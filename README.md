@@ -52,7 +52,7 @@ Run `./kickstart.sh` an follow the instructions.
 
 This should only be needed when running the project for the first time.
 
-- run `./devs.sh setup`, this will also install the Dev Script Runner. You can now use `dev <some-taks>` from anywhere
+- run `./dev.sh setup`, this will also install the Dev Script Runner. You can now use `dev <some-taks>` from anywhere
   inside the project.
 - for font awesome pro support in local dev
     - open: `app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Private/.npmrc.sample`
