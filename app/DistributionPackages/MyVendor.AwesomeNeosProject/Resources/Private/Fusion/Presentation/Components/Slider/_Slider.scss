@@ -3,15 +3,16 @@
 @use "AbstractStyles/Mixins";
 @use "Fusion/Presentation/Components/Button/Button";
 
-.slider {
+// "slider" class is also used in klaro cookie consent, so we need a more specific class name here
+.content-slider {
     min-height: 250px;
 }
 
-.slider__slides {
+.content-slider__slides {
     align-items: center;
 }
 
-.slider__slide {
+.content-slider__slide {
     > .content-width {
         max-width: 80% !important;
 
@@ -21,13 +22,13 @@
     }
 }
 
-.slider__slide--active {
+.content-slider__slide--active {
     // fix for flickering when sliding
     position: relative;
     z-index: 10;
 }
 
-.slider__arrow {
+.content-slider__arrow {
     border: none;
     background: transparent;
 
@@ -44,7 +45,7 @@
     }
 }
 
-.slider__pagination {
+.content-slider__pagination {
     &.swiper-pagination-bullets.swiper-pagination-horizontal {
         bottom: 10px;
     }
