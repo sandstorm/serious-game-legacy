@@ -44,7 +44,7 @@ function setup {
 	mkdir -p ./tmp/.yarn-cache
 
 	_echo_green "Running initial build"
-	make build
+	build
 
   _echo_green "Installing Playwright testrunner"
 	pushd ./e2e-testrunner
