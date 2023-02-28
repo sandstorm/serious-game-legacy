@@ -4,8 +4,8 @@ import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
 import {Swiper as SwiperType} from "swiper";
 
-const SLIDE_CLASS = "slider__slide";
-const SLIDER_CLASS = "slider";
+const SLIDE_CLASS = "content-slider__slide";
+const SLIDER_CLASS = "content-slider";
 
 export default (inBackend: unknown = false) => ({
     inBackend: inBackend as boolean,
