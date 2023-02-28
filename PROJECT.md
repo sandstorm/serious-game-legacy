@@ -50,7 +50,7 @@ This should only be needed when running the project for the first time.
 
 - run `git lfs install` and `git lfs pull` to get large files like the content dump (you need to install git-lfs on your
   machine)
-- run `./devs.sh setup`, this will also install the Dev Script Runner. You can now use `dev <some-taks>` from anywhere inside the project.
+- run `./dev.sh setup`, this will also install the Dev Script Runner. You can now use `dev <some-taks>` from anywhere inside the project.
 - for font awesome pro support in local dev
     - open: `app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Private/.npmrc.sample`
     - and do what the file tells you ;)

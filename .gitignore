@@ -4,3 +4,4 @@
 *.iml
 /tmp
 .DS_Store
+.npmrc
