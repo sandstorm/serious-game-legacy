@@ -100,23 +100,23 @@ function enter-assets {
 
 ######################### Logs #########################
 
-function log {
+function logs {
 	docker compose logs -f
 }
 
-function log-db {
+function logs-db {
 	docker compose logs -f maria-db
 }
 
-function log-neos {
+function logs-neos {
 	docker compose logs -f neos
 }
 
-function log-assets {
+function logs-assets {
 	docker compose logs -f neos-assets
 }
 
-function log-flow-exceptions {
+function logs-flow-exceptions {
 	docker compose exec neos ./watchAndLogExceptions.sh
 }
 
@@ -200,8 +200,8 @@ function site-export-prod {
 function site-import {
 	# the import will be started inside the container if no site is found, which is the case
 	# after calling down.
-	_echo_yellow "IMPORTANT: Containers and data will be removed. Then the container will be restated."
-	_echo_yellow "The entrypoint.sh will check if a site can be found. If not the dumb will be imported."
+	_echo_yellow "IMPORTANT: Containers and data will be removed. Then the container will be restarted."
+	_echo_yellow "The entrypoint.sh will check if a site can be found. If not, the SQL dump will be imported."
 	down
 	start
 }
