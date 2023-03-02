@@ -1,18 +1,9 @@
 #!/usr/bin/env bash
 
-IMPORT_FILE=/app/ContentDump/Database.sql.gz
+echo "Starting import"
 
-if [ -f "$IMPORT_FILE" ];
-    then
-        echo "Starting Import"
-    else
-        echo "No import file found: Exiting"
-        exit 0
-fi
-
-gzip -dk ${IMPORT_FILE}
-
-echo "Importing content"
+echo "Importing database dump."
+gzip -dk /app/ContentDump/Database.sql.gz
 
 # generating tables to be dropped before restoring backup
 echo "SET FOREIGN_KEY_CHECKS = 0;" > ./temp.sql
@@ -36,24 +27,17 @@ mysql --host=$DB_NEOS_HOST --user=$DB_NEOS_USER --password=$DB_NEOS_PASSWORD $DB
 rm ./temp.sql
 rm /app/ContentDump/Database.sql
 
+echo "Importing Resources."
 # Removing Resources
 rm -rf /app/Data/Persistent/Resources/*
 
 # Unzipping into Resources
-RESOURCES_FILE=/app/ContentDump/Resources.tar.gz
+tar -xf /app/ContentDump/Resources.tar.gz -C /app/Data/Persistent/Resources
 
-if [ -f "$RESOURCES_FILE" ];
-    then
-        echo "Importing resouces"
-        tar -xf ${RESOURCES_FILE} -C /app/Data/Persistent/Resources
+# publishing resources and warming up
+./flow resource:clean
+./flow resource:publish
 
-        # publishing resources and warming up
-        ./flow resource:publish
-    else
-        echo "No resources file found: skipping"
-fi
-
-./flow user:create --roles Administrator admin password LocalDev Admin || true
+./flow user:create --roles Administrator admin password LocalDev Admin
 
 echo "ALL DONE, HAVE FUN ;)"
-echo "(you have to re-create the neos users)"
