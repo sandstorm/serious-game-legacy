@@ -11,7 +11,6 @@ spec:
     myvendor-awesomeneosproject-staging.cloud.sandstorm.de: []
 
   node: worker1
-  # TODO change when deploying a kickstarted package to staging
   image: docker-hub.sandstorm.de/infrastructure/neos-on-docker-kickstart/neos:main
 
   port: 8081

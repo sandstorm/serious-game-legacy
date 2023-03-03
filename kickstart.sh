@@ -1,38 +1,35 @@
 #!/usr/bin/env bash
 
-green_echo() {
+_green_echo() {
   printf "\033[0;32m%s\033[0m\n" "${1}"
 }
-yellow_echo() {
+_yellow_echo() {
   printf "\033[1;33m%s\033[0m\n" "${1}"
 }
-red_echo() {
+_red_echo() {
   printf "\033[0;31m%s\033[0m\n" "${1}"
 }
-grey_echo() {
+_grey_echo() {
   printf "\033[0;37m%s\033[0m\n" "${1}"
 }
 
+############# Backing up .git #############
+
+# for easier development of this file
 if [ "$1" = "--restore-git" ]
   then
     if [ -d ".git_back" ]
       then
-        yellow_echo "Found folder .git_back, restoring ..."
+        _yellow_echo "Found folder .git_back, restoring ..."
         rm -rf .git
         mv .git_back .git
       else
-        red_echo "No folder .git_back present, nothing to restore."
+        _red_echo "No folder .git_back present, nothing to restore."
     fi
     exit 0
 fi
 
-initNewGitRepo="no"
-
-findExcludePaths=""
-findExcludePaths="${findExcludePaths} -not -name kickstart.sh"
-findExcludePaths="${findExcludePaths} -not -path */node_modules/*"
-findExcludePaths="${findExcludePaths} -not -path */.idea/*"
-findExcludePaths="${findExcludePaths} -not -path */.git/*"
+################ Defaults #################
 
 defaultVendorName="MyVendor"
 defaultPackageName="AwesomeNeosProject"
@@ -42,7 +39,19 @@ defaultPackageNameLowerCase=$(echo $defaultPackageName | tr '[:upper:]' '[:lower
 
 defaultDockerHubPath="infrastructure/neos-on-docker-kickstart"
 
-green_echo "Please Provide the following information"
+############### User Input ################
+
+_red_echo "All Data in the DB will be lost. The dump will be imported again once"
+_red_echo "you start up the project. "
+echo
+_yellow_echo "If you want to keep your data hit CTRL+C to exit and run 'dev site-export'"
+_yellow_echo "before running the kickstart again."
+echo
+_yellow_echo "Hit RETURN to continue with the kickstart"
+
+read -p ""
+
+_green_echo "Please Provide the following information"
 read -p "Vendor (default='$defaultVendorName'): " vendorName
 vendorName=${vendorName:-$defaultVendorName}
 
@@ -52,40 +61,45 @@ packageName=${packageName:-$defaultPackageName}
 vendorNameLowerCase=$(echo $vendorName | tr '[:upper:]' '[:lower:]')
 packageNameLowerCase=$(echo $packageName | tr '[:upper:]' '[:lower:]')
 
-echo
-green_echo "Before we start"
-echo
-yellow_echo "Things you should have already set up to make the kickstart run smoothly ;)"
-echo "  * an empty git repo you want to push the project '${packageName}' to"
-echo "  * the namespace '${vendorNameLowerCase}-${packageNameLowerCase}-staging' already created in kubernetes"
-echo "    (only relevant in the sandstorm context)"
-echo
-yellow_echo "Hit RETURN to continue, or CTRL+C to exit"
-read -p ""
-
-yellow_echo "This is what we will do next"
+_yellow_echo "This is what we will do next"
+_red_echo "  * we will remove your docker containers an all their data"
 echo "  * we do a search replace on vendor and package names"
 echo "     * e.g. Flow packages names will be renamed to '${vendorName}.${packageName}'"
 echo "     * e.g. the composer packageName will be renamed to '${vendorNameLowerCase}/${packageNameLowerCase}'"
+echo "     * e.g. in the SQL dump we will also replace NodeType names"
 echo "     * ..."
-echo "  * we will switch around READMEs to provide you with a good default"
-echo "    for documenting your project"
+echo "  * we will remove some parts of the README that will be obsolete after running the kickstart"
 echo "  * we remove some kickstarter files"
+echo "  * we will try to create a Kubernetes namespace for you"
 echo "  * you will later be asked if you want to init a new .git with a new remote"
 echo
 
-yellow_echo "Hit RETURN to start replacing, or CTRL+C to exit"
+_yellow_echo "Hit RETURN to run the kickstart, or CTRL+C to exit"
 read -p ""
 
-# TODO: fix later Unzip site-import file and let this script replace the namespaces with new one
-# gzip -dk ./app/ContentDump/Database.sql.gz
-# rm ./app/ContentDump/Database.sql.gz
+############### Preparations ################
 
-# rename distribution package
+_yellow_echo "Removing Containers ..."
+docker compose down
+
+############### Running Replacements ################
+
+# unzip SQL dump so we can replace inside
+gzip -dk ./app/ContentDump/Database.sql.gz
+rm ./app/ContentDump/Database.sql.gz
+
+findExcludePaths=""
+# Add new lines here if you want to exclude files and folders from being replaced
+findExcludePaths="${findExcludePaths} -not -name kickstart.sh"
+findExcludePaths="${findExcludePaths} -not -path */node_modules/*"
+findExcludePaths="${findExcludePaths} -not -path */.idea/*"
+findExcludePaths="${findExcludePaths} -not -path */.git/*"
+
+_yellow_echo "Renaming DistributionPackage ..."
 mv ./app/DistributionPackages/${defaultVendorName}.${defaultPackageName} ./app/DistributionPackages/${vendorName}.${packageName} 2> /dev/null
 
-yellow_echo "Replacing Name of Vendor ..."
-yellow_echo "Replacing Name of Package ..."
+_yellow_echo "Replacing Name of Vendor ..."
+_yellow_echo "Replacing Name of Package ..."
 
 # replace Vendor and Package name -> yaml, php, package.json ...
 find ./ -type f ${findExcludePaths} -exec grep -Iq . {} \; -print | xargs sed -i '' "s/${defaultVendorName}/${vendorName}/g"
@@ -94,41 +108,41 @@ find ./ -type f ${findExcludePaths} -exec grep -Iq . {} \; -print | xargs sed -i
 find ./ -type f ${findExcludePaths} -exec grep -Iq . {} \; -print | xargs sed -i '' "s/${defaultVendorNameLowerCase}/${vendorNameLowerCase}/g"
 find ./ -type f ${findExcludePaths} -exec grep -Iq . {} \; -print | xargs sed -i '' "s/${defaultPackageNameLowerCase}/${packageNameLowerCase}/g"
 
-yellow_echo "Moving README files ..."
-mv ./README.md ./KICKSTART.md
-mv ./PROJECT.md ./README.md
+# zip site export after replacing because importSite.sh expects a `Database.sql.gz`
+gzip ./app/ContentDump/Database.sql
 
-# zip site export again for importSite.sh script after replacing namespace
-# TODO: fix later Unzip site-import file and let this script replace the namespaces with new one
-# gzip ./app/ContentDump/Database.sql
+############### Removing Kickstart Infos and Files ################
 
-# remove old content dump -> we create a new blank page
-rm ./app/ContentDump/Database.sql.gz
-rm ./app/ContentDump/Resources.tar.gz
-
-yellow_echo "Removing Kickstart files ..."
+_yellow_echo "Removing kickstart infos and files ..."
+echo "$(sed '/KICKSTART_INFO_SECTION__START/,/KICKSTART_INFO_SECTION__END/d' README.md)" > ./README.md
 
 if [ "$1" != "--dev" ]
   then
     rm ./kickstart.sh
 fi
 echo
-yellow_echo "The kickstart has finished. Should we init a new git repository for you?"
-red_echo "This will remove the .git folder and run 'git init'!!!"
-red_echo "If you are unsure you can do it later manually."
+
+############### Initializing new Git ################
+
+initNewGitRepo="no"
+_yellow_echo "The kickstart has finished. Should we init a new git repository for you?"
+_red_echo "This will remove the .git folder and run 'git init'!!!"
+_red_echo "If you are unsure you can do it later manually."
 read -p "Init new repo 'yes/no' (default=$initNewGitRepo): " initNewGitRepo
 initNewGitRepo=${initNewGitRepo:-"no"}
 echo
 
 if [ "$initNewGitRepo" = "yes" ]
   then
-    yellow_echo "Backing up .git"
+    _yellow_echo "Backing up .git"
     mv .git .git_back
     rm -rf .git
 
     git init -b main
 
-    read -p "Repo Url: " repoUrl
+    _yellow_echo "Please provide the SSH url to your repo. If you have not created a repo yet"
+    _yellow_echo "please do it now ;)"
+    read -p "Repo Url (ssh://git@...): " repoUrl
 
     if [ $repoUrl ]
       # we have move the README to prevent conflicts with an initialized git repo
@@ -136,10 +150,46 @@ if [ "$initNewGitRepo" = "yes" ]
       mv ./README.md ./README_PROJECT.md
       then
         if [[ $repoUrl == *"gitlab.sandstorm.de"* ]]; then
-          yellow_echo "Sandstorm Gitlab repo detected ;)"
+          _yellow_echo "Sandstorm Gitlab repo detected ;)"
           repoPath=$(echo $repoUrl | sed -e 's;ssh://git@gitlab.sandstorm.de:29418/;;g' -e 's;.git;;g')
-          yellow_echo "Replacing path to dockerhub in app.yaml with $repoPath"
+          _yellow_echo "Replacing path to dockerhub in app.yaml with $repoPath"
           sed -i '' "s;${defaultDockerHubPath};${repoPath};g" deployment/staging/app.yaml
+
+          ############### Creating Kubernetes Namespace ################
+
+          kubernetesNamespace="$vendorNameLowerCase-$packageNameLowerCase-staging"
+          # 1) find the right kubernetes pod to connect to
+          kubectl >> /dev/null 2>&1
+          if [[ $? -gt 0 ]]; then
+            echo "kubectl must be installed to run the script"
+            echo "Not Skipping. Please create the namespace manually"
+          else
+            kubectl get namespace "$kubernetesNamespace" >> /dev/null 2>&1
+            if [[ $? -gt 0 ]]; then
+                echo "Kubernetes namespace '$kubernetesNamespace' not found!"
+                read -p "Create new kubernetes namespace 'yes/no' (default=$createKubernetesNamespace): " createKubernetesNamespace
+                createKubernetesNamespace=${createKubernetesNamespace:-"yes"}
+
+                if [[ "$createKubernetesNamespace" = "yes" ]]; then
+                  read -p "Comma separated list of maintainers (for namespace description): " maintainerNames
+
+cat <<EOF | kubectl create -f -
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: $kubernetesNamespace
+  annotations:
+    # IMPORTANT: the projectId points to "apps" and needs to be changed for major updates of the cluster
+    field.cattle.io/projectId: "c-m-vlgfn55h:p-h5lr5"
+    field.cattle.io/description: |-
+      Maintainers: $maintainerNames;
+      Repo: https://gitlab.sandstorm.de/$repoPath
+EOF
+                fi
+            else
+              echo "Namespace '$kubernetesNamespace' found ;)"
+            fi
+          fi
         fi
 
         git add .
@@ -161,8 +211,10 @@ if [ "$initNewGitRepo" = "yes" ]
         git push
     fi
   else
-    yellow_echo "NO git repository was initialized."
+    _yellow_echo "NO git repository was initialized."
 fi
 echo
-green_echo "DONE - Check README.md again to start developing your Neos project."
+_green_echo "KICKSTART has finished successfully ;)"
+_green_echo "run 'dev start'"
+
 

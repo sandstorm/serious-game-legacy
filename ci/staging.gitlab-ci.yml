@@ -40,8 +40,8 @@ deploy_staging:
     name: staging
   script:
     - export KUBECONFIG=$KUBECONFIG_K3S2021
-    - kubectl get namespace myvendor-awesomeneosproject-relaunch
+    - kubectl get namespace myvendor-awesomeneosproject-staging
     - kubectl apply -f deployment/staging/database.yaml
     - kubectl apply -f deployment/staging/app.yaml
     # enforce a redeploy by changing the release identifier
-    - 'kubectl -n myvendor-awesomeneosproject-relaunch patch --type merge OneContainerOnePort app -p "{\"spec\":{\"releaseIdentifier\": \"$CI_JOB_ID\"}}"'
+    - 'kubectl -n myvendor-awesomeneosproject-staging patch --type merge OneContainerOnePort app -p "{\"spec\":{\"releaseIdentifier\": \"$CI_JOB_ID\"}}"'
