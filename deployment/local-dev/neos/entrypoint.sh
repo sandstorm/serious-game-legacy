@@ -15,8 +15,6 @@ if [ "$importedSites" = "No sites available" ]; then
     ./ContentDump/importSite.sh
 fi
 
-./flow user:create --roles Administrator $ADMIN_USERNAME $ADMIN_PASSWORD LocalDev Admin || true
-
 ./flow resource:publish
 ./flow flow:cache:flush
 ./flow cache:warmup

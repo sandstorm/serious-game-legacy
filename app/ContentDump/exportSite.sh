@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
 # IMPORTANT: will run in Container
-echo "Starting Export In Container"
+echo "------------ Exporting Resources ------------"
 
 tar fcz /app/ContentDump/Resources.tar.gz -C /app/Data/Persistent/Resources/ .
 
+echo "------------ Exporting DB ------------"
 # First we create the structure of the database
 mysqldump \
     --host=$DB_NEOS_HOST \
@@ -58,3 +59,5 @@ mysqldump \
 
 gzip ./temp.sql
 mv ./temp.sql.gz /app/ContentDump/Database.sql.gz
+
+echo "------------> Export Finished"

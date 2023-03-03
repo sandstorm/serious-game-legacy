@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
 
-echo "Starting import"
-
-echo "Importing database dump."
+echo "------------ Importing database dump. ------------"
 gzip -dk /app/ContentDump/Database.sql.gz
 
-# generating tables to be dropped before restoring backup
+echo "Generating drop table before importing dump"
 echo "SET FOREIGN_KEY_CHECKS = 0;" > ./temp.sql
 mysqldump \
     --host=$DB_NEOS_HOST \
@@ -23,11 +21,11 @@ mysql --host=$DB_NEOS_HOST --user=$DB_NEOS_USER --password=$DB_NEOS_PASSWORD $DB
 # importing dumps
 mysql --host=$DB_NEOS_HOST --user=$DB_NEOS_USER --password=$DB_NEOS_PASSWORD $DB_NEOS_DATABASE < /app/ContentDump/Database.sql
 
-# cleaning up
+echo "Cleaning up"
 rm ./temp.sql
 rm /app/ContentDump/Database.sql
 
-echo "Importing Resources."
+echo "------------ Importing Resources. ------------"
 # Removing Resources
 rm -rf /app/Data/Persistent/Resources/*
 
@@ -40,4 +38,5 @@ tar -xf /app/ContentDump/Resources.tar.gz -C /app/Data/Persistent/Resources
 
 ./flow user:create --roles Administrator admin password LocalDev Admin
 
+echo "------------> Import Finished"
 echo "ALL DONE, HAVE FUN ;)"
