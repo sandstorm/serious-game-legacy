@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d0464b4530b6628db0a8b105b2f8734a",
+    "content-hash": "ebcb34f0a53b8119efffb00e90b2a91c",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2209,6 +2209,41 @@
                 "source": "https://github.com/Flowpack/Flowpack.Listable/tree/3.5.1"
             },
             "time": "2022-04-06T20:21:02+00:00"
+        },
+        {
+            "name": "flowpack/nodetemplates",
+            "version": "1.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Flowpack/Flowpack.NodeTemplates.git",
+                "reference": "913f28f5d84def0eb5b82ee60a102122c6015084"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Flowpack/Flowpack.NodeTemplates/zipball/913f28f5d84def0eb5b82ee60a102122c6015084",
+                "reference": "913f28f5d84def0eb5b82ee60a102122c6015084",
+                "shasum": ""
+            },
+            "require": {
+                "neos/neos": "^5.0 || ^7.0 || ^8.0",
+                "neos/neos-ui": "*"
+            },
+            "type": "neos-package",
+            "autoload": {
+                "psr-4": {
+                    "Flowpack\\NodeTemplates\\": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-3.0+"
+            ],
+            "description": "Neos package that allows to modify nodes on creation via templates.",
+            "support": {
+                "issues": "https://github.com/Flowpack/Flowpack.NodeTemplates/issues",
+                "source": "https://github.com/Flowpack/Flowpack.NodeTemplates/tree/1.3.2"
+            },
+            "time": "2022-04-06T20:22:35+00:00"
         },
         {
             "name": "friendsofphp/proxy-manager-lts",

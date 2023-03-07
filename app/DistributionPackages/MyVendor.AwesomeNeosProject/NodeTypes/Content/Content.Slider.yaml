@@ -9,3 +9,8 @@
     label: 'Slider'
     position: 301
     icon: icon-images
+  options:
+    template:
+      childNodes:
+        firstSlide:
+          type: 'MyVendor.AwesomeNeosProject:Content.Image'
