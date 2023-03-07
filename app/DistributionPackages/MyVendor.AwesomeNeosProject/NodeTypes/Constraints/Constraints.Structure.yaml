@@ -1,0 +1,5 @@
+'MyVendor.AwesomeNeosProject:Constraints.Structure':
+  abstract: true
+  constraints:
+    nodeTypes:
+      'MyVendor.AwesomeNeosProject:Content.SectionWithBackground': true

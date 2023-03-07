@@ -1,0 +1,21 @@
+@use "AbstractStyles/Variables/Spacing";
+@use "AbstractStyles/Mixins";
+
+.background-section {
+    width: 100%;
+    padding-top: Spacing.$xxl;
+    padding-bottom: Spacing.$xxl;
+
+    // TODO remove when no other element has content-width class
+    > .content-width {
+        .content-width {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+
+    @include Mixins.mq(small) {
+        padding-top: Spacing.$xl;
+        padding-bottom: Spacing.$xl;
+    }
+}

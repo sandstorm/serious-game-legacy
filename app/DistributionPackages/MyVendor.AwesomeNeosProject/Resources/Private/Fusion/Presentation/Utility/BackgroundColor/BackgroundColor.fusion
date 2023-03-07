@@ -1,0 +1,13 @@
+prototype(MyVendor.AwesomeNeosProject:Utility.BackgroundColor) < prototype(Neos.Fusion:Component) {
+    backgroundColor = ''
+
+    @propTypes {
+        @strict = true
+        backgroundColor = ${PropTypes.oneOf(['white', 'black', 'grey', 'blue'])}
+    }
+
+    renderer = Neos.Fusion:Component {
+        @apply.props = ${props}
+        renderer = ${props.backgroundColor ? 'background-color--' + props.backgroundColor : ''}
+    }
+}

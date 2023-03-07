@@ -1,0 +1,18 @@
+@use "AbstractStyles/Variables/Colors";
+
+.background-color--white {
+    background-color: Colors.$white;
+}
+
+.background-color--black {
+    background-color: Colors.$black;
+    color: Colors.$white;
+}
+
+.background-color--grey {
+    background-color: Colors.$grey--lighter;
+}
+
+.background-color--blue {
+    background-color: Colors.$blue;
+}

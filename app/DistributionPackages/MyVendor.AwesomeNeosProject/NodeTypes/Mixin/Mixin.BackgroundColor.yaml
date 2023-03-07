@@ -1,0 +1,22 @@
+'MyVendor.AwesomeNeosProject:Mixin.BackgroundColor':
+  abstract: true
+  properties:
+    backgroundColor:
+      type: string
+      defaultValue: 'white'
+      ui:
+        label: 'Background color'
+        reloadIfChanged: true
+        inspector:
+          group: properties
+          editor: 'Neos.Neos/Inspector/Editors/SelectBoxEditor'
+          editorOptions:
+            values:
+              white:
+                label: 'White'
+              grey:
+                label: 'Grey'
+              blue:
+                label: 'Blue'
+              black:
+                label: 'Black'

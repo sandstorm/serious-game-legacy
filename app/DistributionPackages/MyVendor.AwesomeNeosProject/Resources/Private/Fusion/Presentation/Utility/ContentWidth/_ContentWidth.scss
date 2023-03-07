@@ -12,22 +12,20 @@ $contentWidth--full: 100%;
     margin: 0 auto;
     padding-left: Spacing.$lg;
     padding-right: Spacing.$lg;
+}
 
-    &--small {
-        max-width: $contentWidth--small;
-    }
+.content-width--small {
+    max-width: $contentWidth--small;
+}
 
-    &--large {
-        max-width: $contentWidth--large;
-        padding-left: Spacing.$xxl;
-        padding-right: Spacing.$xxl;
-    }
+.content-width--large {
+    max-width: $contentWidth--large;
+}
 
-    &--full {
-        max-width: $contentWidth--full;
-        padding-left: 0;
-        padding-right: 0;
-    }
+.content-width--full {
+    max-width: $contentWidth--full;
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .content-width-context--blogpost {

@@ -1,0 +1,28 @@
+prototype(MyVendor.AwesomeNeosProject:Component.SectionWithBackground) < prototype(Neos.Fusion:Component) {
+    content = ''
+    backgroundColor = ''
+    contentWidth = ''
+
+    @propTypes {
+        @strict = true
+        content = ${PropTypes.string}
+        backgroundColor = ${PropTypes.string}
+        contentWidth = ${PropTypes.string}
+    }
+
+    renderer = Neos.Fusion:Component {
+        @apply.props = ${props}
+
+        _backgroundColorClass = MyVendor.AwesomeNeosProject:Utility.BackgroundColor {
+            backgroundColor = ${props.backgroundColor}
+        }
+
+        renderer = afx`
+            <section class={AtomicFusion.classNames('background-section', props._backgroundColorClass )}>
+                <MyVendor.AwesomeNeosProject:Utility.ContentWidth size={props.contentWidth}>
+                    {props.content}
+                </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
+            </section>
+        `
+    }
+}
