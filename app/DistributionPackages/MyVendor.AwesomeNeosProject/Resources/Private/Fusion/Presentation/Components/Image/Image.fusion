@@ -5,12 +5,14 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
     fileExtension = ''
     alternativeText = ''
     imageDescription = ''
+
     href = ''
     isExternalLink = false
+    contentWidth = null
+
     loadEager = false
     // If set to false we prevent this component from rendering a image placeholder in backend when no image is set
     showImagePlaceholder = true
-    contentWidth = null
     @context.contentWidth = ${this.contentWidth}
     class = ''
 
@@ -47,6 +49,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
                 '100vw'
             ]}
         }
+        // large or full
         default {
             condition = true
             renderer = ${[
@@ -70,11 +73,14 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
         fileExtension = ${PropTypes.string}
         alternativeText = ${PropTypes.string}
         imageDescription = ${PropTypes.string}
+
         href = ${PropTypes.string}
         isExternalLink = ${PropTypes.boolean}
+        contentWidth = ${PropTypes.oneOf([null, '', 'small', 'large', 'full'])}
+
         loadEager = ${PropTypes.boolean}
         showImagePlaceholder = ${PropTypes.boolean}
-        contentWidth = ${PropTypes.oneOf([null, '', 'small', 'large', 'full'])}
+
         srcSet = ${PropTypes.arrayOf(PropTypes.string)}
         sizes = ${PropTypes.arrayOf(PropTypes.string)}
         formats = ${PropTypes.arrayOf(PropTypes.string)}

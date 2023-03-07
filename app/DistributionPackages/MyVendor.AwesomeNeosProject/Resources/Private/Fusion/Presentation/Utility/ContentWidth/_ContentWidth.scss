@@ -1,30 +1,34 @@
 @use "AbstractStyles/Variables/Spacing";
 
+$contentWidth--default: 1400px;
+$contentWidth--small: 800px;
+$contentWidth--large: 1800px;
+$contentWidth--full: 100%;
+
 .content-width {
+    max-width: $contentWidth--default;
     position: relative;
     width: 100%;
     margin: 0 auto;
-    max-width: 1400px;
     padding-left: Spacing.$lg;
     padding-right: Spacing.$lg;
-}
 
-.content-width--small {
-    max-width: 800px;
-}
+    &--small {
+        max-width: $contentWidth--small;
+    }
 
-.content-width--large {
-    max-width: 1800px;
-    padding-left: Spacing.$xxl;
-    padding-right: Spacing.$xxl;
-}
+    &--large {
+        max-width: $contentWidth--large;
+        padding-left: Spacing.$xxl;
+        padding-right: Spacing.$xxl;
+    }
 
-.content-width--full {
-    max-width: 100%;
-    padding-left: 0;
-    padding-right: 0;
+    &--full {
+        max-width: $contentWidth--full;
+        padding-left: 0;
+        padding-right: 0;
+    }
 }
-
 
 .content-width-context--blogpost {
     .content-width {
