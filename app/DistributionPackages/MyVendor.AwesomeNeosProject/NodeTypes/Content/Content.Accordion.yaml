@@ -9,3 +9,19 @@
     nodeTypes:
       '*': false
       'MyVendor.AwesomeNeosProject:Content.Accordion.Item': true
+  options:
+    template:
+      childNodes:
+        firstAccordionItem:
+          type: 'MyVendor.AwesomeNeosProject:Content.Accordion.Item'
+          properties:
+            title: 'Title'
+          childNodes:
+            mainContentCollection:
+              name: 'main'
+              type: 'MyVendor.AwesomeNeosProject:ContentCollection.Default'
+              childNodes:
+                firstAccordionItemContent:
+                  type: 'MyVendor.AwesomeNeosProject:Content.Text'
+                  properties:
+                    text: 'Lorem ipsum'
