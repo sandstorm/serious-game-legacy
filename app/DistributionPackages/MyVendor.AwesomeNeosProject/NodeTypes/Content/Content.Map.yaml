@@ -4,10 +4,9 @@
   ui:
     label: 'Map'
     icon: icon-map
-    position: 50
-
+    group: special
+    position: 40
   properties:
-
     lat:
       type: string
       defaultValue: '51.0567032'
@@ -16,7 +15,6 @@
         reloadIfChanged: true
         inspector:
           group: properties
-
     lng:
       type: string
       defaultValue: '13.7769583'
@@ -25,7 +23,6 @@
         reloadIfChanged: true
         inspector:
           group: properties
-
     zoom:
       type: string
       defaultValue: '14'
@@ -34,7 +31,6 @@
         reloadIfChanged: true
         inspector:
           group: properties
-
     popupText:
       type: string
       defaultValue: ''

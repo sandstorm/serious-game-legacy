@@ -4,6 +4,7 @@
   ui:
     label: Anchor
     icon: icon-anchor
+    position: 60
   properties:
     id:
       type: string

@@ -5,8 +5,7 @@
   ui:
     label: Text
     icon: icon-file-text
-    position: 20
-    inlineEditable: true
+    position: 10
   properties:
     text:
       options:

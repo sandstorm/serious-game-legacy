@@ -2,13 +2,10 @@
   abstract: true
   constraints:
     nodeTypes:
-      'MyVendor.AwesomeNeosProject:Content.Accordion': true
       'MyVendor.AwesomeNeosProject:Content.Anchor': true
       'MyVendor.AwesomeNeosProject:Content.Button': true
-      'MyVendor.AwesomeNeosProject:Content.ContactForm': true
       'MyVendor.AwesomeNeosProject:Content.Download': true
       'MyVendor.AwesomeNeosProject:Content.Headline': true
       'MyVendor.AwesomeNeosProject:Content.Image': true
-      'MyVendor.AwesomeNeosProject:Content.Map': true
       'MyVendor.AwesomeNeosProject:Content.Text': true
       'Jonnitto.PrettyEmbedVideoPlatforms:Content.Video': true

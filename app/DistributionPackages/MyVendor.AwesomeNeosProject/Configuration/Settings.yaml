@@ -27,6 +27,16 @@ Neos:
       frontendConfiguration:
         defaultInlineEditor: 'ckeditor5'
         hotkeys: ~
+    nodeTypes:
+      groups:
+        special:
+          position: 40
+          label: 'Special elements'
+          collapsed: false
+        columns:
+          position: 50
+          label: 'Columns'
+          collapsed: false
   ContentRepository:
     contentDimensions:
       language:

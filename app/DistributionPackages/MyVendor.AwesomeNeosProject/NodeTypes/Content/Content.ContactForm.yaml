@@ -4,7 +4,8 @@
   ui:
     label: 'Contact Form'
     icon: icon-envelope
-    position: 120
+    group: special
+    position: 30
   properties:
     mailTo:
       type: string

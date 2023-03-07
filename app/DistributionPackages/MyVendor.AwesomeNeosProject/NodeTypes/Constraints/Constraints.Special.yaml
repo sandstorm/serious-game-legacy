@@ -1,0 +1,8 @@
+'MyVendor.AwesomeNeosProject:Constraints.Special':
+  abstract: true
+  constraints:
+    nodeTypes:
+      'MyVendor.AwesomeNeosProject:Content.Accordion': true
+      'MyVendor.AwesomeNeosProject:Content.Slider': true
+      'MyVendor.AwesomeNeosProject:Content.ContactForm': true
+      'MyVendor.AwesomeNeosProject:Content.Map': true

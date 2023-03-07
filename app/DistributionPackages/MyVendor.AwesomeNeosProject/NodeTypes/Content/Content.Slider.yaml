@@ -7,8 +7,9 @@
     'MyVendor.AwesomeNeosProject:Constraints.Columns': true
   ui:
     label: 'Slider'
-    position: 301
     icon: icon-images
+    group: special
+    position: 10
   options:
     template:
       childNodes:

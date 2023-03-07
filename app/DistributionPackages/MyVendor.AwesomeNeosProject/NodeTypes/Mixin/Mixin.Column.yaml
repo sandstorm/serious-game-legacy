@@ -2,4 +2,4 @@
   abstract: true
   ui:
     icon: icon-columns
-    group: structure
+    group: columns
