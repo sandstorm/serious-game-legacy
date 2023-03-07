@@ -5,6 +5,8 @@
   ui:
     label: 'Accordion'
     icon: icon-chevron-down
+    group: special
+    position: 20
   constraints:
     nodeTypes:
       '*': false

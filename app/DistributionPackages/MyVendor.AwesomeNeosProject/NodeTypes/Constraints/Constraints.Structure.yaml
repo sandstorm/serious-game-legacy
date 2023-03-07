@@ -2,7 +2,4 @@
   abstract: true
   constraints:
     nodeTypes:
-      'MyVendor.AwesomeNeosProject:Content.TwoColumn': true
-      'MyVendor.AwesomeNeosProject:Content.ThreeColumn': true
-      'MyVendor.AwesomeNeosProject:Content.FourColumn': true
-      'MyVendor.AwesomeNeosProject:Content.Slider': true
+      'MyVendor.AwesomeNeosProject:Content.SectionWithBackground': true

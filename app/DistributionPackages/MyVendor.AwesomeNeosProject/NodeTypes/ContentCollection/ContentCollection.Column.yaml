@@ -2,5 +2,6 @@
   superTypes:
     'Neos.Neos:ContentCollection': true
     'MyVendor.AwesomeNeosProject:Constraints.Base': true
+    'MyVendor.AwesomeNeosProject:Constraints.Special': true
     'MyVendor.AwesomeNeosProject:Constraints.Columns': true
 
