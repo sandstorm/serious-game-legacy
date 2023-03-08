@@ -16,7 +16,9 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu) < prototype(Neos.Fusio
                 <div class="mobile-menu__toggle__hamburger-line"></div>
             </button>
 
-            <MyVendor.AwesomeNeosProject:Component.PageMenu.Main />
+            <MyVendor.AwesomeNeosProject:Component.PageMenu.Main/>
+
+            <MyVendor.AwesomeNeosProject:Component.LanguageMenu/>
         </nav>
     `
 }

@@ -10,7 +10,7 @@
 
     background-color: Colors.$white;
 
-    @include Mixins.mq(small) {
+    @include Mixins.mq(medium) {
         display: none;
         position: absolute;
         width: 100%;
@@ -23,6 +23,15 @@
 
         &--is-visible {
             display: block;
+        }
+    }
+
+    .language-menu {
+        display: none;
+
+        @include Mixins.mq(medium) {
+            display: block;
+            margin-bottom: Spacing.$lg;
         }
     }
 }
@@ -62,7 +71,7 @@
         }
     }
 
-    @include Mixins.mq(small) {
+    @include Mixins.mq(medium) {
         width: 100%;
         height: unset;
         padding-top: Spacing.$md;
@@ -72,7 +81,6 @@
 
 .page-menu__toplevel-link {
     text-decoration: none;
-    text-transform: uppercase;
     color: Colors.$grey;
     line-height: PageHeader.$header__height;
     font-size: 1.2rem;
@@ -81,7 +89,7 @@
         color: Colors.$blue !important;
     }
 
-    @include Mixins.mq(small) {
+    @include Mixins.mq(medium) {
         line-height: unset;
     }
 }
@@ -108,7 +116,7 @@
 
     box-shadow: 5px 5px 10px transparentize(Colors.$black, 0.5);
 
-    @include Mixins.mq(small) {
+    @include Mixins.mq(medium) {
         position: relative;
         top: unset;
         max-height: unset;

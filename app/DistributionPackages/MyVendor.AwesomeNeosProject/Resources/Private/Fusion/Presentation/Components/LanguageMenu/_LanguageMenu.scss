@@ -1,0 +1,48 @@
+@use "AbstractStyles/Mixins";
+@use "AbstractStyles/Variables/Colors";
+@use "AbstractStyles/Variables/Spacing";
+
+.language-menu {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+
+    @include Mixins.mq(medium) {
+        // hide the language menu in the header
+        display: none;
+    }
+}
+
+// List of Entries
+.language-menu__items {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    margin: 0;
+
+    list-style: none;
+
+    @include Mixins.mq(medium) {
+        justify-content: flex-end;
+    }
+}
+
+// List Entry
+.language-menu__item {
+    margin-right: Spacing.$lg;
+
+    a {
+        color: Colors.$black;
+        text-decoration: none;
+    }
+
+    &--deactivated {
+        opacity: 0.5;
+        cursor: default;
+    }
+
+    &--current > a {
+        color: Colors.$blue;
+    }
+}

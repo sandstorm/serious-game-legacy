@@ -14,7 +14,6 @@
 
 .page-menu__logo {
     display: inline-block;
-    flex: 1;
 }
 
 .page-menu__search {
@@ -32,7 +31,7 @@
 
     width: Button.$button__height;
 
-    @include Mixins.mq(small) {
+    @include Mixins.mq(medium) {
         display: flex;
     }
 }
