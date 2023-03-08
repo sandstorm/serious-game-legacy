@@ -3,7 +3,6 @@
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
     'MyVendor.AwesomeNeosProject:Mixin.Image': true
     'MyVendor.AwesomeNeosProject:Mixin.Link': true
-    'MyVendor.AwesomeNeosProject:Mixin.ContentWidth': true
     'MyVendor.AwesomeNeosProject:Mixin.Align': true
   ui:
     label: 'Image'

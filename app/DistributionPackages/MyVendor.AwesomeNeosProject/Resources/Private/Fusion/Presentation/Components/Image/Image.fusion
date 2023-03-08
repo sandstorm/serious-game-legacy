@@ -8,13 +8,12 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
 
     href = ''
     isExternalLink = false
-    contentWidth = null
+    textAlign = ''
 
     loadEager = false
     // If set to false we prevent this component from rendering a image placeholder in backend when no image is set
     showImagePlaceholder = true
     @context.contentWidth = ${this.contentWidth}
-    class = ''
 
     // The possible image sizes we are using here are determined empirically, so
     // f.e. for a 4column Blog Overview page, we need a rendering bigger than 350 px (as the breakpoint
@@ -24,45 +23,15 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
 
     // This is only for full-width images!!
     // For images displayed at smaller sizes, you MUST OVERRIDE THIS!!
-    sizes = Neos.Fusion:Case {
-        // Keep contentWidth checks in sync with MyVendor.AwesomeNeosProject:Mixin.ContentWidth.yaml
-        // default = 1400px
-        contentWidthDefault {
-            condition = ${contentWidth == ''}
-            renderer =  ${[
-                '(min-width: 1400px) 1400px',
-                '(min-width: 1200px) 1200px',
-                '(min-width: 996px) 996px',
-                '(min-width: 768px) 768px',
-                '(min-width: 500px) 500px',
-                '(min-width: 370px) 370px',
-                '100vw'
-            ]}
-        }
-        // small = 800px
-        contentWidthSmall {
-            condition = ${contentWidth == 'small'}
-            renderer =  ${[
-                '(min-width: 800px) 800px',
-                '(min-width: 500px) 500px',
-                '(min-width: 370px) 370px',
-                '100vw'
-            ]}
-        }
-        // large or full
-        default {
-            condition = true
-            renderer = ${[
-                '(min-width: 1600px) 1600px',
-                '(min-width: 1200px) 1200px',
-                '(min-width: 996px) 996px',
-                '(min-width: 768px) 768px',
-                '(min-width: 500px) 500px',
-                '(min-width: 370px) 370px',
-                '100vw'
-            ]}
-        }
-    }
+    sizes = ${[
+        '(min-width: 1600px) 1600px',
+        '(min-width: 1200px) 1200px',
+        '(min-width: 996px) 996px',
+        '(min-width: 768px) 768px',
+        '(min-width: 500px) 500px',
+        '(min-width: 370px) 370px',
+        '100vw'
+    ]}
 
     formats = ${['webp', 'jpg']}
 
@@ -76,7 +45,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
 
         href = ${PropTypes.string}
         isExternalLink = ${PropTypes.boolean}
-        contentWidth = ${PropTypes.oneOf([null, '', 'small', 'large', 'full'])}
+        textAlign = ${PropTypes.string}
 
         loadEager = ${PropTypes.boolean}
         showImagePlaceholder = ${PropTypes.boolean}
@@ -84,17 +53,19 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
         srcSet = ${PropTypes.arrayOf(PropTypes.string)}
         sizes = ${PropTypes.arrayOf(PropTypes.string)}
         formats = ${PropTypes.arrayOf(PropTypes.string)}
-        class = ${PropTypes.string}
     }
 
     renderer = Neos.Fusion:Component {
         @apply.props = ${props}
         _inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
+        @context._textAlignClass = MyVendor.AwesomeNeosProject:Utility.TextAlign {
+            textAlign = ${props.textAlign}
+        }
 
         _imageAttributes = Neos.Fusion:DataStructure {
             "href" = ${props.href ? props.href : null}
             "target" = ${props.isExternalLink ? '_blank' : null}
-            "class" = ${AtomicFusion.classNames('image', props.class)}
+            "class" = ${AtomicFusion.classNames('image', props.class, _textAlignClass)}
         }
 
         renderer = Neos.Fusion:Tag {
