@@ -2,9 +2,7 @@
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
     'Neos.Neos:ContentCollection': true
-    'MyVendor.AwesomeNeosProject:Mixin.Column': true
     'MyVendor.AwesomeNeosProject:Constraints.Slider': true
-    'MyVendor.AwesomeNeosProject:Constraints.Columns': true
   ui:
     label: 'Slider'
     icon: icon-images
