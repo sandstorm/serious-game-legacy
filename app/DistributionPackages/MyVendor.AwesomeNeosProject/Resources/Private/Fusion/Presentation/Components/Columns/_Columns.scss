@@ -15,6 +15,26 @@
 }
 
 .columns__cell {
+    &--size-33 {
+        width: 33%;
+    }
+
+    &--size-25 {
+        width: 25%;
+    }
+
+    &--size-50 {
+        width: 50%;
+    }
+
+    &--size-66 {
+        width: 66%;
+    }
+
+    &--size-75 {
+        width: 75%;
+    }
+
     @include Mixins.mq(small) {
         width: 100% !important;
     }
@@ -24,24 +44,3 @@
         padding-right: 0;
     }
 }
-
-.columns__cell--size-33 {
-    width: 33%;
-}
-
-.columns__cell--size-25 {
-    width: 25%;
-}
-
-.columns__cell--size-50 {
-    width: 50%;
-}
-
-.columns__cell--size-66 {
-    width: 66%;
-}
-
-.columns__cell--size-75 {
-    width: 75%;
-}
-

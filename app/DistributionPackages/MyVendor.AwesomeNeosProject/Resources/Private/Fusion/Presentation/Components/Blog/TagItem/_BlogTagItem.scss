@@ -18,11 +18,11 @@ a.blog-tag {
     margin: 0;
     flex-grow: 0;
     flex-shrink: 0;
-}
 
-a.blog-tag--is-active {
-    background-color: Colors.$blue--dark !important;
-    border-color: Colors.$blue--dark !important;
+    &--is-active {
+        background-color: Colors.$blue--dark !important;
+        border-color: Colors.$blue--dark !important;
 
-    color: Colors.$white !important;
+        color: Colors.$white !important;
+    }
 }

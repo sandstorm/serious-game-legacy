@@ -10,6 +10,10 @@
 
     background-color: Colors.$white;
 
+    &--is-visible {
+        display: block;
+    }
+
     @include Mixins.mq(small) {
         display: none;
         position: absolute;
@@ -21,10 +25,6 @@
 
         z-index: 999;
     }
-}
-
-.page-menu__main--is-visible {
-    display: block;
 }
 
 .page-menu__toplevel,
@@ -40,33 +40,33 @@
     padding: 0 Spacing.$lg;
     height: PageHeader.$header__height;
 
+    &--has-items {
+        &:hover, &:focus-within {
+            // transparent bar for better menu hovering
+            &:after {
+                content: " ";
+                position: absolute;
+                left: 0;
+                top: PageHeader.$header__height - 30px;
+                height: 30px;
+                width: 100%;
+
+                background-color: transparent;
+
+                z-index: 999;
+            }
+
+            .page-menu__sublevel-wrapper {
+                display: block;
+            }
+        }
+    }
+
     @include Mixins.mq(small) {
         width: 100%;
         height: unset;
         padding-top: Spacing.$md;
         padding-bottom: Spacing.$md;
-    }
-}
-
-.page-menu__toplevel-item--has-items {
-    &:hover, &:focus-within {
-        // transparent bar for better menu hovering
-        &:after {
-            content: " ";
-            position: absolute;
-            left: 0;
-            top: PageHeader.$header__height - 30px;
-            height: 30px;
-            width: 100%;
-
-            background-color: transparent;
-
-            z-index: 999;
-        }
-
-        .page-menu__sublevel-wrapper {
-            display: block;
-        }
     }
 }
 
@@ -77,12 +77,12 @@
     line-height: PageHeader.$header__height;
     font-size: 1.2rem;
 
-    @include Mixins.mq(small) {
-        line-height: unset;
-    }
-
     &:hover, &:focus, &:active {
         color: Colors.$blue !important;
+    }
+
+    @include Mixins.mq(small) {
+        line-height: unset;
     }
 }
 

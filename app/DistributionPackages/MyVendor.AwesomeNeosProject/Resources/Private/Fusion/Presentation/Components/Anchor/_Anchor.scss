@@ -7,11 +7,11 @@
 
     // add for sticky header
     // top: -$header__height;
-}
 
-.anchor--backend {
-    margin-top: Spacing.$lg;
-    margin-bottom: Spacing.$lg;
+    &--in-backend {
+        margin-top: Spacing.$lg;
+        margin-bottom: Spacing.$lg;
 
-    border: 1px dashed Colors.$grey;
+        border: 1px dashed Colors.$grey;
+    }
 }

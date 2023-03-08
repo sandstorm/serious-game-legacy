@@ -10,18 +10,18 @@ $button__height--larger: 60px;
 .button__wrapper {
     display: flex;
     width: 100%;
-}
 
-.button__wrapper--left {
-    justify-content: flex-start;
-}
+    &--left {
+        justify-content: flex-start;
+    }
 
-.button__wrapper--center {
-    justify-content: center;
-}
+    &--center {
+        justify-content: center;
+    }
 
-.button__wrapper--right {
-    justify-content: flex-end;
+    &--right {
+        justify-content: flex-end;
+    }
 }
 
 .button {
