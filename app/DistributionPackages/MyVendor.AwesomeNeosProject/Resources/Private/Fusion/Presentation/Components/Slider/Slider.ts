@@ -2,7 +2,8 @@
 import Swiper from 'swiper/bundle';
 // import Swiper styles
 import 'swiper/css/bundle';
-import {Swiper as SwiperType} from "swiper";
+// @ts-ignore
+import { Swiper as SwiperType } from "swiper";
 
 const SLIDE_CLASS = "content-slider__slide";
 const SLIDER_CLASS = "content-slider";
@@ -15,10 +16,9 @@ export default (inBackend: unknown = false) => ({
     // init is called before alpine.js renders the appropriate component in the DOM.
     // In this case we create a new Swiper for the referenced Slider (x-ref="slider") in the DOM.
     init() {
-        const scope = this;
-
         this._initSlider();
         if (this.inBackend) {
+            const scope = this;
             // listen to node events to scroll to the right slide in neos backend
             document.addEventListener('Neos.NodeCreated', function (event) {
                 scope.nodeCreated(event)
@@ -76,15 +76,13 @@ export default (inBackend: unknown = false) => ({
     _initSlider() {
         // @ts-ignore
         const swiperRef = this.$refs.slider;
-
-        // @ts-ignore
-        const amountOfSlides = swiperRef.querySelectorAll('.swiper-slide').length;
+        const amountOfSlides = swiperRef.querySelectorAll(`.${SLIDE_CLASS}`).length;
         if (amountOfSlides === 0) {
             return;
         }
 
         const swiperOptions = {
-            loop: true,
+            loop: !this.inBackend,
             pagination: {
                 el: '.swiper-pagination',
                 clickable: true,
@@ -94,10 +92,6 @@ export default (inBackend: unknown = false) => ({
                 prevEl: '.swiper-button-prev',
             },
         }
-
-        // this would otherwise create copies of the slides breaking
-        // the index calculation
-        if (this.inBackend) swiperOptions.loop = false;
 
         this.swiper = new Swiper(swiperRef, swiperOptions);
     }

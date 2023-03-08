@@ -1,11 +1,9 @@
 prototype(MyVendor.AwesomeNeosProject:Component.Slider) < prototype(Neos.Fusion:Component) {
     slides = ''
-    inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
 
     @propTypes {
         @strict = true
         slides = ${PropTypes.string}
-        inBackend = ${PropTypes.boolean}
     }
 
     // This slider uses swiper.js and is wrapped by alpine.js.
@@ -14,29 +12,35 @@ prototype(MyVendor.AwesomeNeosProject:Component.Slider) < prototype(Neos.Fusion:
     // With x-data="slider" we set the component-name we want to use.
     // With x-ref="slider" we allow alpine.js to get an easy access to the referenced dom node.
     // In the main.ts the 'slider' component is registered, this way we can access its properties and functionality.
-    renderer = afx`
-        <MyVendor.AwesomeNeosProject:Utility.ContentWidth>
-            <div x-data={"slider(" + props.inBackend + ")"}>
-                <!-- Slider main container -->
-                <div
-                    class={AtomicFusion.classNames('swiper', 'content-slider', {'content-slider--in-backend': props.inBackend})}
-                    x-ref="slider"
-                >
-                    <!-- Slides -->
-                    {props.slides}
+    renderer = Neos.Fusion:Component {
+        @apply.props = ${props}
 
-                    <!-- If we need pagination -->
-                    <div class="swiper-pagination content-slider__pagination"></div>
+        _inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
 
-                    <button class="swiper-button-prev content-slider__arrow">
-                        <span class="sr-only">Skip to previous slide page</span>
-                    </button>
+        renderer = afx`
+            <MyVendor.AwesomeNeosProject:Utility.ContentWidth>
+                <div x-data={"slider(" + props._inBackend + ")"}>
+                    <!-- Slider main container -->
+                    <div
+                        class={AtomicFusion.classNames('swiper', 'content-slider')}
+                        x-ref="slider"
+                    >
+                        <!-- Slides -->
+                        {props.slides}
 
-                    <button class="swiper-button-next content-slider__arrow">
-                        <span class="sr-only">Skip to next slide page</span>
-                    </button>
+                        <!-- If we need pagination -->
+                        <div class="swiper-pagination content-slider__pagination"></div>
+
+                        <button class="swiper-button-prev content-slider__arrow">
+                            <span class="sr-only">Skip to previous slide page</span>
+                        </button>
+
+                        <button class="swiper-button-next content-slider__arrow">
+                            <span class="sr-only">Skip to next slide page</span>
+                        </button>
+                    </div>
                 </div>
-            </div>
-        </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
-    `
+            </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
+        `
+    }
 }

@@ -2,12 +2,14 @@
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
     'Neos.Neos:ContentCollection': true
-    'MyVendor.AwesomeNeosProject:Constraints.Slider': true
   ui:
     label: 'Slider'
     icon: icon-images
     group: special
     position: 10
+  constraints:
+    nodeTypes:
+      'MyVendor.AwesomeNeosProject:Content.Image': true
   options:
     template:
       childNodes:
