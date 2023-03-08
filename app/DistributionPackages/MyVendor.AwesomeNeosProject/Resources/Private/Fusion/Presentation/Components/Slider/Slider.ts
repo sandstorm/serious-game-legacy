@@ -8,91 +8,96 @@ import { Swiper as SwiperType } from "swiper";
 const SLIDE_CLASS = "content-slider__slide";
 const SLIDER_CLASS = "content-slider";
 
-export default (inBackend: unknown = false) => ({
-    inBackend: inBackend as boolean,
-    _currentPosition: 1,
-    swiper: null as SwiperType | null,
+export const basicSlider = function(inBackend: unknown = false) {
+    return {
+        inBackend: inBackend as boolean,
 
-    // init is called before alpine.js renders the appropriate component in the DOM.
-    // In this case we create a new Swiper for the referenced Slider (x-ref="slider") in the DOM.
-    init() {
-        this._initSlider();
-        if (this.inBackend) {
-            const scope = this;
-            // listen to node events to scroll to the right slide in neos backend
-            document.addEventListener('Neos.NodeCreated', function (event) {
-                scope.nodeCreated(event)
-            }, false);
-            document.addEventListener('Neos.NodeSelected', function (event) {
-                scope.nodeSelected(event)
-            }, false);
-            document.addEventListener('Neos.NodeRemoved', function (event) {
-                scope.nodeRemoved(event)
-            }, false);
-        }
-    },
+        _currentPosition: 1,
+        _swiper: null as SwiperType | null,
 
-    // Backend Optimizations
-    getSlideIndex(element: HTMLElement): number {
-        // @ts-ignore
-        const slides = Array.from(this.$refs.slider.querySelectorAll(`.${SLIDE_CLASS}`));
-        return slides.indexOf(element);
-    },
-
-    isSlide(element: HTMLElement): boolean {
-        return element.classList.contains(SLIDE_CLASS);
-    },
-
-    isOwnSlide(element: HTMLElement): boolean {
-        if (!this.isSlide(element)) return false;
-        // @ts-ignore
-        return element.closest(`.${SLIDER_CLASS}`) === this.$refs.slider;
-    },
-
-    nodeSelected(event: any) {
-        if (this.swiper && this.isOwnSlide(event.detail.element)) {
-            const index = this.getSlideIndex(event.detail.element);
-            if (index >= 0) {
-                this.swiper.update();
-                this.swiper.slideTo(index);
+        // init is called before alpine.js renders the appropriate component in the DOM.
+        // In this case we create a new Swiper for the referenced Slider (x-ref="slider") in the DOM.
+        init() {
+            this._initSlider();
+            if (this.inBackend) {
+                const scope = this;
+                // listen to node events to scroll to the right slide in neos backend
+                document.addEventListener('Neos.NodeCreated', function (event) {
+                    scope.nodeCreated(event)
+                }, false);
+                document.addEventListener('Neos.NodeSelected', function (event) {
+                    scope.nodeSelected(event)
+                }, false);
+                document.addEventListener('Neos.NodeRemoved', function (event) {
+                    scope.nodeRemoved(event)
+                }, false);
             }
-        }
-    },
+        },
 
-    nodeRemoved(event: any) {
-        if (this.swiper && this.isSlide(event.detail.element)) {
-            // we update all sliders in the page as the parent is null
-            // and we cannot check if it is our own slide
-            this.swiper.update();
-        }
-    },
+        // Backend Optimizations
+        getSlideIndex(element: HTMLElement): number {
+            // @ts-ignore
+            const slides = Array.from(this.$refs.slider.querySelectorAll(`.${SLIDE_CLASS}`));
+            return slides.indexOf(element);
+        },
 
-    nodeCreated(event: any) {
-        if (this.swiper && this.isOwnSlide(event.detail.element)) {
-            this.swiper.update();
-        }
-    },
+        isSlide(element: HTMLElement): boolean {
+            return element.classList.contains(SLIDE_CLASS);
+        },
 
-    _initSlider() {
-        // @ts-ignore
-        const swiperRef = this.$refs.slider;
-        const amountOfSlides = swiperRef.querySelectorAll(`.${SLIDE_CLASS}`).length;
-        if (amountOfSlides === 0) {
-            return;
-        }
+        isOwnSlide(element: HTMLElement): boolean {
+            if (!this.isSlide(element)) return false;
+            // @ts-ignore
+            return element.closest(`.${SLIDER_CLASS}`) === this.$refs.slider;
+        },
 
-        const swiperOptions = {
-            loop: !this.inBackend,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-        }
+        nodeSelected(event: any) {
+            if (this._swiper && this.isOwnSlide(event.detail.element)) {
+                const index = this.getSlideIndex(event.detail.element);
+                if (index >= 0) {
+                    this._swiper.update();
+                    this._swiper.slideTo(index);
+                }
+            }
+        },
 
-        this.swiper = new Swiper(swiperRef, swiperOptions);
+        nodeRemoved(event: any) {
+            if (this._swiper && this.isSlide(event.detail.element)) {
+                // we update all sliders in the page as the parent is null
+                // and we cannot check if it is our own slide
+                this._swiper.update();
+            }
+        },
+
+        nodeCreated(event: any) {
+            if (this._swiper && this.isOwnSlide(event.detail.element)) {
+                this._swiper.update();
+            }
+        },
+
+        _initSlider() {
+            // @ts-ignore
+            const swiperRef = this.$refs.slider;
+            const amountOfSlides = swiperRef.querySelectorAll(`.${SLIDE_CLASS}`).length;
+            if (amountOfSlides === 0) {
+                return;
+            }
+
+            const swiperOptions = {
+                loop: !this.inBackend,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+            }
+
+            this._swiper = new Swiper(swiperRef, swiperOptions);
+        }
     }
-})
+};
+
+export default basicSlider
