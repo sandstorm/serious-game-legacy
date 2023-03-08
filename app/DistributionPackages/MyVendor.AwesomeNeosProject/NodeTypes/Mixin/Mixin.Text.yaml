@@ -8,6 +8,7 @@
         inline:
           editorOptions:
             placeholder: 'Type something'
+            autoparagraph: true
             linking:
               anchor: true
               title: true
