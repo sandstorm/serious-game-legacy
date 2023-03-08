@@ -5,7 +5,7 @@
     'MyVendor.AwesomeNeosProject:Mixin.InspectorGeneral': true
   childNodes:
     main:
-      type: 'MyVendor.AwesomeNeosProject:ContentCollection.Default'
+      type: 'MyVendor.AwesomeNeosProject:ContentCollection.PageFirstLevel'
   constraints:
     nodeTypes:
       '*': ~
