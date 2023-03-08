@@ -5,32 +5,22 @@ prototype(MyVendor.AwesomeNeosProject:Content.Image) < prototype(MyVendor.Awesom
 
 // use basic image when including in other components
 prototype(MyVendor.AwesomeNeosProject:Content.BasicImage) < prototype(Neos.Fusion:Value) {
-
-    @context._textAlignClass = MyVendor.AwesomeNeosProject:Utility.TextAlign {
-        textAlign = ${q(node).property('textAlign')}
-    }
-
-    value = MyVendor.AwesomeNeosProject:Utility.ContentWidth {
-        class = ${AtomicFusion.classNames(_textAlignClass, 'image__wrapper')}
-        size = ${q(node).property('contentWidth')}
-
-        content = MyVendor.AwesomeNeosProject:Component.Image {
-            imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
-                asset = ${q(node).property('image')}
-            }
-            imageUri = Neos.Fusion:ResourceUri {
-                resource = ${q(node).property('image').resource}
-            }
-            fileExtension = ${q(node).property('image').resource.fileExtension}
-            alternativeText = MyVendor.AwesomeNeosProject:Helper.ImageAltText {
-                image = ${q(node).property('image')}
-            }
-            imageDescription = ${q(node).property('imageDescription')}
-
-            href = ${q(node).property('link')}
-            href.@process.convert = Neos.Neos:ConvertUris
-            isExternalLink = ${q(node).property('isExternalLink')}
-            contentWidth = ${q(node).property('contentWidth')}
+    value = MyVendor.AwesomeNeosProject:Component.Image {
+        imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
+            asset = ${q(node).property('image')}
         }
+        imageUri = Neos.Fusion:ResourceUri {
+            resource = ${q(node).property('image').resource}
+        }
+        fileExtension = ${q(node).property('image').resource.fileExtension}
+        alternativeText = MyVendor.AwesomeNeosProject:Helper.ImageAltText {
+            image = ${q(node).property('image')}
+        }
+        imageDescription = ${q(node).property('imageDescription')}
+
+        href = ${q(node).property('link')}
+        href.@process.convert = Neos.Neos:ConvertUris
+        isExternalLink = ${q(node).property('isExternalLink')}
+        textAlign = ${q(node).property('textAlign')}
     }
 }

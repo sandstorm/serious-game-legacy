@@ -9,9 +9,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Headline) < prototype(Neos.Fusio
     renderer = Neos.Fusion:Component {
         @apply.props = ${props}
         renderer = afx`
-            <MyVendor.AwesomeNeosProject:Utility.ContentWidth class="headline">
-                {props.title}
-            </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
+            {props.title}
         `
     }
 }

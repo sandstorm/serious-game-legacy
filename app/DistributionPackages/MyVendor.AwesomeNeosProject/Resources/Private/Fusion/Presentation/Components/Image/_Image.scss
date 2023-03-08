@@ -6,18 +6,14 @@ img {
 }
 
 .image {
-    margin: auto;
     width: 100%;
     height: 100%;
 
     picture {
         display: inline-block;
+        margin: auto;
         width: 100%;
         height: 100%;
-    }
-
-    img {
-        width: 100%;
     }
 }
 
