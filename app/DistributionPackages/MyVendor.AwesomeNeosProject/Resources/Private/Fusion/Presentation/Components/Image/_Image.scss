@@ -8,6 +8,20 @@ img {
 .image {
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+
+    &--left {
+        justify-content: flex-start;
+    }
+
+    &--center {
+        justify-content: center;
+    }
+
+    &--right {
+        justify-content: flex-end;
+    }
 
     picture {
         display: inline-block;

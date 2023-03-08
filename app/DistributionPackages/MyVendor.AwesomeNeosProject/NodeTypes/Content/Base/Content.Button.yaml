@@ -2,19 +2,24 @@
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
     'MyVendor.AwesomeNeosProject:Mixin.Link': true
+    'MyVendor.AwesomeNeosProject:Mixin.Align': true
   ui:
     label: 'Button'
     icon: icon-box
     position: 30
   properties:
-    text:
+    title:
       type: string
-      defaultValue: 'Button'
       ui:
-        label: 'Button title'
-        reloadIfChanged: true
+        label: 'Title'
+        inlineEditable: true
+        showInCreationDialog: true
         inspector:
-          group: properties
+          editorOptions:
+            placeholder: 'Title of this Button'
+        inline:
+          editorOptions:
+            placeholder: 'Title of this Button'
     type:
       type: string
       defaultValue: 'solid-blue'
@@ -34,21 +39,4 @@
                 label: 'Outline'
               link:
                 label: 'Link'
-    align:
-      type: string
-      defaultValue: left
-      ui:
-        label: 'Align'
-        reloadIfChanged: true
-        inspector:
-          group: 'properties'
-          editor: 'Neos.Neos/Inspector/Editors/SelectBoxEditor'
-          editorOptions:
-            allowEmpty: true
-            values:
-              left:
-                label: 'Left'
-              center:
-                label: 'Center'
-              right:
-                label: 'Right'
+

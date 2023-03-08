@@ -1,11 +1,11 @@
 'MyVendor.AwesomeNeosProject:Mixin.Align':
   abstract: true
   properties:
-    textAlign:
+    align:
       type: string
-      defaultValue: ''
+      defaultValue: left
       ui:
-        label: 'Text align'
+        label: 'Align'
         reloadIfChanged: true
         inspector:
           group: 'properties'

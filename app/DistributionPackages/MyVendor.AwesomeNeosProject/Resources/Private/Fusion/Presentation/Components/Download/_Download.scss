@@ -1,14 +1,17 @@
+@use "AbstractStyles/Variables/Spacing";
+
 .download {
-    display: flex;
-    align-items: start;
-    margin-bottom: 10px;
-    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: Spacing.$md;
+    margin-top: Spacing.$md;
+
+    text-align: left;
 }
 
 .download__icon {
     width: 18px;
-    margin-right: 10px;
-    margin-top: 4px;
+    margin-right: Spacing.$lg;
     flex-shrink: 0;
     flex-grow: 0;
 }

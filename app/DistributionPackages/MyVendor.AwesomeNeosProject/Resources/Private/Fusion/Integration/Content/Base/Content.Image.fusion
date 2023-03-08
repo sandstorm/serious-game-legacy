@@ -21,6 +21,6 @@ prototype(MyVendor.AwesomeNeosProject:Content.BasicImage) < prototype(Neos.Fusio
         href = ${q(node).property('link')}
         href.@process.convert = Neos.Neos:ConvertUris
         isExternalLink = ${q(node).property('isExternalLink')}
-        textAlign = ${q(node).property('textAlign')}
+        align = ${q(node).property('align')}
     }
 }

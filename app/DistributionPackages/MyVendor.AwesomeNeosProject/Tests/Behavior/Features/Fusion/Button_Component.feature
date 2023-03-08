@@ -19,7 +19,7 @@ Feature: Testcase for Button Component
         When I render the Fusion object "/testcase" with the current context node:
             """fusion
             testcase = MyVendor.AwesomeNeosProject:Component.Button {
-              text = "External Link"
+              title = "External Link"
               href = "https://spiegel.de"
               isExternalLink = true
               type = "solid-blue"

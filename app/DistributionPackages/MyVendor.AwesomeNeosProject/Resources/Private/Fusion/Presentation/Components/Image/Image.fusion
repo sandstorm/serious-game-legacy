@@ -8,7 +8,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
 
     href = ''
     isExternalLink = false
-    textAlign = ''
+    align = ''
 
     loadEager = false
     // If set to false we prevent this component from rendering a image placeholder in backend when no image is set
@@ -45,7 +45,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
 
         href = ${PropTypes.string}
         isExternalLink = ${PropTypes.boolean}
-        textAlign = ${PropTypes.string}
+        align = ${PropTypes.oneOf(['left', 'center', 'right'])}
 
         loadEager = ${PropTypes.boolean}
         showImagePlaceholder = ${PropTypes.boolean}
@@ -58,14 +58,11 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
     renderer = Neos.Fusion:Component {
         @apply.props = ${props}
         _inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
-        @context._textAlignClass = MyVendor.AwesomeNeosProject:Utility.TextAlign {
-            textAlign = ${props.textAlign}
-        }
 
         _imageAttributes = Neos.Fusion:DataStructure {
             "href" = ${props.href ? props.href : null}
             "target" = ${props.isExternalLink ? '_blank' : null}
-            "class" = ${AtomicFusion.classNames('image', props.class, _textAlignClass)}
+            "class" = ${AtomicFusion.classNames('image', 'image--' + props.align)}
         }
 
         renderer = Neos.Fusion:Tag {
