@@ -1,0 +1,12 @@
+prototype(MyVendor.AwesomeNeosProject:Content.Logowall) < prototype(Neos.Neos:ContentComponent) {
+    renderer = MyVendor.AwesomeNeosProject:Component.Logowall {
+        amountOfLogos = ${q(node).property('amountOfLogos')}
+        autoplayInterval = ${q(node).property('autoplayInterval')}
+
+        logos = Neos.Neos:ContentCollection {
+            tagName = "div"
+            nodePath = "main"
+            attributes.class = "swiper-wrapper slider__slides"
+        }
+    }
+}

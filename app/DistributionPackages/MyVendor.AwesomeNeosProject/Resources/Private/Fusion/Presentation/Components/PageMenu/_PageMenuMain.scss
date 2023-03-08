@@ -10,10 +10,6 @@
 
     background-color: Colors.$white;
 
-    &--is-visible {
-        display: block;
-    }
-
     @include Mixins.mq(small) {
         display: none;
         position: absolute;
@@ -24,6 +20,10 @@
         border-bottom: 1px solid Colors.$grey--lighter;
 
         z-index: 999;
+
+        &--is-visible {
+            display: block;
+        }
     }
 }
 

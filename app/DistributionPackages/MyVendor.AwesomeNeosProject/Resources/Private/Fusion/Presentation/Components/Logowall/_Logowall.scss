@@ -1,0 +1,19 @@
+@use "AbstractStyles/Variables/Spacing";
+
+.logowall {
+    width: 100%;
+    padding-top: Spacing.$xl;
+    padding-bottom: Spacing.$xl;
+
+    .image__wrapper {
+        text-align: center !important;
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    img, .image-placeholder {
+        height: 100%;
+        max-height: 100px;
+        min-height: unset;
+    }
+}

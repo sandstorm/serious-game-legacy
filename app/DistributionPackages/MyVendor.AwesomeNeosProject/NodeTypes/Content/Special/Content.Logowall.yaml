@@ -1,0 +1,37 @@
+'MyVendor.AwesomeNeosProject:Content.Logowall':
+  superTypes:
+    'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
+    'Neos.Neos:ContentCollection': true
+    'MyVendor.AwesomeNeosProject:Constraints.Slider': true
+  ui:
+    label: 'Logowall'
+    icon: icon-icons
+    group: special
+    position: 15
+  options:
+    template:
+      childNodes:
+        firstLogo:
+          type: 'MyVendor.AwesomeNeosProject:Content.Image'
+  properties:
+    autoplayInterval:
+      type: string
+      defaultValue: '3000'
+      ui:
+        label: 'Autoplay interval in ms'
+        help:
+          message: 'Set an autoplay interval in ms. If empty there is no autoplay.'
+        reloadIfChanged: true
+        inspector:
+          group: 'properties'
+    amountOfLogos:
+      type: string
+      validation:
+        'Neos.Neos/Validation/IntegerValidator': { }
+      defaultValue: '6'
+      ui:
+        label: 'Visible amount of logos (Desktop)'
+        reloadIfChanged: true
+        inspector:
+          group: 'properties'
+

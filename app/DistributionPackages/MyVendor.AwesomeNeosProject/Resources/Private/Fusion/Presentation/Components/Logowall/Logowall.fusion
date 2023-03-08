@@ -1,0 +1,31 @@
+prototype(MyVendor.AwesomeNeosProject:Component.Logowall) < prototype(Neos.Fusion:Component) {
+    logos = ''
+    amountOfLogos = '6'
+    autoplayInterval = ''
+
+    @propTypes {
+        @strict = true
+        logos = ${PropTypes.string}
+        amountOfLogos = ${PropTypes.string}
+        autoplayInterval = ${PropTypes.string}
+    }
+
+    renderer = Neos.Fusion:Component {
+        @apply.props = ${props}
+
+        @context._inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
+
+        _dataAttributes = Neos.Fusion:DataStructure {
+            "amountOfLogos" = ${props.amountOfLogos}
+            "autoplayInterval" = ${props.autoplayInterval ? props.autoplayInterval : "0"}
+            "inBackend" = ${_inBackend ? "true" : "false"}
+        }
+        renderer = afx`
+            <div class={AtomicFusion.classNames('logowall')} x-data={"logowall(" + Array.join(props._dataAttributes, ",") + ")"}>
+                <div class={AtomicFusion.classNames('swiper', 'content-slider')} x-ref="logowallSlider">
+                    {props.logos}
+                </div>
+            </div>
+        `
+    }
+}
