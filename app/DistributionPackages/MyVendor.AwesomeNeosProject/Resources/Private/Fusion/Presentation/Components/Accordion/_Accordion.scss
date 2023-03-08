@@ -35,14 +35,14 @@
 
 .accordion__icon {
     color: Colors.$black;
-}
 
-.accordion__icon--open {
-    transform: rotate(90deg);
-}
+    &--open {
+        transform: rotate(90deg);
+    }
 
-.accordion__icon--closed {
-    transform: rotate(-90deg);
+    &--closed {
+        transform: rotate(-90deg);
+    }
 }
 
 .accordion__content {

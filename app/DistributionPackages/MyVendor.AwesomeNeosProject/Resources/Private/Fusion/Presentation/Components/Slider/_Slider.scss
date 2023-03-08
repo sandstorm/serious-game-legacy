@@ -20,12 +20,12 @@
             max-width: 100% !important;
         }
     }
-}
 
-.content-slider__slide--active {
-    // fix for flickering when sliding
-    position: relative;
-    z-index: 10;
+    &--active {
+        // fix for flickering when sliding
+        position: relative;
+        z-index: 10;
+    }
 }
 
 .content-slider__arrow {
