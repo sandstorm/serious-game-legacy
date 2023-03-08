@@ -95,7 +95,7 @@ run `dev run-unit-tests` to run all unit tests
 
 run `dev run-functional-tests` to run all functional tests
 
-run `dev run-e2e-tests` to run all e2e tests
+run `start-e2e-testrunner` and in new console `dev run-e2e-tests` to run all e2e tests
 
 ### E2E Test
 

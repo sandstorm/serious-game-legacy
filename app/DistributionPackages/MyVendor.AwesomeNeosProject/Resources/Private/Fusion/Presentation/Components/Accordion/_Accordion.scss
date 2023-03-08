@@ -31,6 +31,10 @@
     @include Mixins.mq(medium) {
         font-size: Typo.$fontSize;
     }
+
+    &:focus {
+        border: 1px dotted Colors.$blue;
+    }
 }
 
 .accordion__icon {
