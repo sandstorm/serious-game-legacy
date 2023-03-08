@@ -49,6 +49,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Main) < prototype(Neos.
                     </li>
                 </Neos.Fusion:Loop>
             </ul>
+            <MyVendor.AwesomeNeosProject:Component.LanguageMenu/>
         </div>
     `
 }

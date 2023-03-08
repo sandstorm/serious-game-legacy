@@ -21,7 +21,7 @@ Feature: Blog post overview rendering in frontend
         And I accepted the Cookie Consent
 
     Scenario: Blog overview gets rendered
-        Given I access the URI path "/de/blog"
+        Given I access the URI path "/blog"
         Then the page title should be "Blog - Website"
         Then there must be a blog post overview
         And there must be 2 blog-posts inside the blog overview
@@ -29,7 +29,7 @@ Feature: Blog post overview rendering in frontend
         And I must see a blog post with the headline "Another Blog Post" inside the blog overview
 
     Scenario: Changing a blog post invalidates reference content cache
-        Given I access the URI path "/de/blog"
+        Given I access the URI path "/blog"
         And there must be 2 blog-posts inside the blog overview
         And there must be 2 tags inside the blog overview
         # node data change
