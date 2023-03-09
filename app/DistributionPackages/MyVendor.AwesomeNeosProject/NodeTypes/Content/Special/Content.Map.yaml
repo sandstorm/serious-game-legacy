@@ -39,3 +39,5 @@
         reloadIfChanged: true
         inspector:
           group: properties
+      options:
+        automaticTranslation: true
