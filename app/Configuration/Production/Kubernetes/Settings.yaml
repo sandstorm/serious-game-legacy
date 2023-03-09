@@ -23,3 +23,8 @@ Neos:
       defaultOptions:
         # The Vips driver does not support interlace
         interlace: ~
+
+Sitegeist:
+  LostInTranslation:
+    DeepLApi:
+      authenticationKey: '%env:DEEPL_API_KEY%'

@@ -50,8 +50,12 @@ Neos:
             values:
               - de
             uriSegment: ''
+            options:
+              translationStrategy: 'none'
           en:
             label: 'EN'
             values:
               - en
             uriSegment: 'en'
+            options:
+              translationStrategy: 'once'

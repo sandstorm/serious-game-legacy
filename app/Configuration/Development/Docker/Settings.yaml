@@ -41,3 +41,8 @@ PackageFactory:
   AtomicFusion:
     PropTypes:
       enable: true
+
+Sitegeist:
+  LostInTranslation:
+    DeepLApi:
+      authenticationKey: '%env:DEEPL_API_KEY%'

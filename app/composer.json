@@ -47,7 +47,9 @@
         "packagefactory/atomicfusion-classnames": "^1.0",
         "neos/swiftmailer": "^7.3.0",
         "flowpack/nodetemplates": "^1.3",
-        "yoast/yoast-seo-for-neos": "^1.3"
+        "yoast/yoast-seo-for-neos": "^1.3",
+        "sitegeist/lostintranslation": "^2.0",
+        "jonnitto/prettyembedvideoplatforms": "^2.1"
     },
     "require-dev": {
         "neos/behat": "~8.2.0",

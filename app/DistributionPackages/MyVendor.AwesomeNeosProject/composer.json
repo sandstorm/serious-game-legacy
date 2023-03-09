@@ -3,7 +3,8 @@
     "type": "neos-site",
     "require": {
         "neos/neos": "*",
-        "jonnitto/prettyembedvideoplatforms": "^2.0"
+        "jonnitto/prettyembedvideoplatforms": "*",
+        "sitegeist/lostintranslation": "*"
     },
     "suggest": {
         "neos/seo": "*"

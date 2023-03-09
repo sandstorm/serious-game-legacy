@@ -147,6 +147,15 @@ run `dev site-export` to export a site
 
 run `dev site-import` to import a site
 
+## Automatic Translation with DeepL
+
+We use Sitegeist.LostInTranslation to translate documents and content automatically once editors choose to "create and
+copy" a version in another language. See
+the [package repository](https://github.com/sitegeist/Sitegeist.LostInTranslation) to check what you need to configure.
+
+DeepL is used for the translation, therefore you need to have an api key for it. For local development put the key
+in `.env`. For staging/production use e.g. gitlab variables or set the environment variable on the server.
+
 [//]: # (KICKSTART_INFO_SECTION__START)
 
 ## Improving Kickstart Experience

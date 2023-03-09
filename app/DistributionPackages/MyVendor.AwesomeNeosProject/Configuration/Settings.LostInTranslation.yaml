@@ -1,0 +1,24 @@
+Sitegeist:
+  LostInTranslation:
+#    DeepLApi:
+#      ignoredTerms:
+#        - TODO if needed
+
+    nodeTranslation:
+      #
+      # Enable the automatic translations of nodes while they are adopted to another dimension
+      #
+      enabled: true
+
+      #
+      # Translate all inline editable fields without further configuration.
+      #
+      # If this is disabled inline editables can be configured for translation by setting
+      # `options.translateOnAdoption: true` for each property seperatly
+      #
+      translateInlineEditables: true
+
+      #
+      # The name of the language dimension. Usually needs no modification
+      #
+      languageDimensionName: 'language'

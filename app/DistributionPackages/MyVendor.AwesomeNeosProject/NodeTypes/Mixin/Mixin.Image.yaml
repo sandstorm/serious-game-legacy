@@ -17,6 +17,8 @@
         inspector:
           group: 'image'
           position: 100
+      options:
+        automaticTranslation: true
     imageDescription:
       type: string
       ui:
@@ -25,3 +27,5 @@
         inspector:
           group: 'image'
           position: 102
+      options:
+        automaticTranslation: true
