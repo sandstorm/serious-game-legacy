@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b52916a0a94a70f0e0b6cd19ef930c2a",
+    "content-hash": "f9e85c0b262e448290655f22aa931cde",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -7058,16 +7058,16 @@
         },
         {
             "name": "sandstorm/cookiepunch",
-            "version": "4.3.0",
+            "version": "4.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sandstorm/Sandstorm.CookiePunch.git",
-                "reference": "5b83fba911eff33890be32137dda88e05165ec96"
+                "reference": "5a52ce8ce354734751bdfce958bdc91ec528fdf5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sandstorm/Sandstorm.CookiePunch/zipball/5b83fba911eff33890be32137dda88e05165ec96",
-                "reference": "5b83fba911eff33890be32137dda88e05165ec96",
+                "url": "https://api.github.com/repos/sandstorm/Sandstorm.CookiePunch/zipball/5a52ce8ce354734751bdfce958bdc91ec528fdf5",
+                "reference": "5a52ce8ce354734751bdfce958bdc91ec528fdf5",
                 "shasum": ""
             },
             "require": {
@@ -7104,7 +7104,7 @@
                 "issues": "https://github.com/sandstorm/Sandstorm.CookiePunch/issues",
                 "source": "https://github.com/sandstorm/Sandstorm.CookiePunch"
             },
-            "time": "2022-05-24T08:49:18+00:00"
+            "time": "2023-03-09T12:08:02+00:00"
         },
         {
             "name": "sandstorm/e2etesttools",
@@ -11254,5 +11254,5 @@
         "php": "8.1.0",
         "ext-vips": "1.0.8"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.1.0"
 }

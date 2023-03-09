@@ -4,7 +4,8 @@
     "require": {
         "neos/neos": "*",
         "jonnitto/prettyembedvideoplatforms": "*",
-        "sitegeist/lostintranslation": "*"
+        "sitegeist/lostintranslation": "*",
+        "sandstorm/cookiepunch": "*"
     },
     "suggest": {
         "neos/seo": "*"

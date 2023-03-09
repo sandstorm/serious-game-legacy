@@ -1,14 +1,14 @@
 Sandstorm:
   CookiePunch:
     consent:
+      contextualConsentOnly: true
+      mustConsent: false
       elementID: cookie-punch
       storageMethod: cookie
       cookieName: cookie_punch
       cookieExpiresAfterDays: 120
-      mustConsent: true
       acceptAll: true
       hideDeclineAll: false
-      default: true
       purposes:
         mediaembeds:
           title: MyVendor.AwesomeNeosProject:CookiePunch:purposes.mediaembeds
