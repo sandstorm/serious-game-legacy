@@ -14,10 +14,17 @@ prototype(MyVendor.AwesomeNeosProject:Document.Blog.Post) < prototype(MyVendor.A
                 image = ${q(node).property('image')}
             }
             imageDescription = ${q(node).property('imageDescription')}
+            imageUri = Neos.Fusion:ResourceUri {
+                resource = ${q(node).property('image').resource}
+            }
             imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
                 asset = ${q(node).property('image')}
             }
-            class = 'blog-post-header__image'
+            align = 'center'
+            sizes = ${[
+                '(min-width: 400px) 400px',
+                '100vw'
+            ]}
         }
 
         tags = MyVendor.AwesomeNeosProject:Component.BlogTagList {

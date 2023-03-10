@@ -1,0 +1,25 @@
+prototype(MyVendor.AwesomeNeosProject:Component.PreviewTiles.Tile) < prototype(Neos.Fusion:Component) {
+    title = ''
+    image = ''
+    href = ''
+
+    @propTypes {
+        @strict = true
+        title = ${PropTypes.string}
+        image = ${PropTypes.string}
+        href = ${PropTypes.string}
+    }
+
+    renderer = Neos.Fusion:Component {
+        @apply.props = ${props}
+
+        renderer = afx`
+            <a class="preview-tiles__tile" href={props.href}>
+                <div class="preview-tiles__tile-aspect">
+                    {props.image}
+                </div>
+                <div>{props.title}</div>
+            </a>
+        `
+    }
+}

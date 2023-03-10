@@ -1,0 +1,7 @@
+'MyVendor.AwesomeNeosProject:Content.Repository.Teaser':
+  superTypes:
+    'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
+  ui:
+    label: 'Repository Teaser'
+    icon: icon-image
+    position: 60

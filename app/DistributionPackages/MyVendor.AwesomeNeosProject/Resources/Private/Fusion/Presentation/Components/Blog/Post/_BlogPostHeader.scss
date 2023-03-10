@@ -1,5 +1,7 @@
 @use "AbstractStyles/Variables/Spacing";
 
+$header-image__width: 400px;
+
 .blog-post-header {
     margin-top: Spacing.$sm * 10;
     margin-bottom: Spacing.$sm * 10;
@@ -9,6 +11,18 @@
 
     .blog-tag-list {
         margin: 0;
+    }
+
+    .image {
+        margin-bottom: Spacing.$lg;
+
+        picture img {
+            width: $header-image__width;
+        }
+    }
+
+    .image__description {
+        width: $header-image__width;
     }
 }
 
@@ -36,13 +50,6 @@
     &::before {
         content: " | ";
     }
-}
-
-.blog-post-header__image.image {
-    margin-bottom: Spacing.$lg;
-    width: 400px;
-
-    text-align: center;
 }
 
 .blog-post-header__teaser {

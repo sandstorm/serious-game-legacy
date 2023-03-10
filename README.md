@@ -156,6 +156,22 @@ the [package repository](https://github.com/sitegeist/Sitegeist.LostInTranslatio
 DeepL is used for the translation, therefore you need to have an api key for it. For local development put the key
 in `.env`. For staging/production set the environment variable on the server, e.g. via rancher secret.
 
+## Kickstart repository nodetypes
+
+We found that to create repository nodetypes with a parent, several children and some kind of aggregation ("show me all
+child nodes as teasers") you would have to do some repetitive tasks like creating the yaml files for all node types,
+write the fusion aggregation logic, write some basic presentational code, consider caching, and so on. You can
+use `dev generate-repository` to have all this work be done for you :)
+
+The command will create the following files:
+
+* NodeTypes/Document/Document.Repository.yaml
+* NodeTypes/Document/Document.Repository.Item.yaml
+* NodeTypes/Content/Content.Repository.Teaser.yaml
+* Resources/Private/Fusion/Integration/Document/Document.Repository.fusion
+* Resources/Private/Fusion/Integration/Document/Document.Repository.Item.fusion
+* Resources/Private/Fusion/Integration/Content/Content.Repository.Teaser.fusion
+
 [//]: # (KICKSTART_INFO_SECTION__START)
 
 ## Improving Kickstart Experience
