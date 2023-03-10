@@ -54,7 +54,10 @@ spec:
   volumes:
     - name: persistent
       mountPath: /app/Data/Persistent
-
+    # we want a volume for caches so that we don't fill up the disk -
+    # otherwise we waste disk space because of containerd writable overlay internals
+    - name: temporary
+      mountPath: /app/Data/Temporary
   sso:
     enabled: false
 
