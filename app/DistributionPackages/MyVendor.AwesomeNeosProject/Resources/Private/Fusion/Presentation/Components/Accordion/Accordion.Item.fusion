@@ -40,7 +40,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Accordion.Item) < prototype(Neos
                             aria-hidden="true" class="accordion__icon"
                             :class="expanded ? 'accordion__icon--open' : 'accordion__icon--closed'"
                         >
-                            &lt;
+                            <i class="icon-angle-down" />
                         </span>
                     </Neos.Fusion:Tag>
                 </h3>

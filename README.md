@@ -24,6 +24,8 @@ Run `./kickstart.sh` an follow the instructions.
       * [Generating content (node) fixtures workflow](#generating-content--node--fixtures-workflow)
   * [Staging](#staging)
   * [Site Export / Site Import](#site-export--site-import)
+  * [Automatic Translation with DeepL](#automatic-translation-with-deepl)
+  * [Custom icon font with icomoon](#custom-icon-font-with-icomoon)
   * [Improving Kickstart Experience](#improving-kickstart-experience)
     * [Backlog](#backlog)
 <!-- TOC -->
@@ -61,9 +63,6 @@ Run `./kickstart.sh` an follow the instructions.
 
 - run `./dev.sh setup` to install the Dev Script Runner. You can now use `dev <some-taks>` from anywhere
   inside the project.
-- for font awesome pro support in local dev
-    - open: `app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Private/.npmrc.sample`
-    - and do what the file tells you ;)
 
 ### Setting up IntelliJ
 
@@ -171,6 +170,11 @@ The command will create the following files:
 * Resources/Private/Fusion/Integration/Document/Document.Repository.fusion
 * Resources/Private/Fusion/Integration/Document/Document.Repository.Item.fusion
 * Resources/Private/Fusion/Integration/Content/Content.Repository.Teaser.fusion
+
+## Custom icon font with icomoon
+
+We use a custom icon font build with https://icomoon.io/app.
+Look at the Icons.md for more information: `DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public/Fonts`
 
 [//]: # (KICKSTART_INFO_SECTION__START)
 

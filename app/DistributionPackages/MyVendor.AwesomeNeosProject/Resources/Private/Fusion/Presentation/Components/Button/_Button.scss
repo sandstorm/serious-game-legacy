@@ -117,4 +117,8 @@ $button__height--larger: 60px;
         background-color: transparent;
         color: Colors.$blue--dark;
     }
+
+    &:focus {
+        outline: 1px solid Colors.$blue--dark;
+    }
 }

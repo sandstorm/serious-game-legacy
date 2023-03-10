@@ -11,7 +11,7 @@ esbuild.build({
     bundle: true,
     sourcemap: true,
     outfile: '../Public/bundle.js',
-    external: ['*.woff', '*.woff2', '/_maptiles/frontend/v1/map-main.js'],
+    external: ['*.woff', '*.woff2', '*.svg', '*.ttf', '/_maptiles/frontend/v1/map-main.js'],
 
     // NOTE: if you want to use Tailwind.css in this setup,
     // you need to add the following plugin entry, where "postCssPlugin" is imported from "esbuild-plugin-postcss2";

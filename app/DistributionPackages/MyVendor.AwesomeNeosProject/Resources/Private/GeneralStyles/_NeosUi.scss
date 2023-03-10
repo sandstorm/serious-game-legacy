@@ -3,3 +3,8 @@
 .ck-focused * {
     text-transform: initial;
 }
+
+// neos backend
+.neos-backend .ck-editor__editable_inline {
+    min-width: 50px;
+}
