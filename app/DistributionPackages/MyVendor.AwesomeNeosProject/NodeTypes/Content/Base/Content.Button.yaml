@@ -1,8 +1,9 @@
 'MyVendor.AwesomeNeosProject:Content.Button':
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
-    'MyVendor.AwesomeNeosProject:Mixin.Link': true
     'MyVendor.AwesomeNeosProject:Mixin.Align': true
+    'MyVendor.AwesomeNeosProject:Mixin.ButtonType': true
+    'MyVendor.AwesomeNeosProject:Mixin.Link': true
   ui:
     label: 'Button'
     icon: icon-box
@@ -20,23 +21,3 @@
         inline:
           editorOptions:
             placeholder: 'Title of this Button'
-    type:
-      type: string
-      defaultValue: 'solid-blue'
-      ui:
-        label: 'Button type'
-        reloadIfChanged: true
-        inspector:
-          group: properties
-          editor: 'Neos.Neos/Inspector/Editors/SelectBoxEditor'
-          editorOptions:
-            values:
-              'solid-blue':
-                label: 'Solid blue'
-              'solid-grey':
-                  label: 'Solid grey'
-              outline:
-                label: 'Outline'
-              link:
-                label: 'Link'
-

@@ -174,7 +174,7 @@ The command will create the following files:
 ## Custom icon font with icomoon
 
 We use a custom icon font build with https://icomoon.io/app.
-Look at the Icons.md for more information: `DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public/Fonts`
+Look at the Icons.md for more information: `DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public/Fonts/Icons.md`
 
 [//]: # (KICKSTART_INFO_SECTION__START)
 

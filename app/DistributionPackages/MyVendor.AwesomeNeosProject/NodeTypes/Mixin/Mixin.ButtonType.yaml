@@ -1,0 +1,22 @@
+'MyVendor.AwesomeNeosProject:Mixin.ButtonType':
+  abstract: true
+  properties:
+    type:
+      type: string
+      defaultValue: 'solid-blue'
+      ui:
+        label: 'Button type'
+        reloadIfChanged: true
+        inspector:
+          group: properties
+          editor: 'Neos.Neos/Inspector/Editors/SelectBoxEditor'
+          editorOptions:
+            values:
+              'solid-blue':
+                label: 'Solid blue'
+              'solid-grey':
+                label: 'Solid grey'
+              outline:
+                label: 'Outline'
+              link:
+                label: 'Link'

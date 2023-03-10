@@ -7,6 +7,7 @@
 
 ### Adding changed icon font to neos
 
+* if you want to add new icons note that we used font awesome icons in the past
 * export icons in icomoon and download the zip file
 * move the new font files to `Public/Fonts`
 * override the `Public/Fonts/selection.json` with the new one

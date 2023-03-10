@@ -2,6 +2,7 @@
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
     'MyVendor.AwesomeNeosProject:Mixin.Align': true
+    'MyVendor.AwesomeNeosProject:Mixin.ButtonType': true
   ui:
     label: 'Download'
     icon: icon-download
@@ -25,8 +26,7 @@
       editor: Neos.Neos/Inspector/Editor/AssetEditor
       ui:
         label: 'File'
-        reloadIfChanged: false
+        reloadIfChanged: true
         showInCreationDialog: true
         inspector:
           group: properties
-

@@ -1,35 +1,39 @@
 prototype(MyVendor.AwesomeNeosProject:Component.Download) < prototype(Neos.Fusion:Component) {
     fileUrl = ''
     description = ''
-    imgSrc = ''
     align = ''
+    fileSize = ''
+    type = ''
 
     @propTypes {
         @strict = true
         fileUrl = ${PropTypes.string}
         description = ${PropTypes.string}
-        imgSrc = ${PropTypes.string}
         align = ${PropTypes.oneOf(['left', 'center', 'right'])}
+        fileSize = ${PropTypes.string}
+        type = ${PropTypes.oneOf(['solid-blue', 'solid-grey', 'outline', 'link'])}
     }
 
     renderer = Neos.Fusion:Component {
         @apply.props = ${props}
 
         _inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
-        _target = ${props.isExternalLink ? '_blank' : null}
 
         renderer = afx`
             <div class={AtomicFusion.classNames(
                     'button__wrapper',
                     'button__wrapper--' + props.align
-                )}>
+                )}
+            >
                 <Neos.Fusion:Tag
-                    tagName={(props.href && !props._inBackend) ? 'a' : 'div'}
-                    attributes.class={AtomicFusion.classNames('button', 'download', 'button--outline')}
-                    attributes.href={props.href ? props.href : null}
-                    attributes.target={props.isExternalLink ? props._target : null}
+                    tagName={(props.fileUrl && !props._inBackend) ? 'a' : 'div'}
+                    attributes.class={AtomicFusion.classNames('button', 'button--' + props.type, 'download')}
+                    attributes.href={props.fileUrl ? props.fileUrl : null}
+                    attributes.target="_blank"
                 >
-                    <img alt="icon" class="download__icon" src={props.imgSrc}/>{props.description}
+                    <i class="icon-arrow-down-to-line download__icon" />
+                    <span>{props.description}</span>
+                    <span class="download__size" @if={props.fileSize}>({props.fileSize})</span>
                 </Neos.Fusion:Tag>
             </div>
         `

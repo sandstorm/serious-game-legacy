@@ -1,4 +1,3 @@
-
 prototype(MyVendor.AwesomeNeosProject:Content.Download) < prototype(Neos.Neos:ContentComponent) {
     renderer = MyVendor.AwesomeNeosProject:Component.Download {
         description = Neos.Neos:Editable {
@@ -7,10 +6,9 @@ prototype(MyVendor.AwesomeNeosProject:Content.Download) < prototype(Neos.Neos:Co
         fileUrl = Neos.Fusion:ResourceUri {
             resource = ${q(node).property('file').resource}
         }
-        imgSrc = Neos.Neos:ImageUri {
-            // this will provide an icon for the filetype
-            asset = ${q(node).property('file')}
-        }
         align = ${q(node).property('align')}
+        fileSize = ${q(node).property('file').resource.fileSize}
+        fileSize.@process.format = ${value ? MyVendor.AwesomeNeosProject.FileSize.format(value) : ''}
+        type = ${q(node).property('type')}
     }
 }
