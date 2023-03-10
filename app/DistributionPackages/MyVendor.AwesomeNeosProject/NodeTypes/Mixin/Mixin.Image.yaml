@@ -6,6 +6,7 @@
       ui:
         label: 'Image'
         reloadIfChanged: true
+        showInCreationDialog: true
         inspector:
           group: 'image'
           position: 50

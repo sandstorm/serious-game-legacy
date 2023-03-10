@@ -8,19 +8,25 @@
     position: 35
     inlineEditable: true
   properties:
+    description:
+      type: string
+      ui:
+        label: 'Description'
+        inlineEditable: true
+        showInCreationDialog: true
+        inspector:
+          editorOptions:
+            placeholder: 'Download description'
+        inline:
+          editorOptions:
+            placeholder: 'Download description'
     file:
       type: Neos\Media\Domain\Model\Asset
       editor: Neos.Neos/Inspector/Editor/AssetEditor
       ui:
         label: 'File'
         reloadIfChanged: false
+        showInCreationDialog: true
         inspector:
           group: properties
-    text:
-      type: string
-      ui:
-        reloadIfChanged: true
-        inlineEditable: true
-        inline:
-          editorOptions:
-            placeholder: 'Download description'
+

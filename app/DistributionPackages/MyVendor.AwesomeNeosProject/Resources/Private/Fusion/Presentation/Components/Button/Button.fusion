@@ -1,5 +1,5 @@
 prototype(MyVendor.AwesomeNeosProject:Component.Button) < prototype(Neos.Fusion:Component) {
-    text = ''
+    title = ''
     href = ''
     isExternalLink = false
     type = ''
@@ -7,7 +7,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Button) < prototype(Neos.Fusion:
 
     @propTypes {
         @strict = true
-        text = ${PropTypes.string}
+        title = ${PropTypes.string}
         href = ${PropTypes.string}
         isExternalLink = ${PropTypes.boolean}
         type = ${PropTypes.oneOf(['solid-blue', 'solid-grey', 'outline', 'link'])}
@@ -20,7 +20,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Button) < prototype(Neos.Fusion:
         _inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
 
         renderer = afx`
-            <MyVendor.AwesomeNeosProject:Utility.ContentWidth
+            <div
                 class={AtomicFusion.classNames(
                     'button__wrapper',
                     'button__wrapper--' + props.align
@@ -35,9 +35,9 @@ prototype(MyVendor.AwesomeNeosProject:Component.Button) < prototype(Neos.Fusion:
                     attributes.href={props.href ? props.href : null}
                     attributes.target={props.isExternalLink ? '_blank' : null}
                 >
-                    {props.text}
+                    {props.title}
                 </Neos.Fusion:Tag>
-            </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
+            </div>
         `
     }
 }

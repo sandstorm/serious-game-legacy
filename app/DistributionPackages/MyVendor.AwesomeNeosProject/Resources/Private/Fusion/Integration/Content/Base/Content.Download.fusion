@@ -1,8 +1,8 @@
 
 prototype(MyVendor.AwesomeNeosProject:Content.Download) < prototype(Neos.Neos:ContentComponent) {
     renderer = MyVendor.AwesomeNeosProject:Component.Download {
-        text = Neos.Neos:Editable {
-            property = 'text'
+        description = Neos.Neos:Editable {
+            property = 'description'
         }
         fileUrl = Neos.Fusion:ResourceUri {
             resource = ${q(node).property('file').resource}
@@ -11,6 +11,6 @@ prototype(MyVendor.AwesomeNeosProject:Content.Download) < prototype(Neos.Neos:Co
             // this will provide an icon for the filetype
             asset = ${q(node).property('file')}
         }
-        textAlign = ${q(node).property('textAlign')}
+        align = ${q(node).property('align')}
     }
 }

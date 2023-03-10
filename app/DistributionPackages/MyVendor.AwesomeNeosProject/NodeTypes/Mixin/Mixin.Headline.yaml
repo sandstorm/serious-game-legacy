@@ -5,6 +5,7 @@
       type: string
       defaultValue: '<h2>Please enter a heading</h2>'
       ui:
+        label: 'Headline'
         inlineEditable: true
         inline:
           editorOptions:

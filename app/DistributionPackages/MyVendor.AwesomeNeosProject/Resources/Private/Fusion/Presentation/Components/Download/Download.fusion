@@ -1,15 +1,15 @@
 prototype(MyVendor.AwesomeNeosProject:Component.Download) < prototype(Neos.Fusion:Component) {
     fileUrl = ''
-    text = ''
+    description = ''
     imgSrc = ''
-    textAlign = ''
+    align = ''
 
     @propTypes {
         @strict = true
         fileUrl = ${PropTypes.string}
-        text = ${PropTypes.string}
+        description = ${PropTypes.string}
         imgSrc = ${PropTypes.string}
-        textAlign = ${PropTypes.string}
+        align = ${PropTypes.oneOf(['left', 'center', 'right'])}
     }
 
     renderer = Neos.Fusion:Component {
@@ -17,21 +17,21 @@ prototype(MyVendor.AwesomeNeosProject:Component.Download) < prototype(Neos.Fusio
 
         _inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
         _target = ${props.isExternalLink ? '_blank' : null}
-        _textAlignClass = MyVendor.AwesomeNeosProject:Utility.TextAlign {
-            textAlign = ${props.textAlign}
-        }
 
         renderer = afx`
-            <MyVendor.AwesomeNeosProject:Utility.ContentWidth class={AtomicFusion.classNames('button-outer' , props._textAlignClass)}>
+            <div class={AtomicFusion.classNames(
+                    'button__wrapper',
+                    'button__wrapper--' + props.align
+                )}>
                 <Neos.Fusion:Tag
                     tagName={(props.href && !props._inBackend) ? 'a' : 'div'}
-                    attributes.class={AtomicFusion.classNames('button download')}
+                    attributes.class={AtomicFusion.classNames('button', 'download', 'button--outline')}
                     attributes.href={props.href ? props.href : null}
                     attributes.target={props.isExternalLink ? props._target : null}
                 >
-                    <img alt="icon" class="download__icon" src={props.imgSrc}/>{props.text}
+                    <img alt="icon" class="download__icon" src={props.imgSrc}/>{props.description}
                 </Neos.Fusion:Tag>
-            </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
+            </div>
         `
     }
 }

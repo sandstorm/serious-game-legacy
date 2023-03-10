@@ -1,6 +1,8 @@
 prototype(MyVendor.AwesomeNeosProject:Content.Button) < prototype(Neos.Neos:ContentComponent) {
     renderer = MyVendor.AwesomeNeosProject:Component.Button {
-        text = ${q(node).property('text')}
+        title = Neos.Neos:Editable {
+            property = 'title'
+        }
         href = ${q(node).property('link')}
         href.@process.convert = Neos.Neos:ConvertUris
         type = ${q(node).property('type')}
