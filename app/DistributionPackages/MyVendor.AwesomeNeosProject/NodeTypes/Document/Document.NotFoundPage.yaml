@@ -8,10 +8,10 @@
   constraints:
     nodeTypes:
       '*': ~
-#  options:
-#    template:
-#      properties:
-#        _hiddenInIndex: true
+  options:
+    template:
+      properties:
+        _hiddenInIndex: true
   properties:
     uriPathSegment:
       # the not found page is SINGLETON per default - meaning only one node per dimension/workspace should exist at a time!

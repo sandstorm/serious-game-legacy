@@ -9,3 +9,11 @@
       '*': ~
       'MyVendor.AwesomeNeosProject:Document.Page': true
       'MyVendor.AwesomeNeosProject:Document.Shortcut': true
+  options:
+    template:
+      childNodes:
+        mainContentCollection:
+          name: 'main'
+          childNodes:
+            firstSection:
+              type: 'MyVendor.AwesomeNeosProject:Content.SectionWithBackground'
