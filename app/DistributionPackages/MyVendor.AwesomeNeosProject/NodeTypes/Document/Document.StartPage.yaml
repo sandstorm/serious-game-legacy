@@ -7,9 +7,11 @@
   constraints:
     nodeTypes:
       '*': ~
-      'MyVendor.AwesomeNeosProject:Document.Page': true
       'MyVendor.AwesomeNeosProject:Document.Blog': true
+      'MyVendor.AwesomeNeosProject:Document.Page': true
       'MyVendor.AwesomeNeosProject:Document.Shortcut': true
+      # template for generate repository helper
+      # 'MyVendor.AwesomeNeosProject:Document.Repository': true
   childNodes:
     footerContent:
       type: 'MyVendor.AwesomeNeosProject:ContentCollection.Default'

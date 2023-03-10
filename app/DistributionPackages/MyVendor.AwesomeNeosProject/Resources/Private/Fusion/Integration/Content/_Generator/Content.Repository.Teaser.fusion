@@ -1,0 +1,48 @@
+prototype(MyVendor.AwesomeNeosProject:Content.Repository.Teaser) < prototype(Neos.Neos:ContentComponent) {
+    @cache {
+        mode = 'cached'
+        entryIdentifier {
+            node = ${node}
+            editPreviewMode = ${node.context.currentRenderingMode.name}
+        }
+        entryTags {
+            1 = ${Neos.Caching.nodeTag(node)}
+            2 = ${Neos.Caching.nodeTypeTag('MyVendor.AwesomeNeosProject:Document.Repository.Item', node)}
+        }
+    }
+
+    renderer = MyVendor.AwesomeNeosProject:Component.PreviewTiles {
+        content = Neos.Fusion:Loop {
+            items = ${q(site).find('[instanceof MyVendor.AwesomeNeosProject:Document.Repository.Item]')}
+            itemRenderer = MyVendor.AwesomeNeosProject:Component.PreviewTiles.Tile {
+                title = ${q(item).property('title')}
+                image = MyVendor.AwesomeNeosProject:Component.Image {
+                    alternativeText = MyVendor.AwesomeNeosProject:Helper.ImageAltText {
+                        image = ${q(item).property('image')}
+                        node = ${q(item)}
+                    }
+                    imageUri = Neos.Fusion:ResourceUri {
+                        resource = ${q(item).property('image').resource}
+                    }
+                    imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
+                        asset = ${q(item).property('image')}
+                    }
+
+                    // We want to deliver the smallest possible image.
+                    // - for big screens, we have 3 columns,
+                    // - for medium 2
+                    // - on mobile just one column.
+                    sizes = ${[
+                        '(min-width: 1400px) calc(100vw / 3)',
+                        '(min-width: 500px) calc(100vw / 2)',
+                        '100vw'
+                    ]}
+                    class = 'preview-tiles__tile-img'
+                }
+                href = Neos.Neos:NodeUri {
+                    node = ${item}
+                }
+            }
+        }
+    }
+}

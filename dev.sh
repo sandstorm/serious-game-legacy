@@ -9,6 +9,7 @@
 ###############################################################################
 
 source ./dev_utilities.sh
+source ./dev_generators.sh
 source "$HOME/.nvm/nvm.sh"
 
 set -e
@@ -36,6 +37,8 @@ function setup {
   _echo_green "Installing Dev Script Runner"
   brew install sandstorm/tap/dev-script-runner
   brew upgrade sandstorm/tap/dev-script-runner
+
+  brew install yq
 
   # Adding folders -> when using `docker compose` instead of `docker-compose`
   # folders must already be present

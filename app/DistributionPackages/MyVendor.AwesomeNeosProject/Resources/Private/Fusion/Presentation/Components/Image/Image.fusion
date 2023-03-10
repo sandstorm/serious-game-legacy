@@ -8,12 +8,13 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
 
     href = ''
     isExternalLink = false
-    align = ''
+    align = 'left'
 
     loadEager = false
     // If set to false we prevent this component from rendering a image placeholder in backend when no image is set
     showImagePlaceholder = true
     @context.contentWidth = ${this.contentWidth}
+    class = ''
 
     // The possible image sizes we are using here are determined empirically, so
     // f.e. for a 4column Blog Overview page, we need a rendering bigger than 350 px (as the breakpoint
@@ -49,6 +50,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
 
         loadEager = ${PropTypes.boolean}
         showImagePlaceholder = ${PropTypes.boolean}
+        class = ${PropTypes.string}
 
         srcSet = ${PropTypes.arrayOf(PropTypes.string)}
         sizes = ${PropTypes.arrayOf(PropTypes.string)}
@@ -62,7 +64,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
         _imageAttributes = Neos.Fusion:DataStructure {
             "href" = ${props.href ? props.href : null}
             "target" = ${props.isExternalLink ? '_blank' : null}
-            "class" = ${AtomicFusion.classNames('image', 'image--' + props.align)}
+            "class" = ${AtomicFusion.classNames('image', 'image--' + props.align, props.class)}
         }
 
         renderer = Neos.Fusion:Tag {

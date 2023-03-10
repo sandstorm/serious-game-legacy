@@ -12,6 +12,7 @@ prototype(MyVendor.AwesomeNeosProject:Content.BlogPostPreview) < prototype(Neos.
         image = MyVendor.AwesomeNeosProject:Component.Image {
             alternativeText = MyVendor.AwesomeNeosProject:Helper.ImageAltText {
                 image = ${q(node).property('image')}
+                node = ${q(item)}
             }
             imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
                 asset = ${q(node).property('image')}
