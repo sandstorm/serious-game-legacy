@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f9e85c0b262e448290655f22aa931cde",
+    "content-hash": "9a44125fa4bf12d605b671f1ce69e3d7",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -7153,6 +7153,42 @@
                 "source": "https://github.com/sandstorm/Sandstorm.E2ETestTools/tree/main"
             },
             "time": "2022-09-21T15:08:58+00:00"
+        },
+        {
+            "name": "sandstorm/neosacl",
+            "version": "2.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sandstorm/NeosAcl.git",
+                "reference": "d06a1d7cc81b5e74fac359c0da5a1038bb2efaee"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sandstorm/NeosAcl/zipball/d06a1d7cc81b5e74fac359c0da5a1038bb2efaee",
+                "reference": "d06a1d7cc81b5e74fac359c0da5a1038bb2efaee",
+                "shasum": ""
+            },
+            "require": {
+                "neos/flow": "^7.0 || ^8.0 || dev-master",
+                "neos/fusion-afx": "*"
+            },
+            "type": "neos-package",
+            "extra": {
+                "neos": {
+                    "package-key": "Sandstorm.NeosAcl"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Sandstorm\\NeosAcl\\": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "support": {
+                "issues": "https://github.com/sandstorm/NeosAcl/issues",
+                "source": "https://github.com/sandstorm/NeosAcl/tree/2.2.1"
+            },
+            "time": "2022-07-21T06:24:59+00:00"
         },
         {
             "name": "seld/jsonlint",
