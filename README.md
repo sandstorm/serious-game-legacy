@@ -154,7 +154,7 @@ copy" a version in another language. See
 the [package repository](https://github.com/sitegeist/Sitegeist.LostInTranslation) to check what you need to configure.
 
 DeepL is used for the translation, therefore you need to have an api key for it. For local development put the key
-in `.env`. For staging/production use e.g. gitlab variables or set the environment variable on the server.
+in `.env`. For staging/production set the environment variable on the server, e.g. via rancher secret.
 
 [//]: # (KICKSTART_INFO_SECTION__START)
 
