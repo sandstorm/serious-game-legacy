@@ -40,12 +40,10 @@
 .accordion__icon {
     color: Colors.$black;
 
-    &--open {
-        transform: rotate(90deg);
-    }
+    @include Mixins.transition(transform .25s ease-in);
 
-    &--closed {
-        transform: rotate(-90deg);
+    &--open {
+        transform: rotate(180deg);
     }
 }
 

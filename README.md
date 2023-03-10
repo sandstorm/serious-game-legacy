@@ -24,6 +24,8 @@ Run `./kickstart.sh` an follow the instructions.
       * [Generating content (node) fixtures workflow](#generating-content--node--fixtures-workflow)
   * [Staging](#staging)
   * [Site Export / Site Import](#site-export--site-import)
+  * [Automatic Translation with DeepL](#automatic-translation-with-deepl)
+  * [Custom icon font with icomoon](#custom-icon-font-with-icomoon)
   * [Improving Kickstart Experience](#improving-kickstart-experience)
     * [Backlog](#backlog)
 <!-- TOC -->
@@ -61,9 +63,6 @@ Run `./kickstart.sh` an follow the instructions.
 
 - run `./dev.sh setup` to install the Dev Script Runner. You can now use `dev <some-taks>` from anywhere
   inside the project.
-- for font awesome pro support in local dev
-    - open: `app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Private/.npmrc.sample`
-    - and do what the file tells you ;)
 
 ### Setting up IntelliJ
 
@@ -155,6 +154,11 @@ the [package repository](https://github.com/sitegeist/Sitegeist.LostInTranslatio
 
 DeepL is used for the translation, therefore you need to have an api key for it. For local development put the key
 in `.env`. For staging/production use e.g. gitlab variables or set the environment variable on the server.
+
+## Custom icon font with icomoon
+
+We use a custom icon font build with https://icomoon.io/app.
+Look at the Icons.md for more information: `DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public/Fonts`
 
 [//]: # (KICKSTART_INFO_SECTION__START)
 

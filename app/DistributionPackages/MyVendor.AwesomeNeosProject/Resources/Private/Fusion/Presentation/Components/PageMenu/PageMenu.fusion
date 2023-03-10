@@ -10,10 +10,8 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu) < prototype(Neos.Fusio
                 <MyVendor.AwesomeNeosProject:Component.PageHeader.Logo/>
             </div>
 
-            <button x-on:click="openMobileMenu = ! openMobileMenu" id="open-mobile-menu" class="mobile-menu__toggle button button--text" title="Menü öffnen">
-                <div class="mobile-menu__toggle__hamburger-line"></div>
-                <div class="mobile-menu__toggle__hamburger-line"></div>
-                <div class="mobile-menu__toggle__hamburger-line"></div>
+            <button x-on:click="openMobileMenu = ! openMobileMenu" id="open-mobile-menu" class="mobile-menu__toggle button button--link" title="Menü öffnen">
+                <i class="icon-bars1" />
             </button>
 
             <MyVendor.AwesomeNeosProject:Component.PageMenu.Main/>

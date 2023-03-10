@@ -15,7 +15,6 @@ body {
     outline: none;
 }
 
-
 .sr-only {
     position: absolute;
     width: 1px;
@@ -28,7 +27,3 @@ body {
     border-width: 0;
 }
 
-// neos backend
-.neos-backend .ck-editor__editable_inline {
-    min-width: 50px;
-}
