@@ -4,6 +4,10 @@ set -ex
 # Hotfix for M1
 source /etc/bash.vips-arm64-hotfix.sh
 
+mkdir -p /var/www/.composer || true
+composer config --global cache-dir /composer_cache
+composer config --global 'preferred-install.sandstorm/*' source
+
 composer install
 
 ./flow doctrine:migrate

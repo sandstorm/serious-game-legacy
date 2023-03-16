@@ -54,9 +54,12 @@ RUN echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT" >> /usr/local/etc
 RUN echo "ffi.enable = true" >> /usr/local/etc/php/conf.d/ffi.ini
 
 # install composer
-RUN curl --silent --show-error https://getcomposer.org/installer | php
-RUN mv composer.phar /usr/local/bin/composer
-RUN composer config --global cache-dir /composer_cache
+# IMPORTANT:
+#   do not call the composer command inside the Dockerfile!
+#   Otherwise, the config files will be created in root home and are not
+#   readable by www-data later. (unless you chown it explicitly)
+RUN curl --silent --show-error https://getcomposer.org/installer | php && \
+    mv composer.phar /usr/local/bin/composer
 
 # add colored shell env to distinguish environments properly
 ENV SHELL_ENV_DISPLAY=dev
@@ -90,7 +93,7 @@ RUN mkdir -p /var/lib/nginx /usr/local/var/log/ && \
 
 # cleanup & chown
 RUN mkdir -p /app/Data/Persistent /app/Configuration/Development/Docker /app/Build/Behat /composer_cache && \
-    chown -R www-data /app /composer_cache && \
+    chown -R www-data /app /composer_cache /var/www && \
     apt-get clean
 
 # utility scripts

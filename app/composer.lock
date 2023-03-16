@@ -7113,12 +7113,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sandstorm/Sandstorm.E2ETestTools.git",
-                "reference": "342f7ac3f29cad852fa1413962525b97e2318651"
+                "reference": "57d8d14c69f53f2f304d662785bce9c364cefa5e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sandstorm/Sandstorm.E2ETestTools/zipball/342f7ac3f29cad852fa1413962525b97e2318651",
-                "reference": "342f7ac3f29cad852fa1413962525b97e2318651",
+                "url": "https://api.github.com/repos/sandstorm/Sandstorm.E2ETestTools/zipball/57d8d14c69f53f2f304d662785bce9c364cefa5e",
+                "reference": "57d8d14c69f53f2f304d662785bce9c364cefa5e",
                 "shasum": ""
             },
             "require": {
@@ -7152,7 +7152,7 @@
                 "issues": "https://github.com/sandstorm/Sandstorm.E2ETestTools/issues",
                 "source": "https://github.com/sandstorm/Sandstorm.E2ETestTools/tree/main"
             },
-            "time": "2022-09-21T15:08:58+00:00"
+            "time": "2023-03-16T15:16:19+00:00"
         },
         {
             "name": "sandstorm/neosacl",
