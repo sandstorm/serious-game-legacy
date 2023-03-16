@@ -50,6 +50,8 @@ e2e_test:
     E2E_FLOW_CONTEXT: Production/Kubernetes
     REDIS_HOST: redis
     REDIS_PORT: 6379
+    # sandstorm maps
+    SANDSTORM_MAPS_API_KEY: 'this_is_not_a_valid_key'
   services:
     - name: mariadb:10.3
     - name: redis:6.2.2

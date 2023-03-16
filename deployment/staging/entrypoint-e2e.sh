@@ -20,6 +20,7 @@ green_echo "DB - host: $DB_NEOS_HOST, port: $DB_NEOS_PORT, user: $DB_NEOS_USER, 
 
 green_echo "####### Symlinking e2e nginx conf"
 
+envsubst '${SANDSTORM_MAPS_API_KEY}' < /etc/nginx/nginx.conf > /tmp/nginx.conf && mv /tmp/nginx.conf /etc/nginx/nginx.conf
 ln -s /etc/nginx/nginx-e2etest-server-prod.conf /etc/nginx/conf.d/nginx-e2etest-server-prod.conf
 
 green_echo "####### Starting nginx"

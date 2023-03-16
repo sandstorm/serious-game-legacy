@@ -192,21 +192,13 @@ Look at the Icons.md for more information: `DistributionPackages/MyVendor.Awesom
 
 ## Maps
 
-To render maps we use [Sandstorm Maps](https://maps.sandstorm.de/). To get it running you need to configure an api key
-in nginx.conf:
-
-```
-http {
-    server {
-        location /_maptiles/ {
-            set $args t=MyApiKey;
-        }
-    }
-}
-```
+To render maps we use [Sandstorm Maps](https://maps.sandstorm.de/). To get it running you need to configure an api key.
 
 To get an api key check https://intern.sandstorm.de/knowledge/maps-api-sandstorm-de-nutzung if you work at Sandstorm or
 get in contact with us otherwise :)
+
+For local development put the key in `.env`. For staging/production set the environment variable on the server, e.g. via
+rancher secret.
 
 [//]: # (KICKSTART_INFO_SECTION__START)
 
