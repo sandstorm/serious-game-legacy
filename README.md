@@ -25,9 +25,11 @@ Run `./kickstart.sh` an follow the instructions.
   * [Staging](#staging)
   * [Site Export / Site Import](#site-export--site-import)
   * [Automatic Translation with DeepL](#automatic-translation-with-deepl)
+  * [Kickstart repository nodetypes](#kickstart-repository-nodetypes)
   * [Custom icon font with icomoon](#custom-icon-font-with-icomoon)
+  * [Maps](#maps)
   * [Improving Kickstart Experience](#improving-kickstart-experience)
-    * [Backlog](#backlog)
+  * [Backlog](#backlog)
 <!-- TOC -->
 
 ## Requirements
@@ -188,6 +190,24 @@ The command will create the following files:
 We use a custom icon font build with https://icomoon.io/app.
 Look at the Icons.md for more information: `DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public/Fonts/Icons.md`
 
+## Maps
+
+To render maps we use [Sandstorm Maps](https://maps.sandstorm.de/). To get it running you need to configure an api key
+in nginx.conf:
+
+```
+http {
+    server {
+        location /_maptiles/ {
+            set $args t=MyApiKey;
+        }
+    }
+}
+```
+
+To get an api key check https://intern.sandstorm.de/knowledge/maps-api-sandstorm-de-nutzung if you work at Sandstorm or
+get in contact with us otherwise :)
+
 [//]: # (KICKSTART_INFO_SECTION__START)
 
 ## Improving Kickstart Experience
@@ -199,7 +219,7 @@ Run `./kickstart.sh --restore-git` after testing changes you made to `./kickstar
 
 [//]: # (KICKSTART_INFO_SECTION__END)
 
-### Backlog
+## Backlog
 
 * Examples for rights in Neos -> separate Distribution Package
 * Custom Backend Module Beispiel in extra Distribution Package
