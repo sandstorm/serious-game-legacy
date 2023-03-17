@@ -146,6 +146,18 @@ run `dev site-export` to export a site
 
 run `dev site-import` to import a site
 
+### Site Export Prod
+
+For local development, if you want to use `site-export-prod` make sure to run the following commands locally beforehand:
+
+```
+sku context k3s2021
+sku ns myvendor-awesomeneosproject-staging
+```
+
+Otherwise you may get an error that the pods could not be found.
+If you're not working at sandstorm update this command for your environment. :)
+
 ## Automatic Translation with DeepL
 
 We use Sitegeist.LostInTranslation to translate documents and content automatically once editors choose to "create and

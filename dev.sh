@@ -164,7 +164,7 @@ function open-local-db {
 }
 
 # Open local e2e testing db with your default UI
-function open-local-db {
+function open-local-db-e2e {
 	open "mysql://neos:neos@localhost:13306/neos_e2etest"
 }
 
@@ -179,7 +179,7 @@ function site-export {
 
 # Export production site SQL and resources
 function site-export-prod {
-  _log_green "Starting prod content dump. This might take some time, depending on the size of the Resource folder."
+  _echo_green "Starting prod content dump. This might take some time, depending on the size of the Resource folder."
 
 	NAMESPACE="myvendor-awesomeneosproject-staging"
   # 1) find the right kubernetes pod to connect to
@@ -206,8 +206,8 @@ function site-export-prod {
   echo "Downloading resource dump ..."
   kubectl -n $NAMESPACE cp $PODNAME:/app/ContentDump/Resources.tar.gz ./app/ContentDump/Resources.tar.gz
 
-	_log_green "Prod content dump finished"
-	_log_green "You can now run 'dev site-import' to import the dump"
+	_echo_green "Prod content dump finished"
+	_echo_green "You can now run 'dev site-import' to import the dump"
 }
 
 # Import site SQL dump and resources
