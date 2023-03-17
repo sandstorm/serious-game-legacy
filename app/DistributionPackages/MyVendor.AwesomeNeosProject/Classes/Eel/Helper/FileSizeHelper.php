@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MyVendor\AwesomeNeosProject\Eel\Helper;
@@ -17,15 +18,22 @@ class FileSizeHelper implements ProtectedContextAwareInterface
      */
     public function format(float $size): string
     {
+        // Return when $size is null, negative or 0, otherwise $base would result in NAN
+        if (!$size || $size < 0) {
+            return  '';
+        } else if ($size <= 0) {
+            return  '0 B';
+        }
+
         // https://stackoverflow.com/a/2510540
         $base = log($size, 1024);
-        $suffixes = array('', 'KB', 'MB', 'GB', 'TB');
+        $suffixes = array('B', 'KB', 'MB', 'GB', 'TB');
 
-        return round(pow(1024, $base - floor($base)), 0) .' '. $suffixes[floor($base)];
+        return round(pow(1024, $base - floor($base)), 0) . ' ' . $suffixes[floor($base)];
     }
 
     /**
-     * All methods are considered safe, i.e. can be executed  from within Eel
+     * All methods are considered safe, i.e. can be executed from within Eel
      *
      * @param string $methodName
      * @return boolean
@@ -35,4 +43,3 @@ class FileSizeHelper implements ProtectedContextAwareInterface
         return true;
     }
 }
-
