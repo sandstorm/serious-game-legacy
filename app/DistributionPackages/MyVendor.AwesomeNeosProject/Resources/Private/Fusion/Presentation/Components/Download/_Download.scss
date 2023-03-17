@@ -1,4 +1,5 @@
 @use "AbstractStyles/Variables/Spacing";
+@use "AbstractStyles/Variables/Typo";
 
 .download {
     display: inline-flex;
@@ -7,11 +8,14 @@
     margin-top: Spacing.$md;
 
     text-align: left;
+    font-size: Typo.$fontSize;
 }
 
 .download__icon {
-    width: 18px;
     margin-right: Spacing.$lg;
-    flex-shrink: 0;
-    flex-grow: 0;
+}
+
+.download__size {
+    margin-left: Spacing.$sm;
+    font-size: Typo.$fontSize--small;
 }

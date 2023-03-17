@@ -2,6 +2,7 @@ Neos:
   Fusion:
     defaultContext:
       "MyVendor.AwesomeNeosProject.Example": 'MyVendor\AwesomeNeosProject\Eel\Helper\TruncateHelper'
+      "MyVendor.AwesomeNeosProject.FileSize": 'MyVendor\AwesomeNeosProject\Eel\Helper\FileSizeHelper'
   Flow:
     mvc:
       routes:

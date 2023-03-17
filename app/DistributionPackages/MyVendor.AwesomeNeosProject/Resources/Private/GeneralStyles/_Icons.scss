@@ -13,6 +13,9 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-arrow-down-to-line:before {
+    content: "\e900";
+}
 .icon-bars1:before {
     content: "\f0c9";
 }
