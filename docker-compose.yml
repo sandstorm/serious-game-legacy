@@ -28,6 +28,7 @@ services:
       DB_NEOS_DATABASE_E2ETEST: 'neos_e2etest'
       # DeepL Authentication Key
       DEEPL_API_KEY: '${DEEPL_API_KEY}'
+      SANDSTORM_MAPS_API_KEY: '${SANDSTORM_MAPS_API_KEY}'
       # auto site import
       SITE_IMPORT_PACKAGE_KEY: 'MyVendor.AwesomeNeosProject'
       # auto creation of admin user for Neos backend
