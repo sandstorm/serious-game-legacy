@@ -7,10 +7,14 @@ use Neos\ContentRepository\Tests\Behavior\Features\Bootstrap\NodeOperationsTrait
 use Neos\Flow\Configuration\ConfigurationManager;
 use Neos\Flow\ObjectManagement\Exception\UnknownObjectException;
 use Neos\Flow\ObjectManagement\ObjectManagerInterface;
+use Neos\Flow\Security\Authentication\AuthenticationProviderManager;
+use Neos\Flow\Security\Authorization\PrivilegeManagerInterface;
+use Neos\Flow\Security\Policy\PolicyService;
 use Neos\Flow\Tests\Behavior\Features\Bootstrap\SecurityOperationsTrait;
 use Sandstorm\E2ETestTools\Tests\Behavior\Bootstrap\FusionRenderingTrait;
 use Sandstorm\E2ETestTools\Tests\Behavior\Bootstrap\NeosBackendControlTrait;
 use Sandstorm\E2ETestTools\Tests\Behavior\Bootstrap\PlaywrightTrait;
+use Neos\Flow\Security;
 
 require_once(__DIR__ . '/../../../../../../Packages/Application/Neos.Behat/Tests/Behat/FlowContextTrait.php');
 require_once(__DIR__ . '/../../../../../../Packages/Application/Neos.ContentRepository/Tests/Behavior/Features/Bootstrap/NodeOperationsTrait.php');
@@ -43,6 +47,11 @@ class FeatureContext implements Context
     protected $objectManager;
 
     /**
+     * @var Security\Context
+     */
+    protected $securityContext;
+
+    /**
      * @throws \Neos\Flow\Exception
      * @throws UnknownObjectException
      */
@@ -58,6 +67,17 @@ class FeatureContext implements Context
         $this->setupFlowContextForSUT($this->objectManager);
         // TODO configure enable/disable tracing?
         //$this->setPlaywrightTracingMode(self::$PLAYWRIGHT_TRACING_MODE_ALWAYS);
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function resetSecurityBeforeScenario(BeforeScenarioScope $event): void
+    {
+        $this->securityInitialized = false;
+        $this->tearDownSecurity();
+        self::cleanUpSecurity();
+        $this->setupSecurity();
     }
 
     /**
@@ -104,5 +124,36 @@ class FeatureContext implements Context
             return false;
         }
         return true;
+    }
+
+    /**
+     * Resets security test requirements
+     *
+     * @return void
+     */
+    protected function tearDownSecurity()
+    {
+        $privilegeManager = $this->objectManager->get(PrivilegeManagerInterface::class);
+        $policyService = $this->objectManager->get(PolicyService::class);
+        $tokenAndProviderFactory = $this->objectManager->get(Security\Authentication\TokenAndProviderFactoryInterface::class);
+        $testingProvider = $tokenAndProviderFactory->getProviders()['TestingProvider'];
+        $securityContext = $this->objectManager->get(Security\Context::class);
+        $authenticationManager = $this->objectManager->get(AuthenticationProviderManager::class);
+
+        if ($privilegeManager !== null) {
+            $privilegeManager->reset();
+        }
+        if ($policyService !== null) {
+            $policyService->reset();
+        }
+        if ($testingProvider !== null) {
+            $testingProvider->reset();
+        }
+        if ($securityContext !== null) {
+            $securityContext->clearContext();
+        }
+        if ($authenticationManager !== null) {
+            \Neos\Utility\ObjectAccess::setProperty($authenticationManager, 'isAuthenticated', null, true);
+        }
     }
 }
