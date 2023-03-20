@@ -1,0 +1,37 @@
+@use "AbstractStyles/Mixins";
+@use "AbstractStyles/Variables/Colors";
+@use "AbstractStyles/Variables/Spacing";
+@use "AbstractStyles/Variables/Typo";
+
+.Pagination {
+    margin: Spacing.$xl 0 0;
+    padding: 0;
+
+    text-align: center;
+    list-style: none;
+    line-height: 2.5rem;
+}
+
+.Pagination-item {
+    display: inline-block;
+    margin-left: Spacing.$sm;
+    margin-right: Spacing.$sm;
+
+    a {
+        padding: Spacing.$sm Spacing.$md;
+
+        border-radius: 2px;
+        background-color: Colors.$grey--light;
+
+        color: Colors.$white;
+        text-decoration: none;
+
+        &:hover, &:active, &:focus {
+            background-color: Colors.$black;
+        }
+    }
+
+    &.isCurrent a {
+        background-color: Colors.$blue;
+    }
+}
