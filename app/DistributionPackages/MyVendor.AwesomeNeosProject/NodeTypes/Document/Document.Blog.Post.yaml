@@ -21,27 +21,6 @@
         reloadIfChanged: true
         inspector:
           group: properties
-    authors:
-      type: string
-      ui:
-        label: 'Author(s)'
-        reloadIfChanged: true
-        inspector:
-          group: properties
-          editor: Neos.Neos/Inspector/Editors/SelectBoxEditor
-          editorOptions:
-            # Alternate Source -> use other node types as reference
-            # nodeTypes: [ 'MyVendor.AwesomeNeosProject:Document.Team.Member' ]
-            placeholder: 'Choose Author(s)'
-            dataSourceIdentifier: vendor-site-authors
-            allowEmpty: true
-            multiple: true
-    relatedPosts:
-      type: references
-      ui:
-        label: 'Related posts'
-        reloadIfChanged: true
-        inspector:
-          group: 'document'
-          editorOptions:
-            nodeTypes: [ 'MyVendor.AwesomeNeosProject:Document.Blog.Post' ]
+    # if you want to reference authors you might want to use a custom data source
+    # (https://docs.neos.io/guide/manual/extending-neos-with-php-flow/custom-data-sources)
+    # or use a reference node type restricted to the author node type

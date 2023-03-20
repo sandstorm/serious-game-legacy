@@ -44,14 +44,6 @@ $header-image__width: 400px;
     margin-right: Spacing.$sm;
 }
 
-.blog-post-header__date {
-    margin-right: Spacing.$sm;
-
-    &::before {
-        content: " | ";
-    }
-}
-
 .blog-post-header__teaser {
     width: 600px;
     max-width: 100%;

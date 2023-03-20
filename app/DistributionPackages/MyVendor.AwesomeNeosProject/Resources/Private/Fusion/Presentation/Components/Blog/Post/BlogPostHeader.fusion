@@ -1,7 +1,6 @@
 prototype(MyVendor.AwesomeNeosProject:Component.BlogPostHeader) < prototype(Neos.Fusion:Component) {
     title = ''
     teaserText = ''
-    authors = ''
     tags = ''
     date = ''
     image = ''
@@ -10,7 +9,6 @@ prototype(MyVendor.AwesomeNeosProject:Component.BlogPostHeader) < prototype(Neos
         @strict = true
         title = ${PropTypes.string}
         teaserText = ${PropTypes.string}
-        authors = ${PropTypes.string}
         tags = ${PropTypes.string}
         date = ${PropTypes.any}
         image = ${PropTypes.string}
@@ -23,11 +21,10 @@ prototype(MyVendor.AwesomeNeosProject:Component.BlogPostHeader) < prototype(Neos
             <MyVendor.AwesomeNeosProject:Utility.ContentWidth>
                 <header class="blog-post-header">
                     <h1 class="blog-post-header__title">{props.title}</h1>
+                    <div class="blog-post-header__meta_data" @if={props.date}>
+                        {Date.format(props.date, 'd.m.Y')}
+                    </div>
                     <div class="blog-post-header__meta_data">
-                        <span @if.hasAuthor={props.authors} class="blog-post-header__authors">
-                            {props.authors}
-                        </span>
-                        <span class="blog-post-header__date">{Date.format(props.date, 'd.m.Y')}</span>
                         {props.tags}
                     </div>
                     {props.image}
