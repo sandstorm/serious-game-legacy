@@ -37,6 +37,7 @@ spec:
   envFromSecrets:
     - db
     - deepl-api-key
+    - sandstorm-maps-api-key
 
   httpBasicPasswordProtection:
     enabled: true
