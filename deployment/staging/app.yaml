@@ -55,10 +55,17 @@ spec:
   volumes:
     - name: persistent
       mountPath: /app/Data/Persistent
-    # we want a volume for caches so that we don't fill up the disk -
-    # otherwise we waste disk space because of containerd writable overlay internals
+
+  # we want a volume for caches so that we don't fill up the disk -
+  # otherwise we waste disk space because of containerd writable overlay internals
+  extraVolumesInK8sFormat:
     - name: temporary
-      mountPath: /app/Data/Temporary
+      # emptyDir are volumes that get created empty when a Pod is created. They are deleted when the Pod is deleted.
+      emptyDir: {}
+  extraVolumeMountsInK8sFormat:
+    - mountPath: /app/Data/Temporary
+      name: temporary
+
   sso:
     enabled: false
 
