@@ -1,6 +1,6 @@
 Jonnitto:
   PrettyEmbedHelper:
-    # If you want to use your own assets, set this to false (Backend.js and Backend.css will be always be included in the backend)
+    # If you want to use your own assets, set this to false (Backend.js and Backend.css will always be included in the backend)
     includeAssets:
       css: true
       js: true
@@ -8,7 +8,16 @@ Jonnitto:
     # This is the maximum width of a custom preview image
     maximumWidth: 1920
 
-    # If this is set to a string, the element gets wrapped with a div and the class with the giving string.
+    # If this is set to a string, the element gets wrapped with a div and the class with the given string.
     # If set to true, the element gets wrapped with a div without any class.
-    # If set to false, the element get not wrapped at all
+    # If set to false, the element does not get wrapped at all.
     wrapper: 'content-width'
+
+  PrettyEmbedVideoPlatforms:
+    youtube:
+      playlist:
+        embed: 'https://www.youtube-nocookie.com/embed/videoseries?list=%id%'
+        href: 'https://www.youtube.com/playlist?list=%id%'
+      video:
+        embed: 'https://www.youtube-nocookie.com/embed/%id%'
+        href: 'https://www.youtube.com/watch?v=%id%'
