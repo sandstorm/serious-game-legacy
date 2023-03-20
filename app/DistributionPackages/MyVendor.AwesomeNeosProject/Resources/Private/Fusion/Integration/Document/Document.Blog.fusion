@@ -9,6 +9,7 @@ prototype(MyVendor.AwesomeNeosProject:Document.Blog) < prototype(MyVendor.Awesom
     body.main.content.blogposts = MyVendor.AwesomeNeosProject:Utility.ContentWidth {
         content = Flowpack.Listable:PaginatedCollection {
             collection = ${q(site).find('[instanceof MyVendor.AwesomeNeosProject:Document.Blog.Post][_hiddenInIndex != true]').sort('datePublished', 'DESC').get()}
+            itemsPerPage = 16
 
             prototype(Flowpack.Listable:Collection) {
                 listClass = 'blog-post-overview'
