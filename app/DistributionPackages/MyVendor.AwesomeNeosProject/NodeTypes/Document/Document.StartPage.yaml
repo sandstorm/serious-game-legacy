@@ -26,3 +26,43 @@
           group: 'document'
           editorOptions:
             nodeTypes: [ 'MyVendor.AwesomeNeosProject:Document.Page' ]
+    facebookLink:
+      type: string
+      ui:
+        label: 'Facebook-Link'
+        reloadIfChanged: true
+        inspector:
+          group: 'properties'
+          editor: 'Neos.Neos/Inspector/Editors/LinkEditor'
+    twitterLink:
+      type: string
+      ui:
+        label: 'Twitter-Link'
+        reloadIfChanged: true
+        inspector:
+          group: 'properties'
+          editor: 'Neos.Neos/Inspector/Editors/LinkEditor'
+    instagramLink:
+      type: string
+      ui:
+        label: 'Instagram-Link'
+        reloadIfChanged: true
+        inspector:
+          group: 'properties'
+          editor: 'Neos.Neos/Inspector/Editors/LinkEditor'
+    youtubeLink:
+      type: string
+      ui:
+        label: 'YouTube-Link'
+        reloadIfChanged: true
+        inspector:
+          group: 'properties'
+          editor: 'Neos.Neos/Inspector/Editors/LinkEditor'
+    mastodonLink:
+      type: string
+      ui:
+        label: 'Mastodon-Link'
+        reloadIfChanged: true
+        inspector:
+          group: 'properties'
+          editor: 'Neos.Neos/Inspector/Editors/LinkEditor'
