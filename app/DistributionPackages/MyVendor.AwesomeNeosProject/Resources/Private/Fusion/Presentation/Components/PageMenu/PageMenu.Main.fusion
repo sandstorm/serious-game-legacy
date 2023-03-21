@@ -27,11 +27,8 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Main) < prototype(Neos.
                         </Neos.Neos:NodeLink>
 
                         <div @if.hasItems={item.subItems} class="page-menu__sublevel-wrapper">
-                            <MyVendor.AwesomeNeosProject:Utility.ContentWidth size="small" class="page-menu__sublevel-container">
-                                <ul
-                                    @if.has={item.subItems}
-                                    class="page-menu__sublevel"
-                                >
+                            <div class="page-menu__sublevel-container">
+                                <ul @if.has={item.subItems} class="page-menu__sublevel">
                                     <Neos.Fusion:Loop items={item.subItems} itemName="item">
                                         <li class={AtomicFusion.classNames(item.state, 'page-menu__sublevel-item')}>
                                             <Neos.Neos:NodeLink
@@ -44,7 +41,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Main) < prototype(Neos.
                                         </li>
                                     </Neos.Fusion:Loop>
                                 </ul>
-                            </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
+                            </div>
                         </div>
                     </li>
                 </Neos.Fusion:Loop>
