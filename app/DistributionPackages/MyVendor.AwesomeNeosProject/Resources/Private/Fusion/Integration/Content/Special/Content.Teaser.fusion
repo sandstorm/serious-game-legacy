@@ -1,0 +1,15 @@
+prototype(MyVendor.AwesomeNeosProject:Content.Teaser) < prototype(Neos.Neos:ContentComponent) {
+    renderer = MyVendor.AwesomeNeosProject:Component.Teaser {
+        backgroundImage = ${q(node).property('backgroundImage')}
+
+        imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
+            asset = ${q(node).property('backgroundImage')}
+        }
+
+        content = Neos.Neos:ContentCollection {
+            tagName = "div"
+            nodePath = "main"
+            attributes.class = "teaser__content"
+        }
+    }
+}
