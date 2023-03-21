@@ -2,6 +2,7 @@
 @use "AbstractStyles/Variables/Spacing";
 @use "AbstractStyles/Mixins";
 @use "Fusion/Presentation/Components/PageHeader/PageHeader";
+@use "Fusion/Presentation/Utility/ContentWidth/ContentWidth";
 
 .page-menu__main {
     display: flex;
@@ -51,20 +52,6 @@
 
     &--has-items {
         &:hover, &:focus-within {
-            // transparent bar for better menu hovering
-            &:after {
-                content: " ";
-                position: absolute;
-                left: 0;
-                top: PageHeader.$header__height - 30px;
-                height: 30px;
-                width: 100%;
-
-                background-color: transparent;
-
-                z-index: 999;
-            }
-
             .page-menu__sublevel-wrapper {
                 display: block;
             }
@@ -117,6 +104,7 @@
     box-shadow: 5px 5px 10px transparentize(Colors.$black, 0.5);
 
     @include Mixins.mq(medium) {
+        display: block;
         position: relative;
         top: unset;
         max-height: unset;
@@ -131,8 +119,17 @@
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
+
     height: 100%;
+    max-width: ContentWidth.$contentWidth--small;
     padding: 0;
+    margin: 0 auto;
+
+    @include Mixins.mq(medium) {
+        max-width: unset;
+        margin: unset;
+        margin-left: Spacing.$lg;
+    }
 }
 
 .page-menu__sublevel-item {
