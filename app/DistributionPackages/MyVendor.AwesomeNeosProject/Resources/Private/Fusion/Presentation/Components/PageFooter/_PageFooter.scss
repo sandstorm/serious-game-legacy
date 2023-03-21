@@ -2,12 +2,11 @@
 @use "AbstractStyles/Variables/Spacing";
 
 .page-footer {
-    margin-top: Spacing.$xxl;
     background-color: Colors.$grey;
     color: Colors.$grey--lighter;
 }
 
 .page-footer__content {
-    padding-top: Spacing.$xl;
-    padding-bottom: Spacing.$xl;
+    padding-top: Spacing.$xxl;
+    padding-bottom: Spacing.$xxl;
 }

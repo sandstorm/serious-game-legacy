@@ -6,6 +6,7 @@
       ui:
         label: 'Link'
         reloadIfChanged: true
+        showInCreationDialog: true
         inspector:
           group: 'properties'
           editor: 'Neos.Neos/Inspector/Editors/LinkEditor'
@@ -16,6 +17,7 @@
       type: boolean
       ui:
         reloadIfChanged: true
+        showInCreationDialog: true
         label: 'Open link in new tab?'
         inspector:
           group: 'properties'

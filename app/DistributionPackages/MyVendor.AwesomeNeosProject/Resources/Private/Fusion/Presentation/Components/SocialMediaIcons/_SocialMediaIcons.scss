@@ -1,0 +1,36 @@
+@use "AbstractStyles/Variables/Colors";
+@use "AbstractStyles/Variables/Spacing";
+@use "AbstractStyles/Mixins";
+
+.social-media-icons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    margin-bottom: Spacing.$lg;
+    background-color: Colors.$grey;
+
+    font-size: 1.5rem;
+
+    @include Mixins.mq(small) {
+        justify-content: flex-start;
+    }
+}
+
+.social-media-icons__link {
+    text-decoration: none;
+
+    + .social-media-icons__link {
+        margin-left: Spacing.$lg;
+    }
+}
+
+.social-media-icons__icon {
+    color: Colors.$white;
+
+    @include Mixins.transition(color .25s);
+
+    &:hover, &:active, &:focus {
+        color: Colors.$blue;
+    }
+}

@@ -10,6 +10,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageFooter) < prototype(Neos.Fus
         <footer class={AtomicFusion.classNames('page-footer')}>
             <MyVendor.AwesomeNeosProject:Utility.ContentWidth>
                 <div @if.hasFooter={props.content != ''} class="page-footer__content">
+                    <Myvendor.AwesomeNeosProject.Site:Component.SocialMediaIcons/>
                     {props.content}
                 </div>
             </MyVendor.AwesomeNeosProject:Utility.ContentWidth>

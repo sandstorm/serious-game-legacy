@@ -5,13 +5,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Text) < prototype(Neos.Fusion:Co
         @strict = true
         text = ${PropTypes.string}
     }
-
-    renderer = Neos.Fusion:Component {
-        @apply.props = ${props}
-        renderer = afx`
-            <MyVendor.AwesomeNeosProject:Utility.ContentWidth>
-                {props.text}
-            </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
-        `
-    }
+    renderer = afx`
+        {props.text}
+    `
 }

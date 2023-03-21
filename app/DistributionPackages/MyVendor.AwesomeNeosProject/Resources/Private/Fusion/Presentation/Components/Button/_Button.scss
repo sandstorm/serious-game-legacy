@@ -112,6 +112,7 @@ $button__height--larger: 60px;
 
     color: Colors.$blue;
     line-height: unset;
+    font-size: Typo.$fontSize;
 
     &:hover, &:active, &:focus {
         background-color: transparent;
