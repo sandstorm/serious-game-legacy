@@ -5,13 +5,18 @@ prototype(MyVendor.AwesomeNeosProject:Resources.HeaderAssets) < prototype(Neos.F
         attributes.content = 'width=device-width, initial-scale=1'
     }
 
-    favicon = Neos.Fusion:Tag {
-        tagName = 'link'
-        attributes.rel = 'icon'
-        attributes.type = 'image/png'
-        attributes.href = Neos.Fusion:ResourceUri {
-            path = 'resource://MyVendor.AwesomeNeosProject/Public/Images/favicon.png'
-        }
+    favicon = Neos.Fusion:Component {
+        // We use https://realfavicongenerator.net/ to generate all needed files
+        // and the markup. Using the same generator again makes updating easier
+        renderer = afx`
+            <link rel="apple-touch-icon" sizes="180x180" href={StaticResource.uri('MyVendor.AwesomeNeosProject', 'Public/Favicon/apple-touch-icon.png')}/>
+            <link rel="icon" type="image/png" sizes="32x32" href={StaticResource.uri('MyVendor.AwesomeNeosProject', 'Public/Favicon/favicon-32x32.png')}/>
+            <link rel="icon" type="image/png" sizes="16x16" href={StaticResource.uri('MyVendor.AwesomeNeosProject', 'Public/Favicon/favicon-16x16.png')}/>
+            <link rel="manifest" href={StaticResource.uri('MyVendor.AwesomeNeosProject', 'Public/Favicon/site.webmanifest')}/>
+            <link rel="mask-icon" href={StaticResource.uri('MyVendor.AwesomeNeosProject', 'Public/Favicon/safari-pinned-tab.svg')}/>
+            <link rel="shortcut icon" href={StaticResource.uri('MyVendor.AwesomeNeosProject', 'Public/Favicon/favicon.ico')}/>
+            <meta name="msapplication-config" content={StaticResource.uri('MyVendor.AwesomeNeosProject', 'Public/Favicon/browserconfig.xml')}/>
+        `
     }
 
     bundleCSS = Neos.Fusion:Tag {
