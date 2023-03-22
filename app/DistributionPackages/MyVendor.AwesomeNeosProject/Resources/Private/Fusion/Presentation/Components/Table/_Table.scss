@@ -1,0 +1,40 @@
+@use "AbstractStyles/Variables/Colors";
+@use "AbstractStyles/Variables/Spacing";
+@use "AbstractStyles/Mixins";
+
+figure.table {
+    width: 100%;
+    margin: 0;
+    margin-bottom: 6 * Spacing.$base__module;
+    overflow-x: auto;
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+
+        thead {
+            tr {
+                border-bottom: 1px solid Colors.$black;
+            }
+
+            th {
+                text-align: left;
+            }
+        }
+
+        td, th {
+            padding-top: Spacing.$md;
+            padding-bottom: Spacing.$sm;
+        }
+
+        td, th {
+            &:not(:last-child) {
+                padding-right: Spacing.$xl;
+
+                @include Mixins.mq(small) {
+                    padding-right: Spacing.$lg;
+                }
+            }
+        }
+    }
+}
