@@ -3,10 +3,26 @@ prototype(MyVendor.AwesomeNeosProject:Content.Teaser) < prototype(Neos.Neos:Cont
         height = ${q(node).property('height')}
         textColor = ${q(node).property('textColor')}
 
-        imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
-            asset = ${q(node).property('image')}
+        image = MyVendor.AwesomeNeosProject:Component.Image {
+            alternativeText = MyVendor.AwesomeNeosProject:Helper.ImageAltText {
+                image = ${q(node).property('image')}
+            }
+            imageUri = Neos.Fusion:ResourceUri {
+                resource = ${q(node).property('image').resource}
+            }
+            imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
+                asset = ${q(node).property('image')}
+            }
+            sizes = ${[
+            '(min-width: 1600px) 1600px',
+            '(min-width: 1200px) 1200px',
+            '(min-width: 996px) 996px',
+            '(min-width: 768px) 768px',
+            '(min-width: 500px) 500px',
+            '(min-width: 370px) 370px',
+            '100vw'
+            ]}
         }
-        alternativeText = ${q(node).property('alternativeText')}
 
         content = Neos.Neos:ContentCollection {
             tagName = "div"

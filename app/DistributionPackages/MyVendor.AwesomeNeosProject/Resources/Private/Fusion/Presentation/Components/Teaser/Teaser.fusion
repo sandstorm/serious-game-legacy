@@ -3,9 +3,8 @@ prototype(MyVendor.AwesomeNeosProject:Component.Teaser) < prototype(Neos.Fusion:
         @strict = true
         height = ${PropTypes.oneOf(['100vh', '90vh', '70vh', '50vh'])}
         textColor = ${PropTypes.oneOf(['dark', 'light'])}
-        imageSource = ${PropTypes.any}
+        image = ${PropTypes.string}
         content = ${PropTypes.string}
-        alternativeText = ${PropTypes.string}
     }
 
     renderer = afx`
@@ -13,12 +12,11 @@ prototype(MyVendor.AwesomeNeosProject:Component.Teaser) < prototype(Neos.Fusion:
             tagName={'div'}
             attributes.class={AtomicFusion.classNames(
                 'teaser',
-                'teaser--text-' + props.textColor,
-                'teaser--' + props.height
+                'teaser--' + props.height,
+                'teaser--text-' + props.textColor
             )}
         >
-<!--       todo: src-set     -->
-            <img src={props.imageSource} alt={props.alternativeText} />
+            {props.image}
             {props.content}
         </Neos.Fusion:Tag>
     `

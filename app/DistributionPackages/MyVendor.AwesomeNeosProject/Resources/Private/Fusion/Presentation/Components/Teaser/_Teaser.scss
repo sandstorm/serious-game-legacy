@@ -1,14 +1,17 @@
 @use "AbstractStyles/Variables/Colors";
 @use "AbstractStyles/Variables/Spacing";
 
-// todo: attribute ordering
+// todo: property ordering
 
 .teaser {
     position: relative;
     display: flex;
 
-    img {
+    .image {
         position: absolute;
+    }
+
+    img {
         width: 100%;
         height: 100%;
         object-fit: cover;

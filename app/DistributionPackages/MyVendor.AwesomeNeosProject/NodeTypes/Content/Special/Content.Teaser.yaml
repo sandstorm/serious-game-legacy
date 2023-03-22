@@ -5,7 +5,7 @@
     'MyVendor.AwesomeNeosProject:Mixin.Image': true
   ui:
     label: 'Teaser'
-    icon: icon-fullscreen
+    icon: icon-image
     group: special
     position: 5
   constraints:
