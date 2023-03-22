@@ -2,12 +2,14 @@ prototype(MyVendor.AwesomeNeosProject:Component.SectionWithBackground) < prototy
     content = ''
     backgroundColor = ''
     contentWidth = ''
+    padding = ''
 
     @propTypes {
         @strict = true
         content = ${PropTypes.string}
         backgroundColor = ${PropTypes.string}
         contentWidth = ${PropTypes.string}
+        padding = ${PropTypes.string}
     }
 
     renderer = Neos.Fusion:Component {
@@ -16,9 +18,10 @@ prototype(MyVendor.AwesomeNeosProject:Component.SectionWithBackground) < prototy
         _backgroundColorClass = MyVendor.AwesomeNeosProject:Utility.BackgroundColor {
             backgroundColor = ${props.backgroundColor}
         }
+        _paddingClass = ${props.padding == 'none' ? 'background-section--padding-none' : '' }
 
         renderer = afx`
-            <section class={AtomicFusion.classNames('background-section', props._backgroundColorClass )}>
+            <section class={AtomicFusion.classNames('background-section', props._backgroundColorClass, props._paddingClass )}>
                 <MyVendor.AwesomeNeosProject:Utility.ContentWidth size={props.contentWidth}>
                     {props.content}
                 </MyVendor.AwesomeNeosProject:Utility.ContentWidth>

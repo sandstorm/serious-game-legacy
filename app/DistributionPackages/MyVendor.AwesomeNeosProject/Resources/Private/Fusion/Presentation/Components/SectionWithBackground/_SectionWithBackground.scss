@@ -6,6 +6,11 @@
     padding-top: Spacing.$xxl;
     padding-bottom: Spacing.$xxl;
 
+    &--padding-none {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
     // TODO remove when no other element has content-width class
     > .content-width {
         .content-width {
