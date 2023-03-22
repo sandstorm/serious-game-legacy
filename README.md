@@ -5,7 +5,7 @@
 This packages helps you to quickly set up a Neos Project. Besides a basic Neos setup
 we provided examples and configuration that helps us to quickly provide a kickstart.
 
-Run `./kickstart.sh` an follow the instructions.
+Run `./kickstart.sh` and follow the instructions.
 
 [//]: # (KICKSTART_INFO_SECTION__END)
 
@@ -63,6 +63,7 @@ Run `./kickstart.sh` an follow the instructions.
 
 ### Install Dependencies
 
+- make sure [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) is installed on your system
 - run `./dev.sh setup` to install the Dev Script Runner. You can now use `dev <some-taks>` from anywhere
   inside the project.
 
