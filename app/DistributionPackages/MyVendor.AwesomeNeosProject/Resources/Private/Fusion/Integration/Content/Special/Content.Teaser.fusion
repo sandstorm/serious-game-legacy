@@ -1,10 +1,12 @@
 prototype(MyVendor.AwesomeNeosProject:Content.Teaser) < prototype(Neos.Neos:ContentComponent) {
     renderer = MyVendor.AwesomeNeosProject:Component.Teaser {
-        backgroundImage = ${q(node).property('backgroundImage')}
+        height = ${q(node).property('height')}
+        textColor = ${q(node).property('textColor')}
 
         imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
-            asset = ${q(node).property('backgroundImage')}
+            asset = ${q(node).property('image')}
         }
+        alternativeText = ${q(node).property('alternativeText')}
 
         content = Neos.Neos:ContentCollection {
             tagName = "div"

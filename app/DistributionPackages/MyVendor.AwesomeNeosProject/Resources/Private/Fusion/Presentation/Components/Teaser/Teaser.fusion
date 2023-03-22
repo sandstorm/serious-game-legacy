@@ -1,27 +1,25 @@
 prototype(MyVendor.AwesomeNeosProject:Component.Teaser) < prototype(Neos.Fusion:Component) {
-    backgroundImage =  ''
-    content = ''
-
     @propTypes {
         @strict = true
-        backgroundImage = ${PropTypes.any}
+        height = ${PropTypes.oneOf(['100vh', '90vh', '70vh', '50vh'])}
+        textColor = ${PropTypes.oneOf(['dark', 'light'])}
         imageSource = ${PropTypes.any}
-        styleAttribute = ${PropTypes.string}
         content = ${PropTypes.string}
+        alternativeText = ${PropTypes.string}
     }
-
-    styleAttribute = ${"background-image: url("+this.imageSource+");"}
 
     renderer = afx`
         <Neos.Fusion:Tag
-                tagName="div"
-                attributes.class="teaser"
-                attributes.style={props.styleAttribute}
+            tagName={'div'}
+            attributes.class={AtomicFusion.classNames(
+                'teaser',
+                'teaser--text-' + props.textColor,
+                'teaser--' + props.height
+            )}
         >
+<!--       todo: src-set     -->
+            <img src={props.imageSource} alt={props.alternativeText} />
             {props.content}
         </Neos.Fusion:Tag>
     `
 }
-
-
-// image tag, object-fit: cover

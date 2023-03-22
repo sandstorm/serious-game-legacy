@@ -2,6 +2,7 @@
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
     'Neos.Neos:ContentCollection': true
+    'MyVendor.AwesomeNeosProject:Mixin.Image': true
   ui:
     label: 'Teaser'
     icon: icon-fullscreen
@@ -13,12 +14,44 @@
       'MyVendor.AwesomeNeosProject:Content.Text': true
       'MyVendor.AwesomeNeosProject:Content.Button': true
   properties:
-    backgroundImage:
-      type: Neos\Media\Domain\Model\ImageInterface
+    height:
+      type: string
+      defaultValue: '90vh'
       ui:
-        label: 'Background Image'
+        label: 'Height'
         reloadIfChanged: true
         showInCreationDialog: true
         inspector:
-          group: 'image'
+          group: properties
+          editor: 'Neos.Neos/Inspector/Editors/SelectBoxEditor'
+          position: 20
+          editorOptions:
+            values:
+              '100vh':
+                label: '100%'
+              '90vh':
+                label: '90%'
+              70vh:
+                label: '70%'
+              50vh:
+                label: '50%'
+    textColor:
+      type: string
+      ui:
+        label: 'Text Color'
+        reloadIfChanged: true
+        showInCreationDialog: true
+        inspector:
+          group: properties
+          editor: 'Neos.Neos/Inspector/Editors/SelectBoxEditor'
           position: 50
+          editorOptions:
+            values:
+              'dark':
+                label: 'dark'
+              'light':
+                label: 'light'
+    imageDescription:
+      ui:
+        inspector:
+          group: 'hidden'
