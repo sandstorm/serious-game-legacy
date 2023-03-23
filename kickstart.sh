@@ -62,7 +62,7 @@ vendorNameLowerCase=$(echo $vendorName | tr '[:upper:]' '[:lower:]')
 packageNameLowerCase=$(echo $packageName | tr '[:upper:]' '[:lower:]')
 
 _yellow_echo "This is what we will do next"
-_red_echo "  * we will remove your docker containers an all their data"
+_red_echo "  * we will remove your docker containers and all their data"
 echo "  * we do a search replace on vendor and package names"
 echo "     * e.g. Flow packages names will be renamed to '${vendorName}.${packageName}'"
 echo "     * e.g. the composer packageName will be renamed to '${vendorNameLowerCase}/${packageNameLowerCase}'"

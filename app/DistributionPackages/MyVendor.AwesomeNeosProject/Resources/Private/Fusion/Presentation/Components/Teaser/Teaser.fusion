@@ -1,0 +1,28 @@
+prototype(MyVendor.AwesomeNeosProject:Component.Teaser) < prototype(Neos.Fusion:Component) {
+    height = ''
+    textColor = ''
+    image = ''
+    content = ''
+
+    @propTypes {
+        @strict = true
+        height = ${PropTypes.oneOf(['100vh', '90vh', '70vh', '50vh'])}
+        textColor = ${PropTypes.oneOf(['dark', 'light'])}
+        image = ${PropTypes.string}
+        content = ${PropTypes.string}
+    }
+
+    renderer = afx`
+        <Neos.Fusion:Tag
+            tagName='div'
+            attributes.class={AtomicFusion.classNames(
+                'teaser',
+                'teaser--' + props.height,
+                'teaser--text-' + props.textColor
+            )}
+        >
+            {props.image}
+            {props.content}
+        </Neos.Fusion:Tag>
+    `
+}

@@ -13,3 +13,21 @@
     backgroundColor:
       ui:
         showInCreationDialog: true
+    padding:
+      type: string
+      defaultValue: 'default'
+      ui:
+        label: 'Padding'
+        reloadIfChanged: true
+        inspector:
+          group: 'properties'
+          editor: 'Neos.Neos/Inspector/Editors/SelectBoxEditor'
+          position: 30
+          editorOptions:
+            values:
+              default:
+                label: 'default (vertical padding)'
+              none:
+                label: 'no padding'
+
+

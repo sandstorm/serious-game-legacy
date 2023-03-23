@@ -1,0 +1,23 @@
+prototype(MyVendor.AwesomeNeosProject:Content.Teaser) < prototype(Neos.Neos:ContentComponent) {
+    renderer = MyVendor.AwesomeNeosProject:Component.Teaser {
+        height = ${q(node).property('height')}
+        textColor = ${q(node).property('textColor')}
+
+        image = MyVendor.AwesomeNeosProject:Component.Image {
+            alternativeText = MyVendor.AwesomeNeosProject:Helper.ImageAltText {
+                image = ${q(node).property('image')}
+            }
+            imageUri = Neos.Fusion:ResourceUri {
+                resource = ${q(node).property('image').resource}
+            }
+            imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
+                asset = ${q(node).property('image')}
+            }
+        }
+
+        content = Neos.Neos:ContentCollection {
+            nodePath = "main"
+            attributes.class = "teaser__content"
+        }
+    }
+}
