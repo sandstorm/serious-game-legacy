@@ -22,5 +22,10 @@
     @include Mixins.mq(small) {
         padding-top: Spacing.$xl;
         padding-bottom: Spacing.$xl;
+
+        &--padding-none {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
     }
 }
