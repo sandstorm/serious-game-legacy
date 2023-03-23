@@ -19,9 +19,9 @@ prototype(MyVendor.AwesomeNeosProject:Content.AbstractSlide) < prototype(Neos.Ne
         partOfLogowall {
             condition = ${q(node).parent('[instanceof MyVendor.AwesomeNeosProject:Content.Logowall]').get(0)}
             renderer = afx`
-                <MyVendor.AwesomeNeosProject:Component.Slide>
+                <MyVendor.AwesomeNeosProject:Component.Logowall.Slide>
                     {props.slideContent}
-                </MyVendor.AwesomeNeosProject:Component.Slide>
+                </MyVendor.AwesomeNeosProject:Component.Logowall.Slide>
             `
         }
         default {

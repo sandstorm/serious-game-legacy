@@ -5,8 +5,9 @@ import 'swiper/css/bundle';
 // @ts-ignore
 import { Swiper as SwiperType } from "swiper";
 
-const SLIDE_CLASS = "content-slider__slide";
-const SLIDER_CLASS = "content-slider";
+// use the generic swiper classes here so the code works for all swipers inheriting this function
+const SLIDE_CLASS = "swiper-slide";
+const SLIDER_CLASS = "swiper";
 
 export const basicSlider = function(inBackend: unknown = false) {
     return {

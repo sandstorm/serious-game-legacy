@@ -15,7 +15,7 @@ export default function Logowall(amountOfLogos: unknown = 6, autoplayInterval: u
 
         _initSlider() {
             // @ts-ignore
-            const swiperRef = this.$refs.logowallSlider;
+            const swiperRef = this.$refs.slider;
             const amountOfSlides = swiperRef.querySelectorAll('.swiper-slide').length;
             if (amountOfSlides === 0) {
                 return;
@@ -33,7 +33,9 @@ export default function Logowall(amountOfLogos: unknown = 6, autoplayInterval: u
                 slidesPerView: 2, // for mobile
                 spaceBetween: 20,
                 pauseOnMouseEnter: false,
-                autoplay: autoplay,
+                autoplay: this.inBackend ? false : {
+                    disableOnInteraction: false,
+                },
                 breakpoints: {
                     // when window width is >= 996px
                     996: {

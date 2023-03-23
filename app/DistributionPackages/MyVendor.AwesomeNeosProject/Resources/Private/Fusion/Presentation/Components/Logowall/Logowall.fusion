@@ -22,7 +22,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Logowall) < prototype(Neos.Fusio
         }
         renderer = afx`
             <div class={AtomicFusion.classNames('logowall')} x-data={"logowall(" + Array.join(props._dataAttributes, ",") + ")"}>
-                <div class={AtomicFusion.classNames('swiper', 'content-slider')} x-ref="logowallSlider">
+                <div class={AtomicFusion.classNames('swiper', 'logowall__slider')} x-ref="slider">
                     {props.logos}
                 </div>
             </div>
