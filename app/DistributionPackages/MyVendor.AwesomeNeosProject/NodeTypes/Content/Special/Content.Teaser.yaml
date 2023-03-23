@@ -27,9 +27,9 @@
           position: 20
           editorOptions:
             values:
-              '100vh':
+              100vh:
                 label: '100%'
-              '90vh':
+              90vh:
                 label: '90%'
               70vh:
                 label: '70%'
@@ -37,6 +37,7 @@
                 label: '50%'
     textColor:
       type: string
+      defaultValue: 'dark'
       ui:
         label: 'Text Color'
         reloadIfChanged: true
@@ -47,9 +48,9 @@
           position: 50
           editorOptions:
             values:
-              'dark':
+              dark:
                 label: 'dark'
-              'light':
+              light:
                 label: 'light'
     imageDescription:
       ui:
