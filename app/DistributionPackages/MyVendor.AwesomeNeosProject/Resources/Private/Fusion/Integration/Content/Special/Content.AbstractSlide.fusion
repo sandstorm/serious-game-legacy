@@ -10,11 +10,19 @@ prototype(MyVendor.AwesomeNeosProject:Content.AbstractSlide) < prototype(Neos.Ne
     renderer = Neos.Fusion:Case {
         partOfSlider {
             condition = ${q(node).parent('[instanceof MyVendor.AwesomeNeosProject:Content.Slider]').get(0)}
-            renderer = afx`<MyVendor.AwesomeNeosProject:Component.Slide>{props.slideContent}</MyVendor.AwesomeNeosProject:Component.Slide>`
+            renderer = afx`
+                <MyVendor.AwesomeNeosProject:Component.Slide>
+                    {props.slideContent}
+                </MyVendor.AwesomeNeosProject:Component.Slide>
+            `
         }
         partOfLogowall {
             condition = ${q(node).parent('[instanceof MyVendor.AwesomeNeosProject:Content.Logowall]').get(0)}
-            renderer = afx`<MyVendor.AwesomeNeosProject:Component.Slide>{props.slideContent}</MyVendor.AwesomeNeosProject:Component.Slide>`
+            renderer = afx`
+                <MyVendor.AwesomeNeosProject:Component.Slide>
+                    {props.slideContent}
+                </MyVendor.AwesomeNeosProject:Component.Slide>
+            `
         }
         default {
             condition = true
