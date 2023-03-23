@@ -55,4 +55,4 @@
     imageDescription:
       ui:
         inspector:
-          group: 'hidden'
+          group: ~

@@ -13,19 +13,9 @@ prototype(MyVendor.AwesomeNeosProject:Content.Teaser) < prototype(Neos.Neos:Cont
             imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
                 asset = ${q(node).property('image')}
             }
-            sizes = ${[
-            '(min-width: 1600px) 1600px',
-            '(min-width: 1200px) 1200px',
-            '(min-width: 996px) 996px',
-            '(min-width: 768px) 768px',
-            '(min-width: 500px) 500px',
-            '(min-width: 370px) 370px',
-            '100vw'
-            ]}
         }
 
         content = Neos.Neos:ContentCollection {
-            tagName = "div"
             nodePath = "main"
             attributes.class = "teaser__content"
         }
