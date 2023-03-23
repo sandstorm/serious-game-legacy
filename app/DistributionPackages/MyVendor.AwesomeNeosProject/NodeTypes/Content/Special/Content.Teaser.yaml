@@ -56,3 +56,19 @@
       ui:
         inspector:
           group: ~
+  options:
+    template:
+      childNodes:
+        headline:
+          type: 'MyVendor.AwesomeNeosProject:Content.Headline'
+          properties:
+            title: '<h1>Your Awesome Headline</h1>'
+        slogan:
+          type: 'MyVendor.AwesomeNeosProject:Content.Text'
+          properties:
+            text: '<p>Your Awesome Slogan</p>'
+        button:
+          type: 'MyVendor.AwesomeNeosProject:Content.Button'
+          properties:
+            align: 'center'
+            title: 'Call To Action'
