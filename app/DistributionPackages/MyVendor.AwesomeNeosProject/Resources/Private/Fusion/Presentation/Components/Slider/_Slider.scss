@@ -4,10 +4,6 @@
 @use "Fusion/Presentation/Components/Button/Button";
 
 // "slider" class is also used in klaro cookie consent, so we need a more specific class name here
-.content-slider {
-    min-height: 250px;
-}
-
 .content-slider__slides {
     align-items: center;
 }
@@ -25,6 +21,27 @@
         // fix for flickering when sliding
         position: relative;
         z-index: 10;
+    }
+
+    .image {
+        height: 700px;
+
+        @include Mixins.mq(small) {
+            height: 400px;
+        }
+
+        picture {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        img {
+            width: auto;
+            max-width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
     }
 }
 
