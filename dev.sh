@@ -172,7 +172,7 @@ function open-local-db-e2e {
 
 # Export local site SQL and resources
 function site-export {
-  _echo_red "IMPORTANT: This dumb cannot be used as a backup. As we removed all user data"
+  _echo_red "IMPORTANT: This dump cannot be used as a backup. As we removed all user data"
   _echo_red "and related workspaces to prevent committing sensitive user data."
 	docker compose exec neos /app/ContentDump/exportSite.sh
 }
