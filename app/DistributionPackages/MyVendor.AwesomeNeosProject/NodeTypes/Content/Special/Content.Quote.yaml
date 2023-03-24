@@ -1,0 +1,38 @@
+'MyVendor.AwesomeNeosProject:Content.Quote':
+  superTypes:
+    'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
+    'MyVendor.AwesomeNeosProject:Mixin.Text': true
+    'MyVendor.AwesomeNeosProject:Mixin.Image': true
+  ui:
+    label: 'Quote'
+    icon: icon-quote-left
+    group: special
+    position: 50
+  properties:
+    text:
+      ui:
+        showInCreationDialog: true
+      options:
+        silhouette: 'text.free'
+    image:
+      ui:
+        inspector:
+          editorOptions:
+            features:
+              crop: true
+            crop:
+              aspectRatio:
+                options:
+                  square:
+                    width: 1
+                    height: 1
+                  twoOne: ~
+                  fourFive: ~
+                  fiveSeven: ~
+                  twoThree: ~
+                  fourThree: ~
+                  sixteenNine: ~
+                forceCrop: true
+                enableOriginal: false
+                allowCustom: false
+                defaultOption: square

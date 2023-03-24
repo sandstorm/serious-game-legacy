@@ -1,0 +1,22 @@
+prototype(MyVendor.AwesomeNeosProject:Content.Quote) < prototype(Neos.Neos:ContentComponent) {
+    renderer = MyVendor.AwesomeNeosProject:Component.Quote {
+        text = Neos.Neos:Editable {
+            property = 'text'
+        }
+        hasImageSource = ${q(node).property('image') ? true : false}
+        image= MyVendor.AwesomeNeosProject:Content.BasicImage {
+            alternativeText = MyVendor.AwesomeNeosProject:Helper.ImageAltText {
+                image = ${q(node).property('image')}
+            }
+            imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
+                asset = ${q(node).property('image')}
+            }
+            sizes = ${[
+            '(min-width: 1400px) calc(100vw / 2)',
+            '(min-width: 996px) calc(100vw / 2)',
+            '(min-width: 768px) calc(100vw / 2)',
+            '100vw'
+            ]}
+        }
+    }
+}

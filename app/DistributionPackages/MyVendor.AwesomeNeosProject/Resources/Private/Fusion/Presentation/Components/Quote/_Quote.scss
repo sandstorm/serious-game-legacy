@@ -1,0 +1,56 @@
+@use "AbstractStyles/Mixins";
+
+.quote {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+    @include Mixins.mq(medium) {
+        flex-direction: column;
+    }
+
+}
+
+.quote__image {
+    height: auto;
+    width: 33.3%;
+
+    padding: 5%;
+
+    @include Mixins.mq(medium) {
+        width: 40%;
+    }
+
+    @include Mixins.mq(small) {
+        width: 50%;
+        padding: 3%;
+    }
+
+    picture img {
+        border-radius: 50%;
+    }
+}
+
+.quote__text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 66.6%;
+    text-align: center;
+
+    @include Mixins.mq(medium) {
+        width: 75%;
+        margin: 0;
+    }
+
+    @include Mixins.mq(small) {
+        width: 90%;
+    }
+
+    span {
+        width: 100%;
+        word-wrap: normal;
+    }
+}
