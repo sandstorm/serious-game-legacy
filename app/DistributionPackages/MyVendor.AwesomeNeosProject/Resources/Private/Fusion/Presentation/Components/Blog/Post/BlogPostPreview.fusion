@@ -28,8 +28,8 @@ prototype(MyVendor.AwesomeNeosProject:Component.BlogPostPreview) < prototype(Neo
                 attributes.class={"blog-post-preview"}
                 attributes.title={I18n.translate('MyVendor.AwesomeNeosProject:Base:linkTo') + ' Blog Post: ' + props.title}
             >
+                {props.image}
                 <div class="blog-post-preview__content">
-                    {props.image}
                     <h3 class="blog-post-preview__title">{props.title}</h3>
                     <div @if.hasTeaserText={props.teaserText} class="blog-post-preview__teaser">
                         {props.teaserText}

@@ -1,0 +1,14 @@
+prototype(MyVendor.AwesomeNeosProject:Component.LatestBlogPosts) < prototype(Neos.Fusion:Component) {
+    content = ''
+
+    @propTypes {
+        @strict = true
+        content = ${PropTypes.string}
+    }
+
+    renderer = afx`
+        <div class="latest-blog-posts">
+            {props.content}
+        </div>
+    `
+}

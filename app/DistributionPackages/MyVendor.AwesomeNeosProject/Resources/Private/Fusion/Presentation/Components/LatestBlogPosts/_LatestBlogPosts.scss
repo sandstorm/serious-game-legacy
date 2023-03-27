@@ -1,0 +1,24 @@
+@use "AbstractStyles/Variables/Colors";
+@use "AbstractStyles/Variables/Spacing";
+
+$latestBlogPosts__preview-width: 400px;
+
+.latest-blog-posts {
+    display: flex;
+    justify-content: center;
+    gap: Spacing.$xl;
+    flex-wrap: wrap;
+
+    .blog-post-preview {
+        width: $latestBlogPosts__preview-width;
+        height: fit-content;
+    }
+
+    .blog-post-preview__teaser {
+        margin-bottom: Spacing.$xl;
+    }
+
+     .blog-post-preview__tags {
+        display: none;
+    }
+}
