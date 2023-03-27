@@ -1,8 +1,11 @@
 @use "AbstractStyles/Variables/Colors";
+@use "AbstractStyles/Mixins";
 
 a {
     word-break: break-word;
     color: Colors.$blue;
+
+    @include Mixins.transition(color .25s);
 
     &:hover, &:focus, &:active {
         color: Colors.$blue--dark;

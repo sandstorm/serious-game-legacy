@@ -6,6 +6,12 @@
     padding-top: Spacing.$xxl;
     padding-bottom: Spacing.$xxl;
 
+    @include Mixins.mq(small) {
+        padding-top: Spacing.$xl;
+        padding-bottom: Spacing.$xl;
+    }
+
+    // no padding wins over custom padding for small breakpoint
     &--padding-none {
         padding-top: 0;
         padding-bottom: 0;
@@ -16,16 +22,6 @@
         .content-width {
             padding-left: 0;
             padding-right: 0;
-        }
-    }
-
-    @include Mixins.mq(small) {
-        padding-top: Spacing.$xl;
-        padding-bottom: Spacing.$xl;
-
-        &--padding-none {
-            padding-top: 0;
-            padding-bottom: 0;
         }
     }
 }
