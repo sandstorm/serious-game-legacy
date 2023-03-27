@@ -11,13 +11,22 @@
     text-decoration: none;
     color: Colors.$black;
 
-    img {
-        object-fit: cover;
+    .image {
         height: 250px;
-        width: 100%;
 
-        // this is needed to make the image fit the entire height of its box
-        display: block;
+        picture {
+            width: 100%;
+            height: 100%;
+
+            img {
+                object-fit: cover;
+                width: 100%;
+                height: 100%;
+
+                // this is needed to make the image fit the entire height of its .image-container
+                display: block;
+            }
+        }
     }
 }
 
