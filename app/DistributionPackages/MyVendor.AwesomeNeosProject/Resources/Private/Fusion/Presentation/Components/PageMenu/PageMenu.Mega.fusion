@@ -13,11 +13,16 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Mega) < prototype(Neos.
     }
 
     renderer = afx`
-        <div class="page-menu__mega page-menu__mega--visible">
+        <div class="page-menu__mega " :class="megaMenuVisible ? 'page-menu__mega--visible' : ''">
                 <header class="page-menu__mega-header">
                     <div class="page-menu__mega-header-gradient">
                     </div>
-                    <button id="close-mega-menu" data-action="click->PageMenu#toggle" class="page-menu__toggle button button--square button--text" title="Menü schließen">
+                    <button
+                        x-on:click="megaMenuVisible = false"
+                        id="close-mega-menu"
+                        class="page-menu__toggle button button--square button--text"
+                        title="Menü schließen"
+                    >
                         <i class="fas fa-times"></i>
                     </button>
                 </header>

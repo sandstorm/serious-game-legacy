@@ -1,57 +1,170 @@
-@use "GeneralStyles" as *;
+@use "AbstractStyles/Variables/Colors";
+@use "AbstractStyles/Variables/Spacing";
+@use "AbstractStyles/Mixins";
 
-.page-menu {
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    flex-wrap: nowrap;
-    height: $header__height;
+$header__height: 85px;
+$SUBLEVEL_GAP: Spacing.$xl;
+
+.page-menu__mega {
+    display: none;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    left: 0;
+    top: 0;
+
+    background: Colors.$white;
+
+    z-index: 999;
+
+    &--visible {
+        display: block;
+    }
+
+    > .content-width {
+        height: 100%;
+    }
 }
 
-.page-menu__logo {
-    display: inline-block;
-    flex: 1;
-    z-index: 5;
+.page-menu__mega-header {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    height: $header__height;
+    padding-left: Spacing.$lg * 2;
+    padding-right: Spacing.$lg * 2;
 
-    left: 0;
-    @include transition(left 200ms ease-in);
+    z-index: 100;
 
-    @include mq(xsmall) {
-        position:absolute;
-        left: $spacing--md;
+    .page-menu__toggle {
+        color: Colors.$black;
 
-        &--hidden-on-small {
-            left: -200px;
+        z-index: 5;
+    }
+
+    .page-menu__mega-header-gradient {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: $header__height;
+        background-image: linear-gradient(
+                rgba(Colors.$grey--dark, 1),
+                rgba(Colors.$grey--dark, .95),
+                rgba(Colors.$grey--dark, .8),
+                rgba(Colors.$grey--dark, .7),
+                rgba(Colors.$grey--dark, .0),);
+
+        width: 100%;
+    }
+}
+//
+.page-menu__mega-content-wrapper {
+    height: 100%;
+
+    overflow: hidden;
+}
+
+.page-menu__mega-content {
+    $SUBLEVEL_GAP: Spacing.$xl;
+
+    padding-top: $header__height;
+
+    height: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    overflow-y: scroll;
+
+    -ms-overflow-style: none;  /* Hide scrollbar in IE and Edge */
+    scrollbar-width: none;  /* Hide scrollbar in Firefox */
+
+    /* Hide scrollbar in Chrome, Safari and Opera */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    .page-menu__toplevel {
+        flex-grow: 1;
+        display: flex;
+        flex-wrap: wrap;
+        max-width: calc(100% - 400px);
+        padding-bottom: Spacing.$xxl;
+    }
+
+    .page-menu__toplevel-item {
+        width: 33%;
+        height: auto;
+
+
+        @include Mixins.mq(large) {
+            width: 50%;
+        }
+
+        @include Mixins.mq(xsmall) {
+            width: 100%;
+        }
+
+        h4 {
+            margin-top: 0;
+        }
+
+        a {
+            color: Colors.$black;
         }
     }
-}
 
-.page-menu__actions {
-    flex: 1;
-    display: flex;
-    flex-wrap: nowrap;
-    gap: $spacing--md;
-    justify-content: flex-end;
-}
+    .page-menu__sublevel {
+        margin-bottom: Spacing.$xl;
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: $SUBLEVEL_GAP;
 
-.page-menu__search {
-    width: 100%;
-}
-
-.page-menu__toggle {
-    flex-grow: 0;
-    flex-shrink: 0;
-    display: inline-block;
-    margin-left: 0;
-    margin-bottom: 0;
-
-    border-radius: 0;
-
-    line-height: $button__height;
-    color: $color__grey;
-
-    i {
-        font-size: 1.1em;
+        word-break: break-word;
     }
+
+    //.page-menu__sublevel-item {
+    //    width: 100%;
+    //
+    //    $TWO_COLUMN_WIDTH: calc(50% - (#{$SUBLEVEL_GAP} / 2));
+    //
+    //    @media screen and (max-width: $breakpoint--xsmall) and (min-width: calc(#{$breakpoint--xsmall} * 3 / 4)) {
+    //        width: $TWO_COLUMN_WIDTH;
+    //    }
+    //
+    //    @media screen and (max-width: $breakpoint--small) and (min-width: calc(#{$breakpoint--small} * 4 / 5)) {
+    //        width: $TWO_COLUMN_WIDTH;
+    //    }
+    //
+    //    @media screen and (max-width: $breakpoint--large) and (min-width: calc(#{$breakpoint--large} * 4 / 5)) {
+    //        width: $TWO_COLUMN_WIDTH;
+    //    }
+    //
+    //    a {
+    //        color: Colors.$grey--lighter;
+    //        font-weight: bold;
+    //    }
+    //}
 }
 
+
+//@include mq(small) {
+//    .page-menu__teaser {
+//        display: none;
+//    }
+//    .page-menu__mega-content .page-menu__toplevel {
+//        max-width: 100%;
+//    }
+//}
+//@media screen and (max-height: $breakpoint--xsmall){
+//    .page-menu__teaser {
+//        display: none;
+//    }
+//    .page-menu__mega-content .page-menu__toplevel {
+//        max-width: 100%;
+//    }
+//}
