@@ -1,21 +1,26 @@
 prototype(MyVendor.AwesomeNeosProject:Component.Quote) < prototype(Neos.Fusion:Component) {
     text = ''
+    person = ''
     image = ''
     hasImageSource = ''
 
     @propTypes {
         @strict = true
         text = ${PropTypes.string}
-        image = ${PropTypes.any}
+        person = ${PropTypes.string}
+        image = ${PropTypes.string}
         hasImageSource = ${PropTypes.boolean}
     }
 
-        renderer = afx`
-                <div class="quote">
-                    <div @if.hasImage={props.hasImageSource} class="quote__image">
-                        {props.image}
-                    </div>
-                    <div class="quote__text">{props.text}</div>
-                </div>
-        `
+    renderer = afx`
+        <div class="quote">
+            <div @if.hasImage={props.hasImageSource} class="quote__image">
+                {props.image}
+            </div>
+            <figure class="quote__content">
+                <blockquote class="quote__text">{props.text}</blockquote>
+                <figcaption class="quote__person">{props.person}</figcaption>
+            </figure>
+        </div>
+    `
 }

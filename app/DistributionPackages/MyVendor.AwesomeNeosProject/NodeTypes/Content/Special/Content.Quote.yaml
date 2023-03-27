@@ -1,7 +1,6 @@
 'MyVendor.AwesomeNeosProject:Content.Quote':
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
-    'MyVendor.AwesomeNeosProject:Mixin.Text': true
     'MyVendor.AwesomeNeosProject:Mixin.Image': true
   ui:
     label: 'Quote'
@@ -10,10 +9,22 @@
     position: 50
   properties:
     text:
+      type: string
       ui:
+        label: 'Quote'
         showInCreationDialog: true
-      options:
-        silhouette: 'text.free'
+        inlineEditable: true
+        inline:
+          editorOptions:
+            autoparagraph: true
+            linking:
+              anchor: true
+              title: true
+              relNofollow: true
+              targetBlank: true
+            formatting:
+              strong: true
+              em: true
     image:
       ui:
         inspector:
@@ -36,3 +47,12 @@
                 enableOriginal: false
                 allowCustom: false
                 defaultOption: square
+    person:
+      type: string
+      ui:
+        label: 'Person'
+        showInCreationDialog: true
+        inlineEditable: true
+        inline:
+          editorOptions:
+            placeholder: 'Person'
