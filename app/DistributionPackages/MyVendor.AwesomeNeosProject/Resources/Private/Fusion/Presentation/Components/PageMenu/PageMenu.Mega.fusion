@@ -15,8 +15,6 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Mega) < prototype(Neos.
     renderer = afx`
         <div class="page-menu__mega " :class="megaMenuVisible ? 'page-menu__mega--visible' : ''">
                 <header class="page-menu__mega-header">
-                    <div class="page-menu__mega-header-gradient">
-                    </div>
                     <button
                         x-on:click="megaMenuVisible = false"
                         id="close-mega-menu"

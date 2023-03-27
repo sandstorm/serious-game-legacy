@@ -44,23 +44,8 @@ $SUBLEVEL_GAP: Spacing.$xl;
 
         z-index: 5;
     }
-
-    .page-menu__mega-header-gradient {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: $header__height;
-        background-image: linear-gradient(
-                rgba(Colors.$grey--dark, 1),
-                rgba(Colors.$grey--dark, .95),
-                rgba(Colors.$grey--dark, .8),
-                rgba(Colors.$grey--dark, .7),
-                rgba(Colors.$grey--dark, .0),);
-
-        width: 100%;
-    }
 }
-//
+
 .page-menu__mega-content-wrapper {
     height: 100%;
 
