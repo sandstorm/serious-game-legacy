@@ -1,0 +1,65 @@
+prototype(MyVendor.AwesomeNeosProject:Content.LatestBlogPosts) < prototype(Neos.Neos:ContentComponent) {
+    @cache {
+        mode = 'cached'
+        entryIdentifier {
+            node = ${node}
+            editPreviewMode = ${node.context.currentRenderingMode.name}
+        }
+        entryTags {
+            1 = ${Neos.Caching.nodeTag(node)}
+            2 = ${Neos.Caching.nodeTypeTag('MyVendor.AwesomeNeosProject:Document.Blog.Post', node)}
+        }
+    }
+
+    renderer = MyVendor.AwesomeNeosProject:Component.LatestBlogPosts {
+        @context.tag = ${q(node).property('tag')}
+
+        content = Neos.Fusion:Loop {
+            itemName = 'post'
+            @context.allPosts = ${q(site).find('[instanceof MyVendor.AwesomeNeosProject:Document.Blog.Post][_hiddenInIndex != true]').sort('datePublished', 'DESC').get()}
+
+            items = Neos.Fusion:Case {
+                if {
+                    condition = ${tag == null}
+                    renderer = ${allPosts}
+                }
+                else {
+                    condition = TRUE
+                    renderer = ${Array.filter(allPosts, post =>
+                        q(post).property('tags') != null &&
+                        !Array.isEmpty(
+                            Array.filter(q(post).property('tags'), postTag =>
+                                postTag == tag
+                            )
+                        )
+                    )}
+                }
+            }
+
+            items.@process.slice = ${q(value).slice(0,3)}
+
+            itemRenderer = MyVendor.AwesomeNeosProject:Component.BlogPostPreview {
+                image = MyVendor.AwesomeNeosProject:Component.Image {
+                    alternativeText = MyVendor.AwesomeNeosProject:Helper.ImageAltText {
+                        image = ${q(post).property('image')}
+                        node = ${q(post)}
+                    }
+                    imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
+                        asset = ${q(post).property('image')}
+                    }
+                    sizes = ${[
+                        '(min-width: 1400px) calc(100vw / 3)',
+                        '(min-width: 996px) calc(100vw / 2)',
+                        '100vw'
+                    ]}
+                }
+
+                title = ${q(post).property('title')}
+                teaserText = ${q(post).property('teaserText')}
+                href = Neos.Neos:NodeUri {
+                    node = ${node}
+                }
+            }
+        }
+    }
+}

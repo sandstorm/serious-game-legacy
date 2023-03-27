@@ -1,0 +1,18 @@
+'MyVendor.AwesomeNeosProject:Content.LatestBlogPosts':
+  superTypes:
+    'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
+    'MyVendor.AwesomeNeosProject:Mixin.BlogTags': true
+  ui:
+    label: 'Latest Blog Posts'
+    icon: icon-copy
+    group: special
+    position: 50
+  properties:
+    tag:
+      type: reference
+      ui:
+        label: 'Filter By Tag'
+        showInCreationDialog: true
+        reloadIfChanged: true
+        inspector:
+          group: properties
