@@ -13,40 +13,40 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Mega) < prototype(Neos.
     }
 
     renderer = afx`
-        <div class="page-menu__mega " :class="megaMenuVisible ? 'page-menu__mega--visible' : ''">
-                <header class="page-menu__mega-header">
+        <div class="page-menu-mega" :class="megaMenuVisible ? ' page-menu-mega--visible' : ''">
+                <header class="page-menu-mega__header">
                     <button
                         x-on:click="megaMenuVisible = false"
                         id="close-mega-menu"
-                        class="page-menu__toggle button button--square button--text"
+                        class="page-menu-mega__toggle button button--square button--text"
                         title="Menü schließen"
                     >
                         <i class="fas fa-times"></i>
                     </button>
                 </header>
 
-                <div class="page-menu__mega-content-wrapper">
-                    <div class="page-menu__mega-content">
-                        <ul class="page-menu__toplevel">
+                <div class="page-menu-mega__content-wrapper">
+                    <div class="page-menu-mega__content">
+                        <ul class="page-menu-mega__toplevel">
                             <Neos.Fusion:Loop items={props.menuItems} itemName="item">
-                                <li class={item.state + ' page-menu__toplevel-item'}>
+                                <li class={item.state + ' page-menu-mega__toplevel-item'}>
                                     <Neos.Neos:NodeLink node={item.node}>
                                         <h4>{item.label}</h4>
                                     </Neos.Neos:NodeLink>
                                     <ul
                                         @if.has={item.subItems}
-                                        class="page-menu__sublevel"
+                                        class="page-menu-mega__sublevel"
                                     >
                                         <Neos.Fusion:Loop items={item.subItems} itemName="itemLvl2">
-                                            <li class={itemLvl2.state + ' page-menu__sublevel-item'}>
+                                            <li class={itemLvl2.state + ' page-menu-mega__sublevel-item'}>
                                                 <Neos.Neos:NodeLink
                                                     node={itemLvl2.node}>{itemLvl2.label}</Neos.Neos:NodeLink>
                                                 <ul
                                                     @if.has={itemLvl2.subItems}
-                                                    class="page-menu__sublevel"
+                                                    class="page-menu-mega__sublevel"
                                                 >
                                                     <Neos.Fusion:Loop items={itemLvl2.subItems} itemName="itemLvl3">
-                                                        <li class={itemLvl3.state + ' page-menu__sublevel-item'}>
+                                                        <li class={itemLvl3.state + ' page-menu-mega__sublevel-item'}>
                                                             <Neos.Neos:NodeLink
                                                                 node={itemLvl3.node}>{itemLvl3.label}</Neos.Neos:NodeLink>
                                                         </li>
@@ -58,7 +58,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Mega) < prototype(Neos.
                                 </li>
                             </Neos.Fusion:Loop>
                         </ul>
-<!--                        <Sandstorm.Website:PageMenu.PageMenuTeaser showEmptyInBackend={true} additionalClass="page-menu__mega-teaser">-->
+<!--                        <Sandstorm.Website:PageMenu.PageMenuTeaser showEmptyInBackend={true} additionalClass="page-menu-mega__teaser">-->
 <!--                            <Sandstorm.Website:PageMenu.Mega.TeaserQuery @path="teaserQuery" />-->
 <!--                        </Sandstorm.Website:PageMenu.PageMenuTeaser>-->
                     </div>

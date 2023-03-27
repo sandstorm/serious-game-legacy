@@ -5,7 +5,7 @@
 $header__height: 85px;
 $SUBLEVEL_GAP: Spacing.$xl;
 
-.page-menu__mega {
+.page-menu-mega {
     display: none;
     position: fixed;
     height: 100vh;
@@ -26,7 +26,7 @@ $SUBLEVEL_GAP: Spacing.$xl;
     }
 }
 
-.page-menu__mega-header {
+.page-menu-mega__header {
     position: absolute;
     top: 0;
     width: 100%;
@@ -39,20 +39,20 @@ $SUBLEVEL_GAP: Spacing.$xl;
 
     z-index: 100;
 
-    .page-menu__toggle {
+    .page-menu-mega__toggle {
         color: Colors.$black;
 
         z-index: 5;
     }
 }
 
-.page-menu__mega-content-wrapper {
+.page-menu-mega__content-wrapper {
     height: 100%;
 
     overflow: hidden;
 }
 
-.page-menu__mega-content {
+.page-menu-mega__content {
     $SUBLEVEL_GAP: Spacing.$xl;
 
     padding-top: $header__height;
@@ -73,7 +73,7 @@ $SUBLEVEL_GAP: Spacing.$xl;
         display: none;
     }
 
-    .page-menu__toplevel {
+    .page-menu-mega__toplevel {
         flex-grow: 1;
         display: flex;
         flex-wrap: wrap;
@@ -81,7 +81,7 @@ $SUBLEVEL_GAP: Spacing.$xl;
         padding-bottom: Spacing.$xxl;
     }
 
-    .page-menu__toplevel-item {
+    .page-menu-mega__toplevel-item {
         width: 33%;
         height: auto;
 
@@ -103,7 +103,7 @@ $SUBLEVEL_GAP: Spacing.$xl;
         }
     }
 
-    .page-menu__sublevel {
+    .page-menu-mega__sublevel {
         margin-bottom: Spacing.$xl;
         display: flex;
         flex-wrap: wrap;
@@ -112,7 +112,7 @@ $SUBLEVEL_GAP: Spacing.$xl;
         word-break: break-word;
     }
 
-    //.page-menu__sublevel-item {
+    //.page-menu-mega__sublevel-item {
     //    width: 100%;
     //
     //    $TWO_COLUMN_WIDTH: calc(50% - (#{$SUBLEVEL_GAP} / 2));
@@ -138,18 +138,18 @@ $SUBLEVEL_GAP: Spacing.$xl;
 
 
 //@include mq(small) {
-//    .page-menu__teaser {
+//    .page-menu-mega__teaser {
 //        display: none;
 //    }
-//    .page-menu__mega-content .page-menu__toplevel {
+//    .page-menu-mega__content .page-menu-mega__toplevel {
 //        max-width: 100%;
 //    }
 //}
 //@media screen and (max-height: $breakpoint--xsmall){
-//    .page-menu__teaser {
+//    .page-menu-mega__teaser {
 //        display: none;
 //    }
-//    .page-menu__mega-content .page-menu__toplevel {
+//    .page-menu-mega__mega-content .page-menu-mega__toplevel {
 //        max-width: 100%;
 //    }
 //}
