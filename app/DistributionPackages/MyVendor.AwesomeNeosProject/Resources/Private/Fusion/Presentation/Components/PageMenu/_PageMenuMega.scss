@@ -1,0 +1,57 @@
+@use "GeneralStyles" as *;
+
+.page-menu {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    flex-wrap: nowrap;
+    height: $header__height;
+}
+
+.page-menu__logo {
+    display: inline-block;
+    flex: 1;
+    z-index: 5;
+
+    left: 0;
+    @include transition(left 200ms ease-in);
+
+    @include mq(xsmall) {
+        position:absolute;
+        left: $spacing--md;
+
+        &--hidden-on-small {
+            left: -200px;
+        }
+    }
+}
+
+.page-menu__actions {
+    flex: 1;
+    display: flex;
+    flex-wrap: nowrap;
+    gap: $spacing--md;
+    justify-content: flex-end;
+}
+
+.page-menu__search {
+    width: 100%;
+}
+
+.page-menu__toggle {
+    flex-grow: 0;
+    flex-shrink: 0;
+    display: inline-block;
+    margin-left: 0;
+    margin-bottom: 0;
+
+    border-radius: 0;
+
+    line-height: $button__height;
+    color: $color__grey;
+
+    i {
+        font-size: 1.1em;
+    }
+}
+

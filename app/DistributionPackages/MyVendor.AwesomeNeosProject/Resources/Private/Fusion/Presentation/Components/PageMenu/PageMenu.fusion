@@ -15,8 +15,12 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu) < prototype(Neos.Fusio
             </button>
 
             <MyVendor.AwesomeNeosProject:Component.PageMenu.Main/>
-
+            <MyVendor.AwesomeNeosProject:Component.PageMenu.Mega/>
             <MyVendor.AwesomeNeosProject:Component.LanguageMenu/>
+
+            <button id="open-mega-menu" data-action="click->PageMenu#toggle" class="page-menu__toggle button button--square button--text" title="Menü öffnen">
+                <i class="fas fa-bars"></i>
+            </button>
         </nav>
     `
 }
