@@ -22,7 +22,7 @@ e2e_test:
   image:
     name: $CI_REGISTRY_IMAGE/neos:$CI_COMMIT_REF_SLUG
     # we need to override the entrypoint here to prevent the container default behaviour
-    entrypoint: [""]
+    entrypoint: ['']
   needs:
     - package_app_staging
     - build_e2e_testrunner
@@ -74,3 +74,16 @@ e2e_test:
       - flow-exceptions
     reports:
       junit: e2e-results/behat.xml
+
+code_metrics:
+  stage: quality-ci
+  only:
+    - main
+  except:
+    - tags
+  needs: []
+  extends:
+    - .code-metrics-template
+  variables:
+    SOURCE_ROOT: app/DistributionPackages
+    IGNORE_PATTERN: "bundle\\.(css|js)"

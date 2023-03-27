@@ -1,3 +1,8 @@
+include:
+  - project: 'infrastructure/sandstorm-quality-ci'
+    ref: main
+    file: 'job-templates.yml'
+
 package_app_staging:
   stage: build
   except:
@@ -32,7 +37,7 @@ deploy_staging:
     - tags
   image:
     name: bitnami/kubectl:1.15.0
-    entrypoint: [""]
+    entrypoint: ['']
   needs:
     - package_app_staging
     - e2e_test
@@ -45,3 +50,17 @@ deploy_staging:
     - kubectl apply -f deployment/staging/app.yaml
     # enforce a redeploy by changing the release identifier
     - 'kubectl -n myvendor-awesomeneosproject-staging patch --type merge OneContainerOnePort app -p "{\"spec\":{\"releaseIdentifier\": \"$CI_JOB_ID\"}}"'
+
+quality_ci-lhci_staging:
+  stage: quality-ci
+  only:
+    - main
+  except:
+    - tags
+  needs:
+    - deploy_staging
+  extends:
+    - .lhci-template
+  variables:
+    LHCI_URL: https://admin:$LHCI_URL_PASSWORD_STAGING@myvendor-awesomeneosproject-staging.cloud.sandstorm.de/
+    LHCI_TOKEN: $LHCI_TOKEN_STAGING
