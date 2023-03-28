@@ -8,6 +8,7 @@ $image__height: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: Spacing.$marginBottom--large;
 
     @include Mixins.mq(medium) {
         flex-direction: column;

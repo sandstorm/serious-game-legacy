@@ -8,6 +8,7 @@ $latestBlogPosts__preview-width: 400px;
     justify-content: center;
     gap: Spacing.$xl;
     flex-wrap: wrap;
+    margin-bottom: Spacing.$marginBottom--large;
 
     .blog-post-preview {
         width: $latestBlogPosts__preview-width;

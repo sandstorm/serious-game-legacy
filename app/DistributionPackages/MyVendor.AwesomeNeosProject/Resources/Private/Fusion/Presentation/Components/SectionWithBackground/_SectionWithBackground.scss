@@ -23,5 +23,10 @@
             padding-left: 0;
             padding-right: 0;
         }
+
+        // remove margin bottom from last element inside a section
+        > .neos-contentcollection > *:last-child {
+            margin-bottom: 0;
+        }
     }
 }

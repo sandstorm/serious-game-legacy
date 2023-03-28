@@ -1,0 +1,9 @@
+@use "AbstractStyles/Variables/Spacing";
+
+.map {
+    margin-bottom: Spacing.$marginBottom--large;
+}
+
+.map__content {
+    height: 80vh;
+}

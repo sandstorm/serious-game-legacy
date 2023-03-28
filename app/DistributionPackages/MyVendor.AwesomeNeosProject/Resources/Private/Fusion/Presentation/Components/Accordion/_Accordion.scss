@@ -3,6 +3,10 @@
 @use "AbstractStyles/Variables/Spacing";
 @use "AbstractStyles/Variables/Typo";
 
+.accordion {
+    margin-bottom: Spacing.$marginBottom--large;
+}
+
 .accordion__item {
     border-bottom: 1px solid Colors.$grey--light;
 

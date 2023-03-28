@@ -7,3 +7,7 @@ $md: 2 * $base__module;
 $lg: 4 * $base__module;
 $xl: 8 * $base__module;
 $xxl: 16 * $base__module;
+
+// Margins for components to the next one
+$marginBottom: $lg;
+$marginBottom--large: $xl;

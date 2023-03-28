@@ -13,6 +13,7 @@ export function initMap(Alpine: AlpineType) {
                         container: this.$el,
                         center: [lng, lat], // starting position [lng, lat]
                         zoom: zoom, // starting zoom
+                        cooperativeGestures: true // use cmd/ctrl + Scroll to zoom
                     });
 
                     map.addControl(new maplibregl.NavigationControl(), 'top-left');
