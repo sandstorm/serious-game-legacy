@@ -1,9 +1,18 @@
-prototype(Myvendor.AwesomeNeosProject.Site:Component.SocialMediaIcons) < prototype(Neos.Fusion:Component) {
-    twitterLink = ${q(site).property('twitterLink')}
-    facebookLink = ${q(site).property('facebookLink')}
-    instagramLink = ${q(site).property('instagramLink')}
-    mastodonLink = ${q(site).property('mastodonLink')}
-    youtubeLink = ${q(site).property('youtubeLink')}
+prototype(MyVendor.AwesomeNeosProject:Component.SocialMediaIcons) < prototype(Neos.Fusion:Component) {
+    instagramLink = ''
+    facebookLink = ''
+    twitterLink = ''
+    youtubeLink = ''
+    mastodonLink = ''
+
+    @propTypes {
+        @strict = true
+        instagramLink = ${PropTypes.string}
+        facebookLink = ${PropTypes.string}
+        twitterLink = ${PropTypes.string}
+        youtubeLink = ${PropTypes.string}
+        mastodonLink = ${PropTypes.string}
+    }
 
     renderer = afx`
         <div class="social-media-icons">

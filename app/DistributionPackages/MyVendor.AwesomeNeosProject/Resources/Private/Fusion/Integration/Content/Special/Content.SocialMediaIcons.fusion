@@ -1,0 +1,9 @@
+prototype(MyVendor.AwesomeNeosProject:Content.SocialMediaIcons) < prototype(Neos.Neos:ContentComponent) {
+    renderer = MyVendor.AwesomeNeosProject:Component.SocialMediaIcons {
+        twitterLink = ${q(site).property('twitterLink')}
+        facebookLink = ${q(site).property('facebookLink')}
+        instagramLink = ${q(site).property('instagramLink')}
+        mastodonLink = ${q(site).property('mastodonLink')}
+        youtubeLink = ${q(site).property('youtubeLink')}
+    }
+}
