@@ -5,10 +5,14 @@
 
 .accordion__item {
     border-bottom: 1px solid Colors.$grey--light;
-}
 
-.accordion__title {
-    color: Colors.$black;
+    &--open .accordion__icon {
+        transform: rotate(180deg);
+    }
+
+    &:last-of-type {
+        border-bottom: none;
+    }
 }
 
 .accordion__trigger {
@@ -17,36 +21,47 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: Spacing.$lg Spacing.$lg Spacing.$lg 0;
+    padding-top: Spacing.$lg;
+    padding-bottom: Spacing.$lg;
+    padding-left: Spacing.$md;
+    padding-right: Spacing.$md;
 
     border: none;
     background: transparent;
 
     cursor: pointer;
-    text-align: left;
-    font-family: Typo.$heading__fontFamily;
-    font-weight: Typo.$heading__fontWeight;
+    color: Colors.$black;
+
+    &:hover, &:focus {
+        color: Colors.$blue;
+    }
+
+    &:focus {
+        outline: 1px solid Colors.$blue;
+    }
+}
+
+.accordion__title {
+    margin: 0;
+
+    font-size: Typo.$h4__fontSize;
+
+    @include Mixins.mq(medium) {
+        font-size: Typo.$fontSize;
+    }
+}
+
+.accordion__icon {
     font-size: Typo.$h4__fontSize;
 
     @include Mixins.mq(medium) {
         font-size: Typo.$fontSize;
     }
 
-    &:focus {
-        border: 1px dotted Colors.$blue;
-    }
-}
-
-.accordion__icon {
-    color: Colors.$black;
-
     @include Mixins.transition(transform .25s ease-in);
-
-    &--open {
-        transform: rotate(180deg);
-    }
 }
 
 .accordion__content {
+    padding: Spacing.$md;
     padding-bottom: Spacing.$xl;
 }
