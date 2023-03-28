@@ -1,11 +1,5 @@
-// the image can be part of a slider
-prototype(MyVendor.AwesomeNeosProject:Content.Image) < prototype(MyVendor.AwesomeNeosProject:Content.AbstractSlide) {
-    slideContent = MyVendor.AwesomeNeosProject:Content.BasicImage
-}
-
-// use basic image when including in other components
-prototype(MyVendor.AwesomeNeosProject:Content.BasicImage) < prototype(Neos.Fusion:Value) {
-    value = MyVendor.AwesomeNeosProject:Component.Image {
+prototype(MyVendor.AwesomeNeosProject:Content.Image) < prototype(Neos.Neos:ContentComponent) {
+    renderer = MyVendor.AwesomeNeosProject:Component.Image {
         imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
             asset = ${q(node).property('image')}
         }

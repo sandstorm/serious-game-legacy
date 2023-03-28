@@ -1,4 +1,4 @@
-'MyVendor.AwesomeNeosProject:Content.Image':
+'MyVendor.AwesomeNeosProject:Content.Logowall.Slide':
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
     'MyVendor.AwesomeNeosProject:Mixin.Image': true
@@ -7,4 +7,7 @@
   ui:
     label: 'Image'
     icon: icon-picture
-    position: 20
+  # overwrite default value from mixin
+  properties:
+    align:
+      defaultValue: center
