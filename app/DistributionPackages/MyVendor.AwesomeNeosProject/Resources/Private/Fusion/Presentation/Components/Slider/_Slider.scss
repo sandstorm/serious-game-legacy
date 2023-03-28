@@ -63,8 +63,10 @@
 }
 
 .content-slider__pagination {
+
     &.swiper-pagination-bullets.swiper-pagination-horizontal {
-        bottom: 10px;
+        position: relative;
+        bottom: 0;
     }
 
     .swiper-pagination-bullet {
