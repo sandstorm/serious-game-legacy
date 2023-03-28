@@ -5,6 +5,10 @@
 $header__height: 85px;
 $SUBLEVEL_GAP: Spacing.$xl;
 
+.mega-menu__toggle {
+    display: block;
+}
+
 .page-menu__mega {
     display: none;
     position: fixed;
@@ -103,11 +107,12 @@ $SUBLEVEL_GAP: Spacing.$xl;
     }
 
     .page-menu__sublevel {
-        margin-bottom: Spacing.$xl;
         display: flex;
+        flex-direction: column;
         flex-wrap: wrap;
         column-gap: $SUBLEVEL_GAP;
 
+        margin-bottom: Spacing.$xl;
         word-break: break-word;
     }
 

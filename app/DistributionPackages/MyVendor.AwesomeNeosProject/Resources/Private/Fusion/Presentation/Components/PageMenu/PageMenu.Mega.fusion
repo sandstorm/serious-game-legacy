@@ -13,14 +13,15 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Mega) < prototype(Neos.
 
     renderer = afx`
         <div class="page-menu__mega " :class="megaMenuVisible ? 'page-menu__mega--visible' : ''">
+            <MyVendor.AwesomeNeosProject:Utility.ContentWidth>
+
             <header class="page-menu__mega-header">
                 <button
                     x-on:click="megaMenuVisible = false"
-                    id="close-mega-menu"
-                    class="page-menu__toggle button button--square button--text"
+                    class="menu__toggle mega-menu__toggle button button--link"
                     title="Menü schließen"
                 >
-                    <i class="fas fa-times"></i>
+                    <i class="icon-angle-down"/>
                 </button>
             </header>
 
@@ -35,40 +36,28 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Mega) < prototype(Neos.
                                 >
                                     <h4>{item.label}</h4>
                                 </Neos.Neos:NodeLink>
-                                <ul
-                                    @if.has={item.subItems}
-                                    class="page-menu__sublevel"
-                                >
-                                    <Neos.Fusion:Loop items={item.subItems} itemName="itemLvl2">
-                                        <li class={itemLvl2.state + ' page-menu__sublevel-item'}>
+                                <ul @if.has={item.subItems} class="page-menu__sublevel">
+                                    <Neos.Fusion:Loop items={item.subItems} itemName="item">
+                                        <li class={AtomicFusion.classNames(item.state, 'page-menu__sublevel-item')}>
                                             <Neos.Neos:NodeLink
-                                                node={itemLvl2.node}
+                                                node={item.node}
+                                                attributes.title={I18n.translate('MyVendor.AwesomeNeosProject:Base:linkToPage') + item.label}
                                                 attributes.class="page-menu__sublevel-link"
-                                            >{itemLvl2.label}</Neos.Neos:NodeLink>
-                                            <ul
-                                                @if.has={itemLvl2.subItems}
-                                                class="page-menu__sublevel"
                                             >
-                                                <Neos.Fusion:Loop items={itemLvl2.subItems} itemName="itemLvl3">
-                                                    <li class={itemLvl3.state + ' page-menu__sublevel-item'}>
-                                                        <Neos.Neos:NodeLink
-                                                            node={itemLvl3.node}
-                                                            attributes.class="page-menu__sublevel-link"
-                                                        >{itemLvl3.label}</Neos.Neos:NodeLink>
-                                                    </li>
-                                                </Neos.Fusion:Loop>
-                                            </ul>
+                                                {item.label}
+                                            </Neos.Neos:NodeLink>
                                         </li>
                                     </Neos.Fusion:Loop>
                                 </ul>
                             </li>
                         </Neos.Fusion:Loop>
                     </ul>
-                    <!--                        <Sandstorm.Website:PageMenu.PageMenuTeaser showEmptyInBackend={true} additionalClass="page-menu__mega-teaser">-->
-                    <!--                            <Sandstorm.Website:PageMenu.Mega.TeaserQuery @path="teaserQuery" />-->
-                    <!--                        </Sandstorm.Website:PageMenu.PageMenuTeaser>-->
+                    <!--                        <MyVendor.AwesomeNeosProject:PageMenu.PageMenuTeaser showEmptyInBackend={true} additionalClass="page-menu__mega-teaser">-->
+                    <!--                            <MyVendor.AwesomeNeosProject:PageMenu.Mega.TeaserQuery @path="teaserQuery" />-->
+                    <!--                        </MyVendor.AwesomeNeosProject:PageMenu.PageMenuTeaser>-->
                 </div>
             </div>
+            </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
 
         </div>
     `

@@ -5,15 +5,14 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu) < prototype(Neos.Fusio
     // We use alpine js to toggle the mobile menu.
     // If the state of 'openMobileMenu' changes to true we add a class in PageMenu.Main.fusion.
     renderer = afx`
-        <nav class="page-menu" x-data="{ openMobileMenu: false, megaMenuVisible: true }">
+        <nav class="page-menu" x-data="{ openMobileMenu: false, megaMenuVisible: false }">
             <div class="page-menu__logo">
                 <MyVendor.AwesomeNeosProject:Component.PageHeader.Logo/>
             </div>
 
             <button
                     x-on:click="openMobileMenu = ! openMobileMenu"
-                    id="open-mobile-menu"
-                    class="mobile-menu__toggle button button--link"
+                    class="menu__toggle button button--link"
                     title="Menü öffnen"
             >
                 <i class="icon-bars1"/>
@@ -24,12 +23,11 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu) < prototype(Neos.Fusio
             <MyVendor.AwesomeNeosProject:Component.LanguageMenu/>
 
             <button
-                    x-on:click="megaMenuVisible = true"
-                    id="open-mega-menu"
-                    class="page-menu__toggle button button--square button--text"
-                    title="Menü öffnen"
+                x-on:click="megaMenuVisible = true"
+                class="menu__toggle mega-menu__toggle button button--link"
+                title="Menü öffnen"
             >
-                <i class="fas fa-bars"></i>
+                <i class="icon-bars1"/>
             </button>
         </nav>
     `
