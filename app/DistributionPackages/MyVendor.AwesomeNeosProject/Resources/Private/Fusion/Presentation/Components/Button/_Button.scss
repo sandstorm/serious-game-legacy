@@ -47,6 +47,10 @@ $button__height--larger: 60px;
     overflow: hidden;
 
     @include Mixins.transition(background-color .25s, color .25s, border .25s);
+
+    &:focus {
+        outline: 1px solid Colors.$blue;
+    }
 }
 
 .button--solid-blue {

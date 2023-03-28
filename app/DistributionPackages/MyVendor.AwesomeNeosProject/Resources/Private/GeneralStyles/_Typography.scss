@@ -61,6 +61,43 @@ h6 {
     font-size: Typo.$h6__fontSize;
 }
 
+
+// show the editor the kind of headline when editing in backend (not preview mode, see AbstractPage.fusion)
+.neos-backend:not(.neos-backend--preview) {
+    h1, h2, h3, h4, h5 {
+        &:after {
+            position: absolute;
+            margin-left: 10px;
+            padding: 5px;
+
+            background-color: Colors.$blue;
+
+            color: Colors.$white;
+            font-size: Typo.$fontSize--smallest;
+        }
+    }
+
+    h1:after {
+        content: "H1";
+    }
+
+    h2:after {
+        content: "H2";
+    }
+
+    h3:after {
+        content: "H3";
+    }
+
+    h4:after {
+        content: "H4";
+    }
+
+    h5:after {
+        content: "H5";
+    }
+}
+
 pre {
     max-width: 100%;
     overflow: hidden;
