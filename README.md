@@ -136,6 +136,22 @@ docker compose exec -T neos ./flow stepgenerator:notfoundpage | pbcopy
 
 4. paste into your feature files and run tests
 
+### Accessibility Tests
+
+For staging we have a CI task called `a11y_test_staging` which creates us an a11y test report as an job artifact. This can also be added to production.
+
+The test uses pa11y, so have a look at https://github.com/pa11y/pa11y-ci for possible configuration options.
+
+#### Testing without htaccess
+If we don't have an htaccess in front of the page, we can use the `.pa11yci` file to define all urls of the page we want to test. Just rename `.pa11yci.sample` to `.pa11yci` and add the urls. We also can make screen captures if we want to (see `.pa11yci.sample`). When we use it this way, we don't have to use the `--config` flag like we do in the `a11y_test_staging` job (`tests.gitlab-ci.yml`) because it will pick up the `.pa11yci` config automatically.
+
+#### Testing with htaccess (e.g. staging)
+If we have an htacces in front of the page we can write the pa11y config like we would do with the `.pa11yci` file but store it in a gitlab variable. It's importent that the variable is of type `file` (Settings > CI/CD > Variables). For the kickstarter we use the variable `$A11Y_TEST`. If we want to add an url to test, just edit this variable.
+
+#### Results
+In both cases htaccess or not the results will be stored as job artifacts and can be downloaded. The html-report can be found in the directory `pa11y-ci-report` and if we decided to get some screenshots, they will be stored in the directory `pa11y-ci-report-images`.
+
+
 ## Staging
 
 run `dev open-staging` to open the staging url in the browser.

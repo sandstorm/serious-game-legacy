@@ -51,6 +51,30 @@ deploy_staging:
     # enforce a redeploy by changing the release identifier
     - 'kubectl -n myvendor-awesomeneosproject-staging patch --type merge OneContainerOnePort app -p "{\"spec\":{\"releaseIdentifier\": \"$CI_JOB_ID\"}}"'
 
+a11y_test_staging:
+  image: registry.gitlab.com/gitlab-ci-utils/gitlab-pa11y-ci:latest
+  stage: accessibility
+  only:
+    - main
+  except:
+    - tags
+  needs:
+    - deploy_staging
+  allow_failure: true
+  before_script:
+    - npm install pa11y-ci-reporter-html
+  script:
+    - mkdir pa11y-ci-report-images
+    - pa11y-ci --reporter=pa11y-ci-reporter-html --config=$A11Y_TEST
+  artifacts:
+    # Make sure artifacts are always saved, otherwise they will not be on failure.
+    when: always
+    expose_as: 'Accessibility Reports'
+    paths:
+      - pa11y-ci-report/
+      - pa11y-ci-report-images/
+    expire_in: 1 week
+
 quality_ci-lhci_staging:
   stage: quality-ci
   only:
