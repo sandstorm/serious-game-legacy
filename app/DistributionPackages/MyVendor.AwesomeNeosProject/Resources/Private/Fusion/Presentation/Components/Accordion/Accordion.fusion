@@ -8,13 +8,22 @@ prototype(MyVendor.AwesomeNeosProject:Component.Accordion) < prototype(Neos.Fusi
         content = ${PropTypes.string}
     }
 
-    renderer = afx`
-        <div
-            x-data={'{ active: "' + props.firstChild.identifier + '", expanded: false }'}
-            id={'accordion-' + node.identifier}
-            class="accordion content-width"
-        >
-            {props.content}
-        </div>
-    `
+    renderer = Neos.Fusion:Component {
+        @apply.props = ${props}
+
+        _accordionAttributes = Neos.Fusion:DataStructure {
+            "id" = ${'accordion-' + node.identifier}
+            "class" = "accordion"
+            "x-data" = ${'{ active: "' + props.firstChild.identifier + '", expanded: false }'}
+        }
+
+        renderer = afx`
+            <Neos.Fusion:Tag
+                tagName="div"
+                attributes={props._accordionAttributes}
+            >
+                {props.content}
+            </Neos.Fusion:Tag>
+        `
+    }
 }

@@ -25,10 +25,10 @@ prototype(MyVendor.AwesomeNeosProject:Component.Map) < prototype(Neos.Fusion:Com
         }
 
         renderer = afx`
-            <MyVendor.AwesomeNeosProject:Utility.ContentWidth class={AtomicFusion.classNames('button-outer' , props.textAlign)}>
+            <div class="map">
                 <link rel="stylesheet" href="/_maptiles/frontend/v1/map-main.css" />
-                <div class="content-width" style="height: 100vh" x-data={'map(' + Json.stringify(props.mapInitializer) + ')'} x-intersect.once="loadMap()"></div>
-            </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
+                <div class="map__content" x-data={'map(' + Json.stringify(props.mapInitializer) + ')'} x-intersect.once="loadMap()"></div>
+            </div>
         `
     }
 }

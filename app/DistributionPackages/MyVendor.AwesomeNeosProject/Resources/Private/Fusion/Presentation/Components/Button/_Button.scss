@@ -10,6 +10,7 @@ $button__height--larger: 60px;
 .button__wrapper {
     display: flex;
     width: 100%;
+    margin-bottom: Spacing.$marginBottom;
 
     &--left {
         justify-content: flex-start;

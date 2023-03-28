@@ -3,6 +3,10 @@
 @use "AbstractStyles/Mixins";
 @use "Fusion/Presentation/Components/Button/Button";
 
+.content-slider {
+    margin-bottom: Spacing.$marginBottom--large;
+}
+
 // "slider" class is also used in klaro cookie consent, so we need a more specific class name here
 .content-slider__slides {
     align-items: center;

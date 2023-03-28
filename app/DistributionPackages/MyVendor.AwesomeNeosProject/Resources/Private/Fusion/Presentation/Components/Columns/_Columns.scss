@@ -6,6 +6,7 @@
     display: flex;
     width: 100%;
     gap: Spacing.$xl Spacing.$xl;
+    margin-bottom: Spacing.$marginBottom--large;
 
     @include Mixins.mq(small) {
         flex-wrap: wrap;
@@ -33,12 +34,12 @@
         width: 75%;
     }
 
-    @include Mixins.mq(small) {
-        width: 100% !important;
+    // remove margin bottom from last element inside a column cell
+    > .neos-contentcollection > *:last-child {
+        margin-bottom: 0;
     }
 
-    .content-width {
-        padding-left: 0;
-        padding-right: 0;
+    @include Mixins.mq(small) {
+        width: 100% !important;
     }
 }
