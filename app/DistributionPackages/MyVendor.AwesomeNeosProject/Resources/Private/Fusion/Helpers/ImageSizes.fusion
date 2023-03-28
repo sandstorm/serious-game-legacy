@@ -3,7 +3,7 @@ prototype(MyVendor.AwesomeNeosProject:Helper.ImageSizes) < prototype(Neos.Fusion
 
     @propTypes {
         @strict = true
-        type = ${PropTypes.oneOf(['two-column', 'three-column', 'four-column', 'three-column--wrap', 'four-column--wrap'])}
+        type = ${PropTypes.oneOf(['', 'two-column', 'three-column', 'four-column', 'three-column--wrap', 'four-column--wrap'])}
     }
 
     renderer = Neos.Fusion:Case {
@@ -44,6 +44,10 @@ prototype(MyVendor.AwesomeNeosProject:Helper.ImageSizes) < prototype(Neos.Fusion
                 '(min-width: 500px) calc(100vw / 2)',
                 '100vw'
             ]}
+        }
+        default {
+            condition = true
+            renderer = ${['100vw']}
         }
     }
 }
