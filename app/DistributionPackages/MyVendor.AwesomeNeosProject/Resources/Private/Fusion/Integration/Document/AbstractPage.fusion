@@ -3,6 +3,11 @@ prototype(MyVendor.AwesomeNeosProject:Document.AbstractPage) < prototype(Neos.Ne
         javascripts.site = MyVendor.AwesomeNeosProject:Resources.HeaderAssets
     }
 
+    // we add a helper class to the body in case preview-mode is active
+    bodyTag.attributes {
+        class.previewMode = ${node.context.inBackend && node.context.currentRenderingMode.preview ? 'neos-backend--preview' : ''}
+    }
+
     body >
     body = Neos.Fusion:Join {
         @position = 'after bodyTag'
