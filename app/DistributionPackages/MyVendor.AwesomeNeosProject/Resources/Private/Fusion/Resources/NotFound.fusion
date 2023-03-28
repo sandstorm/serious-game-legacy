@@ -9,10 +9,11 @@
 include: resource://Neos.Neos/Private/Fusion/Error/*.fusion
 
 error {
+    dimensions = MyVendor.AwesomeNeosProject:Helper.ExtractDimensions
     // see app/DistributionPackages/MyVendor.AwesomeNeosProject/NodeTypes/Document/Document.StartPage.yaml
     // the notFoundPage is a auto-created child node. we use the node path to access the 404 page document node,
     // since it is most stable and unique.
-    @context.notfoundDocument = ${q(site).find('notfoundpage').get(0)}
+    @context.notfoundDocument = ${q(site).context({'dimensions': this.dimensions.dimensions, 'targetDimensions': this.dimensions.targetDimensions}).find('notfoundpage').get(0)}
     4xx {
         @position = 'start'
         condition = ${statusCode >= 400 && statusCode < 500 && notfoundDocument}

@@ -1,0 +1,39 @@
+// Helper to get dimensions for 404 page
+// See: https://discuss.neos.io/t/native-404-handling-with-content-dimensions-multi-language-sites/4739
+
+prototype(MyVendor.AwesomeNeosProject:Helper.ExtractDimensions) < prototype(Neos.Fusion:Value) {
+    trimmedPath = ${String.trim(request.httpRequest.uri.path, '/')}
+    pathParts = ${String.split(this.trimmedPath, '/', 2)}
+    @context{
+        dimensionPart = ${this.pathParts[0]}
+        defaultPresets = Neos.Fusion:DataStructure {
+            language = ${Configuration.setting('Neos.ContentRepository.contentDimensions.language.defaultPreset')}
+        }
+    }
+
+    value = Neos.Fusion:Case {
+        dimensionsFound {
+            condition = ${Configuration.setting('Neos.ContentRepository.contentDimensions.language.presets.' + dimensionPart + '.values')}
+            renderer = Neos.Fusion:DataStructure {
+                dimensions = Neos.Fusion:DataStructure {
+                    language = ${Configuration.setting('Neos.ContentRepository.contentDimensions.language.presets.' + dimensionPart + '.values')}
+                }
+                targetDimensions = Neos.Fusion:DataStructure {
+                    language = ${dimensionPart}
+                }
+            }
+        }
+
+        noDimensionsFound {
+            condition = true
+            renderer = Neos.Fusion:DataStructure {
+                dimensions = Neos.Fusion:DataStructure {
+                    language = ${Configuration.setting('Neos.ContentRepository.contentDimensions.language.presets.' + defaultPresets.language + '.values')}
+                }
+                targetDimensions = Neos.Fusion:DataStructure {
+                    language = ${defaultPresets.language}
+                }
+            }
+        }
+    }
+}
