@@ -7,7 +7,7 @@ prototype(MyVendor.AwesomeNeosProject:Content.Quote) < prototype(Neos.Neos:Conte
             property = 'person'
         }
         hasImageSource = ${q(node).property('image') ? true : false}
-        image= MyVendor.AwesomeNeosProject:Content.BasicImage {
+        image= MyVendor.AwesomeNeosProject:Content.Image {
             alternativeText = MyVendor.AwesomeNeosProject:Helper.ImageAltText {
                 image = ${q(node).property('image')}
             }

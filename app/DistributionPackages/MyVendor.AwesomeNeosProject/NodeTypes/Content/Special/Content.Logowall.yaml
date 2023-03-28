@@ -2,17 +2,19 @@
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
     'Neos.Neos:ContentCollection': true
-    'MyVendor.AwesomeNeosProject:Constraints.Slider': true
   ui:
     label: 'Logowall'
     icon: icon-icons
     group: special
     position: 15
+  constraints:
+    nodeTypes:
+      'MyVendor.AwesomeNeosProject:Content.Logowall.Slide': true
   options:
     template:
       childNodes:
         firstLogo:
-          type: 'MyVendor.AwesomeNeosProject:Content.Image'
+          type: 'MyVendor.AwesomeNeosProject:Content.Logowall.Slide'
   properties:
     autoplayInterval:
       type: string
