@@ -3,6 +3,9 @@
 @use "AbstractStyles/Mixins";
 @use "Fusion/Presentation/Components/Button/Button";
 
+$contentSlider__height: 700px;
+$contentSlider__height--small: 400px;
+
 .content-slider {
     margin-bottom: Spacing.$marginBottom--large;
 }
@@ -28,10 +31,10 @@
     }
 
     .image {
-        height: 700px;
+        height: $contentSlider__height;
 
         @include Mixins.mq(small) {
-            height: 400px;
+            height: $contentSlider__height--small;
         }
 
         picture {

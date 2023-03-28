@@ -15,6 +15,10 @@
     }
 
     @include Mixins.mq(small) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include Mixins.mq(xsmall) {
         grid-template-columns: repeat(1, 1fr);
     }
 }

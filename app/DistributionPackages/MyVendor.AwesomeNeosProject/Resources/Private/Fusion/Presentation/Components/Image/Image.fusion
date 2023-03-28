@@ -16,6 +16,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
     @context.contentWidth = ${this.contentWidth}
     class = ''
 
+    // TODO: i don't understand this comment
     // The possible image sizes we are using here are determined empirically, so
     // f.e. for a 4column Blog Overview page, we need a rendering bigger than 350 px (as the breakpoint
     // is > 1400px). That's why we use the minimum size of 370 px to have some buffer here.
@@ -24,15 +25,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
 
     // This is only for full-width images!!
     // For images displayed at smaller sizes, you MUST OVERRIDE THIS!!
-    sizes = ${[
-        '(min-width: 1600px) 1600px',
-        '(min-width: 1200px) 1200px',
-        '(min-width: 996px) 996px',
-        '(min-width: 768px) 768px',
-        '(min-width: 500px) 500px',
-        '(min-width: 370px) 370px',
-        '100vw'
-    ]}
+    sizes = ${['100vw']}
 
     formats = ${['webp', 'jpg']}
 

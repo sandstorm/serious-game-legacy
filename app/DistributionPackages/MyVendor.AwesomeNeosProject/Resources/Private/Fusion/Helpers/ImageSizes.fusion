@@ -1,0 +1,49 @@
+prototype(MyVendor.AwesomeNeosProject:Helper.ImageSizes) < prototype(Neos.Fusion:Component) {
+    type = ''
+
+    @propTypes {
+        @strict = true
+        type = ${PropTypes.oneOf(['two-column', 'three-column', 'four-column', 'three-column--wrap', 'four-column--wrap'])}
+    }
+
+    renderer = Neos.Fusion:Case {
+        twoColumn {
+            condition = ${props.type == 'two-column'}
+            renderer = ${[
+                '(min-width: 768px) calc(100vw / 2)',
+                '100vw'
+            ]}
+        }
+        threeColumn {
+            condition = ${props.type == 'three-column'}
+            renderer = ${[
+                '(min-width: 768px) calc(100vw / 3)',
+                '100vw'
+            ]}
+        }
+        fourColumn {
+            condition = ${props.type == 'four-column'}
+            renderer = ${[
+                '(min-width: 768px) calc(100vw / 4)',
+                '100vw'
+            ]}
+        }
+        threeColumnWrap {
+            condition = ${props.type == 'three-column--wrap'}
+            renderer = ${[
+                '(min-width: 996px) calc(100vw / 3)',
+                '(min-width: 500px) calc(100vw / 2)',
+                '100vw'
+            ]}
+        }
+        fourColumnWrap {
+            condition = ${props.type == 'four-column--wrap'}
+            renderer = ${[
+                '(min-width: 996px) calc(100vw / 4)',
+                '(min-width: 768px) calc(100vw / 3)',
+                '(min-width: 500px) calc(100vw / 2)',
+                '100vw'
+            ]}
+        }
+    }
+}

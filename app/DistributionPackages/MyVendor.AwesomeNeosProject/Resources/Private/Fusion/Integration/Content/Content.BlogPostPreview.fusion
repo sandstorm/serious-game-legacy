@@ -3,7 +3,7 @@ prototype(MyVendor.AwesomeNeosProject:Content.BlogPostPreview) < prototype(Neos.
         title = ${q(node).property('title')}
         teaserText = ${q(node).property('teaserText')}
         tags = MyVendor.AwesomeNeosProject:Component.BlogTagList {
-            tags = ${q(node).property("tags")}
+            tags = ${q(node).property('tags')}
             renderAsLink = false
         }
         href = Neos.Neos:NodeUri {
@@ -12,25 +12,17 @@ prototype(MyVendor.AwesomeNeosProject:Content.BlogPostPreview) < prototype(Neos.
         image = MyVendor.AwesomeNeosProject:Component.Image {
             alternativeText = MyVendor.AwesomeNeosProject:Helper.ImageAltText {
                 image = ${q(node).property('image')}
-                node = ${q(item)}
             }
             imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
                 asset = ${q(node).property('image')}
             }
-
-            // We want to deliver the smallest possible image.
-            // - for big screens, we have 4 columns,
-            // - for medium 3 or 2
-            // - on mobile just one column.
-            //
-            // The min-width numbers are basically "referencing" the breakpoints (see _Variables.scss - $breakpoints).
-            // The calculation encodes the different resulting column counts from _BlogPostOverview.scss.
-            sizes = ${[
-                '(min-width: 1400px) calc(100vw / 4)',
-                '(min-width: 996px) calc(100vw / 3)',
-                '(min-width: 768px) calc(100vw / 2)',
-                '100vw'
-            ]}
+            imageUri = Neos.Fusion:ResourceUri {
+                resource = ${q(node).property('image').resource}
+            }
+            fileExtension = ${q(node).property('image').resource.fileExtension}
+            sizes = MyVendor.AwesomeNeosProject:Helper.ImageSizes {
+                type = 'four-column--wrap'
+            }
         }
     }
 }
