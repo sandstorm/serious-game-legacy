@@ -9,5 +9,3 @@
       'MyVendor.AwesomeNeosProject:Content.Image': true
       'MyVendor.AwesomeNeosProject:Content.Text': true
       'Jonnitto.PrettyEmbedVideoPlatforms:Content.Video': true
-      # template for generate repository helper
-      # 'MyVendor.AwesomeNeosProject:Content.Repository.Teaser': true

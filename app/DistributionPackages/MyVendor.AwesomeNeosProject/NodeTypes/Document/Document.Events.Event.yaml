@@ -1,0 +1,79 @@
+'MyVendor.AwesomeNeosProject:Document.Events.Event':
+  superTypes:
+    'MyVendor.AwesomeNeosProject:Document.AbstractPage': true
+    # we just reuse the blog tags here, as it depends on the project which tags make sense here
+    'MyVendor.AwesomeNeosProject:Mixin.BlogTags': true
+  ui:
+    group: general
+    label: 'Event'
+    icon: icon-calendar
+  constraints:
+    nodeTypes:
+      '*': ~
+  options:
+    template:
+      childNodes:
+        mainContentCollection:
+          name: 'main'
+          childNodes:
+            firstSection:
+              type: 'MyVendor.AwesomeNeosProject:Content.SectionWithBackground'
+  properties:
+    date:
+      type: DateTime
+      ui:
+        label: Startdatum
+        showInCreationDialog: true
+        reloadIfChanged: true
+        inspector:
+          group: properties
+          editorOptions:
+            format: 'd-m-Y'
+      validation:
+        'Neos.Neos/Validation/DateTimeValidator': [ ]
+    dateUntil:
+      type: DateTime
+      ui:
+        label: Enddatum (optional)
+        showInCreationDialog: true
+        reloadIfChanged: true
+        inspector:
+          group: properties
+          editorOptions:
+            format: 'd-m-Y'
+      validation:
+        'Neos.Neos/Validation/DateTimeValidator': [ ]
+    timeFrom:
+      type: DateTime
+      ui:
+        label: Von (Uhrzeit)
+        showInCreationDialog: true
+        reloadIfChanged: true
+        inspector:
+          group: properties
+          editorOptions:
+            format: 'H:i'
+      validation:
+        'Neos.Neos/Validation/DateTimeValidator': [ ]
+    timeTo:
+      type: DateTime
+      ui:
+        label: Bis (Uhrzeit)
+        showInCreationDialog: true
+        reloadIfChanged: true
+        inspector:
+          group: properties
+          editorOptions:
+            format: 'H:i'
+      validation:
+        'Neos.Neos/Validation/DateTimeValidator': [ ]
+    location:
+      type: string
+      ui:
+        label: 'Location'
+        showInCreationDialog: true
+        reloadIfChanged: true
+        inspector:
+          group: properties
+          editorOptions:
+            placeholder: 'Location'

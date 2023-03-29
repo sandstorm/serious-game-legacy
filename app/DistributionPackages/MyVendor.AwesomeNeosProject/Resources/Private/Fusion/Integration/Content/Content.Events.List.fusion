@@ -1,0 +1,37 @@
+prototype(MyVendor.AwesomeNeosProject:Content.Events.List) < prototype(Neos.Neos:ContentComponent) {
+    @cache {
+        mode = 'cached'
+        entryIdentifier {
+            node = ${node}
+            editPreviewMode = ${node.context.currentRenderingMode.name}
+        }
+        entryTags {
+            1 = ${Neos.Caching.nodeTag(node)}
+            2 = ${Neos.Caching.nodeTypeTag('MyVendor.AwesomeNeosProject:Document.Events.Event', node)}
+        }
+    }
+
+    renderer = MyVendor.AwesomeNeosProject:Component.EventList {
+        content = Neos.Fusion:Loop {
+            items = ${q(site).find('[instanceof MyVendor.AwesomeNeosProject:Document.Events.Event]').sort('date', 'ASC')}
+            items.@process.filterPastElements = ${Array.filter(value, item => q(item).property('date') >= Date.today() || q(item).property('dateUntil') >= Date.today())}
+            itemRenderer = MyVendor.AwesomeNeosProject:Component.EventList.Event {
+                title = ${q(item).property('title')}
+                href = Neos.Neos:NodeUri {
+                    node = ${item}
+                }
+                date = ${q(item).property('date')}
+                // if an event spreads over multiple days, we normally want to render the first day as date.
+                // if the first day is already in the past we render the current day.
+                // all events in the past are filtered out above, so we shouldn't run into trouble with this.
+                date.@process.dateForCurrentlyRunningEvents = ${q(item).property('date') < Date.today() ? Date.today() : value}
+                timeFrom = ${q(item).property('timeFrom') ? Date.format(q(item).property('timeFrom'), 'H:i') : ''}
+                timeTo = ${q(item).property('timeTo') ? Date.format(q(item).property('timeTo'), 'H:i') : ''}
+                location = ${q(item).property('location')}
+                tags = MyVendor.AwesomeNeosProject:Component.BlogTagList {
+                    tags = ${q(item).property('tags')}
+                }
+            }
+        }
+    }
+}

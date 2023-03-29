@@ -1,4 +1,4 @@
-prototype(MyVendor.AwesomeNeosProject:Content.Repository.Teaser) < prototype(Neos.Neos:ContentComponent) {
+prototype(MyVendor.AwesomeNeosProject:Content.Repository.List) < prototype(Neos.Neos:ContentComponent) {
     @cache {
         mode = 'cached'
         entryIdentifier {

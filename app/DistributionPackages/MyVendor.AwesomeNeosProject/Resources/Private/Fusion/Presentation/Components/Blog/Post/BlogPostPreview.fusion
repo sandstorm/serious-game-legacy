@@ -23,9 +23,9 @@ prototype(MyVendor.AwesomeNeosProject:Component.BlogPostPreview) < prototype(Neo
 
         renderer = afx`
             <Neos.Fusion:Tag
-                tagName={props._inBackend ? "div" : "a"}
+                tagName={props._inBackend ? 'div' : 'a'}
                 attributes.href={props._inBackend ? null : props.href}
-                attributes.class={"blog-post-preview"}
+                attributes.class="blog-post-preview"
                 attributes.title={I18n.translate('MyVendor.AwesomeNeosProject:Base:linkTo') + ' Blog Post: ' + props.title}
             >
                 {props.image}
@@ -37,7 +37,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.BlogPostPreview) < prototype(Neo
                     <div class="blog-post-preview__tags">
                         {props.tags}
                     </div>
-                    <button class="button button--solid-blue">Mehr erfahren!</button>
+                    <button class="button button--solid-blue">{I18n.translate('MyVendor.AwesomeNeosProject:Base:learnMore')}</button>
                 </div>
             </Neos.Fusion:Tag>
         `
