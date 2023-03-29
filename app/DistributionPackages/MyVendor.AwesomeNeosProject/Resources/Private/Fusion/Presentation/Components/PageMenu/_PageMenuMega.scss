@@ -6,7 +6,7 @@ $header__height: 85px;
 $SUBLEVEL_GAP: Spacing.$xl;
 
 .mega-menu__toggle {
-    display: block;
+    display: flex;
 }
 
 .page-menu__mega {
@@ -69,8 +69,8 @@ $SUBLEVEL_GAP: Spacing.$xl;
 
     overflow-y: scroll;
 
-    -ms-overflow-style: none;  /* Hide scrollbar in IE and Edge */
-    scrollbar-width: none;  /* Hide scrollbar in Firefox */
+    -ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
 
     /* Hide scrollbar in Chrome, Safari and Opera */
     &::-webkit-scrollbar {
@@ -141,19 +141,11 @@ $SUBLEVEL_GAP: Spacing.$xl;
 }
 
 
-//@include mq(small) {
-//    .page-menu__teaser {
-//        display: none;
-//    }
-//    .page-menu__mega-content .page-menu__toplevel {
-//        max-width: 100%;
-//    }
-//}
-//@media screen and (max-height: $breakpoint--xsmall){
-//    .page-menu__teaser {
-//        display: none;
-//    }
-//    .page-menu__mega-content .page-menu__toplevel {
-//        max-width: 100%;
-//    }
-//}
+@include Mixins.mq(medium) {
+    .page-menu__teaser {
+        display: none;
+    }
+    .page-menu__mega-content .page-menu__toplevel {
+        max-width: 100%;
+    }
+}
