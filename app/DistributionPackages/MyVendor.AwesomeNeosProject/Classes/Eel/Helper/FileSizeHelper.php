@@ -12,17 +12,18 @@ class FileSizeHelper implements ProtectedContextAwareInterface
     /**
      * Get size of a file and format to human readable
      *
-     * @param $size float
+     * @param float $size
      * @return string
      *
      */
     public function format(float $size): string
     {
+        if ($size == 0) {
+            return '0 B';
+        }
         // Return when $size is null, negative or 0, otherwise $base would result in NAN
         if (!$size || $size < 0) {
             return  '';
-        } else if ($size <= 0) {
-            return  '0 B';
         }
 
         // https://stackoverflow.com/a/2510540
