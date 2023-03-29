@@ -1,13 +1,16 @@
-import {sassPlugin} from 'esbuild-sass-plugin';
+import { sassPlugin } from 'esbuild-sass-plugin';
 import esbuild from 'esbuild';
 
 /**
  * This file contains the JS/CSS bundler configuration, as executed on `npm run watch`
  */
-esbuild.build({
+// NOTE: How watch is used changed with esbuild 17, see https://esbuild.github.io/api/#watch
+const ctx = await esbuild.context({
     // Generic Options (shared between build.js and build-watch.js)
     entryPoints: ['./main.ts'],
-    target: ['esnext'],
+    target: ['es2017'],
+    // To prevent shortening of top, right, bottom, left into inset because it is not well supported yet (https://github.com/evanw/esbuild/pull/1758/files)
+    supported: { 'inset-property': false },
     bundle: true,
     sourcemap: true,
     outfile: '../Public/bundle.js',
@@ -20,18 +23,12 @@ esbuild.build({
     // postCssPlugin.default({
     //    plugins: [autoprefixer, tailwindcss]
     // })
-    plugins: [sassPlugin({
-        loadPaths: ['./', './node_modules']
-    })],
+    plugins: [
+        sassPlugin({
+            loadPaths: ['./', './node_modules'],
+        }),
+    ],
+});
 
-
-    // Specific options for "npm run watch"
-    watch: {
-        onRebuild(error, result) {
-            if (error) console.error('watch build failed. See above for the error.')
-            else console.log('watch build succeeded.')
-        },
-    },
-}).then(result => {
-    console.log('watching...')
-})
+await ctx.watch();
+console.log('watching...');
