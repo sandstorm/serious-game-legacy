@@ -11,6 +11,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.ImagePlaceholder) < prototype(Ne
     renderer = Neos.Fusion:Component {
         @apply.props = ${props}
 
+        // TODO remove this hack
         // aspect ratio CSS trick
         _inlineStyle = ${'padding-top:' + 1/props.aspectRatio*100 + '%'}
         renderer = afx`

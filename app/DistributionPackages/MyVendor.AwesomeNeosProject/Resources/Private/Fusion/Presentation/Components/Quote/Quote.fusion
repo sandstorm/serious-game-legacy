@@ -2,7 +2,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Quote) < prototype(Neos.Fusion:C
     text = ''
     person = ''
     image = ''
-    hasImageSource = ''
+    hasImageSource = false
 
     @propTypes {
         @strict = true

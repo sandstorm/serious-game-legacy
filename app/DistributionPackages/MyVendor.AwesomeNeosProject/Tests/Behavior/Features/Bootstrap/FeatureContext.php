@@ -64,6 +64,10 @@ class FeatureContext implements Context
         $this->setupSecurity();
         $this->setupPlaywright();
         $this->setupFusionRendering('MyVendor.AwesomeNeosProject');
+        $this->PersistentResourceTrait_registerResourcePersistedHook(function () {
+            // publish resources post persist hook for PersistentResources created by fixtures
+            $this->executeFlowCommand('resource:publish', 'publish resources');
+        });
         $this->setupFlowContextForSUT($this->objectManager);
         // TODO configure enable/disable tracing?
         //$this->setPlaywrightTracingMode(self::$PLAYWRIGHT_TRACING_MODE_ALWAYS);
