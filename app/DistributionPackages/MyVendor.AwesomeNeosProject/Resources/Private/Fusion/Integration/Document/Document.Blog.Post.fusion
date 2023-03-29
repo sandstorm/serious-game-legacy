@@ -19,6 +19,7 @@ prototype(MyVendor.AwesomeNeosProject:Document.Blog.Post) < prototype(MyVendor.A
             imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
                 asset = ${q(node).property('image')}
             }
+            fileExtension = ${q(node).property('image').resource.fileExtension}
             align = 'center'
             sizes = ${[
                 '(min-width: 400px) 400px',

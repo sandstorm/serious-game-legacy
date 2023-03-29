@@ -1,8 +1,9 @@
 @use "AbstractStyles/Mixins";
+@use "AbstractStyles/Variables/Spacing";
 
 .preview-tiles {
     display: grid;
-    grid-gap: 20px;
+    grid-gap: Spacing.$lg;
     grid-template-columns: repeat(3, 1fr);
 
     @include Mixins.mq(medium) {
