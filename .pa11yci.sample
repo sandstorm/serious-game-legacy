@@ -1,0 +1,16 @@
+{
+    "defaults": {
+        "includeWarnings": true
+    },
+    "urls": [
+        "https://pa11y.org/",
+        {
+            "url": "https://pa11y.org/news/",
+            "screenCapture": "pa11y-ci-report-images/news.png"
+        },
+        {
+            "url": "https://pa11y.org/contributing/communications/",
+            "screenCapture": "pa11y-ci-report-images/contributing-communications.png"
+        }
+    ]
+}
