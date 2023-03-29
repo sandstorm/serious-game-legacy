@@ -5,7 +5,11 @@ prototype(MyVendor.AwesomeNeosProject:Helper.ImageSizes) < prototype(Neos.Fusion
         @strict = true
         type = ${PropTypes.oneOf(['', 'two-column', 'three-column', 'four-column', 'three-column--wrap', 'four-column--wrap'])}
     }
-
+    
+    // This helper is intended to make it easier to choose the right (Kaleidoscope) sizes for different column layouts.
+    // It currently supports standard columns that are only linearized on mobile screens ('two-column', 'three-column', 'four-column')
+    // and wrapping columns that have different column counts depending on the screen size ('three-column--wrap', 'four-column--wrap').
+    // This obviously only makes sense if the css wrapping is built accordingly.
     renderer = Neos.Fusion:Case {
         twoColumn {
             condition = ${props.type == 'two-column'}
@@ -30,6 +34,7 @@ prototype(MyVendor.AwesomeNeosProject:Helper.ImageSizes) < prototype(Neos.Fusion
         }
         threeColumnWrap {
             condition = ${props.type == 'three-column--wrap'}
+            // 3 columns on desktop, 2 columns on smaller laptop screens & tablet, 1 column on mobile
             renderer = ${[
                 '(min-width: 996px) calc(100vw / 3)',
                 '(min-width: 500px) calc(100vw / 2)',
@@ -38,6 +43,7 @@ prototype(MyVendor.AwesomeNeosProject:Helper.ImageSizes) < prototype(Neos.Fusion
         }
         fourColumnWrap {
             condition = ${props.type == 'four-column--wrap'}
+            // 4 columns on desktop, 3 columns on smaller laptop screens, 2 columns on tablet, 1 column on mobile
             renderer = ${[
                 '(min-width: 996px) calc(100vw / 4)',
                 '(min-width: 768px) calc(100vw / 3)',
@@ -47,7 +53,8 @@ prototype(MyVendor.AwesomeNeosProject:Helper.ImageSizes) < prototype(Neos.Fusion
         }
         default {
             condition = true
-            renderer = ${['100vw']}
+            // Sizes="100vw" means the image file is swapped out based on the total width of the viewport.
+            renderer = ${'100vw'}
         }
     }
 }
