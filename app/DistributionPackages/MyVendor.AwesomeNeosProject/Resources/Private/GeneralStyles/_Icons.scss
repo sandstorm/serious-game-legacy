@@ -13,6 +13,15 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-close:before {
+    content: "\f00d";
+}
+.icon-remove:before {
+    content: "\f00d";
+}
+.icon-times:before {
+    content: "\f00d";
+}
 .icon-mastodon:before {
     content: "\e901";
 }
