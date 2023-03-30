@@ -1,20 +1,37 @@
 prototype(MyVendor.AwesomeNeosProject:Content.Events.List) < prototype(Neos.Neos:ContentComponent) {
+    @context {
+        tagsParameter = ${request.arguments.tags}
+    }
+
     @cache {
-        mode = 'cached'
+        mode = 'dynamic'
         entryIdentifier {
             node = ${node}
             editPreviewMode = ${node.context.currentRenderingMode.name}
         }
+        // if you add more parameters here you need to manually build an entry discriminator (`param1 + '___' + param2`)
+        entryDiscriminator = ${tagsParameter}
+        context {
+            1 = 'node'
+            2 = 'documentNode'
+            3 = 'site'
+            4 = 'tagsParameter'
+        }
         entryTags {
             1 = ${Neos.Caching.nodeTag(node)}
-            2 = ${Neos.Caching.nodeTypeTag('MyVendor.AwesomeNeosProject:Document.Events.Event', node)}
+            2 = ${Neos.Caching.nodeTypeTag('MyVendor.AwesomeNeosProject:Document.Blog.Tag', node)}
+            3 = ${Neos.Caching.nodeTypeTag('MyVendor.AwesomeNeosProject:Document.Events.Event', node)}
         }
     }
 
     renderer = MyVendor.AwesomeNeosProject:Component.EventList {
+        @context {
+            futureItems = ${q(site).find('[instanceof MyVendor.AwesomeNeosProject:Document.Events.Event]').sort('date', 'ASC')}
+            futureItems.@process.filterPastElements = ${Array.filter(value, item => q(item).property('date') >= Date.today() || q(item).property('dateUntil') >= Date.today())}
+        }
         content = Neos.Fusion:Loop {
-            items = ${q(site).find('[instanceof MyVendor.AwesomeNeosProject:Document.Events.Event]').sort('date', 'ASC')}
-            items.@process.filterPastElements = ${Array.filter(value, item => q(item).property('date') >= Date.today() || q(item).property('dateUntil') >= Date.today())}
+            items = ${futureItems}
+            items.@process.filterByTag = ${MyVendor.AwesomeNeosProject.FilterNodesByReference.filterNodes(value, 'tags', tagsParameter)}
             itemRenderer = MyVendor.AwesomeNeosProject:Component.EventList.Event {
                 title = ${q(item).property('title')}
                 href = Neos.Neos:NodeUri {
@@ -28,9 +45,32 @@ prototype(MyVendor.AwesomeNeosProject:Content.Events.List) < prototype(Neos.Neos
                 timeFrom = ${q(item).property('timeFrom') ? Date.format(q(item).property('timeFrom'), 'H:i') : ''}
                 timeTo = ${q(item).property('timeTo') ? Date.format(q(item).property('timeTo'), 'H:i') : ''}
                 location = ${q(item).property('location')}
-                tags = MyVendor.AwesomeNeosProject:Component.BlogTagList {
-                    tags = ${q(item).property('tags')}
+                tags = MyVendor.AwesomeNeosProject:Component.EventTagList {
+                    tags = Neos.Fusion:Map {
+                        items = ${q(item).property('tags')}
+                        itemName = 'tag'
+                        itemRenderer = Neos.Fusion:DataStructure {
+                            title = ${q(tag).property('title')}
+                        }
+                    }
                 }
+            }
+        }
+        tags = Neos.Fusion:Map {
+            items = ${q(site).find('[instanceof MyVendor.AwesomeNeosProject:Document.Blog.Tag]')}
+            // for each tag we iterate over all future events and check if any of them has the current tag
+            items.@process.filterOutUnusedTags = ${Array.filter(value, item =>
+                !Array.isEmpty(
+                    Array.filter(futureItems, event =>
+                        q(event).property('tags') && Array.indexOf(q(event).property('tags'), item) > -1
+                    )
+                )
+            )}
+            itemName = 'tag'
+            itemRenderer = Neos.Fusion:DataStructure {
+                title = ${q(tag).property('title')}
+                // we split the tagsParameter by comma and check if the current tag is in the list
+                isActive = ${Array.indexOf(String.split(String.toLowerCase(tagsParameter), ','), String.toLowerCase(q(tag).property('title'))) > -1}
             }
         }
     }

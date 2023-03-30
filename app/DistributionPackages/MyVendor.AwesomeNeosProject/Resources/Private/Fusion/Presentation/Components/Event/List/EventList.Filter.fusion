@@ -1,0 +1,40 @@
+prototype(MyVendor.AwesomeNeosProject:Component.EventList.Filter) < prototype(Neos.Fusion:Component) {
+    tags = null
+
+    @propTypes {
+        @strict = true
+        tags = ${PropTypes.arrayOf(PropTypes.dataStructure({'title': PropTypes.string, 'isActive': PropTypes.boolean}))}
+    }
+
+    renderer = Neos.Fusion:Component {
+        @apply.props = ${props}
+
+        _filterButtonAttributes = Neos.Fusion:DataStructure {
+            class = 'button button--solid-blue'
+            x-on:click = 'filterOpen=!filterOpen'
+            'x-on:click.outside' = 'filterOpen=false'
+        }
+
+        renderer = afx`
+            <div class="event-list__filter" x-data="eventList">
+                <Neos.Fusion:Tag tagName="button" attributes={props._filterButtonAttributes}>
+                    {I18n.translate('MyVendor.AwesomeNeosProject:Base:filterDates')}
+                </Neos.Fusion:Tag>
+                <div x-show="filterOpen" class="event-list__filter-options" x-cloak>
+                    <Neos.Fusion:Loop items={props.tags} itemName="tag">
+                        <label class="event-list__tag">
+                            <input
+                                type="checkbox"
+                                name={tag.title}
+                                checked={tag.isActive}
+                                id={tag.title}
+                                x-on:click="filterByTagClick"
+                            />
+                            <span>{tag.title}</span>
+                        </label>
+                    </Neos.Fusion:Loop>
+                </div>
+            </div>
+        `
+    }
+}

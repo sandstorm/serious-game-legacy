@@ -5,6 +5,7 @@ import collapse from '@alpinejs/collapse';
 // @ts-ignore
 import intersect from '@alpinejs/intersect';
 import "./main.scss";
+import eventList from "./Fusion/Presentation/Components/Event/List/EventList";
 import {initMap} from "./Fusion/Presentation/Components/Map/Map";
 import slider from "./Fusion/Presentation/Components/Slider/Slider";
 import logowall from "./Fusion/Presentation/Components/Logowall/Logowall";
@@ -15,7 +16,8 @@ Alpine.plugin(collapse);
 Alpine.plugin(intersect);
 initMap(Alpine);
 
-Alpine.data('slider', slider);
+Alpine.data('eventList', eventList);
 Alpine.data('logowall', logowall);
+Alpine.data('slider', slider);
 
 Alpine.start();

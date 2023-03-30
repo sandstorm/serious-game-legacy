@@ -1,0 +1,21 @@
+prototype(MyVendor.AwesomeNeosProject:Component.EventTagList) < prototype(Neos.Fusion:Component) {
+    tags = null
+    showIcon = false
+
+    @propTypes {
+        @strict = true
+        tags = ${PropTypes.arrayOf(PropTypes.dataStructure({'title': PropTypes.string}))}
+        showIcon = ${PropTypes.boolean}
+    }
+
+    renderer = afx`
+        <div class="event-tag-list">
+            <span @if={props.tags}>
+                <i class="icon-tags" @if={props.showIcon} />{' '}
+            </span>
+            <Neos.Fusion:Loop items={props.tags} @glue=" | ">
+                <span>{item.title}</span>
+            </Neos.Fusion:Loop>
+        </div>
+    `
+}

@@ -8,9 +8,9 @@ $eventListDate__width--small: 70px;
 
 .event-list__event {
     display: flex;
-
     margin-top: Spacing.$lg;
     padding-bottom: Spacing.$lg;
+
     border-bottom: 1px solid Colors.$black;
 
     .button__wrapper {
@@ -23,7 +23,6 @@ $eventListDate__width--small: 70px;
     display: flex;
     flex-direction: column;
     align-items: center;
-
     width: $eventListDate__width;
     margin-right: Spacing.$xl;
 

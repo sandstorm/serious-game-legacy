@@ -37,11 +37,12 @@ prototype(MyVendor.AwesomeNeosProject:Component.EventList.Event) < prototype(Neo
                     <div @if={props.timeFrom} class="event-list__time">
                         {props.timeFrom}
                         <span @if={props.timeTo}> - {props.timeTo}</span>
-                        {' '}Uhr
+                        {' '}{I18n.translate('MyVendor.AwesomeNeosProject:Base:oClock')}
                     </div>
+                    {props.tags}
                     <h4 class="event-list__title">{props.title}</h4>
                     <div @if={props.location}>
-                        <i class="icon-map-pin" /> {props.location}
+                        <i class="icon-location" /> {props.location}
                     </div>
                     <MyVendor.AwesomeNeosProject:Component.Button
                         title={I18n.translate('MyVendor.AwesomeNeosProject:Base:learnMore')}

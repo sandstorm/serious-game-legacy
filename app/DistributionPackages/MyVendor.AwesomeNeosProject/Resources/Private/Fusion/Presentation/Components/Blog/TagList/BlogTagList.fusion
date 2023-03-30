@@ -1,10 +1,9 @@
 prototype(MyVendor.AwesomeNeosProject:Component.BlogTagList) < prototype(Neos.Fusion:Component) {
-    tags = ""
-    activeTag = ""
+    tags = ''
+    activeTag = ''
     renderAsLink = true
 
     @propTypes {
-        # validation rules for props
         tags = ${PropTypes.arrayOf( PropTypes.any )}
         activeTag = ${PropTypes.any}
         renderAsLink = ${PropTypes.boolean}
@@ -13,7 +12,11 @@ prototype(MyVendor.AwesomeNeosProject:Component.BlogTagList) < prototype(Neos.Fu
     renderer = afx`
         <div class="blog-tag-list">
             <Neos.Fusion:Loop items={props.tags} itemName="tag" @children="itemRenderer">
-                <MyVendor.AwesomeNeosProject:Component.BlogTagItem tag={tag} activeTag={props.activeTag} renderAsLink={props.renderAsLink} />
+                <MyVendor.AwesomeNeosProject:Component.BlogTagItem
+                    tag={tag}
+                    activeTag={props.activeTag}
+                    renderAsLink={props.renderAsLink}
+                />
             </Neos.Fusion:Loop>
         </div>
     `

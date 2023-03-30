@@ -2,6 +2,7 @@ Neos:
   Fusion:
     defaultContext:
       'MyVendor.AwesomeNeosProject.FileSize': 'MyVendor\AwesomeNeosProject\Eel\Helper\FileSizeHelper'
+      'MyVendor.AwesomeNeosProject.FilterNodesByReference': 'MyVendor\AwesomeNeosProject\Eel\Helper\FilterNodesByReferenceHelper'
   Flow:
     mvc:
       routes:
