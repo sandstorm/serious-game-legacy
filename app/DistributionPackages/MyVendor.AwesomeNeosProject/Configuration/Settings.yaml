@@ -1,7 +1,7 @@
 Neos:
   Fusion:
     defaultContext:
-      "MyVendor.AwesomeNeosProject.FileSize": 'MyVendor\AwesomeNeosProject\Eel\Helper\FileSizeHelper'
+      'MyVendor.AwesomeNeosProject.FileSize': 'MyVendor\AwesomeNeosProject\Eel\Helper\FileSizeHelper'
   Flow:
     mvc:
       routes:
@@ -9,6 +9,11 @@ Neos:
           variables:
             # We prefer URLs without the ".html" suffix
             defaultUriSuffix: ''
+    i18n:
+      defaultLocale: 'de'
+      fallbackRule:
+        order: ['de']
+
   Neos:
     eventLog:
       enabled: true
@@ -18,6 +23,9 @@ Neos:
           loadingDepth: 1
         structureTree:
           loadingDepth: 4
+      translation:
+        autoInclude:
+          'MyVendor.AwesomeNeosProject': ['NodeTypes/*']
     fusion:
       # uncomment this line for cache debugging
       #contentCacheDebugMode: true

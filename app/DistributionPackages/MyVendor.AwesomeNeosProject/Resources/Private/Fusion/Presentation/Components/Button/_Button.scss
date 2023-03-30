@@ -128,3 +128,15 @@ $button__height--larger: 60px;
         outline: 1px solid Colors.$blue--dark;
     }
 }
+
+.button--with-icon {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    &.button--icon-right {
+        flex-direction: row-reverse;
+    }
+}
+
+
