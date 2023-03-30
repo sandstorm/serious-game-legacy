@@ -31,6 +31,7 @@ Run `./kickstart.sh` and follow the instructions.
   * [Automatic Translation with DeepL](#automatic-translation-with-deepl)
   * [Kickstart repository nodetypes](#kickstart-repository-nodetypes)
   * [Custom icon font with icomoon](#custom-icon-font-with-icomoon)
+    * [Use in backend](#use-custom-icons-in-neos-backend) 
   * [Maps](#maps)
   * [Improving Kickstart Experience](#improving-kickstart-experience)
   * [Backlog](#backlog)
@@ -210,6 +211,20 @@ The command will create the following files:
 
 We use a custom icon font build with https://icomoon.io/app.
 Look at the Icons.md for more information: `DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public/Fonts/Icons.md`
+
+### Use custom icons in neos backend
+
+Unfortunately we can't use our custom icomoon font in the neos backend directly because it just works with the integrated fontawesome iconfont. But if we want to use our own icons anyway we can:
+
+1. Export the SVGs of the icomoon font (e.g. in white)
+2. Copy those SVGs into the `Public/SVGs` folder
+3. Use the icon as SVG e.g. in the `Mixin.Icon` for the `SelectBoxEditor` by using the `resource://` path (https://www.youtube.com/watch?v=Aq4w21pjriY)
+
+```yaml
+icon-angle-down:
+  label: i18n
+  icon: 'resource://MyVendor.AwesomeNeosProject/SVGs/angle-down.svg'
+```
 
 ## Maps
 

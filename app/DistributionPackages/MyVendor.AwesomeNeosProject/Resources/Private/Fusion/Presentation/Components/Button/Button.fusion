@@ -4,6 +4,8 @@ prototype(MyVendor.AwesomeNeosProject:Component.Button) < prototype(Neos.Fusion:
     isExternalLink = false
     type = ''
     align = ''
+    icon = ''
+    iconAlignment = 'left'
 
     @propTypes {
         @strict = true
@@ -12,12 +14,17 @@ prototype(MyVendor.AwesomeNeosProject:Component.Button) < prototype(Neos.Fusion:
         isExternalLink = ${PropTypes.boolean}
         type = ${PropTypes.oneOf(['solid-blue', 'solid-grey', 'outline', 'link'])}
         align = ${PropTypes.oneOf(['left', 'center', 'right'])}
+        icon = ${PropTypes.string}
+        iconAlignment = ${PropTypes.oneOf(['left', 'right'])}
     }
 
     renderer = Neos.Fusion:Component {
         @apply.props = ${props}
 
         _inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
+
+        _buttonClasses = ${AtomicFusion.classNames('button','button--' + props.type)}
+        _buttonWithIconClasses = ${AtomicFusion.classNames('button','button--' + props.type, 'button--with-icon', 'button--icon-' + props.iconAlignment)}
 
         renderer = afx`
             <div
@@ -28,13 +35,11 @@ prototype(MyVendor.AwesomeNeosProject:Component.Button) < prototype(Neos.Fusion:
             >
                 <Neos.Fusion:Tag
                     tagName={(props.href && !props._inBackend) ? 'a' : 'div'}
-                    attributes.class={AtomicFusion.classNames(
-                        'button',
-                        'button--' + props.type
-                    )}
+                    attributes.class={props.icon ? props._buttonWithIconClasses : props._buttonClasses}
                     attributes.href={props.href ? props.href : null}
                     attributes.target={props.isExternalLink ? '_blank' : null}
                 >
+                    <span @if.hasIcon={props.icon} class={AtomicFusion.classNames(props.icon)}></span>
                     {props.title}
                 </Neos.Fusion:Tag>
             </div>

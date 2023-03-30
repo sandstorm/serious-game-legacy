@@ -1,0 +1,26 @@
+'MyVendor.AwesomeNeosProject:Content.ButtonWithIcon':
+  superTypes:
+    'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
+    'MyVendor.AwesomeNeosProject:Content.Button': true
+    'MyVendor.AwesomeNeosProject:Mixin.Icon': true
+  ui:
+    label: 'Button with icon'
+    icon: icon-box
+    position: 31
+  properties:
+    iconAlign:
+      type: string
+      defaultValue: left
+      ui:
+        label: 'Icon alignment'
+        showInCreationDialog: true
+        reloadIfChanged: true
+        inspector:
+          group: properties
+          editor: 'Neos.Neos/Inspector/Editors/SelectBoxEditor'
+          editorOptions:
+            values:
+              left:
+                label: i18n
+              right:
+                label: i18n
