@@ -30,6 +30,9 @@
             <trans-unit id="openMenu">
                 <source>Open menu</source>
             </trans-unit>
+            <trans-unit id="resetFilters">
+                <source>Reset filters</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>

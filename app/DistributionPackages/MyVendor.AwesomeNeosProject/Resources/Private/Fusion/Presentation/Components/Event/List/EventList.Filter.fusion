@@ -10,9 +10,14 @@ prototype(MyVendor.AwesomeNeosProject:Component.EventList.Filter) < prototype(Ne
         @apply.props = ${props}
 
         _filterButtonAttributes = Neos.Fusion:DataStructure {
-            class = 'button button--solid-blue'
-            x-on:click = 'filterOpen=!filterOpen'
+            'class' = 'button button--solid-blue'
+            'x-on:click' = 'filterOpen=!filterOpen'
             'x-on:click.outside' = 'filterOpen=false'
+        }
+
+        _deleteFilterButtonAttributes = Neos.Fusion:DataStructure {
+            'class' = 'button button--link event-list__delete-filter'
+            'x-on:click' = 'deleteFilter'
         }
 
         renderer = afx`
@@ -24,9 +29,10 @@ prototype(MyVendor.AwesomeNeosProject:Component.EventList.Filter) < prototype(Ne
                     <Neos.Fusion:Loop items={props.tags} itemName="tag">
                         <label class="event-list__tag">
                             <input
+                                autocomplete="off"
                                 type="checkbox"
                                 name={tag.title}
-                                checked={tag.isActive}
+                                checked={tag.isActive ? 'checked' : null}
                                 id={tag.title}
                                 x-on:click="filterByTagClick"
                             />
@@ -34,6 +40,13 @@ prototype(MyVendor.AwesomeNeosProject:Component.EventList.Filter) < prototype(Ne
                         </label>
                     </Neos.Fusion:Loop>
                 </div>
+                <Neos.Fusion:Tag
+                    tagName="button"
+                    attributes={props._deleteFilterButtonAttributes}
+                    @if={Array.length(Array.filter(props.tags, tag => tag.isActive == true)) != 0}
+                >
+                    {I18n.translate('MyVendor.AwesomeNeosProject:Base:resetFilters')}
+                </Neos.Fusion:Tag>
             </div>
         `
     }

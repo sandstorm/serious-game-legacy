@@ -18,9 +18,7 @@ $input__size--checked: 12px;
     margin-top: Spacing.$sm;
 
     background: Colors.$white;
-    -webkit-box-shadow: 0px 5px 5px 0px Colors.$grey;
-    -moz-box-shadow: 0px 5px 5px 0px Colors.$grey;
-    box-shadow: 0px 5px 5px 0px Colors.$grey;
+    box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.35);
 }
 
 .event-list__tag {
@@ -28,7 +26,7 @@ $input__size--checked: 12px;
     grid-template-columns: Spacing.$lg auto;
     align-items: center;
     gap: Spacing.$sm;
-    margin-bottom: Spacing.$sm;
+    margin-bottom: Spacing.$md;
 
     font-size: Typo.$fontSize--small;
     cursor: pointer;
@@ -65,4 +63,10 @@ $input__size--checked: 12px;
         line-height: 1.1;
         margin-left: Spacing.$sm;
     }
+}
+
+.event-list__delete-filter {
+    margin-left: Spacing.$lg;
+
+    font-size: Typo.$fontSize--small;
 }
