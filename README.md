@@ -201,10 +201,10 @@ The command will create the following files:
 
 * NodeTypes/Document/Document.Repository.yaml
 * NodeTypes/Document/Document.Repository.Item.yaml
-* NodeTypes/Content/Content.Repository.Teaser.yaml
+* NodeTypes/Content/Content.Repository.List.yaml
 * Resources/Private/Fusion/Integration/Document/Document.Repository.fusion
 * Resources/Private/Fusion/Integration/Document/Document.Repository.Item.fusion
-* Resources/Private/Fusion/Integration/Content/Content.Repository.Teaser.fusion
+* Resources/Private/Fusion/Integration/Content/Content.Repository.List.fusion
 
 ## Custom icon font with icomoon
 

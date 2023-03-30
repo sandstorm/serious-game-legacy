@@ -1,0 +1,53 @@
+@use "AbstractStyles/Variables/Colors";
+@use "AbstractStyles/Variables/Spacing";
+@use "AbstractStyles/Variables/Typo";
+@use "AbstractStyles/Mixins";
+
+$eventListDate__width: 100px;
+$eventListDate__width--small: 70px;
+
+.event-list__event {
+    display: flex;
+
+    margin-top: Spacing.$lg;
+    padding-bottom: Spacing.$lg;
+    border-bottom: 1px solid Colors.$black;
+
+    .button__wrapper {
+        margin-top: Spacing.$lg;
+        margin-bottom: 0;
+    }
+}
+
+.event-list__date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: $eventListDate__width;
+    margin-right: Spacing.$xl;
+
+    @include Mixins.mq(small) {
+        width: $eventListDate__width--small;
+        margin-right: Spacing.$lg;
+    }
+}
+
+.event-list__day {
+    font-size: 2.5rem;
+    line-height: 1;
+}
+
+.event-list__month {
+    text-transform: uppercase;
+}
+
+.event-list__title {
+    margin-bottom: Spacing.$md;
+
+    font-weight: bold;
+}
+
+.event-list__time {
+    font-size: Typo.$fontSize--small;
+}

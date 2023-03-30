@@ -4,7 +4,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu) < prototype(Neos.Fusio
     }
 
     // We use a span-tag for the menu icon because the i-tag causes some trouble with the rendering of the 404-Page
-    
+
     // We use alpine js to toggle the mobile menu.
     // If the state of 'openMobileMenu' changes to true we add a class in PageMenu.Main.fusion.
     renderer = afx`
@@ -13,8 +13,13 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu) < prototype(Neos.Fusio
                 <MyVendor.AwesomeNeosProject:Component.PageHeader.Logo/>
             </div>
 
-            <button x-on:click="openMobileMenu = ! openMobileMenu" id="open-mobile-menu" class="mobile-menu__toggle button button--link" title="Menü öffnen"> 
-                <span class="icon-bars1" aria-hidden="true"></span>
+            <button
+                x-on:click="openMobileMenu = ! openMobileMenu"
+                id="open-mobile-menu"
+                class="mobile-menu__toggle button button--link"
+                title={I18n.translate('MyVendor.AwesomeNeosProject:Base:openMenu')}
+            >
+                <span class="icon-bars" aria-hidden="true"></span>
                 <span class="sr-only">{I18n.translate('MyVendor.AwesomeNeosProject:Base:menu')}</span>
             </button>
 

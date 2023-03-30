@@ -22,12 +22,16 @@
 @use "Fusion/Presentation/Components/ContactForm/ContactForm";
 @use "Fusion/Presentation/Components/CookiePunch/CookiePunch";
 @use "Fusion/Presentation/Components/Download/Download";
+@use "Fusion/Presentation/Components/Event/EventHeader";
+@use "Fusion/Presentation/Components/EventList/EventList";
 @use "Fusion/Presentation/Components/Form/Form";
 @use "Fusion/Presentation/Components/Image/Image";
 @use "Fusion/Presentation/Components/ImagePlaceholder/ImagePlaceholder";
 @use "Fusion/Presentation/Components/LanguageMenu/LanguageMenu";
+@use "Fusion/Presentation/Components/LatestBlogPosts/LatestBlogPosts";
 @use "Fusion/Presentation/Components/Link/Link";
 @use "Fusion/Presentation/Components/Logowall/Logowall";
+@use "Fusion/Presentation/Components/Map/Map";
 @use "Fusion/Presentation/Components/PageFooter/PageFooter";
 @use "Fusion/Presentation/Components/PageHeader/PageHeader";
 @use "Fusion/Presentation/Components/PageMenu/PageMenu";
@@ -40,6 +44,4 @@
 @use "Fusion/Presentation/Components/SocialMediaIcons/SocialMediaIcons";
 @use "Fusion/Presentation/Components/Table/Table";
 @use "Fusion/Presentation/Components/Teaser/Teaser";
-@use "Fusion/Presentation/Components/LatestBlogPosts/LatestBlogPosts";
-@use "Fusion/Presentation/Components/Map/Map";
 @use "Fusion/Presentation/Components/Video/Video";

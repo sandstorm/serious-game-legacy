@@ -13,6 +13,15 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-clock:before {
+    content: "\f017";
+}
+.icon-calendar:before {
+    content: "\f073";
+}
+.icon-map-pin:before {
+    content: "\f276";
+}
 .icon-mastodon:before {
     content: "\e901";
 }
@@ -31,7 +40,7 @@
 .icon-arrow-down-to-line:before {
     content: "\e900";
 }
-.icon-bars1:before {
+.icon-bars:before {
     content: "\f0c9";
 }
 .icon-angle-left:before {

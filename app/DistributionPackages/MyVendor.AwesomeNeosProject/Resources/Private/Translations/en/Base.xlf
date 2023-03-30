@@ -1,22 +1,24 @@
 <?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="de" target-language="en" datatype="plaintext">
+    <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="en" datatype="plaintext">
         <body>
+            <trans-unit id="learnMore">
+                <source>Learn more</source>
+            </trans-unit>
             <trans-unit id="linkToStartPage">
-                <source>Link zur Startseite</source>
-                <target>Link to startpage</target>
+                <source>Link to startpage</source>
             </trans-unit>
             <trans-unit id="linkToPage">
-                <source>Link zur Seite: </source>
-                <target>Link to page:</target>
+                <source>Link to page: </source>
             </trans-unit>
             <trans-unit id="linkTo">
-                <source>Link zum</source>
-                <target>Link to</target>
+                <source>Link to</source>
             </trans-unit>
             <trans-unit id="menu">
-                <source>Menü</source>
-                <target>Menu</target>
+                <source>Menu</source>
+            </trans-unit>
+            <trans-unit id="openMenu">
+                <source>Open menu</source>
             </trans-unit>
         </body>
     </file>
