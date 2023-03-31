@@ -5,7 +5,7 @@
     'MyVendor.AwesomeNeosProject:Mixin.Image': true
   ui:
     group: general
-    label: 'Blog Post'
+    label: i18n
     icon: 'icon-book'
   properties:
     title:
@@ -16,15 +16,15 @@
     teaserText:
       type: string
       ui:
-        label: 'Teaser Text'
+        label: i18n
         inlineEditable: true
         inline:
           editorOptions:
-            placeholder: 'Please enter a description'
+            placeholder: i18n
     datePublished:
       type: DateTime
       ui:
-        label: 'Publication Date'
+        label: i18n
         reloadIfChanged: true
         inspector:
           group: properties

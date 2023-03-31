@@ -3,7 +3,7 @@
     'Neos.Neos:Shortcut': true
   ui:
     group: general
-    label: 'Shortcut'
+    label: i18n
   constraints:
     nodeTypes:
       '*': false
