@@ -22,7 +22,7 @@ prototype(MyVendor.AwesomeNeosProject:Document.AbstractPage) < prototype(Neos.Ne
                 }
             }
         }
-        toTopButton = MyVendor.AwesomeNeosProject:Component.ToTopButton
+        buttonToTop = MyVendor.AwesomeNeosProject:Component.ButtonToTop
         footer = MyVendor.AwesomeNeosProject:Content.PageFooter
     }
 

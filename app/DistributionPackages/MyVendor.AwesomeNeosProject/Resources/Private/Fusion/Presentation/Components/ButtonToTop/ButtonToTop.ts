@@ -1,7 +1,7 @@
 export default () => ({
     init() {
         //@ts-ignore
-        const toTopButton = this.$refs.toTopButton;
+        const buttonToTop = this.$refs.buttonToTop;
 
         const body = document.body
         const html = document.documentElement
@@ -10,13 +10,13 @@ export default () => ({
         // To get the document height
         const documentHeight = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
 
-        // We don't have to show the to-top-button, when we can see all of the content at once
+        // We don't have to show the button-to-top, when we can see all of the content at once
         if(documentHeight <= window.innerHeight) {
-            const buttonWrapper = toTopButton.closest('.to-top-button__wrapper')
-            buttonWrapper.classList.add('is-hidden')
+            const buttonWrapper = buttonToTop.closest('.button__wrapper')
+            buttonWrapper.classList.add('button__wrapper--is-hidden')
         }
 
-        toTopButton.addEventListener("click", () => {
+        buttonToTop.addEventListener("click", () => {
             window.scrollTo({ top: 0, behavior: "smooth" });
         });
     },

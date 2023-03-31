@@ -1,6 +1,6 @@
 @fixtures
 @playwright
-Feature: Testcase for ToTopButton Component
+Feature: Testcase for ButtonToTop Component
 
     Background:
         Given I have a site for Site Node "site"
@@ -16,26 +16,23 @@ Feature: Testcase for ToTopButton Component
     Scenario: To Top Button
         When I render the Fusion object "/testcase" with the current context node:
             """fusion
-            testcase = MyVendor.AwesomeNeosProject:Component.ToTopButton {
-                x-data="toTopButton" 
-                x-ref="toTopButton"
+            testcase = MyVendor.AwesomeNeosProject:Component.ButtonToTop {
+                x-data="buttonToTop" 
+                x-ref="buttonToTop"
                 title="To Top" 
                 type="link"
-                align="left"
+                align="center"
                 icon="icon-angle-up"
-                additionalCssClasses="to-top-button"
+                additionalCssClasses="button--to-top"
             }
             """
         Then in the fusion output, the inner HTML of CSS selector ".button" matches '<span class="icon-angle-up"></span>Nach oben'
         Then in the fusion output, the attributes of CSS selector ".button__wrapper" are:
             | Key   | Value                                 |
-            | class | button__wrapper button__wrapper--left |
+            | class | button__wrapper button__wrapper--center |
         Then in the fusion output, the attributes of CSS selector ".button" are:
-            | Key     | Value                                                                 |
-            | class   | button button--link button--with-icon button--icon-left to-top-button |
-            | x-data  | toTopButton                                                           |
-            | x-ref   | toTopButton                                                           |
-        Then in the fusion output, the attributes of CSS selector ".to-top-button__wrapper" are:
-            | Key   | Value                                 |
-            | class | to-top-button__wrapper content-width  |
-        Then I store the Fusion output in the styleguide as "ToTopButton_Component"
+            | Key     | Value                                                                  |
+            | class   | button button--link button--with-icon button--icon-left button--to-top |
+            | x-data  | buttonToTop                                                            |
+            | x-ref   | buttonToTop                                                            |
+        Then I store the Fusion output in the styleguide as "ButtonToTop_Component"

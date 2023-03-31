@@ -1,0 +1,14 @@
+prototype(MyVendor.AwesomeNeosProject:Component.ButtonToTop) < prototype(Neos.Fusion:Component) {
+    renderer = Neos.Fusion:Component {
+        renderer = afx`
+            <MyVendor.AwesomeNeosProject:Component.Button  
+                x-data="buttonToTop" 
+                x-ref="buttonToTop"
+                title={I18n.translate('MyVendor.AwesomeNeosProject:Base:toTop')} 
+                type="link"
+                align="center"
+                icon="icon-angle-up"
+                additionalCssClasses="button--to-top" />
+        `
+    }
+}
