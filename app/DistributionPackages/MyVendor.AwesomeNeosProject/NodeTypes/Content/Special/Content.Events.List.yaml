@@ -2,6 +2,6 @@
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
   ui:
-    label: 'Events List'
+    label: i18n
     icon: icon-calendar
     group: special

@@ -2,7 +2,7 @@
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
   ui:
-    label: 'Accordion Item'
+    label: i18n
     icon: icon-chevron-down
   childNodes:
     main:
@@ -16,7 +16,7 @@
       ui:
         inlineEditable: true
         showInCreationDialog: true
-        label: 'Title'
+        label: i18n
         inline:
           editorOptions:
-            placeholder: 'Title'
+            placeholder: i18n

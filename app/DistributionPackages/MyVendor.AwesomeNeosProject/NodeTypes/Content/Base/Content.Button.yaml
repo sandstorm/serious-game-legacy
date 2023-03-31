@@ -15,10 +15,6 @@
         label: i18n
         inlineEditable: true
         showInCreationDialog: true
-        inspector:
-          editorOptions:
-            # TODO not working
-            placeholder: i18n
         inline:
           editorOptions:
             placeholder: i18n

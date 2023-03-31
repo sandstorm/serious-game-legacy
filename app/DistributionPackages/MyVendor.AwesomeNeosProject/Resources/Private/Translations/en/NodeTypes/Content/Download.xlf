@@ -6,10 +6,6 @@
                 <source>Beschreibung</source>
                 <target>Description</target>
             </trans-unit>
-            <trans-unit id="properties.description.ui.inspector.editorOptions.placeholder" xml:space="preserve">
-                <source>Beschreibung der Datei</source>
-                <target>File description</target>
-            </trans-unit>
             <trans-unit id="properties.description.ui.inline.editorOptions.placeholder" xml:space="preserve">
                 <source>Beschreibung der Datei</source>
                 <target>File description</target>

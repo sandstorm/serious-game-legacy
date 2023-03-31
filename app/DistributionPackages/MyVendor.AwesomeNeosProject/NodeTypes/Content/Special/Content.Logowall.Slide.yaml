@@ -5,7 +5,7 @@
     'MyVendor.AwesomeNeosProject:Mixin.Link': true
     'MyVendor.AwesomeNeosProject:Mixin.Align': true
   ui:
-    label: 'Image'
+    label: i18n
     icon: icon-picture
   # overwrite default value from mixin
   properties:

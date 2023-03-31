@@ -3,7 +3,7 @@
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
     'Neos.Neos:ContentCollection': true
   ui:
-    label: 'Logowall'
+    label: i18n
     icon: icon-icons
     group: special
     position: 15
@@ -20,9 +20,9 @@
       type: string
       defaultValue: '3000'
       ui:
-        label: 'Autoplay interval in ms'
+        label: i18n
         help:
-          message: 'Set an autoplay interval in ms. If empty there is no autoplay.'
+          message: i18n
         reloadIfChanged: true
         inspector:
           group: 'properties'
@@ -32,7 +32,7 @@
         'Neos.Neos/Validation/IntegerValidator': { }
       defaultValue: '6'
       ui:
-        label: 'Visible amount of logos (Desktop)'
+        label: i18n
         reloadIfChanged: true
         inspector:
           group: 'properties'

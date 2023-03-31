@@ -3,7 +3,7 @@
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
     'MyVendor.AwesomeNeosProject:Mixin.Image': true
   ui:
-    label: 'Quote'
+    label: i18n
     icon: icon-quote-left
     group: special
     position: 50
@@ -11,7 +11,7 @@
     text:
       type: string
       ui:
-        label: 'Quote'
+        label: i18n
         showInCreationDialog: true
         inlineEditable: true
         inline:
@@ -50,9 +50,9 @@
     person:
       type: string
       ui:
-        label: 'Person'
+        label: i18n
         showInCreationDialog: true
         inlineEditable: true
         inline:
           editorOptions:
-            placeholder: 'Person'
+            placeholder: 'Jon Doe'
