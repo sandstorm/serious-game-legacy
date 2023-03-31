@@ -12,12 +12,13 @@
     title:
       type: string
       ui:
-        label: 'Title'
+        label: i18n
         inlineEditable: true
         showInCreationDialog: true
         inspector:
           editorOptions:
-            placeholder: 'Title of this Button'
+            # TODO not working
+            placeholder: i18n
         inline:
           editorOptions:
-            placeholder: 'Title of this Button'
+            placeholder: i18n

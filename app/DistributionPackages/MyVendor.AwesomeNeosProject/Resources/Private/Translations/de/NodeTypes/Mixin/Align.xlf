@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="de" datatype="plaintext">
+        <body>
+            <trans-unit id="properties.align" xml:space="preserve">
+                <source>Ausrichtung</source>
+            </trans-unit>
+            <trans-unit id="properties.align.selectBoxEditor.values.left" xml:space="preserve">
+                <source>Links</source>
+            </trans-unit>
+            <trans-unit id="properties.align.selectBoxEditor.values.center" xml:space="preserve">
+                <source>Mittig</source>
+            </trans-unit>
+            <trans-unit id="properties.align.selectBoxEditor.values.right" xml:space="preserve">
+                <source>Rechts</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

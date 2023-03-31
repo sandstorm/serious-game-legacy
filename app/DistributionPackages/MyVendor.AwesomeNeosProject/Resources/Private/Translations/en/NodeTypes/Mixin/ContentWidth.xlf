@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="de" datatype="plaintext">
+        <body>
+            <trans-unit id="properties.contentWidth" xml:space="preserve">
+                <source>Breite des Inhalts</source>
+                <target>Content width</target>
+            </trans-unit>
+            <trans-unit id="properties.contentWidth.selectBoxEditor.values." xml:space="preserve">
+                <source>Standard (max-breite: 1400px)</source>
+                <target>Default (max-width: 1400px)</target>
+            </trans-unit>
+            <trans-unit id="properties.contentWidth.selectBoxEditor.values.small" xml:space="preserve">
+                <source>Klein (max-breite: 800px)</source>
+                <target>Small (max-width: 800px)</target>
+            </trans-unit>
+            <trans-unit id="properties.contentWidth.selectBoxEditor.values.large" xml:space="preserve">
+                <source>Groß (max-breite: 1800px)</source>
+                <target>Large (max-width: 1800px)</target>
+            </trans-unit>
+            <trans-unit id="properties.contentWidth.selectBoxEditor.values.full" xml:space="preserve">
+                <source>Volle Breite (max-width: 100%)</source>
+                <target>Full (max-width: 100%)</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -3,7 +3,6 @@
     'MyVendor.AwesomeNeosProject:Document.AbstractPage': true
     'MyVendor.AwesomeNeosProject:Mixin.BlogTags': true
     'MyVendor.AwesomeNeosProject:Mixin.Image': true
-    'MyVendor.AwesomeNeosProject:Mixin.Teaser.Text': true
   ui:
     group: general
     label: 'Blog Post'
@@ -14,6 +13,14 @@
         inspector:
           editorOptions:
             maxlength: 70
+    teaserText:
+      type: string
+      ui:
+        label: 'Teaser Text'
+        inlineEditable: true
+        inline:
+          editorOptions:
+            placeholder: 'Please enter a description'
     datePublished:
       type: DateTime
       ui:

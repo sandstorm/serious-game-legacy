@@ -5,7 +5,7 @@
       type: string
       defaultValue: left
       ui:
-        label: 'Align'
+        label: i18n
         reloadIfChanged: true
         showInCreationDialog: true
         inspector:
@@ -15,8 +15,8 @@
             allowEmpty: true
             values:
               left:
-                label: 'Left'
+                label: i18n
               center:
-                label: 'Center'
+                label: i18n
               right:
-                label: 'Right'
+                label: i18n

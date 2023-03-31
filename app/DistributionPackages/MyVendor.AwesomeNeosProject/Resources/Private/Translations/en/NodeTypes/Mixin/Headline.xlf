@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="de" datatype="plaintext">
+        <body>
+            <trans-unit id="properties.title" xml:space="preserve">
+                <source>Überschrift</source>
+                <target>Headline</target>
+            </trans-unit>
+            <trans-unit id="properties.title.ui.inline.editorOptions.placeholder" xml:space="preserve">
+                <source>Please enter a heading</source>
+                <target>Please enter a heading</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

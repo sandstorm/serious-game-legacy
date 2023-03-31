@@ -6,9 +6,9 @@
         general:
           label: i18n
         properties:
-          label: 'Properties'
+          label: i18n
           tab: default
         image:
-          label: 'Image'
+          label: i18n
           icon: 'icon-image'
           tab: default

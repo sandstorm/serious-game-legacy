@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="de" datatype="plaintext">
+        <body>
+            <trans-unit id="properties.backgroundColor" xml:space="preserve">
+                <source>Hintergrundfarbe</source>
+            </trans-unit>
+            <trans-unit id="properties.backgroundColor.selectBoxEditor.values.white" xml:space="preserve">
+                <source>Weiß</source>
+            </trans-unit>
+            <trans-unit id="properties.backgroundColor.selectBoxEditor.values.grey" xml:space="preserve">
+                <source>Grau</source>
+            </trans-unit>
+            <trans-unit id="properties.backgroundColor.selectBoxEditor.values.blue" xml:space="preserve">
+                <source>Blau</source>
+            </trans-unit>
+            <trans-unit id="properties.backgroundColor.selectBoxEditor.values.black" xml:space="preserve">
+                <source>Schwarz</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

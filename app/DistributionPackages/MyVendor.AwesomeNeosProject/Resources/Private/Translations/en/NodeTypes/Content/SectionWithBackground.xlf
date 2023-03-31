@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="de" datatype="plaintext">
+        <body>
+            <trans-unit id="ui.label" xml:space="preserve">
+                <source>Section</source>
+                <target>Section</target>
+            </trans-unit>
+            <trans-unit id="properties.padding" xml:space="preserve">
+                <source>Abstand (oben/unten)</source>
+                <target>Padding (top/bottom)</target>
+            </trans-unit>
+            <trans-unit id="properties.padding.selectBoxEditor.values.default" xml:space="preserve">
+                <source>Standard</source>
+                <target>Default</target>
+            </trans-unit>
+            <trans-unit id="properties.padding.selectBoxEditor.values.none" xml:space="preserve">
+                <source>Kein Abstand</source>
+                <target>No padding</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

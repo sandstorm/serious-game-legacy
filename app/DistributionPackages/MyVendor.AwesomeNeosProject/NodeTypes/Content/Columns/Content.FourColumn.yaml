@@ -3,7 +3,7 @@
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
     'MyVendor.AwesomeNeosProject:Mixin.Column': true
   ui:
-    label: 'Four columns'
+    label: i18n
     icon: icon-columns
     position: 204
   childNodes:
