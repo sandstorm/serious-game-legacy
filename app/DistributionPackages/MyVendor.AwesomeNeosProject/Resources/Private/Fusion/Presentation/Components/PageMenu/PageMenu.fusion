@@ -1,34 +1,58 @@
 prototype(MyVendor.AwesomeNeosProject:Component.PageMenu) < prototype(Neos.Fusion:Component) {
+    menuType = ''
+
     @propTypes {
         @strict = true
+        menuType = ${PropTypes.string}
     }
-    // We use alpine js to toggle the mobile menu.
-    // If the state of 'openMobileMenu' changes to true we add a class in PageMenu.Main.fusion.
-    renderer = afx`
-        <nav class="page-menu" x-data="{ openMobileMenu: false, megaMenuVisible: false }">
-            <div class="page-menu__logo">
-                <MyVendor.AwesomeNeosProject:Component.PageHeader.Logo/>
-            </div>
 
-            <button
-                    x-on:click="openMobileMenu = ! openMobileMenu"
-                    class="menu__toggle button button--link"
-                    title="Menü öffnen"
-            >
-                <i class="icon-bars1"/>
-            </button>
+    renderer = Neos.Fusion:Case {
+        if {
+            condition = ${props.menuType == 'main'}
+            // We use alpine js to toggle the mobile menu.
+            // If the state of 'mobileMenuOpen' changes to true we add a class in PageMenu.Main.fusion.
+            renderer = afx`
+                <nav class="page-menu page-menu--main" x-data="{ mobileMenuOpen: false }">
+                    <div class="page-menu__logo">
+                        <MyVendor.AwesomeNeosProject:Component.PageHeader.Logo/>
+                    </div>
 
-            <MyVendor.AwesomeNeosProject:Component.PageMenu.Main/>
-            <MyVendor.AwesomeNeosProject:Component.PageMenu.Mega/>
-            <MyVendor.AwesomeNeosProject:Component.LanguageMenu/>
+                    <button
+                        x-on:click="mobileMenuOpen = ! mobileMenuOpen"
+                        id="open-mobile-menu"
+                        class="mobile-menu__toggle button button--link"
+                        title="Menü öffnen"
+                    >
+                        <i class="icon-bars1"/>
+                    </button>
 
-            <button
-                x-on:click="megaMenuVisible = true"
-                class="menu__toggle mega-menu__toggle button button--link"
-                title="Menü öffnen"
-            >
-                <i class="icon-bars1"/>
-            </button>
-        </nav>
-    `
+                    <MyVendor.AwesomeNeosProject:Component.PageMenu.Main/>
+                    <MyVendor.AwesomeNeosProject:Component.LanguageMenu/>
+                </nav>
+            `
+        }
+        else {
+            condition = ${props.menuType == 'mega'}
+            renderer = afx`
+                <nav class="page-menu page-menu--mega" x-data="{ megaMenuOpen: false }">
+                    <div class="page-menu__logo">
+                        <MyVendor.AwesomeNeosProject:Component.PageHeader.Logo/>
+                    </div>
+
+                    <MyVendor.AwesomeNeosProject:Component.PageMenu.Mega/>
+                    <div class="page-menu__button-container">
+                        <MyVendor.AwesomeNeosProject:Component.LanguageMenu/>
+
+                        <button
+                                x-on:click="megaMenuOpen = true"
+                                class="mega-menu__toggle button button--link"
+                                title="Menü öffnen"
+                        >
+                            <i class="icon-bars1"/>
+                        </button>
+                    </div>
+                </nav>
+            `
+        }
+    }
 }

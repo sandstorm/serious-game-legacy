@@ -5,6 +5,17 @@
 $header__height: 85px;
 $SUBLEVEL_GAP: Spacing.$xl;
 
+.page-menu--mega {
+    .page-menu__button-container {
+        display: flex;
+        align-items: center;
+
+        .language-menu {
+            margin-right: Spacing.$xl;
+        }
+    }
+}
+
 .mega-menu__toggle {
     display: flex;
 }
@@ -21,12 +32,21 @@ $SUBLEVEL_GAP: Spacing.$xl;
 
     z-index: 999;
 
-    &--visible {
+    &--open {
         display: block;
     }
 
     > .content-width {
         height: 100%;
+    }
+
+    .language-menu {
+        display: none;
+
+        @include Mixins.mq(medium) {
+            display: block;
+            margin-right: Spacing.$xl;
+        }
     }
 }
 

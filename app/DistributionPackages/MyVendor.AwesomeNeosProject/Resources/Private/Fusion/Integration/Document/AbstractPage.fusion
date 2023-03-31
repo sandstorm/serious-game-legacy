@@ -3,11 +3,15 @@ prototype(MyVendor.AwesomeNeosProject:Document.AbstractPage) < prototype(Neos.Ne
         javascripts.site = MyVendor.AwesomeNeosProject:Resources.HeaderAssets
     }
 
+
     body >
     body = Neos.Fusion:Join {
         @position = 'after bodyTag'
         header = MyVendor.AwesomeNeosProject:Component.PageHeader {
-            menu = MyVendor.AwesomeNeosProject:Component.PageMenu
+            menu = MyVendor.AwesomeNeosProject:Component.PageMenu {
+                // has to be 'main' or 'mega'
+                menuType = 'mega'
+            }
         }
         breadcrumb = MyVendor.AwesomeNeosProject:Component.Breadcrumb
         main = MyVendor.AwesomeNeosProject:Layout.Default {
