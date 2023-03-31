@@ -18,10 +18,10 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu) < prototype(Neos.Fusio
                     </div>
 
                     <button
-                        x-on:click="mobileMenuOpen = ! mobileMenuOpen"
-                        id="open-mobile-menu"
-                        class="mobile-menu__toggle button button--link"
-                        title="Menü öffnen"
+                            x-on:click="mobileMenuOpen = !mobileMenuOpen"
+                            id="open-mobile-menu"
+                            class="mobile-menu__toggle button button--link"
+                            :title="mobileMenuOpen ? 'Menü schließen' : 'Menü öffnen'"
                     >
                         <i class="icon-bars1"/>
                     </button>
@@ -45,7 +45,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu) < prototype(Neos.Fusio
 
                         <button
                                 x-on:click="megaMenuOpen = true"
-                                class="mega-menu__toggle button button--link"
+                                class="page-menu__mega__toggle button button--link"
                                 title="Menü öffnen"
                         >
                             <i class="icon-bars1"/>

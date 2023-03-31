@@ -20,7 +20,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Mega) < prototype(Neos.
 
                     <button
                             x-on:click="megaMenuOpen = false"
-                            class="menu__toggle mega-menu__toggle button button--link"
+                            class="page-menu__mega__toggle button button--link"
                             title="Menü schließen"
                     >
                         <i class="icon-close"/>
