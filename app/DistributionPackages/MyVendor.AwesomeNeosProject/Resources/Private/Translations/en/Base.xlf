@@ -2,6 +2,9 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="en" datatype="plaintext">
         <body>
+           <trans-unit id="filterDates">
+               <source>Filter dates</source>
+           </trans-unit>
             <trans-unit id="learnMore">
                 <source>Learn more</source>
             </trans-unit>
@@ -17,8 +20,18 @@
             <trans-unit id="menu">
                 <source>Menu</source>
             </trans-unit>
+            <trans-unit id="noItems">
+                <source>Currently no items</source>
+            </trans-unit>
+            <trans-unit id="oClock">
+                <!-- no english analogy for "Uhr", you would usually just not write anything behind the timestamp -->
+                <source></source>
+            </trans-unit>
             <trans-unit id="openMenu">
                 <source>Open menu</source>
+            </trans-unit>
+            <trans-unit id="resetFilters">
+                <source>Reset filters</source>
             </trans-unit>
         </body>
     </file>

@@ -1,5 +1,4 @@
 @use "AbstractStyles/Variables/Colors";
-@use "AbstractStyles/Variables/Spacing";
 @use "AbstractStyles/Variables/Typo";
 @use "AbstractStyles/Mixins";
 
@@ -9,9 +8,9 @@ $icon_font-path: $relativePublicPath + "Fonts";
 // icon font build with IcoMoon App (see Icons.md in Resources/Public/Fonts Folder)
 @font-face {
     font-family: 'icons';
-    src: url($icon_font-path +  '/icons.ttf') format('truetype'),
-    url($icon_font-path +  '/icons.woff') format('woff'),
-    url($icon_font-path +  '/icons.svg') format('svg');
+    src: url($icon_font-path +  '/icons_v3.ttf') format('truetype'),
+    url($icon_font-path +  '/icons_v3.woff') format('woff'),
+    url($icon_font-path +  '/icons_v3.svg') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;

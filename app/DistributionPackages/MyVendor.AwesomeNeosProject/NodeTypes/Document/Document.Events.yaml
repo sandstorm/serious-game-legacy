@@ -8,3 +8,19 @@
   constraints:
     nodeTypes:
       'MyVendor.AwesomeNeosProject:Document.Events.Event': true
+  options:
+    template:
+      childNodes:
+        mainContentCollection:
+          name: 'main'
+          childNodes:
+            firstSection:
+              type: 'MyVendor.AwesomeNeosProject:Content.SectionWithBackground'
+              name: 'Section'
+              childNodes:
+                headline:
+                  type: 'MyVendor.AwesomeNeosProject:Content.Headline'
+                  properties:
+                    title: '<h1>Events</h1>'
+                eventList:
+                  type: 'MyVendor.AwesomeNeosProject:Content.Events.List'

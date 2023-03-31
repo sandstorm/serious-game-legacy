@@ -27,3 +27,6 @@ body {
     border-width: 0;
 }
 
+// Used to prevent flickering of elements when using alpine.js
+// See https://alpinejs.dev/directives/cloak
+[x-cloak] { display: none !important; }

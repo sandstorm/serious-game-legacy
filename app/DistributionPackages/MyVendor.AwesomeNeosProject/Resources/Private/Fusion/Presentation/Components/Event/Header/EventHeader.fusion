@@ -29,11 +29,12 @@ prototype(MyVendor.AwesomeNeosProject:Component.EventHeader) < prototype(Neos.Fu
                 <div @if={props.timeFrom}>
                     <i class="icon-clock" /> {props.timeFrom}
                     <span @if={props.timeTo}> - {props.timeTo}</span>
+                    {' '}{I18n.translate('MyVendor.AwesomeNeosProject:Base:oClock')}
                 </div>
                 <div @if={props.location}>
-                    <i class="icon-map-pin" /> {props.location}
+                    <i class="icon-location" /> {props.location}
                 </div>
-                <div>{props.tags}</div>
+                {props.tags}
             </header>
         </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
     `
