@@ -6,6 +6,9 @@ prototype(MyVendor.AwesomeNeosProject:Component.Button) < prototype(Neos.Fusion:
     align = ''
     icon = ''
     iconAlignment = 'left'
+    x-data = null
+    x-ref = null
+    additionalCssClasses = null
 
     @propTypes {
         @strict = true
@@ -16,6 +19,9 @@ prototype(MyVendor.AwesomeNeosProject:Component.Button) < prototype(Neos.Fusion:
         align = ${PropTypes.oneOf(['left', 'center', 'right'])}
         icon = ${PropTypes.string}
         iconAlignment = ${PropTypes.oneOf(['left', 'right'])}
+        x-data = ${PropTypes.string}
+        x-ref = ${PropTypes.string}
+        additionalCssClasses = ${PropTypes.string}
     }
 
     renderer = Neos.Fusion:Component {
@@ -23,8 +29,13 @@ prototype(MyVendor.AwesomeNeosProject:Component.Button) < prototype(Neos.Fusion:
 
         _inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
 
-        _buttonClasses = ${AtomicFusion.classNames('button','button--' + props.type)}
-        _buttonWithIconClasses = ${AtomicFusion.classNames('button','button--' + props.type, 'button--with-icon', 'button--icon-' + props.iconAlignment)}
+        _buttonClasses = ${AtomicFusion.classNames(
+            'button',
+            'button--' + props.type, 
+            props.icon ? 'button--with-icon' : null, 
+            props.icon ? 'button--icon-' + props.iconAlignment : null, 
+            props.additionalCssClasses
+        )}
 
         renderer = afx`
             <div
@@ -35,9 +46,11 @@ prototype(MyVendor.AwesomeNeosProject:Component.Button) < prototype(Neos.Fusion:
             >
                 <Neos.Fusion:Tag
                     tagName={(props.href && !props._inBackend) ? 'a' : 'div'}
-                    attributes.class={props.icon ? props._buttonWithIconClasses : props._buttonClasses}
+                    attributes.class={props._buttonClasses}
                     attributes.href={props.href ? props.href : null}
                     attributes.target={props.isExternalLink ? '_blank' : null}
+                    attributes.x-data={props.x-data ? props.x-data : null}
+                    attributes.x-ref={props.x-ref ? props.x-ref : null}
                 >
                     <span @if.hasIcon={props.icon} class={AtomicFusion.classNames(props.icon)}></span>
                     {props.title}
