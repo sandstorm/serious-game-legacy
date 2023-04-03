@@ -23,7 +23,6 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu) < prototype(Neos.Fusio
                             x-on:click="mobileMenuOpen = !mobileMenuOpen"
                             id="open-mobile-menu"
                             class="mobile-menu__toggle button button--link"
-                            :title="mobileMenuOpen ? 'Menü schließen' : 'Menü öffnen'"
                             title={I18n.translate('MyVendor.AwesomeNeosProject:Base:openMenu')}
                     >
                         <span class="icon-bars" aria-hidden="true"></span>
