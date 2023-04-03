@@ -10,6 +10,7 @@ $button__height--larger: 60px;
 .button__wrapper {
     display: flex;
     width: 100%;
+    margin-bottom: Spacing.$marginBottom;
 
     &--left {
         justify-content: flex-start;
@@ -46,6 +47,10 @@ $button__height--larger: 60px;
     overflow: hidden;
 
     @include Mixins.transition(background-color .25s, color .25s, border .25s);
+
+    &:focus {
+        outline: 1px solid Colors.$blue;
+    }
 }
 
 .button--solid-blue {
@@ -123,3 +128,15 @@ $button__height--larger: 60px;
         outline: 1px solid Colors.$blue--dark;
     }
 }
+
+.button--with-icon {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    &.button--icon-right {
+        flex-direction: row-reverse;
+    }
+}
+
+

@@ -1,0 +1,5 @@
+prototype(MyVendor.AwesomeNeosProject:Content.Slider.Slide) < prototype(MyVendor.AwesomeNeosProject:Content.Image) {
+    @process.wrapWithSliderClass = MyVendor.AwesomeNeosProject:Component.Slider.Slide {
+        content = ${value}
+    }
+}

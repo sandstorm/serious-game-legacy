@@ -8,7 +8,3 @@
     label: 'Image'
     icon: icon-picture
     position: 20
-  # overwrite default value from mixin
-  properties:
-    align:
-      defaultValue: center

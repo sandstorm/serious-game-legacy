@@ -2,6 +2,12 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="de" datatype="plaintext">
         <body>
+           <trans-unit id="filterDates">
+               <source>Termine filtern</source>
+           </trans-unit>
+            <trans-unit id="learnMore">
+                <source>Mehr erfahren</source>
+            </trans-unit>
             <trans-unit id="linkToStartPage">
                 <source>Link zur Startseite</source>
             </trans-unit>
@@ -10,6 +16,21 @@
             </trans-unit>
             <trans-unit id="linkTo">
                 <source>Link zum</source>
+            </trans-unit>
+            <trans-unit id="menu">
+                <source>Menü</source>
+            </trans-unit>
+            <trans-unit id="noItems">
+                <source>Aktuell keine Einträge</source>
+            </trans-unit>
+            <trans-unit id="oClock">
+                <source>Uhr</source>
+            </trans-unit>
+            <trans-unit id="openMenu">
+                <source>Menü öffnen</source>
+            </trans-unit>
+            <trans-unit id="resetFilters">
+                <source>Filter zurücksetzen</source>
             </trans-unit>
         </body>
     </file>

@@ -47,11 +47,13 @@ prototype(MyVendor.AwesomeNeosProject:Content.LatestBlogPosts) < prototype(Neos.
                     imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
                         asset = ${q(post).property('image')}
                     }
-                    sizes = ${[
-                        '(min-width: 1400px) calc(100vw / 3)',
-                        '(min-width: 996px) calc(100vw / 2)',
-                        '100vw'
-                    ]}
+                    imageUri = Neos.Fusion:ResourceUri {
+                        resource = ${q(post).property('image').resource}
+                    }
+                    fileExtension = ${q(post).property('image').resource.fileExtension}
+                    sizes = MyVendor.AwesomeNeosProject:Helper.ImageSizes {
+                        type = 'three-column--wrap'
+                    }
                 }
 
                 title = ${q(post).property('title')}

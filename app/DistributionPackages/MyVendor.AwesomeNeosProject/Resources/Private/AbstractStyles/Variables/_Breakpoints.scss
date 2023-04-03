@@ -1,5 +1,6 @@
-// !! Those breakpoints are coupled to the image breakpoints (sizes attribute) inside:
-// - Content.BlogPostPreview.fusion.
+// !! These breakpoints are coupled to the image breakpoints (sizes attribute) in:
+// - MyVendor.AwesomeNeosProject:Helper.ImageSizes
+// - and all components using the image sizes attribute individually
 // !! If changing the breakpoints here, also adjust the sizes on the locations above.
 $breakpoints: (
     xxsmall: "(max-width: 374px)",

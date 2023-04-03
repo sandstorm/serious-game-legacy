@@ -3,7 +3,7 @@
 
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertTrue;
-use Behat\Gherkin\Node\TableNode;
+use function PHPUnit\Framework\assertFalse;
 use Neos\Neos\Fusion\Cache\ContentCacheFlusher;
 use Neos\Utility\ObjectAccess;
 
@@ -64,33 +64,31 @@ trait FrontendControlTrait
     }
 
     /**
-     * @Then the current element in the breadcrumb should be :elementName
+     * @Then I must not see the breadcrumb
      */
-    public function theCurrentElementInTheBreadcrumbShouldBe($elementName)
+    public function iMustNotSeeTheBreadcrumb(): void
     {
-        $actualCurrentElement = $this->playwrightConnector->execute($this->playwrightContext,
+        $isVisible = $this->playwrightConnector->execute($this->playwrightContext,
             // language=JavaScript
             '
-                return await vars.page.textContent(`body .breadcrumb .current`);
+            return await vars.page.isVisible(`.body .breadcrumb`)
         ');// language=PHP
-
-        assertEquals($elementName, $actualCurrentElement, 'current element mismatch');
-
+        assertFalse($isVisible, "breadcrumb is not visible");
     }
 
     /**
-     * @Then the breadcrumb should contain the following elements:
+     * @Then the :level element in the breadcrumb should be :elementName
      */
-    public function theBreadcrumbShouldContainTheFollowingElements(TableNode $elements)
+    public function theCurrentElementInTheBreadcrumbShouldBe($level, $elementName)
     {
-        $actualElements = $this->playwrightConnector->execute($this->playwrightContext,
-            // language=JavaScript
+        $actualCurrentElement = $this->playwrightConnector->execute($this->playwrightContext,  sprintf(
+        // language=JavaScript
             '
-                const elements = await vars.page.$$(`body .breadcrumb li`);
-                return await Promise.all(elements.map(item => item.textContent()));
-        ');// language=PHP
+                const currentBreadcrumbContent = await vars.page.textContent(`body .breadcrumb .%s`);
+                return currentBreadcrumbContent.trim();
+        ', $level));// language=PHP
 
-        assertEquals($elements->getColumn(0), $actualElements, 'breadcrumb elements mismatch');
+        assertEquals($elementName, $actualCurrentElement, 'element mismatch');
     }
 
     /**

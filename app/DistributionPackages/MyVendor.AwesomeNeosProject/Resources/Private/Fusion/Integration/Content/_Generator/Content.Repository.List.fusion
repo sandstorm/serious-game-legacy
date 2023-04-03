@@ -1,4 +1,4 @@
-prototype(MyVendor.AwesomeNeosProject:Content.Repository.Teaser) < prototype(Neos.Neos:ContentComponent) {
+prototype(MyVendor.AwesomeNeosProject:Content.Repository.List) < prototype(Neos.Neos:ContentComponent) {
     @cache {
         mode = 'cached'
         entryIdentifier {
@@ -27,16 +27,10 @@ prototype(MyVendor.AwesomeNeosProject:Content.Repository.Teaser) < prototype(Neo
                     imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
                         asset = ${q(item).property('image')}
                     }
-
-                    // We want to deliver the smallest possible image.
-                    // - for big screens, we have 3 columns,
-                    // - for medium 2
-                    // - on mobile just one column.
-                    sizes = ${[
-                        '(min-width: 1400px) calc(100vw / 3)',
-                        '(min-width: 500px) calc(100vw / 2)',
-                        '100vw'
-                    ]}
+                    fileExtension = ${q(item).property('image').resource.fileExtension}
+                    sizes = MyVendor.AwesomeNeosProject:Helper.ImageSizes {
+                        type = 'three-column--wrap'
+                    }
                     class = 'preview-tiles__tile-img'
                 }
                 href = Neos.Neos:NodeUri {

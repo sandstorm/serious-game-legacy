@@ -1,0 +1,57 @@
+prototype(MyVendor.AwesomeNeosProject:Component.EventList.Event) < prototype(Neos.Fusion:Component) {
+    title = ''
+    href = ''
+    title = ''
+    tags = ''
+    date = ''
+    timeFrom = ''
+    timeTo = ''
+    location = ''
+
+    @propTypes {
+        @strict = true
+        title = ${PropTypes.string}
+        href = ${PropTypes.string}
+        tags = ${PropTypes.string}
+        date = ${PropTypes.instanceOf('DateTimeInterface')}
+        timeFrom = ${PropTypes.string}
+        timeTo = ${PropTypes.string}
+        location = ${PropTypes.string}
+    }
+
+    renderer = Neos.Fusion:Component {
+        @apply.props = ${props}
+
+        _day = ${Date.format(props.date, 'd')}
+        _month = ${Date.formatCldr(props.date, 'MMM', 'de')}
+        _year = ${Date.format(props.date, 'Y')}
+
+        renderer = afx`
+            <div class="event-list__event">
+                <div class="event-list__date">
+                    <span class="event-list__day">{props._day}</span>
+                    <span class="event-list__month">{props._month}</span>
+                    <span>{props._year}</span>
+                </div>
+                <div>
+                    <div @if={props.timeFrom} class="event-list__time">
+                        {props.timeFrom}
+                        <span @if={props.timeTo}> - {props.timeTo}</span>
+                        {' '}{I18n.translate('MyVendor.AwesomeNeosProject:Base:oClock')}
+                    </div>
+                    {props.tags}
+                    <h4 class="event-list__title">{props.title}</h4>
+                    <div @if={props.location}>
+                        <i class="icon-location" /> {props.location}
+                    </div>
+                    <MyVendor.AwesomeNeosProject:Component.Button
+                        title={I18n.translate('MyVendor.AwesomeNeosProject:Base:learnMore')}
+                        href={props.href}
+                        type="link"
+                        align="left"
+                    />
+                </div>
+            </div>
+        `
+    }
+}

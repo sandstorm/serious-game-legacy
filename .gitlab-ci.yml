@@ -3,6 +3,8 @@ stages:
   - build
   - test
   - deploy
+  - accessibility
+  - quality-ci
 
 include:
   - local: ci/common.gitlab-ci.yml

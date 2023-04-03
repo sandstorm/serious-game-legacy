@@ -239,12 +239,24 @@ function run-e2e-tests {
 	echo "You can now run 'dev open-styleguide'"
 }
 
+# use @dev at any scenario or feature that should be tested
+function run-e2e-tests-dev {
+	docker compose exec maria-db "/createTestingDB.sh"
+	docker compose exec neos bash -c ". /etc/bash.vips-arm64-hotfix.sh; FLOW_CONTEXT=Development/Docker/Behat ./flow doctrine:migrate"
+	docker compose exec neos bash -c ". /etc/bash.vips-arm64-hotfix.sh; FLOW_CONTEXT=Development/Docker/Behat ./flow user:create --roles Administrator admin password LocalDev Admin || true"
+
+	echo "TODO: check if testrunner is running and give hint"
+	docker compose exec neos bin/behat -c Packages/Sites/MyVendor.AwesomeNeosProject/Tests/Behavior/behat.yml.dist -vvv --tags=dev
+	echo
+	echo "You can now run 'dev open-styleguide'"
+}
+
 function run-unit-tests {
-	docker compose exec neos bash -c "./bin/phpunit -c Build/BuildEssentials/PhpUnit/UnitTests.xml Packages/Sites/MyVendor.AwesomeNeosProject/Tests/Unit"
+	docker compose exec neos bash -c "FLOW_CONTEXT=Testing ./bin/phpunit -c Build/BuildEssentials/PhpUnit/UnitTests.xml Packages/Sites/MyVendor.AwesomeNeosProject/Tests/Unit"
 }
 
 function run-functional-tests {
-	docker compose exec neos bash -c "./bin/phpunit -c Build/BuildEssentials/PhpUnit/FunctionalTests.xml Packages/Sites/MyVendor.AwesomeNeosProject/Tests/Functional"
+	docker compose exec neos bash -c "FLOW_CONTEXT=Testing ./bin/phpunit -c Build/BuildEssentials/PhpUnit/FunctionalTests.xml Packages/Sites/MyVendor.AwesomeNeosProject/Tests/Functional"
 }
 
 _echo_green "------------- Running task $@ -------------"

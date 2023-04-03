@@ -1,0 +1,41 @@
+prototype(MyVendor.AwesomeNeosProject:Component.EventHeader) < prototype(Neos.Fusion:Component) {
+    title = ''
+    tags = ''
+    date = ''
+    dateUntil = ''
+    timeFrom = ''
+    timeTo = ''
+    location = ''
+
+    @propTypes {
+        @strict = true
+        title = ${PropTypes.string}
+        tags = ${PropTypes.string}
+        date = ${PropTypes.string}
+        dateUntil = ${PropTypes.string}
+        timeFrom = ${PropTypes.string}
+        timeTo = ${PropTypes.string}
+        location = ${PropTypes.string}
+    }
+
+    renderer = afx`
+        <MyVendor.AwesomeNeosProject:Utility.ContentWidth>
+            <header class="event-header">
+                <h1>{props.title}</h1>
+                <div @if={props.date}>
+                    <i class="icon-calendar" /> {props.date}
+                    <span @if={props.dateUntil}> - {props.dateUntil}</span>
+                </div>
+                <div @if={props.timeFrom}>
+                    <i class="icon-clock" /> {props.timeFrom}
+                    <span @if={props.timeTo}> - {props.timeTo}</span>
+                    {' '}{I18n.translate('MyVendor.AwesomeNeosProject:Base:oClock')}
+                </div>
+                <div @if={props.location}>
+                    <i class="icon-location" /> {props.location}
+                </div>
+                {props.tags}
+            </header>
+        </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
+    `
+}

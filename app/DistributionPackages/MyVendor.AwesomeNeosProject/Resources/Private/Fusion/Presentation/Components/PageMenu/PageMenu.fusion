@@ -6,6 +6,8 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu) < prototype(Neos.Fusio
         menuType = ${PropTypes.string}
     }
 
+    // We use a span-tag for the menu icon because the i-tag causes some trouble with the rendering of the 404-Page
+
     renderer = Neos.Fusion:Case {
         if {
             condition = ${props.menuType == 'main'}
@@ -22,8 +24,10 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu) < prototype(Neos.Fusio
                             id="open-mobile-menu"
                             class="mobile-menu__toggle button button--link"
                             :title="mobileMenuOpen ? 'Menü schließen' : 'Menü öffnen'"
+                            title={I18n.translate('MyVendor.AwesomeNeosProject:Base:openMenu')}
                     >
-                        <i class="icon-bars1"/>
+                        <span class="icon-bars" aria-hidden="true"></span>
+                        <span class="sr-only">{I18n.translate('MyVendor.AwesomeNeosProject:Base:menu')}</span>
                     </button>
 
                     <MyVendor.AwesomeNeosProject:Component.PageMenu.Main/>
@@ -48,8 +52,9 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu) < prototype(Neos.Fusio
                                 class="page-menu__mega__toggle button button--link"
                                 title="Menü öffnen"
                         >
-                            <i class="icon-bars1"/>
-                        </button>
+                            <span class="icon-bars" aria-hidden="true"></span>
+                            <span class="sr-only">{I18n.translate('MyVendor.AwesomeNeosProject:Base:menu')}</span>
+                      </button>
                     </div>
                 </nav>
             `

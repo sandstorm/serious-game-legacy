@@ -1,0 +1,20 @@
+prototype(MyVendor.AwesomeNeosProject:Document.Events.Event) < prototype(MyVendor.AwesomeNeosProject:Document.Page) {
+    body.main.content.eventHeader = MyVendor.AwesomeNeosProject:Component.EventHeader {
+        title = ${q(node).property('title')}
+        date = ${Date.format(q(node).property('date'), 'd.m.Y')}
+        dateUntil = ${q(node).property('dateUntil') ? Date.format(q(node).property('dateUntil'), 'd.m.Y') : ''}
+        timeFrom = ${q(node).property('timeFrom') ? Date.format(q(node).property('timeFrom'), 'H:i') : ''}
+        timeTo = ${q(node).property('timeTo') ? Date.format(q(node).property('timeTo'), 'H:i') : ''}
+        location = ${q(node).property('location')}
+        tags = MyVendor.AwesomeNeosProject:Component.EventTagList {
+            tags = Neos.Fusion:Map {
+                items = ${q(node).property('tags')}
+                itemRenderer = Neos.Fusion:DataStructure {
+                    title = ${q(item).property('title')}
+                }
+            }
+            showIcon = true
+        }
+    }
+    body.main.content.eventHeader.@position = 'before mainContent'
+}

@@ -10,8 +10,12 @@ prototype(MyVendor.AwesomeNeosProject:Content.PageFooter) < prototype(Neos.Fusio
 
         // content is alway rendered from a ContentCollection from the StartPage document node
         // see auto-created child node in Document.StartPage.yaml
-        content = Neos.Neos:ContentCollection {
-            @context.node = ${q(site).find('footerContent').get(0)}
+        content = Neos.Fusion:Join {
+            socialIcons = MyVendor.AwesomeNeosProject:Content.SocialMediaIcons
+
+            content = Neos.Neos:ContentCollection {
+                @context.node = ${q(site).find('footerContent').get(0)}
+            }
         }
     }
 }

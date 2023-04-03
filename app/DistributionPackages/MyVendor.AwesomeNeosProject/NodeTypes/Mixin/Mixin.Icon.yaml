@@ -1,0 +1,48 @@
+'MyVendor.AwesomeNeosProject:Mixin.Icon':
+  abstract: true
+  properties:
+    icon:
+      type: string
+      ui:
+        label: Icon
+        reloadIfChanged: true
+        showInCreationDialog: true
+        inspector:
+          group: properties
+          editor: Neos.Neos/Inspector/Editors/SelectBoxEditor
+          editorOptions:
+            allowEmpty: true
+            placeholder: i18n
+            values:
+              # Social Media
+              icon-mastodon:
+                label: i18n
+                icon: 'resource://MyVendor.AwesomeNeosProject/SVGs/mastodon.svg'
+              icon-youtube:
+                label: i18n
+                icon: 'resource://MyVendor.AwesomeNeosProject/SVGs/youtube.svg'
+              icon-instagram:
+                label: i18n
+                icon: 'resource://MyVendor.AwesomeNeosProject/SVGs/instagram.svg'
+              icon-twitter:
+                label: i18n
+                icon: 'resource://MyVendor.AwesomeNeosProject/SVGs/twitter.svg'
+              icon-facebook:
+                label: i18n
+                icon: 'resource://MyVendor.AwesomeNeosProject/SVGs/facebook.svg'
+              # Pfeile
+              icon-arrow-down-to-line:
+                label: i18n
+                icon: 'resource://MyVendor.AwesomeNeosProject/SVGs/arrow-down-to-line.svg'
+              icon-angle-left:
+                label: i18n
+                icon: 'resource://MyVendor.AwesomeNeosProject/SVGs/angle-left.svg'
+              icon-angle-right:
+                label: i18n
+                icon: 'resource://MyVendor.AwesomeNeosProject/SVGs/angle-right.svg'
+              icon-angle-up:
+                label: i18n
+                icon: 'resource://MyVendor.AwesomeNeosProject/SVGs/angle-up.svg'
+              icon-angle-down:
+                label: i18n
+                icon: 'resource://MyVendor.AwesomeNeosProject/SVGs/angle-down.svg'

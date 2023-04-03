@@ -1,0 +1,7 @@
+'MyVendor.AwesomeNeosProject:Content.Events.List':
+  superTypes:
+    'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
+  ui:
+    label: 'Events List'
+    icon: icon-calendar
+    group: special

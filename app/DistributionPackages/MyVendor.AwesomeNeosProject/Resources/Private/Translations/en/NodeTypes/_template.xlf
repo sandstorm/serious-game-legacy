@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file original="" product-name="MyVendor.AwesomeNeosProject" source-language="de" target-language="en" datatype="plaintext">
+		<body>
+			<trans-unit id="ui.label" xml:space="preserve">
+				<source>name</source>
+				<target>name</target>
+			</trans-unit>
+			<trans-unit id="groups.data" xml:space="preserve">
+				<source>Gruppenname</source>
+				<target>Group name</target>
+			</trans-unit>
+			<trans-unit id="properties.name" xml:space="preserve">
+				<source>name</source>
+				<target>name</target>
+			</trans-unit>
+			<trans-unit id="properties.name.selectBoxEditor.placeholder" xml:space="preserve">
+				<source>...</source>
+				<target>...</target>
+			</trans-unit>
+			<trans-unit id="properties.name.selectBoxEditor.values.xxx" xml:space="preserve">
+				<source>Eigenschaft xxx</source>
+				<target>Property xxx</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

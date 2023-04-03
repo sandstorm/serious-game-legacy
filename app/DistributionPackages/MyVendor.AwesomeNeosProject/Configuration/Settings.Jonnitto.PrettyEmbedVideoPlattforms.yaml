@@ -11,7 +11,7 @@ Jonnitto:
     # If this is set to a string, the element gets wrapped with a div and the class with the given string.
     # If set to true, the element gets wrapped with a div without any class.
     # If set to false, the element does not get wrapped at all.
-    wrapper: 'content-width'
+    wrapper: false
 
   PrettyEmbedVideoPlatforms:
     youtube:

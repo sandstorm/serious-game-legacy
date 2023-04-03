@@ -22,11 +22,16 @@ Run `./kickstart.sh` and follow the instructions.
       * [Debug Failing Tests](#debug-failing-tests)
       * [Run Single BDD Feature Files / Scenarios](#run-single-bdd-feature-files--scenarios)
       * [Generating content (node) fixtures workflow](#generating-content--node--fixtures-workflow)
+    * [Accessibility Tests](#accessibility-tests)
+      * [Testing without htaccess](#testing-without-htaccess-eg-production)
+      * [Testing with htaccess](#testing-with-htaccess-eg-staging)
+      * [Results](#results) 
   * [Staging](#staging)
   * [Site Export / Site Import](#site-export--site-import)
   * [Automatic Translation with DeepL](#automatic-translation-with-deepl)
   * [Kickstart repository nodetypes](#kickstart-repository-nodetypes)
   * [Custom icon font with icomoon](#custom-icon-font-with-icomoon)
+    * [Use in backend](#use-custom-icons-in-neos-backend) 
   * [Maps](#maps)
   * [Improving Kickstart Experience](#improving-kickstart-experience)
   * [Backlog](#backlog)
@@ -136,6 +141,22 @@ docker compose exec -T neos ./flow stepgenerator:notfoundpage | pbcopy
 
 4. paste into your feature files and run tests
 
+### Accessibility Tests
+
+We have CI tasks for staging `a11y_test_staging` and production `a11y_test_production` which will create us an a11y test report as an job artifact.
+
+The test uses pa11y, so have a look at https://github.com/pa11y/pa11y-ci for possible configuration options.
+
+#### Testing without htaccess (e.g. production)
+If we don't have an htaccess in front of the page, we can use the `.pa11yci` file to define all urls of the page we want to test. Just rename `.pa11yci.sample` to `.pa11yci` and add the urls you want to be tested. We also can make screen captures if we want to (see `.pa11yci.sample`). When we use it this way, we don't have to use the `--config` flag like we do in the `a11y_test_staging` job because it will pick up the `.pa11yci` config automatically.
+
+#### Testing with htaccess (e.g. staging)
+If we have an htaccess in front of the page we can write the pa11y config like we would do with the `.pa11yci` file but store it in a gitlab variable. It's importent that the variable is of type `file` (Settings > CI/CD > Variables). For the kickstarter we use the variable `$A11Y_TEST`. If we want to add an url we want to test, we can just edit this variable. If you cannot see the Settings just ask another Sandstormee with access rights ;) 
+
+#### Results
+In both cases htaccess or not the results will be stored as job artifacts and can be downloaded. The html-report can be found in the directory `pa11y-ci-report` and if we decided to get some screenshots, they will be stored in the directory `pa11y-ci-report-images`.
+
+
 ## Staging
 
 run `dev open-staging` to open the staging url in the browser.
@@ -181,15 +202,29 @@ The command will create the following files:
 
 * NodeTypes/Document/Document.Repository.yaml
 * NodeTypes/Document/Document.Repository.Item.yaml
-* NodeTypes/Content/Content.Repository.Teaser.yaml
+* NodeTypes/Content/Content.Repository.List.yaml
 * Resources/Private/Fusion/Integration/Document/Document.Repository.fusion
 * Resources/Private/Fusion/Integration/Document/Document.Repository.Item.fusion
-* Resources/Private/Fusion/Integration/Content/Content.Repository.Teaser.fusion
+* Resources/Private/Fusion/Integration/Content/Content.Repository.List.fusion
 
 ## Custom icon font with icomoon
 
 We use a custom icon font build with https://icomoon.io/app.
 Look at the Icons.md for more information: `DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public/Fonts/Icons.md`
+
+### Use custom icons in neos backend
+
+Unfortunately we can't use our custom icomoon font in the neos backend directly because it just works with the integrated fontawesome iconfont. But if we want to use our own icons anyway we can:
+
+1. Export the SVGs of the icomoon font (e.g. in white)
+2. Copy those SVGs into the `Public/SVGs` folder
+3. Use the icon as SVG e.g. in the `Mixin.Icon` for the `SelectBoxEditor` by using the `resource://` path (https://www.youtube.com/watch?v=Aq4w21pjriY)
+
+```yaml
+icon-angle-down:
+  label: i18n
+  icon: 'resource://MyVendor.AwesomeNeosProject/SVGs/angle-down.svg'
+```
 
 ## Maps
 

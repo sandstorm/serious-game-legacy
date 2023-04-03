@@ -3,6 +3,13 @@
 @use "AbstractStyles/Mixins";
 @use "Fusion/Presentation/Components/Button/Button";
 
+$contentSlider__height: 700px;
+$contentSlider__height--small: 400px;
+
+.content-slider {
+    margin-bottom: Spacing.$marginBottom--large;
+}
+
 // "slider" class is also used in klaro cookie consent, so we need a more specific class name here
 .content-slider__slides {
     align-items: center;
@@ -24,10 +31,10 @@
     }
 
     .image {
-        height: 700px;
+        height: $contentSlider__height;
 
         @include Mixins.mq(small) {
-            height: 400px;
+            height: $contentSlider__height--small;
         }
 
         picture {
@@ -63,8 +70,10 @@
 }
 
 .content-slider__pagination {
+
     &.swiper-pagination-bullets.swiper-pagination-horizontal {
-        bottom: 10px;
+        position: relative;
+        bottom: 0;
     }
 
     .swiper-pagination-bullet {

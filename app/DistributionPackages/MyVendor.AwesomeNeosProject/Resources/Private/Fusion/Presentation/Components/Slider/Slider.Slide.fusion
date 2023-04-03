@@ -1,4 +1,4 @@
-prototype(MyVendor.AwesomeNeosProject:Component.Slide) < prototype(Neos.Fusion:Component) {
+prototype(MyVendor.AwesomeNeosProject:Component.Slider.Slide) < prototype(Neos.Fusion:Component) {
     content = ''
 
     @propTypes {

@@ -6,9 +6,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-
-    margin-bottom: Spacing.$lg;
-    background-color: Colors.$grey;
+    margin-bottom: Spacing.$marginBottom;
 
     font-size: 1.5rem;
 
@@ -19,16 +17,11 @@
 
 .social-media-icons__link {
     text-decoration: none;
+    color: Colors.$white;
 
     + .social-media-icons__link {
         margin-left: Spacing.$lg;
     }
-}
-
-.social-media-icons__icon {
-    color: Colors.$white;
-
-    @include Mixins.transition(color .25s);
 
     &:hover, &:active, &:focus {
         color: Colors.$blue;

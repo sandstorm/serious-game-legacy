@@ -1,0 +1,13 @@
+'MyVendor.AwesomeNeosProject:Content.Slider.Slide':
+  superTypes:
+    'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
+    'MyVendor.AwesomeNeosProject:Mixin.Image': true
+    'MyVendor.AwesomeNeosProject:Mixin.Link': true
+    'MyVendor.AwesomeNeosProject:Mixin.Align': true
+  ui:
+    label: 'Image'
+    icon: icon-picture
+  # overwrite default value from mixin
+  properties:
+    align:
+      defaultValue: center

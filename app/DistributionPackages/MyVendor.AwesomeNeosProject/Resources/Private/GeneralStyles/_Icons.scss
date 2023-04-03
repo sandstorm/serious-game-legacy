@@ -13,14 +13,11 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-close:before {
-    content: "\f00d";
+.icon-clock:before {
+    content: "\f017";
 }
-.icon-remove:before {
-    content: "\f00d";
-}
-.icon-times:before {
-    content: "\f00d";
+.icon-calendar:before {
+    content: "\f073";
 }
 .icon-mastodon:before {
     content: "\e901";
@@ -40,7 +37,7 @@
 .icon-arrow-down-to-line:before {
     content: "\e900";
 }
-.icon-bars1:before {
+.icon-bars:before {
     content: "\f0c9";
 }
 .icon-angle-left:before {
@@ -54,4 +51,10 @@
 }
 .icon-angle-down:before {
     content: "\f107";
+}
+.icon-tags:before {
+    content: "\e936";
+}
+.icon-location:before {
+    content: "\e947";
 }

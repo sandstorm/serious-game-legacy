@@ -12,7 +12,7 @@ function generate-repository {
 
   defaultFullName="Document.$defaultName"
   defaultItemFullName="Document.$defaultName.$defaultItemName"
-  defaultTeaserContentName="Content.$defaultName.Teaser"
+  defaultListContentName="Content.$defaultName.List"
 
   _echo_yellow "#########################################################"
   _echo_yellow "#                                                       #"
@@ -33,18 +33,18 @@ function generate-repository {
     then
       documentName="Document.$name"
       itemDocumentName="Document.$name.$itemName"
-      teaserContentName="Content.$name.Teaser"
+      ListContentName="Content.$name.List"
       siteFullName="Document.StartPage"
-      constraintsMixinFullName="Constraints.Base"
+      constraintsMixinFullName="Constraints.Special"
 
       echo
       echo "These files will be created:"
       _echo_green "  * NodeTypes/Document/$documentName.yaml"
       _echo_green "  * NodeTypes/Document/$itemDocumentName.yaml"
-      _echo_green "  * NodeTypes/Content/$teaserContentName.yaml"
+      _echo_green "  * NodeTypes/Content/$ListContentName.yaml"
       _echo_green "  * Resources/Private/Fusion/Integration/Document/$documentName.fusion"
       _echo_green "  * Resources/Private/Fusion/Integration/Document/$itemDocumentName.fusion"
-      _echo_green "  * Resources/Private/Fusion/Integration/Content/$teaserContentName.fusion"
+      _echo_green "  * Resources/Private/Fusion/Integration/Content/$ListContentName.fusion"
       echo
       echo "We will also add constraints to:"
       _echo_green "  * NodeTypes/Document/$siteFullName.yaml"
@@ -67,7 +67,7 @@ function generate-repository {
       # Replace Item Label
       sed -i '' "s/${defaultName}/${name}/g" "$documentName.yaml"
       # Replace NodeType in node templates
-      sed -i '' "s/${defaultTeaserContentName}/${teaserContentName}/g" "$documentName.yaml"
+      sed -i '' "s/${defaultListContentName}/${ListContentName}/g" "$documentName.yaml"
 
       # ITEM
       sed -i '' "s/${defaultItemFullName}/${itemDocumentName}/g" "$itemDocumentName.yaml"
@@ -97,15 +97,15 @@ function generate-repository {
       echo
       pushd "./NodeTypes/Content" > /dev/null
       echo "... Copying Content NodeType Templates"
-      cp "$generatorFolderName/$defaultTeaserContentName.yaml" "$teaserContentName.yaml"
+      cp "$generatorFolderName/$defaultListContentName.yaml" "$ListContentName.yaml"
       echo "... Replacing Name"
-      sed -i '' "s/${defaultTeaserContentName}/${teaserContentName}/g" "$teaserContentName.yaml"
-      sed -i '' "s/${defaultName} Teaser/${name} Teaser/g" "$teaserContentName.yaml"
+      sed -i '' "s/${defaultListContentName}/${ListContentName}/g" "$ListContentName.yaml"
+      sed -i '' "s/${defaultName} List/${name} List/g" "$ListContentName.yaml"
       popd > /dev/null
 
       pushd "./NodeTypes/Constraints" > /dev/null
       echo "... Updating Constraints in $constraintsMixinFullName.yaml"
-      constraintsKey="$namespace:$teaserContentName"
+      constraintsKey="$namespace:$ListContentName"
       if grep -q "$constraintsKey" "$constraintsMixinFullName.yaml"
         then
           _echo_yellow "    Constraints for $constraintsKey already set"
@@ -117,16 +117,16 @@ function generate-repository {
       echo
       pushd "./Resources/Private/Fusion/Integration/Content" > /dev/null
       echo "... Copying Content Fusion File Templates"
-      cp "$generatorFolderName/$defaultTeaserContentName.fusion" "$teaserContentName.fusion"
+      cp "$generatorFolderName/$defaultListContentName.fusion" "$ListContentName.fusion"
       echo "... Replacing Names"
 
       # Replacing Prototype
-      sed -i '' "s/${defaultTeaserContentName}/${teaserContentName}/g" "$teaserContentName.fusion"
+      sed -i '' "s/${defaultListContentName}/${ListContentName}/g" "$ListContentName.fusion"
 
       # Replacing referenced NodeTypes
       # IMPORTANT: we need to replace the repository item name first
-      sed -i '' "s/${defaultItemFullName}/${itemDocumentName}/g" "$teaserContentName.fusion"
-      sed -i '' "s/${defaultFullName}/${documentName}/g" "$teaserContentName.fusion"
+      sed -i '' "s/${defaultItemFullName}/${itemDocumentName}/g" "$ListContentName.fusion"
+      sed -i '' "s/${defaultFullName}/${documentName}/g" "$ListContentName.fusion"
       popd > /dev/null
     else
       _echo_yellow "Nothing to do :("

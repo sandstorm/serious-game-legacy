@@ -1,0 +1,13 @@
+@use "AbstractStyles/Variables/Spacing";
+
+.event-header {
+    margin-top: Spacing.$sm * 10;
+    margin-bottom: Spacing.$sm * 10;
+    width: 100%;
+
+    text-align: center;
+
+    .blog-tag-list {
+        justify-content: center;
+    }
+}

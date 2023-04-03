@@ -1,0 +1,1 @@
+prototype(MyVendor.AwesomeNeosProject:Document.Events) < prototype(MyVendor.AwesomeNeosProject:Document.Page)
