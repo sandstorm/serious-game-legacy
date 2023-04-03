@@ -1,5 +1,11 @@
-.button__wrapper {
+@use 'AbstractStyles/Variables/Spacing';
+
+.button-to-top__wrapper {
     &--is-hidden {
         display: none;
     }
+}
+
+.button--to-top {
+    padding: 0 Spacing.$md;
 }

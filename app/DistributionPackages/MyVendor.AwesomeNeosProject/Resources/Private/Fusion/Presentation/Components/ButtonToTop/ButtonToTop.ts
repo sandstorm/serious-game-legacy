@@ -1,3 +1,5 @@
+const BUTTON_TO_TOP_WRAPPER_CLASS = 'button-to-top__wrapper'
+
 export default () => ({
     init() {
         //@ts-ignore
@@ -12,8 +14,8 @@ export default () => ({
 
         // We don't have to show the button-to-top, when we can see all of the content at once
         if(documentHeight <= window.innerHeight) {
-            const buttonWrapper = buttonToTop.closest('.button__wrapper')
-            buttonWrapper.classList.add('button__wrapper--is-hidden')
+            const buttonWrapper = buttonToTop.closest(`.${BUTTON_TO_TOP_WRAPPER_CLASS}`)
+            buttonWrapper.classList.add(`${BUTTON_TO_TOP_WRAPPER_CLASS}--is-hidden`)
         }
 
         buttonToTop.addEventListener("click", () => {

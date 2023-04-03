@@ -6,9 +6,6 @@ prototype(MyVendor.AwesomeNeosProject:Component.Button) < prototype(Neos.Fusion:
     align = ''
     icon = ''
     iconAlignment = 'left'
-    x-data = null
-    x-ref = null
-    additionalCssClasses = null
 
     @propTypes {
         @strict = true
@@ -19,9 +16,6 @@ prototype(MyVendor.AwesomeNeosProject:Component.Button) < prototype(Neos.Fusion:
         align = ${PropTypes.oneOf(['left', 'center', 'right'])}
         icon = ${PropTypes.string}
         iconAlignment = ${PropTypes.oneOf(['left', 'right'])}
-        x-data = ${PropTypes.string}
-        x-ref = ${PropTypes.string}
-        additionalCssClasses = ${PropTypes.string}
     }
 
     renderer = Neos.Fusion:Component {
@@ -33,8 +27,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Button) < prototype(Neos.Fusion:
             'button',
             'button--' + props.type, 
             props.icon ? 'button--with-icon' : null, 
-            props.icon ? 'button--icon-' + props.iconAlignment : null, 
-            props.additionalCssClasses
+            props.icon ? 'button--icon-' + props.iconAlignment : null
         )}
 
         renderer = afx`
@@ -49,8 +42,6 @@ prototype(MyVendor.AwesomeNeosProject:Component.Button) < prototype(Neos.Fusion:
                     attributes.class={props._buttonClasses}
                     attributes.href={props.href ? props.href : null}
                     attributes.target={props.isExternalLink ? '_blank' : null}
-                    attributes.x-data={props.x-data ? props.x-data : null}
-                    attributes.x-ref={props.x-ref ? props.x-ref : null}
                 >
                     <span @if.hasIcon={props.icon} class={AtomicFusion.classNames(props.icon)}></span>
                     {props.title}

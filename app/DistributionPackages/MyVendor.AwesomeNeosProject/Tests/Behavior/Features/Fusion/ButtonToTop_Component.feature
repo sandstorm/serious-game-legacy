@@ -16,20 +16,12 @@ Feature: Testcase for ButtonToTop Component
     Scenario: To Top Button
         When I render the Fusion object "/testcase" with the current context node:
             """fusion
-            testcase = MyVendor.AwesomeNeosProject:Component.ButtonToTop {
-                x-data="buttonToTop" 
-                x-ref="buttonToTop"
-                title="To Top" 
-                type="link"
-                align="center"
-                icon="icon-angle-up"
-                additionalCssClasses="button--to-top"
-            }
+            testcase = MyVendor.AwesomeNeosProject:Component.ButtonToTop
             """
-        Then in the fusion output, the inner HTML of CSS selector ".button" matches '<span class="icon-angle-up"></span>Nach oben'
+        Then in the fusion output, the inner HTML of CSS selector ".button" matches '<span class="icon-angle-up" aria-hidden="true"></span>Nach oben'
         Then in the fusion output, the attributes of CSS selector ".button__wrapper" are:
-            | Key   | Value                                 |
-            | class | button__wrapper button__wrapper--center |
+            | Key   | Value                                                          |
+            | class | button__wrapper button__wrapper--center button-to-top__wrapper |
         Then in the fusion output, the attributes of CSS selector ".button" are:
             | Key     | Value                                                                  |
             | class   | button button--link button--with-icon button--icon-left button--to-top |
