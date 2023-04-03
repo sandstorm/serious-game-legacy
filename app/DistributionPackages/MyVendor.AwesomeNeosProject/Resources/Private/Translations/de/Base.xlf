@@ -15,7 +15,7 @@
                 <source>Link zur Seite: </source>
             </trans-unit>
             <trans-unit id="linkTo">
-                <source>Link zum</source>
+                <source>Link zu</source>
             </trans-unit>
             <trans-unit id="menu">
                 <source>Menü</source>
