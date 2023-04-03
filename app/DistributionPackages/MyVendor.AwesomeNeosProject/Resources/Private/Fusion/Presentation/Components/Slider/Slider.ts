@@ -5,9 +5,32 @@ import 'swiper/css/bundle';
 // @ts-ignore
 import { Swiper as SwiperType } from "swiper";
 
+const AVAILABLE_LANGUAGES = ['de', 'en']
+
+type AvailableLanguages = typeof AVAILABLE_LANGUAGES[number]
+
+type TranslationItem = {
+    prevSlideMessage: string,
+    nextSlideMessage: string, 
+}
+
+type Translations = Record<AvailableLanguages, TranslationItem>
+
 // use the generic swiper classes here so the code works for all swipers inheriting this function
 const SLIDE_CLASS = "swiper-slide";
 const SLIDER_CLASS = "swiper";
+
+// According to translations in base.xlf
+const TRANSLATIONS: Translations = {
+    de: {
+        prevSlideMessage: 'Zur vorherigen Seite springen',
+        nextSlideMessage: 'Zur nächsten Seite springen',
+    },
+    en: {
+        prevSlideMessage: 'Skip to previous slide page',
+        nextSlideMessage: 'Skip to next slide page',
+    }
+};
 
 export const basicSlider = function(inBackend: unknown = false) {
     return {
@@ -84,6 +107,9 @@ export const basicSlider = function(inBackend: unknown = false) {
                 return;
             }
 
+            const html = document.documentElement
+            const currentLanguage = html.hasAttribute('lang') ? html.getAttribute('lang') : 'de'
+
             const swiperOptions = {
                 loop: !this.inBackend,
                 pagination: {
@@ -94,6 +120,11 @@ export const basicSlider = function(inBackend: unknown = false) {
                     nextEl: '.swiper-button-next',
                     prevEl: '.swiper-button-prev',
                 },
+                a11y: {
+                    prevSlideMessage: currentLanguage !== null && AVAILABLE_LANGUAGES.indexOf(currentLanguage) !== -1 ? TRANSLATIONS[currentLanguage as AvailableLanguages].prevSlideMessage : TRANSLATIONS['de'].prevSlideMessage,
+                    nextSlideMessage: currentLanguage !== null && AVAILABLE_LANGUAGES.indexOf(currentLanguage) !== -1 ? TRANSLATIONS[currentLanguage as AvailableLanguages].nextSlideMessage : TRANSLATIONS['de'].nextSlideMessage,
+                }
+                
             }
 
             this._swiper = new Swiper(swiperRef, swiperOptions);
