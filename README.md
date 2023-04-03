@@ -163,6 +163,12 @@ We exclude the following rules for the kickstarter because they are more or less
 * WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Alpha
 * WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Abs
 
+Excluded Elements:
+* a[href='#open_cookie_punch_modal']
+
+Usage of components:
+* accordions should be used in a section with an h2 to keep the headline hierachy otherwise we have to update the accordion headlines accordingly
+
 ## Staging
 
 run `dev open-staging` to open the staging url in the browser.
