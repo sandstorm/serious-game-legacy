@@ -157,6 +157,11 @@ If we have an htaccess in front of the page we can write the pa11y config like w
 #### Results
 In both cases htaccess or not the results will be stored as job artifacts and can be downloaded. The html-report can be found in the directory `pa11y-ci-report` and if we decided to get some screenshots, they will be stored in the directory `pa11y-ci-report-images`.
 
+#### Hint
+We exclude the following rules for the kickstarter because they are more or less color contrast related. In the kickstarter we focus on structure-related issues. Nevertheless should the color contrast be checked in an actual project.
+* WCAG2AA.Principle1.Guideline1_4.1_4_3.G18 / WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Fail
+* WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Alpha
+* WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Abs
 
 ## Staging
 
