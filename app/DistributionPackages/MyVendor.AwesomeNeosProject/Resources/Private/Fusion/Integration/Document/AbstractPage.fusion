@@ -27,5 +27,4 @@ prototype(MyVendor.AwesomeNeosProject:Document.AbstractPage) < prototype(Neos.Ne
         }
         footer = MyVendor.AwesomeNeosProject:Content.PageFooter
     }
-
 }

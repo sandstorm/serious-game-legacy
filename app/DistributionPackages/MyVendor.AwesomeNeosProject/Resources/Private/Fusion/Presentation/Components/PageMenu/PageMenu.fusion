@@ -38,7 +38,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu) < prototype(Neos.Fusio
         else {
             condition = ${props.menuType == 'mega'}
             renderer = afx`
-                <nav class="page-menu page-menu--mega" x-data="{ megaMenuOpen: true }">
+                <nav class="page-menu page-menu--mega" x-data="{ megaMenuOpen: false }">
                     <div class="page-menu__logo">
                         <MyVendor.AwesomeNeosProject:Component.PageHeader.Logo/>
                     </div>
