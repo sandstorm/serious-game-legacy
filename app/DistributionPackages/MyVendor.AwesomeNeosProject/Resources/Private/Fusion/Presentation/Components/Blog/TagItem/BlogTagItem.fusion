@@ -14,14 +14,16 @@ prototype(MyVendor.AwesomeNeosProject:Component.BlogTagItem) < prototype(Neos.Fu
         node = ${node}
     }
 
-    renderer = Neos.Fusion:Tag {
-        tagName = ${props.renderAsLink ? 'a' : 'span'}
-        attributes.class = ${AtomicFusion.classNames('blog-tag', {'blog-tag--is-active': props.activeTag == props.tag})}
-        attributes.href = ${props.renderAsLink ? props.tagPage : null}
-        attributes.title = ${props.renderAsLink ? I18n.translate('MyVendor.AwesomeNeosProject:Base:linkTo') + ' Tag: ' + props.tag.properties.title : null}
-
-        content = afx`
-            {props.tag.properties.title}
-        `
-    }
+    renderer = afx`
+        <li>
+            <Neos.Fusion:Tag
+                tagName={props.renderAsLink ? 'a' : 'span'}
+                attributes.class={AtomicFusion.classNames('blog-tag', {'blog-tag--is-active': props.activeTag == props.tag})}
+                attributes.href={props.renderAsLink ? props.tagPage : null}
+                attributes.title={props.renderAsLink ? I18n.translate('MyVendor.AwesomeNeosProject:Base:linkTo') + ' Tag: ' + props.tag.properties.title : null}
+            >
+                {props.tag.properties.title}
+            </Neos.Fusion:Tag>
+        </li>
+    `
 }
