@@ -17,19 +17,19 @@ prototype(MyVendor.AwesomeNeosProject:Component.SocialMediaIcons) < prototype(Ne
     renderer = afx`
         <div class="social-media-icons">
             <a @if={props.instagramLink} target="_blank" href={props.instagramLink} aria-label="Instagram" class="social-media-icons__link">
-                <i class="icon-instagram"></i>
+                <span class="icon-instagram" aria-hidden="true"></span>
             </a>
             <a @if={props.facebookLink} target="_blank" href={props.facebookLink} aria-label="Facebook" class="social-media-icons__link">
-                <i class="icon-facebook"></i>
+                <span class="icon-facebook" aria-hidden="true"></span>
             </a>
             <a @if={props.twitterLink} target="_blank" href={props.twitterLink} aria-label="Twitter" class="social-media-icons__link">
-                <i class="icon-twitter"></i>
+                <span class="icon-twitter" aria-hidden="true"></span>
             </a>
             <a @if={props.youtubeLink} target="_blank" href={props.youtubeLink} aria-label="YouTube" class="social-media-icons__link">
-                <i class="icon-youtube"></i>
+                <span class="icon-youtube" aria-hidden="true"></span>
             </a>
             <a @if={props.mastodonLink} target="_blank" href={props.mastodonLink} aria-label="Mastodon" class="social-media-icons__link">
-                <i class="icon-mastodon"></i>
+                <span class="icon-mastodon" aria-hidden="true"></span>
             </a>
         </div>
     `

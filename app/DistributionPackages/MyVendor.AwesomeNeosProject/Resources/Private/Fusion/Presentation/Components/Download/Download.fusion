@@ -31,7 +31,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Download) < prototype(Neos.Fusio
                     attributes.href={props.fileUrl ? props.fileUrl : null}
                     attributes.target="_blank"
                 >
-                    <i class="icon-arrow-down-to-line download__icon" />
+                    <span class="icon-arrow-down-to-line download__icon" aria-hidden="true"></span>
                     <span>{props.description}</span>
                     <span class="download__size" @if={props.fileSize}>({props.fileSize})</span>
                 </Neos.Fusion:Tag>
