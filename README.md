@@ -23,15 +23,16 @@ Run `./kickstart.sh` and follow the instructions.
       * [Run Single BDD Feature Files / Scenarios](#run-single-bdd-feature-files--scenarios)
       * [Generating content (node) fixtures workflow](#generating-content--node--fixtures-workflow)
     * [Accessibility Tests](#accessibility-tests)
-      * [Testing without htaccess](#testing-without-htaccess-eg-production)
-      * [Testing with htaccess](#testing-with-htaccess-eg-staging)
-      * [Results](#results) 
+      * [Testing without htaccess (e.g. production)](#testing-without-htaccess--eg-production-)
+      * [Testing with htaccess (e.g. staging)](#testing-with-htaccess--eg-staging-)
+      * [Results](#results)
   * [Staging](#staging)
   * [Site Export / Site Import](#site-export--site-import)
+    * [Site Export Prod](#site-export-prod)
   * [Automatic Translation with DeepL](#automatic-translation-with-deepl)
   * [Kickstart repository nodetypes](#kickstart-repository-nodetypes)
   * [Custom icon font with icomoon](#custom-icon-font-with-icomoon)
-    * [Use in backend](#use-custom-icons-in-neos-backend) 
+    * [Use custom icons in neos backend](#use-custom-icons-in-neos-backend)
   * [Maps](#maps)
   * [Improving Kickstart Experience](#improving-kickstart-experience)
   * [Backlog](#backlog)
@@ -209,21 +210,26 @@ The command will create the following files:
 
 ## Custom icon font with icomoon
 
-We use a custom icon font build with https://icomoon.io/app.
-Look at the Icons.md for more information: `DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public/Fonts/Icons.md`
+We use a custom icon font build with https://icomoon.io/app. Look at the Icons.md for more
+information: `DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public/Fonts/Icons.md`
+
+In the past we had rendering problems when we used the icon font as `<i class="icon-xyz"></i>`. To be safe we use
+the `<span class="icon-xyz"></span>` syntax instead.
 
 ### Use custom icons in neos backend
 
-Unfortunately we can't use our custom icomoon font in the neos backend directly because it just works with the integrated fontawesome iconfont. But if we want to use our own icons anyway we can:
+Unfortunately we can't use our custom icomoon font in the neos backend directly because it just works with the
+integrated fontawesome iconfont. But if we want to use our own icons anyway we can:
 
 1. Export the SVGs of the icomoon font (e.g. in white)
 2. Copy those SVGs into the `Public/SVGs` folder
-3. Use the icon as SVG e.g. in the `Mixin.Icon` for the `SelectBoxEditor` by using the `resource://` path (https://www.youtube.com/watch?v=Aq4w21pjriY)
+3. Use the icon as SVG e.g. in the `Mixin.Icon` for the `SelectBoxEditor` by using the `resource://`
+   path (https://www.youtube.com/watch?v=Aq4w21pjriY)
 
 ```yaml
 icon-angle-down:
-  label: i18n
-  icon: 'resource://MyVendor.AwesomeNeosProject/SVGs/angle-down.svg'
+    label: i18n
+    icon: 'resource://MyVendor.AwesomeNeosProject/SVGs/angle-down.svg'
 ```
 
 ## Maps

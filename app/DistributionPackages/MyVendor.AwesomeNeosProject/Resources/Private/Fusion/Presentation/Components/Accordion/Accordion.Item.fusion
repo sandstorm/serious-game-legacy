@@ -54,7 +54,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Accordion.Item) < prototype(Neos
                     attributes={props._accordionTriggerAttributes}
                 >
                     <h3 class="accordion__title">{props.title}</h3>
-                    <i aria-hidden="true" class="accordion__icon icon-angle-down" />
+                    <span aria-hidden="true" class="accordion__icon icon-angle-down"></span>
                 </Neos.Fusion:Tag>
                 <Neos.Fusion:Tag
                     tagName="div"
