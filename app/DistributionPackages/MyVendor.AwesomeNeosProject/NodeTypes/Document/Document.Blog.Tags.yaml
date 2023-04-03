@@ -3,7 +3,7 @@
     'Neos.Neos:Shortcut': true
   ui:
     group: general
-    label: 'Blog Tags'
+    label: i18n
     icon: icon-tags
   constraints:
     nodeTypes:

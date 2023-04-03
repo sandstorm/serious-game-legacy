@@ -12,20 +12,17 @@
     description:
       type: string
       ui:
-        label: 'Description'
+        label: i18n
         inlineEditable: true
         showInCreationDialog: true
-        inspector:
-          editorOptions:
-            placeholder: 'Download description'
         inline:
           editorOptions:
-            placeholder: 'Download description'
+            placeholder: i18n
     file:
       type: Neos\Media\Domain\Model\Asset
       editor: Neos.Neos/Inspector/Editor/AssetEditor
       ui:
-        label: 'File'
+        label: i18n
         reloadIfChanged: true
         showInCreationDialog: true
         inspector:

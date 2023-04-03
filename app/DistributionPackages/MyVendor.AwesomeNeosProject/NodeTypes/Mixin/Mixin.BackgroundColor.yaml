@@ -5,7 +5,7 @@
       type: string
       defaultValue: 'white'
       ui:
-        label: 'Background color'
+        label: i18n
         reloadIfChanged: true
         inspector:
           group: properties
@@ -13,10 +13,10 @@
           editorOptions:
             values:
               white:
-                label: 'White'
+                label: i18n
               grey:
-                label: 'Grey'
+                label: i18n
               blue:
-                label: 'Blue'
+                label: i18n
               black:
-                label: 'Black'
+                label: i18n

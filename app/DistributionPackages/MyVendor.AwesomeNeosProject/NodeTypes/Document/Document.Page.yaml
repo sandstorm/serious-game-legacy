@@ -3,7 +3,7 @@
     'MyVendor.AwesomeNeosProject:Document.AbstractPage': true
   ui:
     icon: 'icon-file'
-    label: 'Page'
+    label: i18n
   constraints:
     nodeTypes:
       '*': ~

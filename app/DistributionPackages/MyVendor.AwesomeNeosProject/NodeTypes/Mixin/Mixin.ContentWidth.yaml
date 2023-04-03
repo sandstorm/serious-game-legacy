@@ -4,7 +4,7 @@
     contentWidth:
       type: string
       ui:
-        label: 'Content Width'
+        label: i18n
         reloadIfChanged: true
         inspector:
           group: 'properties'
@@ -12,10 +12,10 @@
           editorOptions:
             values:
               '':
-                label: 'default (max-width: 1400px)'
+                label: i18n
               small:
-                label: 'small (max-width: 800px)'
+                label: i18n
               large:
-                label: 'large (max-width: 1800px)'
+                label: i18n
               full:
-                label: 'full (max-width: 100%)'
+                label: i18n

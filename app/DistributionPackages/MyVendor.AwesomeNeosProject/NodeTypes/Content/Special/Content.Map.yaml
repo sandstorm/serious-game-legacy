@@ -2,7 +2,7 @@
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
   ui:
-    label: 'Map'
+    label: i18n
     icon: icon-map
     group: special
     position: 40
@@ -11,7 +11,7 @@
       type: string
       defaultValue: '51.0567032'
       ui:
-        label: 'Latitude'
+        label: i18n
         reloadIfChanged: true
         inspector:
           group: properties
@@ -19,7 +19,7 @@
       type: string
       defaultValue: '13.7769583'
       ui:
-        label: 'Longitude'
+        label: i18n
         reloadIfChanged: true
         inspector:
           group: properties
@@ -27,7 +27,7 @@
       type: string
       defaultValue: '14'
       ui:
-        label: 'Default zoom level'
+        label: i18n
         reloadIfChanged: true
         inspector:
           group: properties
@@ -35,7 +35,7 @@
       type: string
       defaultValue: ''
       ui:
-        label: 'Popup-Text'
+        label: i18n
         reloadIfChanged: true
         inspector:
           group: properties

@@ -4,7 +4,7 @@
     'MyVendor.AwesomeNeosProject:Content.Button': true
     'MyVendor.AwesomeNeosProject:Mixin.Icon': true
   ui:
-    label: 'Button with icon'
+    label: i18n
     icon: icon-box
     position: 31
   properties:
@@ -12,7 +12,7 @@
       type: string
       defaultValue: left
       ui:
-        label: 'Icon alignment'
+        label: i18n
         showInCreationDialog: true
         reloadIfChanged: true
         inspector:

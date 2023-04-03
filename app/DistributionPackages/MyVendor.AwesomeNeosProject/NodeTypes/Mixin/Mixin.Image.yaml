@@ -4,7 +4,7 @@
     image:
       type: Neos\Media\Domain\Model\ImageInterface
       ui:
-        label: 'Image'
+        label: i18n
         reloadIfChanged: true
         showInCreationDialog: true
         inspector:
@@ -13,7 +13,7 @@
     alternativeText:
       type: string
       ui:
-        label: 'Alternate Text'
+        label: i18n
         reloadIfChanged: false
         inspector:
           group: 'image'
@@ -23,7 +23,7 @@
     imageDescription:
       type: string
       ui:
-        label: 'Description'
+        label: i18n
         reloadIfChanged: true
         inspector:
           group: 'image'
