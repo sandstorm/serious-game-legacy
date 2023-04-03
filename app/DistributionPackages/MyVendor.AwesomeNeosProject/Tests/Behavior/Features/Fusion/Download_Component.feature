@@ -27,7 +27,7 @@ Feature: Testcase for Download Component
         Then in the fusion output, the attributes of CSS selector ".button__wrapper" are:
             | Key   | Value                                 |
             | class | button__wrapper button__wrapper--left |
-        Then in the fusion output, the inner HTML of CSS selector ".download" matches '<i class="icon-arrow-down-to-line download__icon"></i><span>Download button</span><span class="download__size">(1 MB)</span>'
+        Then in the fusion output, the inner HTML of CSS selector ".download" matches '<span class="icon-arrow-down-to-line download__icon" aria-hidden="true"></span><span>Download button</span><span class="download__size">(1 MB)</span>'
         Then in the fusion output, the attributes of CSS selector ".download" are:
             | Key    | Value                              |
             | class  | button button--solid-blue download |
@@ -48,7 +48,7 @@ Feature: Testcase for Download Component
         Then in the fusion output, the attributes of CSS selector ".button__wrapper" are:
             | Key   | Value                                 |
             | class | button__wrapper button__wrapper--left |
-        Then in the fusion output, the inner HTML of CSS selector ".download" matches '<i class="icon-arrow-down-to-line download__icon"></i><span>Download button</span>'
+        Then in the fusion output, the inner HTML of CSS selector ".download" matches '<span class="icon-arrow-down-to-line download__icon" aria-hidden="true"></span><span>Download button</span>'
         Then in the fusion output, the attributes of CSS selector ".download" are:
             | Key    | Value                              |
             | class  | button button--solid-grey download |

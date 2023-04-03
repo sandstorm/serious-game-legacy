@@ -22,7 +22,7 @@ Feature: Testcase for Image Placeholder Component
             | Key   | Value              |
             | class | image-placeholder  |
             | style | padding-top:56.25% |
-        Then in the fusion output, the inner HTML of CSS selector ".image-placeholder" matches '<div class="image-placeholder__inner"><i class="fas fa-image"></i><small>Please choose an image in the Inspector</small></div>'
+        Then in the fusion output, the inner HTML of CSS selector ".image-placeholder" matches '<div class="image-placeholder__inner"><small>Please choose an image in the Inspector</small></div>'
         Then I store the Fusion output in the styleguide as "ImagePlaceholder_Component"
 
     Scenario: Image placeholder rendering without placeholder
