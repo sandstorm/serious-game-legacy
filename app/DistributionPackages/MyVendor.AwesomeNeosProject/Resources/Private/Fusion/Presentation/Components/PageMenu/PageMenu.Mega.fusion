@@ -21,7 +21,8 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Mega) < prototype(Neos.
                         class="page-menu__mega__toggle button button--link"
                         title="Menü schließen"
                     >
-                        <i class="icon-close"/>
+                        <span class="icon-close" aria-hidden="true"></span>
+                        <span class="sr-only">{I18n.translate('MyVendor.AwesomeNeosProject:Base:menu')}</span>
                     </button>
                 </header>
 
