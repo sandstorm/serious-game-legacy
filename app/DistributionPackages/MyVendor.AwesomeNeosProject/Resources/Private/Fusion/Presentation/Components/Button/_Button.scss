@@ -132,7 +132,7 @@ $button__height--larger: 60px;
 .button--with-icon {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: Spacing.$md;
 
     &.button--icon-right {
         flex-direction: row-reverse;

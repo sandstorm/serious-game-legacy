@@ -2,9 +2,9 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="en" datatype="plaintext">
         <body>
-           <trans-unit id="filterDates">
-               <source>Filter dates</source>
-           </trans-unit>
+            <trans-unit id="filterDates">
+                <source>Filter dates</source>
+            </trans-unit>
             <trans-unit id="learnMore">
                 <source>Learn more</source>
             </trans-unit>
@@ -32,6 +32,9 @@
             </trans-unit>
             <trans-unit id="resetFilters">
                 <source>Reset filters</source>
+            </trans-unit>
+            <trans-unit id="toTop">
+                <source>To Top</source>
             </trans-unit>
         </body>
     </file>
