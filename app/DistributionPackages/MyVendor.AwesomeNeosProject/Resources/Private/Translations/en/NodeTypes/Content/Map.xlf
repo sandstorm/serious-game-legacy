@@ -15,7 +15,7 @@
                 <target>Longitude</target>
             </trans-unit>
             <trans-unit id="properties.zoom" xml:space="preserve">
-                <source>Standard Zoom-Level</source>
+                <source>Standard-Zoom-Level</source>
                 <target>Default zoom level</target>
             </trans-unit>
             <trans-unit id="properties.popupText" xml:space="preserve">

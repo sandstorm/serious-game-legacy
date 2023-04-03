@@ -3,11 +3,11 @@
     <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="de" datatype="plaintext">
         <body>
             <trans-unit id="ui.label" xml:space="preserve">
-                <source>Kontakt Formular</source>
+                <source>Kontaktformular</source>
                 <target>Contact form</target>
             </trans-unit>
             <trans-unit id="properties.mailTo" xml:space="preserve">
-                <source>Empfänger Adresse</source>
+                <source>Empfängeradresse</source>
                 <target>Recipient address</target>
             </trans-unit>
         </body>

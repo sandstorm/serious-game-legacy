@@ -3,7 +3,7 @@
     <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="de" datatype="plaintext">
         <body>
             <trans-unit id="ui.label" xml:space="preserve">
-                <source>Zwei-Spalter</source>
+                <source>Zweispalter</source>
                 <target>Two-column</target>
             </trans-unit>
         </body>

@@ -11,7 +11,7 @@
                 <target>Height</target>
             </trans-unit>
             <trans-unit id="properties.textColor" xml:space="preserve">
-                <source>Text Farbe</source>
+                <source>Textfarbe</source>
                 <target>Text color</target>
             </trans-unit>
             <trans-unit id="properties.textColor.selectBoxEditor.values.dark" xml:space="preserve">

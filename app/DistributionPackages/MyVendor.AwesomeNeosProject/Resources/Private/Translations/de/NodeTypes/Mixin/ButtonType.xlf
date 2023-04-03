@@ -3,7 +3,7 @@
     <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="de" datatype="plaintext">
         <body>
             <trans-unit id="properties.type" xml:space="preserve">
-                <source>Button Typ</source>
+                <source>Button-Typ</source>
             </trans-unit>
             <trans-unit id="properties.type.selectBoxEditor.values.solid-blue" xml:space="preserve">
                 <source>Blau</source>

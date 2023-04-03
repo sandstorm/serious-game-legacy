@@ -3,7 +3,7 @@
     <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="de" datatype="plaintext">
         <body>
             <trans-unit id="ui.label" xml:space="preserve">
-                <source>Event Liste</source>
+                <source>Eventliste</source>
             </trans-unit>
         </body>
     </file>

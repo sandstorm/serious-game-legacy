@@ -19,7 +19,7 @@
                 <target>Large (max-width: 1800px)</target>
             </trans-unit>
             <trans-unit id="properties.contentWidth.selectBoxEditor.values.full" xml:space="preserve">
-                <source>Volle Breite (max-width: 100%)</source>
+                <source>Volle Breite (max-breite: 100%)</source>
                 <target>Full (max-width: 100%)</target>
             </trans-unit>
         </body>

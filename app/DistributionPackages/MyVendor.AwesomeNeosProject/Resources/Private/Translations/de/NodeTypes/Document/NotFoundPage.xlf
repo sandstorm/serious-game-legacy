@@ -3,7 +3,7 @@
     <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="de" datatype="plaintext">
         <body>
             <trans-unit id="ui.label" xml:space="preserve">
-                <source>404 Seite</source>
+                <source>404-Seite</source>
             </trans-unit>
         </body>
     </file>

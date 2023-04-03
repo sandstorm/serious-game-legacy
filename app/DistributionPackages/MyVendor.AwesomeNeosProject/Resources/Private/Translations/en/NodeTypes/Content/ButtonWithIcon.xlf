@@ -7,7 +7,7 @@
                 <target>Button with icon</target>
             </trans-unit>
             <trans-unit id="properties.iconAlign" xml:space="preserve">
-                <source>Icon Ausrichtung</source>
+                <source>Icon-Ausrichtung</source>
                 <target>Icon alignment</target>
             </trans-unit>
             <trans-unit id="properties.iconAlign.selectBoxEditor.values.left" xml:space="preserve">

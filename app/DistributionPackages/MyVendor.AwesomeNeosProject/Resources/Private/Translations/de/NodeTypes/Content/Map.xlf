@@ -12,7 +12,7 @@
                 <source>Längengrad</source>
             </trans-unit>
             <trans-unit id="properties.zoom" xml:space="preserve">
-                <source>Standard Zoom-Level</source>
+                <source>Standard-Zoom-Level</source>
             </trans-unit>
             <trans-unit id="properties.popupText" xml:space="preserve">
                 <source>Popup Text</source>
