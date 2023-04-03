@@ -1,9 +1,10 @@
 @use "AbstractStyles/Variables/Colors";
 @use "AbstractStyles/Variables/Spacing";
+@use "AbstractStyles/Variables/Breakpoints";
 @use "AbstractStyles/Mixins";
+@use "Fusion/Presentation/Components/PageHeader/PageHeader";
 
-$header__height: 85px;
-$SUBLEVEL_GAP: Spacing.$xl;
+$sublevel-gap: Spacing.$xl;
 
 .page-menu--mega {
     .page-menu__button-container {
@@ -57,7 +58,7 @@ $SUBLEVEL_GAP: Spacing.$xl;
     display: flex;
     align-items: center;
     justify-content: end;
-    height: $header__height;
+    height: PageHeader.$header__height;
     padding-left: Spacing.$lg * 2;
     padding-right: Spacing.$lg * 2;
 
@@ -77,9 +78,9 @@ $SUBLEVEL_GAP: Spacing.$xl;
 }
 
 .page-menu__mega-content {
-    $SUBLEVEL_GAP: Spacing.$xl;
+    $sublevel-gap: Spacing.$xl;
 
-    padding-top: $header__height;
+    padding-top: PageHeader.$header__height;
 
     height: 100%;
     display: flex;
@@ -130,41 +131,14 @@ $SUBLEVEL_GAP: Spacing.$xl;
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
-        column-gap: $SUBLEVEL_GAP;
+        column-gap: $sublevel-gap;
 
         margin-bottom: Spacing.$xl;
         word-break: break-word;
     }
-
-    //.page-menu__sublevel-item {
-    //    width: 100%;
-    //
-    //    $TWO_COLUMN_WIDTH: calc(50% - (#{$SUBLEVEL_GAP} / 2));
-    //
-    //    @media screen and (max-width: $breakpoint--xsmall) and (min-width: calc(#{$breakpoint--xsmall} * 3 / 4)) {
-    //        width: $TWO_COLUMN_WIDTH;
-    //    }
-    //
-    //    @media screen and (max-width: $breakpoint--small) and (min-width: calc(#{$breakpoint--small} * 4 / 5)) {
-    //        width: $TWO_COLUMN_WIDTH;
-    //    }
-    //
-    //    @media screen and (max-width: $breakpoint--large) and (min-width: calc(#{$breakpoint--large} * 4 / 5)) {
-    //        width: $TWO_COLUMN_WIDTH;
-    //    }
-    //
-    //    a {
-    //        color: Colors.$grey--lighter;
-    //        font-weight: bold;
-    //    }
-    //}
 }
 
-
 @include Mixins.mq(medium) {
-    .page-menu__teaser {
-        display: none;
-    }
     .page-menu__mega-content .page-menu__toplevel {
         max-width: 100%;
     }

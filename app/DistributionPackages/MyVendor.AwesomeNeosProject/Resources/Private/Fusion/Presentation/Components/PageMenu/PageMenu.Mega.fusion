@@ -1,6 +1,4 @@
 prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Mega) < prototype(Neos.Fusion:Component) {
-
-    root = ${site}
     menuItems = Neos.Neos:MenuItems {
         maximumLevels = 2
         filter = "
@@ -19,9 +17,9 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Mega) < prototype(Neos.
                     <MyVendor.AwesomeNeosProject:Component.LanguageMenu/>
 
                     <button
-                            x-on:click="megaMenuOpen = false"
-                            class="page-menu__mega__toggle button button--link"
-                            title="Menü schließen"
+                        x-on:click="megaMenuOpen = false"
+                        class="page-menu__mega__toggle button button--link"
+                        title="Menü schließen"
                     >
                         <i class="icon-close"/>
                     </button>
@@ -30,21 +28,21 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Mega) < prototype(Neos.
                 <div class="page-menu__mega-content-wrapper">
                     <div class="page-menu__mega-content">
                         <ul class="page-menu__toplevel">
-                            <Neos.Fusion:Loop items={props.menuItems} itemName="item">
+                            <Neos.Fusion:Loop items={props.menuItems}>
                                 <li class={item.state + ' page-menu__toplevel-item'}>
                                     <Neos.Neos:NodeLink
-                                            node={item.node}
-                                            attributes.class="page-menu__toplevel-link"
+                                        node={item.node}
+                                        attributes.class="page-menu__toplevel-link"
                                     >
-                                        <h4>{item.label}</h4>
+                                        {item.label}
                                     </Neos.Neos:NodeLink>
                                     <ul @if.has={item.subItems} class="page-menu__sublevel">
-                                        <Neos.Fusion:Loop items={item.subItems} itemName="item">
+                                        <Neos.Fusion:Loop items={item.subItems}>
                                             <li class={AtomicFusion.classNames(item.state, 'page-menu__sublevel-item')}>
                                                 <Neos.Neos:NodeLink
-                                                        node={item.node}
-                                                        attributes.title={I18n.translate('MyVendor.AwesomeNeosProject:Base:linkToPage') + item.label}
-                                                        attributes.class="page-menu__sublevel-link"
+                                                    node={item.node}
+                                                    attributes.title={I18n.translate('MyVendor.AwesomeNeosProject:Base:linkToPage') + item.label}
+                                                    attributes.class="page-menu__sublevel-link"
                                                 >
                                                     {item.label}
                                                 </Neos.Neos:NodeLink>
@@ -54,9 +52,6 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Mega) < prototype(Neos.
                                 </li>
                             </Neos.Fusion:Loop>
                         </ul>
-                    <!--                        <MyVendor.AwesomeNeosProject:PageMenu.PageMenuTeaser showEmptyInBackend={true} additionalClass="page-menu__mega-teaser">-->
-                    <!--                            <MyVendor.AwesomeNeosProject:PageMenu.Mega.TeaserQuery @path="teaserQuery" />-->
-                    <!--                        </MyVendor.AwesomeNeosProject:PageMenu.PageMenuTeaser>-->
                     </div>
                 </div>
             </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
