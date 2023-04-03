@@ -164,7 +164,8 @@ We exclude the following rules for the kickstarter because they are more or less
 * WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Abs
 
 Excluded Elements:
-* a[href='#open_cookie_punch_modal']
+* a[href='#open_cookie_punch_modal'] > Cookie Punch Package
+* .maplibregl-ctrl-attrib-inner > Maps Package
 
 Usage of components:
 * accordions should be used in a section with an h2 to keep the headline hierachy otherwise we have to update the accordion headlines accordingly
