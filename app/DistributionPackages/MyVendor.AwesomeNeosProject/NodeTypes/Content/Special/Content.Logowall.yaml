@@ -36,4 +36,3 @@
         reloadIfChanged: true
         inspector:
           group: 'properties'
-

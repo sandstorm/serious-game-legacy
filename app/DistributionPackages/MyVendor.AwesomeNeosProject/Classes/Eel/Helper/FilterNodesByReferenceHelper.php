@@ -13,11 +13,11 @@ class FilterNodesByReferenceHelper implements ProtectedContextAwareInterface
      * e.g. "give me all blog posts that have a reference to tag xyz".
      *
      * @param array $givenUnfilteredNodes
-     * @param string $referencePropertyName
-     * @param string|null $referencedTitlesToFind
+     * @param string $referencePropertyName (e.g. "tags")
+     * @param string|null $referencedTitlesToFind (e.g. "tag1,tag2,tag3")
      * @return array
      */
-    public function filterNodes(array $givenUnfilteredNodes, string $referencePropertyName, ?string $referencedTitlesToFind)
+    public function filterNodes(array $givenUnfilteredNodes, string $referencePropertyName, ?string $referencedTitlesToFind): array
     {
 
         if ($referencedTitlesToFind === '' || $referencedTitlesToFind === null) {
