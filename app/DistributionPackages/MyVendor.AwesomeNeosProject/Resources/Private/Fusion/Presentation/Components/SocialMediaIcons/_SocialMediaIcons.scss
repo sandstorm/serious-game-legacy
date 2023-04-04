@@ -8,9 +8,9 @@
     align-items: center;
     margin: 0 0 Spacing.$marginBottom;
     padding: 0;
-    list-style: none;
     gap: Spacing.$lg;
-
+    
+    list-style: none;
     font-size: 1.5rem;
 
     @include Mixins.mq(small) {

@@ -16,10 +16,12 @@ prototype(MyVendor.AwesomeNeosProject:Component.Slider) < prototype(Neos.Fusion:
         @apply.props = ${props}
 
         _inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
+        _prevSlideMessage = ${I18n.translate('MyVendor.AwesomeNeosProject:Base:prevSlideMessage')}
+        _nextSlideMessage = ${I18n.translate('MyVendor.AwesomeNeosProject:Base:nextSlideMessage')}
 
         renderer = afx`
             <MyVendor.AwesomeNeosProject:Utility.ContentWidth>
-                <div x-data={"slider(" + props._inBackend + ")"}>
+                <div x-data={"slider('" + props._prevSlideMessage + "', '" + props._nextSlideMessage + "', " + (props._inBackend ? "true" : "false") + ")"}>
                     <!-- Slider main container -->
                     <div
                         class={AtomicFusion.classNames('swiper', 'content-slider')}

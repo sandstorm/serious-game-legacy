@@ -44,13 +44,16 @@
                 <target>Reset filters</target>
             </trans-unit>
             <trans-unit id="toTop">
-                <source>To Top</source>
+                <source>Nach oben</source>
+                <target>To Top</target>
             </trans-unit>
             <trans-unit id="prevSlideMessage">
-                <source>Skip to previous slide page</source>
+                <source>Zur vorherigen Seite springen</source>
+                <target>Skip to previous slide page</target>
             </trans-unit>
             <trans-unit id="nextSlideMessage">
-                <source>Skip to next slide page</source>
+                <source>Zur nächsten Seite springen</source>
+                <target>Skip to next slide page</target>
             </trans-unit>
         </body>
     </file>
