@@ -5,6 +5,7 @@
       type: references
       ui:
         label: 'Blog Tags'
+        reloadIfChanged: true
         inspector:
           group: 'document'
           editorOptions:

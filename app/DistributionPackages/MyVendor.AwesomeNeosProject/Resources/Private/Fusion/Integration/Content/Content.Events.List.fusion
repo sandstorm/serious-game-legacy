@@ -28,10 +28,20 @@ prototype(MyVendor.AwesomeNeosProject:Content.Events.List) < prototype(Neos.Neos
         @context {
             futureItems = ${q(site).find('[instanceof MyVendor.AwesomeNeosProject:Document.Events.Event]').sort('date', 'ASC')}
             futureItems.@process.filterPastElements = ${Array.filter(value, item => q(item).property('date') >= Date.today() || q(item).property('dateUntil') >= Date.today())}
+
+            // we get the tags from the inspector, extract their titles and join them with a comma (as this is what the filtering eel helper expects)
+            tagsFromInspector = ${q(node).property('tags')}
+            tagsFromInspector.@process.getTagNames = ${value ? Array.map(value, item => q(item).property('title')) : value}
+            tagsFromInspector.@process.join = ${value ? Array.join(value, ',') : value}
+
+            amountOfEvents = ${q(node).property('amountOfEvents')}
         }
         content = Neos.Fusion:Loop {
             items = ${futureItems}
-            items.@process.filterByTag = ${MyVendor.AwesomeNeosProject.FilterNodesByReference.filterNodes(value, 'tags', tagsParameter)}
+            // when tags are selected in the inspector by the editor, we filter the events by those tags -> they always "win"
+            // only if no tags are selected in the inspector, we allow frontend filtering for the end user via dropdown / tags request parameter
+            items.@process.filterByTag = ${tagsFromInspector ? MyVendor.AwesomeNeosProject.FilterNodesByReference.filterNodes(value, 'tags', tagsFromInspector) : MyVendor.AwesomeNeosProject.FilterNodesByReference.filterNodes(value, 'tags', tagsParameter)}
+            items.@process.limitAmountOfEvents = ${amountOfEvents > 0 ? Array.slice(value, 0, amountOfEvents) : value}
             itemRenderer = MyVendor.AwesomeNeosProject:Component.EventList.Event {
                 title = ${q(item).property('title')}
                 href = Neos.Neos:NodeUri {
@@ -56,21 +66,31 @@ prototype(MyVendor.AwesomeNeosProject:Content.Events.List) < prototype(Neos.Neos
                 }
             }
         }
-        tags = Neos.Fusion:Map {
-            items = ${q(site).find('[instanceof MyVendor.AwesomeNeosProject:Document.Blog.Tag]')}
-            // for each tag we iterate over all future events and check if any of them has the current tag
-            items.@process.filterOutUnusedTags = ${Array.filter(value, item =>
-                !Array.isEmpty(
-                    Array.filter(futureItems, event =>
-                        q(event).property('tags') && Array.indexOf(q(event).property('tags'), item) > -1
-                    )
-                )
-            )}
-            itemName = 'tag'
-            itemRenderer = Neos.Fusion:DataStructure {
-                title = ${q(tag).property('title')}
-                // we split the tagsParameter by comma and check if the current tag is in the list
-                isActive = ${Array.indexOf(String.split(String.toLowerCase(tagsParameter), ','), String.toLowerCase(q(tag).property('title'))) > -1}
+        tags = Neos.Fusion:Case {
+            tagsAreSelectedInInspector {
+                condition = ${tagsFromInspector}
+                // if tags are selected in the inspector, we don't want to show the tag filter
+                renderer = ${null}
+            }
+            default {
+                condition = ${true}
+                renderer = Neos.Fusion:Map {
+                    items = ${q(site).find('[instanceof MyVendor.AwesomeNeosProject:Document.Blog.Tag]')}
+                    // for each tag we iterate over all future events and check if any of them has the current tag
+                    items.@process.filterOutUnusedTags = ${Array.filter(value, item =>
+                        !Array.isEmpty(
+                            Array.filter(futureItems, event =>
+                                q(event).property('tags') && Array.indexOf(q(event).property('tags'), item) > -1
+                            )
+                        )
+                    )}
+                    itemName = 'tag'
+                    itemRenderer = Neos.Fusion:DataStructure {
+                        title = ${q(tag).property('title')}
+                        // we split the tagsParameter by comma and check if the current tag is in the list
+                        isActive = ${Array.indexOf(String.split(String.toLowerCase(tagsParameter), ','), String.toLowerCase(q(tag).property('title'))) > -1}
+                    }
+                }
             }
         }
     }
