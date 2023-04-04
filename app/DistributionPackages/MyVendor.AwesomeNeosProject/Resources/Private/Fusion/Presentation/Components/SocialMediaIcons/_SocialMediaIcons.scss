@@ -6,8 +6,11 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    margin-bottom: Spacing.$marginBottom;
-
+    margin: 0 0 Spacing.$marginBottom;
+    padding: 0;
+    gap: Spacing.$lg;
+    
+    list-style: none;
     font-size: 1.5rem;
 
     @include Mixins.mq(small) {
@@ -18,10 +21,6 @@
 .social-media-icons__link {
     text-decoration: none;
     color: Colors.$white;
-
-    + .social-media-icons__link {
-        margin-left: Spacing.$lg;
-    }
 
     &:hover, &:active, &:focus {
         color: Colors.$blue;

@@ -1,7 +1,7 @@
 // @ts-ignore
-import Swiper from 'swiper/bundle';
+import Swiper from "swiper/bundle";
 // import Swiper styles
-import 'swiper/css/bundle';
+import "swiper/css/bundle";
 // @ts-ignore
 import { Swiper as SwiperType } from "swiper";
 
@@ -9,9 +9,11 @@ import { Swiper as SwiperType } from "swiper";
 const SLIDE_CLASS = "swiper-slide";
 const SLIDER_CLASS = "swiper";
 
-export const basicSlider = function(inBackend: unknown = false) {
+export const basicSlider = function (prevSlideMessage: unknown, nextSlideMessage: unknown, inBackend: unknown = false) {
     return {
         inBackend: inBackend as boolean,
+        prevSlideMessage: prevSlideMessage as string,
+        nextSlideMessage: nextSlideMessage as string,
 
         _currentPosition: 1,
         _swiper: null as SwiperType | null,
@@ -23,15 +25,27 @@ export const basicSlider = function(inBackend: unknown = false) {
             if (this.inBackend) {
                 const scope = this;
                 // listen to node events to scroll to the right slide in neos backend
-                document.addEventListener('Neos.NodeCreated', function (event) {
-                    scope.nodeCreated(event)
-                }, false);
-                document.addEventListener('Neos.NodeSelected', function (event) {
-                    scope.nodeSelected(event)
-                }, false);
-                document.addEventListener('Neos.NodeRemoved', function (event) {
-                    scope.nodeRemoved(event)
-                }, false);
+                document.addEventListener(
+                    "Neos.NodeCreated",
+                    function (event) {
+                        scope.nodeCreated(event);
+                    },
+                    false
+                );
+                document.addEventListener(
+                    "Neos.NodeSelected",
+                    function (event) {
+                        scope.nodeSelected(event);
+                    },
+                    false
+                );
+                document.addEventListener(
+                    "Neos.NodeRemoved",
+                    function (event) {
+                        scope.nodeRemoved(event);
+                    },
+                    false
+                );
             }
         },
 
@@ -87,18 +101,22 @@ export const basicSlider = function(inBackend: unknown = false) {
             const swiperOptions = {
                 loop: !this.inBackend,
                 pagination: {
-                    el: '.swiper-pagination',
+                    el: ".swiper-pagination",
                     clickable: true,
                 },
                 navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
                 },
-            }
+                a11y: {
+                    prevSlideMessage: this.prevSlideMessage,
+                    nextSlideMessage: this.nextSlideMessage,
+                },
+            };
 
             this._swiper = new Swiper(swiperRef, swiperOptions);
-        }
-    }
+        },
+    };
 };
 
-export default basicSlider
+export default basicSlider;

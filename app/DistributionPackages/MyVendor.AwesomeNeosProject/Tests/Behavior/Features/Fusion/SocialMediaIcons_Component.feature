@@ -18,7 +18,7 @@ Feature: Testcase for Social Media Icons Component
             """fusion
             testcase = MyVendor.AwesomeNeosProject:Content.SocialMediaIcons
             """
-        Then in the fusion output, the inner HTML of CSS selector ".social-media-icons" matches '<a target="_blank" href="https://www.facebook.de" aria-label="Facebook" class="social-media-icons__link"><span class="icon-facebook" aria-hidden="true"></span></a>'
+        Then in the fusion output, the inner HTML of CSS selector ".social-media-icons" matches '<li><a target="_blank" href="https://www.facebook.de" aria-label="Facebook" class="social-media-icons__link"><span class="icon-facebook" aria-hidden="true"></span></a></li>'
 
     Scenario: Social media icons rendering with non set
         When I render the Fusion object "/testcase" with the current context node:
@@ -38,7 +38,7 @@ Feature: Testcase for Social Media Icons Component
                 mastodonLink = ''
             }
             """
-        Then in the fusion output, the inner HTML of CSS selector ".social-media-icons" matches '<a target="_blank" href="https://www.instagram.de" aria-label="Instagram" class="social-media-icons__link"><span class="icon-instagram" aria-hidden="true"></span></a><a target="_blank" href="https://www.facebook.de" aria-label="Facebook" class="social-media-icons__link"><span class="icon-facebook" aria-hidden="true"></span></a><a target="_blank" href="https://www.twitter.de" aria-label="Twitter" class="social-media-icons__link"><span class="icon-twitter" aria-hidden="true"></span></a><a target="_blank" href="https://www.youtube.de" aria-label="YouTube" class="social-media-icons__link"><span class="icon-youtube" aria-hidden="true"></span></a>'
+        Then in the fusion output, the inner HTML of CSS selector ".social-media-icons" matches '<li><a target="_blank" href="https://www.instagram.de" aria-label="Instagram" class="social-media-icons__link"><span class="icon-instagram" aria-hidden="true"></span></a></li><li><a target="_blank" href="https://www.facebook.de" aria-label="Facebook" class="social-media-icons__link"><span class="icon-facebook" aria-hidden="true"></span></a></li><li><a target="_blank" href="https://www.twitter.de" aria-label="Twitter" class="social-media-icons__link"><span class="icon-twitter" aria-hidden="true"></span></a></li><li><a target="_blank" href="https://www.youtube.de" aria-label="YouTube" class="social-media-icons__link"><span class="icon-youtube" aria-hidden="true"></span></a></li>'
 
     Scenario: Social media icons rendering only mastodon
         When I render the Fusion object "/testcase" with the current context node:
@@ -47,5 +47,5 @@ Feature: Testcase for Social Media Icons Component
                 mastodonLink = 'https://www.mastodon.de'
             }
             """
-        Then in the fusion output, the inner HTML of CSS selector ".social-media-icons" matches '<a target="_blank" href="https://www.mastodon.de" aria-label="Mastodon" class="social-media-icons__link"><span class="icon-mastodon" aria-hidden="true"></span></a>'
+        Then in the fusion output, the inner HTML of CSS selector ".social-media-icons" matches '<li><a target="_blank" href="https://www.mastodon.de" aria-label="Mastodon" class="social-media-icons__link"><span class="icon-mastodon" aria-hidden="true"></span></a></li>'
 

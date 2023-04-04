@@ -35,6 +35,12 @@
             <trans-unit id="toTop">
                 <source>Nach oben</source>
             </trans-unit>
+            <trans-unit id="prevSlideMessage">
+                <source>Zur vorherigen Seite springen</source>
+            </trans-unit>
+            <trans-unit id="nextSlideMessage">
+                <source>Zur nächsten Seite springen</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
