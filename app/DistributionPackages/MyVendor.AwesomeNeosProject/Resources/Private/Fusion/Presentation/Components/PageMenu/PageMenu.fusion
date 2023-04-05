@@ -10,31 +10,6 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu) < prototype(Neos.Fusio
 
     renderer = Neos.Fusion:Case {
         if {
-            condition = ${props.menuType == 'main'}
-            // We use alpine js to toggle the mobile menu.
-            // If the state of 'mobileMenuOpen' changes to true we add a class in PageMenu.Main.fusion.
-            renderer = afx`
-                <nav class="page-menu page-menu--main" x-data="{ mobileMenuOpen: false }">
-                    <div class="page-menu__logo">
-                        <MyVendor.AwesomeNeosProject:Component.PageHeader.Logo/>
-                    </div>
-
-                    <button
-                            x-on:click="mobileMenuOpen = !mobileMenuOpen"
-                            id="open-mobile-menu"
-                            class="mobile-menu__toggle button button--link"
-                            title={I18n.translate('MyVendor.AwesomeNeosProject:Base:openMenu')}
-                    >
-                        <span class="icon-bars" aria-hidden="true"></span>
-                        <span class="sr-only">{I18n.translate('MyVendor.AwesomeNeosProject:Base:menu')}</span>
-                    </button>
-
-                    <MyVendor.AwesomeNeosProject:Component.PageMenu.Main/>
-                    <MyVendor.AwesomeNeosProject:Component.LanguageMenu/>
-                </nav>
-            `
-        }
-        else {
             condition = ${props.menuType == 'mega'}
             renderer = afx`
                 <nav class="page-menu page-menu--mega" x-data="{ megaMenuOpen: false }">
@@ -47,14 +22,39 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu) < prototype(Neos.Fusio
                         <MyVendor.AwesomeNeosProject:Component.LanguageMenu/>
 
                         <button
-                                x-on:click="megaMenuOpen = true"
-                                class="page-menu__mega__toggle button button--link"
-                                title="Menü öffnen"
+                            x-on:click="megaMenuOpen = true"
+                            class="page-menu__mega__toggle button button--link"
+                            title="Menü öffnen"
                         >
                             <span class="icon-bars" aria-hidden="true"></span>
                             <span class="sr-only">{I18n.translate('MyVendor.AwesomeNeosProject:Base:menu')}</span>
-                      </button>
+                        </button>
                     </div>
+                </nav>
+            `
+        }
+        else {
+            condition = true
+            // We use alpine js to toggle the mobile menu.
+            // If the state of 'mobileMenuOpen' changes to true we add a class in PageMenu.Main.fusion.
+            renderer = afx`
+                <nav class="page-menu page-menu--main" x-data="{ mobileMenuOpen: false }">
+                    <div class="page-menu__logo">
+                        <MyVendor.AwesomeNeosProject:Component.PageHeader.Logo/>
+                    </div>
+
+                    <button
+                        x-on:click="mobileMenuOpen = !mobileMenuOpen"
+                        id="open-mobile-menu"
+                        class="mobile-menu__toggle button button--link"
+                        title={I18n.translate('MyVendor.AwesomeNeosProject:Base:openMenu')}
+                    >
+                        <span class="icon-bars" aria-hidden="true"></span>
+                        <span class="sr-only">{I18n.translate('MyVendor.AwesomeNeosProject:Base:menu')}</span>
+                    </button>
+
+                    <MyVendor.AwesomeNeosProject:Component.PageMenu.Main/>
+                    <MyVendor.AwesomeNeosProject:Component.LanguageMenu/>
                 </nav>
             `
         }

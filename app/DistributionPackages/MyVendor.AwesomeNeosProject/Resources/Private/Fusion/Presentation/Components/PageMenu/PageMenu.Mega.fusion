@@ -19,7 +19,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Mega) < prototype(Neos.
                     <button
                         x-on:click="megaMenuOpen = false"
                         class="page-menu__mega__toggle button button--link"
-                        title="Menü schließen"
+                        title={I18n.translate('MyVendor.AwesomeNeosProject:Base:menu')}
                     >
                         <span class="icon-close" aria-hidden="true"></span>
                         <span class="sr-only">{I18n.translate('MyVendor.AwesomeNeosProject:Base:menu')}</span>
