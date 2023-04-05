@@ -24,10 +24,10 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu) < prototype(Neos.Fusio
                         <button
                             x-on:click="megaMenuOpen = true"
                             class="page-menu__mega__toggle button button--link"
-                            title="Menü öffnen"
+                            title={I18n.translate('MyVendor.AwesomeNeosProject:Base:openMenu')}
                         >
                             <span class="icon-bars" aria-hidden="true"></span>
-                            <span class="sr-only">{I18n.translate('MyVendor.AwesomeNeosProject:Base:menu')}</span>
+                            <span class="sr-only">{I18n.translate('MyVendor.AwesomeNeosProject:Base:openMenu')}</span>
                         </button>
                     </div>
                 </nav>
@@ -50,7 +50,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu) < prototype(Neos.Fusio
                         title={I18n.translate('MyVendor.AwesomeNeosProject:Base:openMenu')}
                     >
                         <span class="icon-bars" aria-hidden="true"></span>
-                        <span class="sr-only">{I18n.translate('MyVendor.AwesomeNeosProject:Base:menu')}</span>
+                        <span class="sr-only">{I18n.translate('MyVendor.AwesomeNeosProject:Base:openMenu')}</span>
                     </button>
 
                     <MyVendor.AwesomeNeosProject:Component.PageMenu.Main/>

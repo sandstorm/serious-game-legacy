@@ -29,6 +29,9 @@
             <trans-unit id="openMenu">
                 <source>Menü öffnen</source>
             </trans-unit>
+            <trans-unit id="closeMenu">
+                <source>Menü schließen</source>
+            </trans-unit>
             <trans-unit id="resetFilters">
                 <source>Filter zurücksetzen</source>
             </trans-unit>
