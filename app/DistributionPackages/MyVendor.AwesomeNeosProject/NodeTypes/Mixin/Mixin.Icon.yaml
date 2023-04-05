@@ -4,7 +4,7 @@
     icon:
       type: string
       ui:
-        label: Icon
+        label: 'Icon'
         reloadIfChanged: true
         showInCreationDialog: true
         inspector:

@@ -23,15 +23,16 @@ Run `./kickstart.sh` and follow the instructions.
       * [Run Single BDD Feature Files / Scenarios](#run-single-bdd-feature-files--scenarios)
       * [Generating content (node) fixtures workflow](#generating-content--node--fixtures-workflow)
     * [Accessibility Tests](#accessibility-tests)
-      * [Testing without htaccess](#testing-without-htaccess-eg-production)
-      * [Testing with htaccess](#testing-with-htaccess-eg-staging)
-      * [Results](#results) 
+      * [Testing without htaccess (e.g. production)](#testing-without-htaccess--eg-production-)
+      * [Testing with htaccess (e.g. staging)](#testing-with-htaccess--eg-staging-)
+      * [Results](#results)
   * [Staging](#staging)
   * [Site Export / Site Import](#site-export--site-import)
+    * [Site Export Prod](#site-export-prod)
   * [Automatic Translation with DeepL](#automatic-translation-with-deepl)
   * [Kickstart repository nodetypes](#kickstart-repository-nodetypes)
   * [Custom icon font with icomoon](#custom-icon-font-with-icomoon)
-    * [Use in backend](#use-custom-icons-in-neos-backend) 
+    * [Use custom icons in neos backend](#use-custom-icons-in-neos-backend)
   * [Maps](#maps)
   * [Improving Kickstart Experience](#improving-kickstart-experience)
   * [Backlog](#backlog)
@@ -156,6 +157,18 @@ If we have an htaccess in front of the page we can write the pa11y config like w
 #### Results
 In both cases htaccess or not the results will be stored as job artifacts and can be downloaded. The html-report can be found in the directory `pa11y-ci-report` and if we decided to get some screenshots, they will be stored in the directory `pa11y-ci-report-images`.
 
+#### Hint
+We exclude the following rules for the kickstarter because they are more or less color contrast related. In the kickstarter we focus on structure-related issues. Nevertheless should the color contrast be checked in an actual project.
+* WCAG2AA.Principle1.Guideline1_4.1_4_3.G18 / WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Fail
+* WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Alpha
+* WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Abs
+
+Excluded Elements:
+* a[href='#open_cookie_punch_modal'] > Cookie Punch Package
+* .maplibregl-ctrl-attrib-inner > Maps Package
+
+Usage of components:
+* accordions should be used in a section with an h2 to keep the headline hierachy otherwise we have to update the accordion headlines accordingly
 
 ## Staging
 
@@ -209,21 +222,26 @@ The command will create the following files:
 
 ## Custom icon font with icomoon
 
-We use a custom icon font build with https://icomoon.io/app.
-Look at the Icons.md for more information: `DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public/Fonts/Icons.md`
+We use a custom icon font build with https://icomoon.io/app. Look at the Icons.md for more
+information: `DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public/Fonts/Icons.md`
+
+In the past we had rendering problems when we used the icon font as `<i class="icon-xyz"></i>`. To be safe we use
+the `<span class="icon-xyz"></span>` syntax instead.
 
 ### Use custom icons in neos backend
 
-Unfortunately we can't use our custom icomoon font in the neos backend directly because it just works with the integrated fontawesome iconfont. But if we want to use our own icons anyway we can:
+Unfortunately we can't use our custom icomoon font in the neos backend directly because it just works with the
+integrated fontawesome iconfont. But if we want to use our own icons anyway we can:
 
 1. Export the SVGs of the icomoon font (e.g. in white)
 2. Copy those SVGs into the `Public/SVGs` folder
-3. Use the icon as SVG e.g. in the `Mixin.Icon` for the `SelectBoxEditor` by using the `resource://` path (https://www.youtube.com/watch?v=Aq4w21pjriY)
+3. Use the icon as SVG e.g. in the `Mixin.Icon` for the `SelectBoxEditor` by using the `resource://`
+   path (https://www.youtube.com/watch?v=Aq4w21pjriY)
 
 ```yaml
 icon-angle-down:
-  label: i18n
-  icon: 'resource://MyVendor.AwesomeNeosProject/SVGs/angle-down.svg'
+    label: i18n
+    icon: 'resource://MyVendor.AwesomeNeosProject/SVGs/angle-down.svg'
 ```
 
 ## Maps

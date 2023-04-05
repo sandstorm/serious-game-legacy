@@ -3,7 +3,7 @@
     'MyVendor.AwesomeNeosProject:Document.AbstractPage': true
   ui:
     group: general
-    label: 'Blog Tag'
+    label: i18n
     icon: icon-tag
   constraints:
     nodeTypes:

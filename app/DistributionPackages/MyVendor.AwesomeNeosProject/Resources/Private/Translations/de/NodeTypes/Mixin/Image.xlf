@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="de" datatype="plaintext">
+        <body>
+            <trans-unit id="properties.image" xml:space="preserve">
+                <source>Bild</source>
+            </trans-unit>
+            <trans-unit id="properties.alternativeText" xml:space="preserve">
+                <source>Alternativer Text</source>
+            </trans-unit>
+            <trans-unit id="properties.imageDescription" xml:space="preserve">
+                <source>Beschreibung</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

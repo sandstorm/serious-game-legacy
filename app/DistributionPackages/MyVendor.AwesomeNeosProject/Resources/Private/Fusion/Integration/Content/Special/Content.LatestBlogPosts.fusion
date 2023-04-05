@@ -59,7 +59,7 @@ prototype(MyVendor.AwesomeNeosProject:Content.LatestBlogPosts) < prototype(Neos.
                 title = ${q(post).property('title')}
                 teaserText = ${q(post).property('teaserText')}
                 href = Neos.Neos:NodeUri {
-                    node = ${node}
+                    node = ${post}
                 }
             }
         }

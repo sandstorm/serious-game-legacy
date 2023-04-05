@@ -42,7 +42,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.EventList.Event) < prototype(Neo
                     {props.tags}
                     <h4 class="event-list__title">{props.title}</h4>
                     <div @if={props.location}>
-                        <i class="icon-location" /> {props.location}
+                        <span class="icon-location" aria-hidden="true"></span> {props.location}
                     </div>
                     <MyVendor.AwesomeNeosProject:Component.Button
                         title={I18n.translate('MyVendor.AwesomeNeosProject:Base:learnMore')}

@@ -7,7 +7,7 @@ prototype(MyVendor.AwesomeNeosProject:Content.Quote) < prototype(Neos.Neos:Conte
             property = 'person'
         }
         hasImageSource = ${q(node).property('image') ? true : false}
-        image= MyVendor.AwesomeNeosProject:Content.Image {
+        image= MyVendor.AwesomeNeosProject:Component.Image {
             alternativeText = MyVendor.AwesomeNeosProject:Helper.ImageAltText {
                 image = ${q(node).property('image')}
             }
@@ -18,12 +18,9 @@ prototype(MyVendor.AwesomeNeosProject:Content.Quote) < prototype(Neos.Neos:Conte
                 resource = ${q(node).property('image').resource}
             }
             fileExtension = ${q(node).property('image').resource.fileExtension}
-            sizes = ${[
-                '(min-width: 1400px) calc(100vw / 2)',
-                '(min-width: 996px) calc(100vw / 2)',
-                '(min-width: 768px) calc(100vw / 2)',
-                '100vw'
-            ]}
+            sizes = MyVendor.AwesomeNeosProject:Helper.ImageSizes {
+                type = "two-column"
+            }
         }
     }
 }

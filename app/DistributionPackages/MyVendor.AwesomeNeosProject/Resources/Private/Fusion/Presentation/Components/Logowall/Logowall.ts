@@ -8,7 +8,9 @@ import basicSlider from "../Slider/Slider";
 
 export default function Logowall(amountOfLogos: unknown = 6, autoplayInterval: unknown = 3000, inBackend: unknown = false) {
     return {
-        ...basicSlider(inBackend),
+        // Function signature: function(prevSlideMessage: string, nextSlideMessage: string, inBackend: unknown = false)
+        // We are not rendering the arrows here, so we don't need the a11y messages for prev and next slide
+        ...basicSlider('', '', inBackend), 
 
         amountOfLogos: amountOfLogos as number,
         autoplayInterval: autoplayInterval as number,

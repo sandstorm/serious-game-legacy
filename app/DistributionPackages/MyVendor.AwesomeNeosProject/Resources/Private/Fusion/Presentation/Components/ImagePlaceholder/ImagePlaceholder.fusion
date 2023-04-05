@@ -1,5 +1,5 @@
 prototype(MyVendor.AwesomeNeosProject:Component.ImagePlaceholder) < prototype(Neos.Fusion:Component) {
-    aspectRatio = ${16/9}
+    aspectRatio = ${16 / 9}
     showPlaceholderText = true
 
     @propTypes {
@@ -13,11 +13,11 @@ prototype(MyVendor.AwesomeNeosProject:Component.ImagePlaceholder) < prototype(Ne
 
         // TODO remove this hack
         // aspect ratio CSS trick
-        _inlineStyle = ${'padding-top:' + 1/props.aspectRatio*100 + '%'}
+        _inlineStyle = ${'padding-top:' + 1 / props.aspectRatio * 100 + '%'}
+
         renderer = afx`
             <div class="image-placeholder" style={props._inlineStyle}>
                 <div class="image-placeholder__inner">
-                    <i @if.showText={props.showPlaceholderText} class="fas fa-image"></i>
                     <small @if.showText={props.showPlaceholderText}>Please choose an image in the Inspector</small>
                 </div>
             </div>

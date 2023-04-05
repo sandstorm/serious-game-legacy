@@ -23,7 +23,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
     // Sizes="100vw" means the image file is swapped out based on the total width of the viewport.
     // This value is only appropriate for full-width images
     // - you should override this for images displayed at smaller sizes.
-    sizes = ${'100vw'}
+    sizes = ${['100vw']}
 
     formats = ${['webp', 'jpg']}
 

@@ -3,7 +3,7 @@
     'MyVendor.AwesomeNeosProject:Document.AbstractPage': true
   ui:
     group: general
-    label: 'Events'
+    label: i18n
     icon: icon-calendar
   constraints:
     nodeTypes:

@@ -3,7 +3,7 @@
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
     'MyVendor.AwesomeNeosProject:Mixin.BlogTags': true
   ui:
-    label: 'Latest Blog Posts'
+    label: i18n
     icon: icon-copy
     group: special
     position: 50
@@ -11,7 +11,7 @@
     tag:
       type: reference
       ui:
-        label: 'Filter By Tag'
+        label: i18n
         showInCreationDialog: true
         reloadIfChanged: true
         inspector:

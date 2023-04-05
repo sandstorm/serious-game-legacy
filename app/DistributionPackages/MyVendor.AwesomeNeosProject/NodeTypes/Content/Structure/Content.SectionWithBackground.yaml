@@ -5,7 +5,7 @@
     'MyVendor.AwesomeNeosProject:Mixin.BackgroundColor': true
     'MyVendor.AwesomeNeosProject:Mixin.ContentWidth': true
   ui:
-    label: 'Section'
+    label: i18n
     position: 10
     icon: icon-swatchbook
     group: structure
@@ -17,7 +17,7 @@
       type: string
       defaultValue: 'default'
       ui:
-        label: 'Padding'
+        label: i18n
         reloadIfChanged: true
         inspector:
           group: 'properties'
@@ -26,8 +26,8 @@
           editorOptions:
             values:
               default:
-                label: 'default (vertical padding)'
+                label: i18n
               none:
-                label: 'no padding'
+                label: i18n
 
 

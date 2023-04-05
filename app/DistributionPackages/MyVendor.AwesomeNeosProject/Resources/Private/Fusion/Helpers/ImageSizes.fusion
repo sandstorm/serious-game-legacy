@@ -5,7 +5,7 @@ prototype(MyVendor.AwesomeNeosProject:Helper.ImageSizes) < prototype(Neos.Fusion
         @strict = true
         type = ${PropTypes.oneOf(['', 'two-column', 'three-column', 'four-column', 'three-column--wrap', 'four-column--wrap'])}
     }
-    
+
     // This helper is intended to make it easier to choose the right (Kaleidoscope) sizes for different column layouts.
     // It currently supports standard columns that are only linearized on mobile screens ('two-column', 'three-column', 'four-column')
     // and wrapping columns that have different column counts depending on the screen size ('three-column--wrap', 'four-column--wrap').
@@ -54,7 +54,7 @@ prototype(MyVendor.AwesomeNeosProject:Helper.ImageSizes) < prototype(Neos.Fusion
         default {
             condition = true
             // Sizes="100vw" means the image file is swapped out based on the total width of the viewport.
-            renderer = ${'100vw'}
+            renderer = ${['100vw']}
         }
     }
 }

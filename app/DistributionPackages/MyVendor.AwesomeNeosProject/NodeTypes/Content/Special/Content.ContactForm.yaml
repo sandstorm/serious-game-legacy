@@ -2,7 +2,7 @@
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
   ui:
-    label: 'Contact Form'
+    label: i18n
     icon: icon-envelope
     group: special
     position: 30
@@ -11,8 +11,8 @@
       type: string
       validation:
         'Neos.Neos/Validation/EmailAddressValidator': [ ]
-      defaultValue: contact@sandstorm.de
+      defaultValue: 'contact@sandstorm.de'
       ui:
-        label: 'Recipient address'
+        label: i18n
         inspector:
           group: 'properties'

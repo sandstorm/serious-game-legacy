@@ -3,6 +3,6 @@
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
     'MyVendor.AwesomeNeosProject:Mixin.Headline': true
   ui:
-    label: 'Headline'
+    label: i18n
     icon: icon-header
     position: 5

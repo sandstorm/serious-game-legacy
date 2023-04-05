@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="de" target-language="en" datatype="plaintext">
+        <body>
+            <trans-unit id="ui.label" xml:space="preserve">
+                <source>Zitat</source>
+                <target>Quote</target>
+            </trans-unit>
+            <trans-unit id="properties.text" xml:space="preserve">
+                <source>Das Zitat</source>
+                <target>The quote</target>
+            </trans-unit>
+            <trans-unit id="properties.person" xml:space="preserve">
+                <source>Person</source>
+                <target>Person</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

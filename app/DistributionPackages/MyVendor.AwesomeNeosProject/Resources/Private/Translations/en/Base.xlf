@@ -1,37 +1,59 @@
 <?xml version="1.0"?>
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="en" datatype="plaintext">
+    <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="de" target-language="en" datatype="plaintext">
         <body>
-           <trans-unit id="filterDates">
-               <source>Filter dates</source>
-           </trans-unit>
+            <trans-unit id="filterDates">
+                <source>Termine filtern</source>
+                <target>Filter dates</target>
+            </trans-unit>
             <trans-unit id="learnMore">
-                <source>Learn more</source>
+                <source>Mehr erfahren</source>
+                <target>Learn more</target>
             </trans-unit>
             <trans-unit id="linkToStartPage">
-                <source>Link to startpage</source>
+                <source>Link zur Startseite</source>
+                <target>Link to startpage</target>
             </trans-unit>
             <trans-unit id="linkToPage">
-                <source>Link to page: </source>
+                <source>Link zur Seite: </source>
+                <target>Link to page: </target>
             </trans-unit>
             <trans-unit id="linkTo">
-                <source>Link to</source>
+                <source>Link zu</source>
+                <target>Link to</target>
             </trans-unit>
             <trans-unit id="menu">
-                <source>Menu</source>
+                <source>Menü</source>
+                <target>Menu</target>
             </trans-unit>
             <trans-unit id="noItems">
-                <source>Currently no items</source>
+                <source>Aktuell keine Einträge</source>
+                <target>Currently no items</target>
             </trans-unit>
             <trans-unit id="oClock">
+                <source>Uhr</source>
                 <!-- no english analogy for "Uhr", you would usually just not write anything behind the timestamp -->
-                <source></source>
+                <target></target>
             </trans-unit>
             <trans-unit id="openMenu">
-                <source>Open menu</source>
+                <source>Menü öffnen</source>
+                <target>Open menu</target>
             </trans-unit>
             <trans-unit id="resetFilters">
-                <source>Reset filters</source>
+                <source>Filter zurücksetzen</source>
+                <target>Reset filters</target>
+            </trans-unit>
+            <trans-unit id="toTop">
+                <source>Nach oben</source>
+                <target>To Top</target>
+            </trans-unit>
+            <trans-unit id="prevSlideMessage">
+                <source>Zur vorherigen Seite springen</source>
+                <target>Skip to previous slide page</target>
+            </trans-unit>
+            <trans-unit id="nextSlideMessage">
+                <source>Zur nächsten Seite springen</source>
+                <target>Skip to next slide page</target>
             </trans-unit>
         </body>
     </file>

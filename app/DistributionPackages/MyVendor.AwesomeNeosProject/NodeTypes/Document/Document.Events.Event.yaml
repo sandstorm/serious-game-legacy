@@ -5,7 +5,7 @@
     'MyVendor.AwesomeNeosProject:Mixin.BlogTags': true
   ui:
     group: general
-    label: 'Event'
+    label: i18n
     icon: icon-calendar
   constraints:
     nodeTypes:
@@ -22,7 +22,7 @@
     date:
       type: DateTime
       ui:
-        label: Startdatum
+        label: i18n
         showInCreationDialog: true
         reloadIfChanged: true
         inspector:
@@ -34,7 +34,7 @@
     dateUntil:
       type: DateTime
       ui:
-        label: Enddatum (optional)
+        label: i18n
         showInCreationDialog: true
         reloadIfChanged: true
         inspector:
@@ -46,7 +46,7 @@
     timeFrom:
       type: DateTime
       ui:
-        label: Von (Uhrzeit)
+        label: i18n
         showInCreationDialog: true
         reloadIfChanged: true
         inspector:
@@ -58,7 +58,7 @@
     timeTo:
       type: DateTime
       ui:
-        label: Bis (Uhrzeit)
+        label: i18n
         showInCreationDialog: true
         reloadIfChanged: true
         inspector:
@@ -70,10 +70,8 @@
     location:
       type: string
       ui:
-        label: 'Location'
+        label: i18n
         showInCreationDialog: true
         reloadIfChanged: true
         inspector:
           group: properties
-          editorOptions:
-            placeholder: 'Location'

@@ -5,7 +5,7 @@
       type: string
       defaultValue: 'solid-blue'
       ui:
-        label: 'Button type'
+        label: i18n
         reloadIfChanged: true
         showInCreationDialog: true
         inspector:
@@ -14,10 +14,10 @@
           editorOptions:
             values:
               'solid-blue':
-                label: 'Solid blue'
+                label: i18n
               'solid-grey':
-                label: 'Solid grey'
+                label: i18n
               outline:
-                label: 'Outline'
+                label: i18n
               link:
-                label: 'Link'
+                label: i18n

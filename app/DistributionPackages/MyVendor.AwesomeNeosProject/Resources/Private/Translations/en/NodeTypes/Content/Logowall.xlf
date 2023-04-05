@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="de" target-language="en" datatype="plaintext">
+        <body>
+            <trans-unit id="ui.label" xml:space="preserve">
+                <source>Logowall</source>
+                <target>Logowall</target>
+            </trans-unit>
+            <trans-unit id="properties.autoplayInterval" xml:space="preserve">
+                <source>Interval (ms) für automatische Wiedergabe</source>
+                <target>Autoplay interval in ms</target>
+            </trans-unit>
+            <trans-unit id="properties.autoplayInterval.ui.help.message" xml:space="preserve">
+                <source>Setzt das interval für die automatische Wiedergabe in Millisekunden. Wenn leer, erfolgt keine automatische Wiedergabe.</source>
+                <target>Set an autoplay interval in ms. If empty there is no autoplay.</target>
+            </trans-unit>
+            <trans-unit id="properties.amountOfLogos" xml:space="preserve">
+                <source>Anzahl sichtbarer Logos</source>
+                <target>Visible amount of logos</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

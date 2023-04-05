@@ -1,7 +1,27 @@
 'MyVendor.AwesomeNeosProject:Content.Events.List':
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
+    'MyVendor.AwesomeNeosProject:Mixin.BlogTags': true
   ui:
-    label: 'Events List'
+    label: i18n
     icon: icon-calendar
     group: special
+    help:
+      message: i18n
+  properties:
+    amountOfEvents:
+      type: string
+      validation:
+        'Neos.Neos/Validation/IntegerValidator': { }
+      defaultValue: '3'
+      ui:
+        label: i18n
+        reloadIfChanged: true
+        inspector:
+          group: 'properties'
+    tags:
+      ui:
+        inspector:
+          group: 'properties'
+        help:
+          message: i18n

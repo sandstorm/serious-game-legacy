@@ -4,7 +4,7 @@
     link:
       type: string
       ui:
-        label: 'Link'
+        label: i18n
         reloadIfChanged: true
         showInCreationDialog: true
         inspector:
@@ -18,6 +18,6 @@
       ui:
         reloadIfChanged: true
         showInCreationDialog: true
-        label: 'Open link in new tab?'
+        label: i18n
         inspector:
           group: 'properties'

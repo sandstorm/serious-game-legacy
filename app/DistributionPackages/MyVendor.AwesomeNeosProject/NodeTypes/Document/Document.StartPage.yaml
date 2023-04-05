@@ -3,7 +3,7 @@
     'MyVendor.AwesomeNeosProject:Document.AbstractPage': true
   ui:
     icon: 'icon-home'
-    label: 'Start Page'
+    label: i18n
   constraints:
     nodeTypes:
       '*': ~
@@ -22,9 +22,9 @@
     privacyPage:
       type: reference
       ui:
-        label: 'Privacy Page'
+        label: i18n
         inspector:
-          group: 'document'
+          group: 'properties'
           editorOptions:
             nodeTypes: [ 'MyVendor.AwesomeNeosProject:Document.Page' ]
     facebookLink:

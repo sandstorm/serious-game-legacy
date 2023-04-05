@@ -10,7 +10,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.BlogTagList) < prototype(Neos.Fu
     }
 
     renderer = afx`
-        <div class="blog-tag-list">
+        <ul class="blog-tag-list">
             <Neos.Fusion:Loop items={props.tags} itemName="tag" @children="itemRenderer">
                 <MyVendor.AwesomeNeosProject:Component.BlogTagItem
                     tag={tag}
@@ -18,6 +18,6 @@ prototype(MyVendor.AwesomeNeosProject:Component.BlogTagList) < prototype(Neos.Fu
                     renderAsLink={props.renderAsLink}
                 />
             </Neos.Fusion:Loop>
-        </div>
+        </ul>
     `
 }

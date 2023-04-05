@@ -3,13 +3,13 @@
   properties:
     title:
       type: string
-      defaultValue: '<h2>Please enter a heading</h2>'
+      defaultValue: '<h2>Headline</h2>' # TODO translation not working
       ui:
-        label: 'Headline'
+        label: i18n
         inlineEditable: true
         inline:
           editorOptions:
-            placeholder: 'Please enter a heading'
+            placeholder: i18n
             linking:
               anchor: true
               title: true
