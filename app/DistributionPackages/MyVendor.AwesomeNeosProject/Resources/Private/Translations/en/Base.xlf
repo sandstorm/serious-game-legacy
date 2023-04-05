@@ -39,6 +39,10 @@
                 <source>Menü öffnen</source>
                 <target>Open menu</target>
             </trans-unit>
+            <trans-unit id="closeMenu">
+                <source>Menü schließen</source>
+                <target>Close menu</target>
+            </trans-unit>
             <trans-unit id="resetFilters">
                 <source>Filter zurücksetzen</source>
                 <target>Reset filters</target>

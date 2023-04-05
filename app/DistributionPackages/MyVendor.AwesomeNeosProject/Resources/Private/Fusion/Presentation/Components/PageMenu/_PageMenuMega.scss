@@ -1,0 +1,145 @@
+@use "AbstractStyles/Variables/Colors";
+@use "AbstractStyles/Variables/Spacing";
+@use "AbstractStyles/Variables/Breakpoints";
+@use "AbstractStyles/Mixins";
+@use "Fusion/Presentation/Components/PageHeader/PageHeader";
+
+$sublevel-gap: Spacing.$xl;
+
+.page-menu--mega {
+    .page-menu__button-container {
+        display: flex;
+        align-items: center;
+
+        .language-menu {
+            margin-right: Spacing.$xl;
+        }
+    }
+}
+
+.page-menu__mega__toggle {
+    display: flex;
+}
+
+.page-menu__mega {
+    display: none;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    left: 0;
+    top: 0;
+
+    background: Colors.$white;
+
+    z-index: 999;
+
+    &--open {
+        display: block;
+    }
+
+    > .content-width {
+        height: 100%;
+    }
+
+    .language-menu {
+        display: none;
+
+        @include Mixins.mq(medium) {
+            display: block;
+            margin-right: Spacing.$xl;
+        }
+    }
+}
+
+.page-menu__mega-header {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    height: PageHeader.$header__height;
+    padding-left: Spacing.$xl;
+    padding-right: Spacing.$xl;
+
+    z-index: 100;
+
+    .page-menu__toggle {
+        color: Colors.$black;
+
+        z-index: 5;
+    }
+}
+
+.page-menu__mega-content-wrapper {
+    height: 100%;
+
+    overflow: hidden;
+}
+
+.page-menu__mega-content {
+    $sublevel-gap: Spacing.$xl;
+
+    padding-top: PageHeader.$header__height;
+
+    height: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    overflow-y: scroll;
+
+    -ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+
+    /* Hide scrollbar in Chrome, Safari and Opera */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    .page-menu__toplevel {
+        flex-grow: 1;
+        display: flex;
+        flex-wrap: wrap;
+        max-width: calc(100% - 400px);
+        padding-bottom: Spacing.$xxl;
+    }
+
+    .page-menu__toplevel-item {
+        width: 33%;
+        height: auto;
+
+        @include Mixins.mq(large) {
+            width: 50%;
+        }
+
+        @include Mixins.mq(xsmall) {
+            width: 100%;
+        }
+
+        h4 {
+            margin-top: 0;
+        }
+
+        a {
+            color: Colors.$black;
+        }
+    }
+
+    .page-menu__sublevel {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        column-gap: $sublevel-gap;
+
+        margin-bottom: Spacing.$xl;
+        word-break: break-word;
+    }
+}
+
+@include Mixins.mq(medium) {
+    .page-menu__mega-content .page-menu__toplevel {
+        max-width: 100%;
+    }
+}

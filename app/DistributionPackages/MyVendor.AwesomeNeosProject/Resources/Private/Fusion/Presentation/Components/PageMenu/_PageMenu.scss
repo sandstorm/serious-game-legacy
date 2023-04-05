@@ -20,7 +20,8 @@
     width: 100%;
 }
 
-.mobile-menu__toggle {
+.mobile-menu__toggle,
+.page-menu__mega__toggle, {
     display: none;
     justify-content: center;
     align-items: center;

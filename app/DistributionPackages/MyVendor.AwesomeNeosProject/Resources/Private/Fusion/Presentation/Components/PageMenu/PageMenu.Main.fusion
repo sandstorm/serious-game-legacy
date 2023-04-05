@@ -10,9 +10,9 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Main) < prototype(Neos.
     }
 
     // we use alpine js to toggle the main menu for mobile screen size
-    // :class sets the visible class depending on the 'openMobileMenu' state (See PageMenu.fusion)
+    // :class sets the visible class depending on the 'mobileMenuOpen' state (See PageMenu.fusion)
     renderer = afx`
-        <div class="page-menu__main" :class="openMobileMenu ? 'page-menu__main--is-visible' : ''">
+        <div class="page-menu__main" :class="mobileMenuOpen ? 'page-menu__main--open' : ''">
             <ul class="page-menu__toplevel">
                 <Neos.Fusion:Loop items={props.menuItems}>
                     <li

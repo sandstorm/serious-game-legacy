@@ -1,0 +1,62 @@
+prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Mega) < prototype(Neos.Fusion:Component) {
+    menuItems = Neos.Neos:MenuItems {
+        maximumLevels = 2
+        filter = "
+            Neos.Neos:Document,
+            !MyVendor.AwesomeNeosProject:Document.NotFoundPage,
+            !MyVendor.AwesomeNeosProject:Document.Blog.Tags,
+            !MyVendor.AwesomeNeosProject:Document.Blog.Post
+        "
+    }
+
+    renderer = afx`
+        <div class="page-menu__mega " :class="megaMenuOpen ? 'page-menu__mega--open' : ''">
+            <MyVendor.AwesomeNeosProject:Utility.ContentWidth>
+
+                <header class="page-menu__mega-header">
+                    <MyVendor.AwesomeNeosProject:Component.LanguageMenu/>
+
+                    <button
+                        x-on:click="megaMenuOpen = false"
+                        class="page-menu__mega__toggle button button--link"
+                        title={I18n.translate('MyVendor.AwesomeNeosProject:Base:closeMenu')}
+                    >
+                        <span class="icon-close" aria-hidden="true"></span>
+                        <span class="sr-only">{I18n.translate('MyVendor.AwesomeNeosProject:Base:closeMenu')}</span>
+                    </button>
+                </header>
+
+                <div class="page-menu__mega-content-wrapper">
+                    <div class="page-menu__mega-content">
+                        <ul class="page-menu__toplevel">
+                            <Neos.Fusion:Loop items={props.menuItems}>
+                                <li class={item.state + ' page-menu__toplevel-item'}>
+                                    <Neos.Neos:NodeLink
+                                        node={item.node}
+                                        attributes.class="page-menu__toplevel-link"
+                                    >
+                                        {item.label}
+                                    </Neos.Neos:NodeLink>
+                                    <ul @if.has={item.subItems} class="page-menu__sublevel">
+                                        <Neos.Fusion:Loop items={item.subItems}>
+                                            <li class={AtomicFusion.classNames(item.state, 'page-menu__sublevel-item')}>
+                                                <Neos.Neos:NodeLink
+                                                    node={item.node}
+                                                    attributes.title={I18n.translate('MyVendor.AwesomeNeosProject:Base:linkToPage') + item.label}
+                                                    attributes.class="page-menu__sublevel-link"
+                                                >
+                                                    {item.label}
+                                                </Neos.Neos:NodeLink>
+                                            </li>
+                                        </Neos.Fusion:Loop>
+                                    </ul>
+                                </li>
+                            </Neos.Fusion:Loop>
+                        </ul>
+                    </div>
+                </div>
+            </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
+        </div>
+    `
+
+}
