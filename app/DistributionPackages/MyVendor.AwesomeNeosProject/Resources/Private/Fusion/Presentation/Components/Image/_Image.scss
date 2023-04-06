@@ -10,19 +10,20 @@ img {
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     margin-bottom: Spacing.$marginBottom--large;
 
     &--left {
-        justify-content: flex-start;
+        align-items: flex-start;
     }
 
     &--center {
-        justify-content: center;
+        align-items: center;
     }
 
     &--right {
-        justify-content: flex-end;
+        align-items: flex-end;
     }
 
     picture {
@@ -33,7 +34,6 @@ img {
 
 .image__description {
     display: block;
-    width: 100%;
 
     font-size: 0.8rem;
     text-align: left;
