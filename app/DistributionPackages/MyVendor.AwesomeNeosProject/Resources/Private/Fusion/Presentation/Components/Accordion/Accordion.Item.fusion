@@ -12,7 +12,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Accordion.Item) < prototype(Neos
         @apply.props = ${props}
 
         _inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
-        _isFirstChild = ${node.identifier == q(node).parents('[instanceof MyVendor.AwesomeNeosProject:Content.Accordion]').children().get(0).identifier}
+        @context._isFirstChild = ${node.identifier == q(node).parents('[instanceof MyVendor.AwesomeNeosProject:Content.Accordion]').children().get(0).identifier}
 
         _accordionItemAttributes = Neos.Fusion:DataStructure {
             "class" = "accordion__item"
@@ -36,6 +36,16 @@ prototype(MyVendor.AwesomeNeosProject:Component.Accordion.Item) < prototype(Neos
             ":aria-expanded" = "expanded"
         }
 
+        _accordionContainerAttributes = Neos.Fusion:DataStructure {
+            "class" = "accordion__content-container"
+            "id" = ${'accordion__content-container-' + node.identifier}
+            "role" = "region"
+            "aria-labelledby" = ${'accordion__trigger-' + node.identifier}
+            "x-show" = "expanded"
+            "x-collapse" = ""
+            "x-cloak" = ${_isFirstChild ? null : true}
+        }
+
         renderer = afx`
             <Neos.Fusion:Tag
                 tagName="div"
@@ -48,19 +58,14 @@ prototype(MyVendor.AwesomeNeosProject:Component.Accordion.Item) < prototype(Neos
                     <h3 class="accordion__title">{props.title}</h3>
                     <span aria-hidden="true" class="accordion__icon icon-angle-down"></span>
                 </Neos.Fusion:Tag>
-                <div 
-                    class="accordion__content-container"
-                    id={'accordion__content-container-' + node.identifier}
-                    role="region"
-                    aria-labelledby={'accordion__trigger-' + node.identifier}
-                    x-show="expanded"
-                    x-collapse
-                    x-cloak={props._isFirstChild ? null : true}
+                <Neos.Fusion:Tag
+                    tagName="div"
+                    attributes={props._accordionContainerAttributes}
                 >
                     <div class="accordion__content">
                         {props.content}
                     </div>
-                </div>
+                </Neos.Fusion:Tag>
             </Neos.Fusion:Tag>
         `
     }
