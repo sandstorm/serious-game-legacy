@@ -12,6 +12,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Accordion.Item) < prototype(Neos
         @apply.props = ${props}
 
         _inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
+        @context._isFirstChild = ${node.identifier == q(node).parents('[instanceof MyVendor.AwesomeNeosProject:Content.Accordion]').children().get(0).identifier}
 
         _accordionItemAttributes = Neos.Fusion:DataStructure {
             "class" = "accordion__item"
@@ -42,6 +43,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Accordion.Item) < prototype(Neos
             "aria-labelledby" = ${'accordion__trigger-' + node.identifier}
             "x-show" = "expanded"
             "x-collapse" = ""
+            "x-cloak" = ${_isFirstChild ? null : true}
         }
 
         renderer = afx`
