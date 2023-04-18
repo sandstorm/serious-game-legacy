@@ -5,6 +5,15 @@
 This packages helps you to quickly set up a Neos Project. Besides a basic Neos setup
 we provided examples and configuration that helps us to quickly provide a kickstart.
 
+You have to use git lfs for the ContentDump! Therefore, after pulling the current main,
+you also have to run git lfs pull to get the database to working.
+
+Run `brew install git-lfs`to install git lfs.
+```
+git lfs install
+git lfs pull
+```
+
 Run `./kickstart.sh` and follow the instructions.
 
 [//]: # (KICKSTART_INFO_SECTION__END)
@@ -44,6 +53,7 @@ Run `./kickstart.sh` and follow the instructions.
   - enable VirtioFS in docker host settings (experimental features)
   - alternatively, comment out the volume mount in the docker-compose.yml if you encounter bad local performance 
 - node -> to run Playwright Tests or for local development (without docker) of your sites JavaScript
+- git lfs
 
 ## Features
 
