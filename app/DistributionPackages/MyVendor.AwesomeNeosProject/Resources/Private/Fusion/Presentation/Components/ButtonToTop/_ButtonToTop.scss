@@ -1,8 +1,34 @@
-@use 'AbstractStyles/Variables/Spacing';
+@use "AbstractStyles/Variables/Spacing";
+@use "AbstractStyles/Mixins";
 
 .button-to-top__wrapper {
+    position: fixed;
+    bottom: Spacing.$lg;
+    z-index: 1000;
+    right: 0;
+    transition: right 0.6s ease-in-out;
+
     &--is-hidden {
-        display: none;
+        right: -100%;
+    }
+}
+
+.button-to-top__icon {
+    font-size: 1.2rem;
+}
+
+.button-to-top__title {
+    @include Mixins.mq(small) {
+        // .sr-only > @extend not working
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
     }
 }
 

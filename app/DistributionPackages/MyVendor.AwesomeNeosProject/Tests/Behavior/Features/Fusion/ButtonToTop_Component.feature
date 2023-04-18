@@ -18,13 +18,13 @@ Feature: Testcase for ButtonToTop Component
             """fusion
             testcase = MyVendor.AwesomeNeosProject:Component.ButtonToTop
             """
-        Then in the fusion output, the inner HTML of CSS selector ".button" matches '<span class="icon-angle-up" aria-hidden="true"></span>Nach oben'
+        Then in the fusion output, the inner HTML of CSS selector ".button" matches '<span class="button-to-top__icon icon-angle-up" aria-hidden="true"></span><span class="button-to-top__title">Nach oben</span>'
         Then in the fusion output, the attributes of CSS selector ".button__wrapper" are:
-            | Key   | Value                                                          |
-            | class | button__wrapper button__wrapper--center button-to-top__wrapper |
+            | Key   | Value                                                                                           |
+            | class | button__wrapper button__wrapper--right button-to-top__wrapper button-to-top__wrapper--is-hidden |
         Then in the fusion output, the attributes of CSS selector ".button" are:
             | Key     | Value                                                                  |
-            | class   | button button--link button--with-icon button--icon-left button--to-top |
+            | class   | button button--solid-blue button--with-icon button--icon-left button--to-top |
             | x-data  | buttonToTop                                                            |
             | x-ref   | buttonToTop                                                            |
         Then I store the Fusion output in the styleguide as "ButtonToTop_Component"

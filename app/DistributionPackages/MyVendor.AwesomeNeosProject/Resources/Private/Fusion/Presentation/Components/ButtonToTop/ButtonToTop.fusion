@@ -3,13 +3,14 @@ prototype(MyVendor.AwesomeNeosProject:Component.ButtonToTop) < prototype(Neos.Fu
         <div
             class={AtomicFusion.classNames(
                 'button__wrapper',
-                'button__wrapper--center',
-                'button-to-top__wrapper'
+                'button__wrapper--right',
+                'button-to-top__wrapper',
+                'button-to-top__wrapper--is-hidden'
             )}
         >
-            <button class='button button--link button--with-icon button--icon-left button--to-top' x-data='buttonToTop' x-ref='buttonToTop'>
-                <span class={AtomicFusion.classNames('icon-angle-up')} aria-hidden="true"></span>
-                {I18n.translate('MyVendor.AwesomeNeosProject:Base:toTop')}
+            <button class='button button--solid-blue button--with-icon button--icon-left button--to-top' x-data='buttonToTop' x-ref='buttonToTop'>
+                <span class={AtomicFusion.classNames('button-to-top__icon', 'icon-angle-up')} aria-hidden="true"></span>
+                <span class="button-to-top__title">{I18n.translate('MyVendor.AwesomeNeosProject:Base:toTop')}</span>
             </button>
         </div>
     `
