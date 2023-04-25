@@ -3,7 +3,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu) < prototype(Neos.Fusio
 
     @propTypes {
         @strict = true
-        menuType = ${PropTypes.string}
+        menuType = ${PropTypes.oneOf(['main', 'mega'])}
     }
 
     // We use a span-tag for the menu icon because the i-tag causes some trouble with the rendering of the 404-Page

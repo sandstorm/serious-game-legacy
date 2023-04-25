@@ -4,8 +4,6 @@
 @use "AbstractStyles/Mixins";
 @use "Fusion/Presentation/Components/PageHeader/PageHeader";
 
-$sublevel-gap: Spacing.$xl;
-
 .page-menu--mega {
     .page-menu__button-container {
         display: flex;
@@ -78,10 +76,7 @@ $sublevel-gap: Spacing.$xl;
 }
 
 .page-menu__mega-content {
-    $sublevel-gap: Spacing.$xl;
-
     padding-top: PageHeader.$header__height;
-
     height: 100%;
     display: flex;
     flex-wrap: nowrap;
@@ -131,7 +126,7 @@ $sublevel-gap: Spacing.$xl;
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
-        column-gap: $sublevel-gap;
+        column-gap: Spacing.$xl;;
 
         margin-bottom: Spacing.$xl;
         word-break: break-word;
