@@ -4,9 +4,9 @@
     tags:
       type: references
       ui:
-        label: 'Blog Tags'
+        label: 'Tags'
         reloadIfChanged: true
         inspector:
-          group: 'document'
+          group: properties
           editorOptions:
             nodeTypes: ['MyVendor.AwesomeNeosProject:Document.Blog.Tag']

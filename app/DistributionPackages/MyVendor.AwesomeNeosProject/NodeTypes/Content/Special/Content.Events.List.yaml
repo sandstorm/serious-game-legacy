@@ -21,7 +21,5 @@
           group: 'properties'
     tags:
       ui:
-        inspector:
-          group: 'properties'
         help:
           message: i18n
