@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2185fbdd7f94c56a6637255f9fb23eed",
+    "content-hash": "59243c923c75a2a44fa27044f7eeb458",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -3108,7 +3108,7 @@
         },
         {
             "name": "myvendor/awesomeneosproject",
-            "version": "dev-update/neos-8.3",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./DistributionPackages/MyVendor.AwesomeNeosProject",
@@ -7171,16 +7171,16 @@
         },
         {
             "name": "sandstorm/e2etesttools",
-            "version": "dev-main",
+            "version": "8.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sandstorm/Sandstorm.E2ETestTools.git",
-                "reference": "57d8d14c69f53f2f304d662785bce9c364cefa5e"
+                "reference": "bddd0d912ba9693cdc08f495b1486295af8edb07"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sandstorm/Sandstorm.E2ETestTools/zipball/57d8d14c69f53f2f304d662785bce9c364cefa5e",
-                "reference": "57d8d14c69f53f2f304d662785bce9c364cefa5e",
+                "url": "https://api.github.com/repos/sandstorm/Sandstorm.E2ETestTools/zipball/bddd0d912ba9693cdc08f495b1486295af8edb07",
+                "reference": "bddd0d912ba9693cdc08f495b1486295af8edb07",
                 "shasum": ""
             },
             "require": {
@@ -7193,7 +7193,6 @@
                 "neos/behat": "^6.1 || dev-master",
                 "neos/flow": "*"
             },
-            "default-branch": true,
             "type": "neos-package",
             "extra": {
                 "neos": {
@@ -7212,9 +7211,9 @@
             ],
             "support": {
                 "issues": "https://github.com/sandstorm/Sandstorm.E2ETestTools/issues",
-                "source": "https://github.com/sandstorm/Sandstorm.E2ETestTools/tree/main"
+                "source": "https://github.com/sandstorm/Sandstorm.E2ETestTools/tree/8.3.0"
             },
-            "time": "2023-03-16T15:16:19+00:00"
+            "time": "2023-06-06T05:48:58+00:00"
         },
         {
             "name": "sandstorm/neosacl",
@@ -11336,8 +11335,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "myvendor/awesomeneosproject": 20,
-        "sandstorm/e2etesttools": 20
+        "myvendor/awesomeneosproject": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -11347,5 +11345,5 @@
         "php": "8.1.19",
         "ext-vips": "1.0.8"
     },
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.3.0"
 }
