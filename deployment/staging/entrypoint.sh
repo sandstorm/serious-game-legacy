@@ -12,6 +12,15 @@ set -ex
 ./flow flow:cache:flush
 ./flow cache:warmup
 
+# If you want to use cron:
+# - enable the following 3 lines
+# - adjust the TODO_SERVICE_NAME in the glue.cloud.sandstorm.de monitoring call.
+#
+#echo "curl https://glue.cloud.sandstorm.de/api/public/cronjob-monitor/TODO_SERVICE_NAME" > /app/notify-cronjob.sh
+#chmod +x /app/notify-cronjob.sh
+#/usr/local/bin/supercronic /crontab &
+
+
 
 # replace env variable and start nginx
 envsubst '${SANDSTORM_MAPS_API_KEY}' < /etc/nginx/nginx.conf > /tmp/nginx.conf && mv /tmp/nginx.conf /etc/nginx/nginx.conf
