@@ -1,9 +1,11 @@
 prototype(Neos.Neos:Page) {
     head.javascripts.cookiepunchConsent = Sandstorm.CookiePunch:Consent
     # Block Global
-    @process.blockTags = ${CookiePunch.blockTags(["iframe", "script"],value, !node.context.inBackend)}
+    @process.blockTags = ${CookiePunch.blockTags(["iframe", "script"], value, !node.context.inBackend)}
 }
 
 prototype(Jonnitto.PrettyEmbedVideoPlatforms:Component.Video) {
     @process.addContextualConsent = ${CookiePunch.addContextualConsent("youtube", value, !node.context.inBackend)}
+    // as we can not access the props in css to get the background image, we hack it in here
+    @process.addStyle = ${'<style>div[data-name="youtube"] .klaro .context-notice:after {background-image: url("' + props.poster + '");}</style>' + value}
 }

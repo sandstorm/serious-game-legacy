@@ -102,8 +102,7 @@ docker compose down
 ############### Running Replacements ################
 
 # unzip SQL dump so we can replace inside
-gzip -dk ./app/ContentDump/Database.sql.gz
-rm ./app/ContentDump/Database.sql.gz
+gzip -dk ./app/ContentDump/Database.sql.gz && rm ./app/ContentDump/Database.sql.gz
 
 _yellow_echo "Renaming DistributionPackage ..."
 mv ./app/DistributionPackages/${defaultVendorName}.${defaultPackageName} ./app/DistributionPackages/${vendorName}.${packageName} 2> /dev/null
