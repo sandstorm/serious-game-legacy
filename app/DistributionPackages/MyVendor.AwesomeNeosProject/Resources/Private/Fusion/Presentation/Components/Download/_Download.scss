@@ -5,8 +5,18 @@
     display: inline-flex;
     align-items: center;
 
+    white-space: normal;
+    overflow: visible;
+    height: auto;
+    padding: Spacing.$md Spacing.$lg;
+
     text-align: left;
     font-size: Typo.$fontSize;
+    line-height: 1.4;
+
+    &.button--link {
+        padding: 0;
+    }
 }
 
 .download__icon {
@@ -15,5 +25,6 @@
 
 .download__size {
     margin-left: Spacing.$sm;
+
     font-size: Typo.$fontSize--small;
 }
