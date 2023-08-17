@@ -2,6 +2,7 @@ prototype(MyVendor.AwesomeNeosProject:Content.Download) < prototype(Neos.Neos:Co
     renderer = MyVendor.AwesomeNeosProject:Component.Download {
         description = Neos.Neos:Editable {
             property = 'description'
+            block = false
         }
         fileUrl = Neos.Fusion:ResourceUri {
             resource = ${q(node).property('file').resource}
