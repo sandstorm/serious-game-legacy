@@ -23,10 +23,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Slider) < prototype(Neos.Fusion:
             <MyVendor.AwesomeNeosProject:Utility.ContentWidth>
                 <div x-data={"slider('" + props._prevSlideMessage + "', '" + props._nextSlideMessage + "', " + (props._inBackend ? "true" : "false") + ")"}>
                     <!-- Slider main container -->
-                    <div
-                        class={AtomicFusion.classNames('swiper', 'content-slider')}
-                        x-ref="slider"
-                    >
+                    <div class="swiper content-slider" x-ref="slider">
                         <!-- Slides -->
                         {props.slides}
 

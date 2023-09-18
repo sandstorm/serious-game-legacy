@@ -21,7 +21,7 @@ prototype(MyVendor.AwesomeNeosProject:Content.Repository.List) < prototype(Neos.
                         image = ${q(item).property('image')}
                         node = ${q(item)}
                     }
-                    imageUri = Neos.Fusion:ResourceUri {
+                    imageUri = MyVendor.AwesomeNeosProject:Helper.ResourceUri {
                         resource = ${q(item).property('image').resource}
                     }
                     imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
