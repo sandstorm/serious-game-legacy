@@ -6,7 +6,7 @@
     bottom: Spacing.$lg;
     z-index: 1000;
     right: 0;
-    transition: right 0.6s ease-in-out;
+    transition: right 0.3s ease-in-out;
 
     &--is-hidden {
         right: -100%;

@@ -11,7 +11,6 @@ export default () => ({
         });
 
         window.addEventListener("scroll", () => this.handleScroll());
-        window.addEventListener("resize", () => this.init());
     },
     isScrollingDown() {
         let goingDown = false;
