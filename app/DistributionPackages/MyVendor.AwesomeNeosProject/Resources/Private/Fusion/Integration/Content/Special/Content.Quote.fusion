@@ -14,7 +14,7 @@ prototype(MyVendor.AwesomeNeosProject:Content.Quote) < prototype(Neos.Neos:Conte
             imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
                 asset = ${q(node).property('image')}
             }
-            imageUri = Neos.Fusion:ResourceUri {
+            imageUri = MyVendor.AwesomeNeosProject:Helper.ResourceUri {
                 resource = ${q(node).property('image').resource}
             }
             fileExtension = ${q(node).property('image').resource.fileExtension}

@@ -47,7 +47,7 @@ prototype(MyVendor.AwesomeNeosProject:Content.LatestBlogPosts) < prototype(Neos.
                     imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
                         asset = ${q(post).property('image')}
                     }
-                    imageUri = Neos.Fusion:ResourceUri {
+                    imageUri = MyVendor.AwesomeNeosProject:Helper.ResourceUri {
                         resource = ${q(post).property('image').resource}
                     }
                     fileExtension = ${q(post).property('image').resource.fileExtension}

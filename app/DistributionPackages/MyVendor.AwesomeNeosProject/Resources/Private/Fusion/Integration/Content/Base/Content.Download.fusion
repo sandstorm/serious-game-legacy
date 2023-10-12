@@ -4,7 +4,7 @@ prototype(MyVendor.AwesomeNeosProject:Content.Download) < prototype(Neos.Neos:Co
             property = 'description'
             block = false
         }
-        fileUrl = Neos.Fusion:ResourceUri {
+        fileUrl = MyVendor.AwesomeNeosProject:Helper.ResourceUri {
             resource = ${q(node).property('file').resource}
         }
         align = ${q(node).property('align')}

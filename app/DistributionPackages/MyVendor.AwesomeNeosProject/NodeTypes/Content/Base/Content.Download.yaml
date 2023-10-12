@@ -27,3 +27,5 @@
         showInCreationDialog: true
         inspector:
           group: properties
+      validation:
+        'Neos.Neos/Validation/NotEmptyValidator': [ ]
