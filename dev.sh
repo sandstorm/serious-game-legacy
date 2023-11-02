@@ -10,7 +10,6 @@
 
 source ./dev_utilities.sh
 source ./dev_generators.sh
-source "$HOME/.nvm/nvm.sh"
 
 set -e
 
@@ -51,6 +50,7 @@ function setup {
 
   _echo_green "Installing Playwright testrunner"
 	pushd ./e2e-testrunner
+	source "$HOME/.nvm/nvm.sh"
 	nvm install
 	nvm use
 	npm install
@@ -222,6 +222,7 @@ function site-import {
 
 function start-e2e-testrunner {
   pushd ./e2e-testrunner
+  source "$HOME/.nvm/nvm.sh"
   nvm use
   npm install
   node index.js
