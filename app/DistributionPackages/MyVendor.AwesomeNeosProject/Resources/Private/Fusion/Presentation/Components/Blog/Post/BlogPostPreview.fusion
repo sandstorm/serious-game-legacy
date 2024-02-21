@@ -16,32 +16,29 @@ prototype(MyVendor.AwesomeNeosProject:Component.BlogPostPreview) < prototype(Neo
         image = ${PropTypes.string}
     }
 
-    renderer = Neos.Fusion:Component {
-        @apply.props = ${props}
+    @private.inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
 
-        _inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
-
-        renderer = afx`
-            <article>
-                <Neos.Fusion:Tag
-                    tagName={props._inBackend ? 'div' : 'a'}
-                    attributes.href={props._inBackend ? null : props.href}
-                    attributes.class="blog-post-preview"
-                    attributes.title={I18n.translate('MyVendor.AwesomeNeosProject:Base:linkTo') + ' Blog Post: ' + props.title}
-                >
-                    {props.image}
-                    <div class="blog-post-preview__content">
-                        <h3 class="blog-post-preview__title">{props.title}</h3>
-                        <div @if.hasTeaserText={props.teaserText} class="blog-post-preview__teaser">
-                            {props.teaserText}
-                        </div>
-                        <div class="blog-post-preview__tags">
-                            {props.tags}
-                        </div>
-                        <button class="button button--solid-blue">{I18n.translate('MyVendor.AwesomeNeosProject:Base:learnMore')}</button>
+    renderer = afx`
+        <article>
+            <Neos.Fusion:Tag
+                tagName={private.inBackend ? 'div' : 'a'}
+                attributes.href={private.inBackend ? null : props.href}
+                attributes.class="blog-post-preview"
+                attributes.title={I18n.translate('MyVendor.AwesomeNeosProject:Base:linkTo') + ' Blog Post: ' + props.title}
+            >
+                {props.image}
+                <div class="blog-post-preview__content">
+                    <h3 class="blog-post-preview__title">{props.title}</h3>
+                    <div @if.hasTeaserText={props.teaserText} class="blog-post-preview__teaser">
+                        {props.teaserText}
                     </div>
-                </Neos.Fusion:Tag>
-            </article>
-        `
-    }
+                    <div class="blog-post-preview__tags">
+                        {props.tags}
+                    </div>
+                    <button
+                        class="button button--solid-blue">{I18n.translate('MyVendor.AwesomeNeosProject:Base:learnMore')}</button>
+                </div>
+            </Neos.Fusion:Tag>
+        </article>
+    `
 }

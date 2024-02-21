@@ -4,14 +4,14 @@ prototype(MyVendor.AwesomeNeosProject:Component.BlogTagItem) < prototype(Neos.Fu
     renderAsLink = true
 
     @propTypes {
-        tag = ${PropTypes.any}
-        activeTag = ${PropTypes.any}
+        @strict = true
+        tag = ${PropTypes.instanceOf('MyVendor.AwesomeNeosProject:Document.Blog.Tag')}
+        activeTag = ${PropTypes.instanceOf('MyVendor.AwesomeNeosProject:Document.Blog.Tag')}
         renderAsLink = ${PropTypes.boolean}
     }
 
-    @context.node = ${this.tag}
-    tagPage = Neos.Neos:NodeUri {
-        node = ${node}
+    @private.tagPage = Neos.Neos:NodeUri {
+        node = ${props.tag}
     }
 
     renderer = afx`
@@ -19,7 +19,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.BlogTagItem) < prototype(Neos.Fu
             <Neos.Fusion:Tag
                 tagName={props.renderAsLink ? 'a' : 'span'}
                 attributes.class={AtomicFusion.classNames('blog-tag', {'blog-tag--is-active': props.activeTag == props.tag})}
-                attributes.href={props.renderAsLink ? props.tagPage : null}
+                attributes.href={props.renderAsLink ? private.tagPage : null}
                 attributes.title={props.renderAsLink ? I18n.translate('MyVendor.AwesomeNeosProject:Base:linkTo') + ' Tag: ' + props.tag.properties.title : null}
             >
                 {props.tag.properties.title}

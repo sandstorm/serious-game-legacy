@@ -1,11 +1,12 @@
 prototype(MyVendor.AwesomeNeosProject:Component.BlogTagList) < prototype(Neos.Fusion:Component) {
-    tags = ''
-    activeTag = ''
+    tags = null
+    activeTag = null
     renderAsLink = true
 
     @propTypes {
-        tags = ${PropTypes.arrayOf( PropTypes.any )}
-        activeTag = ${PropTypes.any}
+        @strict = true
+        tags = ${PropTypes.arrayOf( PropTypes.instanceOf('MyVendor.AwesomeNeosProject:Document.Blog.Tag') )}
+        activeTag = ${PropTypes.instanceOf('MyVendor.AwesomeNeosProject:Document.Blog.Tag')}
         renderAsLink = ${PropTypes.boolean}
     }
 
