@@ -4,26 +4,17 @@ prototype(MyVendor.AwesomeNeosProject:Component.Accordion) < prototype(Neos.Fusi
 
     @propTypes {
         @strict = true
-        firstChild = ${PropTypes.any}
+        firstChild = ${PropTypes.instanceOf('MyVendor.AwesomeNeosProject:Content.Accordion.Item')}
         content = ${PropTypes.string}
     }
 
-    renderer = Neos.Fusion:Component {
-        @apply.props = ${props}
-
-        _accordionAttributes = Neos.Fusion:DataStructure {
-            "id" = ${'accordion-' + node.identifier}
-            "class" = "accordion"
-            "x-data" = ${'{ active: "' + props.firstChild.identifier + '", expanded: false }'}
-        }
-
-        renderer = afx`
-            <Neos.Fusion:Tag
-                tagName="div"
-                attributes={props._accordionAttributes}
-            >
-                {props.content}
-            </Neos.Fusion:Tag>
-        `
+    @private {
+        xData = ${AlpineJS.object({active: props.firstChild.identifier, expanded: false})}
     }
+
+    renderer = afx`
+        <div id={'accordion-' + node.identifier} class="accordion" x-data={private.xData}>
+            {props.content}
+        </div>
+    `
 }

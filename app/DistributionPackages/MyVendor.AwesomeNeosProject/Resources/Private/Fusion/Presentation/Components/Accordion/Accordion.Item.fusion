@@ -5,68 +5,51 @@ prototype(MyVendor.AwesomeNeosProject:Component.Accordion.Item) < prototype(Neos
     @propTypes {
         @strict = true
         title = ${PropTypes.string}
-        content = ${PropTypes.any}
+        content = ${PropTypes.string}
     }
 
-    renderer = Neos.Fusion:Component {
-        @apply.props = ${props}
+    @private {
+        isFirstChild = ${node.identifier == q(node).parents('[instanceof MyVendor.AwesomeNeosProject:Content.Accordion]').children().get(0).identifier}
+        accordionItemXData = ${'{
+            id: "' + node.identifier + '",
+            get expanded() {
+                return this.active === this.id' +
+            '},
+            set expanded(value) {
+                this.active = value ? this.id : null
+            },
+        }'}
+    }
 
-        _inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
-        @context._isFirstChild = ${node.identifier == q(node).parents('[instanceof MyVendor.AwesomeNeosProject:Content.Accordion]').children().get(0).identifier}
-
-        _accordionItemAttributes = Neos.Fusion:DataStructure {
-            "class" = "accordion__item"
-            ":class" = "expanded ? 'accordion__item--open' : 'accordion__item--closed'"
-            "x-data" = ${'{
-                id: "' + node.identifier + '",
-                get expanded() {
-                    return ' + (props._inBackend ? 'true' : 'this.active === this.id') +
-                '},
-                set expanded(value) {
-                    this.active = value ? this.id : null
-                },
-            }'}
-        }
-
-        _accordionTriggerAttributes = Neos.Fusion:DataStructure {
-            "class" = "accordion__trigger"
-            "id" = ${'accordion__trigger-' + node.identifier}
-            "aria-controls" = ${'accordion__content-container-' + node.identifier}
-            "x-on:click" = "expanded = !expanded"
-            ":aria-expanded" = "expanded"
-        }
-
-        _accordionContainerAttributes = Neos.Fusion:DataStructure {
-            "class" = "accordion__content-container"
-            "id" = ${'accordion__content-container-' + node.identifier}
-            "role" = "region"
-            "aria-labelledby" = ${'accordion__trigger-' + node.identifier}
-            "x-show" = "expanded"
-            "x-collapse" = ""
-            "x-cloak" = ${_isFirstChild ? null : true}
-        }
-
-        renderer = afx`
-            <Neos.Fusion:Tag
-                tagName="div"
-                attributes={props._accordionItemAttributes}
+    renderer = afx`
+        <div
+            class="accordion__item"
+            :class="expanded ? 'accordion__item--open' : 'accordion__item--closed'"
+            x-data={private.accordionItemXData}
+        >
+            <button
+                class="accordion__trigger"
+                id={'accordion__trigger-' + node.identifier}
+                aria-controls={'accordion__content-container-' + node.identifier}
+                x-on:click="expanded = !expanded"
+                :aria-expanded="expanded"
             >
-                <Neos.Fusion:Tag
-                    tagName={props._inBackend ? 'div' : 'button'}
-                    attributes={props._accordionTriggerAttributes}
-                >
-                    <h3 class="accordion__title">{props.title}</h3>
-                    <span aria-hidden="true" class="accordion__icon icon-angle-down"></span>
-                </Neos.Fusion:Tag>
-                <Neos.Fusion:Tag
-                    tagName="div"
-                    attributes={props._accordionContainerAttributes}
-                >
-                    <div class="accordion__content">
-                        {props.content}
-                    </div>
-                </Neos.Fusion:Tag>
-            </Neos.Fusion:Tag>
-        `
-    }
+                <h3 class="accordion__title">{props.title}</h3>
+                <span aria-hidden="true" class="accordion__icon icon-angle-down"></span>
+            </button>
+            <div
+                class="accordion__content-container"
+                id={'accordion__content-container-' + node.identifier}
+                role="region"
+                aria-labelledby={'accordion__trigger-' + node.identifier}
+                x-show="expanded"
+                x-collapse
+                x-cloak={private.isFirstChild ? null : true}
+            >
+                <div class="accordion__content">
+                    {props.content}
+                </div>
+            </div>
+        </div>
+    `
 }

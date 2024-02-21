@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "59243c923c75a2a44fa27044f7eeb458",
+    "content-hash": "985caef52571730ac54c0f66e3654bce",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -112,22 +112,24 @@
         },
         {
             "name": "carbon/eel",
-            "version": "2.5.0",
+            "version": "2.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CarbonPackages/Carbon.Eel.git",
-                "reference": "6cf3adda174536b96e37858f82f3ce9cb25a187d"
+                "reference": "3db2043c3403f2438196e95c7d5252fa57b83428"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CarbonPackages/Carbon.Eel/zipball/6cf3adda174536b96e37858f82f3ce9cb25a187d",
-                "reference": "6cf3adda174536b96e37858f82f3ce9cb25a187d",
+                "url": "https://api.github.com/repos/CarbonPackages/Carbon.Eel/zipball/3db2043c3403f2438196e95c7d5252fa57b83428",
+                "reference": "3db2043c3403f2438196e95c7d5252fa57b83428",
                 "shasum": ""
             },
             "require": {
                 "behat/transliterator": "^1.2",
+                "matthiasmullie/minify": "^1.3",
                 "neos/flow": "^7.0 || ^8.0 || ^9.0",
-                "php": "^7.4 || ^8.0"
+                "php": "^8.1",
+                "yieldstudio/tailwind-merge-php": "^0.0.3"
             },
             "type": "neos-carbon",
             "extra": {
@@ -163,7 +165,7 @@
             ],
             "support": {
                 "issues": "https://github.com/CarbonPackages/Carbon.Eel/issues",
-                "source": "https://github.com/CarbonPackages/Carbon.Eel/tree/2.5.0"
+                "source": "https://github.com/CarbonPackages/Carbon.Eel/tree/2.12.0"
             },
             "funding": [
                 {
@@ -175,7 +177,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-05-03T08:36:08+00:00"
+            "time": "2024-02-06T14:24:45+00:00"
         },
         {
             "name": "carbon/notification",
@@ -3105,6 +3107,130 @@
                 "source": "https://github.com/Masterminds/html5-php/tree/2.8.0"
             },
             "time": "2023-04-26T07:27:39+00:00"
+        },
+        {
+            "name": "matthiasmullie/minify",
+            "version": "1.3.71",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/matthiasmullie/minify.git",
+                "reference": "ae42a47d7fecc1fbb7277b2f2d84c37a33edc3b1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/matthiasmullie/minify/zipball/ae42a47d7fecc1fbb7277b2f2d84c37a33edc3b1",
+                "reference": "ae42a47d7fecc1fbb7277b2f2d84c37a33edc3b1",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pcre": "*",
+                "matthiasmullie/path-converter": "~1.1",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": ">=2.0",
+                "matthiasmullie/scrapbook": ">=1.3",
+                "phpunit/phpunit": ">=4.8",
+                "squizlabs/php_codesniffer": ">=3.0"
+            },
+            "suggest": {
+                "psr/cache-implementation": "Cache implementation to use with Minify::cache"
+            },
+            "bin": [
+                "bin/minifycss",
+                "bin/minifyjs"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MatthiasMullie\\Minify\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matthias Mullie",
+                    "email": "minify@mullie.eu",
+                    "homepage": "https://www.mullie.eu",
+                    "role": "Developer"
+                }
+            ],
+            "description": "CSS & JavaScript minifier, in PHP. Removes whitespace, strips comments, combines files (incl. @import statements and small assets in CSS files), and optimizes/shortens a few common programming patterns.",
+            "homepage": "https://github.com/matthiasmullie/minify",
+            "keywords": [
+                "JS",
+                "css",
+                "javascript",
+                "minifier",
+                "minify"
+            ],
+            "support": {
+                "issues": "https://github.com/matthiasmullie/minify/issues",
+                "source": "https://github.com/matthiasmullie/minify/tree/1.3.71"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/matthiasmullie",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-04-25T20:33:03+00:00"
+        },
+        {
+            "name": "matthiasmullie/path-converter",
+            "version": "1.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/matthiasmullie/path-converter.git",
+                "reference": "e7d13b2c7e2f2268e1424aaed02085518afa02d9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/matthiasmullie/path-converter/zipball/e7d13b2c7e2f2268e1424aaed02085518afa02d9",
+                "reference": "e7d13b2c7e2f2268e1424aaed02085518afa02d9",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pcre": "*",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MatthiasMullie\\PathConverter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matthias Mullie",
+                    "email": "pathconverter@mullie.eu",
+                    "homepage": "http://www.mullie.eu",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Relative path converter",
+            "homepage": "http://github.com/matthiasmullie/path-converter",
+            "keywords": [
+                "converter",
+                "path",
+                "paths",
+                "relative"
+            ],
+            "support": {
+                "issues": "https://github.com/matthiasmullie/path-converter/issues",
+                "source": "https://github.com/matthiasmullie/path-converter/tree/1.1.3"
+            },
+            "time": "2019-02-05T23:41:09+00:00"
         },
         {
             "name": "myvendor/awesomeneosproject",
@@ -9224,6 +9350,74 @@
                 "source": "https://github.com/TYPO3/Fluid"
             },
             "time": "2023-03-23T12:04:09+00:00"
+        },
+        {
+            "name": "yieldstudio/tailwind-merge-php",
+            "version": "0.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/YieldStudio/tailwind-merge-php.git",
+                "reference": "228795ebbc139b1e4b3f4a983aa80d534dfe3712"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/YieldStudio/tailwind-merge-php/zipball/228795ebbc139b1e4b3f4a983aa80d534dfe3712",
+                "reference": "228795ebbc139b1e4b3f4a983aa80d534dfe3712",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "laravel/framework": "^9|^10",
+                "laravel/pint": "^1.10",
+                "orchestra/testbench": "7.*|8.*",
+                "pestphp/pest": "^v1|^v2.2.3",
+                "phpstan/phpstan": "^1.10"
+            },
+            "suggest": {
+                "laravel/framework": "Want to use Tailwind Merge PHP with Laravel ?"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "YieldStudio\\TailwindMerge\\Laravel\\TailwindMergeServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "YieldStudio\\TailwindMerge\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "James Hemery",
+                    "email": "james@yieldstudio.fr"
+                }
+            ],
+            "description": "Merge Tailwind CSS classes without style conflicts",
+            "keywords": [
+                "classlist",
+                "conflict",
+                "css",
+                "laravel",
+                "merge",
+                "override",
+                "php",
+                "tailwind",
+                "tailwindcss"
+            ],
+            "support": {
+                "issues": "https://github.com/YieldStudio/tailwind-merge-php/issues",
+                "source": "https://github.com/YieldStudio/tailwind-merge-php/tree/0.0.3"
+            },
+            "time": "2023-07-19T12:28:31+00:00"
         },
         {
             "name": "yoast/yoast-seo-for-neos",
