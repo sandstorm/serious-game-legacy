@@ -10,27 +10,23 @@ prototype(MyVendor.AwesomeNeosProject:Component.BlogPostHeader) < prototype(Neos
         title = ${PropTypes.string}
         teaserText = ${PropTypes.string}
         tags = ${PropTypes.string}
-        date = ${PropTypes.any}
+        date = ${PropTypes.instanceOf('DateTimeInterface')}
         image = ${PropTypes.string}
     }
 
-    renderer = Neos.Fusion:Component {
-        @apply.props = ${props}
-
-        renderer = afx`
-            <MyVendor.AwesomeNeosProject:Utility.ContentWidth>
-                <header class="blog-post-header">
-                    <h1 class="blog-post-header__title">{props.title}</h1>
-                    <div class="blog-post-header__meta_data" @if={props.date}>
-                        {Date.format(props.date, 'd.m.Y')}
-                    </div>
-                    <div class="blog-post-header__meta_data">
-                        {props.tags}
-                    </div>
-                    {props.image}
-                    <div @if.hasTeaserText={props.teaserText} class="blog-post-header__teaser">{props.teaserText}</div>
-                </header>
-            </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
-        `
-    }
+    renderer = afx`
+        <MyVendor.AwesomeNeosProject:Utility.ContentWidth>
+            <header class="blog-post-header">
+                <h1 class="blog-post-header__title">{props.title}</h1>
+                <div class="blog-post-header__meta_data" @if={props.date}>
+                    {Date.format(props.date, 'd.m.Y')}
+                </div>
+                <div class="blog-post-header__meta_data">
+                    {props.tags}
+                </div>
+                {props.image}
+                <div @if.hasTeaserText={props.teaserText} class="blog-post-header__teaser">{props.teaserText}</div>
+            </header>
+        </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
+    `
 }

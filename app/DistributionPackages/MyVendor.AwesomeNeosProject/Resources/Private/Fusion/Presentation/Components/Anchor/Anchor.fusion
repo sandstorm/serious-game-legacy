@@ -6,15 +6,11 @@ prototype(MyVendor.AwesomeNeosProject:Component.Anchor) < prototype(Neos.Fusion:
         id = ${PropTypes.string}
     }
 
-    renderer = Neos.Fusion:Component {
-        @apply.props = ${props}
+    @private.inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
 
-        _inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
-
-        renderer = afx`
-            <div id={props.id} class={AtomicFusion.classNames('anchor', {'anchor--in-backend': props._inBackend})}>
-                <div @if.inBackend={props._inBackend}>Anchor: {props.id}</div>
-            </div>
-        `
-    }
+    renderer = afx`
+        <div id={props.id} class={AtomicFusion.classNames('anchor', {'anchor--in-backend': private.inBackend})}>
+            <div @if.inBackend={private.inBackend}>Anchor: {props.id}</div>
+        </div>
+    `
 }

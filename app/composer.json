@@ -50,7 +50,8 @@
         "yoast/yoast-seo-for-neos": "^1.3",
         "sitegeist/lostintranslation": "^2.0",
         "jonnitto/prettyembedvideoplatforms": "^2.1",
-        "sandstorm/neosacl": "^2.2"
+        "sandstorm/neosacl": "^2.2",
+        "carbon/eel": "^2.12"
     },
     "require-dev": {
         "neos/behat": "~8.3.0",

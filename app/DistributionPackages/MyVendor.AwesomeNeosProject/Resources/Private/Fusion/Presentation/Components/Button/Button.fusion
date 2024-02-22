@@ -18,35 +18,27 @@ prototype(MyVendor.AwesomeNeosProject:Component.Button) < prototype(Neos.Fusion:
         iconAlignment = ${PropTypes.oneOf(['left', 'right'])}
     }
 
-    renderer = Neos.Fusion:Component {
-        @apply.props = ${props}
-
-        _inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
-
-        _buttonClasses = ${AtomicFusion.classNames(
+    @private {
+        inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
+        buttonClasses = ${AtomicFusion.classNames(
             'button',
-            'button--' + props.type, 
-            props.icon ? 'button--with-icon' : null, 
-            props.icon ? 'button--icon-' + props.iconAlignment : null
+            'button--' + props.type,
+            {'button--with-icon': props.icon},
+            props.icon ? ('button--icon-' + props.iconAlignment) : ''
         )}
-
-        renderer = afx`
-            <div
-                class={AtomicFusion.classNames(
-                    'button__wrapper',
-                    'button__wrapper--' + props.align
-                )}
-            >
-                <Neos.Fusion:Tag
-                    tagName={(props.href && !props._inBackend) ? 'a' : 'div'}
-                    attributes.class={props._buttonClasses}
-                    attributes.href={props.href ? props.href : null}
-                    attributes.target={props.isExternalLink ? '_blank' : null}
-                >
-                    <span @if.hasIcon={props.icon} class={AtomicFusion.classNames(props.icon)}></span>
-                    {props.title}
-                </Neos.Fusion:Tag>
-            </div>
-        `
     }
+
+    renderer = afx`
+        <div class={AtomicFusion.classNames('button__wrapper','button__wrapper--' + props.align)}>
+            <Neos.Fusion:Tag
+                tagName={(props.href && !private.inBackend) ? 'a' : 'div'}
+                attributes.class={private.buttonClasses}
+                attributes.href={props.href ? props.href : null}
+                attributes.target={props.isExternalLink ? '_blank' : null}
+            >
+                <span @if.hasIcon={props.icon} class={AtomicFusion.classNames(props.icon)}></span>
+                {props.title}
+            </Neos.Fusion:Tag>
+        </div>
+    `
 }
