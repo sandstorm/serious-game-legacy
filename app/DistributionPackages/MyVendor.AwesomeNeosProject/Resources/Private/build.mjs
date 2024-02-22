@@ -1,5 +1,5 @@
-import { sassPlugin } from 'esbuild-sass-plugin';
-import esbuild from 'esbuild';
+import { sassPlugin } from 'esbuild-sass-plugin'
+import esbuild from 'esbuild'
 
 /**
  * This file contains the JS/CSS bundler configuration, as executed on `npm run build`
@@ -32,4 +32,4 @@ esbuild
         // Specific options for "npm run build"
         minify: true,
     })
-    .catch(() => process.exit(1));
+    .catch(() => process.exit(1))

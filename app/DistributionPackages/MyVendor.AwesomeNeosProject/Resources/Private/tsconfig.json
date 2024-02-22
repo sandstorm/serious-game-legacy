@@ -7,10 +7,12 @@
         "esModuleInterop": true,
         "noImplicitAny": true,
         "removeComments": true,
+        "skipLibCheck": true,
         "lib": [
             "es6",
             "dom"
-        ]
+        ],
+        "typeRoots": ["./node_modules/@types", "./Types/alpine.d.ts"]
     },
     "include": [
         "**/*.ts"
