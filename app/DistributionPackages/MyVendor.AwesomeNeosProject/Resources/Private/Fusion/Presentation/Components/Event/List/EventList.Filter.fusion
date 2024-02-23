@@ -11,8 +11,8 @@ prototype(MyVendor.AwesomeNeosProject:Component.EventList.Filter) < prototype(Ne
 
         _filterButtonAttributes = Neos.Fusion:DataStructure {
             'class' = 'button button--solid-blue'
-            'x-on:click' = 'filterOpen=!filterOpen'
-            'x-on:click.outside' = 'filterOpen=false'
+            'x-on:click' = 'toggleFilter'
+            'x-on:click.outside' = 'closeFilter'
         }
 
         _deleteFilterButtonAttributes = Neos.Fusion:DataStructure {
