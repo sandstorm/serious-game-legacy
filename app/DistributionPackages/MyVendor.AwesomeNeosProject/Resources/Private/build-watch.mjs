@@ -1,5 +1,5 @@
-import { sassPlugin } from 'esbuild-sass-plugin';
-import esbuild from 'esbuild';
+import { sassPlugin } from 'esbuild-sass-plugin'
+import esbuild from 'esbuild'
 
 /**
  * This file contains the JS/CSS bundler configuration, as executed on `npm run watch`
@@ -28,7 +28,7 @@ const ctx = await esbuild.context({
             loadPaths: ['./', './node_modules'],
         }),
     ],
-});
+})
 
-await ctx.watch();
-console.log('watching...');
+await ctx.watch()
+console.log('watching...')

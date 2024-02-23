@@ -30,11 +30,11 @@ prototype(MyVendor.AwesomeNeosProject:Component.Slider) < prototype(Neos.Fusion:
                         <!-- If we need pagination -->
                         <div class="swiper-pagination content-slider__pagination"></div>
 
-                        <button class="swiper-button-prev content-slider__arrow">
+                        <button class="swiper-button-prev swiper-button-prev--basic-slider content-slider__arrow">
                             <span class="sr-only">{I18n.translate('MyVendor.AwesomeNeosProject:Base:prevSlideMessage')}</span>
                         </button>
 
-                        <button class="swiper-button-next content-slider__arrow">
+                        <button class="swiper-button-next swiper-button-next--basic-slider content-slider__arrow">
                             <span class="sr-only">{I18n.translate('MyVendor.AwesomeNeosProject:Base:nextSlideMessage')}</span>
                         </button>
                     </div>

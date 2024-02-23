@@ -1,25 +1,25 @@
-// @ts-ignore
-import Alpine from 'alpinejs';
-// @ts-ignore
-import collapse from '@alpinejs/collapse';
-// @ts-ignore
-import intersect from '@alpinejs/intersect';
-import "./main.scss";
-import eventList from "./Fusion/Presentation/Components/Event/List/EventList";
-import {initMap} from "./Fusion/Presentation/Components/Map/Map";
-import slider from "./Fusion/Presentation/Components/Slider/Slider";
-import logowall from "./Fusion/Presentation/Components/Logowall/Logowall";
-import buttonToTop from "./Fusion/Presentation/Components/ButtonToTop/ButtonToTop";
+import Alpine, { AlpineComponent } from 'alpinejs'
+import collapse from '@alpinejs/collapse'
+import intersect from '@alpinejs/intersect'
+import persist from '@alpinejs/persist'
+import './main.scss'
+import { initMap } from './Fusion/Presentation/Components/Map/Map'
+import ButtonToTop, { ButtonToTopComponent } from './Fusion/Presentation/Components/ButtonToTop/ButtonToTop'
+import EventList, { EventListComponent } from './Fusion/Presentation/Components/Event/List/EventList'
+import Logowall, { LogowallComponent } from './Fusion/Presentation/Components/Logowall/Logowall'
+import Slider, { SliderComponent } from './Fusion/Presentation/Components/Slider/Slider'
 
 // We decided to use https://alpinejs.dev/ to write js code
 // as it provides a great way to structure and develop js components.
-Alpine.plugin(collapse);
-Alpine.plugin(intersect);
-initMap(Alpine);
+Alpine.plugin(collapse)
+Alpine.plugin(intersect)
+Alpine.plugin(persist)
 
-Alpine.data('eventList', eventList);
-Alpine.data('logowall', logowall);
-Alpine.data('slider', slider);
-Alpine.data('buttonToTop', buttonToTop);
+initMap(Alpine)
 
-Alpine.start();
+Alpine.data('buttonToTop', ButtonToTop as (value: any) => AlpineComponent<ButtonToTopComponent>)
+Alpine.data('eventList', EventList as (value: any) => AlpineComponent<EventListComponent>)
+Alpine.data('logowall', Logowall as (value: any) => AlpineComponent<LogowallComponent>)
+Alpine.data('slider', Slider as (value: any) => AlpineComponent<SliderComponent>)
+
+Alpine.start()

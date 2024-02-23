@@ -12,6 +12,11 @@
   resolved "https://registry.yarnpkg.com/@alpinejs/intersect/-/intersect-3.12.0.tgz#935e34a25206c98498502cd49e265f8302491046"
   integrity sha512-pwaOtU3g4l9tKxOoccbZzCoRWokDyEr35T9hCKO8mWruyJ0WKjaB+8ypCA49TT1Vxw5XMUz82FBzuF3JJboirw==
 
+"@alpinejs/persist@^3.13.5":
+  version "3.13.5"
+  resolved "https://registry.yarnpkg.com/@alpinejs/persist/-/persist-3.13.5.tgz#4e06907189b18b414aa4c2120916285fbb66c7ab"
+  integrity sha512-nmULi5Kp/v5/h4FtGpqyzzMPlulc2fmQ+Olhk0NwTcBKSCZDg6OtXgS998rnHpcWO0jsjCmvXn/Pul2av7D8lA==
+
 "@esbuild/android-arm64@0.17.14":
   version "0.17.14"
   resolved "https://registry.yarnpkg.com/@esbuild/android-arm64/-/android-arm64-0.17.14.tgz#4624cea3c8941c91f9e9c1228f550d23f1cef037"
