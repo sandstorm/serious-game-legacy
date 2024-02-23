@@ -1,57 +1,66 @@
-// @ts-ignore
-import Swiper from 'swiper/bundle';
+import { AlpineComponent } from 'alpinejs'
+import Swiper from 'swiper/bundle'
+import { SwiperOptions, Swiper as SwiperType } from 'swiper'
 // import Swiper styles
-import 'swiper/css/bundle';
-// @ts-ignore
-import { Swiper as SwiperType } from "swiper";
-import basicSlider from "../Slider/Slider";
+import 'swiper/css/bundle'
+import basicSlider, { SliderComponent } from '../Slider/Slider'
 
-export default function Logowall(amountOfLogos: unknown = 6, autoplayInterval: unknown = 3000, inBackend: unknown = false) {
+const CSS_CLASSES = {
+    // use the generic swiper classes here so the code works for all swipers inheriting this function
+    slide: '.swiper-slide',
+}
+
+export type LogowallComponent = SliderComponent & {
+    amountOfLogos: number
+    autoplayInterval: number
+}
+
+export default (
+    amountOfLogos: number = 6,
+    autoplayInterval: number = 3000,
+    inBackend: boolean = false
+): AlpineComponent<LogowallComponent> => {
     return {
-        // Function signature: function(prevSlideMessage: string, nextSlideMessage: string, inBackend: unknown = false)
-        // We are not rendering the arrows here, so we don't need the a11y messages for prev and next slide
-        ...basicSlider('', '', inBackend), 
+        amountOfLogos: amountOfLogos,
+        autoplayInterval: autoplayInterval,
 
-        amountOfLogos: amountOfLogos as number,
-        autoplayInterval: autoplayInterval as number,
+        // We are not rendering the arrows here, so we don't need the a11y messages for prev and next slide
+        ...basicSlider('', '', inBackend),
 
         _initSlider() {
-            // @ts-ignore
-            const swiperRef = this.$refs.slider;
-            const amountOfSlides = swiperRef.querySelectorAll('.swiper-slide').length;
+            const swiperRef = this.$refs.slider
+
+            const amountOfSlides = swiperRef.querySelectorAll(CSS_CLASSES.slide).length
+
             if (amountOfSlides === 0) {
-                return;
+                return
             }
 
-            let autoplay = undefined;
-            if (this.autoplayInterval && !this.inBackend) {
-                autoplay = {
-                    delay: this.autoplayInterval,
-                }
-            }
-
-            const swiperOptions = {
+            const swiperOptions: SwiperOptions & { pauseOnMouseEnter: boolean } = {
                 loop: !this.inBackend,
                 slidesPerView: 2, // for mobile
                 spaceBetween: 20,
                 pauseOnMouseEnter: false,
-                autoplay: this.inBackend ? false : {
-                    disableOnInteraction: false,
-                },
+                autoplay: this.inBackend
+                    ? false
+                    : {
+                          disableOnInteraction: false,
+                          delay: this.autoplayInterval && !this.inBackend ? this.autoplayInterval : undefined
+                      },
                 breakpoints: {
                     // when window width is >= 996px
                     996: {
                         slidesPerView: this.amountOfLogos,
-                        spaceBetween: 40
+                        spaceBetween: 40,
                     },
                     // when window width is >= 768px
                     768: {
                         slidesPerView: 4,
                     },
-                }
+                },
             }
 
-            this._swiper = new Swiper(swiperRef, swiperOptions);
-        }
+            this._swiper = new Swiper(swiperRef, swiperOptions)
+        },
     }
 }
