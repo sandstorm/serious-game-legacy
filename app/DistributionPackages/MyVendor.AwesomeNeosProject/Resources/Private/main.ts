@@ -3,10 +3,10 @@ import collapse from '@alpinejs/collapse'
 import intersect from '@alpinejs/intersect'
 import persist from '@alpinejs/persist'
 import './main.scss'
-import { initMap } from './Fusion/Presentation/Components/Map/Map'
 import ButtonToTop, { ButtonToTopComponent } from './Fusion/Presentation/Components/ButtonToTop/ButtonToTop'
 import EventList, { EventListComponent } from './Fusion/Presentation/Components/Event/List/EventList'
 import Logowall, { LogowallComponent } from './Fusion/Presentation/Components/Logowall/Logowall'
+import Map, { MapComponent } from './Fusion/Presentation/Components/Map/Map'
 import Slider, { SliderComponent } from './Fusion/Presentation/Components/Slider/Slider'
 
 // We decided to use https://alpinejs.dev/ to write js code
@@ -15,11 +15,10 @@ Alpine.plugin(collapse)
 Alpine.plugin(intersect)
 Alpine.plugin(persist)
 
-initMap(Alpine)
-
 Alpine.data('buttonToTop', ButtonToTop as (value: any) => AlpineComponent<ButtonToTopComponent>)
 Alpine.data('eventList', EventList as (value: any) => AlpineComponent<EventListComponent>)
 Alpine.data('logowall', Logowall as (value: any) => AlpineComponent<LogowallComponent>)
+Alpine.data('map', Map as (value: any) => AlpineComponent<MapComponent>)
 Alpine.data('slider', Slider as (value: any) => AlpineComponent<SliderComponent>)
 
 Alpine.start()
