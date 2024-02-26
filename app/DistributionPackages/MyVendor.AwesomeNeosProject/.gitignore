@@ -1,5 +1,6 @@
 Resources/Private/node_modules
 Resources/Private/*.log
+Resources/Private/tsconfig.tsbuildinfo
 # this file is compiled
 Resources/Public/bundle.js
 Resources/Public/bundle.css

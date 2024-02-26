@@ -1,7 +1,7 @@
-@use "AbstractStyles/Mixins";
-@use "AbstractStyles/Variables/Colors";
-@use "AbstractStyles/Variables/Spacing";
-@use "AbstractStyles/Variables/Typo";
+@use 'Utility/Mixins';
+@use 'Utility/Variables/Colors';
+@use 'Utility/Variables/Spacing';
+@use 'Utility/Variables/Typo';
 
 .accordion {
     margin-bottom: Spacing.$marginBottom--large;
@@ -33,7 +33,8 @@
     cursor: pointer;
     color: Colors.$black;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
         color: Colors.$blue;
     }
 
@@ -59,7 +60,7 @@
         font-size: Typo.$fontSize;
     }
 
-    @include Mixins.transition(transform .25s ease-in);
+    @include Mixins.transition(transform 0.25s ease-in);
 }
 
 .accordion__content {

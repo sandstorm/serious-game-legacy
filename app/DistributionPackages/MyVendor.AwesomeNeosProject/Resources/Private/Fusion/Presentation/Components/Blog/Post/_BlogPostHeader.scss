@@ -1,4 +1,4 @@
-@use "AbstractStyles/Variables/Spacing";
+@use 'Utility/Variables/Spacing';
 
 $header-image__width: 400px;
 
@@ -37,7 +37,7 @@ $header-image__width: 400px;
     margin-top: Spacing.$lg;
     margin-bottom: Spacing.$lg;
 
-    font-size: .9rem;
+    font-size: 0.9rem;
 }
 
 .blog-post-header__authors {
@@ -49,6 +49,6 @@ $header-image__width: 400px;
     max-width: 100%;
     margin: auto;
 
-    font-size: .9rem;
+    font-size: 0.9rem;
     text-align: center;
 }

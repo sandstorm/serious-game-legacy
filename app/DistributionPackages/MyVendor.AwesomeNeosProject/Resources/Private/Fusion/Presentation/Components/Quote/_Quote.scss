@@ -1,6 +1,6 @@
-@use "AbstractStyles/Mixins";
-@use "AbstractStyles/Variables/Spacing";
-@use "AbstractStyles/Variables/Typo";
+@use 'Utility/Mixins';
+@use 'Utility/Variables/Spacing';
+@use 'Utility/Variables/Typo';
 
 $image__height: 300px;
 

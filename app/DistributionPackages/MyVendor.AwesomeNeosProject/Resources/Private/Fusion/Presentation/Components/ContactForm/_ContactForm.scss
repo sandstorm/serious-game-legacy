@@ -1,11 +1,11 @@
-@use "AbstractStyles/Variables/Spacing";
-@use "AbstractStyles/Variables/Colors";
+@use 'Utility/Variables/Spacing';
+@use 'Utility/Variables/Colors';
 
 .contact-form {
     // TODO: Neos.Fusion.Form renders its own submit button.
     // At the time committing this, I didn't know how to disable
     // this button: This is how this hacky CSS code came here ...
-    button[type=submit]:not(#submitContactForm) {
+    button[type='submit']:not(#submitContactForm) {
         display: none;
     }
 }
@@ -18,7 +18,7 @@
     margin: Spacing.$sm;
     display: block;
 
-    font-size: .9rem;
+    font-size: 0.9rem;
 }
 
 .contact-form__success {
@@ -59,6 +59,3 @@
 
     z-index: -1;
 }
-
-
-

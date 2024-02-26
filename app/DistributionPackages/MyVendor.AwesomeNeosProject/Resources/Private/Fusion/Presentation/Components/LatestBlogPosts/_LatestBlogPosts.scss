@@ -1,5 +1,5 @@
-@use "AbstractStyles/Variables/Colors";
-@use "AbstractStyles/Variables/Spacing";
+@use 'Utility/Variables/Colors';
+@use 'Utility/Variables/Spacing';
 
 $latestBlogPosts__preview-width: 400px;
 
@@ -19,7 +19,7 @@ $latestBlogPosts__preview-width: 400px;
         margin-bottom: Spacing.$xl;
     }
 
-     .blog-post-preview__tags {
+    .blog-post-preview__tags {
         display: none;
     }
 }

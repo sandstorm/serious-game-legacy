@@ -1,20 +1,22 @@
 {
     "compilerOptions": {
         "target": "es6",
-        "module": "es6",
+        "module": "ESNext",
         "moduleResolution": "node",
         "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "allowJs": false,
         "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
         "noImplicitAny": true,
         "removeComments": true,
         "skipLibCheck": true,
-        "lib": [
-            "es6",
-            "dom"
-        ],
-        "typeRoots": ["./node_modules/@types", "./Types/alpine.d.ts"]
+        "noEmit": true,
+        "incremental": true,
+        "noFallthroughCasesInSwitch": true,
+        "lib": ["es6", "dom", "ESNext"],
+        "typeRoots": ["./node_modules/@types", "./JavaScript/Types/alpine.d.ts"]
     },
-    "include": [
-        "**/*.ts"
-    ]
+    "include": ["./JavaScript/", "./Fusion/"]
 }

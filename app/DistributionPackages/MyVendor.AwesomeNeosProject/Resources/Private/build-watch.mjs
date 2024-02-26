@@ -1,4 +1,3 @@
-import { sassPlugin } from 'esbuild-sass-plugin'
 import esbuild from 'esbuild'
 
 /**
@@ -7,8 +6,9 @@ import esbuild from 'esbuild'
 // NOTE: How watch is used changed with esbuild 17, see https://esbuild.github.io/api/#watch
 const ctx = await esbuild.context({
     // Generic Options (shared between build.js and build-watch.js)
-    entryPoints: ['./main.ts'],
-    target: ['es2017'],
+    entryPoints: ['./JavaScript/main.ts'],
+    sourceRoot: './JavaScript',
+    target: ['esnext'],
     // To prevent shortening of top, right, bottom, left into inset because it is not well supported yet (https://github.com/evanw/esbuild/pull/1758/files)
     supported: { 'inset-property': false },
     bundle: true,
@@ -23,11 +23,11 @@ const ctx = await esbuild.context({
     // postCssPlugin.default({
     //    plugins: [autoprefixer, tailwindcss]
     // })
-    plugins: [
-        sassPlugin({
-            loadPaths: ['./', './node_modules'],
-        }),
-    ],
+    // plugins: [
+    //     sassPlugin({
+    //         loadPaths: ['./', './node_modules'],
+    //     }),
+    // ],
 })
 
 await ctx.watch()

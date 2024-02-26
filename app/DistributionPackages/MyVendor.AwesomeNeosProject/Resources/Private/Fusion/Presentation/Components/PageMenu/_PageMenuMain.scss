@@ -1,8 +1,8 @@
-@use "AbstractStyles/Variables/Colors";
-@use "AbstractStyles/Variables/Spacing";
-@use "AbstractStyles/Mixins";
-@use "Fusion/Presentation/Components/PageHeader/PageHeader";
-@use "Fusion/Presentation/Utility/ContentWidth/ContentWidth";
+@use 'Utility/Variables/Colors';
+@use 'Utility/Variables/Spacing';
+@use 'Utility/Mixins';
+@use 'Presentation/Components/PageHeader/PageHeader';
+@use 'Presentation/Utility/ContentWidth/ContentWidth';
 
 .page-menu__main {
     display: flex;
@@ -51,7 +51,8 @@
     height: PageHeader.$header__height;
 
     &--has-items {
-        &:hover, &:focus-within {
+        &:hover,
+        &:focus-within {
             .page-menu__sublevel-wrapper {
                 display: block;
             }
@@ -72,7 +73,9 @@
     line-height: PageHeader.$header__height;
     font-size: 1.2rem;
 
-    &:hover, &:focus, &:active {
+    &:hover,
+    &:focus,
+    &:active {
         color: Colors.$blue !important;
     }
 
@@ -140,7 +143,9 @@
     text-decoration: none;
     color: Colors.$black;
 
-    &:hover, &:focus, &:active {
+    &:hover,
+    &:focus,
+    &:active {
         color: Colors.$blue !important;
     }
 }

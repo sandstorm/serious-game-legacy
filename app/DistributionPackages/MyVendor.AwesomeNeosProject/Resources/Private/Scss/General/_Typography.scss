@@ -1,22 +1,22 @@
-@use "AbstractStyles/Variables/Colors";
-@use "AbstractStyles/Variables/Typo";
-@use "AbstractStyles/Mixins";
+@use 'Utility/Variables/Colors';
+@use 'Utility/Variables/Typo';
+@use 'Utility/Mixins';
 
 $relativePublicPath: '/_Resources/Static/Packages/MyVendor.AwesomeNeosProject/';
-$icon_font-path: $relativePublicPath + "Fonts";
+$icon_font-path: $relativePublicPath + 'Fonts';
 
 // icon font build with IcoMoon App (see Icons.md in Resources/Public/Fonts Folder)
 @font-face {
     font-family: 'icons';
-    src: url($icon_font-path +  '/icons_v4.ttf') format('truetype'),
-    url($icon_font-path +  '/icons_v4.woff') format('woff'),
-    url($icon_font-path +  '/icons_v4.svg') format('svg');
+    src: url($icon_font-path + '/icons_v4.ttf') format('truetype'),
+        url($icon_font-path + '/icons_v4.woff') format('woff'), url($icon_font-path + '/icons_v4.svg') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
 }
 
-html, body {
+html,
+body {
     font-size: Typo.$fontSize;
     font-family: Typo.$text__fontFamily;
     font-weight: Typo.$text__fontWeight;
@@ -24,7 +24,12 @@ html, body {
     color: Colors.$black;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     margin-top: 0;
 
     font-family: Typo.$heading__fontFamily;
@@ -61,10 +66,13 @@ h6 {
     font-size: Typo.$h6__fontSize;
 }
 
-
 // show the editor the kind of headline when editing in backend (not preview mode, see AbstractPage.fusion)
 .neos-backend:not(.neos-backend--preview) {
-    h1, h2, h3, h4, h5 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
         &:after {
             position: absolute;
             margin-left: 10px;
@@ -78,23 +86,23 @@ h6 {
     }
 
     h1:after {
-        content: "H1";
+        content: 'H1';
     }
 
     h2:after {
-        content: "H2";
+        content: 'H2';
     }
 
     h3:after {
-        content: "H3";
+        content: 'H3';
     }
 
     h4:after {
-        content: "H4";
+        content: 'H4';
     }
 
     h5:after {
-        content: "H5";
+        content: 'H5';
     }
 }
 

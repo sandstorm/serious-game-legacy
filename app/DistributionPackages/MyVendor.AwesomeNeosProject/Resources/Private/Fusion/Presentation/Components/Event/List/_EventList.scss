@@ -1,7 +1,7 @@
-@use "AbstractStyles/Variables/Colors";
-@use "AbstractStyles/Variables/Spacing";
-@use "AbstractStyles/Variables/Typo";
-@use "AbstractStyles/Mixins";
+@use 'Utility/Variables/Colors';
+@use 'Utility/Variables/Spacing';
+@use 'Utility/Variables/Typo';
+@use 'Utility/Mixins';
 
 $eventListDate__width: 100px;
 $eventListDate__width--small: 70px;

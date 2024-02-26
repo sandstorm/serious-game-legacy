@@ -1,12 +1,12 @@
-@use "AbstractStyles/Variables/Colors";
-@use "Fusion/Presentation/Components/Button/Button";
+@use 'Utility/Variables/Colors';
+@use 'Presentation/Components/Button/Button';
 
 // tag rendered as text
 span.blog-tag {
     text-transform: lowercase;
 
     &:before {
-        content: "#";
+        content: '#';
     }
 }
 

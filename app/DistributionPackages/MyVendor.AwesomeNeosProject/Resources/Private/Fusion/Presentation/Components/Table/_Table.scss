@@ -1,6 +1,6 @@
-@use "AbstractStyles/Variables/Colors";
-@use "AbstractStyles/Variables/Spacing";
-@use "AbstractStyles/Mixins";
+@use 'Utility/Variables/Colors';
+@use 'Utility/Variables/Spacing';
+@use 'Utility/Mixins';
 
 figure.table {
     width: 100%;
@@ -22,12 +22,14 @@ figure.table {
             }
         }
 
-        td, th {
+        td,
+        th {
             padding-top: Spacing.$md;
             padding-bottom: Spacing.$sm;
         }
 
-        td, th {
+        td,
+        th {
             &:not(:last-child) {
                 padding-right: Spacing.$xl;
 
