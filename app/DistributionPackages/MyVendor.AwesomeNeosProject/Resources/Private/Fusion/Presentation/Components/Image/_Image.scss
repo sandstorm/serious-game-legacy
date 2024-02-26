@@ -32,10 +32,15 @@ img {
     }
 }
 
+a.image {
+    text-decoration: none;
+}
+
 .image__description {
     display: block;
 
     font-size: 0.8rem;
     text-align: left;
     color: Colors.$grey--light;
+    text-decoration: none;
 }

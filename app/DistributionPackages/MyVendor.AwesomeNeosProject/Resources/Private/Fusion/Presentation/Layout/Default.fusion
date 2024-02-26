@@ -2,13 +2,13 @@ prototype(MyVendor.AwesomeNeosProject:Layout.Default) < prototype(Neos.Fusion:Co
     content = ''
 
     @propTypes {
-        # validation rules for props
-        content = ${PropTypes.any}
+        @strict = true
+        content = ${PropTypes.string}
     }
 
     renderer = afx`
-    <main>
-        {props.content}
-    </main>
+        <main>
+            {props.content}
+        </main>
     `
 }

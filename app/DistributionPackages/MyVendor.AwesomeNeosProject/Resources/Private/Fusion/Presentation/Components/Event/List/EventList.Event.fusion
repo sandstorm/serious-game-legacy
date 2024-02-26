@@ -19,39 +19,37 @@ prototype(MyVendor.AwesomeNeosProject:Component.EventList.Event) < prototype(Neo
         location = ${PropTypes.string}
     }
 
-    renderer = Neos.Fusion:Component {
-        @apply.props = ${props}
-
-        _day = ${Date.format(props.date, 'd')}
-        _month = ${Date.formatCldr(props.date, 'MMM', 'de')}
-        _year = ${Date.format(props.date, 'Y')}
-
-        renderer = afx`
-            <div class="event-list__event">
-                <div class="event-list__date">
-                    <span class="event-list__day">{props._day}</span>
-                    <span class="event-list__month">{props._month}</span>
-                    <span>{props._year}</span>
-                </div>
-                <div>
-                    <div @if={props.timeFrom} class="event-list__time">
-                        {props.timeFrom}
-                        <span @if={props.timeTo}> - {props.timeTo}</span>
-                        {' '}{I18n.translate('MyVendor.AwesomeNeosProject:Base:oClock')}
-                    </div>
-                    {props.tags}
-                    <h4 class="event-list__title">{props.title}</h4>
-                    <div @if={props.location}>
-                        <span class="icon-location" aria-hidden="true"></span> {props.location}
-                    </div>
-                    <MyVendor.AwesomeNeosProject:Component.Button
-                        title={I18n.translate('MyVendor.AwesomeNeosProject:Base:learnMore')}
-                        href={props.href}
-                        type="link"
-                        align="left"
-                    />
-                </div>
-            </div>
-        `
+    @private {
+        day = ${Date.format(props.date, 'd')}
+        month = ${Date.formatCldr(props.date, 'MMM', 'de')}
+        year = ${Date.format(props.date, 'Y')}
     }
+
+    renderer = afx`
+        <div class="event-list__event">
+            <div class="event-list__date">
+                <span class="event-list__day">{private.day}</span>
+                <span class="event-list__month">{private.month}</span>
+                <span>{private.year}</span>
+            </div>
+            <div>
+                <div @if={props.timeFrom} class="event-list__time">
+                    {props.timeFrom}
+                    <span @if={props.timeTo}> - {props.timeTo}</span>
+                    {' '}{I18n.translate('MyVendor.AwesomeNeosProject:Base:oClock')}
+                </div>
+                {props.tags}
+                <h4 class="event-list__title">{props.title}</h4>
+                <div @if={props.location}>
+                    <span class="icon-location" aria-hidden="true"></span> {props.location}
+                </div>
+                <MyVendor.AwesomeNeosProject:Component.Button
+                    title={I18n.translate('MyVendor.AwesomeNeosProject:Base:learnMore')}
+                    href={props.href}
+                    type="link"
+                    align="left"
+                />
+            </div>
+        </div>
+    `
 }
