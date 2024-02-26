@@ -1,5 +1,5 @@
-@use "AbstractStyles/Variables/Spacing";
-@use "AbstractStyles/Variables/Typo";
+@use 'Utility/Variables/Spacing';
+@use 'Utility/Variables/Typo';
 
 .download {
     display: inline-flex;

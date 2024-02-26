@@ -1,8 +1,6 @@
 import { AlpineComponent } from 'alpinejs'
 import Swiper from 'swiper/bundle'
-import { SwiperOptions, Swiper as SwiperType } from 'swiper'
-// import Swiper styles
-import 'swiper/css/bundle'
+import { Swiper as SwiperType } from 'swiper'
 
 const CSS_CLASSES = {
     // use the generic swiper classes here so the code works for all swipers inheriting this function
@@ -127,7 +125,7 @@ export default (
                 return
             }
 
-            const swiperOptions: SwiperOptions = {
+            const swiperOptions = {
                 loop: !this.inBackend,
                 pagination: {
                     el: CSS_CLASSES.pagination,

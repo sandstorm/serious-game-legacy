@@ -1,5 +1,5 @@
-@use "AbstractStyles/Variables/Colors";
-@use "AbstractStyles/Variables/Spacing";
+@use 'Utility/Variables/Colors';
+@use 'Utility/Variables/Spacing';
 
 .teaser {
     position: relative;
@@ -56,7 +56,12 @@
     padding: Spacing.$xxl;
     text-align: center;
 
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
         margin-top: 0;
     }
 

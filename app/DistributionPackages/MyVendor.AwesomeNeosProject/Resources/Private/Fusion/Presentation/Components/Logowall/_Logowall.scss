@@ -1,4 +1,4 @@
-@use "AbstractStyles/Variables/Spacing";
+@use 'Utility/Variables/Spacing';
 
 .logowall {
     width: 100%;
@@ -10,7 +10,8 @@
         padding-right: 0;
     }
 
-    img, .image-placeholder {
+    img,
+    .image-placeholder {
         height: 100%;
         max-height: 100px;
         width: auto;

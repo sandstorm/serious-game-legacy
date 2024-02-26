@@ -1,8 +1,5 @@
 import { AlpineComponent } from 'alpinejs'
 import Swiper from 'swiper/bundle'
-import { SwiperOptions, Swiper as SwiperType } from 'swiper'
-// import Swiper styles
-import 'swiper/css/bundle'
 import basicSlider, { SliderComponent } from '../Slider/Slider'
 
 const CSS_CLASSES = {
@@ -36,7 +33,7 @@ export default (
                 return
             }
 
-            const swiperOptions: SwiperOptions & { pauseOnMouseEnter: boolean } = {
+            const swiperOptions = {
                 loop: !this.inBackend,
                 slidesPerView: 2, // for mobile
                 spaceBetween: 20,

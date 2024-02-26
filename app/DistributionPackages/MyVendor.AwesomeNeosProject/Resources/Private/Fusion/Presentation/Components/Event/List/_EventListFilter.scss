@@ -1,7 +1,7 @@
-@use "AbstractStyles/Variables/Colors";
-@use "AbstractStyles/Variables/Spacing";
-@use "AbstractStyles/Variables/Typo";
-@use "AbstractStyles/Mixins";
+@use 'Utility/Variables/Colors';
+@use 'Utility/Variables/Spacing';
+@use 'Utility/Variables/Typo';
+@use 'Utility/Mixins';
 
 $input__size: 20px;
 $input__size--checked: 12px;
@@ -18,7 +18,7 @@ $input__size--checked: 12px;
     margin-top: Spacing.$sm;
 
     background: Colors.$white;
-    box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.35);
+    box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.35);
 }
 
 .event-list__tag {
@@ -31,7 +31,7 @@ $input__size--checked: 12px;
     font-size: Typo.$fontSize--small;
     cursor: pointer;
 
-    input[type="checkbox"] {
+    input[type='checkbox'] {
         -webkit-appearance: none;
         appearance: none;
         display: grid;
@@ -51,7 +51,7 @@ $input__size--checked: 12px;
         }
     }
 
-    input[type="checkbox"]:checked::before {
+    input[type='checkbox']:checked::before {
         content: '';
         width: $input__size--checked;
         height: $input__size--checked;

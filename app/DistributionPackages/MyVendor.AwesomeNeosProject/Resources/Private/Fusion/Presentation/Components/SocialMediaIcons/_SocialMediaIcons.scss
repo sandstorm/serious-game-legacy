@@ -1,6 +1,6 @@
-@use "AbstractStyles/Variables/Colors";
-@use "AbstractStyles/Variables/Spacing";
-@use "AbstractStyles/Mixins";
+@use 'Utility/Variables/Colors';
+@use 'Utility/Variables/Spacing';
+@use 'Utility/Mixins';
 
 .social-media-icons {
     display: flex;
@@ -9,7 +9,7 @@
     margin: 0 0 Spacing.$marginBottom;
     padding: 0;
     gap: Spacing.$lg;
-    
+
     list-style: none;
     font-size: 1.5rem;
 
@@ -22,7 +22,9 @@
     text-decoration: none;
     color: Colors.$white;
 
-    &:hover, &:active, &:focus {
+    &:hover,
+    &:active,
+    &:focus {
         color: Colors.$blue;
     }
 }

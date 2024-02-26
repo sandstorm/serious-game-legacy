@@ -1,6 +1,7 @@
-@use "AbstractStyles/Variables/Colors";
+@use 'Utility/Variables/Colors';
 
-html, body {
+html,
+body {
     margin: 0;
     width: 100%;
     background-color: Colors.$white;
@@ -22,11 +23,13 @@ body {
     padding: 0;
     margin: -1px;
     overflow: hidden;
-    clip: rect(0,0,0,0);
+    clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border-width: 0;
 }
 
 // Used to prevent flickering of elements when using alpine.js
 // See https://alpinejs.dev/directives/cloak
-[x-cloak] { display: none !important; }
+[x-cloak] {
+    display: none !important;
+}

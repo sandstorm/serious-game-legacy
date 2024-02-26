@@ -1,8 +1,8 @@
-@use "AbstractStyles/Variables/Colors";
-@use "AbstractStyles/Variables/Spacing";
-@use "AbstractStyles/Variables/Breakpoints";
-@use "AbstractStyles/Mixins";
-@use "Fusion/Presentation/Components/PageHeader/PageHeader";
+@use 'Utility/Variables/Colors';
+@use 'Utility/Variables/Spacing';
+@use 'Utility/Variables/Breakpoints';
+@use 'Utility/Mixins';
+@use 'Presentation/Components/PageHeader/PageHeader';
 
 .page-menu--mega {
     .page-menu__button-container {
@@ -55,7 +55,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content: flex-end;
     height: PageHeader.$header__height;
     padding-left: Spacing.$xl;
     padding-right: Spacing.$xl;
@@ -126,7 +126,7 @@
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
-        column-gap: Spacing.$xl;;
+        column-gap: Spacing.$xl;
 
         margin-bottom: Spacing.$xl;
         word-break: break-word;
