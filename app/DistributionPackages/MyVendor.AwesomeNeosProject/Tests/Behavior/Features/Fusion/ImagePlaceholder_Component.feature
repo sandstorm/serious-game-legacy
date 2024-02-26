@@ -19,10 +19,10 @@ Feature: Testcase for Image Placeholder Component
             testcase = MyVendor.AwesomeNeosProject:Component.ImagePlaceholder
             """
         Then in the fusion output, the attributes of CSS selector ".image-placeholder" are:
-            | Key   | Value              |
-            | class | image-placeholder  |
-            | style | padding-top:56.25% |
-        Then in the fusion output, the inner HTML of CSS selector ".image-placeholder" matches '<div class="image-placeholder__inner"><small>Please choose an image in the Inspector</small></div>'
+            | Key   | Value                         |
+            | class | image-placeholder             |
+            | style | aspect-ratio: 1.7777777777778 |
+        Then in the fusion output, the inner HTML of CSS selector ".image-placeholder" matches '<div class="image-placeholder__inner"><small>Bitte ein Bild im Inspector auswählen</small></div>'
         Then I store the Fusion output in the styleguide as "ImagePlaceholder_Component"
 
     Scenario: Image placeholder rendering without placeholder
@@ -33,9 +33,9 @@ Feature: Testcase for Image Placeholder Component
             }
             """
         Then in the fusion output, the attributes of CSS selector ".image-placeholder" are:
-            | Key   | Value              |
-            | class | image-placeholder  |
-            | style | padding-top:56.25% |
+            | Key   | Value                         |
+            | class | image-placeholder             |
+            | style | aspect-ratio: 1.7777777777778 |
         Then in the fusion output, the inner HTML of CSS selector ".image-placeholder" matches '<div class="image-placeholder__inner"></div>'
         Then I store the Fusion output in the styleguide as "ImagePlaceholder_Component"
 

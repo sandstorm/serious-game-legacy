@@ -10,11 +10,11 @@ prototype(MyVendor.AwesomeNeosProject:Utility.ContentWidth) < prototype(Neos.Fus
         class = ${PropTypes.string}
     }
 
-    renderer = Neos.Fusion:Component {
-        @apply.props = ${props}
-        _sizeClassname = ${props.size ? 'content-width--' + props.size : ''}
-        renderer = afx`
-            <div class={AtomicFusion.classNames(props.class, 'content-width' , props._sizeClassname)}>{props.content}</div>
-        `
-    }
+    @private.sizeClassName = ${props.size ? 'content-width--' + props.size : ''}
+
+    renderer = afx`
+        <div class={AtomicFusion.classNames(props.class, 'content-width' , private.sizeClassName)}>
+            {props.content}
+        </div>
+    `
 }

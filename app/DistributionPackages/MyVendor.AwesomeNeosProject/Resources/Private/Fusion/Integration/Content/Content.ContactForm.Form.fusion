@@ -1,8 +1,7 @@
 prototype(MyVendor.AwesomeNeosProject:Content.ContactForm.Form) < prototype(Neos.Fusion.Form:Runtime.RuntimeForm) {
-
-    namespace = "contactform"
-    attributes.id = "contact-form"
-    attributes.class = "form"
+    namespace = 'contactform'
+    attributes.id = 'contact-form'
+    attributes.class = 'form'
 
     process {
         content = MyVendor.AwesomeNeosProject:Component.ContactForm
@@ -31,7 +30,7 @@ prototype(MyVendor.AwesomeNeosProject:Content.ContactForm.Form) < prototype(Neos
             @if.noHoney = ${data.surname ? false : true}
             type = 'Neos.Fusion.Form.Runtime:Email'
             options {
-                senderAddress = "contact@sandstorm.de"
+                senderAddress = 'contact@sandstorm.de'
                 recipientAddress = ${q(node).property('mailTo')}
                 subject = ${'Contact form from: ' + q(documentNode).property('title')}
                 text = MyVendor.AwesomeNeosProject:Component.MailBodyText

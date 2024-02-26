@@ -5,7 +5,7 @@ prototype(MyVendor.AwesomeNeosProject:Content.SectionWithBackground) < prototype
         padding = ${q(node).property('padding')}
 
         content = Neos.Neos:ContentCollection {
-            nodePath = "main"
+            nodePath = 'main'
         }
     }
 }

@@ -29,7 +29,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
 
     @propTypes {
         @strict = true
-        imageSource = ${PropTypes.any}
+        imageSource = ${PropTypes.instanceOf('\\Sitegeist\\Kaleidoscope\\Domain\\ImageSourceInterface')}
         imageUri = ${PropTypes.string}
         fileExtension = ${PropTypes.string}
         alternativeText = ${PropTypes.string}

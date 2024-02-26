@@ -6,8 +6,8 @@
                 <source>Neueste Blogbeiträge</source>
                 <target>Latest blog posts</target>
             </trans-unit>
-            <trans-unit id="properties.text" xml:space="preserve">
-                <source>Nach Tags Filtern</source>
+            <trans-unit id="properties.tag" xml:space="preserve">
+                <source>Nach Tag Filtern</source>
                 <target>Filter by tag</target>
             </trans-unit>
         </body>

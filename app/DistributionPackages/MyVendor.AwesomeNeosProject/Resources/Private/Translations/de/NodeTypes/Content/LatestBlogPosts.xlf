@@ -6,7 +6,7 @@
                 <source>Neueste Blogbeiträge</source>
             </trans-unit>
             <trans-unit id="properties.tag" xml:space="preserve">
-                <source>Nach Tags Filtern</source>
+                <source>Nach Tag Filtern</source>
             </trans-unit>
         </body>
     </file>

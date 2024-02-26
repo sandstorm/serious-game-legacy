@@ -6,40 +6,35 @@ prototype(MyVendor.AwesomeNeosProject:Component.Slider) < prototype(Neos.Fusion:
         slides = ${PropTypes.string}
     }
 
-    // This slider uses swiper.js and is wrapped by alpine.js.
-    // Look at the doku on how to use swiper: https://swiperjs.com/swiper-api
-    // The "swiper" css classes are prescribed by swiper.js.
-    // With x-data="slider" we set the component-name we want to use.
-    // With x-ref="slider" we allow alpine.js to get an easy access to the referenced dom node.
-    // In the main.ts the 'slider' component is registered, this way we can access its properties and functionality.
-    renderer = Neos.Fusion:Component {
-        @apply.props = ${props}
-
-        _inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
-        _prevSlideMessage = ${I18n.translate('MyVendor.AwesomeNeosProject:Base:prevSlideMessage')}
-        _nextSlideMessage = ${I18n.translate('MyVendor.AwesomeNeosProject:Base:nextSlideMessage')}
-
-        renderer = afx`
-            <MyVendor.AwesomeNeosProject:Utility.ContentWidth>
-                <div x-data={"slider('" + props._prevSlideMessage + "', '" + props._nextSlideMessage + "', " + (props._inBackend ? "true" : "false") + ")"}>
-                    <!-- Slider main container -->
-                    <div class="swiper content-slider" x-ref="slider">
-                        <!-- Slides -->
-                        {props.slides}
-
-                        <!-- If we need pagination -->
-                        <div class="swiper-pagination content-slider__pagination"></div>
-
-                        <button class="swiper-button-prev swiper-button-prev--basic-slider content-slider__arrow">
-                            <span class="sr-only">{I18n.translate('MyVendor.AwesomeNeosProject:Base:prevSlideMessage')}</span>
-                        </button>
-
-                        <button class="swiper-button-next swiper-button-next--basic-slider content-slider__arrow">
-                            <span class="sr-only">{I18n.translate('MyVendor.AwesomeNeosProject:Base:nextSlideMessage')}</span>
-                        </button>
-                    </div>
-                </div>
-            </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
-        `
+    @private {
+        inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
+        prevSlideMessage = ${I18n.translate('MyVendor.AwesomeNeosProject:Base:prevSlideMessage')}
+        nextSlideMessage = ${I18n.translate('MyVendor.AwesomeNeosProject:Base:nextSlideMessage')}
     }
+
+    // This slider uses swiper.js: https://swiperjs.com/swiper-api
+    // The "swiper" css classes are prescribed by swiper.js.
+
+    renderer = afx`
+        <MyVendor.AwesomeNeosProject:Utility.ContentWidth>
+            <div x-data={AlpineJS.xData('slider', private.prevSlideMessage, private.nextSlideMessage, private.inBackend)}>
+                <div class="swiper content-slider" x-ref="slider">
+                    {props.slides}
+
+                    <div class="swiper-pagination content-slider__pagination"></div>
+
+                    <button class="swiper-button-prev swiper-button-prev--basic-slider content-slider__arrow">
+                        <span class="sr-only">
+                            {I18n.translate('MyVendor.AwesomeNeosProject:Base:prevSlideMessage')}
+                        </span>
+                    </button>
+                    <button class="swiper-button-next swiper-button-next--basic-slider content-slider__arrow">
+                        <span class="sr-only">
+                            {I18n.translate('MyVendor.AwesomeNeosProject:Base:nextSlideMessage')}
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
+    `
 }

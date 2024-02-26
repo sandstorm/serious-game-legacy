@@ -6,14 +6,11 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageHeader) < prototype(Neos.Fus
         menu = ${PropTypes.string}
     }
 
-    renderer = Neos.Fusion:Component {
-        @apply.props = ${props}
-        renderer = afx`
-            <header class={AtomicFusion.classNames('page-header')}>
-                <MyVendor.AwesomeNeosProject:Utility.ContentWidth>
-                    {props.menu}
-                </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
-            </header>
-        `
-    }
+    renderer = afx`
+        <header class={AtomicFusion.classNames('page-header')}>
+            <MyVendor.AwesomeNeosProject:Utility.ContentWidth>
+                {props.menu}
+            </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
+        </header>
+    `
 }

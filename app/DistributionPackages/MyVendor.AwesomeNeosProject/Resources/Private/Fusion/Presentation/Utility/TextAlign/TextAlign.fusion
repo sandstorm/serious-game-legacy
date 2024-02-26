@@ -6,8 +6,5 @@ prototype(MyVendor.AwesomeNeosProject:Utility.TextAlign) < prototype(Neos.Fusion
         textAlign = ${PropTypes.oneOf(['', 'left', 'center', 'right'])}
     }
 
-    renderer = Neos.Fusion:Component {
-        @apply.props = ${props}
-        renderer = ${props.textAlign ? 'text-align--' + props.textAlign : ''}
-    }
+    renderer = ${props.textAlign ? 'text-align--' + props.textAlign : ''}
 }

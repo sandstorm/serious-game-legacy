@@ -1,5 +1,9 @@
 prototype(MyVendor.AwesomeNeosProject:Component.LanguageMenu) < prototype(Neos.Fusion:Component) {
-    _languageMenu = Neos.Neos:DimensionsMenu {
+    @propTypes {
+        @strict = true
+    }
+
+    @private.languageMenu = Neos.Neos:DimensionsMenu {
         dimension = 'language'
         attributes.class = 'language-menu__items'
         active.attributes.class = 'language-menu__item'
@@ -10,7 +14,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.LanguageMenu) < prototype(Neos.F
 
     renderer = afx`
         <div class="language-menu">
-            {props._languageMenu}
+            {private.languageMenu}
         </div>
     `
 }

@@ -3,7 +3,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageFooter) < prototype(Neos.Fus
 
     @propTypes {
         @strict = true
-        content = ${PropTypes.any}
+        content = ${PropTypes.string}
     }
 
     renderer = afx`

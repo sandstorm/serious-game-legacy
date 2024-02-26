@@ -1,14 +1,18 @@
 prototype(MyVendor.AwesomeNeosProject:Component.PageHeader.Logo) < prototype(Neos.Fusion:Component) {
-    renderer = Neos.Fusion:Component {
-        //there will be a proper logo to implement here
-        _logoResourceUri = Neos.Fusion:ResourceUri {
-            path = 'resource://MyVendor.AwesomeNeosProject/Public/Images/logo.svg'
-        }
-        renderer = afx`
-        <a href="/" class="page-header__logo" title={I18n.translate('MyVendor.AwesomeNeosProject:Base:linkToStartPage')}>
-            <img class="page-header__logo-img" src={props._logoResourceUri} alt="Logo"/>
-        </a>
-        `
+    @propTypes {
+        @strict = true
     }
 
+    @private {
+        logoResourceUri = Neos.Fusion:ResourceUri {
+            path = 'resource://MyVendor.AwesomeNeosProject/Public/Images/logo.svg'
+        }
+        linkTitle = ${I18n.translate('MyVendor.AwesomeNeosProject:Base:linkToStartPage')}
+    }
+
+    renderer = afx`
+        <a href="/" class="page-header__logo" title={private.linkTitle}>
+            <img class="page-header__logo-img" src={private.logoResourceUri} alt="Logo"/>
+        </a>
+    `
 }

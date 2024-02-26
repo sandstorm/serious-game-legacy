@@ -1,17 +1,14 @@
 prototype(MyVendor.AwesomeNeosProject:Component.ButtonToTop) < prototype(Neos.Fusion:Component) {
+    @propTypes {
+        @strict = true
+    }
+
     renderer = afx`
-        <div
-            class={AtomicFusion.classNames(
-                'button__wrapper',
-                'button__wrapper--right',
-                'button-to-top__wrapper',
-                'button-to-top__wrapper--is-hidden'
-            )}
-        >
+        <div class="button__wrapper button__wrapper--right button-to-top__wrapper button-to-top__wrapper--is-hidden">
             <button
-                class='button button--solid-blue button--with-icon button--icon-left button--to-top'
-                x-data='buttonToTop'
-                x-ref='buttonToTop'
+                class="button button--solid-blue button--with-icon button--icon-left button--to-top"
+                x-data="buttonToTop"
+                x-ref="buttonToTop"
                 "x-on:scroll.window"="handleScroll()"
             >
                 <span class={AtomicFusion.classNames('button-to-top__icon', 'icon-angle-up')} aria-hidden="true"></span>
