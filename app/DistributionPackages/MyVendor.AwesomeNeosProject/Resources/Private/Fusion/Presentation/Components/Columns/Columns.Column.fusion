@@ -8,13 +8,11 @@ prototype(MyVendor.AwesomeNeosProject:Component.Columns.Column) < prototype(Neos
         content = ${PropTypes.string}
     }
 
-    renderer = Neos.Fusion:Component {
-        @apply.props = ${props}
-        _sizeClassName = ${'columns__cell--size-' + props.size}
-        renderer = afx`
-            <div class={AtomicFusion.classNames('columns__cell' , props._sizeClassName)}>
-                {props.content}
-            </div>
-        `
-    }
+    @private.sizeClassName = ${'columns__cell--size-' + props.size}
+
+    renderer = afx`
+        <div class={AtomicFusion.classNames('columns__cell' , private.sizeClassName)}>
+            {props.content}
+        </div>
+    `
 }

@@ -6,12 +6,9 @@ prototype(MyVendor.AwesomeNeosProject:Component.Columns) < prototype(Neos.Fusion
         content = ${PropTypes.string}
     }
 
-    renderer = Neos.Fusion:Component {
-        @apply.props = ${props}
-        renderer = afx`
-            <div class="columns">
-                {props.content}
-            </div>
-        `
-    }
+    renderer = afx`
+        <div class="columns">
+            {props.content}
+        </div>
+    `
 }
