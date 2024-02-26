@@ -1,5 +1,5 @@
-@use "AbstractStyles/Variables/Spacing";
-@use "AbstractStyles/Mixins";
+@use 'Utility/Variables/Spacing';
+@use 'Utility/Mixins';
 
 .button-to-top__wrapper {
     position: fixed;

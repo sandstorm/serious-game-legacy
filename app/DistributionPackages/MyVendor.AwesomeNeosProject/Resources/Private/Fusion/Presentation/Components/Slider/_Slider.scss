@@ -1,7 +1,7 @@
-@use "AbstractStyles/Variables/Colors";
-@use "AbstractStyles/Variables/Spacing";
-@use "AbstractStyles/Mixins";
-@use "Fusion/Presentation/Components/Button/Button";
+@use 'Utility/Variables/Colors';
+@use 'Utility/Variables/Spacing';
+@use 'Utility/Mixins';
+@use 'Presentation/Components/Button/Button';
 
 $contentSlider__height: 700px;
 $contentSlider__height--small: 400px;
@@ -70,7 +70,6 @@ $contentSlider__height--small: 400px;
 }
 
 .content-slider__pagination {
-
     &.swiper-pagination-bullets.swiper-pagination-horizontal {
         position: relative;
         bottom: 0;

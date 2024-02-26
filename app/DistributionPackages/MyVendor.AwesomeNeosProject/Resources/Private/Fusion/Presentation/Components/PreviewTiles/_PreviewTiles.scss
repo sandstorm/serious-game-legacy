@@ -1,5 +1,5 @@
-@use "AbstractStyles/Mixins";
-@use "AbstractStyles/Variables/Spacing";
+@use 'Utility/Mixins';
+@use 'Utility/Variables/Spacing';
 
 .preview-tiles {
     display: grid;

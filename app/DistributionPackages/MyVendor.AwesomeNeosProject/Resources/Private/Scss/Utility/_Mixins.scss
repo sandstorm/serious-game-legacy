@@ -1,9 +1,11 @@
-@use "AbstractStyles/Functions" as *;
-@use "AbstractStyles/Variables/Breakpoints";
+@use 'Utility/Functions' as *;
+@use 'Utility/Variables/Breakpoints';
 
 @mixin mq($key) {
     @if breakpoint($key) {
-        @media #{breakpoint($key)} { @content; }
+        @media #{breakpoint($key)} {
+            @content;
+        }
     }
 }
 
@@ -33,14 +35,14 @@
 
 @mixin responsive($properties, $breakpoints) {
     @each $breakpointKey, $propertyValue in Breakpoints.$breakpoints {
-        @if($breakpointKey == default) {
+        @if ($breakpointKey == default) {
             @each $property in $properties {
-                #{$property}: $propertyValue
+                #{$property}: $propertyValue;
             }
         } @else {
             @media #{breakpoint($breakpointKey)} {
                 @each $property in $properties {
-                    #{$property}: $propertyValue
+                    #{$property}: $propertyValue;
                 }
             }
         }

@@ -3,24 +3,30 @@
         "@alpinejs/collapse": "^3.11.1",
         "@alpinejs/intersect": "^3.10.3",
         "@alpinejs/persist": "^3.13.5",
-        "alpinejs": "^3.10.3",
-        "swiper": "^9.0.5"
+        "alpinejs": "^3.12.2",
+        "date-fns": "^2.30.0",
+        "swiper": "^10.2.0"
     },
     "scripts": {
-        "build": "yarn run typecheck && yarn run build:css-and-js",
-        "watch": "concurrently \"yarn run watch:css-and-js\" \"yarn run watch:typecheck\"",
-        "build:css-and-js": "node ./build.mjs",
-        "watch:css-and-js": "node ./build-watch.mjs",
+        "watch": "concurrently \"yarn run watch:scss\" \"yarn run watch:js\" \"yarn run watch:typecheck\"",
+        "watch:scss": "yarn run build:scss --watch",
+        "watch:js": "node ./build-watch.mjs",
+        "build": "yarn run typecheck && yarn run build:scss && yarn run postbuild:css && yarn run build:js",
+        "build:scss": "sass -I Scss/ -I Fusion/ Scss/main.scss:../Public/bundle.css --source-map --style compressed",
+        "build:js": "node ./build.mjs",
+        "postbuild:css": "./node_modules/.bin/postcss --use autoprefixer --autoprefixer.browsers 'last 4 versions' ../Public/*.css -d ../Public/",
         "typecheck": "tsc -noEmit",
         "watch:typecheck": "nodemon -e ts -x \"yarn run typecheck || echo '!!!!!!!!!!!!!!!!!!!!!! TypeScript Errors, Please fix !!!!!!!!!!!!!!!!!!!!!!'\""
     },
     "devDependencies": {
         "@types/alpinejs": "^3.7.0",
+        "autoprefixer": "^9.7.3",
         "concurrently": "^8.0.1",
         "esbuild": "^0.17.14",
-        "esbuild-sass-plugin": "^2.3.1",
         "nodemon": "^2.0.12",
+        "postcss-cli": "^7.1.1",
         "prettier": "^2.4.0",
+        "sass": "^1.26.0",
         "typescript": "^5.0.2"
     }
 }

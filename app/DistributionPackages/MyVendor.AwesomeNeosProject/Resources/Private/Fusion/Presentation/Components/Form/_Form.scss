@@ -1,7 +1,7 @@
-@use "AbstractStyles/Variables/Colors";
-@use "AbstractStyles/Variables/Spacing";
-@use "AbstractStyles/Mixins";
-@use "Fusion/Presentation/Components/Button/Button";
+@use 'Utility/Variables/Colors';
+@use 'Utility/Variables/Spacing';
+@use 'Utility/Mixins';
+@use 'Presentation/Components/Button/Button';
 
 $input__height: 40px;
 
@@ -22,7 +22,9 @@ $input__height: 40px;
     margin-bottom: Spacing.$sm;
 }
 
-.form input:not([type=file]), .form select, .form textarea {
+.form input:not([type='file']),
+.form select,
+.form textarea {
     width: 100%;
     height: $input__height;
     margin: 0;
@@ -35,9 +37,10 @@ $input__height: 40px;
     font-size: inherit;
     font-weight: inherit;
 
-    @include Mixins.transition(border-color .25s ease);
+    @include Mixins.transition(border-color 0.25s ease);
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
         border-color: Colors.$blue;
     }
 }
@@ -65,7 +68,7 @@ $input__height: 40px;
 
         pointer-events: none;
         cursor: pointer;
-        @include Mixins.transition(color .25s ease);
+        @include Mixins.transition(color 0.25s ease);
     }
 
     &:hover::after {
@@ -73,7 +76,7 @@ $input__height: 40px;
     }
 
     select {
-        padding: 0 .5em;
+        padding: 0 0.5em;
         flex: 1;
 
         outline: 0;
@@ -112,9 +115,8 @@ $input__height: 40px;
     }
 }
 
-
 .form .error {
-    font-size: .9rem;
+    font-size: 0.9rem;
 
     .errors {
         padding: 0;

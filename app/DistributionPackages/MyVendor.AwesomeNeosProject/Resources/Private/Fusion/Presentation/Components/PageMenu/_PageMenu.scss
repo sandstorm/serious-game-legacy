@@ -1,8 +1,8 @@
-@use "AbstractStyles/Variables/Colors";
-@use "AbstractStyles/Variables/Spacing";
-@use "AbstractStyles/Mixins";
-@use "Fusion/Presentation/Components/Button/Button";
-@use "Fusion/Presentation/Components/PageHeader/PageHeader";
+@use 'Utility/Variables/Colors';
+@use 'Utility/Variables/Spacing';
+@use 'Utility/Mixins';
+@use 'Presentation/Components/Button/Button';
+@use 'Presentation/Components/PageHeader/PageHeader';
 
 .page-menu {
     display: flex;
@@ -21,7 +21,7 @@
 }
 
 .mobile-menu__toggle,
-.page-menu__mega__toggle, {
+.page-menu__mega__toggle {
     display: none;
     justify-content: center;
     align-items: center;

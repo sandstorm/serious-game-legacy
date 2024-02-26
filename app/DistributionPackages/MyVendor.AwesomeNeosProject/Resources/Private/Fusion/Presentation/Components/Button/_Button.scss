@@ -1,7 +1,7 @@
-@use "AbstractStyles/Variables/Colors";
-@use "AbstractStyles/Variables/Typo";
-@use "AbstractStyles/Variables/Spacing";
-@use "AbstractStyles/Mixins";
+@use 'Utility/Variables/Colors';
+@use 'Utility/Variables/Typo';
+@use 'Utility/Variables/Spacing';
+@use 'Utility/Mixins';
 
 $button__height: 40px;
 $button__height--large: 50px;
@@ -46,7 +46,7 @@ $button__height--larger: 60px;
     cursor: pointer;
     overflow: hidden;
 
-    @include Mixins.transition(background-color .25s, color .25s, border .25s);
+    @include Mixins.transition(background-color 0.25s, color 0.25s, border 0.25s);
 
     &:focus {
         outline: 1px solid Colors.$blue;
@@ -58,7 +58,8 @@ $button__height--larger: 60px;
     background-color: Colors.$blue;
     color: Colors.$white;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
         border-color: Colors.$blue--dark;
         background-color: Colors.$blue--dark;
         color: Colors.$white;
@@ -76,7 +77,8 @@ $button__height--larger: 60px;
     background-color: Colors.$grey;
     color: Colors.$white;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
         border-color: Colors.$grey--dark;
         background-color: Colors.$grey--dark;
         color: Colors.$white;
@@ -94,7 +96,8 @@ $button__height--larger: 60px;
     background-color: Colors.$white;
     color: Colors.$blue;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
         border-color: Colors.$blue--dark;
         background-color: Colors.$white;
         color: Colors.$blue--dark;
@@ -119,7 +122,9 @@ $button__height--larger: 60px;
     line-height: unset;
     font-size: Typo.$fontSize;
 
-    &:hover, &:active, &:focus {
+    &:hover,
+    &:active,
+    &:focus {
         background-color: transparent;
         color: Colors.$blue--dark;
     }
@@ -138,5 +143,3 @@ $button__height--larger: 60px;
         flex-direction: row-reverse;
     }
 }
-
-

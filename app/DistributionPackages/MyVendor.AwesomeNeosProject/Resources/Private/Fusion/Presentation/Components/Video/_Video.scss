@@ -1,5 +1,5 @@
-@use "AbstractStyles/Variables/Spacing";
+@use 'Utility/Variables/Spacing';
 
-div[data-name="youtube"] {
+div[data-name='youtube'] {
     margin-bottom: Spacing.$marginBottom--large;
 }

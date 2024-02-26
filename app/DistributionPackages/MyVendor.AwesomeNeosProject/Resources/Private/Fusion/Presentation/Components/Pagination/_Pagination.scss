@@ -1,7 +1,7 @@
-@use "AbstractStyles/Mixins";
-@use "AbstractStyles/Variables/Colors";
-@use "AbstractStyles/Variables/Spacing";
-@use "AbstractStyles/Variables/Typo";
+@use 'Utility/Mixins';
+@use 'Utility/Variables/Colors';
+@use 'Utility/Variables/Spacing';
+@use 'Utility/Variables/Typo';
 
 .Pagination {
     margin: Spacing.$xl 0 0;
@@ -26,7 +26,9 @@
         color: Colors.$white;
         text-decoration: none;
 
-        &:hover, &:active, &:focus {
+        &:hover,
+        &:active,
+        &:focus {
             background-color: Colors.$black;
         }
     }

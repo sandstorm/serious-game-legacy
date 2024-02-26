@@ -1,6 +1,6 @@
-@use "AbstractStyles/Mixins";
-@use "AbstractStyles/Variables/Colors";
-@use "AbstractStyles/Variables/Spacing";
+@use 'Utility/Mixins';
+@use 'Utility/Variables/Colors';
+@use 'Utility/Variables/Spacing';
 
 .language-menu {
     display: flex;

@@ -1,8 +1,8 @@
-@use "AbstractStyles/Mixins";
-@use "AbstractStyles/Variables/Colors";
-@use "AbstractStyles/Variables/Spacing";
-@use "Fusion/Presentation/Components/Button/Button";
-@use "Fusion/Presentation/Utility/ContentWidth/ContentWidth";
+@use 'Utility/Mixins';
+@use 'Utility/Variables/Colors';
+@use 'Utility/Variables/Spacing';
+@use 'Presentation/Components/Button/Button';
+@use 'Presentation/Utility/ContentWidth/ContentWidth';
 
 // with the id `#cookie-punch` we can be more specific and therefore override the styling
 // see Settings.CookiePunch.yaml
