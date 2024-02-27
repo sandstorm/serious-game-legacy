@@ -51,6 +51,8 @@ class FeatureContext implements Context
      */
     protected $securityContext;
 
+    protected string $flowContextForSystemUnderTest;
+
     /**
      * @throws \Neos\Flow\Exception
      * @throws UnknownObjectException
