@@ -1,4 +1,4 @@
-FROM node:16.11
+FROM node:20.11
 
 RUN yarn config set cache-folder /app/.yarn-cache
 
