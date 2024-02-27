@@ -1,7 +1,7 @@
 build_assets:
   stage: compile_resources
   # keep in sync with .nvmrc
-  image: node:16.14-slim
+  image: node:20.11-slim
   needs: []
   script:
     - cd app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Private

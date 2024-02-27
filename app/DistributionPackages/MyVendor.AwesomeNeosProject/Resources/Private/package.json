@@ -10,7 +10,7 @@
     "scripts": {
         "watch": "concurrently \"yarn run watch:scss\" \"yarn run watch:js\" \"yarn run watch:typecheck\"",
         "watch:scss": "yarn run build:scss --watch",
-        "watch:js": "node ./build-watch.mjs",
+        "watch:js": "node ./build.mjs --watch",
         "build": "yarn run typecheck && yarn run build:scss && yarn run postbuild:css && yarn run build:js",
         "build:scss": "sass -I Scss/ -I Fusion/ Scss/main.scss:../Public/bundle.css --source-map --style compressed",
         "build:js": "node ./build.mjs",
@@ -22,7 +22,7 @@
         "@types/alpinejs": "^3.7.0",
         "autoprefixer": "^9.7.3",
         "concurrently": "^8.0.1",
-        "esbuild": "^0.17.14",
+        "esbuild": "^0.14.53",
         "nodemon": "^2.0.12",
         "postcss-cli": "^7.1.1",
         "prettier": "^2.4.0",
