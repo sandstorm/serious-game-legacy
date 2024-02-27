@@ -1,5 +1,9 @@
 prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Mega) < prototype(Neos.Fusion:Component) {
-    menuItems = Neos.Neos:MenuItems {
+    @propTypes {
+        @strict = true
+    }
+
+    @private.menuItems = Neos.Neos:MenuItems {
         maximumLevels = 2
         filter = "
             Neos.Neos:Document,
@@ -29,7 +33,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Mega) < prototype(Neos.
                 <div class="page-menu__mega-content-wrapper">
                     <div class="page-menu__mega-content">
                         <ul class="page-menu__toplevel">
-                            <Neos.Fusion:Loop items={props.menuItems}>
+                            <Neos.Fusion:Loop items={private.menuItems}>
                                 <li class={item.state + ' page-menu__toplevel-item'}>
                                     <Neos.Neos:NodeLink
                                         node={item.node}

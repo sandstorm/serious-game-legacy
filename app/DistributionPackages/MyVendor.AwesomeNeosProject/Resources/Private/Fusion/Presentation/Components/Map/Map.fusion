@@ -16,19 +16,15 @@ prototype(MyVendor.AwesomeNeosProject:Component.Map) < prototype(Neos.Fusion:Com
         popupText = ${PropTypes.string}
     }
 
-    renderer = Neos.Fusion:Component {
-        mapInitializer = Neos.Fusion:DataStructure {
-            lat = ${props.lat}
-            lng = ${props.lng}
-            zoom = ${props.zoom}
-            popupText = ${props.popupText}
-        }
-
-        renderer = afx`
-            <div class="map">
-                <link rel="stylesheet" href="/_maptiles/frontend/v1/map-main.css" />
-                <div class="map__content" x-data={'map(' + Json.stringify(props.mapInitializer) + ')'} x-intersect.once="loadMap()"></div>
+    renderer = afx`
+        <div class="map">
+            <link rel="stylesheet" href="/_maptiles/frontend/v1/map-main.css"/>
+            <div
+                class="map__content"
+                x-data={AlpineJS.xData('map', {lat: props.lat, lng: props.lng, zoom: props.zoom, popupText: props.popupText})}
+                x-intersect.once="loadMap()"
+            >
             </div>
-        `
-    }
+        </div>
+    `
 }

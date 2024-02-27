@@ -1,4 +1,3 @@
-#
 # Extend error matcher to render the document with uriPathSegment `notfound`
 # for exceptions with 4xx status code
 #

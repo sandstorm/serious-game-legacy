@@ -1,5 +1,1 @@
-prototype(MyVendor.AwesomeNeosProject:Document.Page) < prototype(MyVendor.AwesomeNeosProject:Document.AbstractPage) {
-    body.main {
-
-    }
-}
+prototype(MyVendor.AwesomeNeosProject:Document.Page) < prototype(MyVendor.AwesomeNeosProject:Document.AbstractPage)

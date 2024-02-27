@@ -28,30 +28,6 @@ $contentWidth--full: 100%;
     }
 }
 
-.content-width-context--blogpost {
-    .content-width {
-        max-width: 1000px;
-        padding-left: Spacing.$lg;
-        padding-right: Spacing.$lg;
-    }
-
-    .content-width--small {
-        max-width: 800px;
-    }
-
-    .content-width--large {
-        max-width: 1200px;
-        padding-left: Spacing.$xxl;
-        padding-right: Spacing.$xxl;
-    }
-
-    .content-width--full {
-        max-width: 1400px;
-        padding-left: 0;
-        padding-right: 0;
-    }
-}
-
 // resetting widths, all elements are styled with equal width
 .content-width-context--column {
     .content-width {

@@ -1,5 +1,9 @@
 prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Main) < prototype(Neos.Fusion:Component) {
-    menuItems = Neos.Neos:MenuItems {
+    @propTypes {
+        @strict = true
+    }
+
+    @private.menuItems = Neos.Neos:MenuItems {
         maximumLevels = 2
         filter = "
             Neos.Neos:Document,
@@ -14,7 +18,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Main) < prototype(Neos.
     renderer = afx`
         <div class="page-menu__main" :class="mobileMenuOpen ? 'page-menu__main--open' : ''">
             <ul class="page-menu__toplevel">
-                <Neos.Fusion:Loop items={props.menuItems}>
+                <Neos.Fusion:Loop items={private.menuItems}>
                     <li
                         class={AtomicFusion.classNames(item.state, 'page-menu__toplevel-item', {'page-menu__toplevel-item--has-items': item.subItems})}
                     >

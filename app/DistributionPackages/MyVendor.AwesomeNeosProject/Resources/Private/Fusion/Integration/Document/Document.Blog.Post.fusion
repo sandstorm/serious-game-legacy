@@ -1,6 +1,4 @@
 prototype(MyVendor.AwesomeNeosProject:Document.Blog.Post) < prototype(MyVendor.AwesomeNeosProject:Document.AbstractPage) {
-    body.main.class = 'content-width-context--blogpost'
-
     body.main.content.blogpostheader = MyVendor.AwesomeNeosProject:Component.BlogPostHeader {
         title = ${q(node).property('title')}
         teaserText = MyVendor.AwesomeNeosProject:Helper.DocumentEditableProperty {

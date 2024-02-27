@@ -17,8 +17,8 @@ prototype(MyVendor.AwesomeNeosProject:Content.Teaser) < prototype(Neos.Neos:Cont
         }
 
         content = Neos.Neos:ContentCollection {
-            nodePath = "main"
-            attributes.class = "teaser__content"
+            nodePath = 'main'
+            attributes.class = 'teaser__content'
         }
     }
 }

@@ -29,7 +29,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
 
     @propTypes {
         @strict = true
-        imageSource = ${PropTypes.any}
+        imageSource = ${PropTypes.instanceOf('\\Sitegeist\\Kaleidoscope\\Domain\\ImageSourceInterface')}
         imageUri = ${PropTypes.string}
         fileExtension = ${PropTypes.string}
         alternativeText = ${PropTypes.string}
@@ -45,66 +45,61 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
         formats = ${PropTypes.arrayOf(PropTypes.string)}
     }
 
-    renderer = Neos.Fusion:Component {
-        @apply.props = ${props}
+    @private {
+        inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
+    }
 
-        _inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
+    renderer = Neos.Fusion:Tag {
+        @if.showImage = ${props.imageSource || props.showImagePlaceholder}
 
-        _imageAttributes = Neos.Fusion:DataStructure {
-            "href" = ${props.href ? props.href : null}
-            "target" = ${props.isExternalLink ? '_blank' : null}
-            "class" = ${AtomicFusion.classNames('image', 'image--' + props.align, props.class)}
-        }
+        tagName = ${(props.href && !private.inBackend) ? 'a' : 'div'}
+        attributes.href = ${props.href ? props.href : null}
+        attributes.target = ${props.isExternalLink ? '_blank' : null}
+        attributes.class = ${AtomicFusion.classNames('image', 'image--' + props.align, props.class)}
 
-        renderer = Neos.Fusion:Tag {
-            @if.showImage = ${props.imageSource || props.showImagePlaceholder}
-            tagName = ${(props.href && !this._inBackend) ? 'a' : 'div'}
-            attributes = ${props._imageAttributes}
+        content = Neos.Fusion:Case {
+            gifOrSvg {
+                // WORKAROUND for crashing animated gifs:
+                // It seems that if you throw a big animated gif to vips it needs a lot of resources and blocks
+                // the php process for a very long time with high cpu utilization.
+                // Thats why we do not touch gifs and just output them without any processing.
+                // Also added svgs cause they need no different sizes.
+                condition = ${props.fileExtension == 'gif' || props.fileExtension == 'svg'}
+                renderer = afx`
+                    <MyVendor.AwesomeNeosProject:Component.ImagePlaceholder
+                        @if.showPlaceholder={props.showImagePlaceholder && private.inBackend && !props.imageUri}
+                    />
+                    <img
+                        src={props.imageUri}
+                        alt={props.alternativeText}
+                        loading={props.loadEager ? 'eager' : 'lazy'}
+                    />
+                    <MyVendor.AwesomeNeosProject:Component.Image.Description
+                        imageDescription={props.imageDescription}
+                    />
+                `
+            }
 
-            content = Neos.Fusion:Case {
-                gifOrSvg {
-                    // WORKAROUND for crashing animated gifs:
-                    // It seems that if you throw a big animated gif to vips it needs a lot of resources and blocks
-                    // the php process for a very long time with high cpu utilization.
-                    // Thats why we do not touch gifs and just output them without any processing.
-                    // Also added svgs cause they need no different sizes.
-                    condition = ${props.fileExtension == 'gif' || props.fileExtension == 'svg'}
-                    renderer = afx`
-                        <MyVendor.AwesomeNeosProject:Component.ImagePlaceholder
-                            @if.showPlaceholder={props.showImagePlaceholder && props._inBackend && !props.imageUri}
-                        />
-                        <img
-                            src={props.imageUri}
-                            alt={props.alternativeText}
-                            loading={props.loadEager ? 'eager' : 'lazy'}
-                        />
-                        <MyVendor.AwesomeNeosProject:Component.Image.Description
-                            imageDescription={props.imageDescription}
-                        />
-                    `
-                }
-
-                default {
-                    condition = true
-                    renderer = afx`
-                        <MyVendor.AwesomeNeosProject:Component.ImagePlaceholder
-                            @if.showPlaceholder={props.showImagePlaceholder && props._inBackend && !props.imageSource}
-                        />
-                        <Sitegeist.Kaleidoscope:Picture
-                            @if.showImage={props.imageSource}
-                            alt={props.alternativeText}
-                            imageSource={props.imageSource}
-                            srcset={props.srcSet}
-                            sizes={props.sizes}
-                            formats={props.formats}
-                            renderDimensionAttributes={false}
-                            loading={props.loadEager ? 'eager' : 'lazy'}
-                        />
-                        <MyVendor.AwesomeNeosProject:Component.Image.Description
-                            imageDescription={props.imageDescription}
-                        />
-                    `
-                }
+            default {
+                condition = true
+                renderer = afx`
+                    <MyVendor.AwesomeNeosProject:Component.ImagePlaceholder
+                        @if.showPlaceholder={props.showImagePlaceholder && private.inBackend && !props.imageSource}
+                    />
+                    <Sitegeist.Kaleidoscope:Picture
+                        @if.showImage={props.imageSource}
+                        alt={props.alternativeText}
+                        imageSource={props.imageSource}
+                        srcset={props.srcSet}
+                        sizes={props.sizes}
+                        formats={props.formats}
+                        renderDimensionAttributes={false}
+                        loading={props.loadEager ? 'eager' : 'lazy'}
+                    />
+                    <MyVendor.AwesomeNeosProject:Component.Image.Description
+                        imageDescription={props.imageDescription}
+                    />
+                `
             }
         }
     }

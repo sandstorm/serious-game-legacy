@@ -13,16 +13,9 @@ prototype(MyVendor.AwesomeNeosProject:Component.Teaser) < prototype(Neos.Fusion:
     }
 
     renderer = afx`
-        <Neos.Fusion:Tag
-            tagName='div'
-            attributes.class={AtomicFusion.classNames(
-                'teaser',
-                'teaser--' + props.height,
-                'teaser--text-' + props.textColor
-            )}
-        >
+        <div class={AtomicFusion.classNames('teaser', 'teaser--' + props.height, 'teaser--text-' + props.textColor)}>
             {props.image}
             {props.content}
-        </Neos.Fusion:Tag>
+        </div>
     `
 }

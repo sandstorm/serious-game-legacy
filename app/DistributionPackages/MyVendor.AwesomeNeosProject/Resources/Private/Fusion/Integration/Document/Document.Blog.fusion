@@ -4,7 +4,7 @@ prototype(MyVendor.AwesomeNeosProject:Document.Blog) < prototype(MyVendor.Awesom
             tags = ${q(site).find('[instanceof MyVendor.AwesomeNeosProject:Document.Blog.Tag]')}
         }
     }
-    body.main.content.blogtags.@position = "after mainContent"
+    body.main.content.blogtags.@position = 'after mainContent'
 
     body.main.content.blogposts = MyVendor.AwesomeNeosProject:Utility.ContentWidth {
         content = Flowpack.Listable:PaginatedCollection {
@@ -19,5 +19,5 @@ prototype(MyVendor.AwesomeNeosProject:Document.Blog) < prototype(MyVendor.Awesom
             }
         }
     }
-    body.main.content.blogposts.@position = "after mainContent"
+    body.main.content.blogposts.@position = 'after mainContent'
 }

@@ -12,20 +12,15 @@ prototype(MyVendor.AwesomeNeosProject:Component.SectionWithBackground) < prototy
         padding = ${PropTypes.string}
     }
 
-    renderer = Neos.Fusion:Component {
-        @apply.props = ${props}
-
-        _backgroundColorClass = MyVendor.AwesomeNeosProject:Utility.BackgroundColor {
-            backgroundColor = ${props.backgroundColor}
-        }
-        _paddingClass = ${props.padding == 'none' ? 'background-section--padding-none' : '' }
-
-        renderer = afx`
-            <section class={AtomicFusion.classNames('background-section', props._backgroundColorClass, props._paddingClass )}>
-                <MyVendor.AwesomeNeosProject:Utility.ContentWidth size={props.contentWidth}>
-                    {props.content}
-                </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
-            </section>
-        `
+    @private.backgroundColorClass = MyVendor.AwesomeNeosProject:Utility.BackgroundColor {
+        backgroundColor = ${props.backgroundColor}
     }
+
+    renderer = afx`
+        <section class={AtomicFusion.classNames('background-section', private.backgroundColorClass, {'background-section--padding-none': props.padding == 'none'})}>
+            <MyVendor.AwesomeNeosProject:Utility.ContentWidth size={props.contentWidth}>
+                {props.content}
+            </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
+        </section>
+    `
 }

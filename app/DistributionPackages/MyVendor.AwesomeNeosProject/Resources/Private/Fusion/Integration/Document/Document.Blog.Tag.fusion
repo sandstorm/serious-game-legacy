@@ -5,7 +5,7 @@ prototype(MyVendor.AwesomeNeosProject:Document.Blog.Tag) < prototype(MyVendor.Aw
             activeTag = ${node}
         }
     }
-    body.main.content.blogtags.@position = "after mainContent"
+    body.main.content.blogtags.@position = 'after mainContent'
 
     body.main.content.blogposts = MyVendor.AwesomeNeosProject:Utility.ContentWidth {
         content = Flowpack.Listable:PaginatedCollection {
@@ -28,5 +28,5 @@ prototype(MyVendor.AwesomeNeosProject:Document.Blog.Tag) < prototype(MyVendor.Aw
         }
     }
 
-    body.main.content.blogposts.@position = "after mainContent"
+    body.main.content.blogposts.@position = 'after mainContent'
 }

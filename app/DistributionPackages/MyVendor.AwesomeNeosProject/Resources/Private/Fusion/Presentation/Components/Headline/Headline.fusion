@@ -6,10 +6,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Headline) < prototype(Neos.Fusio
         title = ${PropTypes.string}
     }
 
-    renderer = Neos.Fusion:Component {
-        @apply.props = ${props}
-        renderer = afx`
-            {props.title}
-        `
-    }
+    renderer = afx`
+        {props.title}
+    `
 }

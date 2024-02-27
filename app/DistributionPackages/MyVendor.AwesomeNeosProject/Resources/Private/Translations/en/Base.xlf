@@ -2,6 +2,10 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="de" target-language="en" datatype="plaintext">
         <body>
+            <trans-unit id="chooseImageInInspector">
+                <source>Bitte ein Bild im Inspector auswählen</source>
+                <target>Please choose an image in the inspector</target>
+            </trans-unit>
             <trans-unit id="filterDates">
                 <source>Termine filtern</source>
                 <target>Filter dates</target>
