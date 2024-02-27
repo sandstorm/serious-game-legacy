@@ -1,0 +1,12 @@
+parameters:
+    level: 0
+    paths:
+        - Packages/Sites
+        # add more path if necessary, e.g. for plugins
+    excludePaths:
+        analyse:
+            - Packages/Application
+            - Packages/Carbon
+            - Packages/Framework
+            - Packages/Libraries
+            - Packages/Plugins

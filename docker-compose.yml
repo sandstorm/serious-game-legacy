@@ -43,6 +43,7 @@ services:
     volumes:
       - ./app/composer.json:/app/composer.json:cached
       - ./app/composer.lock:/app/composer.lock:cached
+      - ./app/phpstan.neon:/app/phpstan.neon:cached
       - ./app/DistributionPackages/:/app/DistributionPackages/:cached
       - ./app/Build/Behat/:/app/Build/Behat/:cached
       - ./app/ContentDump/:/app/ContentDump/:cached
