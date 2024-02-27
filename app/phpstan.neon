@@ -1,7 +1,8 @@
 parameters:
-    level: 0
+    level: 1
     paths:
-        - Packages/Sites
+        - Packages
+        - Build
         # add more path if necessary, e.g. for plugins
     excludePaths:
         analyse:
@@ -10,3 +11,4 @@ parameters:
             - Packages/Framework
             - Packages/Libraries
             - Packages/Plugins
+            - Build
