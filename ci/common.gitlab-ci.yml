@@ -10,6 +10,7 @@ build_assets:
     #- npm config set "//npm.fontawesome.com/:_authToken" $FONTAWESOME_NPM_AUTH_TOKEN
     - yarn
     - yarn typecheck
+    - yarn test
     - yarn build
   cache:
     paths:
