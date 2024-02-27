@@ -19,6 +19,8 @@ export default (): AlpineComponent<ButtonToTopComponent> => ({
     init() {
         const buttonToTop = this.$refs.buttonToTop as HTMLButtonElement
 
+        if(!buttonToTop) return
+
         buttonToTop.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' })
         })

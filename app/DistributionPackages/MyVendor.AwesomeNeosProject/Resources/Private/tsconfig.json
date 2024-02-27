@@ -15,7 +15,7 @@
         "noEmit": true,
         "incremental": true,
         "noFallthroughCasesInSwitch": true,
-        "lib": ["es6", "dom", "ESNext"],
+        "lib": ["esnext", "dom", "ESNext"],
         "typeRoots": ["./node_modules/@types", "./JavaScript/Types/alpine.d.ts"]
     },
     "include": ["./JavaScript/", "./Fusion/"]
