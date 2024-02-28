@@ -103,10 +103,10 @@ services:
     command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 
   #####
-  # Mailhog (local smtp)
-  mailhog:
-    image: mailhog/mailhog:latest
-    hostname: mailhog
+  # Mailpit (local smtp)
+  mailpit:
+    image: axllent/mailpit:latest
+    hostname: mailpit
     ports:
       - '8025:8025'
     networks:

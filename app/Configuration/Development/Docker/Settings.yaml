@@ -32,7 +32,7 @@ Neos:
     transport:
       type: 'Swift_SmtpTransport'
       options:
-        host: mailhog
+        host: mailpit
         port: 1025
 
 # The propType-validation is enabled via settings.
