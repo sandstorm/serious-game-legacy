@@ -8,7 +8,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.EventList.Filter) < prototype(Ne
 
     renderer = afx`
         <div class="event-list__filter" x-data="eventList">
-            <button class="button button--solid-blue" x-on:click="toggleFilter" "x-on:click.outside"="closeFilter">
+            <button class="button button--solid-blue" data-testid="filterButton" x-on:click="toggleFilter" "x-on:click.outside"="closeFilter">
                 {I18n.translate('MyVendor.AwesomeNeosProject:Base:filterDates')}
             </button>
             <div x-show="filterOpen" class="event-list__filter-options" x-cloak>
@@ -28,6 +28,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.EventList.Filter) < prototype(Ne
             </div>
             <button
                 class="button button--link event-list__delete-filter"
+                data-testid="deleteFilterButton"
                 x-on:click="deleteFilter"
                 @if={Array.length(Array.filter(props.tags, tag => tag.isActive == true)) != 0}
             >

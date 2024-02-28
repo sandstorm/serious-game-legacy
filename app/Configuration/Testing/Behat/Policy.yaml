@@ -3,12 +3,9 @@ roles:
   # acl package is installed
   'Neos.Flow:Everybody':
     privileges:
-      -
-        privilegeTarget: 'Sandstorm.NeosAcl:EditAllNodes'
+      - privilegeTarget: 'Sandstorm.NeosAcl:EditAllNodes'
         permission: GRANT
-      -
-        privilegeTarget: 'Sandstorm.NeosAcl:CreateAllNodes'
+      - privilegeTarget: 'Sandstorm.NeosAcl:CreateAllNodes'
         permission: GRANT
-      -
-        privilegeTarget: 'Sandstorm.NeosAcl:RemoveAllNodes'
+      - privilegeTarget: 'Sandstorm.NeosAcl:RemoveAllNodes'
         permission: GRANT

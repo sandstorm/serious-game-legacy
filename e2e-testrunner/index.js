@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 //
 // THIS SCRIPT IS PART OF THE Sandstorm.E2ETestTools PACKAGE.
@@ -61,13 +61,13 @@
  * NOTE: if this all works out as we hope, this should probably become part of a custom PHP package or so.
  */
 
-const { chromium } = require('playwright');
+const { chromium } = require("playwright");
 
-const Hapi = require('@hapi/hapi');
-const fs = require('fs').promises;
+const Hapi = require("@hapi/hapi");
+const fs = require("fs").promises;
 
 const init = async () => {
-    const browser = await chromium.launch({headless: true});
+    const browser = await chromium.launch({ headless: true, devtools: false });
 
     // the "key" is the context identifier (from the URL)
     // the "value" is an object: {
@@ -79,16 +79,16 @@ const init = async () => {
 
     const server = Hapi.server({
         port: 3000,
-        host: '0.0.0.0'
+        host: "0.0.0.0",
     });
 
     server.route({
-        method: 'POST',
-        path: '/exec/{context}',
+        method: "POST",
+        path: "/exec/{context}",
         options: {
             payload: {
-                parse: false
-            }
+                parse: false,
+            },
         },
         handler: async (request, h) => {
             const contextName = request.params.context;
@@ -98,18 +98,24 @@ const init = async () => {
                 currentlyKnownContexts[contextName] = {
                     playwrightContext: context,
                     vars: {},
-                    script: []
+                    script: [],
                 };
-                currentlyKnownContexts[contextName].playwrightContext.setDefaultTimeout(15000); // 15 s
+                currentlyKnownContexts[
+                    contextName
+                ].playwrightContext.setDefaultTimeout(15000); // 15 s
             }
 
-            const payload = request.payload.toString('utf-8');
+            const payload = request.payload.toString("utf-8");
             console.log(`Executing in ${contextName}: `, payload);
 
             currentlyKnownContexts[contextName].script.push(payload);
 
             // API towards the script
-            const fn = eval("(async (contextName, browser, context, vars, fs) => {\n" + payload + "\n});");
+            const fn = eval(
+                "(async (contextName, browser, context, vars, fs) => {\n" +
+                    payload +
+                    "\n});"
+            );
 
             try {
                 const returnValue = await fn(
@@ -117,45 +123,56 @@ const init = async () => {
                     browser,
                     currentlyKnownContexts[contextName].playwrightContext,
                     currentlyKnownContexts[contextName].vars,
-                    fs);
+                    fs
+                );
                 console.log("Finished execution...");
-                return h.response(JSON.stringify({
-                    error: null,
-                    returnValue: returnValue,
-                    js: wrapForDebug(currentlyKnownContexts[contextName].script)
-                }));
+                return h.response(
+                    JSON.stringify({
+                        error: null,
+                        returnValue: returnValue,
+                        js: wrapForDebug(
+                            currentlyKnownContexts[contextName].script
+                        ),
+                    })
+                );
             } catch (error) {
-                console.log(`ERROR in context ${contextName}: ${error}`)
-                return h.response(JSON.stringify({
-                    error: error.toString(),
-                    returnValue: null,
-                    js: wrapForDebug(currentlyKnownContexts[contextName].script)
-                })).code(500)
+                console.log(`ERROR in context ${contextName}: ${error}`);
+                return h
+                    .response(
+                        JSON.stringify({
+                            error: error.toString(),
+                            returnValue: null,
+                            js: wrapForDebug(
+                                currentlyKnownContexts[contextName].script
+                            ),
+                        })
+                    )
+                    .code(500);
             }
-        }
+        },
     });
 
     server.route({
-        method: 'POST',
-        path: '/stop/{context}',
+        method: "POST",
+        path: "/stop/{context}",
         handler: async (request, h) => {
             const contextName = request.params.context;
             if (!currentlyKnownContexts[contextName]) {
-                return h.response("Not found").code(404)
+                return h.response("Not found").code(404);
             }
 
             await currentlyKnownContexts[contextName].playwrightContext.close();
             delete currentlyKnownContexts[contextName];
 
             return h.response("Deleted").code(200);
-        }
+        },
     });
 
     await server.start();
-    console.log('Server running on %s', server.info.uri);
+    console.log("Server running on %s", server.info.uri);
 };
 
-process.on('unhandledRejection', (err) => {
+process.on("unhandledRejection", (err) => {
     console.log(err);
     process.exit(1);
 });
@@ -173,21 +190,26 @@ const browser = await chromium.launch({headless: false, slowMo: 100});
 const context = await browser.newContext();
 const vars = {};
 
-`
+`;
 
 const endBlock = `
 })();
 `;
 function wrapForDebug(scriptBlocks) {
-    return beginBlock + scriptBlocks.map(scriptBlock => {
-        if (scriptBlock.includes('return')) {
-            return "\n(async () => {\n" + scriptBlock + "\n})();";
-        } else {
-            return "\n" + scriptBlock;
-        }
-    }).join("") + endBlock;
+    return (
+        beginBlock +
+        scriptBlocks
+            .map((scriptBlock) => {
+                if (scriptBlock.includes("return")) {
+                    return "\n(async () => {\n" + scriptBlock + "\n})();";
+                } else {
+                    return "\n" + scriptBlock;
+                }
+            })
+            .join("") +
+        endBlock
+    );
 }
-
 
 /**
  *

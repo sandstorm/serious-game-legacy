@@ -110,11 +110,9 @@ Run `./kickstart.sh` and follow the instructions.
 
 ## Testing
 
-run `dev run-unit-tests` to run all unit tests
-
-run `dev run-functional-tests` to run all functional tests
-
-run `dev start-e2e-testrunner` and in new console `dev run-e2e-tests` to run all e2e tests
+- run `dev run-unit-tests` to run all unit tests
+- run `dev run-functional-tests` to run all functional tests
+- run `dev start-e2e-testrunner` and in new console `dev run-e2e-tests` to run all e2e tests or use `dev run-e2e-tests --tags=<yourTestTag>` to run a single test, e.g a test which is annotated with `@EventList` can be run with `dev run-e2e-tests --tags=EventList`
 
 ### E2E Test
 
@@ -152,6 +150,18 @@ docker compose exec -T neos ./flow stepgenerator:notfoundpage | pbcopy
 ```
 
 4. paste into your feature files and run tests
+
+#### raise curl-timeouts when using `And I pause for debugging`
+
+```shell
+dev enter-neos
+vim Packages/Application/Sandstorm.E2ETestTools/Tests/Behavior/Bootstrap/PlaywrightConnector.php
+```
+
+on line 158 raise the `CURL_TIMEOUT` option to a very high value.
+```shell
+:158
+```
 
 ### Accessibility Tests
 

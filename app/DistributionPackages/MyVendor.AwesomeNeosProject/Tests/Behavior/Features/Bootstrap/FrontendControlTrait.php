@@ -51,6 +51,20 @@ trait FrontendControlTrait
     }
 
     /**
+     * @When /^I pause for debugging$/
+     */
+    public function iPauseForDebugging()
+    {
+        return $this->playwrightConnector->execute(
+            $this->playwrightContext,
+            // language=JavaScript
+            '
+                await vars.page.pause();
+            '
+        );
+    }
+
+    /**
      * @Then the page title should be :title
      */
     public function thePageTitleShouldBe($title)
