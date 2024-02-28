@@ -1,5 +1,5 @@
 # NOTE: this file is executed from the ROOT DIRECTORY of the project, i.e. "../"
-FROM php:8.2-fpm-bookworm
+FROM php:8.1-fpm-bullseye
 
 # ----------------
 # Productive dependencies (should be equal on local-dev, staging and production):
