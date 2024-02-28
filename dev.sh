@@ -106,7 +106,7 @@ function enter-assets {
 
 # All logs
 function logs {
-	docker compose logs -f
+	docker compose logs -f "$@"
 }
 
 # DB logs
