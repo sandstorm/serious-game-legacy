@@ -1,5 +1,5 @@
 # NOTE: this file is executed from the ROOT DIRECTORY of the project, i.e. "../"
-FROM php:8.1.19-fpm-bullseye
+FROM php:8.2-fpm-bookworm
 
 ###################### START - Dev Container only ######################
 # IMPORTANT: we try to keep the production and local-dev the same      #
@@ -48,9 +48,7 @@ RUN apt-get update -y && \
     echo "extension=vips.so" > /usr/local/etc/php/conf.d/vips.ini && \
     pecl install redis && docker-php-ext-enable redis
 
-# for PHP 8.1, disable deprecations to temporarily make Neos/Flow work
-RUN echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT" >> /usr/local/etc/php/conf.d/error_reporting.ini
-# FFI needs to be enabled
+# enable FFI for VIPS in PHP config
 RUN echo "ffi.enable = true" >> /usr/local/etc/php/conf.d/ffi.ini
 
 # install composer
