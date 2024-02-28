@@ -131,7 +131,7 @@ function logs-flow-exceptions {
 
 # Show running containers
 function ps {
-	docker compose ps
+	docker compose ps --all
 }
 
 ######################### Open Urls in Browser / UIs #########################
