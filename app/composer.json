@@ -57,7 +57,8 @@
         "neos/behat": "~8.3.0",
         "neos/buildessentials": "~8.3.0",
         "mikey179/vfsstream": "^1.6",
-        "phpunit/phpunit": "^9.5"
+        "phpunit/phpunit": "^9.5",
+        "phpstan/phpstan": "^1.10"
     },
     "suggest": {
         "ext-pdo_sqlite": "For running functional tests out-of-the-box this is required"

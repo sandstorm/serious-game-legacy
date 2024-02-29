@@ -1,3 +1,16 @@
+php_code_analysis:
+  image: composer:2
+  stage: test
+  needs: [ ]
+  dependencies: [ ]
+  script:
+    - cd app
+    - composer install --ignore-platform-reqs
+    - cd Build/Behat
+    - composer install --ignore-platform-reqs
+    - cd ../..
+    - ./bin/phpstan analyse --memory-limit 1G
+
 build_e2e_testrunner:
   stage: build
   except:

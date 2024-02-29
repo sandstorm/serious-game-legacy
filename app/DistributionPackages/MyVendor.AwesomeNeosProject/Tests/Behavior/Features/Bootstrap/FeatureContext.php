@@ -51,6 +51,8 @@ class FeatureContext implements Context
      */
     protected $securityContext;
 
+    protected string $flowContextForSystemUnderTest;
+
     /**
      * @throws \Neos\Flow\Exception
      * @throws UnknownObjectException
@@ -90,8 +92,8 @@ class FeatureContext implements Context
      */
     public function clearCacheBeforeScenario(BeforeScenarioScope $event): void
     {
-        $this->executeFlowCommand( "cache:flushone --identifier Neos_Fusion_Content", "flush Fusion cache");
-        $this->executeFlowCommand( "cache:warmup", "warmup Fusion cache");
+        $this->executeFlowCommand("cache:flushone --identifier Neos_Fusion_Content", "flush Fusion cache");
+        $this->executeFlowCommand("cache:warmup", "warmup Fusion cache");
     }
 
     /**
@@ -106,7 +108,8 @@ class FeatureContext implements Context
      * @param ObjectManagerInterface $objectManager
      * @throws \Neos\Flow\Configuration\Exception\InvalidConfigurationTypeException
      */
-    private function setupFlowContextForSUT(ObjectManagerInterface $objectManager): void {
+    private function setupFlowContextForSUT(ObjectManagerInterface $objectManager): void
+    {
         $configurationManager = $objectManager->get(ConfigurationManager::class);
         $flowContext = $configurationManager->getConfiguration(
             ConfigurationManager::CONFIGURATION_TYPE_SETTINGS,
@@ -118,7 +121,8 @@ class FeatureContext implements Context
         $this->flowContextForSystemUnderTest = $flowContext;
     }
 
-    private function executeFlowCommand(string $command, string $errorDescription): bool {
+    private function executeFlowCommand(string $command, string $errorDescription): bool
+    {
         $output = [];
         $resultCode = -100;
         exec("FLOW_CONTEXT=$this->flowContextForSystemUnderTest ./flow $command", $output, $resultCode);

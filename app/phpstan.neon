@@ -1,0 +1,15 @@
+parameters:
+    # level should possible be higher but neos related errors would need to be solved for that ^^
+    level: 1
+    paths:
+        - Packages
+        - Build
+        # add more path if necessary, e.g. for plugins
+    excludePaths:
+        analyse:
+            - Packages/Application
+            - Packages/Carbon
+            - Packages/Framework
+            - Packages/Libraries
+            - Packages/Plugins
+            - Build
