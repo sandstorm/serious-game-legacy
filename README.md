@@ -22,7 +22,7 @@ Run `./kickstart.sh` and follow the instructions.
 * [Sandstorm Neos on Docker Kickstart](#sandstorm-neos-on-docker-kickstart)
   * [Requirements](#requirements)
   * [Features](#features)
-  * [Initial Setup (required once)](#initial-setup--required-once-)
+  * [Initial Setup (required once)](#initial-setup-required-once)
     * [Install Dependencies](#install-dependencies)
     * [Setting up IntelliJ](#setting-up-intellij)
   * [Local Development](#local-development)
@@ -30,11 +30,12 @@ Run `./kickstart.sh` and follow the instructions.
     * [E2E Test](#e2e-test)
       * [Debug Failing Tests](#debug-failing-tests)
       * [Run Single BDD Feature Files / Scenarios](#run-single-bdd-feature-files--scenarios)
-      * [Generating content (node) fixtures workflow](#generating-content--node--fixtures-workflow)
+      * [Generating content (node) fixtures workflow](#generating-content-node-fixtures-workflow)
     * [Accessibility Tests](#accessibility-tests)
-      * [Testing without htaccess (e.g. production)](#testing-without-htaccess--eg-production-)
-      * [Testing with htaccess (e.g. staging)](#testing-with-htaccess--eg-staging-)
+      * [Testing without htaccess (e.g. production)](#testing-without-htaccess-eg-production)
+      * [Testing with htaccess (e.g. staging)](#testing-with-htaccess-eg-staging)
       * [Results](#results)
+      * [Hint](#hint)
   * [Staging](#staging)
   * [Site Export / Site Import](#site-export--site-import)
     * [Site Export Prod](#site-export-prod)
@@ -58,7 +59,7 @@ Run `./kickstart.sh` and follow the instructions.
 ## Features
 
 - Neos 8.3
-- PHP 8.1 (Tobi: PHP 8.2 currently breaks Behat (in pipeline))
+- PHP 8.2
 - MariaDB 10.3 (Tobi: this seems to be quite old!)
 - Vips (instead of ImageMagick)
 - Supercronic
