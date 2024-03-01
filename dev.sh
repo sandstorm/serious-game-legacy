@@ -242,7 +242,7 @@ function run-e2e-tests {
 	docker compose exec neos bash -c ". /etc/bash.vips-arm64-hotfix.sh; FLOW_CONTEXT=Development/Docker/Behat ./flow user:create --roles Administrator admin password LocalDev Admin || true"
 
 	echo "TODO: check if testrunner is running and give hint"
-	docker compose exec neos bin/behat -c Packages/Sites/MyVendor.AwesomeNeosProject/Tests/Behavior/behat.yml.dist -vvv
+	docker compose exec neos bin/behat -c Packages/Sites/MyVendor.AwesomeNeosProject/Tests/Behavior/behat.yml.dist -vvv $1
 	echo
 	echo "You can now run 'dev open-styleguide'"
 }

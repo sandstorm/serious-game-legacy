@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright:bionic
+FROM mcr.microsoft.com/playwright:v1.42.0-focal
 
 #
 # THIS SCRIPT IS PART OF THE Sandstorm.E2ETestTools PACKAGE.

@@ -23,6 +23,7 @@ require_once(__DIR__ . '/../../../../../../Packages/Application/Sandstorm.E2ETes
 require_once(__DIR__ . '/../../../../../../Packages/Application/Sandstorm.E2ETestTools/Tests/Behavior/Bootstrap/PlaywrightTrait.php');
 require_once(__DIR__ . '/../../../../../../Packages/Application/Sandstorm.E2ETestTools/Tests/Behavior/Bootstrap/NeosBackendControlTrait.php');
 require_once(__DIR__ . '/FrontendControlTrait.php');
+require_once(__DIR__ . '/EventListTrait.php');
 
 /**
  * Features context
@@ -38,6 +39,7 @@ class FeatureContext implements Context
     }
     use PlaywrightTrait;
     use FrontendControlTrait;
+    use EventListTrait;
 
     protected $isolated = false;
 
