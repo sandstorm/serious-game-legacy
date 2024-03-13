@@ -20,7 +20,7 @@ set -e
 #   * use `start-something` for tasks that will run until terminated manually
 #     e.g. by pressing ctrl+c or closing the terminal
 
-# Removes docker containers and their tata
+# Removes docker containers and their data
 function nuke {
   # we currently only nuke containers
   _echo_green "Nuking docker containers"
