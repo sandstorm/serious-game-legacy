@@ -8,5 +8,6 @@
       'MyVendor.AwesomeNeosProject:Content.Download': true
       'MyVendor.AwesomeNeosProject:Content.Headline': true
       'MyVendor.AwesomeNeosProject:Content.Image': true
+      'MyVendor.AwesomeNeosProject:Content.Spacer': true
       'MyVendor.AwesomeNeosProject:Content.Text': true
       'Jonnitto.PrettyEmbedVideoPlatforms:Content.Video': true

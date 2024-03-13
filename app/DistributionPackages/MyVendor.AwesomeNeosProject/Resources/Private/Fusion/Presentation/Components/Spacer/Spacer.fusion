@@ -1,0 +1,15 @@
+prototype(MyVendor.AwesomeNeosProject:Component.Spacer) < prototype(Neos.Fusion:Component) {
+    height = ''
+
+    @propTypes {
+        @strict = true
+        height = ${PropTypes.oneOf(['small', 'medium', 'large', 'xlarge', 'xxlarge'])}
+    }
+
+    @private.inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
+
+    renderer = afx`
+        <div class={AtomicFusion.classNames('spacer', 'spacer--' + props.height, {'spacer--in-backend': private.inBackend})}>
+        </div>
+    `
+}
