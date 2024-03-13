@@ -73,6 +73,12 @@ function php-stan() {
     'cd /app && composer install --ignore-platform-reqs  && ./bin/phpstan analyse --memory-limit 1G'
 }
 
+function php-stan-json() {
+  cd app
+  docker run -v "$(pwd)":/app composer:2 bash -c \
+    'cd /app && composer install --ignore-platform-reqs  && ./bin/phpstan analyse --error-format=prettyJson --memory-limit 1G'
+}
+
 ######################## Useful Docker Aliases ########################
 
 function start {

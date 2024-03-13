@@ -3,7 +3,7 @@
 namespace MyVendor\AwesomeNeosProject\Command;
 
 use Neos\ContentRepository\Domain\Model\NodeInterface;
-use Neos\ContentRepository\Domain\NodeType\NodeTypeConstraints;
+use Neos\ContentRepository\Domain\NodeType\NodeTypeConstraintFactory;
 use Neos\ContentRepository\Domain\Service\ContextFactoryInterface;
 use Neos\Flow\Annotations as Flow;
 use Neos\Flow\Cli\CommandController;
@@ -23,7 +23,13 @@ class StepGeneratorCommandController extends CommandController
      */
     protected NodeTableBuilderService $nodeTableBuilderService;
 
-    public function homepageCommand()
+    /**
+     * @Flow\Inject
+     * @var NodeTypeConstraintFactory
+     */
+    protected $nodeTypeConstraintFactory;
+
+    public function homepageCommand(): void
     {
         $nodeTable = $this->defaultNodeTable('Frontend/Resources/Homepage');
         $siteNode = $this->getSiteNode();
@@ -36,14 +42,14 @@ class StepGeneratorCommandController extends CommandController
         $nodeTable->print();
     }
 
-    public function notFoundPageCommand()
+    public function notFoundPageCommand(): void
     {
         $nodeTable = $this->defaultNodeTable('Frontend/Resources/NotFound');
         $siteNode = $this->getSiteNode();
 
         $nodeTable->addParents($siteNode);
         $nodeTable->addNode($siteNode);
-        $filter = new NodeTypeConstraints(false, ['MyVendor.AwesomeNeosProject:Document.NotFoundPage']);
+        $filter = $this->nodeTypeConstraintFactory->parseFilterString('MyVendor.AwesomeNeosProject:Document.NotFoundPage');
         $notFoundPageNodes = $siteNode->findChildNodes($filter);
         foreach ($notFoundPageNodes as $notFoundPageNode) {
             $nodeTable->addNode($notFoundPageNode);
@@ -53,14 +59,14 @@ class StepGeneratorCommandController extends CommandController
         $nodeTable->print();
     }
 
-    public function blogPageCommand()
+    public function blogPageCommand(): void
     {
         $nodeTable = $this->defaultNodeTable('Frontend/Resources/Blog');
         $siteNode = $this->getSiteNode();
 
         $nodeTable->addParents($siteNode);
         $nodeTable->addNode($siteNode);
-        $filter = new NodeTypeConstraints(false, ['MyVendor.AwesomeNeosProject:Document.Blog']);
+        $filter = $this->nodeTypeConstraintFactory->parseFilterString('MyVendor.AwesomeNeosProject:Document.Blog');
         $blogPageNodes = $siteNode->findChildNodes($filter);
         foreach ($blogPageNodes as $blogPageNode) {
             $nodeTable->addNode($blogPageNode);
@@ -71,14 +77,14 @@ class StepGeneratorCommandController extends CommandController
         $nodeTable->print();
     }
 
-    public function eventsPageCommand()
+    public function eventsPageCommand(): void
     {
         $nodeTable = $this->defaultNodeTable('Frontend/Resources/Events');
         $siteNode = $this->getSiteNode();
 
         $nodeTable->addParents($siteNode);
         $nodeTable->addNode($siteNode);
-        $filter = new NodeTypeConstraints(false, ['MyVendor.AwesomeNeosProject:Document.Blog, MyVendor.AwesomeNeosProject:Document.Events']);
+        $filter = $this->nodeTypeConstraintFactory->parseFilterString('MyVendor.AwesomeNeosProject:Document.Blog, MyVendor.AwesomeNeosProject:Document.Events');
         $eventPageNodes = $siteNode->findChildNodes($filter);
 
         foreach ($eventPageNodes as $eventPageNode) {
