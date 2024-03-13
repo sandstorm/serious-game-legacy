@@ -19,4 +19,5 @@ build_assets:
     expire_in: 7 days
     paths:
       - app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public/bundle.css
+      - app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public/tailwind.css
       - app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public/bundle.js
