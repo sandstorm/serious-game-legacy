@@ -6,7 +6,7 @@
                 <source>Eventliste</source>
             </trans-unit>
             <trans-unit id="ui.help.message" xml:space="preserve">
-                <source>Aggregiert Events in einer Liste, kann auf eine bestimmte Anzahl Events eingeschränkt werden sowie auf bestimmte Tags. Wenn keine Filterung auf Tags im Backend eingestellt wird, kann der*die Nutzer*in per Dropdown im Frontend auf Tags filtern.</source>
+                <source>Aggregiert Events in einer Liste, kann auf eine bestimmte Anzahl Events eingeschränkt werden sowie auf bestimmte Tags. Wenn keine Filterung auf Tags im Backend eingestellt wird, kann der\*die Nutzer\*in per Dropdown im Frontend auf Tags filtern.</source>
             </trans-unit>
             <trans-unit id="properties.amountOfEvents" xml:space="preserve">
                 <source>Anzahl angezeigter Events</source>
