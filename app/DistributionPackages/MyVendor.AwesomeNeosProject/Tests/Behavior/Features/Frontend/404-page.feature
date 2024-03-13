@@ -1,5 +1,6 @@
 @playwright
 @fixtures
+@NotFound
 Feature: 404 page handling in frontend
 
     Background:

@@ -1,5 +1,6 @@
 @playwright
 @fixtures
+@Breadcrumb
 Feature: Breadcrumb rendering in frontend
 
     The Blog page shows a overview of blog posts.
