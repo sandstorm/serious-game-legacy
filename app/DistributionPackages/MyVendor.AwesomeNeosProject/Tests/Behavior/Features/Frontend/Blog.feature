@@ -1,5 +1,6 @@
 @playwright
 @fixtures
+@Blog
 Feature: Blog post overview rendering in frontend
 
     The Blog page shows a overview of blog posts.

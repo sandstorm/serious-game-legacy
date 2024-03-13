@@ -1,5 +1,6 @@
-@fixtures
 @playwright
+@fixtures
+@Button
 Feature: Testcase for Button Component
 
     Background:

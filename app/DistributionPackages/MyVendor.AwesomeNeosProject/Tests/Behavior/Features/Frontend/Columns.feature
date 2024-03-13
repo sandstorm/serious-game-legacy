@@ -1,5 +1,6 @@
-@fixtures
 @playwright
+@fixtures
+@Columns
 Feature: Testcase for Columns Component
 
     Background:
