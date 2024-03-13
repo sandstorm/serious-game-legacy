@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* TODO: Set margins explicitly */
+@layer base {
+    blockquote,
+    dl,
+    dd,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    hr,
+    figure,
+    p,
+    pre {
+        @apply m-[revert];
+    }
+
+    /* TODO: Set list styles explicitly */
+    ol,
+    ul,
+    menu {
+        @apply list-[revert];
+        @apply m-[revert];
+        @apply p-[revert];
+    }
+
+    /* TODO: Set image styles explicitly */
+    img {
+        @apply inline-block;
+        @apply align-[revert];
+    }
+}
