@@ -1,13 +1,13 @@
-import { AlpineComponent } from 'alpinejs'
+import {AlpineComponent} from 'alpinejs'
 import Swiper from 'swiper/bundle'
-import basicSlider, { SliderComponent } from '../Slider/Slider'
+import basicSlider, {SliderComponent} from '../Slider/Slider'
 
 const CSS_CLASSES = {
     // use the generic swiper classes here so the code works for all swipers inheriting this function
     slide: '.swiper-slide',
 }
 
-export type LogowallComponent = SliderComponent & {
+export type LogoBarComponent = SliderComponent & {
     amountOfLogos: number
     autoplayInterval: number
 }
@@ -16,7 +16,7 @@ export default (
     amountOfLogos: number = 6,
     autoplayInterval: number = 3000,
     inBackend: boolean = false
-): AlpineComponent<LogowallComponent> => {
+): AlpineComponent<LogoBarComponent> => {
     return {
         amountOfLogos: amountOfLogos,
         autoplayInterval: autoplayInterval,
@@ -41,9 +41,9 @@ export default (
                 autoplay: this.inBackend
                     ? false
                     : {
-                          disableOnInteraction: false,
-                          delay: this.autoplayInterval && !this.inBackend ? this.autoplayInterval : undefined
-                      },
+                        disableOnInteraction: false,
+                        delay: this.autoplayInterval && !this.inBackend ? this.autoplayInterval : undefined
+                    },
                 breakpoints: {
                     // when window width is >= 996px
                     996: {

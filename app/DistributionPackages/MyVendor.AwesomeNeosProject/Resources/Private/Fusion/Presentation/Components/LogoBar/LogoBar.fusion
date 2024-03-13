@@ -1,4 +1,4 @@
-prototype(MyVendor.AwesomeNeosProject:Component.Logowall) < prototype(Neos.Fusion:Component) {
+prototype(MyVendor.AwesomeNeosProject:Component.LogoBar) < prototype(Neos.Fusion:Component) {
     logos = ''
     amountOfLogos = '6'
     autoplayInterval = ''
@@ -14,10 +14,10 @@ prototype(MyVendor.AwesomeNeosProject:Component.Logowall) < prototype(Neos.Fusio
 
     renderer = afx`
         <div
-            class={AtomicFusion.classNames('logowall')}
-            x-data={AlpineJS.xData('logowall', props.amountOfLogos, props.autoplayInterval ? props.autoplayInterval : '0', private.inBackend)}
+            class={AtomicFusion.classNames('logo-bar')}
+            x-data={AlpineJS.xData('logoBar', props.amountOfLogos, props.autoplayInterval ? props.autoplayInterval : '0', private.inBackend)}
         >
-            <div class={AtomicFusion.classNames('swiper', 'logowall__slider')} x-ref="slider">
+            <div class={AtomicFusion.classNames('swiper', 'logo-bar__slider')} x-ref="slider">
                 {props.logos}
             </div>
         </div>

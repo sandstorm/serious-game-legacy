@@ -1,4 +1,4 @@
-prototype(MyVendor.AwesomeNeosProject:Component.Logowall.Slide) < prototype(Neos.Fusion:Component) {
+prototype(MyVendor.AwesomeNeosProject:Component.LogoBar.Slide) < prototype(Neos.Fusion:Component) {
     content = ''
 
     @propTypes {
@@ -7,7 +7,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Logowall.Slide) < prototype(Neos
     }
 
     renderer = afx`
-        <div class="swiper-slide logowall__slide">
+        <div class="swiper-slide logo-bar__slide">
             {props.content}
         </div>
     `

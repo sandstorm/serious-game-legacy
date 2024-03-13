@@ -1,5 +1,0 @@
-prototype(MyVendor.AwesomeNeosProject:Content.Logowall.Slide) < prototype(MyVendor.AwesomeNeosProject:Content.Image) {
-    @process.wrapWithSliderClass = MyVendor.AwesomeNeosProject:Component.Logowall.Slide {
-        content = ${value}
-    }
-}
