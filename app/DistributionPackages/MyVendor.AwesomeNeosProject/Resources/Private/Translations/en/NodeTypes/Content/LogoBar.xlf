@@ -3,8 +3,8 @@
     <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="de" target-language="en" datatype="plaintext">
         <body>
             <trans-unit id="ui.label" xml:space="preserve">
-                <source>Logowall</source>
-                <target>Logowall</target>
+                <source>Logoleiste</source>
+                <target>Logo bar</target>
             </trans-unit>
             <trans-unit id="properties.autoplayInterval" xml:space="preserve">
                 <source>Interval (ms) für automatische Wiedergabe</source>

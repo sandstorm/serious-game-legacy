@@ -6,6 +6,7 @@
       ui:
         label: 'Tags'
         reloadIfChanged: true
+        showInCreationDialog: true
         inspector:
           group: properties
           editorOptions:

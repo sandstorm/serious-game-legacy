@@ -6,7 +6,7 @@ import { ExampleStore } from './Types/types'
 import { EXAMPLE_STORE } from './store'
 import ButtonToTop, { ButtonToTopComponent } from '../Fusion/Presentation/Components/ButtonToTop/ButtonToTop'
 import EventList, { EventListComponent } from '../Fusion/Presentation/Components/Event/List/EventList'
-import Logowall, { LogowallComponent } from '../Fusion/Presentation/Components/Logowall/Logowall'
+import LogoBar, { LogoBarComponent } from '../Fusion/Presentation/Components/LogoBar/LogoBar'
 import Map, { MapComponent } from '../Fusion/Presentation/Components/Map/Map'
 import Slider, { SliderComponent } from '../Fusion/Presentation/Components/Slider/Slider'
 
@@ -19,7 +19,7 @@ Alpine.plugin(persist)
 // Components
 Alpine.data('buttonToTop', ButtonToTop as (value: any) => AlpineComponent<ButtonToTopComponent>)
 Alpine.data('eventList', EventList as (value: any) => AlpineComponent<EventListComponent>)
-Alpine.data('logowall', Logowall as (value: any) => AlpineComponent<LogowallComponent>)
+Alpine.data('logoBar', LogoBar as (value: any) => AlpineComponent<LogoBarComponent>)
 Alpine.data('map', Map as (value: any) => AlpineComponent<MapComponent>)
 Alpine.data('slider', Slider as (value: any) => AlpineComponent<SliderComponent>)
 
