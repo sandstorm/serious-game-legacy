@@ -34,7 +34,7 @@ class FilterNodesByReferenceHelper implements ProtectedContextAwareInterface
                 foreach ($referencedNodesByProperty as $referencedNodeByProperty) {
                     foreach ($referencedTitlesToFindArray as $referencedTitleToFind) {
                         /** @var NodeInterface $referencedNodeByProperty */
-                        if (strtolower($referencedNodeByProperty->getProperty('title')) === strtolower($referencedTitleToFind) && !in_array($givenNode, $filteredNodes)) {
+                        if ($this->sanitizeQueryParameter($referencedNodeByProperty->getProperty('title')) === strtolower($referencedTitleToFind) && !in_array($givenNode, $filteredNodes)) {
                             $filteredNodes[] = $givenNode;
                         }
                     }
@@ -42,6 +42,45 @@ class FilterNodesByReferenceHelper implements ProtectedContextAwareInterface
             }
         }
         return $filteredNodes;
+    }
+
+    // the analogue function exists in EventList.ts -> keep in sync
+    public function sanitizeQueryParameter($text): string
+    {
+        $text = mb_strtolower($text, 'utf8');
+
+        $regexReplacements = [
+            '/ä/' => 'ae',
+            '/ö/' => 'oe',
+            '/ü/' => 'ue',
+            '/ß/' => 'ss',
+            '/%/' => '-',
+            '/î/u' => 'i',
+            '/ç/u' => 'c',
+            '/°/u' => 'o',
+            '/@/u' => 'at',
+            '/[áàâ]/u' => 'a',
+            '/[éèê]/u' => 'e',
+            '/[óòô]/u' => 'o',
+            '/[úùû]/u' => 'u',
+            '/[\(\)]/' => '',
+            '/[\"<>]/' => '',
+            '/[+,:\'\s\/#?!&\.\*–]+/' => '-',
+            '/-+/' => '-',
+            '/(^-)|(-$)/' => '',
+            '/[^a-z0-9._~-]/' => '_',
+        ];
+        foreach ($regexReplacements as $pattern => $replacement) {
+            $text = preg_replace($pattern, $replacement, $text);
+        }
+
+        // remove duplicates
+        $noDuplicates = ['-', '_'];
+        foreach ($noDuplicates as $char) {
+            $text = preg_replace('/' . $char . $char . '+/', $char, $text);
+        }
+
+        return $text;
     }
 
     /**

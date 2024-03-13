@@ -88,7 +88,7 @@ prototype(MyVendor.AwesomeNeosProject:Content.Events.List) < prototype(Neos.Neos
                     itemRenderer = Neos.Fusion:DataStructure {
                         title = ${q(tag).property('title')}
                         // we split the tagsParameter by comma and check if the current tag is in the list
-                        isActive = ${Array.indexOf(String.split(String.toLowerCase(tagsParameter), ','), String.toLowerCase(q(tag).property('title'))) > -1}
+                        isActive = ${Array.indexOf(String.split(String.toLowerCase(tagsParameter), ','), MyVendor.AwesomeNeosProject.FilterNodesByReference.sanitizeQueryParameter(q(tag).property('title'))) > -1}
                     }
                 }
             }
