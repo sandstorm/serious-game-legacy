@@ -31,6 +31,7 @@ Run `./kickstart.sh` and follow the instructions.
       * [Debug Failing Tests](#debug-failing-tests)
       * [Run Single BDD Feature Files / Scenarios](#run-single-bdd-feature-files--scenarios)
       * [Generating content (node) fixtures workflow](#generating-content-node-fixtures-workflow)
+      * [raise curl-timeouts when using `And I pause for debugging`](#raise-curl-timeouts-when-using-and-i-pause-for-debugging)
     * [Accessibility Tests](#accessibility-tests)
       * [Testing without htaccess (e.g. production)](#testing-without-htaccess-eg-production)
       * [Testing with htaccess (e.g. staging)](#testing-with-htaccess-eg-staging)
@@ -44,6 +45,8 @@ Run `./kickstart.sh` and follow the instructions.
   * [Custom icon font with icomoon](#custom-icon-font-with-icomoon)
     * [Use custom icons in neos backend](#use-custom-icons-in-neos-backend)
   * [Maps](#maps)
+  * [Menu](#menu)
+  * [Image sizes](#image-sizes)
   * [Improving Kickstart Experience](#improving-kickstart-experience)
   * [Backlog](#backlog)
 <!-- TOC -->
@@ -274,6 +277,26 @@ get in contact with us otherwise :)
 
 For local development put the key in `.env`. For staging/production set the environment variable on the server, e.g. via
 rancher secret.
+
+## Menu
+
+We currently have two menu options implemented: a "normal" menu in a navigation bar style and a mega menu. You can
+switch between them in `AbstractPage.fusion`. You might consider removing the other option once you decided for one.
+
+```
+header = MyVendor.AwesomeNeosProject:Component.PageHeader {
+    menu = MyVendor.AwesomeNeosProject:Component.PageMenu {
+        // menuType has to be 'main' or 'mega'
+        menuType = 'main'
+    }
+}
+```
+
+## Image sizes
+
+We use Sitegeist.Kaleidoscope to define image srcsets. Make sure to define a reasonable value for `sizes` when
+using `Image.fusion`. For images rendered in columns there is the `ImageSizes.fusion` helper class available, intended
+to make it easier to define the `sizes` attribute for standard layouts.
 
 [//]: # (KICKSTART_INFO_SECTION__START)
 
