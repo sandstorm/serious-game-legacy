@@ -13,6 +13,9 @@ trait EventListTrait
      */
     public function iSeeXEvents(int $expectedAmount): void
     {
+        /**
+         * @var int $amount
+         */
         $amount = $this->playwrightConnector->execute($this->playwrightContext,
             // language=JavaScript
             "
@@ -39,9 +42,8 @@ trait EventListTrait
     /**
      * @Then I click on the filter with title :title
      */
-    public function iClickOnTheFilterWithTitleX(string $title)
+    public function iClickOnTheFilterWithTitleX(string $title): void
     {
-        // FIXME
         $this->playwrightConnector->execute($this->playwrightContext,
         sprintf(
             // language=JavaScript
@@ -58,7 +60,7 @@ trait EventListTrait
     /**
      * @Then I delete all filter
      */
-    public function iDeleteAllFilter()
+    public function iDeleteAllFilter(): void
     {
         $this->playwrightConnector->execute($this->playwrightContext,
             // language=JavaScript

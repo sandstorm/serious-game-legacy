@@ -10,7 +10,7 @@ class DummyTest extends UnitTestCase
      * Just a dummy test
      * @test
      */
-    public function dummyTest()
+    public function dummyTest(): void
     {
         $this->assertTrue(true);
     }

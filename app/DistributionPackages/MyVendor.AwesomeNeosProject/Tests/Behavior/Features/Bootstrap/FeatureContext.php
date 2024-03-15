@@ -41,7 +41,7 @@ class FeatureContext implements Context
     use FrontendControlTrait;
     use EventListTrait;
 
-    protected $isolated = false;
+    protected bool $isolated = false;
 
     /**
      * @var ObjectManagerInterface

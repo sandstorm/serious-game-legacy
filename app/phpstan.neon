@@ -1,8 +1,8 @@
 parameters:
     # level should possible be higher but neos related errors would need to be solved for that ^^
-    level: 1
+    level: 9
     paths:
-        - Packages
+        - DistributionPackages
         - Build
         # add more path if necessary, e.g. for plugins
     excludePaths:
@@ -13,3 +13,27 @@ parameters:
             - Packages/Libraries
             - Packages/Plugins
             - Build
+    scanDirectories:
+        - Packages
+    ignoreErrors:
+        -
+            message: '#Call to an undefined method Neos\\ContentRepository\\Domain\\Model\\NodeInterface::findChildNodes\(\).#'
+            paths:
+                - DistributionPackages/*
+        -
+            message: '#Call to an undefined method Neos\\ContentRepository\\Domain\\Service\\Context::getCurrentSiteNode\(\).#'
+            paths:
+                - DistributionPackages/*
+        -
+            message: '#Parameter \#1 \$contextName of method Sandstorm\\E2ETestTools\\Tests\\Behavior\\Bootstrap\\PlaywrightConnector::execute\(\) expects string, string\|null given.#'
+            paths:
+                - DistributionPackages/*
+        -
+            messages:
+                - '#Call to an undefined method object::getConfiguration\(\).#'
+                - '#Call to an undefined method object::getProviders\(\).#'
+                - '#Call to an undefined method object::reset\(\).#'
+                - '#Call to an undefined method object::clearContext\(\).#'
+            paths:
+                - DistributionPackages/MyVendor.AwesomeNeosProject/Tests/Behavior/Features/Bootstrap/FeatureContext.php
+

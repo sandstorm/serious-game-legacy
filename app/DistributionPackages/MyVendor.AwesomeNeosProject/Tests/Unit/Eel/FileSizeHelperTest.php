@@ -6,7 +6,7 @@ use Neos\Flow\Tests\UnitTestCase;
 
 class FileSizeHelperTest extends UnitTestCase
 {
-    protected static $testablePersistenceEnabled = true;
+    protected static bool $testablePersistenceEnabled = true;
 
     private FileSizeHelper $fileSizeHelper;
 
@@ -33,6 +33,7 @@ class FileSizeHelperTest extends UnitTestCase
      * test data contains of:
      *  - fileSizeInBytes
      *  - formatted file size
+     * @return array<array{int, string}>
      */
     public function fileSizeProvider(): array
     {

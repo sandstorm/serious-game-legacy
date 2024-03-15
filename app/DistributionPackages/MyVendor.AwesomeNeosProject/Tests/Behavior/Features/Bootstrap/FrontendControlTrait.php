@@ -12,7 +12,7 @@ trait FrontendControlTrait
     /**
      * @When I reload the current page
      */
-    public function iReloadTheCurrentPage()
+    public function iReloadTheCurrentPage(): void
     {
         $this->playwrightConnector->execute($this->playwrightContext,
             // language=JavaScript
@@ -26,7 +26,7 @@ trait FrontendControlTrait
     /**
      * @Given I accepted the Cookie Consent
      */
-    public function iAcceptedTheCookieConsent()
+    public function iAcceptedTheCookieConsent(): void
     {
         $this->playwrightConnector->execute($this->playwrightContext,
             // language=JavaScript
@@ -45,6 +45,9 @@ trait FrontendControlTrait
      */
     public function theContentCacheFlushIsExecuted(): void
     {
+        /**
+         * @var ContentCacheFlusher $contentCacheFlusher
+         */
         $contentCacheFlusher = $this->getObjectManager()->get(ContentCacheFlusher::class);
         $contentCacheFlusher->shutdownObject();
         ObjectAccess::setProperty($contentCacheFlusher, 'tagsToFlush', [], true);
@@ -53,7 +56,7 @@ trait FrontendControlTrait
     /**
      * @When /^I pause for debugging$/
      */
-    public function iPauseForDebugging()
+    public function iPauseForDebugging(): mixed
     {
         return $this->playwrightConnector->execute(
             $this->playwrightContext,
@@ -67,7 +70,7 @@ trait FrontendControlTrait
     /**
      * @Then the page title should be :title
      */
-    public function thePageTitleShouldBe($title)
+    public function thePageTitleShouldBe(string $title): void
     {
         $actualTitle = $this->playwrightConnector->execute($this->playwrightContext,
             // language=JavaScript
@@ -93,8 +96,11 @@ trait FrontendControlTrait
     /**
      * @Then the :level element in the breadcrumb should be :elementName
      */
-    public function theCurrentElementInTheBreadcrumbShouldBe($level, $elementName)
+    public function theCurrentElementInTheBreadcrumbShouldBe(string $level, string $elementName): void
     {
+        /**
+         * @var string $actualCurrentElement
+         */
         $actualCurrentElement = $this->playwrightConnector->execute($this->playwrightContext,  sprintf(
         // language=JavaScript
             '
@@ -108,7 +114,7 @@ trait FrontendControlTrait
     /**
      * @Then there must be a blog post overview
      */
-    public function thereMustBeABlogPostOverview()
+    public function thereMustBeABlogPostOverview(): void
     {
         $this->playwrightConnector->execute($this->playwrightContext,
             // language=JavaScript
@@ -121,8 +127,11 @@ trait FrontendControlTrait
     /**
      * @Then there must be :blogPostCount blog-posts inside the blog overview
      */
-    public function thereMustBeXBlogPostsInsideTheBlogOverview(int $blogPostCount)
+    public function thereMustBeXBlogPostsInsideTheBlogOverview(int $blogPostCount): void
     {
+        /**
+         * @var int $actualBlogPostCount
+         */
         $actualBlogPostCount = $this->playwrightConnector->execute($this->playwrightContext,
             // language=JavaScript
             '
@@ -135,8 +144,11 @@ trait FrontendControlTrait
     /**
      * @Then there must be :tagCount tags inside the blog overview
      */
-    public function thereMustBeXTagsInsideTheBlogOverview(int $tagCount)
+    public function thereMustBeXTagsInsideTheBlogOverview(int $tagCount): void
     {
+        /**
+         * @var int $actualTagCount
+         */
         $actualTagCount = $this->playwrightConnector->execute($this->playwrightContext,
             // language=JavaScript
             '
@@ -151,6 +163,9 @@ trait FrontendControlTrait
      */
     public function iMustSeeABlogPostWithTheHeadlineXInsideTheBlogOverview(string $expectedHeadline): void
     {
+        /**
+         * @var bool $isVisible
+         */
         $isVisible = $this->playwrightConnector->execute($this->playwrightContext, sprintf(
         // language=JavaScript
             '
@@ -163,19 +178,30 @@ trait FrontendControlTrait
     /**
      * @Then the size of column :column should be :size
      */
-    public function theSizeOfColumnXShouldBeY(int $column, string $size)
+    public function theSizeOfColumnXShouldBeY(int $column, string $size): void
     {
         $classList = $this->getClassListForColumn($column);
         $expectedSizeClassName = "columns__cell--size-$size";
         assertEquals(true, in_array($expectedSizeClassName, $classList), "expected column '$column' to have size '$size'. But class list is: ". implode(",", $classList));
     }
 
+    /**
+     * @return array<string>
+     */
     private function getClassListForColumn(int $column): array
     {
-        return $this->playwrightConnector->execute($this->playwrightContext,  sprintf(
-        // language=JavaScript
+        /**
+         * @var array<string> $classList
+         */
+        $classList = $this->playwrightConnector->execute($this->playwrightContext, sprintf(
+            // language=JavaScript
             '
-                return await vars.page.$eval(".columns .columns__cell:nth-of-type(%s)", el => el.classList);
-        ', $column));// language=PHP
+                    return await vars.page.$eval(".columns .columns__cell:nth-of-type(%s)", el => el.classList);
+            ',
+            // language=PHP
+            $column)
+        );
+
+        return $classList;
     }
 }

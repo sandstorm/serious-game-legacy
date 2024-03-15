@@ -10,7 +10,7 @@ class DummyFunctionalTest extends FunctionalTestCase
      * Just a dummy test
      * @test
      */
-    public function dummyTest()
+    public function dummyTest(): void
     {
         $this->assertTrue(true);
     }

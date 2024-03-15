@@ -21,14 +21,17 @@ class AssetTitleManager
      * @param AssetInterface $asset
      * @throws IllegalObjectTypeException
      */
-    public function addTitleToImportedAsset(AssetInterface $asset)
+    public function addTitleToImportedAsset(AssetInterface $asset): void
     {
         if ($asset instanceof ImageVariant) {
             return;
         }
         $currentTitle = $asset->getTitle();
-        if(strlen($currentTitle) == 0) {
+        if(strlen($currentTitle) === 0) {
             $fileName = $asset->getResource()->getFilename();
+            /**
+             * @var string $fileName
+             */
             $fileName = preg_replace('/.[^.]*$/', '', $fileName);
             $fileName = str_replace(array('-', '_'), ' ', $fileName);
             $asset->setTitle(ucwords($fileName));
