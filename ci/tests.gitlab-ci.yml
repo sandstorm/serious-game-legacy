@@ -1,15 +1,25 @@
 php_code_analysis:
   image: composer:2
   stage: test
-  needs: [ ]
-  dependencies: [ ]
+  needs: []
+  dependencies: []
   script:
     - cd app
     - composer install --ignore-platform-reqs
     - cd Build/Behat
     - composer install --ignore-platform-reqs
     - cd ../..
-    - ./bin/phpstan analyse --memory-limit 1G
+    - ./bin/phpstan analyse --no-progress --memory-limit 1G --error-format junit > phpstan.xml
+    - ./bin/phpstan analyse --no-progress --memory-limit 1G --error-format gitlab > phpstan.json
+  after_script:
+    - cp app/phpstan.xml $CI_PROJECT_DIR/phpstan.xml
+    - cp app/phpstan.json $CI_PROJECT_DIR/phpstan.json
+  artifacts:
+    expire_in: 5 days
+    when: always
+    reports:
+      junit: phpstan.xml
+      codequality: phpstan.json
 
 build_e2e_testrunner:
   stage: build
@@ -35,17 +45,17 @@ e2e_test:
   image:
     name: $CI_REGISTRY_IMAGE/neos:$CI_COMMIT_REF_SLUG
     # we need to override the entrypoint here to prevent the container default behaviour
-    entrypoint: ['']
+    entrypoint: [""]
   needs:
     - package_app_staging
     - build_e2e_testrunner
   variables:
     # service mariadb
-    MYSQL_USER: 'ci_user'
-    MYSQL_PASSWORD: 'ci_db_password'
-    MYSQL_DATABASE: 'ci_test'
+    MYSQL_USER: "ci_user"
+    MYSQL_PASSWORD: "ci_db_password"
+    MYSQL_DATABASE: "ci_test"
     # otherwise service will not start
-    MARIADB_RANDOM_ROOT_PASSWORD: 'yes'
+    MARIADB_RANDOM_ROOT_PASSWORD: "yes"
 
     # System under Test
     FLOW_CONTEXT: Production/Kubernetes
@@ -64,7 +74,7 @@ e2e_test:
     REDIS_HOST: redis
     REDIS_PORT: 6379
     # sandstorm maps
-    SANDSTORM_MAPS_API_KEY: 'this_is_not_a_valid_key'
+    SANDSTORM_MAPS_API_KEY: "this_is_not_a_valid_key"
   services:
     - name: mariadb:10.3
     - name: redis:6.2.2
