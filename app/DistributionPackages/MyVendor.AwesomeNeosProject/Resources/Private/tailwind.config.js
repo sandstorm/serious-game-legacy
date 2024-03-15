@@ -2,7 +2,23 @@
 module.exports = {
     content: ['./**/*.{fusion,ts}'],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                primary: {
+                    main: '#00aeef',
+                    dark: '#0089bc',
+                },
+                white: '#fff',
+                black: '#222',
+                grey: {
+                    main: '#434343',
+                    light: '#868686',
+                    lighter: '#dadada',
+                    dark: '#282828',
+                },
+                error: '#d71a06',
+            },
+        },
     },
     plugins: [],
 }
