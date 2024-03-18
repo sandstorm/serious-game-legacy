@@ -35,6 +35,11 @@
         @apply align-[revert];
     }
 
+    /* TODO: Do we need this margin here? */
+    div[data-name='youtube'] {
+        @apply mb-5;
+    }
+
     /* TODO: We should not do this: https://tailwindcss.com/docs/reusing-styles */
     .button {
         @apply inline-block;
