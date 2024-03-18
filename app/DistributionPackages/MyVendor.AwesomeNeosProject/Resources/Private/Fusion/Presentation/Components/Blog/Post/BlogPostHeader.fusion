@@ -16,16 +16,18 @@ prototype(MyVendor.AwesomeNeosProject:Component.BlogPostHeader) < prototype(Neos
 
     renderer = afx`
         <MyVendor.AwesomeNeosProject:Utility.ContentWidth>
-            <header class="blog-post-header">
-                <h1 class="blog-post-header__title">{props.title}</h1>
-                <div class="blog-post-header__meta_data" @if={props.date}>
-                    {Date.format(props.date, 'd.m.Y')}
-                </div>
-                <div class="blog-post-header__meta_data">
+            <header class="my-10 w-full text-center">
+                <h1 class="m-0">{props.title}</h1>
+                <div class="flex flex-col justify-center items-center gap-5 my-5 [&>ul]:m-0">
+                    <div @if={props.date} class="text-sm">
+                        {Date.format(props.date, 'd.m.Y')}
+                    </div>
                     {props.tags}
                 </div>
-                {props.image}
-                <div @if.hasTeaserText={props.teaserText} class="blog-post-header__teaser">{props.teaserText}</div>
+                <div class="[&>.image]:mb-5 [&_.image_img]:w-96 [&_.image>span]:w-96">
+                    {props.image}
+                </div>
+                <div @if.hasTeaserText={props.teaserText} class="w-[600px] max-w-full m-auto text-sm text-center">{props.teaserText}</div>
             </header>
         </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
     `

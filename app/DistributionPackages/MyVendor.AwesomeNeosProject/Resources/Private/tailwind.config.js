@@ -18,6 +18,9 @@ module.exports = {
                 },
                 error: '#d71a06',
             },
+            boxShadow: {
+                'blog-post': '0 5px 30px -10px rgba(71, 71, 71, 0.3)',
+            }
         },
     },
     plugins: [],

@@ -34,4 +34,23 @@
         @apply inline-block;
         @apply align-[revert];
     }
+
+    /* TODO: We should not do this: https://tailwindcss.com/docs/reusing-styles */
+    .button {
+        @apply inline-block;
+        @apply h-10;
+        @apply py-0;
+        @apply px-5;
+        @apply border;
+        @apply text-sm;
+        @apply text-ellipsis;
+        @apply whitespace-nowrap;
+        @apply align-middle;
+        @apply leading-10;
+        @apply no-underline;
+        @apply text-center;
+        @apply cursor-pointer;
+        @apply overflow-hidden;
+        @apply transition;
+    }
 }

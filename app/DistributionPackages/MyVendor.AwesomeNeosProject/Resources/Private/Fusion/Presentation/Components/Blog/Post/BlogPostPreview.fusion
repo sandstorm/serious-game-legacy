@@ -19,24 +19,28 @@ prototype(MyVendor.AwesomeNeosProject:Component.BlogPostPreview) < prototype(Neo
     @private.inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
 
     renderer = afx`
-        <article>
+        <article data-testid="blogPost">
             <Neos.Fusion:Tag
                 tagName={private.inBackend ? 'div' : 'a'}
                 attributes.href={private.inBackend ? null : props.href}
-                attributes.class="blog-post-preview"
+                attributes.class="flex flex-col bg-white shadow-blog-post no-underline text-black"
                 attributes.title={I18n.translate('MyVendor.AwesomeNeosProject:Base:linkTo') + ' Blog Post: ' + props.title}
             >
-                {props.image}
-                <div class="blog-post-preview__content">
-                    <h3 class="blog-post-preview__title">{props.title}</h3>
-                    <div @if.hasTeaserText={props.teaserText} class="blog-post-preview__teaser">
+                <div class="[&>.image]:h-48 [&>.image]:mb-0 [&_.image_picture]:w-full [&_.image_picture]:h-full [&_img]:w-full [&_img]:h-full [&_img]:block [&_img]:object-cover">
+                    {props.image}
+                </div>
+                <div class="flex flex-col items-center p-5 text-center">
+                    <h3>{props.title}</h3>
+                    <div @if.hasTeaserText={props.teaserText} class="overflow-hidden line-clamp-6">
                         {props.teaserText}
                     </div>
                     <div class="blog-post-preview__tags">
                         {props.tags}
                     </div>
+                    <!-- TODO: Button -->
                     <button
-                        class="button button--solid-blue">{I18n.translate('MyVendor.AwesomeNeosProject:Base:learnMore')}</button>
+                        class="button button--solid-blue">{I18n.translate('MyVendor.AwesomeNeosProject:Base:learnMore')}
+                    </button>
                 </div>
             </Neos.Fusion:Tag>
         </article>

@@ -135,7 +135,7 @@ trait FrontendControlTrait
         $actualBlogPostCount = $this->playwrightConnector->execute($this->playwrightContext,
             // language=JavaScript
             '
-            return await vars.page.locator(`.blog-post-overview .blog-post-overview__post`).count();
+            return await vars.page.getByTestId("blogPost").count();
         '// language=PHP
         );
         assertEquals($blogPostCount, $actualBlogPostCount, "expected $blogPostCount blog posts inside the overview, but found $actualBlogPostCount");
@@ -152,7 +152,7 @@ trait FrontendControlTrait
         $actualTagCount = $this->playwrightConnector->execute($this->playwrightContext,
             // language=JavaScript
             '
-            return await vars.page.locator(`.blog-tag-list .blog-tag`).count();
+            return await vars.page.getByTestId("blogTag").count();
         '// language=PHP
         );
         assertEquals($tagCount, $actualTagCount, "expected $tagCount tags inside the overview, but found $actualTagCount");
@@ -169,7 +169,7 @@ trait FrontendControlTrait
         $isVisible = $this->playwrightConnector->execute($this->playwrightContext, sprintf(
         // language=JavaScript
             '
-            return await vars.page.isVisible(`.blog-post-overview .blog-post-preview__title:text-matches("^%s$", "i")`)
+            return await vars.page.isVisible(`.blog-post-overview h3:text-matches("^%s$", "i")`)
         '// language=PHP
             , $expectedHeadline));
         assertTrue($isVisible, "expected blog post with headline '$expectedHeadline' inside the overview not found");
