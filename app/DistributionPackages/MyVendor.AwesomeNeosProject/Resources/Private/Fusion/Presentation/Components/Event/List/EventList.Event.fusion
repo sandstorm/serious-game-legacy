@@ -26,29 +26,32 @@ prototype(MyVendor.AwesomeNeosProject:Component.EventList.Event) < prototype(Neo
     }
 
     renderer = afx`
-        <div class="event-list__event">
-            <div class="event-list__date">
-                <span class="event-list__day">{private.day}</span>
-                <span class="event-list__month">{private.month}</span>
+        <div class="flex mt-5 pb-5 border-b border-black" data-testid="event">
+            <div class="flex flex-col items-center w-14 md:w-20 mr-2 md:mr-5">
+                <span class="text-5xl leading-none">{private.day}</span>
+                <span class="uppercase">{private.month}</span>
                 <span>{private.year}</span>
             </div>
             <div>
-                <div @if={props.timeFrom} class="event-list__time">
+                <div @if={props.timeFrom} class="text-xs">
                     {props.timeFrom}
                     <span @if={props.timeTo}> - {props.timeTo}</span>
                     {' '}{I18n.translate('MyVendor.AwesomeNeosProject:Base:oClock')}
                 </div>
                 {props.tags}
-                <h4 class="event-list__title">{props.title}</h4>
+                <h4 class="mb-2 font-bold">{props.title}</h4>
                 <div @if={props.location}>
                     <span class="icon-location" aria-hidden="true"></span> {props.location}
                 </div>
-                <MyVendor.AwesomeNeosProject:Component.Button
-                    title={I18n.translate('MyVendor.AwesomeNeosProject:Base:learnMore')}
-                    href={props.href}
-                    type="link"
-                    align="left"
-                />
+                <!--TODO: Button -->
+                <div class="[&>div]:mb-0 [&>div]:mt-5">
+                    <MyVendor.AwesomeNeosProject:Component.Button
+                        title={I18n.translate('MyVendor.AwesomeNeosProject:Base:learnMore')}
+                        href={props.href}
+                        type="link"
+                        align="left"
+                    />
+                </div>
             </div>
         </div>
     `

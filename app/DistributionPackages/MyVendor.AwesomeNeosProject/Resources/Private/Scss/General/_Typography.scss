@@ -8,8 +8,8 @@ $icon_font-path: $relativePublicPath + 'Fonts';
 // icon font build with IcoMoon App (see Icons.md in Resources/Public/Fonts Folder)
 @font-face {
     font-family: 'icons';
-    src: url($icon_font-path + '/icons_v4.ttf') format('truetype'),
-        url($icon_font-path + '/icons_v4.woff') format('woff'), url($icon_font-path + '/icons_v4.svg') format('svg');
+    src: url($icon_font-path + '/icons_v5.ttf') format('truetype'),
+        url($icon_font-path + '/icons_v5.woff') format('woff'), url($icon_font-path + '/icons_v5.svg') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;

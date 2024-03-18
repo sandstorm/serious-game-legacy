@@ -20,21 +20,23 @@ prototype(MyVendor.AwesomeNeosProject:Component.EventHeader) < prototype(Neos.Fu
 
     renderer = afx`
         <MyVendor.AwesomeNeosProject:Utility.ContentWidth>
-            <header class="event-header">
+            <header class="my-10 w-full text-center">
                 <h1>{props.title}</h1>
-                <div @if={props.date}>
-                    <span class="icon-calendar" aria-hidden="true"></span> {props.date}
-                    <span @if={props.dateUntil}> - {props.dateUntil}</span>
+                <div class="flex flex-col gap-1">
+                    <div @if={props.date} class="text-sm">
+                        <span class="icon-calendar" aria-hidden="true"></span> {props.date}
+                        <span @if={props.dateUntil}> - {props.dateUntil}</span>
+                    </div>
+                    <div @if={props.timeFrom} class="text-sm">
+                        <span class="icon-clock" aria-hidden="true"></span> {props.timeFrom}
+                        <span @if={props.timeTo}> - {props.timeTo}</span>
+                        {' '}{I18n.translate('MyVendor.AwesomeNeosProject:Base:oClock')}
+                    </div>
+                    <div @if={props.location} class="text-sm">
+                        <span class="icon-location" aria-hidden="true"></span> {props.location}
+                    </div>
+                    {props.tags}
                 </div>
-                <div @if={props.timeFrom}>
-                    <span class="icon-clock" aria-hidden="true"></span> {props.timeFrom}
-                    <span @if={props.timeTo}> - {props.timeTo}</span>
-                    {' '}{I18n.translate('MyVendor.AwesomeNeosProject:Base:oClock')}
-                </div>
-                <div @if={props.location}>
-                    <span class="icon-location" aria-hidden="true"></span> {props.location}
-                </div>
-                {props.tags}
             </header>
         </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
     `
