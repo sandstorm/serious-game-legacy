@@ -13,7 +13,11 @@ prototype(MyVendor.AwesomeNeosProject:Component.Teaser) < prototype(Neos.Fusion:
     }
 
     renderer = afx`
-        <div class={AtomicFusion.classNames('teaser', 'teaser--' + props.height, 'teaser--text-' + props.textColor)}>
+        <div class={AtomicFusion.classNames(
+            'relative flex [&>.image]:absolute [&>.image]:mb-0 [&>.image_picture]:w-full [&_img]:w-full [&_img]:h-full [&_img]:object-cover',
+            'min-h-[' + props.height + ']',
+            props.textColor == 'dark' ? 'text-black' : 'text-white'
+        )}>
             {props.image}
             {props.content}
         </div>
