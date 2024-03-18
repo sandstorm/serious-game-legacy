@@ -12,7 +12,8 @@ prototype(MyVendor.AwesomeNeosProject:Document.Blog) < prototype(MyVendor.Awesom
             itemsPerPage = 16
 
             prototype(Flowpack.Listable:Collection) {
-                listClass = 'blog-post-overview'
+                // We need to keep class 'blog-overview' for now because it's needed in the test
+                listClass = 'blog-post-overview grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mb-5 p-0 list-none'
                 itemClass = 'blog-post-overview__post'
 
                 itemRenderer = MyVendor.AwesomeNeosProject:Content.BlogPostPreview

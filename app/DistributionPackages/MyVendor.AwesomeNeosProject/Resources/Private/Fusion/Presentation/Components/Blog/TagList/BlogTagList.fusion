@@ -11,7 +11,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.BlogTagList) < prototype(Neos.Fu
     }
 
     renderer = afx`
-        <ul class="blog-tag-list">
+        <ul class="flex flex-wrap gap-2 my-5 p-0 text-center list-none">
             <Neos.Fusion:Loop items={props.tags} itemName="tag" @children="itemRenderer">
                 <MyVendor.AwesomeNeosProject:Component.BlogTagItem
                     tag={tag}
