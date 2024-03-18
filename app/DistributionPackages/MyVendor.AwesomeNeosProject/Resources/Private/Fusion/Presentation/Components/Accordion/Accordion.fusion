@@ -1,18 +1,20 @@
 prototype(MyVendor.AwesomeNeosProject:Component.Accordion) < prototype(Neos.Fusion:Component) {
     firstChild = ''
+    firstAccordionItemIsOpen = false
     content = ''
 
     @propTypes {
         @strict = true
         firstChild = ${PropTypes.instanceOf('MyVendor.AwesomeNeosProject:Content.Accordion.Item')}
+        firstAccordionItemIsOpen = ${PropTypes.boolean}
         content = ${PropTypes.string}
     }
 
     renderer = afx`
         <div
             id={'accordion-' + node.identifier}
-            class="accordion"
-            x-data={AlpineJS.object({active: props.firstChild.identifier, expanded: false})}
+            class="mb-10"
+            x-data={AlpineJS.object({active: props.firstAccordionItemIsOpen ? props.firstChild.identifier : null, expanded: false})}
         >
             {props.content}
         </div>
