@@ -19,7 +19,7 @@ trait EventListTrait
         $amount = $this->playwrightConnector->execute($this->playwrightContext,
             // language=JavaScript
             "
-                return await vars.page.locator('.event-list__event').count()
+                return await vars.page.getByTestId('event').count()
             "// language=PHP
         );
 
@@ -48,7 +48,7 @@ trait EventListTrait
         sprintf(
             // language=JavaScript
             "
-                await vars.page.locator('.event-list__filter .event-list__tag')
+                await vars.page.getByTestId('eventFilterTag')
                     .filter({ hasText: '%s' })
                     .click()
             ",// language=PHP

@@ -13,6 +13,9 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-check:before {
+    content: "\f00c";
+}
 .icon-clock:before {
     content: "\f017";
 }

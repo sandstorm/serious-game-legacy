@@ -9,7 +9,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.EventTagList) < prototype(Neos.F
     }
 
     renderer = afx`
-        <div class="event-tag-list">
+        <div class="text-xs">
             <span @if={props.tags}>
                 <span class="icon-tags" @if={props.showIcon} aria-hidden="true"></span>{' '}
             </span>
