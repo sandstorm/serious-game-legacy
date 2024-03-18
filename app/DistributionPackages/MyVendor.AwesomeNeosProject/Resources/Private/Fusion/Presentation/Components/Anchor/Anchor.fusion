@@ -9,7 +9,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Anchor) < prototype(Neos.Fusion:
     @private.inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
 
     renderer = afx`
-        <div id={props.id} class={AtomicFusion.classNames('anchor', {'anchor--in-backend': private.inBackend})}>
+        <div id={props.id} class={AtomicFusion.classNames('block relative', {'my-5 border border-dashed border-grey-main': private.inBackend})}>
             <div @if.inBackend={private.inBackend}>Anchor: {props.id}</div>
         </div>
     `
