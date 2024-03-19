@@ -16,29 +16,41 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Main) < prototype(Neos.
     // we use alpine js to toggle the main menu for mobile screen size
     // :class sets the visible class depending on the 'mobileMenuOpen' state (See PageMenu.fusion)
     renderer = afx`
-        <div class="page-menu__main" :class="mobileMenuOpen ? 'page-menu__main--open' : ''">
-            <ul class="page-menu__toplevel">
+        <div class="[&>div]:block [&>div]:mb-4 bg-white lg:flex lg:justify-center lg:flex-nowrap page-menu__main lg:[&>div]:hidden" :class="mobileMenuOpen ? 'block absolute w-full left-0 top-16 z-[999] border-b border-b-grey-lighter' : 'hidden'" "x-on:resize.window"="mobileMenuOpen = false">
+            <ul class="m-0 p-0 list-none">
                 <Neos.Fusion:Loop items={private.menuItems}>
                     <li
-                        class={AtomicFusion.classNames(item.state, 'page-menu__toplevel-item', {'page-menu__toplevel-item--has-items': item.subItems})}
+                        class={AtomicFusion.classNames(item.state, 'w-full py-2 lg:w-auto lg:inline-block lg:py-0 px-4 lg:h-16', {'group': item.subItems})}
                     >
                         <Neos.Neos:NodeLink
                             node={item.node}
                             attributes.title={I18n.translate('MyVendor.AwesomeNeosProject:Base:linkToPage') + item.label}
-                            attributes.class="page-menu__toplevel-link"
+                            attributes.class={AtomicFusion.classNames(
+                                'no-underline text-lg lg:leading-[80px] hover:text-primary-main focus:text-primary-main active:text-primary-main',
+                                {
+                                    'text-grey-main': item.state != 'current',
+                                    'text-primary-main': item.state == 'current'
+                                }
+                            )}
                         >
                             {item.label}
                         </Neos.Neos:NodeLink>
 
-                        <div @if.hasItems={item.subItems} class="page-menu__sublevel-wrapper">
-                            <div class="page-menu__sublevel-container">
-                                <ul @if.has={item.subItems} class="page-menu__sublevel">
+                        <div @if.hasItems={item.subItems} class="block relative py-2 bg-white lg:hidden lg:group-hover:block lg:group-focus-within:block lg:py-8 lg:absolute lg:left-0 lg:top-16 lg:w-full lg:max-h-[80vh] lg:shadow-main-menu lg:z-[999] lg:overflow-hidden lg:overflow-y-scroll">
+                            <div class="flex flex-nowrap justify-between h-full p-0 ml-4 lg:mx-auto lg:max-w-[800px]">
+                                <ul @if.has={item.subItems} class="m-0 p-0 list-none">
                                     <Neos.Fusion:Loop items={item.subItems} itemName="item">
-                                        <li class={AtomicFusion.classNames(item.state, 'page-menu__sublevel-item')}>
+                                        <li class={AtomicFusion.classNames(item.state, 'leading-[2rem]')}>
                                             <Neos.Neos:NodeLink
                                                 node={item.node}
                                                 attributes.title={I18n.translate('MyVendor.AwesomeNeosProject:Base:linkToPage') + item.label}
-                                                attributes.class="page-menu__sublevel-link"
+                                                attributes.class={AtomicFusion.classNames(
+                                                    'no-underline hover:text-primary-main focus:text-primary-main active:text-primary-main',
+                                                    {
+                                                        'text-black': item.state != 'current',
+                                                        'text-primary-main': item.state == 'current'
+                                                    }
+                                                )}
                                             >
                                                 {item.label}
                                             </Neos.Neos:NodeLink>

@@ -11,8 +11,8 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageHeader.Logo) < prototype(Neo
     }
 
     renderer = afx`
-        <a href="/" class="page-header__logo" title={private.linkTitle}>
-            <img class="page-header__logo-img" src={private.logoResourceUri} alt="Logo"/>
+        <a href="/" class="h-12 inline-block" title={private.linkTitle}>
+            <img class="h-full" src={private.logoResourceUri} alt="Logo"/>
         </a>
     `
 }

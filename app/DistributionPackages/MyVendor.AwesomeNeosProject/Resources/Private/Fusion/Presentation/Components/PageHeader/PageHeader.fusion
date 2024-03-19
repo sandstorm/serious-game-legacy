@@ -7,7 +7,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageHeader) < prototype(Neos.Fus
     }
 
     renderer = afx`
-        <header class={AtomicFusion.classNames('page-header')}>
+        <header class="relative border-b border-grey-lighter">
             <MyVendor.AwesomeNeosProject:Utility.ContentWidth>
                 {props.menu}
             </MyVendor.AwesomeNeosProject:Utility.ContentWidth>

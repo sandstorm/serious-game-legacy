@@ -7,9 +7,9 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageFooter) < prototype(Neos.Fus
     }
 
     renderer = afx`
-        <footer class={AtomicFusion.classNames('page-footer')}>
+        <footer class="bg-grey-main text-grey-lighter">
             <MyVendor.AwesomeNeosProject:Utility.ContentWidth>
-                <div @if.hasFooter={props.content != ''} class="page-footer__content">
+                <div @if.hasFooter={props.content != ''} class="py-10">
                     {props.content}
                 </div>
             </MyVendor.AwesomeNeosProject:Utility.ContentWidth>

@@ -1,3 +1,5 @@
+const plugin = require('tailwindcss/plugin')
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     content: ['./**/*.{fusion,ts}'],
@@ -20,8 +22,15 @@ module.exports = {
             },
             boxShadow: {
                 'blog-post': '0 5px 30px -10px rgba(71, 71, 71, 0.3)',
-            }
+                'main-menu': '5px 5px 10px rgba(34, 34, 34, 0.5)',
+            },
         },
     },
-    plugins: [],
+    plugins: [
+        plugin(function ({ addBase }) {
+            addBase({
+                html: { fontSize: '20px' },
+            })
+        }),
+    ],
 }
