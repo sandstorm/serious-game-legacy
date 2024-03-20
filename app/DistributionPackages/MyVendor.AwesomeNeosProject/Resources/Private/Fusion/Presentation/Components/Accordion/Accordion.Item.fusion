@@ -10,7 +10,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Accordion.Item) < prototype(Neos
 
     @private {
         isFirstChild = ${node.identifier == q(node).parents('[instanceof MyVendor.AwesomeNeosProject:Content.Accordion]').children().get(0).identifier}
-        firstAccordionItemIsOpen = ${q(node).parents('[instanceof DSC.Site:Content.Accordion]').property('firstAccordionItemIsOpen')}
+        firstAccordionItemIsOpen = ${q(node).parents('[instanceof MyVendor.AwesomeNeosProject:Content.Accordion]').property('firstAccordionItemIsOpen')}
         accordionItemXData = ${'{
             id: "' + node.identifier + '",
             get expanded() {
