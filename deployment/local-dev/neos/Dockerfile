@@ -43,7 +43,7 @@ RUN apt-get update -y && \
         && \
     mkdir -p /var/log/supervisor && \
     rm -rf /var/lib/apt/lists/* && \
-    docker-php-ext-install intl bcmath pdo pdo_mysql xsl ffi && \
+    docker-php-ext-install intl bcmath opcache pdo pdo_mysql xsl ffi && \
     pecl install vips && \
     echo "extension=vips.so" > /usr/local/etc/php/conf.d/vips.ini && \
     pecl install redis && docker-php-ext-enable redis
