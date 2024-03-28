@@ -16,7 +16,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Main) < prototype(Neos.
     // we use alpine js to toggle the main menu for mobile screen size
     // :class sets the visible class depending on the 'mobileMenuOpen' state (See PageMenu.fusion)
     renderer = afx`
-        <div class="[&>div]:block [&>div]:mb-4 bg-white lg:flex lg:justify-center lg:flex-nowrap page-menu__main lg:[&>div]:hidden" :class="mobileMenuOpen ? 'block absolute w-full left-0 top-16 z-[999] border-b border-b-grey-lighter' : 'hidden'" "x-on:resize.window"="mobileMenuOpen = false">
+        <div class="[&>div]:block [&>div]:mb-4 bg-white lg:flex lg:justify-center lg:flex-nowrap page-menu__main lg:[&>div]:hidden" :class="mobileMenuOpen ? 'block absolute w-full left-0 top-16 z-[999] border-b border-b-grey-lighter' : 'hidden'" "x-on:resize.window"="mobileMenuOpen = false" x-cloak>
             <ul class="m-0 p-0 list-none">
                 <Neos.Fusion:Loop items={private.menuItems}>
                     <li

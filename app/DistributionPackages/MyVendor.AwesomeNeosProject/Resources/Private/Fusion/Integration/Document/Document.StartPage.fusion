@@ -1,3 +1,4 @@
 prototype(MyVendor.AwesomeNeosProject:Document.StartPage) < prototype(MyVendor.AwesomeNeosProject:Document.Page) {
     bodyTag.attributes.class.@process.addClass = ${Array.push(value, 'start-page')}
+    body.breadcrumb >
 }
