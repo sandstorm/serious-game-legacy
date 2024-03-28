@@ -1,6 +1,6 @@
 {namespace neos=Neos\Neos\ViewHelpers} {namespace ts=Neos\Fusion\ViewHelpers}
 <f:if condition="{items}">
-    <ul class="m-0 py-2 pl-0 list-none w-full text-sm">
+    <ul class="m-0 py-2 pl-0 list-none w-full text-sm" role="navigation" data-testid="breadcrumb">
         <f:for each="{items}" as="item" reverse="TRUE">
             <li class="{item.state} inline-block text-grey-light {f:if(condition: '{item.state} === current', then: 'pl-1 underline', else: '')} after:content-['_>_'] last-of-type:after:content-none">
                 <f:if condition="{item.state} === 'current'">
