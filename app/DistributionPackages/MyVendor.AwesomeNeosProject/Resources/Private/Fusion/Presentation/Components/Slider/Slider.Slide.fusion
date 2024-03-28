@@ -7,7 +7,14 @@ prototype(MyVendor.AwesomeNeosProject:Component.Slider.Slide) < prototype(Neos.F
     }
 
     renderer = afx`
-        <div class="swiper-slide content-slider__slide">
+        <div class={AtomicFusion.classNames(
+            'swiper-slide',
+            '[&>.content-width]:max-w-[100%] md:[&>.content-width]:max-w-[80%]',
+            '[&.swiper-slide--active]:relative [&.swiper-slide--active]:z-10',
+            '[&_.image]:h-[400px] md:[&_.image]:h-[700px]',
+            '[&_.image_picture]:flex [&_.image_picture]:items-center [&_.image_picture]:justify-center',
+            '[&_.image_picture_img]:w-auto [&_.image_picture_img]:max-w-full [&_.image_picture_img]:h-full [&_.image_picture_img]:object-contain'
+        )}>
             {props.content}
         </div>
     `
