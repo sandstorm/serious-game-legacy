@@ -3,7 +3,9 @@ prototype(MyVendor.AwesomeNeosProject:Component.Breadcrumb) < prototype(Neos.Fus
         @strict = true
     }
 
-    @private.breadcrumb = Neos.Neos:BreadcrumbMenu
+    @private.breadcrumb = Neos.Neos:BreadcrumbMenu {
+        templatePath = 'resource://MyVendor.AwesomeNeosProject/Private/Templates/BreadcrumbMenu.html'
+    }
 
     renderer = afx`
         <MyVendor.AwesomeNeosProject:Utility.ContentWidth>

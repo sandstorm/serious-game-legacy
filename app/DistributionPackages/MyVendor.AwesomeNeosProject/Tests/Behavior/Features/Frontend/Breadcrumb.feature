@@ -3,8 +3,6 @@
 @Breadcrumb
 Feature: Breadcrumb rendering in frontend
 
-    The Blog page shows a overview of blog posts.
-
     Background:
         Given I have a site for Site Node "site" with name "Website"
         Given I have the following nodes:

@@ -58,4 +58,44 @@
         @apply overflow-hidden;
         @apply transition;
     }
+
+    /* Styles for ckeditor elements which we cannot style directly */
+
+    /*---------\
+    | TABLE
+    \---------*/
+    figure.table,
+    .ck-content figure.table {
+        @apply w-full;
+        @apply mt-0;
+        @apply mx-0;
+        @apply mb-6;
+        @apply overflow-x-auto;
+    }
+
+    figure.table table,
+    .ck-content figure.table table {
+        @apply w-full;
+    }
+
+    figure.table table thead tr {
+        @apply border-b;
+        @apply border-b-black;
+    }
+
+    figure.table table thead th {
+        @apply text-left;
+    }
+
+    figure.table table td,
+    figure.table table th {
+        @apply pt-2;
+        @apply pb-1;
+    }
+
+    figure.table table td:not(:last-child),
+    figure.table table th:not(:last-child) {
+        @apply pr-4;
+        @apply md:pr-8;
+    }
 }

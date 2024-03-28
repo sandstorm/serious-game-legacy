@@ -88,7 +88,7 @@ trait FrontendControlTrait
         $isVisible = $this->playwrightConnector->execute($this->playwrightContext,
             // language=JavaScript
             '
-            return await vars.page.isVisible(`.body .breadcrumb`)
+            return await vars.page.getByTestId(`breadcrumb`).isVisible()
         ');// language=PHP
         assertFalse($isVisible, "breadcrumb is not visible");
     }
@@ -104,7 +104,7 @@ trait FrontendControlTrait
         $actualCurrentElement = $this->playwrightConnector->execute($this->playwrightContext,  sprintf(
         // language=JavaScript
             '
-                const currentBreadcrumbContent = await vars.page.textContent(`body .breadcrumb .%s`);
+                const currentBreadcrumbContent = await vars.page.getByTestId(`breadcrumb`).locator(`li.%s`).textContent();
                 return currentBreadcrumbContent.trim();
         ', $level));// language=PHP
 
