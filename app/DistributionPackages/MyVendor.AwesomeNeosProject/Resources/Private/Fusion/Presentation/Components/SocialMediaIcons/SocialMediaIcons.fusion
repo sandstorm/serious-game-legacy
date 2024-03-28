@@ -15,31 +15,21 @@ prototype(MyVendor.AwesomeNeosProject:Component.SocialMediaIcons) < prototype(Ne
     }
 
     renderer = afx`
-        <ul class="social-media-icons">
+        <ul class="flex justify-start md:justify-end items-center mt-0 mx-0 mb-4 p-0 gap-4 list-none">
             <li @if={props.instagramLink}>
-                <a target="_blank" href={props.instagramLink} aria-label="Instagram" class="social-media-icons__link">
-                    <span class="icon-instagram" aria-hidden="true"></span>
-                </a>
+                <MyVendor.AwesomeNeosProject:Component.SocialMediaIcons.Link link={props.instagramLink} label="Instagram" icon="instagram" />
             </li>
             <li @if={props.facebookLink}>
-                <a target="_blank" href={props.facebookLink} aria-label="Facebook" class="social-media-icons__link">
-                    <span class="icon-facebook" aria-hidden="true"></span>
-                </a>
+                <MyVendor.AwesomeNeosProject:Component.SocialMediaIcons.Link link={props.facebookLink} label="Facebook" icon="facebook" />
             </li>
             <li @if={props.twitterLink}>
-                <a target="_blank" href={props.twitterLink} aria-label="Twitter" class="social-media-icons__link">
-                    <span class="icon-twitter" aria-hidden="true"></span>
-                </a>
+                <MyVendor.AwesomeNeosProject:Component.SocialMediaIcons.Link link={props.twitterLink} label="Twitter" icon="twitter" />
             </li>
             <li @if={props.youtubeLink}>
-                <a target="_blank" href={props.youtubeLink} aria-label="YouTube" class="social-media-icons__link">
-                    <span class="icon-youtube" aria-hidden="true"></span>
-                </a>
+                <MyVendor.AwesomeNeosProject:Component.SocialMediaIcons.Link link={props.youtubeLink} label="YouTube" icon="youtube" />
             </li>
             <li @if={props.mastodonLink}>
-                <a target="_blank" href={props.mastodonLink} aria-label="Mastodon" class="social-media-icons__link">
-                    <span class="icon-mastodon" aria-hidden="true"></span>
-                </a>
+                <MyVendor.AwesomeNeosProject:Component.SocialMediaIcons.Link link={props.mastodonLink} label="Mastodon" icon="mastodon" />
             </li>
         </ul>
     `
