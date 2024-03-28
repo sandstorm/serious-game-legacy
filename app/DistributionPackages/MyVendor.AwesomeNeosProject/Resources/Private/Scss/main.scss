@@ -3,9 +3,6 @@
 @use 'General/Typography';
 @use 'General/Icons';
 
-// External components
-@use '../node_modules/swiper/swiper-bundle.css';
-
 // Utility
 @use '../Fusion/Presentation/Utility/BackgroundColor/BackgroundColor';
 @use '../Fusion/Presentation/Utility/ContentWidth/ContentWidth';
@@ -28,4 +25,3 @@
 @use '../Fusion/Presentation/Components/Pagination/Pagination';
 @use '../Fusion/Presentation/Components/PreviewTiles/PreviewTiles';
 @use '../Fusion/Presentation/Components/SectionWithBackground/SectionWithBackground';
-@use '../Fusion/Presentation/Components/Slider/Slider';

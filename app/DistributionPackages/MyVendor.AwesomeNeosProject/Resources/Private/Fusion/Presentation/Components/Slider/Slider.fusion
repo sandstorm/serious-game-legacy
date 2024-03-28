@@ -18,17 +18,22 @@ prototype(MyVendor.AwesomeNeosProject:Component.Slider) < prototype(Neos.Fusion:
     renderer = afx`
         <MyVendor.AwesomeNeosProject:Utility.ContentWidth>
             <div x-data={AlpineJS.xData('slider', private.prevSlideMessage, private.nextSlideMessage, private.inBackend)}>
-                <div class="swiper content-slider" x-ref="slider">
+                <div class="swiper mb-8" x-ref="slider">
                     {props.slides}
 
-                    <div class="swiper-pagination content-slider__pagination"></div>
+                    <div class={AtomicFusion.classNames(
+                        'swiper-pagination',
+                        '[&.swiper-pagination-bullets.swiper-pagination-horizontal]:relative [&.swiper-pagination-bullets.swiper-pagination-horizontal]:b-0',
+                        '[&_.swiper-pagination-bullet]:bg-grey-light',
+                        '[&_.swiper-pagination-bullet.swiper-pagination-bullet-active]:bg-primary-main'
+                    )}></div>
 
-                    <button class="swiper-button-prev swiper-button-prev--basic-slider content-slider__arrow">
+                    <button class="swiper-button-prev swiper-button-prev--basic-slider hidden md:block border-none bg-transparent text-primary-main">
                         <span class="sr-only">
                             {I18n.translate('MyVendor.AwesomeNeosProject:Base:prevSlideMessage')}
                         </span>
                     </button>
-                    <button class="swiper-button-next swiper-button-next--basic-slider content-slider__arrow">
+                    <button class="swiper-button-next swiper-button-next--basic-slider hidden md:block border-none bg-transparent text-primary-main">
                         <span class="sr-only">
                             {I18n.translate('MyVendor.AwesomeNeosProject:Base:nextSlideMessage')}
                         </span>
