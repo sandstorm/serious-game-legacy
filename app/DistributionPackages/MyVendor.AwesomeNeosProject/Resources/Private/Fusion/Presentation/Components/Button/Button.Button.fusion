@@ -1,0 +1,31 @@
+prototype(MyVendor.AwesomeNeosProject:Component.Button.Button) < prototype(Neos.Fusion:Component) {
+    title = ''
+    icon = ''
+    iconAlignment = 'left'
+    additionalAttributes = ''
+    classes = ''
+    isTypeLink = false
+
+    @propTypes {
+        @strict = true
+        title = ${PropTypes.string}
+        icon = ${PropTypes.string}
+        iconAlignment = ${PropTypes.oneOf(['left', 'right'])}
+        classes = ${PropTypes.string}
+        additionalAttributes = ${PropTypes.any} // DataStructure
+        isTypeLink = ${PropTypes.boolean}
+    }
+
+    renderer = afx`
+        <button
+            class={props.classes}
+            {...props.additionalAttributes}
+            title={props.title}
+        >
+            <span @if.hasIcon={props.icon} class={AtomicFusion.classNames(props.icon)}></span>
+            <span class={AtomicFusion.classNames(
+                {'text-ellipsis overflow-hidden whitespace-nowrap': !props.isTypeLink}
+            )}>{props.title}</span>
+        </button>
+    `
+}

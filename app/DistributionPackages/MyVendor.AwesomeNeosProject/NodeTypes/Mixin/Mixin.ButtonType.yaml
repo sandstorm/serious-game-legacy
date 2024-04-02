@@ -3,7 +3,7 @@
   properties:
     type:
       type: string
-      defaultValue: 'solid-blue'
+      defaultValue: 'primary'
       ui:
         label: i18n
         reloadIfChanged: true
@@ -13,9 +13,9 @@
           editor: 'Neos.Neos/Inspector/Editors/SelectBoxEditor'
           editorOptions:
             values:
-              'solid-blue':
+              'primary':
                 label: i18n
-              'solid-grey':
+              'secondary':
                 label: i18n
               outline:
                 label: i18n

@@ -37,10 +37,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.BlogPostPreview) < prototype(Neo
                     <div class="blog-post-preview__tags">
                         {props.tags}
                     </div>
-                    <!-- TODO: Button -->
-                    <button
-                        class="button button--solid-blue">{I18n.translate('MyVendor.AwesomeNeosProject:Base:learnMore')}
-                    </button>
+                    <MyVendor.AwesomeNeosProject:Component.Button type="primary" align="center" title={I18n.translate('MyVendor.AwesomeNeosProject:Base:learnMore')} />
                 </div>
             </Neos.Fusion:Tag>
         </article>

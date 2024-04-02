@@ -1,7 +1,6 @@
 @use 'Utility/Variables/Colors';
 @use 'Utility/Variables/Spacing';
 @use 'Utility/Mixins';
-@use 'Presentation/Components/Button/Button';
 
 $input__height: 40px;
 
@@ -109,8 +108,6 @@ $input__height: 40px;
     }
 
     label {
-        @extend .button;
-        @extend .button--solid-grey;
         margin-bottom: 0;
     }
 }
