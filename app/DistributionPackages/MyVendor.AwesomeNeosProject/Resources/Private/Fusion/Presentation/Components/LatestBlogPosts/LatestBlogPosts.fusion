@@ -7,7 +7,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.LatestBlogPosts) < prototype(Neo
     }
 
     renderer = afx`
-        <div class="flex justify-center gap-5 flex-wrap mb-10 [&>article]:w-96 [&>article]:h-fit [&>article]:mb-5 [&_.button]:mt-5 [&_.blog-post-preview__tags]:hidden">
+        <div class="flex justify-center gap-5 flex-wrap mb-10 [&>article]:w-96 [&>article]:h-fit [&>article]:mb-5 [&_.blog-post-preview__tags]:hidden">
             {props.content}
         </div>
     `

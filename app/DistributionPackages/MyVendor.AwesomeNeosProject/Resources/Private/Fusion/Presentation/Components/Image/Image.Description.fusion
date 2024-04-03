@@ -1,0 +1,12 @@
+prototype(MyVendor.AwesomeNeosProject:Component.Image.Description) < prototype(Neos.Fusion:Component) {
+    imageDescription = ''
+
+    @propTypes {
+        @strict = true
+        imageDescription = ${PropTypes.string}
+    }
+
+    renderer = afx`
+        <span @if.imageDescription={props.imageDescription} class="block text-sm text-left text-grey-light">{props.imageDescription}</span>
+    `
+}

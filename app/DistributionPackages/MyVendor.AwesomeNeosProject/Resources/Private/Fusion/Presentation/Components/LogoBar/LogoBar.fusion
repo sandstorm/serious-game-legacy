@@ -14,10 +14,12 @@ prototype(MyVendor.AwesomeNeosProject:Component.LogoBar) < prototype(Neos.Fusion
 
     renderer = afx`
         <div
-            class={AtomicFusion.classNames('logo-bar')}
+            class={AtomicFusion.classNames('w-full mb-8 [&_.swiper-slide>div]:mb-0', {
+                '[&_.swiper-slide>div>div]:max-h-20': private.inBackend
+            })}
             x-data={AlpineJS.xData('logoBar', props.amountOfLogos, props.autoplayInterval ? props.autoplayInterval : '0', private.inBackend)}
         >
-            <div class={AtomicFusion.classNames('swiper', 'logo-bar__slider')} x-ref="slider">
+            <div class={AtomicFusion.classNames('swiper')} x-ref="slider">
                 {props.logos}
             </div>
         </div>

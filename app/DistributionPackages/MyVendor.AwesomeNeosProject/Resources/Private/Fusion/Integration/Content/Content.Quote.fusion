@@ -21,6 +21,9 @@ prototype(MyVendor.AwesomeNeosProject:Content.Quote) < prototype(Neos.Neos:Conte
             sizes = MyVendor.AwesomeNeosProject:Helper.ImageSizes {
                 type = 'two-column'
             }
+            class = 'w-full h-full flex flex-col flex-wrap mb-0'
+            pictureClasses = 'aspect-square inline-block h-full w-full'
+            imgClasses = 'h-full w-full object-cover rounded-[50%]'
         }
     }
 }

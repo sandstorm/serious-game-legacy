@@ -23,6 +23,9 @@ prototype(MyVendor.AwesomeNeosProject:Document.Blog.Post) < prototype(MyVendor.A
                 '(min-width: 400px) 400px',
                 '100vw'
             ]}
+            class = 'w-full h-full flex flex-col flex-wrap mb-5 [&>span]:w-96'
+            pictureClasses = 'inline-block h-full'
+            imgClasses = 'max-w-full h-auto w-96'
         }
 
         tags = MyVendor.AwesomeNeosProject:Component.BlogTagList {
