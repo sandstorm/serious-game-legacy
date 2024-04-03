@@ -7,7 +7,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Columns) < prototype(Neos.Fusion
     }
 
     renderer = afx`
-        <div class="columns">
+        <div class="relative w-full max-w-full grid grid-cols-6 md:grid-cols-12 gap-8 mb-8">
             {props.content}
         </div>
     `
