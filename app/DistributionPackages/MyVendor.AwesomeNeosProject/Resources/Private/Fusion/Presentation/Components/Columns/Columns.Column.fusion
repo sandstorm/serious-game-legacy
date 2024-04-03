@@ -4,14 +4,21 @@ prototype(MyVendor.AwesomeNeosProject:Component.Columns.Column) < prototype(Neos
 
     @propTypes {
         @strict = true
-        size = ${PropTypes.oneOf(['33', '25', '50', '75', '66'])}
+        size = ${PropTypes.oneOf(['25', '33', '50', '66', '75'])}
         content = ${PropTypes.string}
     }
 
-    @private.sizeClassName = ${'columns__cell--size-' + props.size}
-
     renderer = afx`
-        <div class={AtomicFusion.classNames('columns__cell' , private.sizeClassName)}>
+        <div class={AtomicFusion.classNames(
+            'w-full col-span-6 first:[&>.neos-contentcollection>*]:mt-0 last:[&>.neos-contentcollection>*]:mb-0',
+            {
+                'sm:col-span-3 md:col-span-3': props.size == '25',
+                'sm:col-span-3 md:col-span-4': props.size == '33',
+                'sm:col-span-3 md:col-span-6': props.size == '50',
+                'sm:col-span-3 md:col-span-8': props.size == '66',
+                'sm:col-span-3 md:col-span-9': props.size == '75'
+            }
+        )}>
             {props.content}
         </div>
     `
