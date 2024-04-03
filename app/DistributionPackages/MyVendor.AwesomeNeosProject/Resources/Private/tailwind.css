@@ -42,25 +42,6 @@
         @apply mb-5;
     }
 
-    /* TODO: We should not do this: https://tailwindcss.com/docs/reusing-styles */
-    .button {
-        @apply inline-block;
-        @apply h-10;
-        @apply py-0;
-        @apply px-5;
-        @apply border;
-        @apply text-sm;
-        @apply text-ellipsis;
-        @apply whitespace-nowrap;
-        @apply align-middle;
-        @apply leading-10;
-        @apply no-underline;
-        @apply text-center;
-        @apply cursor-pointer;
-        @apply overflow-hidden;
-        @apply transition;
-    }
-
     /* Styles for ckeditor elements which we cannot style directly */
 
     /*---------\
@@ -99,5 +80,60 @@
     figure.table table th:not(:last-child) {
         @apply pr-4;
         @apply md:pr-8;
+    }
+
+    /* TODO: We should not do this: https://tailwindcss.com/docs/reusing-styles */
+    /* TODO: Refactor form button styles
+    /* Styles for cookie punch buttons & form buttons */
+    #cookie-punch .klaro .cookie-modal .cm-btn-accept-all,
+    #cookie-punch .klaro .cookie-modal .cm-btn-accept,
+    #cookie-punch .klaro .cookie-modal .cm-btn-decline,
+    .form .form-file-upload label {
+        @apply no-underline;
+        @apply cursor-pointer;
+        @apply transition;
+        @apply focus:outline;
+        @apply focus:outline-primary-main;
+
+        @apply inline-block;
+        @apply h-8;
+        @apply py-0;
+        @apply px-4;
+        @apply text-center;
+        @apply text-sm;
+        @apply text-ellipsis;
+        @apply whitespace-nowrap overflow-hidden align-middle leading-8 border;
+    }
+
+    #cookie-punch .klaro .cookie-modal .cm-btn-accept-all {
+        @apply border-primary-main;
+        @apply bg-primary-main;
+        @apply text-white;
+        @apply hover:text-white;
+        @apply hover:border-primary-dark;
+        @apply hover:bg-primary-dark;
+        @apply focus:text-white;
+        @apply focus:border-primary-dark;
+        @apply focus:bg-primary-dark;
+        @apply active:text-white;
+        @apply active:border-black;
+        @apply active:bg-black;
+    }
+
+    #cookie-punch .klaro .cookie-modal .cm-btn-accept,
+    #cookie-punch .klaro .cookie-modal .cm-btn-decline,
+    .form .form-file-upload label {
+        @apply border-grey-main;
+        @apply bg-grey-main;
+        @apply text-white;
+        @apply hover:text-white;
+        @apply hover:border-grey-dark;
+        @apply hover:bg-grey-dark;
+        @apply focus:text-white;
+        @apply focus:border-grey-dark;
+        @apply focus:bg-grey-dark;
+        @apply active:text-white;
+        @apply active:border-black;
+        @apply active:bg-black;
     }
 }

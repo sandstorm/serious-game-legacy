@@ -1,11 +1,7 @@
 import { AlpineComponent } from 'alpinejs'
 
-const CSS_CLASSES = {
-    buttonWrapper: '.button-to-top__wrapper',
-    buttonWrapperHidden: 'button-to-top__wrapper--is-hidden'
-}
-
 export type ButtonToTopComponent = {
+    isHidden: boolean
     previousScrollPosition: number
 
     init: () => void
@@ -14,6 +10,7 @@ export type ButtonToTopComponent = {
 }
 
 export default (): AlpineComponent<ButtonToTopComponent> => ({
+    isHidden: true,
     previousScrollPosition: 0,
 
     init() {
@@ -43,18 +40,14 @@ export default (): AlpineComponent<ButtonToTopComponent> => ({
     handleScroll() {
         const buttonToTop = this.$refs.buttonToTop as HTMLButtonElement
 
-        const buttonWrapper = buttonToTop.closest(CSS_CLASSES.buttonWrapper)
-
-        if(!buttonWrapper) return
+        if(!buttonToTop) return
 
         // We just want to show the button-to-top when the user indicates to scroll up and when we are not already at the top of the page
         // Otherwise we hide the button
         if (window.scrollY === 0 || this.isScrollingDown()) {
-            if (!buttonWrapper.classList.contains(CSS_CLASSES.buttonWrapperHidden)) {
-                buttonWrapper.classList.add(CSS_CLASSES.buttonWrapperHidden)
-            }
+            this.isHidden = true
         } else if (!this.isScrollingDown() && window.scrollY > window.innerHeight) {
-            buttonWrapper.classList.remove(CSS_CLASSES.buttonWrapperHidden)
+            this.isHidden = false
         }
     },
 })

@@ -6,13 +6,22 @@ prototype(MyVendor.AwesomeNeosProject:Component.EventList.Filter) < prototype(Ne
         tags = ${PropTypes.arrayOf(PropTypes.dataStructure({'title': PropTypes.string, 'isActive': PropTypes.boolean}))}
     }
 
+    @private {
+        _additionalFilterButtonAttributes = Neos.Fusion:DataStructure {
+            "data-testid"="filterButton"
+            "x-on:click"="toggleFilter"
+            "x-on:click.outside"="closeFilter"
+        }
+        _additionalDeleteFilterButtonAttributes = Neos.Fusion:DataStructure {
+            "data-testid"="deleteFilterButton"
+            "x-on:click"="deleteFilter"
+        }
+    }
+
     renderer = afx`
-        <div class="mb-10" x-data="eventList">
-            <!-- TODO: Button -->
-            <button class="button button--solid-blue mr-5" data-testid="filterButton" x-on:click="toggleFilter" "x-on:click.outside"="closeFilter">
-                {I18n.translate('MyVendor.AwesomeNeosProject:Base:filterDates')}
-            </button>
-            <div x-show="filterOpen" class="flex flex-col absolute p-5 mt-2 bg-white shadow-md" x-cloak>
+        <div class="relative mb-10 flex gap-4" x-data="eventList">
+            <MyVendor.AwesomeNeosProject:Component.Button type="primary" title={I18n.translate('MyVendor.AwesomeNeosProject:Base:filterDates')} additionalAttributes={private._additionalFilterButtonAttributes} withButtonWrapper={false} />
+            <div x-show="filterOpen" class="flex flex-col absolute p-5 top-10 bg-white shadow-md" x-cloak>
                 <Neos.Fusion:Loop items={props.tags} itemName="tag">
                     <label class="grid grid-cols-[20px_auto] gap-3 mb-2 last:mb-0 text-sm" data-testid="eventFilterTag">
                         <div class="relative w-5 h-5">
@@ -34,15 +43,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.EventList.Filter) < prototype(Ne
                     </label>
                 </Neos.Fusion:Loop>
             </div>
-            <!-- TODO: Button -->
-            <button
-                class="button button--link !text-xs"
-                data-testid="deleteFilterButton"
-                x-on:click="deleteFilter"
-                @if={Array.length(Array.filter(props.tags, tag => tag.isActive == true)) != 0}
-            >
-                {I18n.translate('MyVendor.AwesomeNeosProject:Base:resetFilters')}
-            </button>
+            <MyVendor.AwesomeNeosProject:Component.Button @if={Array.length(Array.filter(props.tags, tag => tag.isActive == true)) != 0} type="link" title={I18n.translate('MyVendor.AwesomeNeosProject:Base:resetFilters')} additionalAttributes={private._additionalDeleteFilterButtonAttributes} withButtonWrapper={false} additionalClasses="!text-xs" />
         </div>
     `
 }

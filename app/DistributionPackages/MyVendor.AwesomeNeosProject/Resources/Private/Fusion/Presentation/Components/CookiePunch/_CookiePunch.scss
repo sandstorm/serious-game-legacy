@@ -1,7 +1,6 @@
 @use 'Utility/Mixins';
 @use 'Utility/Variables/Colors';
 @use 'Utility/Variables/Spacing';
-@use 'Presentation/Components/Button/Button';
 @use 'Presentation/Utility/ContentWidth/ContentWidth';
 
 // with the id `#cookie-punch` we can be more specific and therefore override the styling
@@ -19,15 +18,6 @@
                 width: 100%;
                 margin-bottom: Spacing.$md;
             }
-        }
-
-        .cm-btn-accept-all {
-            @extend .button--solid-blue;
-        }
-
-        .cm-btn-accept,
-        .cm-btn-decline {
-            @extend .button--solid-grey;
         }
 
         .cm-modal .cm-footer-buttons {

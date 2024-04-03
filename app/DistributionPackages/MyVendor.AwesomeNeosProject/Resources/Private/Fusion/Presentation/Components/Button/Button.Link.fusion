@@ -1,0 +1,39 @@
+prototype(MyVendor.AwesomeNeosProject:Component.Button.Link) < prototype(Neos.Fusion:Component) {
+    title = ''
+    href = ''
+    isExternalLink = false
+    icon = ''
+    iconAlignment = 'left'
+    classes = ''
+    isTypeLink = false
+
+    @propTypes {
+        @strict = true
+        title = ${PropTypes.string}
+        href = ${PropTypes.string}
+        isExternalLink = ${PropTypes.boolean}
+        icon = ${PropTypes.string}
+        iconAlignment = ${PropTypes.oneOf(['left', 'right'])}
+        classes = ${PropTypes.string}
+        isTypeLink = ${PropTypes.boolean}
+    }
+
+    @private {
+        inBackend = MyVendor.AwesomeNeosProject:Helper.InBackend
+    }
+
+    renderer = afx`
+        <Neos.Fusion:Tag
+            tagName={(props.href && !private.inBackend) ? 'a' : 'div'}
+            attributes.class={props.classes}
+            attributes.href={props.href ? props.href : null}
+            attributes.target={props.isExternalLink ? '_blank' : null}
+            attributes.title={props.title}
+        >
+            <span @if.hasIcon={props.icon} class={AtomicFusion.classNames(props.icon)}></span>
+            <span class={AtomicFusion.classNames(
+                {'text-ellipsis overflow-hidden whitespace-nowrap': !props.isTypeLink}
+            )}>{props.title}</span>
+        </Neos.Fusion:Tag>
+    `
+}

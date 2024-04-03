@@ -5,11 +5,11 @@
             <trans-unit id="properties.type" xml:space="preserve">
                 <source>Button-Typ</source>
             </trans-unit>
-            <trans-unit id="properties.type.selectBoxEditor.values.solid-blue" xml:space="preserve">
-                <source>Blau</source>
+            <trans-unit id="properties.type.selectBoxEditor.values.primary" xml:space="preserve">
+                <source>Primär</source>
             </trans-unit>
-            <trans-unit id="properties.type.selectBoxEditor.values.solid-grey" xml:space="preserve">
-                <source>Grau</source>
+            <trans-unit id="properties.type.selectBoxEditor.values.secondary" xml:space="preserve">
+                <source>Sekundär</source>
             </trans-unit>
             <trans-unit id="properties.type.selectBoxEditor.values.outline" xml:space="preserve">
                 <source>Rahmen</source>

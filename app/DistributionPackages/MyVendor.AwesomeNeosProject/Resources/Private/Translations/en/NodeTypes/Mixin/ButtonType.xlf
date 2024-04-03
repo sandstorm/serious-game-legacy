@@ -6,13 +6,13 @@
                 <source>Button-Typ</source>
                 <target>Button type</target>
             </trans-unit>
-            <trans-unit id="properties.type.selectBoxEditor.values.solid-blue" xml:space="preserve">
-                <source>Blau</source>
-                <target>Solid blue</target>
+            <trans-unit id="properties.type.selectBoxEditor.values.primary" xml:space="preserve">
+                <source>Primär</source>
+                <target>Primary</target>
             </trans-unit>
-            <trans-unit id="properties.type.selectBoxEditor.values.solid-grey" xml:space="preserve">
-                <source>Grau</source>
-                <target>Solid grey</target>
+            <trans-unit id="properties.type.selectBoxEditor.values.secondary" xml:space="preserve">
+                <source>Sekundär</source>
+                <target>Secondary</target>
             </trans-unit>
             <trans-unit id="properties.type.selectBoxEditor.values.outline" xml:space="preserve">
                 <source>Rahmen</source>

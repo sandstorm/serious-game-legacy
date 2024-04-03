@@ -49,7 +49,6 @@ prototype(MyVendor.AwesomeNeosProject:Component.EventList.Event) < prototype(Neo
                         title={I18n.translate('MyVendor.AwesomeNeosProject:Base:learnMore')}
                         href={props.href}
                         type="link"
-                        align="left"
                     />
                 </div>
             </div>
