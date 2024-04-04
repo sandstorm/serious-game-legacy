@@ -1,4 +1,15 @@
 prototype(MyVendor.AwesomeNeosProject:Content.Image) < prototype(Neos.Neos:ContentComponent) {
+    class = 'w-full h-full flex flex-col flex-wrap mb-8'
+    pictureClasses = 'inline-block h-full'
+    imgClasses = 'max-w-full h-auto'
+
+    @propTypes {
+        @strict = true
+        class = ${PropTypes.string}
+        pictureClasses = ${PropTypes.string}
+        imgClasses = ${PropTypes.string}
+    }
+
     renderer = MyVendor.AwesomeNeosProject:Component.Image {
         imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
             asset = ${q(node).property('image')}
@@ -37,5 +48,9 @@ prototype(MyVendor.AwesomeNeosProject:Content.Image) < prototype(Neos.Neos:Conte
                 }
             }
         }
+
+        class =  ${props.class}
+        pictureClasses =  ${props.pictureClasses}
+        imgClasses = ${props.imgClasses}
     }
 }

@@ -5,7 +5,9 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
     href = ''
     isExternalLink = false
     align = 'left'
-    class = ''
+    class = 'w-full h-full flex flex-col flex-wrap mb-8'
+    pictureClasses = 'inline-block h-full'
+    imgClasses = 'max-w-full h-auto'
 
     // We load all images lazily by default, as the browser is really good at finding what is needed above the fold
     loadEager = false
@@ -40,6 +42,8 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
         loadEager = ${PropTypes.boolean}
         showImagePlaceholder = ${PropTypes.boolean}
         class = ${PropTypes.string}
+        pictureClasses = ${PropTypes.string}
+        imgClasses = ${PropTypes.string}
         srcSet = ${PropTypes.arrayOf(PropTypes.string)}
         sizes = ${PropTypes.arrayOf(PropTypes.string)}
         formats = ${PropTypes.arrayOf(PropTypes.string)}
@@ -55,7 +59,15 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
         tagName = ${(props.href && !private.inBackend) ? 'a' : 'div'}
         attributes.href = ${props.href ? props.href : null}
         attributes.target = ${props.isExternalLink ? '_blank' : null}
-        attributes.class = ${AtomicFusion.classNames('image', 'image--' + props.align, props.class)}
+        attributes.class = ${AtomicFusion.classNames(
+            props.class,
+            {
+                'no-underline': props.href && !private.inBackend,
+                'items-start': props.align == 'left',
+                'items-center': props.align == 'center',
+                'items-end': props.align == 'right'
+            }
+        )}
 
         content = Neos.Fusion:Case {
             gifOrSvg {
@@ -73,6 +85,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
                         src={props.imageUri}
                         alt={props.alternativeText}
                         loading={props.loadEager ? 'eager' : 'lazy'}
+                        class={props.imgClasses}
                     />
                     <MyVendor.AwesomeNeosProject:Component.Image.Description
                         imageDescription={props.imageDescription}
@@ -95,6 +108,8 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
                         formats={props.formats}
                         renderDimensionAttributes={false}
                         loading={props.loadEager ? 'eager' : 'lazy'}
+                        attributes.class={props.pictureClasses}
+                        imgAttributes.class={props.imgClasses}
                     />
                     <MyVendor.AwesomeNeosProject:Component.Image.Description
                         imageDescription={props.imageDescription}
@@ -103,17 +118,4 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image) < prototype(Neos.Fusion:C
             }
         }
     }
-}
-
-prototype(MyVendor.AwesomeNeosProject:Component.Image.Description) < prototype(Neos.Fusion:Component) {
-    imageDescription = ''
-
-    @propTypes {
-        @strict = true
-        imageDescription = ${PropTypes.string}
-    }
-
-    renderer = afx`
-        <span @if.imageDescription={props.imageDescription} class="image__description">{props.imageDescription}</span>
-    `
 }

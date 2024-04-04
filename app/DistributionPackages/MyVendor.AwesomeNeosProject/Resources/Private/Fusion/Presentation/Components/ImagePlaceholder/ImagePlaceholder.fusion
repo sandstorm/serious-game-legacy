@@ -9,8 +9,8 @@ prototype(MyVendor.AwesomeNeosProject:Component.ImagePlaceholder) < prototype(Ne
     }
 
     renderer = afx`
-        <div class="image-placeholder" style={'aspect-ratio: ' + props.aspectRatio}>
-            <div class="image-placeholder__inner">
+        <div class="relative w-full" style={'aspect-ratio: ' + props.aspectRatio}>
+            <div class="absolute inset-0 w-full h-full flex justify-center items-center flex-col text-center p-4 bg-black text-white">
                 <small @if.showText={props.showPlaceholderText}>
                     {I18n.translate('MyVendor.AwesomeNeosProject:Base:chooseImageInInspector')}
                 </small>

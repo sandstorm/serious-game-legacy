@@ -24,9 +24,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.BlogPostHeader) < prototype(Neos
                     </div>
                     {props.tags}
                 </div>
-                <div class="[&>.image]:mb-5 [&_.image_img]:w-96 [&_.image>span]:w-96">
-                    {props.image}
-                </div>
+                {props.image}
                 <div @if.hasTeaserText={props.teaserText} class="w-[600px] max-w-full m-auto text-sm text-center">{props.teaserText}</div>
             </header>
         </MyVendor.AwesomeNeosProject:Utility.ContentWidth>

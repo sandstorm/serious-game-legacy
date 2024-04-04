@@ -11,8 +11,8 @@ prototype(MyVendor.AwesomeNeosProject:Component.PreviewTiles.Tile) < prototype(N
     }
 
     renderer = afx`
-        <a class="preview-tiles__tile" href={props.href}>
-            <div class="preview-tiles__tile-aspect">
+        <a class="relative flex flex-col" href={props.href}>
+            <div class="relative w-full pt-[60%]">
                 {props.image}
             </div>
             <div>{props.title}</div>

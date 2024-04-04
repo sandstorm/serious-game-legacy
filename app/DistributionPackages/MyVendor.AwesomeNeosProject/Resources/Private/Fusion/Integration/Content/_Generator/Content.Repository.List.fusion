@@ -31,7 +31,9 @@ prototype(MyVendor.AwesomeNeosProject:Content.Repository.List) < prototype(Neos.
                     sizes = MyVendor.AwesomeNeosProject:Helper.ImageSizes {
                         type = 'three-column--wrap'
                     }
-                    class = 'preview-tiles__tile-img'
+                    class = 'absolute inset-0 w-full h-full flex flex-col flex-wrap mb-0'
+                    pictureClasses = 'inline-block h-full w-full object-cover'
+                    imgClasses = 'max-w-full h-full w-full object-cover'
                 }
                 href = Neos.Neos:NodeUri {
                     node = ${item}
