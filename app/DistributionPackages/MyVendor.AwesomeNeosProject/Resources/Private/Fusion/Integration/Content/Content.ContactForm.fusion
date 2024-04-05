@@ -1,7 +1,5 @@
 prototype(MyVendor.AwesomeNeosProject:Content.ContactForm) < prototype(Neos.Neos:ContentComponent) {
     renderer = afx`
-        <MyVendor.AwesomeNeosProject:Utility.ContentWidth class="contact-form">
-            <MyVendor.AwesomeNeosProject:Content.ContactForm.Form/>
-        </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
+        <MyVendor.AwesomeNeosProject:Content.ContactForm.Form/>
     `
 }

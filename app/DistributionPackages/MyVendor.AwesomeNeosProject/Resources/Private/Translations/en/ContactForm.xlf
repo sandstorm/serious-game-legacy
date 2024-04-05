@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file original="" product-name="MyVendor.AwesomeNeosProject" source-language="en" datatype="plaintext">
+        <body>
+            <trans-unit id="label.name">
+                <source>Dein Name *</source>
+                <target>Your name *</target>
+            </trans-unit>
+            <trans-unit id="label.email">
+                <source>Email-Adresse *</source>
+                <target>Email address *</target>
+            </trans-unit>
+            <trans-unit id="label.message">
+                <source>Deine Nachricht an uns</source>
+                <target>Your message to us</target>
+            </trans-unit>
+            <trans-unit id="label.likeForm">
+                <source>Gefällt dir dieses Formular?</source>
+                <target>Do you like this form?</target>
+            </trans-unit>
+            <trans-unit id="label.likeForm.option.yes">
+                <source>Ja</source>
+                <target>Yes</target>
+            </trans-unit>
+            <trans-unit id="label.likeForm.option.yesBut">
+                <source>Ja, aber...</source>
+                <target>Yes, but...</target>
+            </trans-unit>
+            <trans-unit id="label.likeForm.option.no">
+                <source>Nein</source>
+                <target>No</target>
+            </trans-unit>
+            <trans-unit id="label.uploadPdf">
+                <source>Wähle eine PDF-Datei aus</source>
+                <target>Select a pdf file</target>
+            </trans-unit>
+            <trans-unit id="requiredFields">
+                <source>Pflichfelder</source>
+                <target>Required fields</target>
+            </trans-unit>
+            <trans-unit id="send">
+                <source>Absenden</source>
+                <target>Send</target>
+            </trans-unit>
+            <trans-unit id="success.headline">
+                <source>Formular erfolgreich gesendet</source>
+                <target>Form send successfully</target>
+            </trans-unit>
+            <trans-unit id="success.text">
+                <source>Danke für deine Nachricht!</source>
+                <target>Thanks for your message!</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

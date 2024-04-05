@@ -1,7 +1,7 @@
 prototype(MyVendor.AwesomeNeosProject:Content.ContactForm.Form) < prototype(Neos.Fusion.Form:Runtime.RuntimeForm) {
     namespace = 'contactform'
     attributes.id = 'contact-form'
-    attributes.class = 'form'
+    attributes.class = 'form [&_button[type="submit"]:not(#submitContactForm)]:hidden max-w-full md:max-w-[800px]'
 
     process {
         content = MyVendor.AwesomeNeosProject:Component.ContactForm

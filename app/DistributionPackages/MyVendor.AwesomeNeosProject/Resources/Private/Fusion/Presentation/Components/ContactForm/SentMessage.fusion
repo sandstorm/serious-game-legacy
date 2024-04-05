@@ -1,8 +1,8 @@
 prototype(MyVendor.AwesomeNeosProject:Component.SentMessage) < prototype(Neos.Fusion:Component) {
     renderer = afx`
-        <div class="contact-form__success">
-            <h4 class="contact-form__headline">Form send!</h4>
-            <span>Thanks for your message.</span>
+        <div class="flex p-4 flex-col justify-center items-center bg-primary-main text-white">
+            <h4 class="mt-0">{I18n.translate('MyVendor.AwesomeNeosProject:ContactForm:success.headline')}</h4>
+            <span>{I18n.translate('MyVendor.AwesomeNeosProject:ContactForm:success.text')}</span>
         </div>
     `
 }
