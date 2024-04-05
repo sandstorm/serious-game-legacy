@@ -6,5 +6,9 @@ prototype(MyVendor.AwesomeNeosProject:Utility.TextAlign) < prototype(Neos.Fusion
         textAlign = ${PropTypes.oneOf(['', 'left', 'center', 'right'])}
     }
 
-    renderer = ${props.textAlign ? 'text-align--' + props.textAlign : ''}
+    renderer = ${props.textAlign ? AtomicFusion.classNames({
+        'text-left': props.textAlign == 'left',
+        'text-center': props.textAlign == 'center',
+        'text-right': props.textAlign == 'right'
+    }) : ''}
 }

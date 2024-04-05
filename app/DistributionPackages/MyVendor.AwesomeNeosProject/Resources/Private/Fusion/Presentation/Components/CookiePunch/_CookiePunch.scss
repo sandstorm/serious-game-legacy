@@ -1,7 +1,6 @@
 @use 'Utility/Mixins';
 @use 'Utility/Variables/Colors';
 @use 'Utility/Variables/Spacing';
-@use 'Presentation/Utility/ContentWidth/ContentWidth';
 
 // with the id `#cookie-punch` we can be more specific and therefore override the styling
 // see Settings.CookiePunch.yaml
@@ -34,7 +33,12 @@
 
 .klaro {
     .context-notice {
-        @extend .content-width;
+        max-width: 1400px;
+        position: relative;
+        width: 100%;
+        margin: 0 auto;
+        padding-left: Spacing.$lg;
+        padding-right: Spacing.$lg;
         min-height: 300px;
     }
 }

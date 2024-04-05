@@ -3,8 +3,13 @@ prototype(MyVendor.AwesomeNeosProject:Utility.BackgroundColor) < prototype(Neos.
 
     @propTypes {
         @strict = true
-        backgroundColor = ${PropTypes.oneOf(['white', 'black', 'grey', 'blue'])}
+        backgroundColor = ${PropTypes.oneOf(['white', 'black', 'grey', 'primary'])}
     }
 
-    renderer = ${props.backgroundColor ? 'background-color--' + props.backgroundColor : ''}
+    renderer = ${props.backgroundColor ? AtomicFusion.classNames({
+        'bg-white': props.backgroundColor == 'white',
+        'bg-black': props.backgroundColor == 'black',
+        'bg-grey-lighter': props.backgroundColor == 'grey',
+        'bg-primary-main': props.backgroundColor == 'white'
+    }) : ''}
 }

@@ -11,8 +11,8 @@
             <trans-unit id="properties.backgroundColor.selectBoxEditor.values.grey" xml:space="preserve">
                 <source>Grau</source>
             </trans-unit>
-            <trans-unit id="properties.backgroundColor.selectBoxEditor.values.blue" xml:space="preserve">
-                <source>Blau</source>
+            <trans-unit id="properties.backgroundColor.selectBoxEditor.values.primary" xml:space="preserve">
+                <source>Primärfarbe</source>
             </trans-unit>
             <trans-unit id="properties.backgroundColor.selectBoxEditor.values.black" xml:space="preserve">
                 <source>Schwarz</source>
