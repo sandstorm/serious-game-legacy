@@ -19,7 +19,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.ButtonToTop) < prototype(Neos.Fu
                 "x-on:scroll.window"="handleScroll()"
             >
                 <span class={AtomicFusion.classNames('text-lg', 'icon-angle-up')} aria-hidden="true"></span>
-                <span class="absolute md:relative w-[1px] md:w-auto h-[1px] md:h-auto overflow-hidden whitespace-nowrap">{I18n.translate('MyVendor.AwesomeNeosProject:Base:toTop')}</span>
+                <span class="sr-only md:not-sr-only">{I18n.translate('MyVendor.AwesomeNeosProject:Base:toTop')}</span>
             </button>
         </div>
     `

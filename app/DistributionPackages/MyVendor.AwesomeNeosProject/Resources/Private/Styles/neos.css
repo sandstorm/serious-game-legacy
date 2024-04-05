@@ -1,0 +1,46 @@
+/* Neos Backend */
+/* IMPORTANT: we want to prevent the editor from making mistakes while typing uppercase */
+.ck-focused * {
+    text-transform: initial;
+}
+
+.neos-backend .ck-editor__editable_inline {
+    min-width: 50px;
+}
+
+.neos-backend:not(.neos-backend--preview) h1:after,
+.neos-backend:not(.neos-backend--preview) h2:after,
+.neos-backend:not(.neos-backend--preview) h3:after,
+.neos-backend:not(.neos-backend--preview) h4:after,
+.neos-backend:not(.neos-backend--preview) h5:after {
+    position: absolute;
+    margin-left: 10px;
+    padding: 5px;
+
+
+    background-color: #00aeef;
+
+    color: #ffffff;
+    font-size:  0.6rem;
+
+}
+
+.neos-backend:not(.neos-backend--preview) h1:after {
+    content: 'H1';
+}
+
+.neos-backend:not(.neos-backend--preview) h2:after {
+    content: 'H2';
+}
+
+.neos-backend:not(.neos-backend--preview) h3:after {
+    content: 'H3';
+}
+
+.neos-backend:not(.neos-backend--preview) h4:after {
+    content: 'H4';
+}
+
+.neos-backend:not(.neos-backend--preview) h5:after {
+    content: 'H5';
+}
