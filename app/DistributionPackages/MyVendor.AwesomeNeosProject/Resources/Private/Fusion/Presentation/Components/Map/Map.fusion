@@ -17,10 +17,10 @@ prototype(MyVendor.AwesomeNeosProject:Component.Map) < prototype(Neos.Fusion:Com
     }
 
     renderer = afx`
-        <div class="map">
+        <div class="mb-8">
             <link rel="stylesheet" href="/_maptiles/frontend/v1/map-main.css"/>
             <div
-                class="map__content"
+                class="h-[80vh]"
                 x-data={AlpineJS.xData('map', {lat: props.lat, lng: props.lng, zoom: props.zoom, popupText: props.popupText})}
                 x-intersect.once="loadMap()"
             >
