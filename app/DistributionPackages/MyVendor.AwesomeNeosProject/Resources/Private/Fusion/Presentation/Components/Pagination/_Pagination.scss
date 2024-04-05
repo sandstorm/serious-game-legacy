@@ -1,7 +1,5 @@
-@use 'Utility/Mixins';
 @use 'Utility/Variables/Colors';
 @use 'Utility/Variables/Spacing';
-@use 'Utility/Variables/Typo';
 
 .Pagination {
     margin: Spacing.$xl 0 0;

@@ -1,11 +1,59 @@
 @import './node_modules/swiper/swiper-bundle.css';
+@import './Styles/neos.css';
+@import './Styles/icons.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* TODO: Set margins explicitly */
 @layer base {
+    /* Alpine */
+    /*
+        Used to prevent flickering of elements when using alpine.js
+        See https://alpinejs.dev/directives/cloak
+    */
+    [x-cloak] {
+        @apply !hidden;
+    }
+
+    /* Fonts */
+    @font-face {
+        font-family: 'icons';
+        font-style: normal;
+        font-weight: normal;
+        font-display: block;
+        src: url(/_Resources/Static/Packages/MyVendor.AwesomeNeosProject/Fonts/icons_v5.ttf) format('truetype'),
+            url(/_Resources/Static/Packages/MyVendor.AwesomeNeosProject/Fonts/icons_v5.woff) format('woff'),
+            url(/_Resources/Static/Packages/MyVendor.AwesomeNeosProject/Fonts/icons_v5.svg) format('svg');
+    }
+
+    /* Layout */
+    html,
+    body {
+        @apply bg-white;
+        @apply text-black;
+        @apply w-full;
+    }
+
+    body {
+        @apply h-full;
+    }
+
+    /* Components */
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply break-words;
+        @apply hyphens-auto;
+        @apply md:break-normal;
+        @apply md:hyphens-manual;
+    }
+
+    /* TODO: Set margins explicitly */
     blockquote,
     dl,
     dd,
@@ -42,8 +90,22 @@
         @apply mb-5;
     }
 
-    /* Styles for ckeditor elements which we cannot style directly */
+    pre {
+        @apply max-w-full;
+        @apply overflow-hidden;
+        @apply whitespace-normal;
+    }
 
+    a {
+        @apply break-words;
+        @apply text-primary-main;
+        @apply transition-colors;
+        @apply hover:text-primary-dark;
+        @apply focus:text-primary-dark;
+        @apply active:text-primary-dark;
+    }
+
+    /* Styles for ckeditor elements which we cannot style directly */
     /*---------\
     | TABLE
     \---------*/
@@ -82,8 +144,6 @@
         @apply md:pr-8;
     }
 
-    /* TODO: We should not do this: https://tailwindcss.com/docs/reusing-styles */
-    /* TODO: Refactor form button styles
     /* Styles for cookie punch buttons & form buttons */
     #cookie-punch .klaro .cookie-modal .cm-btn-accept-all,
     #cookie-punch .klaro .cookie-modal .cm-btn-accept,

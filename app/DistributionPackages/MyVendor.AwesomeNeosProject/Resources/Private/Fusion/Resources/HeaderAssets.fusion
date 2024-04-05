@@ -19,19 +19,19 @@ prototype(MyVendor.AwesomeNeosProject:Resources.HeaderAssets) < prototype(Neos.F
         `
     }
 
-    tailwindCSS = Neos.Fusion:Tag {
-        tagName = 'link'
-        attributes.rel = 'stylesheet'
-        attributes.href = Neos.Fusion:ResourceUri {
-            path = 'resource://MyVendor.AwesomeNeosProject/Public/tailwind.css'
-        }
-    }
-
     bundleCSS = Neos.Fusion:Tag {
         tagName = 'link'
         attributes.rel = 'stylesheet'
         attributes.href = Neos.Fusion:ResourceUri {
             path = 'resource://MyVendor.AwesomeNeosProject/Public/bundle.css'
+        }
+    }
+
+    tailwindCSS = Neos.Fusion:Tag {
+        tagName = 'link'
+        attributes.rel = 'stylesheet'
+        attributes.href = Neos.Fusion:ResourceUri {
+            path = 'resource://MyVendor.AwesomeNeosProject/Public/tailwind.css'
         }
     }
 

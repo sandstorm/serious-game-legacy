@@ -4,6 +4,9 @@ const plugin = require('tailwindcss/plugin')
 module.exports = {
     content: ['./**/*.{fusion,ts,html}'],
     theme: {
+        fontFamily: {
+            sans: ['Arial', 'Helvetica', 'sans-serif'],
+        },
         extend: {
             colors: {
                 primary: {
@@ -29,7 +32,40 @@ module.exports = {
     plugins: [
         plugin(function ({ addBase }) {
             addBase({
-                html: { fontSize: '20px' },
+                html: {
+                    fontSize: '20px',
+                    lineHeight: 1.4,
+                    fontWeight: 400
+                },
+                body: {
+                    fontSize: '20px',
+                    lineHeight: 1.4,
+                    fontWeight: 400
+                },
+                h1: {
+                    fontSize: '3.2rem',
+                    lineHeight: 1.2
+                },
+                h2: {
+                    fontSize: '2.9rem',
+                    lineHeight: 1.2
+                },
+                h3: {
+                    fontSize: '1.6rem',
+                    lineHeight: 1.2
+                },
+                h4: {
+                    fontSize: '1.2rem',
+                    lineHeight: 1.2
+                },
+                h5: {
+                    fontSize: '1.1rem',
+                    lineHeight: 1.2
+                },
+                h6: {
+                    fontSize: '1rem',
+                    lineHeight: 1.2
+                },
             })
         }),
     ],
