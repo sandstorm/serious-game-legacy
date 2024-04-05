@@ -3,17 +3,10 @@
 @use 'General/Typography';
 @use 'General/Icons';
 
-// Utility
-@use '../Fusion/Presentation/Utility/BackgroundColor/BackgroundColor';
-@use '../Fusion/Presentation/Utility/ContentWidth/ContentWidth';
-@use '../Fusion/Presentation/Utility/TextAlign/TextAlign';
-
 // Components
 @use '../Fusion/Presentation/Components/ContactForm/ContactForm';
 @use '../Fusion/Presentation/Components/CookiePunch/CookiePunch';
 @use '../Fusion/Presentation/Components/Form/Form';
-@use '../Fusion/Presentation/Components/LanguageMenu/LanguageMenu';
 @use '../Fusion/Presentation/Components/Link/Link';
 @use '../Fusion/Presentation/Components/Map/Map';
 @use '../Fusion/Presentation/Components/Pagination/Pagination';
-@use '../Fusion/Presentation/Components/SectionWithBackground/SectionWithBackground';

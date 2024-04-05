@@ -17,7 +17,13 @@ prototype(MyVendor.AwesomeNeosProject:Component.SectionWithBackground) < prototy
     }
 
     renderer = afx`
-        <section class={AtomicFusion.classNames('background-section', private.backgroundColorClass, {'background-section--padding-none': props.padding == 'none'})}>
+        <section class={AtomicFusion.classNames(
+            'w-full py-8 md:py-16',
+            private.backgroundColorClass,
+            {
+                'py-0': props.padding == 'none'
+            }
+        )}>
             <MyVendor.AwesomeNeosProject:Utility.ContentWidth size={props.contentWidth}>
                 {props.content}
             </MyVendor.AwesomeNeosProject:Utility.ContentWidth>
