@@ -56,3 +56,11 @@
 * Updateablity von Komponenten im Nachhinein
 * Neos-Kickstart an sich auch ins CLI-Tool reinziehen (raus aus der Clone-and-run-dev-Skript-Lösung wie bisher)
 * Löschen ist nicht Teil des scripts
+
+## UPDATE 2024.04.09 - 17:00
+
+* MyVendor.AwesomeNeosProject wird umbenannt in Sandstorm.ComponentLibrary
+  * kickstart.sh erzeugt komplett neues 2tes site package und installiert base components (nur neues site package muss geladen werden)
+  * root composer.json erhält nur noch required libraries
+  * composer.json im site package enthält alle custom libraries die von komponenten benötigt werden
+  * library package bleibt bestehen, könnte bei prod deployment exkludiert werden (maybe docker ignore file)
