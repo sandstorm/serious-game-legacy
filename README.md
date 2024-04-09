@@ -47,6 +47,8 @@ Run `./kickstart.sh` and follow the instructions.
   * [Maps](#maps)
   * [Menu](#menu)
   * [Image sizes](#image-sizes)
+  * [Recommended Packages](#recommended-packages)
+  * [Coding Guidelines](#coding-guidelines)
   * [Improving Kickstart Experience](#improving-kickstart-experience)
   * [Backlog](#backlog)
 <!-- TOC -->
@@ -146,12 +148,10 @@ docker compose exec neos bin/behat -c Packages/Sites/MyVendor.AwesomeNeosProject
    in `\MyVendor\AwesomeNeosProject\Command\StepGeneratorCommandController` to export only specific nodes for your
    fixtures
 3. Run and copy to clipboard with:
-
-```
-docker compose exec -T neos ./flow stepgenerator:homepage | pbcopy
-docker compose exec -T neos ./flow stepgenerator:notfoundpage | pbcopy
-```
-
+    ```
+    docker compose exec -T neos ./flow stepgenerator:homepage | pbcopy
+    docker compose exec -T neos ./flow stepgenerator:notfoundpage | pbcopy
+    ```
 4. paste into your feature files and run tests
 
 #### raise curl-timeouts when using `And I pause for debugging`
@@ -297,6 +297,14 @@ header = MyVendor.AwesomeNeosProject:Component.PageHeader {
 We use Sitegeist.Kaleidoscope to define image srcsets. Make sure to define a reasonable value for `sizes` when
 using `Image.fusion`. For images rendered in columns there is the `ImageSizes.fusion` helper class available, intended
 to make it easier to define the `sizes` attribute for standard layouts.
+
+## Recommended Packages
+
+See [RECOMMENDATIONS.md](./RECOMMENDATIONS.md) for a list of recommended packages.
+
+## Coding Guidelines
+
+See [CODING_GUIDELINES.md](./CODING_GUIDELINES.md) for a list of coding guidelines.
 
 [//]: # (KICKSTART_INFO_SECTION__START)
 
