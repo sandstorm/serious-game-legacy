@@ -6,7 +6,6 @@
 #  - 8081 -> Neos
 #  - 13306 -> maria db (used for Neos)
 
-version: '3.5'
 services:
   #####
   # Neos CMS (php-fpm)

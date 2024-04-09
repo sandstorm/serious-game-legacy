@@ -2,7 +2,6 @@
   abstract: true
   constraints:
     nodeTypes:
-      'MyVendor.AwesomeNeosProject:Content.Anchor': true
       'MyVendor.AwesomeNeosProject:Content.Button': true
       'MyVendor.AwesomeNeosProject:Content.ButtonWithIcon': true
       'MyVendor.AwesomeNeosProject:Content.Download': true

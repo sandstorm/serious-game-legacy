@@ -1,8 +1,0 @@
-prototype(MyVendor.AwesomeNeosProject:Content.Anchor) < prototype(Neos.Neos:ContentComponent) {
-    renderer = MyVendor.AwesomeNeosProject:Component.Anchor {
-        id = Neos.Neos:Editable {
-            property = 'id'
-            block = false
-        }
-    }
-}
