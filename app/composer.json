@@ -37,6 +37,7 @@
         "neos/redirecthandler-databasestorage": "~5.0.0",
         "neos/redirecthandler-ui": "~2.4.1",
         "myvendor/awesomeneosproject": "@dev",
+        "sandstorm/component-library": "@dev",
         "flowpack/cachebuster": "~1.2.0",
         "flowpack/listable": "^3.5",
         "rokka/imagine-vips": "0.*",
@@ -48,7 +49,6 @@
         "neos/swiftmailer": "^7.3.0",
         "flowpack/nodetemplates": "^1.3",
         "yoast/yoast-seo-for-neos": "^1.3",
-        "sitegeist/lostintranslation": "^2.0",
         "jonnitto/prettyembedvideoplatforms": "^2.1",
         "sandstorm/neosacl": "^2.2",
         "carbon/eel": "^2.12"

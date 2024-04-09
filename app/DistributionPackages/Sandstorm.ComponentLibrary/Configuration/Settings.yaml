@@ -1,0 +1,13 @@
+Neos:
+  Fusion:
+    defaultContext:
+      'Sandstorm.ComponentLibrary.FileSize': 'Sandstorm\ComponentLibrary\Eel\Helper\FileSizeHelper'
+      'Sandstorm.ComponentLibrary.FilterNodesByReference': 'Sandstorm\ComponentLibrary\Eel\Helper\FilterNodesByReferenceHelper'
+  Neos:
+    userInterface:
+      translation:
+        autoInclude:
+          'Sandstorm.ComponentLibrary': [ 'NodeTypes/*' ]
+    fusion:
+      autoInclude:
+        Sandstorm.ComponentLibrary: true

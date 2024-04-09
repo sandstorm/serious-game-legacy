@@ -1,4 +1,4 @@
-'MyVendor.AwesomeNeosProject:Content.Download':
+'Sandstorm.ComponentLibrary:Content.Download':
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
     'MyVendor.AwesomeNeosProject:Mixin.Align': true

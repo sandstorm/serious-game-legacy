@@ -1,5 +1,5 @@
-prototype(MyVendor.AwesomeNeosProject:Content.Download) < prototype(Neos.Neos:ContentComponent) {
-    renderer = MyVendor.AwesomeNeosProject:Component.Download {
+prototype(Sandstorm.ComponentLibrary:Content.Download) < prototype(Neos.Neos:ContentComponent) {
+    renderer = Sandstorm.ComponentLibrary:Component.Download {
         description = Neos.Neos:Editable {
             property = 'description'
             block = false
@@ -9,7 +9,7 @@ prototype(MyVendor.AwesomeNeosProject:Content.Download) < prototype(Neos.Neos:Co
         }
         align = ${q(node).property('align')}
         fileSize = ${q(node).property('file').resource.fileSize}
-        fileSize.@process.format = ${value ? MyVendor.AwesomeNeosProject.FileSize.format(value) : ''}
+        fileSize.@process.format = ${value ? Sandstorm.ComponentLibrary.FileSize.format(value) : ''}
         type = ${q(node).property('type')}
     }
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dfa1202950f0016cd98daaaa0fa6450d",
+    "content-hash": "7801a69e9038ea53a38f3adf4efc0a09",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -3322,17 +3322,16 @@
         },
         {
             "name": "myvendor/awesomeneosproject",
-            "version": "dev-141-tailwind-umbau-vorbereiten",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./DistributionPackages/MyVendor.AwesomeNeosProject",
-                "reference": "bd42ecee976586cc98c76d62e8b670c048bef2f0"
+                "reference": "7c0c196e68c915905cf783cf1e7b7142adfc0c0f"
             },
             "require": {
                 "jonnitto/prettyembedvideoplatforms": "*",
                 "neos/neos": "*",
-                "sandstorm/cookiepunch": "*",
-                "sitegeist/lostintranslation": "*"
+                "sandstorm/cookiepunch": "*"
             },
             "suggest": {
                 "neos/seo": "*"
@@ -7351,6 +7350,35 @@
             "time": "2022-10-12T16:32:32+00:00"
         },
         {
+            "name": "sandstorm/component-library",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "./DistributionPackages/Sandstorm.ComponentLibrary",
+                "reference": "a4fc1390cf16176114627acba1ff7efcefaf259d"
+            },
+            "require": {
+                "neos/neos": "*"
+            },
+            "suggest": {
+                "neos/seo": "*"
+            },
+            "type": "neos-site",
+            "extra": {
+                "neos": {
+                    "package-key": "Sandstorm.ComponentLibrary"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Sandstorm\\ComponentLibrary\\": "Classes/"
+                }
+            },
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
             "name": "sandstorm/cookiepunch",
             "version": "4.4.3",
             "source": {
@@ -7699,52 +7727,6 @@
                 "source": "https://github.com/sitegeist/Sitegeist.Kaleidoscope/tree/v6.5.2"
             },
             "time": "2022-09-07T09:05:08+00:00"
-        },
-        {
-            "name": "sitegeist/lostintranslation",
-            "version": "v2.3.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sitegeist/Sitegeist.LostInTranslation.git",
-                "reference": "434564dedb95ab3613e6209cc360cb83e3f4c608"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sitegeist/Sitegeist.LostInTranslation/zipball/434564dedb95ab3613e6209cc360cb83e3f4c608",
-                "reference": "434564dedb95ab3613e6209cc360cb83e3f4c608",
-                "shasum": ""
-            },
-            "require": {
-                "neos/http-factories": "^7.3 || ^8.0 || dev-master",
-                "neos/neos": "^7.3 || ^8.0 || dev-master",
-                "neos/neos-ui": "^7.3 || ^8.0 || dev-master",
-                "php": ">=8.0.0"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "~1.10.0",
-                "squizlabs/php_codesniffer": "^3.7"
-            },
-            "type": "neos-package",
-            "extra": {
-                "neos": {
-                    "package-key": "Sitegeist.LostInTranslation"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Sitegeist\\LostInTranslation\\": "Classes/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-3.0-or-later"
-            ],
-            "description": "Automatic content translations for Neos using the DeepL Api",
-            "support": {
-                "issues": "https://github.com/sitegeist/Sitegeist.LostInTranslation/issues",
-                "source": "https://github.com/sitegeist/Sitegeist.LostInTranslation/tree/v2.3.1"
-            },
-            "time": "2024-01-24T15:21:25+00:00"
         },
         {
             "name": "sitegeist/slipstream",
@@ -11688,7 +11670,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "myvendor/awesomeneosproject": 20
+        "myvendor/awesomeneosproject": 20,
+        "sandstorm/component-library": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace MyVendor\AwesomeNeosProject\Eel\Helper;
+namespace Sandstorm\ComponentLibrary\Eel\Helper;
 
 use Neos\ContentRepository\Domain\Model\Node;
 use Neos\ContentRepository\Domain\Model\NodeInterface;

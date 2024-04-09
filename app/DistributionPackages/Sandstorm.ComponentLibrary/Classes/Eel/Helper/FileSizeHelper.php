@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MyVendor\AwesomeNeosProject\Eel\Helper;
+namespace Sandstorm\ComponentLibrary\Eel\Helper;
 
 use Neos\Eel\ProtectedContextAwareInterface;
 
