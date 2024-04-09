@@ -29,6 +29,9 @@
 ### Notwendige Schritte:
 * [Subkonzept Components](./20240409101010_Concept_Components.md)
 * kickstart.sh > mit oder ohne Show Case, welche Komponenten installieren
+* Anchor rausschmeißen -> Package empfehlen
+* Folder Package -> empfehlen
+* Extra Readme mit Projekten die spannende Komponenten nutzen
 
 ## Rabbit holes — Details about the solution worth calling out to avoid problems
 
