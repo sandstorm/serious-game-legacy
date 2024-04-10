@@ -10,6 +10,7 @@
 
 source ./dev_utilities.sh
 source ./dev_generators.sh
+source ./dev_components.sh
 
 set -e
 
