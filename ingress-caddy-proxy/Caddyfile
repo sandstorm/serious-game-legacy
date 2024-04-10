@@ -17,8 +17,8 @@
 {$CADDY_DOMAIN_OVERRIDE:www.your-domain.de} {
     # your-application-ingress is the hostname where the application is found
     # in sharedIngressNetwork; this needs to be configured in docker-compose-prod.yml of the application
-    # via TODO
-    reverse_proxy your-application-ingress:80
+    # at services.neos.networks.sharedIngressNetwork.aliases
+    reverse_proxy your-application-ingress:8081
 
     handle_errors {
         respond "{err.status_code} {err.status_text}"
