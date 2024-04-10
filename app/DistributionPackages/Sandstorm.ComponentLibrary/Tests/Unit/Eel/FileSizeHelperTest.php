@@ -1,7 +1,7 @@
 <?php
-namespace MyVendor\AwesomeNeosProject\Tests\Unit\Eel;
+namespace Sandstorm\ComponentLibrary\Tests\Unit\Eel;
 
-use MyVendor\AwesomeNeosProject\Eel\Helper\FileSizeHelper;
+use Sandstorm\ComponentLibrary\Eel\Helper\FileSizeHelper;
 use Neos\Flow\Tests\UnitTestCase;
 
 class FileSizeHelperTest extends UnitTestCase
