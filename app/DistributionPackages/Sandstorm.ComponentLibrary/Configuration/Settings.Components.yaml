@@ -10,5 +10,5 @@ Sandstorm:
           - 'Resources/Private/Translations/en/NodeTypes/Content/Download.xlf'
           - 'Tests/Unit/Eel/FileSizeHelperTest.php'
         eelHelpers:
-          - 'Classes/Eel/Helper/FileSizeHelper.php'
+          - 'FileSize'
         # composerDependencies:

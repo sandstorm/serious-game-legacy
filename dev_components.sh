@@ -12,6 +12,7 @@ function list-components {
 # add a component from the component library to the project
 function add-component {
     sitePackageNamespace="MyVendor.AwesomeNeosProject"
+    sitePackageNamespaceWithSlashes="${sitePackageNamespace//./\\}"
     sitePackagePath="./app/DistributionPackages/$sitePackageNamespace"
     componentsPackageNamespace="Sandstorm.ComponentLibrary"
     componentsPackagePath="./app/DistributionPackages/$componentsPackageNamespace"
@@ -41,7 +42,16 @@ function add-component {
     yq eval ".$componentsPackageNamespace.Components.$name.files[]" "$componentsPackagePath/Configuration/Settings.Components.yaml" | copy_files
 
     # copy eel helper and add to configuration
-    # TODO
+    add_eel_helper() {
+        while read -r path; do
+            fileName="${path}Helper.php"
+            fullComponentPath="$componentsPackagePath/Classes/Eel/Helper/$fileName"
+            cp "$fullComponentPath" "$sitePackagePath/Classes/Eel/Helper/$fileName"
+            yq --inplace ".Neos.Fusion.defaultContext += {\"$sitePackageNamespace.$path\": \"$sitePackageNamespaceWithSlashes\\Eel\\Helper\\${path}Helper\"}" "$sitePackagePath/Configuration/Settings.yaml"
+        done
+    }
+
+    yq eval ".$componentsPackageNamespace.Components.$name.eelHelpers[]" "$componentsPackagePath/Configuration/Settings.Components.yaml" | add_eel_helper
 
     # add constraint to start page config
     pushd "$sitePackagePath/NodeTypes/Constraints" > /dev/null
