@@ -2,6 +2,13 @@
 
 source ./dev_utilities.sh
 
+function list-components {
+    componentsPackageNamespace="Sandstorm.ComponentLibrary"
+    componentsPackagePath="./app/DistributionPackages/$componentsPackageNamespace"
+
+    yq eval ".$componentsPackageNamespace.Components | keys" "$componentsPackagePath/Configuration/Settings.Components.yaml"
+}
+
 # add a component from the component library to the project
 function add-component {
     sitePackageNamespace="MyVendor.AwesomeNeosProject"

@@ -10,13 +10,3 @@ Neos:
     fusion:
       autoInclude:
         Sandstorm.ComponentLibrary: true
-
-Components:
-  Download:
-    files:
-      - 'resource://Sandstorm.ComponentLibrary/Private/Fusion/NodeTypes/Content/Download.fusion'
-    mixins:
-      - 'Sandstorm.ComponentLibrary:Mixin.Align'
-      - 'Sandstorm.ComponentLibrary:Mixin.ButtonType'
-    eelHelper:
-      Sandstorm\ComponentLibrary\Eel\Helper\FileSizeHelper: 'resource://Sandstorm.ComponentLibrary/Private/Eel/Helper/FileSizeHelper.php'
