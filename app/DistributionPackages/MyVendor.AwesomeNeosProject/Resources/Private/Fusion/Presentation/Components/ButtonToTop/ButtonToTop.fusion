@@ -1,3 +1,4 @@
+// TODO utility component
 prototype(MyVendor.AwesomeNeosProject:Component.ButtonToTop) < prototype(Neos.Fusion:Component) {
     @propTypes {
         @strict = true

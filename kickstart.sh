@@ -77,6 +77,23 @@ echo
 _yellow_echo "Hit RETURN to run the kickstart, or CTRL+C to exit"
 read -p ""
 
+############### Choosing menu ################
+_yellow_echo "Please choose the type of menu you want to for your project"
+read -p "Menu type 'main' or 'mega' (default='main'): " menuType
+menuType=${menuType:-"main"}
+
+if [ "$menuType" = "mega" ]
+    then
+        # replace Component.PageMenu.Main in AbstractPage.fusion
+        sed -i '' "s/${defaultVendorName}.${defaultPackageName}:Component.PageMenu.Main/${defaultVendorName}.${defaultPackageName}:Component.PageMenu.Mega/g" ./app/DistributionPackages/${defaultVendorName}.${defaultPackageName}/Resources/Private/Fusion/Integration/Document/AbstractPage.fusion
+        # remove main menu
+        rm -rf ./app/DistributionPackages/${defaultVendorName}.${defaultPackageName}/Resources/Private/Fusion/Presentation/Components/PageMenu/PageMenu.Main.fusion
+    else
+        # remove mega menu
+        rm -rf ./app/DistributionPackages/${defaultVendorName}.${defaultPackageName}/Resources/Private/Fusion/Presentation/Components/PageMenu/PageMenu.Mega.fusion
+fi
+
+
 ############### Preparations ################
 
 _yellow_echo "Removing Containers ..."
@@ -124,8 +141,9 @@ echo
 
 ############### Removing sandstorm/component-library from composer.json ################
 
-_yellow_echo "Removing sandstorm/component-library from composer.json ..."
-sed -i '' '/sandstorm\/component-library/d' ./app/composer.json
+cd app || exit
+composer remove sandstorm/component-library
+cd ..
 
 ############### Initializing new Git ################
 

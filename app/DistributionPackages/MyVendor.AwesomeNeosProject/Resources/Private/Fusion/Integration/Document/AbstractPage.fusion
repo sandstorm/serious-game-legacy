@@ -12,10 +12,7 @@ prototype(MyVendor.AwesomeNeosProject:Document.AbstractPage) < prototype(Neos.Ne
     body = Neos.Fusion:Join {
         @position = 'after bodyTag'
         header = MyVendor.AwesomeNeosProject:Component.PageHeader {
-            menu = MyVendor.AwesomeNeosProject:Component.PageMenu {
-                // menuType has to be 'main' or 'mega'
-                menuType = 'main'
-            }
+            menu = MyVendor.AwesomeNeosProject:Component.PageMenu.Main
         }
         breadcrumb = MyVendor.AwesomeNeosProject:Component.Breadcrumb
         main = MyVendor.AwesomeNeosProject:Layout.Default {
