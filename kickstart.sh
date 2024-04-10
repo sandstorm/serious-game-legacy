@@ -122,6 +122,11 @@ if [ "$1" != "--dev" ]
 fi
 echo
 
+############### Removing sandstorm/component-library from composer.json ################
+
+_yellow_echo "Removing sandstorm/component-library from composer.json ..."
+sed -i '' '/sandstorm\/component-library/d' ./app/composer.json
+
 ############### Initializing new Git ################
 
 initNewGitRepo="no"
