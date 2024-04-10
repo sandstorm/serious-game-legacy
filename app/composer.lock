@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7801a69e9038ea53a38f3adf4efc0a09",
+    "content-hash": "ce4e1a8ed4bd8b6d2104057ccac2b1bd",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -3326,9 +3326,10 @@
             "dist": {
                 "type": "path",
                 "url": "./DistributionPackages/MyVendor.AwesomeNeosProject",
-                "reference": "7c0c196e68c915905cf783cf1e7b7142adfc0c0f"
+                "reference": "69e18f21241f20eb780034eb5cd693cdee36ee7f"
             },
             "require": {
+                "flowpack/listable": "^3.5",
                 "jonnitto/prettyembedvideoplatforms": "*",
                 "neos/neos": "*",
                 "sandstorm/cookiepunch": "*"
@@ -7473,42 +7474,6 @@
                 "source": "https://github.com/sandstorm/Sandstorm.E2ETestTools/tree/8.3.1"
             },
             "time": "2023-08-23T11:41:42+00:00"
-        },
-        {
-            "name": "sandstorm/neosacl",
-            "version": "2.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sandstorm/NeosAcl.git",
-                "reference": "ccc969642584c65a0faaf28591408c06b7fddcc6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sandstorm/NeosAcl/zipball/ccc969642584c65a0faaf28591408c06b7fddcc6",
-                "reference": "ccc969642584c65a0faaf28591408c06b7fddcc6",
-                "shasum": ""
-            },
-            "require": {
-                "neos/flow": "^7.0 || ^8.0 || dev-master",
-                "neos/fusion-afx": "*"
-            },
-            "type": "neos-package",
-            "extra": {
-                "neos": {
-                    "package-key": "Sandstorm.NeosAcl"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Sandstorm\\NeosAcl\\": "Classes/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "support": {
-                "issues": "https://github.com/sandstorm/NeosAcl/issues",
-                "source": "https://github.com/sandstorm/NeosAcl/tree/2.3.0"
-            },
-            "time": "2024-02-29T14:09:57+00:00"
         },
         {
             "name": "seld/jsonlint",
