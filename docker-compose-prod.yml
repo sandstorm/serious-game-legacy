@@ -1,0 +1,73 @@
+##################################################
+##### PRODUCTION ENVIRONMENT            ##########
+# this file is deployed on the prod server to /home/deploy/[project-name]/
+# (so all paths are relative to this folder)
+##################################################
+
+services:
+  #####
+  # Neos CMS (php-fpm)
+  neos:
+    image: TODO: ADD IMAGE FROM DOCKER REGISTRY
+    environment:
+      FLOW_CONTEXT: 'Production/Live'
+      # DB connection
+      DB_NEOS_HOST: 'mariadb'
+      DB_NEOS_PORT: 3306
+      DB_NEOS_USER: 'neos'
+      DB_NEOS_PASSWORD: '${DB_PASSWORD}'
+      DB_NEOS_DATABASE: 'neos'
+      # DeepL Authentication Key
+      DEEPL_API_KEY: '${DEEPL_API_KEY}'
+      SANDSTORM_MAPS_API_KEY: '${SANDSTORM_MAPS_API_KEY}'
+      REDIS_HOST: 'redis-cache'
+      REDIS_PORT: 6379
+
+      # this is safe because the neos container port is only exposed to the local interface
+      # This means that the neos container is ALWAYS accessed through the front facing Ingress
+      FLOW_HTTP_TRUSTED_PROXIES: '*'
+    volumes:
+      - ./app_Data_Persistent/:/app/Data/Persistent/
+      - ./app_Data_Logs/:/app/Data/Logs/
+    networks:
+      awesomeneosproject: { }
+      sharedIngressNetwork:
+        aliases:
+          # NOTE: must match ./ingress-caddy-proxy/Caddyfile -> reverse_proxy directive
+          - your-application-ingress
+    depends_on:
+      - mariadb
+      - redis-cache
+
+  #####
+  # Maria DB
+  mariadb:
+    image: mariadb:10.3
+    ports:
+      # this way, you can connect via "ssh -L 13306:127.0.0.1:13306 -p29418 [username]@[hostname]",
+      # and then connect to 127.0.0.1:13306 to the PROD database from your local machine.
+      - 127.0.0.1:13306:3306
+    networks:
+      - awesomeneosproject
+    environment:
+      MARIADB_RANDOM_ROOT_PASSWORD: 'true'
+      MARIADB_DATABASE: neos
+      MARIADB_USER: neos
+      MARIADB_PASSWORD: '${DB_PASSWORD}'
+    volumes:
+      - ./db:/var/lib/mysql
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+
+  redis-cache:
+    image: redis:6.2.2
+    networks:
+      - awesomeneosproject
+
+networks:
+  # we need to use a custom network here to ensure that all services see each other; and that during prerendering, we can connect to this network (to reach the service facade)
+  awesomeneosproject:
+    name: awesomeneosproject
+  # this network is created via ./ingress-caddy-proxy/docker-compose-prod.yml
+  sharedIngressNetwork:
+    name: sharedIngressNetwork
+    external: true

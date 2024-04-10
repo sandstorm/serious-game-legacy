@@ -317,6 +317,22 @@ Run `./kickstart.sh --restore-git` after testing changes you made to `./kickstar
 
 [//]: # (KICKSTART_INFO_SECTION__END)
 
+# Production Setup
+
+## Important URLs
+
+## Production Cookbook / Tips and Tricks
+
+### my Neos container does not start, how do I debug?
+
+**Symptom:** There is an error in the Entrypoint Neos container during `docker compose up -d`.
+
+You can start the container without executing the entrypoint with the following line:
+
+```bash
+docker compose run --entrypoint /bin/bash neos
+```
+
 ## Backlog
 
 * Examples for rights in Neos -> separate Distribution Package
