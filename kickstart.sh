@@ -139,12 +139,6 @@ if [ "$1" != "--dev" ]
 fi
 echo
 
-############### Removing sandstorm/component-library from composer.json ################
-
-cd app || exit
-composer remove sandstorm/component-library
-cd ..
-
 ############### Initializing new Git ################
 
 initNewGitRepo="no"
@@ -237,7 +231,17 @@ EOF
     _yellow_echo "NO git repository was initialized."
 fi
 echo
+
+############### Removing sandstorm/component-library from composer.json ################
+
+_yellow_echo "Removing sandstorm/component-library from composer.json ..."
+cd app || exit
+composer remove sandstorm/component-library
+cd ..
+
+echo
 _green_echo "KICKSTART has finished successfully ;)"
-_green_echo "run 'dev start'"
+_green_echo "run 'dev start' to start the docker container"
+_green_echo "To add new components use 'dev add-component' or 'dev list-components' to see available components"
 
 

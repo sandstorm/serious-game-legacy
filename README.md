@@ -14,6 +14,10 @@ git lfs install
 git lfs pull
 ```
 
+You need composer on your machine to use kickstarter. If you don't have composer installed, you can install it via homebrew:
+```
+brew install composer
+```
 Run `./kickstart.sh` and follow the instructions.
 
 [//]: # (KICKSTART_INFO_SECTION__END)
