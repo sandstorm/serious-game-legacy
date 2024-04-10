@@ -19,17 +19,21 @@ function add-component {
     documentName="Content.$name"
     componentPath="$componentsPackagePath/$name"
 
-    # move node type config
-    mv "$componentsPackagePath/NodeTypes/Content/$documentName.yaml" "$sitePackagePath/NodeTypes/Content/$documentName.yaml"
-    # move integrational component
-    mv "$componentsPackagePath/Resources/Private/Fusion/Integration/Content/$documentName.fusion" "$sitePackagePath/Resources/Private/Fusion/Integration/Content/$documentName.fusion"
-    # move presentational component dir
-    mv "$componentsPackagePath/Resources/Private/Fusion/Presentation/Components/$name" "$sitePackagePath/Resources/Private/Fusion/Presentation/Components/$name"
-    # move eel helper and add to configuration
-    # TODO
-    # move translation files
-    # TODO
-    # move tests
+    # copy files
+    copy_files() {
+        while read -r path; do
+            fullComponentPath="$componentsPackagePath/$path"
+            if [ -f "$fullComponentPath" ]; then
+                cp "$fullComponentPath" "$sitePackagePath/$path"
+            elif [ -d "$fullComponentPath" ]; then
+                cp -r "$fullComponentPath" "$sitePackagePath/$path"
+            fi
+        done
+    }
+
+    yq eval ".$componentsPackageNamespace.Components.$name.files[]" "$componentsPackagePath/Configuration/Settings.Components.yaml" | copy_files
+
+    # copy eel helper and add to configuration
     # TODO
 
     # add constraint to start page config

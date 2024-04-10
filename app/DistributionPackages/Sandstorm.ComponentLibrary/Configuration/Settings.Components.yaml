@@ -1,0 +1,14 @@
+Sandstorm:
+  ComponentLibrary:
+    Components:
+      Download:
+        files:
+          - 'NodeTypes/Content/Content.Download.yaml'
+          - 'Resources/Private/Fusion/Integration/Content/Content.Download.fusion'
+          - 'Resources/Private/Fusion/Presentation/Components/Download'
+          - 'Resources/Private/Translations/de/NodeTypes/Content/Download.xlf'
+          - 'Resources/Private/Translations/en/NodeTypes/Content/Download.xlf'
+          - 'Tests/Unit/Eel/FileSizeHelperTest.php'
+        eelHelpers:
+          - 'Classes/Eel/Helper/FileSizeHelper.php'
+        # composerDependencies:
