@@ -1,0 +1,35 @@
+{
+    # Global Caddy Config should be added here
+
+    # uncomment the next line to enable extensive debug logging
+    # debug
+}
+
+#######################################
+# APPLICATION: Main Your-Domain Website
+# TLS certificates are handled automatically via Let's Encrypt,
+# as well as HTTP -> HTTPS redirects
+#
+# With {$VARNAME:default_value}, the value of a given environment variable $VARNAME is inserted. If the
+# environment variable is unset, the default_value is used.
+# => we use this trick to make the domain name overridable; so that we can provision a prod system with a
+#    temporary domain.
+{$CADDY_DOMAIN_OVERRIDE:www.your-domain.de} {
+    # your-application-ingress is the hostname where the application is found
+    # in sharedIngressNetwork; this needs to be configured in docker-compose-prod.yml of the application
+    # via TODO
+    reverse_proxy your-application-ingress:80
+
+    handle_errors {
+        respond "{err.status_code} {err.status_text}"
+    }
+
+    # this is a health check, which tests that the ingress is up and running.
+    respond /up-ingress "{$HOSTNAME:ok}" 200
+}
+
+# we add an additional domain without www; so that this also works if people write it.
+# you can add multiple domains.
+#your-domain.de, your-other-domain.de {
+#    redir https://www.{host}{uri}
+#}

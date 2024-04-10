@@ -1,0 +1,25 @@
+deploy_ingress:
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      changes:
+        - .gitlab-ci.yml
+        - ci/production-ingress.gitlab-ci.yml
+        - ingress-caddy-proxy/*
+  image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v3
+  script:
+    - eval $(ssh-agent -s)
+    - chmod 600 $SSH_PRIVATE_DEPLOY_KEY
+    - ssh-add $SSH_PRIVATE_DEPLOY_KEY
+    - mkdir -p ~/.ssh
+    - ssh-keyscan -p 29418 -H your-domain.de >> ~/.ssh/known_hosts
+
+    # reverse proxy ingress
+    - scp -P 29418 -r ./ingress-caddy-proxy deploy@your-domain.de:~
+    # docker-compose up, followed by caddy reload (in case only Caddyfile changed)
+    - ssh -p 29418 deploy@your-domain.de "export HOSTNAME &&
+        cd ingress-caddy-proxy &&
+        mv docker-compose-prod.yml docker-compose.yml &&
+        docker-compose build && docker-compose up -d &&
+        docker-compose exec -T -w /etc/caddy caddy-ingress caddy reload
+      "
