@@ -14,6 +14,7 @@ package_app_staging:
     key: MyVendor.AwesomeNeosProject__composer
     paths:
       - app/.composer-cache
+  interruptible: true
   script:
     - cd app
     # NOTE: for E2E tests we HAVE also to install DEV dependencies; otherwise we won't be able to run behavioral tests then.
@@ -63,6 +64,7 @@ a11y_test_staging:
   allow_failure: true
   before_script:
     - npm install pa11y-ci-reporter-html
+  interruptible: true
   script:
     - mkdir pa11y-ci-report-images
     - pa11y-ci --reporter=pa11y-ci-reporter-html --config=$A11Y_TEST

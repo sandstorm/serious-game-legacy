@@ -3,6 +3,7 @@ build_assets:
   # keep in sync with .nvmrc
   image: node:20.11-slim
   needs: []
+  interruptible: true
   script:
     - cd app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Private
     # example for including font-awesome

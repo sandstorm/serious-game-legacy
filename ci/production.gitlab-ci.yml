@@ -9,6 +9,7 @@ package_app_production:
     key: MyVendor.AwesomeNeosProject__composer
     paths:
       - app/.composer-cache
+  interruptible: true
   script:
     - cd app
     - COMPOSER_CACHE_DIR=.composer-cache composer install --no-dev --ignore-platform-reqs
