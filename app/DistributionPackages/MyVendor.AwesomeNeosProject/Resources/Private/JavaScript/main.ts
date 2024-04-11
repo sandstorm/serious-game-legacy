@@ -10,7 +10,6 @@ import Map, { MapComponent } from '../Fusion/Presentation/Components/Map/Map'
 import Slider, { SliderComponent } from '../Fusion/Presentation/Components/Slider/Slider'
 
 // start: Component Library Imports //
-import LogoBar, { LogoBarComponent } from '../../../../Sandstorm.ComponentLibrary/Resources/Private/Fusion/Presentation/Components/LogoBar/LogoBar'
 // end: Component Library Imports //
 
 // We decided to use https://alpinejs.dev/ to write js code
@@ -26,7 +25,6 @@ Alpine.data('map', Map as (value: any) => AlpineComponent<MapComponent>)
 Alpine.data('slider', Slider as (value: any) => AlpineComponent<SliderComponent>)
 
 // start: Component Library Components //
-Alpine.data('logoBar', LogoBar as (value: any) => AlpineComponent<LogoBarComponent>)
 // end: Component Library Components //
 
 // Stores

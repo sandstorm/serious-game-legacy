@@ -1,0 +1,10 @@
+Resources/Private/node_modules
+Resources/Private/*.log
+Resources/Private/tsconfig.tsbuildinfo
+Resources/Private/JavaScript/Tests/Coverage
+# this file is compiled
+Resources/Public/bundle.js
+Resources/Public/bundle.css
+Resources/Public/tailwind.css
+Resources/Public/bundle.js.map
+Resources/Public/bundle.css.map

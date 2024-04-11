@@ -1,6 +1,6 @@
 import {AlpineComponent} from 'alpinejs'
 import Swiper from 'swiper/bundle'
-import basicSlider, {SliderComponent} from '../Slider/Slider'
+import basicSlider, {SliderComponent} from './AbstractSlider'
 
 const CSS_CLASSES = {
     // use the generic swiper classes here so the code works for all swipers inheriting this function
