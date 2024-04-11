@@ -105,25 +105,21 @@ docker compose down
 gzip -dk ./app/ContentDump/Database.sql.gz
 rm ./app/ContentDump/Database.sql.gz
 
-findExcludePaths=""
-# Add new lines here if you want to exclude files and folders from being replaced
-findExcludePaths="${findExcludePaths} -not -name kickstart.sh"
-findExcludePaths="${findExcludePaths} -not -path */node_modules/*"
-findExcludePaths="${findExcludePaths} -not -path */.idea/*"
-findExcludePaths="${findExcludePaths} -not -path */.git/*"
-
 _yellow_echo "Renaming DistributionPackage ..."
 mv ./app/DistributionPackages/${defaultVendorName}.${defaultPackageName} ./app/DistributionPackages/${vendorName}.${packageName} 2> /dev/null
 
 _yellow_echo "Replacing Name of Vendor ..."
 _yellow_echo "Replacing Name of Package ..."
 
-# replace Vendor and Package name -> yaml, php, package.json ...
-find ./ -type f ${findExcludePaths} -exec grep -Iq . {} \; -print | xargs sed -i '' "s/${defaultVendorName}/${vendorName}/g"
-find ./ -type f ${findExcludePaths} -exec grep -Iq . {} \; -print | xargs sed -i '' "s/${defaultPackageName}/${packageName}/g"
+# regex pattern for excluding paths and files
+findExcludePaths="(/node_modules/|^./app/Packages|^./app/Build|^./tmp|.idea|.git|/kickstart.sh)"
 
-find ./ -type f ${findExcludePaths} -exec grep -Iq . {} \; -print | xargs sed -i '' "s/${defaultVendorNameLowerCase}/${vendorNameLowerCase}/g"
-find ./ -type f ${findExcludePaths} -exec grep -Iq . {} \; -print | xargs sed -i '' "s/${defaultPackageNameLowerCase}/${packageNameLowerCase}/g"
+# replace Vendor and Package name -> yaml, php, package.json ...
+# grep -I ignores binary files, q suppresses output, E allows for extended regex, v inverts the match
+find . -type f | grep -I -Ev ${findExcludePaths} | LC_CTYPE=C xargs -I% sed -i "" "s/${defaultVendorName}/${vendorName}/g" %
+find . -type f | grep -I -Ev ${findExcludePaths} | LC_CTYPE=C xargs -I% sed -i "" "s/${defaultPackageName}/${packageName}/g" %
+find . -type f | grep -I -Ev ${findExcludePaths} | LC_CTYPE=C xargs -I% sed -i "" "s/${defaultVendorNameLowerCase}/${vendorNameLowerCase}/g" %
+find . -type f | grep -I -Ev ${findExcludePaths} | LC_CTYPE=C xargs -I% sed -i "" "s/${defaultPackageNameLowerCase}/${packageNameLowerCase}/g" %
 
 # zip site export after replacing because importSite.sh expects a `Database.sql.gz`
 gzip ./app/ContentDump/Database.sql
