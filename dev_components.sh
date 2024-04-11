@@ -12,10 +12,17 @@ function list-components {
 # add a component from the component library to the project
 function add-component {
     sitePackageNamespace="MyVendor.AwesomeNeosProject"
+    sitePackageVendor=$(echo "$sitePackageNamespace" | cut -d '.' -f 1)
+    sitePackagePackage=$(echo "$sitePackageNamespace" | cut -d '.' -f 2)
     sitePackageNamespaceWithSlashes="${sitePackageNamespace//./\\}"
     sitePackagePath="./app/DistributionPackages/$sitePackageNamespace"
+
     componentsPackageNamespace="Sandstorm.ComponentLibrary"
+    componentsPackageVendor=$(echo "$componentsPackageNamespace" | cut -d '.' -f 1)
+    componentsPackagePackage=$(echo "$componentsPackageNamespace" | cut -d '.' -f 2)
+    componentsPackageNamespaceWithSlashes="${componentsPackageNamespace//./\\}"
     componentsPackagePath="./app/DistributionPackages/$componentsPackageNamespace"
+
     constraintsNodeName="Constraints.Base"
 
     # get component name from user input
@@ -36,6 +43,10 @@ function add-component {
             elif [ -d "$fullComponentPath" ]; then
                 cp -r "$fullComponentPath" "$sitePackagePath/$path"
             fi
+
+            # rename package
+            find "$sitePackagePath/$path" -type f -exec grep -Iq . {} \; -print | xargs sed -i '' "s/${componentsPackageVendor}/${sitePackageVendor}/g"
+            find "$sitePackagePath/$path" -type f -exec grep -Iq . {} \; -print | xargs sed -i '' "s/${componentsPackagePackage}/${sitePackagePackage}/g"
         done
     }
 
@@ -46,8 +57,13 @@ function add-component {
         while read -r path; do
             fileName="${path}Helper.php"
             fullComponentPath="$componentsPackagePath/Classes/Eel/Helper/$fileName"
-            cp "$fullComponentPath" "$sitePackagePath/Classes/Eel/Helper/$fileName"
+            fullSitePackagePath="$sitePackagePath/Classes/Eel/Helper/$fileName"
+            cp "$fullComponentPath" $fullSitePackagePath
             yq --inplace ".Neos.Fusion.defaultContext += {\"$sitePackageNamespace.$path\": \"$sitePackageNamespaceWithSlashes\\Eel\\Helper\\${path}Helper\"}" "$sitePackagePath/Configuration/Settings.yaml"
+
+            # rename package
+            find $fullSitePackagePath -type f -exec grep -Iq . {} \; -print | xargs sed -i '' "s/${componentsPackageVendor}/${sitePackageVendor}/g"
+            find $fullSitePackagePath -type f -exec grep -Iq . {} \; -print | xargs sed -i '' "s/${componentsPackagePackage}/${sitePackagePackage}/g"
         done
     }
 
@@ -64,9 +80,6 @@ function add-component {
         sed -i '' "s/${constraintsKey}/'${constraintsKey}'/g" "$constraintsNodeName.yaml"
     fi
     popd > /dev/null
-
-    # rename package in all added files
-    # TODO
 
     _echo_green "Component $name added"
 }
