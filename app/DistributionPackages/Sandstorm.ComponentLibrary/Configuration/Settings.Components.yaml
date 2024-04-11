@@ -20,3 +20,15 @@ Sandstorm:
           - 'Tests/Unit/Eel/FileSizeHelperTest.php'
         eelHelpers:
           - 'FileSize'
+      LogoBar:
+        files:
+            - 'NodeTypes/Content/Content.LogoBar.yaml'
+            - 'NodeTypes/Content/Content.LogoBar.Slide.yaml'
+            - 'Resources/Private/Fusion/Integration/Content/Content.LogoBar.fusion'
+            - 'Resources/Private/Fusion/Integration/Content/Content.LogoBar.Slide.fusion'
+            - 'Resources/Private/Fusion/Presentation/Components/LogoBar'
+            - 'Resources/Private/Translations/de/NodeTypes/Content/LogoBar'
+            - 'Resources/Private/Translations/de/NodeTypes/Content/LogoBar.xlf'
+            - 'Resources/Private/Translations/en/NodeTypes/Content/LogoBar'
+            - 'Resources/Private/Translations/en/NodeTypes/Content/LogoBar.xlf'
+
