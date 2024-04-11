@@ -1,0 +1,12 @@
+prototype(Sandstorm.ComponentLibrary:Resources.HeaderAssets) < prototype(Neos.Fusion:Array) {
+    componentJs = Neos.Fusion:Tag {
+        tagName = 'script'
+        attributes.defer = true
+        attributes.type = 'text/javascript'
+        attributes.src = Neos.Fusion:ResourceUri {
+            path = 'resource://Sandstorm.ComponentLibrary/Public/bundle.js'
+        }
+        attributes.defer = "defer"
+        @process.neverBlock = ${CookiePunch.neverBlockTags(["script"], value)}
+    }
+}

@@ -3,3 +3,4 @@
   constraints:
     nodeTypes:
       'Sandstorm.ComponentLibrary:Content.Download': true
+      'MyVendor.AwesomeNeosProject:Content.LogoBar': true

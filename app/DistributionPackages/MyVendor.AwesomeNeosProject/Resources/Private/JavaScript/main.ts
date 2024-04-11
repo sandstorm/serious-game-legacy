@@ -2,8 +2,6 @@ import Alpine, { AlpineComponent } from 'alpinejs'
 import collapse from '@alpinejs/collapse'
 import intersect from '@alpinejs/intersect'
 import persist from '@alpinejs/persist'
-import { ExampleStore } from './Types/types'
-import { EXAMPLE_STORE } from './store'
 import ButtonToTop, { ButtonToTopComponent } from '../Fusion/Presentation/Components/ButtonToTop/ButtonToTop'
 import EventList, { EventListComponent } from '../Fusion/Presentation/Components/Event/List/EventList'
 import Map, { MapComponent } from '../Fusion/Presentation/Components/Map/Map'
@@ -27,9 +25,8 @@ Alpine.data('slider', Slider as (value: any) => AlpineComponent<SliderComponent>
 // start: Component Library Components //
 // end: Component Library Components //
 
-// Stores
-Alpine.store<ExampleStore>(EXAMPLE_STORE, {
-    frontendVersion: Alpine.$persist('vx.x.x').as('frontend_version')
-})
+// We write Alpine to global window object to make it available in the component library main.ts.
+// Aline is initialized in the component library main.ts to avoid two initializations.
+// @ts-ignore
+if( !window.Alpine ) window.Alpine = Alpine;
 
-Alpine.start()

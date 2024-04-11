@@ -1,4 +1,4 @@
-import {AlpineComponent} from 'alpinejs'
+import Alpine, {AlpineComponent} from 'alpinejs'
 import Swiper from 'swiper/bundle'
 import basicSlider, {SliderComponent} from './AbstractSlider'
 
@@ -12,7 +12,7 @@ export type LogoBarComponent = SliderComponent & {
     autoplayInterval: number
 }
 
-export default (
+const LogoBar = (
     amountOfLogos: number = 6,
     autoplayInterval: number = 3000,
     inBackend: boolean = false
@@ -61,3 +61,5 @@ export default (
         },
     }
 }
+
+export default LogoBar
