@@ -28,7 +28,8 @@ function add-component {
     # get component name from user input
     read -p "Name of the component: " name
 
-    # TODO: check if component exists and break with warning if not
+    # check if component exists and break with warning if not
+    yq eval ".$componentsPackageNamespace.Components | keys" "$componentsPackagePath/Configuration/Settings.Components.yaml" | grep -q "$name" || { _echo_red "Component $name not found"; return 1; }
 
     # TODO: distinguish between document and content types
     documentName="Content.$name"
@@ -43,6 +44,7 @@ function add-component {
             elif [ -d "$fullComponentPath" ]; then
                 cp -r "$fullComponentPath" "$sitePackagePath/$path"
             fi
+            _echo_green "Copied $fullComponentPath to $sitePackagePath/$path"
 
             # rename package
             find "$sitePackagePath/$path" -type f -exec grep -Iq . {} \; -print | xargs sed -i '' "s/${componentsPackageVendor}/${sitePackageVendor}/g"
@@ -60,6 +62,7 @@ function add-component {
             fullSitePackagePath="$sitePackagePath/Classes/Eel/Helper/$fileName"
             cp "$fullComponentPath" $fullSitePackagePath
             yq --inplace ".Neos.Fusion.defaultContext += {\"$sitePackageNamespace.$path\": \"$sitePackageNamespaceWithSlashes\\Eel\\Helper\\${path}Helper\"}" "$sitePackagePath/Configuration/Settings.yaml"
+            _echo_green "Copied $fullComponentPath to $fullSitePackagePath; added constraint to Settings.yaml"
 
             # rename package
             find $fullSitePackagePath -type f -exec grep -Iq . {} \; -print | xargs sed -i '' "s/${componentsPackageVendor}/${sitePackageVendor}/g"
@@ -78,8 +81,9 @@ function add-component {
     else
         yq --inplace '."'$sitePackageNamespace':'$constraintsNodeName'".constraints.nodeTypes += {"'$constraintsKey'": true}' "$constraintsNodeName.yaml"
         sed -i '' "s/${constraintsKey}/'${constraintsKey}'/g" "$constraintsNodeName.yaml"
+        _echo_green "Added constraints for $constraintsKey to $constraintsNodeName.yaml"
     fi
     popd > /dev/null
 
-    _echo_green "Component $name added"
+    _echo_green "=> Component $name added"
 }
