@@ -1,6 +1,15 @@
 Sandstorm:
   ComponentLibrary:
     Components:
+      Accordion:
+        files:
+            - 'NodeTypes/Content/Content.Accordion.yaml'
+            - 'NodeTypes/Content/Content.Accordion.Item.yaml'
+            - 'Resources/Private/Fusion/Integration/Content/Content.Accordion.fusion'
+            - 'Resources/Private/Fusion/Integration/Content/Content.Accordion.Item.fusion'
+            - 'Resources/Private/Fusion/Presentation/Components/Accordion'
+            - 'Resources/Private/Translations/de/NodeTypes/Content/Accordion'
+            - 'Resources/Private/Translations/en/NodeTypes/Content/Accordion'
       Download:
         files:
           - 'NodeTypes/Content/Content.Download.yaml'
@@ -11,4 +20,3 @@ Sandstorm:
           - 'Tests/Unit/Eel/FileSizeHelperTest.php'
         eelHelpers:
           - 'FileSize'
-        # composerDependencies:

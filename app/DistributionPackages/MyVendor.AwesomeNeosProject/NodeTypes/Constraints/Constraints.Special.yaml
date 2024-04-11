@@ -2,7 +2,6 @@
   abstract: true
   constraints:
     nodeTypes:
-      'MyVendor.AwesomeNeosProject:Content.Accordion': true
       'MyVendor.AwesomeNeosProject:Content.ContactForm': true
       'MyVendor.AwesomeNeosProject:Content.Events.List': true
       'MyVendor.AwesomeNeosProject:Content.LatestBlogPosts': true
