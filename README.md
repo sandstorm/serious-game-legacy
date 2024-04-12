@@ -330,8 +330,28 @@ Run `./kickstart.sh --restore-git` after testing changes you made to `./kickstar
 You can start the container without executing the entrypoint with the following line:
 
 ```bash
+sudo su - deploy
+cd [project-name]
+
 docker compose run --entrypoint /bin/bash neos
 ```
+### Connecting to the production database
+
+When connecting to the system via SSH, use `-L` for a local port forward like this:
+
+```bash
+ssh -p29418 -L 23306:127.0.0.1:13306 [hostname]
+```
+
+Then, you can use the built-in DB browser of IntelliJ to connect:
+
+- User `neos`
+- Password: see bitwarden `TODO`
+- Host: 127.0.0.1
+- **Port 23306**
+- Database: `neos`
+
+[//]: # (KICKSTART_INFO_SECTION__START)
 
 ## Backlog
 
@@ -342,3 +362,5 @@ docker compose run --entrypoint /bin/bash neos
 * check caching config -> nginx e.g. images
 * Distribution Package with search
 * Check examples for accessibility issues
+
+[//]: # (KICKSTART_INFO_SECTION__END)
