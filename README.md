@@ -45,6 +45,7 @@ Run `./kickstart.sh` and follow the instructions.
   - [Site Export / Site Import](#site-export--site-import)
     - [Site Export Prod](#site-export-prod)
   - [Kickstart repository nodetypes](#kickstart-repository-nodetypes)
+  - [Add components from the library to your project](#add-components-from-the-library-to-your-project)
   - [Custom icon font with icomoon](#custom-icon-font-with-icomoon)
     - [Use custom icons in neos backend](#use-custom-icons-in-neos-backend)
   - [Maps](#maps)
@@ -60,7 +61,6 @@ Run `./kickstart.sh` and follow the instructions.
     - [my Neos container does not start, how do I debug?](#my-neos-container-does-not-start-how-do-i-debug)
     - [Connecting to the production database](#connecting-to-the-production-database)
   - [Backlog](#backlog)
-
 <!-- TOC -->
 
 ## Requirements
@@ -252,6 +252,12 @@ The command will create the following files:
 - Resources/Private/Fusion/Integration/Document/Document.Repository.Item.fusion
 - Resources/Private/Fusion/Integration/Content/Content.Repository.List.fusion
 
+## Add components from the library to your project
+
+We have a little shell script `dev_components.sh` that helps you to add components from the library to your project.
+Run `dev list-components` to get a list of all available components. Run `dev add-component` to add a
+component to your project.
+
 ## Custom icon font with icomoon
 
 We use a custom icon font build with <https://icomoon.io/app>. Look at the Icons.md for more
@@ -289,16 +295,7 @@ rancher secret.
 ## Menu
 
 We currently have two menu options implemented: a "normal" menu in a navigation bar style and a mega menu. You can
-switch between them in `AbstractPage.fusion`. You might consider removing the other option once you decided for one.
-
-```
-header = MyVendor.AwesomeNeosProject:Component.PageHeader {
-    menu = MyVendor.AwesomeNeosProject:Component.PageMenu {
-        // menuType has to be 'main' or 'mega'
-        menuType = 'main'
-    }
-}
-```
+choose between them during kickstart.
 
 ## Image sizes
 
