@@ -40,6 +40,7 @@ deploy_production:
 
     # deploy the actual application
     - scp -P 29418 docker-compose-prod.yml deploy@your-domain.de:~/your-project/docker-compose.yml
+    - scp -P 29418 deployment/production/vector.flow.yaml deploy@your-domain.de:~/your-project/vector.flow.yaml
     - |
       ssh -p 29418 deploy@your-domain.de "
         docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY &&
