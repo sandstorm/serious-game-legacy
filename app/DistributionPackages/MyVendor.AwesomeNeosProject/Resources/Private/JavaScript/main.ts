@@ -25,8 +25,10 @@ Alpine.data('slider', Slider as (value: any) => AlpineComponent<SliderComponent>
 // start: Component Library Components //
 // end: Component Library Components //
 
+// start: replace with Alpine.start() on kickstart //
 // We write Alpine to global window object to make it available in the component library main.ts.
 // Aline is initialized in the component library main.ts to avoid two initializations.
 // @ts-ignore
 if( !window.Alpine ) window.Alpine = Alpine;
+// end: replace wirth Alpine.start() on kickstart //
 

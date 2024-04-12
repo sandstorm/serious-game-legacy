@@ -241,6 +241,17 @@ cd app || exit
 composer remove sandstorm/component-library
 cd ..
 
+############### Add Alpine.start() to main.ts ################
+# remove workaround for dev mode from main.ts
+# from: // start: replace with Alpine.start() on kickstart //
+# to: // end: replace with Alpine.start() on kickstart //
+echo "$(sed '/start: replace with Alpine.start() on kickstart/,/end: replace wirth Alpine.start() on kickstart/d' ./app/DistributionPackages/"${vendorName}"."${packageName}"/Resources/Private/JavaScript/main.ts)" >  ./app/DistributionPackages/"${vendorName}"."${packageName}"/Resources/Private/JavaScript/main.ts
+
+# add 'Alpine.start()' to main.ts add end
+_yellow_echo "Adding Alpine.start() to main.ts ..."
+echo "Alpine.start()" >> ./app/DistributionPackages/"${vendorName}"."${packageName}"/Resources/Private/JavaScript/main.ts
+
+
 echo
 _green_echo "KICKSTART has finished successfully ;)"
 _green_echo "run 'dev start' to start the docker container"
