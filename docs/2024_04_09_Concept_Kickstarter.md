@@ -17,7 +17,7 @@
 * einheitliches Setup, welches sich in unsere Infrastrukur integriert (Local, Staging)
 * aktuelles Neos/PHP mit vordefinierter Struktur
 * Show Case zum Entwickeln (site import/export, menu)
-* Nachinstallierbare Komponenten im [Kickstarter](./20240409101010_Concept_Components.md)
+* Nachinstallierbare Komponenten im [Kickstarter](./2024_04_09_Concept_Components)
 * Keine fertige Seite
 
 ### Bisherige Lösung:
@@ -27,7 +27,7 @@
 * kickstart.sh die das DistributionPackage umbenennt
 
 ### Notwendige Schritte:
-* [Subkonzept Components](./20240409101010_Concept_Components.md)
+* [Subkonzept Components](./2024_04_09_Concept_Components)
 * kickstart.sh > mit oder ohne Show Case, welche Komponenten installieren
 * Anchor rausschmeißen -> Package empfehlen (x)
 * Folder Package -> empfehlen (x)
