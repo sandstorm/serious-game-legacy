@@ -3,6 +3,7 @@ php_code_analysis:
   stage: test
   needs: []
   dependencies: []
+  interruptible: true
   script:
     - cd app
     - composer install --ignore-platform-reqs

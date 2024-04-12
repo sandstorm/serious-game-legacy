@@ -12,6 +12,7 @@
 !/Configuration/Production/
 /Configuration/Production/*
 !/Configuration/Production/Kubernetes
+!/Configuration/Production/Live
 
 !/Configuration/Testing/
 /Configuration/Testing/*

@@ -9,6 +9,7 @@ package_app_production:
     key: MyVendor.AwesomeNeosProject__composer
     paths:
       - app/.composer-cache
+  interruptible: true
   script:
     - cd app
     - COMPOSER_CACHE_DIR=.composer-cache composer install --no-dev --ignore-platform-reqs
@@ -25,21 +26,29 @@ deploy_production:
   stage: deploy
   only:
     - tags
-  image:
-    name: bitnami/kubectl:1.15.0
-    entrypoint: ['']
+  image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v3
   needs:
     - package_app_production
   environment:
     name: production
   script:
-    - export KUBECONFIG=$KUBECONFIG_K3S2021
-    - kubectl get namespace myvendor-awesomeneosproject-production
-    - kubectl apply -f deployment/production/database.yaml
-    - cat deployment/production/app.yaml | sed "s/CI_COMMIT_REF_NAME/$CI_COMMIT_REF_NAME/g" > deployment/production/app_modified.yaml
-    - kubectl apply -f deployment/production/app_modified.yaml
-    # enforce a redeploy by changing the release identifier
-    - 'kubectl -n myvendor-awesomeneosproject-production patch --type merge OneContainerOnePort app -p "{\"spec\":{\"releaseIdentifier\": \"$CI_JOB_ID\"}}"'
+    - eval $(ssh-agent -s)
+    - chmod 600 $SSH_PRIVATE_DEPLOY_KEY
+    - ssh-add $SSH_PRIVATE_DEPLOY_KEY
+    - mkdir -p ~/.ssh
+    - ssh-keyscan -p 29418 -H your-domain.de >> ~/.ssh/known_hosts
+
+    # deploy the actual application
+    - scp -P 29418 docker-compose-prod.yml deploy@your-domain.de:~/your-project/docker-compose.yml
+    - scp -P 29418 deployment/production/vector.flow.yaml deploy@your-domain.de:~/your-project/vector.flow.yaml
+    - |
+      ssh -p 29418 deploy@your-domain.de "
+        docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY &&
+        cd your-project &&
+        ([ -f .env ] || { echo 'ERROR: You manually need to create a .env file with secrets first.'; exit 1; }) &&
+        docker compose pull &&
+        docker compose up -d
+      "
 
 a11y_test_production:
   image: registry.gitlab.com/gitlab-ci-utils/gitlab-pa11y-ci:latest
