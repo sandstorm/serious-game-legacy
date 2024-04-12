@@ -9,6 +9,7 @@ services:
   # Neos CMS (php-fpm)
   neos:
     image: TODO: ADD IMAGE FROM DOCKER REGISTRY
+    restart: always
     environment:
       FLOW_CONTEXT: 'Production/Live'
       # DB connection
@@ -43,6 +44,7 @@ services:
   # Maria DB
   mariadb:
     image: mariadb:10.3
+    restart: always
     ports:
       # this way, you can connect via "ssh -L 13306:127.0.0.1:13306 -p29418 [username]@[hostname]",
       # and then connect to 127.0.0.1:13306 to the PROD database from your local machine.
@@ -60,6 +62,7 @@ services:
 
   redis-cache:
     image: redis:6.2.2
+    restart: always
     networks:
       - awesomeneosproject
 
