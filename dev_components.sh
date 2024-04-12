@@ -72,6 +72,19 @@ function add-component {
 
     yq eval ".$componentsPackageNamespace.Components.$name.eelHelpers[]" "$componentsPackagePath/Configuration/Settings.Components.yaml" | add_eel_helper
 
+    # install js dependencies
+    install_js_dependencies() {
+        pushd "$sitePackagePath/Resources/Private" > /dev/null
+            source "$HOME/.nvm/nvm.sh"
+        nvm install && nvm use && yarn
+        while read -r path; do
+             yarn add "$path"
+        done
+        popd > /dev/null
+    }
+
+    yq eval ".$componentsPackageNamespace.Components.$name.jsDependencies[]" "$componentsPackagePath/Configuration/Settings.Components.yaml" | install_js_dependencies
+
     # add constraint to start page config
     pushd "$sitePackagePath/NodeTypes/Constraints" > /dev/null
     constraintsKey="$sitePackageNamespace:$documentName"

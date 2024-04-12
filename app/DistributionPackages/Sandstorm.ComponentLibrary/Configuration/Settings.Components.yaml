@@ -3,13 +3,13 @@ Sandstorm:
     Components:
       Accordion:
         files:
-            - 'NodeTypes/Content/Content.Accordion.yaml'
-            - 'NodeTypes/Content/Content.Accordion.Item.yaml'
-            - 'Resources/Private/Fusion/Integration/Content/Content.Accordion.fusion'
-            - 'Resources/Private/Fusion/Integration/Content/Content.Accordion.Item.fusion'
-            - 'Resources/Private/Fusion/Presentation/Components/Accordion'
-            - 'Resources/Private/Translations/de/NodeTypes/Content/Accordion'
-            - 'Resources/Private/Translations/en/NodeTypes/Content/Accordion'
+          - 'NodeTypes/Content/Content.Accordion.yaml'
+          - 'NodeTypes/Content/Content.Accordion.Item.yaml'
+          - 'Resources/Private/Fusion/Integration/Content/Content.Accordion.fusion'
+          - 'Resources/Private/Fusion/Integration/Content/Content.Accordion.Item.fusion'
+          - 'Resources/Private/Fusion/Presentation/Components/Accordion'
+          - 'Resources/Private/Translations/de/NodeTypes/Content/Accordion'
+          - 'Resources/Private/Translations/en/NodeTypes/Content/Accordion'
       Download:
         files:
           - 'NodeTypes/Content/Content.Download.yaml'
@@ -22,13 +22,14 @@ Sandstorm:
           - 'FileSize'
       LogoBar:
         files:
-            - 'NodeTypes/Content/Content.LogoBar.yaml'
-            - 'NodeTypes/Content/Content.LogoBar.Slide.yaml'
-            - 'Resources/Private/Fusion/Integration/Content/Content.LogoBar.fusion'
-            - 'Resources/Private/Fusion/Integration/Content/Content.LogoBar.Slide.fusion'
-            - 'Resources/Private/Fusion/Presentation/Components/LogoBar'
-            - 'Resources/Private/Translations/de/NodeTypes/Content/LogoBar'
-            - 'Resources/Private/Translations/de/NodeTypes/Content/LogoBar.xlf'
-            - 'Resources/Private/Translations/en/NodeTypes/Content/LogoBar'
-            - 'Resources/Private/Translations/en/NodeTypes/Content/LogoBar.xlf'
-
+          - 'NodeTypes/Content/Content.LogoBar.yaml'
+          - 'NodeTypes/Content/Content.LogoBar.Slide.yaml'
+          - 'Resources/Private/Fusion/Integration/Content/Content.LogoBar.fusion'
+          - 'Resources/Private/Fusion/Integration/Content/Content.LogoBar.Slide.fusion'
+          - 'Resources/Private/Fusion/Presentation/Components/LogoBar'
+          - 'Resources/Private/Translations/de/NodeTypes/Content/LogoBar'
+          - 'Resources/Private/Translations/de/NodeTypes/Content/LogoBar.xlf'
+          - 'Resources/Private/Translations/en/NodeTypes/Content/LogoBar'
+          - 'Resources/Private/Translations/en/NodeTypes/Content/LogoBar.xlf'
+        jsDependencies:
+          - 'swiper@^10.2.0'
