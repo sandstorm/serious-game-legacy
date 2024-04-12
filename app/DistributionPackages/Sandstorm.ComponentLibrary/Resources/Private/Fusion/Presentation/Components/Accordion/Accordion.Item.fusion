@@ -1,4 +1,4 @@
-prototype(MyVendor.AwesomeNeosProject:Component.Accordion.Item) < prototype(Neos.Fusion:Component) {
+prototype(Sandstorm.ComponentLibrary:Component.Accordion.Item) < prototype(Neos.Fusion:Component) {
     title = ''
     content = ''
 
@@ -9,8 +9,8 @@ prototype(MyVendor.AwesomeNeosProject:Component.Accordion.Item) < prototype(Neos
     }
 
     @private {
-        isFirstChild = ${node.identifier == q(node).parents('[instanceof MyVendor.AwesomeNeosProject:Content.Accordion]').children().get(0).identifier}
-        firstAccordionItemIsOpen = ${q(node).parents('[instanceof MyVendor.AwesomeNeosProject:Content.Accordion]').property('firstAccordionItemIsOpen')}
+        isFirstChild = ${node.identifier == q(node).parents('[instanceof Sandstorm.ComponentLibrary:Content.Accordion]').children().get(0).identifier}
+        firstAccordionItemIsOpen = ${q(node).parents('[instanceof Sandstorm.ComponentLibrary:Content.Accordion]').property('firstAccordionItemIsOpen')}
         accordionItemXData = ${'{
             id: "' + node.identifier + '",
             get expanded() {

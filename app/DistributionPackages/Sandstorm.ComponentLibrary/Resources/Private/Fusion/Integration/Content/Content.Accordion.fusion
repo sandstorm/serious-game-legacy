@@ -1,6 +1,6 @@
-prototype(MyVendor.AwesomeNeosProject:Content.Accordion) < prototype(Neos.Neos:ContentComponent) {
-    renderer = MyVendor.AwesomeNeosProject:Component.Accordion {
-        firstChild = ${q(node).find('[instanceof MyVendor.AwesomeNeosProject:Content.Accordion.Item]').get(0)}
+prototype(Sandstorm.ComponentLibrary:Content.Accordion) < prototype(Neos.Neos:ContentComponent) {
+    renderer = Sandstorm.ComponentLibrary:Component.Accordion {
+        firstChild = ${q(node).find('[instanceof Sandstorm.ComponentLibrary:Content.Accordion.Item]').get(0)}
         firstAccordionItemIsOpen = ${q(node).property('firstAccordionItemIsOpen')}
         content = Neos.Neos:ContentCollection {
             @context.node = ${node}

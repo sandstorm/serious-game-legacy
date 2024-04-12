@@ -1,11 +1,11 @@
-prototype(MyVendor.AwesomeNeosProject:Component.Accordion) < prototype(Neos.Fusion:Component) {
+prototype(Sandstorm.ComponentLibrary:Component.Accordion) < prototype(Neos.Fusion:Component) {
     firstChild = ''
     firstAccordionItemIsOpen = false
     content = ''
 
     @propTypes {
         @strict = true
-        firstChild = ${PropTypes.instanceOf('MyVendor.AwesomeNeosProject:Content.Accordion.Item')}
+        firstChild = ${PropTypes.instanceOf('Sandstorm.ComponentLibrary:Content.Accordion.Item')}
         firstAccordionItemIsOpen = ${PropTypes.boolean}
         content = ${PropTypes.string}
     }

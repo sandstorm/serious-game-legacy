@@ -1,5 +1,5 @@
-prototype(MyVendor.AwesomeNeosProject:Content.LogoBar) < prototype(Neos.Neos:ContentComponent) {
-    renderer = MyVendor.AwesomeNeosProject:Component.LogoBar {
+prototype(Sandstorm.ComponentLibrary:Content.LogoBar) < prototype(Neos.Neos:ContentComponent) {
+    renderer = Sandstorm.ComponentLibrary:Component.LogoBar {
         amountOfLogos = ${q(node).property('amountOfLogos')}
         autoplayInterval = ${q(node).property('autoplayInterval')}
 

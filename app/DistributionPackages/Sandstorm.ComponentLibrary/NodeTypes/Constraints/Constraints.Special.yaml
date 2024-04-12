@@ -1,0 +1,7 @@
+'MyVendor.AwesomeNeosProject:Constraints.Special':
+  abstract: true
+  constraints:
+    nodeTypes:
+      'Sandstorm.ComponentLibrary:Content.Accordion': true
+      'Sandstorm.ComponentLibrary:Content.LogoBar': true
+      'Sandstorm.ComponentLibrary:Content.Map': true

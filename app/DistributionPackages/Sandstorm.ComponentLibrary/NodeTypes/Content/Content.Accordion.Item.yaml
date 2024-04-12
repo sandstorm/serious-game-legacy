@@ -1,4 +1,4 @@
-'MyVendor.AwesomeNeosProject:Content.Accordion.Item':
+'Sandstorm.ComponentLibrary:Content.Accordion.Item':
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
   ui:
@@ -9,7 +9,7 @@
       type: 'MyVendor.AwesomeNeosProject:ContentCollection.Default'
       constraints:
         nodeTypes:
-          'MyVendor.AwesomeNeosProject:Content.Accordion': false
+          'Sandstorm.ComponentLibrary:Content.Accordion': false
   properties:
     title:
       type: string

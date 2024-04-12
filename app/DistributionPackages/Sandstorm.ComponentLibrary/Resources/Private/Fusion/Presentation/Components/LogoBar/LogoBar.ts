@@ -1,4 +1,4 @@
-import Alpine, {AlpineComponent} from 'alpinejs'
+import {AlpineComponent} from 'alpinejs'
 import Swiper from 'swiper/bundle'
 import basicSlider, {SliderComponent} from './AbstractSlider'
 

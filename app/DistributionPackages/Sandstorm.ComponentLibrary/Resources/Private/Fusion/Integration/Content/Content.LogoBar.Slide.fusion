@@ -1,7 +1,7 @@
-prototype(MyVendor.AwesomeNeosProject:Content.LogoBar.Slide) < prototype(MyVendor.AwesomeNeosProject:Content.Image) {
+prototype(Sandstorm.ComponentLibrary:Content.LogoBar.Slide) < prototype(MyVendor.AwesomeNeosProject:Content.Image) {
     imgClasses = "max-w-full h-full max-h-20 w-auto"
 
-    @process.wrapWithSliderClass = MyVendor.AwesomeNeosProject:Component.LogoBar.Slide {
+    @process.wrapWithSliderClass = Sandstorm.ComponentLibrary:Component.LogoBar.Slide {
         content = ${value}
     }
 }

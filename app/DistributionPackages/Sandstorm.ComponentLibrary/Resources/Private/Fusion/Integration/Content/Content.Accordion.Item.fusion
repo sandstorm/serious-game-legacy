@@ -1,5 +1,5 @@
-prototype(MyVendor.AwesomeNeosProject:Content.Accordion.Item) < prototype(Neos.Neos:ContentComponent) {
-    renderer = MyVendor.AwesomeNeosProject:Component.Accordion.Item {
+prototype(Sandstorm.ComponentLibrary:Content.Accordion.Item) < prototype(Neos.Neos:ContentComponent) {
+    renderer = Sandstorm.ComponentLibrary:Component.Accordion.Item {
         title = Neos.Neos:Editable {
             property = 'title'
             block = false

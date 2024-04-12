@@ -1,4 +1,4 @@
-'MyVendor.AwesomeNeosProject:Content.Accordion':
+'Sandstorm.ComponentLibrary:Content.Accordion':
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
     'Neos.Neos:ContentCollection': true
@@ -10,12 +10,12 @@
   constraints:
     nodeTypes:
       '*': false
-      'MyVendor.AwesomeNeosProject:Content.Accordion.Item': true
+      'Sandstorm.ComponentLibrary:Content.Accordion.Item': true
   options:
     template:
       childNodes:
         firstAccordionItem:
-          type: 'MyVendor.AwesomeNeosProject:Content.Accordion.Item'
+          type: 'Sandstorm.ComponentLibrary:Content.Accordion.Item'
           properties:
             title: 'Title'
           childNodes:
