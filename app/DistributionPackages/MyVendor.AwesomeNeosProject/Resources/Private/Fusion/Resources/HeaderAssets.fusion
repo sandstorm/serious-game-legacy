@@ -37,16 +37,4 @@ prototype(MyVendor.AwesomeNeosProject:Resources.HeaderAssets) < prototype(Neos.F
         attributes.defer = "defer"
         @process.neverBlock = ${CookiePunch.neverBlockTags(["script"], value)}
     }
-
-    // TODO make part of component package
-    componentJs = Neos.Fusion:Tag {
-        tagName = 'script'
-        attributes.defer = true
-        attributes.type = 'text/javascript'
-        attributes.src = Neos.Fusion:ResourceUri {
-            path = 'resource://Sandstorm.ComponentLibrary/Public/bundle.js'
-        }
-        attributes.defer = "defer"
-        @process.neverBlock = ${CookiePunch.neverBlockTags(["script"], value)}
-    }
 }

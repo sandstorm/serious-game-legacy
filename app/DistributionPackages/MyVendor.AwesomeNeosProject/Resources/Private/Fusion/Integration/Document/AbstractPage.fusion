@@ -1,7 +1,6 @@
 prototype(MyVendor.AwesomeNeosProject:Document.AbstractPage) < prototype(Neos.Neos:Page) {
     head {
         javascripts.site = MyVendor.AwesomeNeosProject:Resources.HeaderAssets
-        # Remove on kickstart
         javascripts.componentLibrary = Sandstorm.ComponentLibrary:Resources.HeaderAssets
     }
 

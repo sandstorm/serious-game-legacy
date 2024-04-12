@@ -228,6 +228,12 @@ EOF
 fi
 echo
 
+############### Remove assets include from AbstractPage.fusion ################
+# removes the assets include from the AbstractPage.fusion on kickstart
+
+_yellow_echo "Removing assets include from AbstractPage.fusion ..."
+sed -i '' '/javascripts.componentLibrary = Sandstorm.ComponentLibrary:Resources.HeaderAssets/d' ./app/DistributionPackages/${vendorName}.${packageName}/Resources/Private/Fusion/Integration/Document/AbstractPage.fusion
+
 ############### Removing sandstorm/component-library from composer.json ################
 
 _yellow_echo "Removing sandstorm/component-library from composer.json ..."
