@@ -1,0 +1,104 @@
+/* Cookie Punch */
+#cookie-punch .klaro {
+    font-size: 1rem;
+}
+
+#cookie-punch .klaro .cookie-modal {
+    z-index: 3000;
+}
+
+#cookie-punch .klaro .cookie-modal .cm-btn {
+    margin-bottom: 0;
+
+    @media all and (max-width: 768px) {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+#cookie-punch .klaro .cookie-modal .cm-modal .cm-footer-buttons {
+    @media all and (max-width: 768px) {
+        flex-direction: column;
+    }
+}
+
+#cookie-punch .klaro .cm-list-input:checked + .cm-list-label .slider {
+    background-color: #00aeef;
+}
+
+#cookie-punch .klaro .context-notice {
+    max-width: 1400px;
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    min-height: 300px;
+}
+
+/* Buttons */
+#cookie-punch .klaro .cookie-modal .cm-btn-accept-all,
+#cookie-punch .klaro .cookie-modal .cm-btn-accept,
+#cookie-punch .klaro .cookie-modal .cm-btn-decline {
+    display: inline-block;
+    height: 40px;
+    padding: 0 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    line-height: 2rem;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+    overflow: hidden;
+    whitespace: nowrap;
+    border: 1p solid transparent;
+
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+#cookie-punch .klaro .cookie-modal .cm-btn-accept-all:focus,
+#cookie-punch .klaro .cookie-modal .cm-btn-accept:focus,
+#cookie-punch .klaro .cookie-modal .cm-btn-decline:focus {
+    outline: 1px solid #00aeef;
+}
+
+#cookie-punch .klaro .cookie-modal .cm-btn-accept-all {
+    border-color: #00aeef;
+    background: #00aeef;
+    color: white;
+    @apply active:text-white;
+    @apply active:border-black;
+    @apply active:bg-black;
+}
+
+#cookie-punch .klaro .cookie-modal .cm-btn-accept-all:hover,
+#cookie-punch .klaro .cookie-modal .cm-btn-accept-all:focus {
+    border-color: #0089bc;
+    background: #0089bc;
+    color: white;
+}
+
+#cookie-punch .klaro .cookie-modal .cm-btn-accept,
+#cookie-punch .klaro .cookie-modal .cm-btn-decline {
+    border-color: #434343;
+    background: #434343;
+    color: white;
+}
+
+#cookie-punch .klaro .cookie-modal .cm-btn-accept:hover,
+#cookie-punch .klaro .cookie-modal .cm-btn-decline:hover,
+#cookie-punch .klaro .cookie-modal .cm-btn-accept:focus,
+#cookie-punch .klaro .cookie-modal .cm-btn-decline:focus {
+    border-color: #282828;
+    background: #282828;
+    color: white;
+}
+
+#cookie-punch .klaro .cookie-modal .cm-btn-accept-all:active,
+#cookie-punch .klaro .cookie-modal .cm-btn-accept:active,
+#cookie-punch .klaro .cookie-modal .cm-btn-decline:active {
+    border-color: #222;
+    background: #222;
+    color: white;
+}

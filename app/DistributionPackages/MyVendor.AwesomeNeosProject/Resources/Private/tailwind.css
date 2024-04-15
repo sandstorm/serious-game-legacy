@@ -1,5 +1,6 @@
 @import './node_modules/swiper/swiper-bundle.css';
 @import './Styles/neos.css';
+@import './Styles/cookiePunch.css';
 @import './Styles/icons.css';
 
 @tailwind base;
@@ -157,56 +158,5 @@
     figure.table table th:not(:last-child) {
         @apply pr-4;
         @apply md:pr-8;
-    }
-
-    /* Styles for cookie punch buttons & form buttons */
-    #cookie-punch .klaro .cookie-modal .cm-btn-accept-all,
-    #cookie-punch .klaro .cookie-modal .cm-btn-accept,
-    #cookie-punch .klaro .cookie-modal .cm-btn-decline {
-        @apply no-underline;
-        @apply cursor-pointer;
-        @apply transition;
-        @apply focus:outline;
-        @apply focus:outline-primary-main;
-
-        @apply inline-block;
-        @apply h-8;
-        @apply py-0;
-        @apply px-4;
-        @apply text-center;
-        @apply text-sm;
-        @apply text-ellipsis;
-        @apply whitespace-nowrap overflow-hidden align-middle leading-8 border;
-    }
-
-    #cookie-punch .klaro .cookie-modal .cm-btn-accept-all {
-        @apply border-primary-main;
-        @apply bg-primary-main;
-        @apply text-white;
-        @apply hover:text-white;
-        @apply hover:border-primary-dark;
-        @apply hover:bg-primary-dark;
-        @apply focus:text-white;
-        @apply focus:border-primary-dark;
-        @apply focus:bg-primary-dark;
-        @apply active:text-white;
-        @apply active:border-black;
-        @apply active:bg-black;
-    }
-
-    #cookie-punch .klaro .cookie-modal .cm-btn-accept,
-    #cookie-punch .klaro .cookie-modal .cm-btn-decline {
-        @apply border-grey-main;
-        @apply bg-grey-main;
-        @apply text-white;
-        @apply hover:text-white;
-        @apply hover:border-grey-dark;
-        @apply hover:bg-grey-dark;
-        @apply focus:text-white;
-        @apply focus:border-grey-dark;
-        @apply focus:bg-grey-dark;
-        @apply active:text-white;
-        @apply active:border-black;
-        @apply active:bg-black;
     }
 }
