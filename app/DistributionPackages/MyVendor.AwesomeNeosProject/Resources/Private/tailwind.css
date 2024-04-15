@@ -105,6 +105,21 @@
         @apply active:text-primary-dark;
     }
 
+    /* Styles for form errors */
+
+    form .error {
+        @apply text-xs;
+    }
+
+    form .errors {
+        @apply list-none;
+        @apply mt-1;
+        @apply mx-0;
+        @apply mb-0;
+        @apply px-0;
+        @apply text-error;
+    }
+
     /* Styles for ckeditor elements which we cannot style directly */
     /*---------\
     | TABLE
@@ -147,8 +162,7 @@
     /* Styles for cookie punch buttons & form buttons */
     #cookie-punch .klaro .cookie-modal .cm-btn-accept-all,
     #cookie-punch .klaro .cookie-modal .cm-btn-accept,
-    #cookie-punch .klaro .cookie-modal .cm-btn-decline,
-    .form .form-file-upload label {
+    #cookie-punch .klaro .cookie-modal .cm-btn-decline {
         @apply no-underline;
         @apply cursor-pointer;
         @apply transition;
@@ -181,8 +195,7 @@
     }
 
     #cookie-punch .klaro .cookie-modal .cm-btn-accept,
-    #cookie-punch .klaro .cookie-modal .cm-btn-decline,
-    .form .form-file-upload label {
+    #cookie-punch .klaro .cookie-modal .cm-btn-decline {
         @apply border-grey-main;
         @apply bg-grey-main;
         @apply text-white;

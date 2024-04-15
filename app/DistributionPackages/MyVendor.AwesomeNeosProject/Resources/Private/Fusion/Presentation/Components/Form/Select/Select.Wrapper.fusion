@@ -1,0 +1,12 @@
+prototype(MyVendor.AwesomeNeosProject:Component.Form.Select.Wrapper) < prototype(Neos.Fusion:Component) {
+    content = ''
+
+    @propTypes {
+        @strict = true
+        content = ${PropTypes.string}
+    }
+
+    renderer = afx`
+        <div class="relative after:content-['\\25BC'] after:pointer-events-none after:absolute after:flex after:justify-center after:items-center after:w-8 after:h-8 after:top-0 after:right-0 hover:after:text-primary-main transition">{props.content}</div>
+    `
+}

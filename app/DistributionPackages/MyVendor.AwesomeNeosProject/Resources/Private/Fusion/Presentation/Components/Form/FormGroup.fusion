@@ -1,0 +1,3 @@
+prototype(MyVendor.AwesomeNeosProject:Component.Form.FormGroup) < prototype(Neos.Fusion.Form:FieldContainer) {
+    class = 'mb-4 [&>label]:text-xs'
+}

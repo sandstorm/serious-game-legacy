@@ -1,0 +1,3 @@
+prototype(MyVendor.AwesomeNeosProject:Component.Form.FormGroup.Hidden) < prototype(Neos.Fusion.Form:FieldContainer) {
+    class = 'opacity-0 absolute inset-0 h-0 w-0 -z-[1]'
+}

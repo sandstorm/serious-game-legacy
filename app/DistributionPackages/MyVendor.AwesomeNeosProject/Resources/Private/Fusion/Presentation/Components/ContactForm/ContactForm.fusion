@@ -1,66 +1,61 @@
 prototype(MyVendor.AwesomeNeosProject:Component.ContactForm) < prototype(Neos.Fusion:Component) {
     renderer = afx`
-        <Neos.Fusion.Form:FieldContainer
-            class="form-group opacity-0 absolute inset-0 h-0 w-0 -z-[1]"
+        <MyVendor.AwesomeNeosProject:Component.Form.FormGroup.Hidden
             field.name="surname"
+            class="min"
             label={I18n.translate('MyVendor.AwesomeNeosProject:ContactForm:surname')}
             attributes.aria-hidden="true"
         >
             <Neos.Fusion.Form:Input field.name="surname" attributes.autocomplete="off" attributes.tabindex="-1" />
-        </Neos.Fusion.Form:FieldContainer>
+        </MyVendor.AwesomeNeosProject:Component.Form.FormGroup.Hidden>
 
-        <Neos.Fusion.Form:FieldContainer class="form-group" field.name="name" label={I18n.translate('MyVendor.AwesomeNeosProject:ContactForm:label.name')}>
-            <Neos.Fusion.Form:Input field.name="name"/>
-        </Neos.Fusion.Form:FieldContainer>
+        <MyVendor.AwesomeNeosProject:Component.Form.FormGroup field.name="name" label={I18n.translate('MyVendor.AwesomeNeosProject:ContactForm:label.name')}>
+            <MyVendor.AwesomeNeosProject:Component.Form.Input field.name="name"/>
+        </MyVendor.AwesomeNeosProject:Component.Form.FormGroup>
 
-        <Neos.Fusion.Form:FieldContainer class="form-group" field.name="email" label={I18n.translate('MyVendor.AwesomeNeosProject:ContactForm:label.email')}>
-            <Neos.Fusion.Form:Input attributes.type="email" field.name="email"/>
-        </Neos.Fusion.Form:FieldContainer>
+        <MyVendor.AwesomeNeosProject:Component.Form.FormGroup field.name="email" label={I18n.translate('MyVendor.AwesomeNeosProject:ContactForm:label.email')}>
+            <MyVendor.AwesomeNeosProject:Component.Form.Input attributes.type="email" field.name="email"/>
+        </MyVendor.AwesomeNeosProject:Component.Form.FormGroup>
 
-        <Neos.Fusion.Form:FieldContainer class="form-group" field.name="message" label={I18n.translate('MyVendor.AwesomeNeosProject:ContactForm:label.message')}>
-            <Neos.Fusion.Form:Textarea field.name="message"/>
-        </Neos.Fusion.Form:FieldContainer>
+        <MyVendor.AwesomeNeosProject:Component.Form.FormGroup field.name="message" label={I18n.translate('MyVendor.AwesomeNeosProject:ContactForm:label.message')}>
+            <MyVendor.AwesomeNeosProject:Component.Form.Textarea field.name="message"/>
+        </MyVendor.AwesomeNeosProject:Component.Form.FormGroup>
 
-        <Neos.Fusion.Form:FieldContainer class="form-group" field.name="selection"
-                                         label={I18n.translate('MyVendor.AwesomeNeosProject:ContactForm:label.likeForm')}>
-            <div class="select">
-                <Neos.Fusion.Form:Select field.name="selection">
+        <MyVendor.AwesomeNeosProject:Component.Form.FormGroup field.name="selection" label={I18n.translate('MyVendor.AwesomeNeosProject:ContactForm:label.likeForm')}>
+            <MyVendor.AwesomeNeosProject:Component.Form.Select.Wrapper>
+                <MyVendor.AwesomeNeosProject:Component.Form.Select field.name="selection">
                     <Neos.Fusion.Form:Select.Option option.value="yes">{I18n.translate('MyVendor.AwesomeNeosProject:ContactForm:label.likeForm.option.yes')}</Neos.Fusion.Form:Select.Option>
                     <Neos.Fusion.Form:Select.Option option.value="yes, but...">{I18n.translate('MyVendor.AwesomeNeosProject:ContactForm:label.likeForm.option.yesBut')}</Neos.Fusion.Form:Select.Option>
                     <Neos.Fusion.Form:Select.Option option.value="no">{I18n.translate('MyVendor.AwesomeNeosProject:ContactForm:label.likeForm.option.no')}</Neos.Fusion.Form:Select.Option>
-                </Neos.Fusion.Form:Select>
-            </div>
-        </Neos.Fusion.Form:FieldContainer>
-
-
+                </MyVendor.AwesomeNeosProject:Component.Form.Select>
+            </MyVendor.AwesomeNeosProject:Component.Form.Select.Wrapper>
+        </MyVendor.AwesomeNeosProject:Component.Form.FormGroup>
 
         <div x-data="{ fileName: '' }">
-            <Neos.Fusion.Form:FieldContainer class="form-group form-file-upload" field.name="attachment1" >
-                <Neos.Fusion.Form:Input
+            <MyVendor.AwesomeNeosProject:Component.Form.FormGroup.FileUpload field.name="attachment1" >
+                <MyVendor.AwesomeNeosProject:Component.Form.Input.FileUpload
                     attributes.accept=".pdf"
                     attributes.type="file"
                     attributes.x-on:change="fileName = $event.target.files[0].name"
                     field.name="attachment1"
                 />
 
-                <label for="contactform[attachment1]" x-text={"fileName === '' ? '" + I18n.translate('MyVendor.AwesomeNeosProject:ContactForm:label.uploadPdf') + "' : fileName"}>
-                </label>
-            </Neos.Fusion.Form:FieldContainer>
+                <MyVendor.AwesomeNeosProject:Component.Form.Label.FileUpload for="contactform[attachment1]"></MyVendor.AwesomeNeosProject:Component.Form.Label.FileUpload>
+            </MyVendor.AwesomeNeosProject:Component.Form.FormGroup.FileUpload>
         </div>
 
         <div class="mb-4">
-            <label class="block text-sm m-1">
+            <label class="block text-sm m-1 text-grey-light">
                 * {I18n.translate('MyVendor.AwesomeNeosProject:ContactForm:requiredFields')}
             </label>
         </div>
 
         <div class="m-1 flex justify-center items-center">
-            <Neos.Fusion.Form:Button
+            <MyVendor.AwesomeNeosProject:Component.Form.SendButton
                 attributes.id="submitContactForm"
-                attributes.class="flex items-center no-underline cursor-pointer transition focus:outline focus:outline-primary-main disabled:opacity-50 h-8 py-0 px-4 justify-center text-sm whitespace-nowrap overflow-hidden border border-primary-main bg-primary-main text-white hover:text-white hover:border-primary-dark hover:bg-primary-dark focus:text-white focus:border-primary-dark focus:bg-primary-dark active:text-white active:border-black active:bg-black"
                 attributes.disabled={false}>
             {I18n.translate('MyVendor.AwesomeNeosProject:ContactForm:send')}
-        </Neos.Fusion.Form:Button>
+        </MyVendor.AwesomeNeosProject:Component.Form.SendButton>
         </div>
     `
 }

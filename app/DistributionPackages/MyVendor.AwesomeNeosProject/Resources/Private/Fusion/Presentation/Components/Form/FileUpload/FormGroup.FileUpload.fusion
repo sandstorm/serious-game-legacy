@@ -1,0 +1,3 @@
+prototype(MyVendor.AwesomeNeosProject:Component.Form.FormGroup.FileUpload) < prototype(Neos.Fusion.Form:FieldContainer) {
+    class = 'mb-4'
+}
