@@ -86,7 +86,7 @@ services:
   #####
   # Maria DB
   maria-db:
-    image: mariadb:10.3
+    image: mariadb:10.11
     ports:
       - 13306:3306
     networks:
@@ -97,6 +97,7 @@ services:
       MYSQL_USER: neos
       MYSQL_PASSWORD: neos
       DATABASE_E2ETEST: neos_e2etest
+      MARIADB_AUTO_UPGRADE: 1
     # use Unicode encoding as default!
     volumes:
       - ./deployment/local-dev/maria-db/createTestingDB.sh:/createTestingDB.sh:cached
