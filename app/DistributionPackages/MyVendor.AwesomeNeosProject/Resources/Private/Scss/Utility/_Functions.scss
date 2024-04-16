@@ -1,5 +1,0 @@
-@use 'Utility/Variables/Breakpoints';
-
-@function breakpoint($key) {
-    @return map-get(Breakpoints.$breakpoints, $key);
-}
