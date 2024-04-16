@@ -8,12 +8,10 @@
         "swiper": "^10.2.0"
     },
     "scripts": {
-        "watch": "concurrently \"yarn run watch:scss\" \"yarn run watch:tailwind\" \"yarn run watch:js\" \"yarn run watch:typecheck\"",
-        "watch:scss": "yarn run build:scss --watch",
+        "watch": "concurrently \"yarn run watch:tailwind\" \"yarn run watch:js\" \"yarn run watch:typecheck\"",
         "watch:tailwind": "npx tailwindcss -i ./tailwind.css -o ../Public/tailwind.css --watch",
         "watch:js": "node ./build.mjs --watch",
-        "build": "yarn run typecheck && yarn run build:scss && yarn run build:tailwind && yarn run postbuild:css && yarn run build:js",
-        "build:scss": "sass -I Scss/ -I Fusion/ Scss/main.scss:../Public/bundle.css --source-map --style compressed",
+        "build": "yarn run typecheck && yarn run build:tailwind && yarn run postbuild:css && yarn run build:js",
         "build:tailwind": "npx tailwindcss -i ./tailwind.css -o ../Public/tailwind.css",
         "build:js": "node ./build.mjs",
         "postbuild:css": "./node_modules/.bin/postcss --use autoprefixer --autoprefixer.browsers 'last 4 versions' ../Public/*.css -d ../Public/",
@@ -32,7 +30,6 @@
         "nodemon": "^2.0.12",
         "postcss-cli": "^7.1.1",
         "prettier": "^2.4.0",
-        "sass": "^1.26.0",
         "tailwindcss": "^3.4.1",
         "typescript": "^5.0.2",
         "vitest": "^1.3.1"
