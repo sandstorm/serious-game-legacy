@@ -33,3 +33,4 @@ Sandstorm:
           - 'Resources/Private/Translations/en/NodeTypes/Content/LogoBar.xlf'
         jsDependencies:
           - 'swiper@^10.2.0'
+        alpineComponent: true

@@ -89,6 +89,44 @@ function add-component {
 
     yq eval ".$componentsPackageNamespace.Components.$name.jsDependencies[]" "$componentsPackagePath/Configuration/Settings.Components.yaml" | install_js_dependencies
 
+    # add to main.ts if it is an alpine component
+    add_to_main_ts() {
+        pushd "$sitePackagePath/Resources/Private/JavaScript" > /dev/null
+        file_path="main.ts"
+
+        # 1. Add import to main.ts
+        _echo_yellow "Add component import to main.ts"
+        importMarker="// start: Component Library Imports //"
+        #TODO: Maybe has import path to config?
+        importTextToAppend="import $name, { ${name}Component } from '../Fusion/Presentation/Components/$name/$name'"
+
+        awk -v marker="$importMarker" -v text="$importTextToAppend" '
+            { print }
+            $0 ~ marker { print text }
+        ' "$file_path" > tmpfile && mv tmpfile "$file_path"
+
+        # 2. Add Alpine.data to main.ts
+        _echo_yellow "Add component to main.ts"
+        componentMarker="// start: Component Library Components //"
+        # covert the first letter of the component to lower case for the Alpine.data name
+        dataName="$(awk '{print tolower(substr($0, 1, 1)) substr($0, 2)}' <<< "$name")"
+        componentTextToAppend="Alpine.data('$dataName', $name as (value: any) => AlpineComponent<${name}Component>)"
+
+        awk -v marker="$componentMarker" -v text="$componentTextToAppend" '
+            { print }
+            $0 ~ marker { print text }
+        ' "$file_path" > tmpfile && mv tmpfile "$file_path"
+
+        popd > /dev/null
+    }
+
+    isAlpineComponent=$(yq eval ".$componentsPackageNamespace.Components.$name.alpineComponent" "$componentsPackagePath/Configuration/Settings.Components.yaml")
+
+    # we only add the component to main.ts if it is an alpine component
+    if [ "$isAlpineComponent" = "true" ]; then
+        add_to_main_ts
+    fi
+
     # add constraint to start page config
     pushd "$sitePackagePath/NodeTypes/Constraints" > /dev/null
     constraintsKey="$sitePackageNamespace:$documentName"

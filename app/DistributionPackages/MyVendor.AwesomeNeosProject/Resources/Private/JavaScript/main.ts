@@ -30,5 +30,5 @@ Alpine.data('slider', Slider as (value: any) => AlpineComponent<SliderComponent>
 // Aline is initialized in the component library main.ts to avoid two initializations.
 // @ts-ignore
 if( !window.Alpine ) window.Alpine = Alpine;
-// end: replace wirth Alpine.start() on kickstart //
+// end: replace with Alpine.start() on kickstart //
 
