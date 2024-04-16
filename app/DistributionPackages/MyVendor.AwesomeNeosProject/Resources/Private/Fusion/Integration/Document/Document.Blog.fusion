@@ -18,6 +18,12 @@ prototype(MyVendor.AwesomeNeosProject:Document.Blog) < prototype(MyVendor.Awesom
 
                 itemRenderer = MyVendor.AwesomeNeosProject:Content.BlogPostPreview
             }
+
+            prototype(Flowpack.Listable:Pagination) {
+                class = "list-none p-0 my-8 mx-0 flex justify-center items-center gap-4 flex-wrap"
+                itemClass = "w-8 h-8 border border-grey-lighter [&>a]:flex [&>a]:justify-center [&>a]:items-center [&>a]:w-full [&>a]:h-full"
+                currentItemClass = "border-primary-main bg-primary-main [&>a]:text-white"
+            }
         }
     }
     body.main.content.blogposts.@position = 'after mainContent'
