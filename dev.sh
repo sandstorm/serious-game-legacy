@@ -239,8 +239,23 @@ function start-e2e-testrunner {
   source "$HOME/.nvm/nvm.sh"
   nvm use
   npm install
-  node index.js
+  node index.js &
+  _echo_green "Testrunner is running on port 3000"
   popd
+}
+
+function stop-e2e-testrunner {
+	kill -9 $(lsof -t -i:3000)
+}
+
+function check-e2e-testrunner {
+  if lsof -Pi :3000 -sTCP:LISTEN -t >/dev/null; then
+	_echo_green "Testrunner is already running on port 3000"
+  else
+	_echo_red "Testrunner is not running on port 3000"
+	_echo_green "Testrunner will be started"
+	start-e2e-testrunner
+  fi
 }
 
 function run-e2e-tests {
@@ -248,7 +263,9 @@ function run-e2e-tests {
 	docker compose exec neos bash -c ". /etc/bash.vips-arm64-hotfix.sh; FLOW_CONTEXT=Development/Docker/Behat ./flow doctrine:migrate"
 	docker compose exec neos bash -c ". /etc/bash.vips-arm64-hotfix.sh; FLOW_CONTEXT=Development/Docker/Behat ./flow user:create --roles Administrator admin password LocalDev Admin || true"
 
-	echo "TODO: check if testrunner is running and give hint"
+	# Check if testrunner is running
+	check-e2e-testrunner
+
 	docker compose exec neos bin/behat -c Packages/Sites/MyVendor.AwesomeNeosProject/Tests/Behavior/behat.yml.dist -vvv $1
 	echo
 	echo "You can now run 'dev open-styleguide'"
@@ -260,7 +277,8 @@ function run-e2e-tests-dev {
 	docker compose exec neos bash -c ". /etc/bash.vips-arm64-hotfix.sh; FLOW_CONTEXT=Development/Docker/Behat ./flow doctrine:migrate"
 	docker compose exec neos bash -c ". /etc/bash.vips-arm64-hotfix.sh; FLOW_CONTEXT=Development/Docker/Behat ./flow user:create --roles Administrator admin password LocalDev Admin || true"
 
-	echo "TODO: check if testrunner is running and give hint"
+	# Check if testrunner is running
+	check-e2e-testrunner
 	docker compose exec neos bin/behat -c Packages/Sites/MyVendor.AwesomeNeosProject/Tests/Behavior/behat.yml.dist -vvv --tags=dev
 	echo
 	echo "You can now run 'dev open-styleguide'"
