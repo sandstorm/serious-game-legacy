@@ -54,12 +54,12 @@ Run `./kickstart.sh` and follow the instructions.
   - [Recommended Packages](#recommended-packages)
   - [Coding Guidelines](#coding-guidelines)
   - [Improving Kickstart Experience](#improving-kickstart-experience)
-- [Production Setup](#production-setup)
-  - [Important URLs](#important-urls)
-  - [Matomo](#matomo)
-  - [Production Cookbook / Tips and Tricks](#production-cookbook--tips-and-tricks)
-    - [my Neos container does not start, how do I debug?](#my-neos-container-does-not-start-how-do-i-debug)
-    - [Connecting to the production database](#connecting-to-the-production-database)
+  - [Production Setup](#production-setup)
+      - [Important URLs](#important-urls)
+      - [Matomo](#matomo)
+      - [Production Cookbook / Tips and Tricks](#production-cookbook--tips-and-tricks)
+          - [my Neos container does not start, how do I debug?](#my-neos-container-does-not-start-how-do-i-debug)
+          - [Connecting to the production database](#connecting-to-the-production-database)
   - [Backlog](#backlog)
 <!-- TOC -->
 
@@ -322,18 +322,18 @@ Run `./kickstart.sh --restore-git` after testing changes you made to `./kickstar
 
 [//]: # (KICKSTART_INFO_SECTION__END)
 
-# Production Setup
+## Production Setup
 
-## Important URLs
+### Important URLs
 
-## Matomo
+### Matomo
 
 For Analytics, we usually use Matomo. Check here for tipps and tricks, e.g. on how to configure it so that we do not
 need a cookie consent: https://intern.sandstorm.de/knowledge/datenschutz/matomo-zugriffsstatistiken
 
-## Production Cookbook / Tips and Tricks
+### Production Cookbook / Tips and Tricks
 
-### my Neos container does not start, how do I debug?
+#### my Neos container does not start, how do I debug?
 
 **Symptom:** There is an error in the Entrypoint Neos container during `docker compose up -d`.
 
@@ -346,7 +346,7 @@ cd [project-name]
 docker compose run --entrypoint /bin/bash neos
 ```
 
-### Connecting to the production database
+#### Connecting to the production database
 
 When connecting to the system via SSH, use `-L` for a local port forward like this:
 

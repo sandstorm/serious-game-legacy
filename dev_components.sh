@@ -25,11 +25,15 @@ function add-component {
 
     constraintsNodeName="Constraints.Base"
 
-    # get component name from user input
-    read -p "Name of the component: " name
+    if [ -z "$1" ]; then
+        # get component name from user input
+        read -p "Name of the component: " name
+    else
+        name="$1"
+    fi
 
     # check if component exists and break with warning if not
-    yq eval ".$componentsPackageNamespace.Components | keys" "$componentsPackagePath/Configuration/Settings.Components.yaml" | grep -q "$name" || { _echo_red "Component $name not found"; return 1; }
+    yq eval ".$componentsPackageNamespace.Components | keys" "$componentsPackagePath/Configuration/Settings.Components.yaml" | grep -q "$name" || { _echo_red "Component $name not found"; _echo_yellow "Available components:"; list-components; return 1; }
 
     # TODO: distinguish between document and content types
     documentName="Content.$name"
