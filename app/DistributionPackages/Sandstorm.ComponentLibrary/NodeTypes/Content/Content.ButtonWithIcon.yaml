@@ -1,4 +1,4 @@
-'MyVendor.AwesomeNeosProject:Content.ButtonWithIcon':
+'Sandstorm.ComponentLibrary:Content.ButtonWithIcon':
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
     'MyVendor.AwesomeNeosProject:Content.Button': true

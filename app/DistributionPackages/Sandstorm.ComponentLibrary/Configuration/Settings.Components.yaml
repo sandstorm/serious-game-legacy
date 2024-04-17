@@ -10,6 +10,12 @@ Sandstorm:
           - 'Resources/Private/Fusion/Presentation/Components/Accordion'
           - 'Resources/Private/Translations/de/NodeTypes/Content/Accordion'
           - 'Resources/Private/Translations/en/NodeTypes/Content/Accordion'
+      ButtonWithIcon:
+        files:
+          - 'NodeTypes/Content/Content.ButtonWithIcon.yaml'
+          - 'Resources/Private/Fusion/Integration/Content/Content.ButtonWithIcon.fusion'
+          - 'Resources/Private/Translations/de/NodeTypes/Content/ButtonWithIcon'
+          - 'Resources/Private/Translations/en/NodeTypes/Content/ButtonWithIcon'
       Download:
         files:
           - 'NodeTypes/Content/Content.Download.yaml'

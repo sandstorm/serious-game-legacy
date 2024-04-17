@@ -1,4 +1,4 @@
-prototype(MyVendor.AwesomeNeosProject:Content.ButtonWithIcon) < prototype(MyVendor.AwesomeNeosProject:Content.Button) {
+prototype(Sandstorm.ComponentLibrary:Content.ButtonWithIcon) < prototype(MyVendor.AwesomeNeosProject:Content.Button) {
     renderer = MyVendor.AwesomeNeosProject:Component.Button {
         icon = ${q(node).property('icon')}
         iconAlignment = ${q(node).property('iconAlign')}
