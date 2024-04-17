@@ -10,6 +10,7 @@ Sandstorm:
           - 'Resources/Private/Fusion/Presentation/Components/Accordion'
           - 'Resources/Private/Translations/de/NodeTypes/Content/Accordion'
           - 'Resources/Private/Translations/en/NodeTypes/Content/Accordion'
+        constraintType: 'Special'
       ButtonWithIcon:
         files:
           - 'NodeTypes/Content/Content.ButtonWithIcon.yaml'
@@ -47,6 +48,7 @@ Sandstorm:
         jsDependencies:
           - 'swiper@^10.2.0'
         alpineComponent: true
+        constraintType: "Special"
       Spacer:
         files:
           - 'NodeTypes/Content/Content.Spacer.yaml'

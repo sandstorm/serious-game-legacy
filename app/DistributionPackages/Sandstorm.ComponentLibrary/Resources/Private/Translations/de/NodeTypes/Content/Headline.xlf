@@ -6,7 +6,7 @@
                 <source>Überschrift</source>
             </trans-unit>
             <trans-unit id="properties.title.ui.inline.editorOptions.placeholder" xml:space="preserve">
-                <source>Überschrift</source>
+                <source>Bitte eine Überschrift angeben</source>
             </trans-unit>
         </body>
     </file>

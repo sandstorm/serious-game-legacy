@@ -23,8 +23,6 @@ function add-component {
     componentsPackageNamespaceWithSlashes="${componentsPackageNamespace//./\\}"
     componentsPackagePath="./app/DistributionPackages/$componentsPackageNamespace"
 
-    constraintsNodeName="Constraints.Base"
-
     if [ -z "$1" ]; then
         # get component name from user input
         read -p "Name of the component: " name
@@ -125,6 +123,17 @@ function add-component {
     # we only add the component to main.ts if it is an alpine component
     if [ "$isAlpineComponent" = "true" ]; then
         add_to_main_ts
+    fi
+
+    # check if a different constraint type is given
+    constraintType=$(yq eval ".$componentsPackageNamespace.Components.$name.constraintType" "$componentsPackagePath/Configuration/Settings.Components.yaml")
+
+    if [ -z "$constraintType" ] || [ "$constraintType" == null ]; then
+        constraintsNodeName="Constraints.Base"
+        echo "No constraint type given. Fallback to $constraintsNodeName"
+    else
+        constraintsNodeName="Constraints.$constraintType"
+        echo "Constraint type given: $constraintType"
     fi
 
     # add constraint to start page config
