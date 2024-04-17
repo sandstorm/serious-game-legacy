@@ -1,5 +1,5 @@
-prototype(MyVendor.AwesomeNeosProject:Content.Teaser) < prototype(Neos.Neos:ContentComponent) {
-    renderer = MyVendor.AwesomeNeosProject:Component.Teaser {
+prototype(Sandstorm.ComponentLibrary:Content.Teaser) < prototype(Neos.Neos:ContentComponent) {
+    renderer = Sandstorm.ComponentLibrary:Component.Teaser {
         height = ${q(node).property('height')}
         textColor = ${q(node).property('textColor')}
 

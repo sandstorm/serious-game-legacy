@@ -56,3 +56,10 @@ Sandstorm:
           - 'Resources/Private/Fusion/Presentation/Components/Spacer'
           - 'Resources/Private/Translations/de/NodeTypes/Content/Spacer.xlf'
           - 'Resources/Private/Translations/en/NodeTypes/Content/Spacer.xlf'
+      Teaser:
+        files:
+          - 'NodeTypes/Content/Content.Teaser.yaml'
+          - 'Resources/Private/Fusion/Integration/Content/Content.Teaser.fusion'
+          - 'Resources/Private/Fusion/Presentation/Components/Teaser'
+          - 'Resources/Private/Translations/de/NodeTypes/Content/Teaser.xlf'
+          - 'Resources/Private/Translations/en/NodeTypes/Content/Teaser.xlf'

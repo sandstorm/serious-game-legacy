@@ -1,4 +1,4 @@
-'MyVendor.AwesomeNeosProject:Content.Teaser':
+'Sandstorm.ComponentLibrary:Content.Teaser':
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
     'Neos.Neos:ContentCollection': true
@@ -10,14 +10,14 @@
     position: 5
   constraints:
     nodeTypes:
-      'MyVendor.AwesomeNeosProject:Content.Headline': true
+      'Sandstorm.ComponentLibrary:Content.Headline': true
       'MyVendor.AwesomeNeosProject:Content.Text': true
       'MyVendor.AwesomeNeosProject:Content.Button': true
   options:
     template:
       childNodes:
         headline:
-          type: 'MyVendor.AwesomeNeosProject:Content.Headline'
+          type: 'Sandstorm.ComponentLibrary:Content.Headline'
           properties:
             title: '<h1>Your Awesome Headline</h1>'
         slogan:
