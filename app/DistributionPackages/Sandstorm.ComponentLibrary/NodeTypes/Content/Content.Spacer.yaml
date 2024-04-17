@@ -1,4 +1,4 @@
-'MyVendor.AwesomeNeosProject:Content.Spacer':
+'Sandstorm.ComponentLibrary:Content.Spacer':
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
   ui:
@@ -20,12 +20,12 @@
             allowEmpty: true
             values:
               small:
-                label: 'Small'
+                label: i18n
               medium:
-                label: 'Medium'
+                label: i18n
               large:
-                label: 'Large'
+                label: i18n
               xlarge:
-                label: 'XL'
+                label: i18n
               xxlarge:
-                label: 'XXL'
+                label: i18n

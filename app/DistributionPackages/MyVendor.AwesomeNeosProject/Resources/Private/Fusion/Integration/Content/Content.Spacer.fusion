@@ -1,5 +1,0 @@
-prototype(MyVendor.AwesomeNeosProject:Content.Spacer) < prototype(Neos.Neos:ContentComponent) {
-    renderer = MyVendor.AwesomeNeosProject:Component.Spacer {
-        height = ${q(node).property('height')}
-    }
-}

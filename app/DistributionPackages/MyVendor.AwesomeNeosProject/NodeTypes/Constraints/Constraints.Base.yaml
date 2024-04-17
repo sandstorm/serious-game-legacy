@@ -4,6 +4,5 @@
     nodeTypes:
       'MyVendor.AwesomeNeosProject:Content.Button': true
       'MyVendor.AwesomeNeosProject:Content.Image': true
-      'MyVendor.AwesomeNeosProject:Content.Spacer': true
       'MyVendor.AwesomeNeosProject:Content.Text': true
       'Jonnitto.PrettyEmbedVideoPlatforms:Content.Video': true

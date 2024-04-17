@@ -14,8 +14,8 @@ Sandstorm:
         files:
           - 'NodeTypes/Content/Content.ButtonWithIcon.yaml'
           - 'Resources/Private/Fusion/Integration/Content/Content.ButtonWithIcon.fusion'
-          - 'Resources/Private/Translations/de/NodeTypes/Content/ButtonWithIcon'
-          - 'Resources/Private/Translations/en/NodeTypes/Content/ButtonWithIcon'
+          - 'Resources/Private/Translations/de/NodeTypes/Content/ButtonWithIcon.xlf'
+          - 'Resources/Private/Translations/en/NodeTypes/Content/ButtonWithIcon.xlf'
       Download:
         files:
           - 'NodeTypes/Content/Content.Download.yaml'
@@ -31,8 +31,8 @@ Sandstorm:
             - 'NodeTypes/Content/Content.Headline.yaml'
             - 'Resources/Private/Fusion/Integration/Content/Content.Headline.fusion'
             - 'Resources/Private/Fusion/Presentation/Components/Headline'
-            - 'Resources/Private/Translations/de/NodeTypes/Content/Headline'
-            - 'Resources/Private/Translations/en/NodeTypes/Content/Headline'
+            - 'Resources/Private/Translations/de/NodeTypes/Content/Headline.xlf'
+            - 'Resources/Private/Translations/en/NodeTypes/Content/Headline.xlf'
       LogoBar:
         files:
           - 'NodeTypes/Content/Content.LogoBar.yaml'
@@ -47,3 +47,10 @@ Sandstorm:
         jsDependencies:
           - 'swiper@^10.2.0'
         alpineComponent: true
+      Spacer:
+        files:
+          - 'NodeTypes/Content/Content.Spacer.yaml'
+          - 'Resources/Private/Fusion/Integration/Content/Content.Spacer.fusion'
+          - 'Resources/Private/Fusion/Presentation/Components/Spacer'
+          - 'Resources/Private/Translations/de/NodeTypes/Content/Spacer.xlf'
+          - 'Resources/Private/Translations/en/NodeTypes/Content/Spacer.xlf'
