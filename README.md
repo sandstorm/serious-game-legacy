@@ -46,6 +46,7 @@ Run `./kickstart.sh` and follow the instructions.
     - [Site Export Prod](#site-export-prod)
   - [Kickstart repository nodetypes](#kickstart-repository-nodetypes)
   - [Add components from the library to your project](#add-components-from-the-library-to-your-project)
+    - [Development](#development)
   - [Custom icon font with icomoon](#custom-icon-font-with-icomoon)
     - [Use custom icons in neos backend](#use-custom-icons-in-neos-backend)
   - [Maps](#maps)
@@ -245,18 +246,26 @@ use `dev generate-repository` to have all this work be done for you :)
 
 The command will create the following files:
 
-- NodeTypes/Document/Document.Repository.yaml
-- NodeTypes/Document/Document.Repository.Item.yaml
-- NodeTypes/Content/Content.Repository.List.yaml
-- Resources/Private/Fusion/Integration/Document/Document.Repository.fusion
-- Resources/Private/Fusion/Integration/Document/Document.Repository.Item.fusion
-- Resources/Private/Fusion/Integration/Content/Content.Repository.List.fusion
+- `NodeTypes/Document/Document.Repository.yaml`
+- `NodeTypes/Document/Document.Repository.Item.yaml`
+- `NodeTypes/Content/Content.Repository.List.yaml`
+- `Resources/Private/Fusion/Integration/Document/Document.Repository.fusion`
+- `Resources/Private/Fusion/Integration/Document/Document.Repository.Item.fusion`
+- `Resources/Private/Fusion/Integration/Content/Content.Repository.List.fusion`
 
 ## Add components from the library to your project
 
 We have a little shell script `dev_components.sh` that helps you to add components from the library to your project.
 Run `dev list-components` to get a list of all available components. Run `dev add-component` to add a
-component to your project.
+component to your project. If you already know the name of the component you want to install you can run e.g.`dev add-component Download`.
+
+### Development
+
+When developing the kickstarter we don't have to install the components, because the component library is included in the composer.json. 
+
+When you want to add a new component to the library you have to:
+1. Add all component files to the Library Package like you would in the Site Package
+2. Add update the `./app/DistributionPackages/Sandstorm.ComponentLibrary/Configuration/Settings.Components.yaml` to add the Settings for the component when being installed.
 
 ## Custom icon font with icomoon
 
