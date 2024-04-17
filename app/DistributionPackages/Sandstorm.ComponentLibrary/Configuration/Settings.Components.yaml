@@ -26,6 +26,13 @@ Sandstorm:
           - 'Tests/Unit/Eel/FileSizeHelperTest.php'
         eelHelpers:
           - 'FileSize'
+      Headline:
+        files:
+            - 'NodeTypes/Content/Content.Headline.yaml'
+            - 'Resources/Private/Fusion/Integration/Content/Content.Headline.fusion'
+            - 'Resources/Private/Fusion/Presentation/Components/Headline'
+            - 'Resources/Private/Translations/de/NodeTypes/Content/Headline'
+            - 'Resources/Private/Translations/en/NodeTypes/Content/Headline'
       LogoBar:
         files:
           - 'NodeTypes/Content/Content.LogoBar.yaml'

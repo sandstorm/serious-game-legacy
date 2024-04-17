@@ -1,5 +1,10 @@
-'MyVendor.AwesomeNeosProject:Mixin.Headline':
-  abstract: true
+'Sandstorm.ComponentLibrary:Content.Headline':
+  superTypes:
+    'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
+  ui:
+    label: i18n
+    icon: icon-header
+    position: 5
   properties:
     title:
       type: string
