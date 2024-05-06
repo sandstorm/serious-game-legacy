@@ -19,43 +19,44 @@ Run `./kickstart.sh` and follow the instructions.
 [//]: # (KICKSTART_INFO_SECTION__END)
 
 <!-- TOC -->
-- [Sandstorm Neos on Docker Kickstart](#sandstorm-neos-on-docker-kickstart)
-  - [Requirements](#requirements)
-  - [Features](#features)
-  - [Initial Setup (required once)](#initial-setup-required-once)
-    - [Install Dependencies](#install-dependencies)
-    - [Setting up IntelliJ](#setting-up-intellij)
-  - [Local Development](#local-development)
-  - [Testing](#testing)
-    - [E2E Test](#e2e-test)
-      - [Debug Failing Tests](#debug-failing-tests)
-      - [Run Single BDD Feature Files / Scenarios](#run-single-bdd-feature-files--scenarios)
-      - [Generating content (node) fixtures workflow](#generating-content-node-fixtures-workflow)
-      - [raise curl-timeouts when using `And I pause for debugging`](#raise-curl-timeouts-when-using-and-i-pause-for-debugging)
-    - [Accessibility Tests](#accessibility-tests)
-      - [Testing without htaccess (e.g. production)](#testing-without-htaccess-eg-production)
-      - [Testing with htaccess (e.g. staging)](#testing-with-htaccess-eg-staging)
-      - [Results](#results)
-      - [Hint](#hint)
-  - [Staging](#staging)
-  - [Site Export / Site Import](#site-export--site-import)
-    - [Site Export Prod](#site-export-prod)
-  - [Automatic Translation with DeepL](#automatic-translation-with-deepl)
-  - [Kickstart repository nodetypes](#kickstart-repository-nodetypes)
-  - [Custom icon font with icomoon](#custom-icon-font-with-icomoon)
-    - [Use custom icons in neos backend](#use-custom-icons-in-neos-backend)
-  - [Maps](#maps)
-  - [Menu](#menu)
-  - [Image sizes](#image-sizes)
-  - [Recommended Packages](#recommended-packages)
-  - [Coding Guidelines](#coding-guidelines)
-  - [Improving Kickstart Experience](#improving-kickstart-experience)
-- [Production Setup](#production-setup)
-  - [Important URLs](#important-urls)
-  - [Production Cookbook / Tips and Tricks](#production-cookbook--tips-and-tricks)
-    - [my Neos container does not start, how do I debug?](#my-neos-container-does-not-start-how-do-i-debug)
-    - [Connecting to the production database](#connecting-to-the-production-database)
-  - [Backlog](#backlog)
+* [Sandstorm Neos on Docker Kickstart](#sandstorm-neos-on-docker-kickstart)
+  * [Requirements](#requirements)
+  * [Features](#features)
+  * [Initial Setup (required once)](#initial-setup-required-once)
+    * [Install Dependencies](#install-dependencies)
+    * [Setting up IntelliJ](#setting-up-intellij)
+  * [Local Development](#local-development)
+  * [Testing](#testing)
+    * [E2E Test](#e2e-test)
+      * [Debug Failing Tests](#debug-failing-tests)
+      * [Run Single BDD Feature Files / Scenarios](#run-single-bdd-feature-files--scenarios)
+      * [Generating content (node) fixtures workflow](#generating-content-node-fixtures-workflow)
+      * [raise curl-timeouts when using `And I pause for debugging`](#raise-curl-timeouts-when-using-and-i-pause-for-debugging)
+    * [Accessibility Tests](#accessibility-tests)
+      * [Testing without htaccess (e.g. production)](#testing-without-htaccess-eg-production)
+      * [Testing with htaccess (e.g. staging)](#testing-with-htaccess-eg-staging)
+      * [Results](#results)
+      * [Hint](#hint)
+  * [Staging](#staging)
+  * [Site Export / Site Import](#site-export--site-import)
+    * [Site Export Prod](#site-export-prod)
+  * [Automatic Translation with DeepL](#automatic-translation-with-deepl)
+  * [Kickstart repository nodetypes](#kickstart-repository-nodetypes)
+  * [Custom icon font with icomoon](#custom-icon-font-with-icomoon)
+    * [Use custom icons in neos backend](#use-custom-icons-in-neos-backend)
+  * [Maps](#maps)
+  * [Menu](#menu)
+  * [Image sizes](#image-sizes)
+  * [Recommended Packages](#recommended-packages)
+  * [Coding Guidelines](#coding-guidelines)
+  * [Improving Kickstart Experience](#improving-kickstart-experience)
+* [Production Setup](#production-setup)
+  * [Important URLs](#important-urls)
+  * [Matomo](#matomo)
+  * [Production Cookbook / Tips and Tricks](#production-cookbook--tips-and-tricks)
+    * [my Neos container does not start, how do I debug?](#my-neos-container-does-not-start-how-do-i-debug)
+    * [Connecting to the production database](#connecting-to-the-production-database)
+  * [Backlog](#backlog)
 <!-- TOC -->
 
 ## Requirements
@@ -325,6 +326,11 @@ Run `./kickstart.sh --restore-git` after testing changes you made to `./kickstar
 # Production Setup
 
 ## Important URLs
+
+## Matomo
+
+For Analytics, we usually use Matomo. Check here for tipps and tricks, e.g. on how to configure it so that we do not
+need a cookie consent: https://intern.sandstorm.de/knowledge/datenschutz/matomo-zugriffsstatistiken
 
 ## Production Cookbook / Tips and Tricks
 
