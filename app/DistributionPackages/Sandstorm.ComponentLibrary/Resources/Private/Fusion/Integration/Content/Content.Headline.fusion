@@ -1,7 +1,0 @@
-prototype(Sandstorm.ComponentLibrary:Content.Headline) < prototype(Neos.Neos:ContentComponent) {
-    renderer = Sandstorm.ComponentLibrary:Component.Headline {
-        title = Neos.Neos:Editable {
-            property = 'title'
-        }
-    }
-}

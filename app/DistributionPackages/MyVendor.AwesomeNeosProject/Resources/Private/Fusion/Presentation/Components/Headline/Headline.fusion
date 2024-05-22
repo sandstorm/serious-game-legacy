@@ -1,4 +1,4 @@
-prototype(Sandstorm.ComponentLibrary:Component.Headline) < prototype(Neos.Fusion:Component) {
+prototype(MyVendor.AwesomeNeosProject:Component.Headline) < prototype(Neos.Fusion:Component) {
     title = ''
 
     @propTypes {

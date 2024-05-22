@@ -1,4 +1,4 @@
-'Sandstorm.ComponentLibrary:Content.Headline':
+'MyVendor.AwesomeNeosProject:Content.Headline':
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
   ui:
@@ -8,7 +8,7 @@
   properties:
     title:
       type: string
-      defaultValue: '<h2>Headline</h2>' # TODO translation not working
+      defaultValue: '<h2>Headline</h2>'
       ui:
         label: i18n
         inlineEditable: true
