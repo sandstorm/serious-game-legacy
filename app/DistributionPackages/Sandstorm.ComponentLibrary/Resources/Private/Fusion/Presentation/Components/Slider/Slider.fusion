@@ -1,4 +1,4 @@
-prototype(MyVendor.AwesomeNeosProject:Component.Slider) < prototype(Neos.Fusion:Component) {
+prototype(Sandstorm.ComponentLibrary:Component.Slider) < prototype(Neos.Fusion:Component) {
     slides = ''
 
     @propTypes {

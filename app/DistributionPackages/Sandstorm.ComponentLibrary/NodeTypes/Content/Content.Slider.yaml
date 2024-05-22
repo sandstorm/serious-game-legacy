@@ -1,4 +1,4 @@
-'MyVendor.AwesomeNeosProject:Content.Slider':
+'Sandstorm.ComponentLibrary:Content.Slider':
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
     'Neos.Neos:ContentCollection': true
@@ -9,9 +9,9 @@
     position: 10
   constraints:
     nodeTypes:
-      'MyVendor.AwesomeNeosProject:Content.Slider.Slide': true
+      'Sandstorm.ComponentLibrary:Content.Slider.Slide': true
   options:
     template:
       childNodes:
         firstSlide:
-          type: 'MyVendor.AwesomeNeosProject:Content.Slider.Slide'
+          type: 'Sandstorm.ComponentLibrary:Content.Slider.Slide'

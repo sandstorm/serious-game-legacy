@@ -1,4 +1,4 @@
-'MyVendor.AwesomeNeosProject:Content.Slider.Slide':
+'Sandstorm.ComponentLibrary:Content.Slider.Slide':
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
     'MyVendor.AwesomeNeosProject:Mixin.Image': true

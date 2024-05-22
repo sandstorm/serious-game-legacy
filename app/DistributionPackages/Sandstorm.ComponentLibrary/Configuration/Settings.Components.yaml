@@ -42,9 +42,7 @@ Sandstorm:
           - 'Resources/Private/Fusion/Integration/Content/Content.LogoBar.Slide.fusion'
           - 'Resources/Private/Fusion/Presentation/Components/LogoBar'
           - 'Resources/Private/Translations/de/NodeTypes/Content/LogoBar'
-          - 'Resources/Private/Translations/de/NodeTypes/Content/LogoBar.xlf'
           - 'Resources/Private/Translations/en/NodeTypes/Content/LogoBar'
-          - 'Resources/Private/Translations/en/NodeTypes/Content/LogoBar.xlf'
         jsDependencies:
           - 'swiper@^10.2.0'
         alpineComponent: true
@@ -70,3 +68,16 @@ Sandstorm:
             - 'Resources/Private/Fusion/Presentation/Components/Quote'
             - 'Resources/Private/Translations/de/NodeTypes/Content/Quote.xlf'
             - 'Resources/Private/Translations/en/NodeTypes/Content/Quote.xlf'
+      Slider:
+        files:
+          - 'NodeTypes/Content/Content.Slider.yaml'
+          - 'NodeTypes/Content/Content.Slider.Slide.yaml'
+          - 'Resources/Private/Fusion/Integration/Content/Content.Slider.fusion'
+          - 'Resources/Private/Fusion/Integration/Content/Content.Slider.Slide.fusion'
+          - 'Resources/Private/Fusion/Presentation/Components/Slider'
+          - 'Resources/Private/Translations/de/NodeTypes/Content/Slider'
+          - 'Resources/Private/Translations/en/NodeTypes/Content/Slider'
+        jsDependencies:
+          - 'swiper@^10.2.0'
+        alpineComponent: true
+        constraintType: "Special"

@@ -6,3 +6,5 @@
       'Sandstorm.ComponentLibrary:Content.Download': true
       'Sandstorm.ComponentLibrary:Content.Headline': true
       'Sandstorm.ComponentLibrary:Content.Spacer': true
+      'Sandstorm.ComponentLibrary:Content.Teaser': true
+      'Sandstorm.ComponentLibrary:Content.Quote': true
