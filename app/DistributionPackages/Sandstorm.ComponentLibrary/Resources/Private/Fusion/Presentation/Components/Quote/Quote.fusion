@@ -1,4 +1,4 @@
-prototype(MyVendor.AwesomeNeosProject:Component.Quote) < prototype(Neos.Fusion:Component) {
+prototype(Sandstorm.ComponentLibrary:Component.Quote) < prototype(Neos.Fusion:Component) {
     text = ''
     person = ''
     image = ''

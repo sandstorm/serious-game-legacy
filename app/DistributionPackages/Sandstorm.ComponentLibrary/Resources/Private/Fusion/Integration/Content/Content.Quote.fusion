@@ -1,5 +1,5 @@
-prototype(MyVendor.AwesomeNeosProject:Content.Quote) < prototype(Neos.Neos:ContentComponent) {
-    renderer = MyVendor.AwesomeNeosProject:Component.Quote {
+prototype(Sandstorm.ComponentLibrary:Content.Quote) < prototype(Neos.Neos:ContentComponent) {
+    renderer = Sandstorm.ComponentLibrary:Component.Quote {
         text = Neos.Neos:Editable {
             property = 'text'
         }

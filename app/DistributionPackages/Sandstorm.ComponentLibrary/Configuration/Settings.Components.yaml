@@ -63,3 +63,10 @@ Sandstorm:
           - 'Resources/Private/Fusion/Presentation/Components/Teaser'
           - 'Resources/Private/Translations/de/NodeTypes/Content/Teaser.xlf'
           - 'Resources/Private/Translations/en/NodeTypes/Content/Teaser.xlf'
+      Quote:
+        files:
+            - 'NodeTypes/Content/Content.Quote.yaml'
+            - 'Resources/Private/Fusion/Integration/Content/Content.Quote.fusion'
+            - 'Resources/Private/Fusion/Presentation/Components/Quote'
+            - 'Resources/Private/Translations/de/NodeTypes/Content/Quote.xlf'
+            - 'Resources/Private/Translations/en/NodeTypes/Content/Quote.xlf'
