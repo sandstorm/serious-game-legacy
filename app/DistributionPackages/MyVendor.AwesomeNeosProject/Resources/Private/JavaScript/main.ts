@@ -4,8 +4,6 @@ import intersect from '@alpinejs/intersect'
 import persist from '@alpinejs/persist'
 import ButtonToTop, { ButtonToTopComponent } from '../Fusion/Presentation/Components/ButtonToTop/ButtonToTop'
 import EventList, { EventListComponent } from '../Fusion/Presentation/Components/Event/List/EventList'
-import Map, { MapComponent } from '../Fusion/Presentation/Components/Map/Map'
-import Slider, { SliderComponent } from '../Fusion/Presentation/Components/Slider/Slider'
 
 // start: Component Library Imports //
 // end: Component Library Imports //
@@ -19,8 +17,6 @@ Alpine.plugin(persist)
 // Components
 Alpine.data('buttonToTop', ButtonToTop as (value: any) => AlpineComponent<ButtonToTopComponent>)
 Alpine.data('eventList', EventList as (value: any) => AlpineComponent<EventListComponent>)
-Alpine.data('map', Map as (value: any) => AlpineComponent<MapComponent>)
-Alpine.data('slider', Slider as (value: any) => AlpineComponent<SliderComponent>)
 
 // start: Component Library Components //
 // end: Component Library Components //

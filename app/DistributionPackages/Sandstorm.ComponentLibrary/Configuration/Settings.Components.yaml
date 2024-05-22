@@ -61,6 +61,7 @@ Sandstorm:
           - 'Resources/Private/Fusion/Presentation/Components/Teaser'
           - 'Resources/Private/Translations/de/NodeTypes/Content/Teaser.xlf'
           - 'Resources/Private/Translations/en/NodeTypes/Content/Teaser.xlf'
+        constraintType: "Special"
       Quote:
         files:
             - 'NodeTypes/Content/Content.Quote.yaml'
@@ -68,6 +69,7 @@ Sandstorm:
             - 'Resources/Private/Fusion/Presentation/Components/Quote'
             - 'Resources/Private/Translations/de/NodeTypes/Content/Quote.xlf'
             - 'Resources/Private/Translations/en/NodeTypes/Content/Quote.xlf'
+        constraintType: "Special"
       Slider:
         files:
           - 'NodeTypes/Content/Content.Slider.yaml'
@@ -79,5 +81,14 @@ Sandstorm:
           - 'Resources/Private/Translations/en/NodeTypes/Content/Slider'
         jsDependencies:
           - 'swiper@^10.2.0'
+        alpineComponent: true
+        constraintType: "Special"
+      Map:
+        files:
+          - 'NodeTypes/Content/Content.Map.yaml'
+          - 'Resources/Private/Fusion/Integration/Content/Content.Map.fusion'
+          - 'Resources/Private/Fusion/Presentation/Components/Map'
+          - 'Resources/Private/Translations/de/NodeTypes/Content/Map.xlf'
+          - 'Resources/Private/Translations/en/NodeTypes/Content/Map.xlf'
         alpineComponent: true
         constraintType: "Special"

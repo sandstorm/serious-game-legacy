@@ -1,5 +1,5 @@
-prototype(MyVendor.AwesomeNeosProject:Content.Map) < prototype(Neos.Neos:ContentComponent) {
-    renderer = MyVendor.AwesomeNeosProject:Component.Map {
+prototype(Sandstorm.ComponentLibrary:Content.Map) < prototype(Neos.Neos:ContentComponent) {
+    renderer = Sandstorm.ComponentLibrary:Component.Map {
         lat = ${q(node).property('lat')}
         lng = ${q(node).property('lng')}
         zoom = ${q(node).property('zoom')}

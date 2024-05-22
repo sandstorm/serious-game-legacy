@@ -1,4 +1,5 @@
 // NOTE: in your esbuild config, set `external: ['/_maptiles/frontend/v1/map-main.js']`
+// see also nginx.conf for the correct location of the maptiles directory
 // for the import below to work.
 
 import { AlpineComponent } from 'alpinejs'
