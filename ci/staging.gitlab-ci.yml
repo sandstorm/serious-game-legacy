@@ -10,6 +10,9 @@ package_app_staging:
   image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.1-v2
   needs:
     - build_assets
+    ### start: delete on kickstart ###
+    - build_assets_component_library
+    ### end: delete on kickstart ###
   cache:
     key: MyVendor.AwesomeNeosProject__composer
     paths:

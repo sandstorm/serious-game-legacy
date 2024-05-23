@@ -112,7 +112,7 @@ _yellow_echo "Replacing Name of Vendor ..."
 _yellow_echo "Replacing Name of Package ..."
 
 # regex pattern for excluding paths and files
-findExcludePaths="(/node_modules/|^./app/Packages|^./app/Build|^./tmp|.idea|.git|/kickstart.sh)"
+findExcludePaths="(/node_modules/|^./app/Packages|^./app/Build|^./tmp|/.git|/kickstart.sh)"
 
 # replace Vendor and Package name -> yaml, php, package.json ...
 # grep -I ignores binary files, q suppresses output, E allows for extended regex, v inverts the match
@@ -134,6 +134,41 @@ if [ "$1" != "--dev" ]
     rm ./kickstart.sh
 fi
 echo
+
+
+############### Remove assets include from AbstractPage.fusion ################
+# removes the assets include from the AbstractPage.fusion on kickstart
+
+_yellow_echo "Removing assets include from AbstractPage.fusion ..."
+sed -i '' '/javascripts.componentLibrary = Sandstorm.ComponentLibrary:Resources.HeaderAssets/d' ./app/DistributionPackages/${vendorName}.${packageName}/Resources/Private/Fusion/Integration/Document/AbstractPage.fusion
+
+############### Removing sandstorm/component-library from composer.json ################
+
+_yellow_echo "Removing sandstorm/component-library from composer.json ..."
+cd app || exit
+composer remove sandstorm/component-library
+cd ..
+
+############## Cleanup docker-compose.yml ################
+
+_yellow_echo "Cleanup docker-compose.yml ..."
+echo "$(sed '/start: delete on kickstart/,/end: delete on kickstart/d' docker-compose.yml)" > docker-compose.yml
+
+############## Cleanup gitlab-ci ################
+
+_yellow_echo "Cleanup .gitlab-ci.yml ..."
+echo "$(sed '/start: delete on kickstart/,/end: delete on kickstart/d' ci/common.gitlab-ci.yml)" > ci/common.gitlab-ci.yml
+echo "$(sed '/start: delete on kickstart/,/end: delete on kickstart/d' ci/staging.gitlab-ci.yml)" > ci/staging.gitlab-ci.yml
+
+############### Add Alpine.start() to main.ts ################
+# remove workaround for dev mode from main.ts
+# from: // start: replace with Alpine.start() on kickstart //
+# to: // end: replace with Alpine.start() on kickstart //
+echo "$(sed '/start: replace with Alpine.start() on kickstart/,/end: replace wirth Alpine.start() on kickstart/d' ./app/DistributionPackages/"${vendorName}"."${packageName}"/Resources/Private/JavaScript/main.ts)" >  ./app/DistributionPackages/"${vendorName}"."${packageName}"/Resources/Private/JavaScript/main.ts
+
+# add 'Alpine.start()' to main.ts add end
+_yellow_echo "Adding Alpine.start() to main.ts ..."
+echo "Alpine.start()" >> ./app/DistributionPackages/"${vendorName}"."${packageName}"/Resources/Private/JavaScript/main.ts
 
 ############### Initializing new Git ################
 
@@ -227,36 +262,6 @@ EOF
     _yellow_echo "NO git repository was initialized."
 fi
 echo
-
-############### Remove assets include from AbstractPage.fusion ################
-# removes the assets include from the AbstractPage.fusion on kickstart
-
-_yellow_echo "Removing assets include from AbstractPage.fusion ..."
-sed -i '' '/javascripts.componentLibrary = Sandstorm.ComponentLibrary:Resources.HeaderAssets/d' ./app/DistributionPackages/${vendorName}.${packageName}/Resources/Private/Fusion/Integration/Document/AbstractPage.fusion
-
-############### Removing sandstorm/component-library from composer.json ################
-
-_yellow_echo "Removing sandstorm/component-library from composer.json ..."
-cd app || exit
-composer remove sandstorm/component-library
-cd ..
-
-############## Cleanup docker-compose.yml ################
-
-_yellow_echo "Cleanup docker-compose.yml ..."
-echo "$(sed '/start: delete on kickstart/,/end: delete on kickstart/d' docker-compose.yml)" > docker-compose.yml
-
-
-############### Add Alpine.start() to main.ts ################
-# remove workaround for dev mode from main.ts
-# from: // start: replace with Alpine.start() on kickstart //
-# to: // end: replace with Alpine.start() on kickstart //
-echo "$(sed '/start: replace with Alpine.start() on kickstart/,/end: replace wirth Alpine.start() on kickstart/d' ./app/DistributionPackages/"${vendorName}"."${packageName}"/Resources/Private/JavaScript/main.ts)" >  ./app/DistributionPackages/"${vendorName}"."${packageName}"/Resources/Private/JavaScript/main.ts
-
-# add 'Alpine.start()' to main.ts add end
-_yellow_echo "Adding Alpine.start() to main.ts ..."
-echo "Alpine.start()" >> ./app/DistributionPackages/"${vendorName}"."${packageName}"/Resources/Private/JavaScript/main.ts
-
 
 echo
 _green_echo "KICKSTART has finished successfully ;)"
