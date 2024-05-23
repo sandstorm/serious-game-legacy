@@ -1,4 +1,31 @@
 prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Main) < prototype(Neos.Fusion:Component) {
+    // We use a span-tag for the menu icon because the i-tag causes some trouble with the rendering of the 404-Page
+
+    // We use alpine js to toggle the mobile menu.
+    // If the state of 'mobileMenuOpen' changes to true we add a class in PageMenu.Main.fusion.
+    renderer = afx`
+        <nav class="flex justify-between items-center flex-nowrap h-16" x-data="{ mobileMenuOpen: false }">
+            <div class="inline-block">
+                <MyVendor.AwesomeNeosProject:Component.PageHeader.Logo/>
+            </div>
+
+            <button
+                x-on:click="mobileMenuOpen = !mobileMenuOpen"
+                id="open-mobile-menu"
+                class="flex lg:hidden justify-center items-center flex-col p-1 m-0 h-8 w-8 text-2xl text-primary-main hover:text-primary-dark focus:text-primary-dark focus:border focus:border-primary-dark"
+                title={I18n.translate('MyVendor.AwesomeNeosProject:Base:openMenu')}
+            >
+                <span class="icon-bars" aria-hidden="true"></span>
+                <span class="sr-only">{I18n.translate('MyVendor.AwesomeNeosProject:Base:openMenu')}</span>
+            </button>
+
+            <MyVendor.AwesomeNeosProject:Component.PageMenu.Main.Inner/>
+            <MyVendor.AwesomeNeosProject:Component.LanguageMenu/>
+        </nav>
+    `
+}
+
+prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Main.Inner) < prototype(Neos.Fusion:Component) {
     @propTypes {
         @strict = true
     }

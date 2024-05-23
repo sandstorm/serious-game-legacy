@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file original="" product-name="Sandstorm.ComponentLibrary" source-language="de" target-language="en" datatype="plaintext">
+        <body>
+            <trans-unit id="ui.label" xml:space="preserve">
+                <source>Teaser</source>
+                <target>Teaser</target>
+            </trans-unit>
+            <trans-unit id="properties.height" xml:space="preserve">
+                <source>Höhe</source>
+                <target>Height</target>
+            </trans-unit>
+            <trans-unit id="properties.textColor" xml:space="preserve">
+                <source>Textfarbe</source>
+                <target>Text color</target>
+            </trans-unit>
+            <trans-unit id="properties.textColor.selectBoxEditor.values.dark" xml:space="preserve">
+                <source>Dunkel</source>
+                <target>Dark</target>
+            </trans-unit>
+            <trans-unit id="properties.textColor.selectBoxEditor.values.light" xml:space="preserve">
+                <source>Hell</source>
+                <target>Light</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

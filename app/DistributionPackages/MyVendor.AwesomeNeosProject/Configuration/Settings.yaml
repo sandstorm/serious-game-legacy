@@ -1,7 +1,6 @@
 Neos:
   Fusion:
     defaultContext:
-      'MyVendor.AwesomeNeosProject.FileSize': 'MyVendor\AwesomeNeosProject\Eel\Helper\FileSizeHelper'
       'MyVendor.AwesomeNeosProject.FilterNodesByReference': 'MyVendor\AwesomeNeosProject\Eel\Helper\FilterNodesByReferenceHelper'
   Flow:
     mvc:
@@ -14,7 +13,6 @@ Neos:
       defaultLocale: 'de'
       fallbackRule:
         order: ['de']
-
   Neos:
     eventLog:
       enabled: true
@@ -59,12 +57,8 @@ Neos:
             values:
               - de
             uriSegment: ''
-            options:
-              translationStrategy: 'none'
           en:
             label: 'EN'
             values:
               - en
             uriSegment: 'en'
-            options:
-              translationStrategy: 'once'

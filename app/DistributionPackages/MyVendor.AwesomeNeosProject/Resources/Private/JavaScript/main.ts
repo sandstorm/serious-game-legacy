@@ -2,13 +2,11 @@ import Alpine, { AlpineComponent } from 'alpinejs'
 import collapse from '@alpinejs/collapse'
 import intersect from '@alpinejs/intersect'
 import persist from '@alpinejs/persist'
-import { ExampleStore } from './Types/types'
-import { EXAMPLE_STORE } from './store'
 import ButtonToTop, { ButtonToTopComponent } from '../Fusion/Presentation/Components/ButtonToTop/ButtonToTop'
 import EventList, { EventListComponent } from '../Fusion/Presentation/Components/Event/List/EventList'
-import LogoBar, { LogoBarComponent } from '../Fusion/Presentation/Components/LogoBar/LogoBar'
-import Map, { MapComponent } from '../Fusion/Presentation/Components/Map/Map'
-import Slider, { SliderComponent } from '../Fusion/Presentation/Components/Slider/Slider'
+
+// start: Component Library Imports //
+// end: Component Library Imports //
 
 // We decided to use https://alpinejs.dev/ to write js code
 // as it provides a great way to structure and develop js components.
@@ -19,13 +17,14 @@ Alpine.plugin(persist)
 // Components
 Alpine.data('buttonToTop', ButtonToTop as (value: any) => AlpineComponent<ButtonToTopComponent>)
 Alpine.data('eventList', EventList as (value: any) => AlpineComponent<EventListComponent>)
-Alpine.data('logoBar', LogoBar as (value: any) => AlpineComponent<LogoBarComponent>)
-Alpine.data('map', Map as (value: any) => AlpineComponent<MapComponent>)
-Alpine.data('slider', Slider as (value: any) => AlpineComponent<SliderComponent>)
 
-// Stores
-Alpine.store<ExampleStore>(EXAMPLE_STORE, {
-    frontendVersion: Alpine.$persist('vx.x.x').as('frontend_version')
-})
+// start: Component Library Components //
+// end: Component Library Components //
 
-Alpine.start()
+// start: replace with Alpine.start() on kickstart //
+// We write Alpine to global window object to make it available in the component library main.ts.
+// Aline is initialized in the component library main.ts to avoid two initializations.
+// @ts-ignore
+if( !window.Alpine ) window.Alpine = Alpine;
+// end: replace with Alpine.start() on kickstart //
+

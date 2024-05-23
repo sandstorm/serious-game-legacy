@@ -1,0 +1,29 @@
+prototype(Sandstorm.ComponentLibrary:Content.Quote) < prototype(Neos.Neos:ContentComponent) {
+    renderer = Sandstorm.ComponentLibrary:Component.Quote {
+        text = Neos.Neos:Editable {
+            property = 'text'
+        }
+        person = Neos.Neos:Editable {
+            property = 'person'
+        }
+        hasImageSource = ${q(node).property('image') ? true : false}
+        image= MyVendor.AwesomeNeosProject:Component.Image {
+            alternativeText = MyVendor.AwesomeNeosProject:Helper.ImageAltText {
+                image = ${q(node).property('image')}
+            }
+            imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
+                asset = ${q(node).property('image')}
+            }
+            imageUri = MyVendor.AwesomeNeosProject:Helper.ResourceUri {
+                resource = ${q(node).property('image').resource}
+            }
+            fileExtension = ${q(node).property('image').resource.fileExtension}
+            sizes = MyVendor.AwesomeNeosProject:Helper.ImageSizes {
+                type = 'two-column'
+            }
+            class = 'w-full h-full flex flex-col flex-wrap mb-0'
+            pictureClasses = 'aspect-square inline-block h-full w-full'
+            imgClasses = 'h-full w-full object-cover rounded-[50%]'
+        }
+    }
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file original="" product-name="Sandstorm.ComponentLibrary" source-language="de" datatype="plaintext">
+        <body>
+            <trans-unit id="properties.description" xml:space="preserve">
+                <source>Beschreibung</source>
+            </trans-unit>
+            <trans-unit id="properties.description.ui.inline.editorOptions.placeholder" xml:space="preserve">
+                <source>Beschreibung der Datei</source>
+            </trans-unit>
+            <trans-unit id="properties.file" xml:space="preserve">
+                <source>Datei</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

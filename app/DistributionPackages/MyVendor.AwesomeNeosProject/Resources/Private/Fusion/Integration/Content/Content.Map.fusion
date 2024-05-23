@@ -1,8 +1,0 @@
-prototype(MyVendor.AwesomeNeosProject:Content.Map) < prototype(Neos.Neos:ContentComponent) {
-    renderer = MyVendor.AwesomeNeosProject:Component.Map {
-        lat = ${q(node).property('lat')}
-        lng = ${q(node).property('lng')}
-        zoom = ${q(node).property('zoom')}
-        popupText = ${q(node).property('popupText')}
-    }
-}

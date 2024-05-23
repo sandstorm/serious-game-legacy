@@ -1,9 +1,0 @@
-prototype(MyVendor.AwesomeNeosProject:Content.Slider.Slide) < prototype(MyVendor.AwesomeNeosProject:Content.Image) {
-    class = "w-full h-[400px] md:h-[700px] flex flex-col flex-wrap mb-8"
-    pictureClasses = "flex justify-center items-center h-full"
-    imgClasses = "max-w-full w-auto h-full object-contain"
-
-    @process.wrapWithSliderClass = MyVendor.AwesomeNeosProject:Component.Slider.Slide {
-        content = ${value}
-    }
-}

@@ -3,10 +3,7 @@
   constraints:
     nodeTypes:
       'MyVendor.AwesomeNeosProject:Content.Button': true
-      'MyVendor.AwesomeNeosProject:Content.ButtonWithIcon': true
-      'MyVendor.AwesomeNeosProject:Content.Download': true
-      'MyVendor.AwesomeNeosProject:Content.Headline': true
       'MyVendor.AwesomeNeosProject:Content.Image': true
-      'MyVendor.AwesomeNeosProject:Content.Spacer': true
       'MyVendor.AwesomeNeosProject:Content.Text': true
+      'MyVendor.AwesomeNeosProject:Content.Headline': true
       'Jonnitto.PrettyEmbedVideoPlatforms:Content.Video': true

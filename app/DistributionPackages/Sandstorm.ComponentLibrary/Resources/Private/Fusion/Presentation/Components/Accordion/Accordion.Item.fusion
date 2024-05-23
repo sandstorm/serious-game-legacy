@@ -1,0 +1,54 @@
+prototype(Sandstorm.ComponentLibrary:Component.Accordion.Item) < prototype(Neos.Fusion:Component) {
+    title = ''
+    content = ''
+
+    @propTypes {
+        @strict = true
+        title = ${PropTypes.string}
+        content = ${PropTypes.string}
+    }
+
+    @private {
+        isFirstChild = ${node.identifier == q(node).parents('[instanceof Sandstorm.ComponentLibrary:Content.Accordion]').children().get(0).identifier}
+        firstAccordionItemIsOpen = ${q(node).parents('[instanceof Sandstorm.ComponentLibrary:Content.Accordion]').property('firstAccordionItemIsOpen')}
+        accordionItemXData = ${'{
+            id: "' + node.identifier + '",
+            get expanded() {
+                return this.active === this.id' +
+            '},
+            set expanded(value) {
+                this.active = value ? this.id : null
+            },
+        }'}
+    }
+
+    renderer = afx`
+        <div
+            class="border-b border-b-grey-light last-of-type:border-none"
+            x-data={private.accordionItemXData}
+        >
+            <button
+                class="relative flex justify-between items-center w-full px-2 py-5 hover:text-primary-main focus:text-primary-main focus:outline focus:outline-primary-main"
+                id={'accordion__trigger-' + node.identifier}
+                aria-controls={'accordion__content-container-' + node.identifier}
+                x-on:click="expanded = !expanded"
+                :aria-expanded="expanded"
+            >
+                <h3 class="text-base md:text-lg m-0">{props.title}</h3>
+                <span aria-hidden="true" class="text-base md:text-lg icon-angle-down transition-transform" :class="expanded ? 'rotate-180' : ''"></span>
+            </button>
+            <div
+                id={'accordion__content-container-' + node.identifier}
+                role="region"
+                aria-labelledby={'accordion__trigger-' + node.identifier}
+                x-show="expanded"
+                x-collapse
+                x-cloak={private.isFirstChild && private.firstAccordionItemIsOpen ? null : true}
+            >
+                <div class="pt-2 px-2 pb-10">
+                    {props.content}
+                </div>
+            </div>
+        </div>
+    `
+}

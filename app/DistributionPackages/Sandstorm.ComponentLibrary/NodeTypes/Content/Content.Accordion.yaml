@@ -1,0 +1,39 @@
+'Sandstorm.ComponentLibrary:Content.Accordion':
+  superTypes:
+    'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
+    'Neos.Neos:ContentCollection': true
+  ui:
+    label: 'Accordion'
+    icon: icon-chevron-down
+    group: special
+    position: 20
+  constraints:
+    nodeTypes:
+      '*': false
+      'Sandstorm.ComponentLibrary:Content.Accordion.Item': true
+  options:
+    template:
+      childNodes:
+        firstAccordionItem:
+          type: 'Sandstorm.ComponentLibrary:Content.Accordion.Item'
+          properties:
+            title: 'Title'
+          childNodes:
+            mainContentCollection:
+              name: 'main'
+              type: 'MyVendor.AwesomeNeosProject:ContentCollection.Default'
+              childNodes:
+                firstAccordionItemContent:
+                  type: 'MyVendor.AwesomeNeosProject:Content.Text'
+                  properties:
+                    text: 'Lorem ipsum'
+  properties:
+    firstAccordionItemIsOpen:
+      type: boolean
+      defaultValue: false
+      ui:
+        label: i18n
+        reloadIfChanged: true
+        showInCreationDialog: true
+        inspector:
+          group: properties

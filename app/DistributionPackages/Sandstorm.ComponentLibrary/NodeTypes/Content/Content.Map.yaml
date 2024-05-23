@@ -1,0 +1,43 @@
+'Sandstorm.ComponentLibrary:Content.Map':
+  superTypes:
+    'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
+  ui:
+    label: i18n
+    icon: icon-map
+    group: special
+    position: 40
+  properties:
+    lat:
+      type: string
+      defaultValue: '51.0567032'
+      ui:
+        label: i18n
+        reloadIfChanged: true
+        inspector:
+          group: properties
+    lng:
+      type: string
+      defaultValue: '13.7769583'
+      ui:
+        label: i18n
+        reloadIfChanged: true
+        inspector:
+          group: properties
+    zoom:
+      type: string
+      defaultValue: '14'
+      ui:
+        label: i18n
+        reloadIfChanged: true
+        inspector:
+          group: properties
+    popupText:
+      type: string
+      defaultValue: ''
+      ui:
+        label: i18n
+        reloadIfChanged: true
+        inspector:
+          group: properties
+      options:
+        automaticTranslation: true

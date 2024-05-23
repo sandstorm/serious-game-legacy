@@ -2,14 +2,8 @@
   abstract: true
   constraints:
     nodeTypes:
-      'MyVendor.AwesomeNeosProject:Content.Accordion': true
       'MyVendor.AwesomeNeosProject:Content.ContactForm': true
       'MyVendor.AwesomeNeosProject:Content.Events.List': true
       'MyVendor.AwesomeNeosProject:Content.LatestBlogPosts': true
-      'MyVendor.AwesomeNeosProject:Content.LogoBar': true
-      'MyVendor.AwesomeNeosProject:Content.Map': true
-      'MyVendor.AwesomeNeosProject:Content.Quote': true
-      'MyVendor.AwesomeNeosProject:Content.Slider': true
-      'MyVendor.AwesomeNeosProject:Content.Teaser': true
       # template for generate repository helper
       # 'MyVendor.AwesomeNeosProject:Content.Repository.List': true

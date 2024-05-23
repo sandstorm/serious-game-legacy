@@ -14,56 +14,61 @@ git lfs install
 git lfs pull
 ```
 
+You need composer on your machine to use kickstarter. If you don't have composer installed, you can install it via homebrew:
+```
+brew install composer
+```
 Run `./kickstart.sh` and follow the instructions.
 
 [//]: # (KICKSTART_INFO_SECTION__END)
 
 <!-- TOC -->
-* [Sandstorm Neos on Docker Kickstart](#sandstorm-neos-on-docker-kickstart)
-  * [Requirements](#requirements)
-  * [Features](#features)
-  * [Initial Setup (required once)](#initial-setup-required-once)
-    * [Install Dependencies](#install-dependencies)
-    * [Setting up IntelliJ](#setting-up-intellij)
-  * [Local Development](#local-development)
-  * [Testing](#testing)
-    * [E2E Test](#e2e-test)
-      * [Debug Failing Tests](#debug-failing-tests)
-      * [Run Single BDD Feature Files / Scenarios](#run-single-bdd-feature-files--scenarios)
-      * [Generating content (node) fixtures workflow](#generating-content-node-fixtures-workflow)
-      * [raise curl-timeouts when using `And I pause for debugging`](#raise-curl-timeouts-when-using-and-i-pause-for-debugging)
-    * [Accessibility Tests](#accessibility-tests)
-      * [Testing without htaccess (e.g. production)](#testing-without-htaccess-eg-production)
-      * [Testing with htaccess (e.g. staging)](#testing-with-htaccess-eg-staging)
-      * [Results](#results)
-      * [Hint](#hint)
-  * [Staging](#staging)
-  * [Site Export / Site Import](#site-export--site-import)
-    * [Site Export Prod](#site-export-prod)
-  * [Automatic Translation with DeepL](#automatic-translation-with-deepl)
-  * [Kickstart repository nodetypes](#kickstart-repository-nodetypes)
-  * [Custom icon font with icomoon](#custom-icon-font-with-icomoon)
-    * [Use custom icons in neos backend](#use-custom-icons-in-neos-backend)
-  * [Maps](#maps)
-  * [Menu](#menu)
-  * [Image sizes](#image-sizes)
-  * [Recommended Packages](#recommended-packages)
-  * [Coding Guidelines](#coding-guidelines)
-  * [Improving Kickstart Experience](#improving-kickstart-experience)
-* [Production Setup](#production-setup)
-  * [Important URLs](#important-urls)
-  * [Matomo](#matomo)
-  * [Production Cookbook / Tips and Tricks](#production-cookbook--tips-and-tricks)
-    * [my Neos container does not start, how do I debug?](#my-neos-container-does-not-start-how-do-i-debug)
-    * [Connecting to the production database](#connecting-to-the-production-database)
-  * [Backlog](#backlog)
+- [Sandstorm Neos on Docker Kickstart](#sandstorm-neos-on-docker-kickstart)
+  - [Requirements](#requirements)
+  - [Features](#features)
+  - [Initial Setup (required once)](#initial-setup-required-once)
+    - [Install Dependencies](#install-dependencies)
+    - [Setting up IntelliJ](#setting-up-intellij)
+  - [Local Development](#local-development)
+  - [Testing](#testing)
+    - [E2E Test](#e2e-test)
+      - [Debug Failing Tests](#debug-failing-tests)
+      - [Run Single BDD Feature Files / Scenarios](#run-single-bdd-feature-files--scenarios)
+      - [Generating content (node) fixtures workflow](#generating-content-node-fixtures-workflow)
+      - [raise curl-timeouts when using `And I pause for debugging`](#raise-curl-timeouts-when-using-and-i-pause-for-debugging)
+    - [Accessibility Tests](#accessibility-tests)
+      - [Testing without htaccess (e.g. production)](#testing-without-htaccess-eg-production)
+      - [Testing with htaccess (e.g. staging)](#testing-with-htaccess-eg-staging)
+      - [Results](#results)
+      - [Hint](#hint)
+  - [Staging](#staging)
+  - [Site Export / Site Import](#site-export--site-import)
+    - [Site Export Prod](#site-export-prod)
+  - [Kickstart repository nodetypes](#kickstart-repository-nodetypes)
+  - [Add components from the library to your project](#add-components-from-the-library-to-your-project)
+    - [Development](#development)
+  - [Custom icon font with icomoon](#custom-icon-font-with-icomoon)
+    - [Use custom icons in neos backend](#use-custom-icons-in-neos-backend)
+  - [Maps](#maps)
+  - [Menu](#menu)
+  - [Image sizes](#image-sizes)
+  - [Recommended Packages](#recommended-packages)
+  - [Coding Guidelines](#coding-guidelines)
+  - [Improving Kickstart Experience](#improving-kickstart-experience)
+  - [Production Setup](#production-setup)
+      - [Important URLs](#important-urls)
+      - [Matomo](#matomo)
+      - [Production Cookbook / Tips and Tricks](#production-cookbook--tips-and-tricks)
+          - [my Neos container does not start, how do I debug?](#my-neos-container-does-not-start-how-do-i-debug)
+          - [Connecting to the production database](#connecting-to-the-production-database)
+  - [Backlog](#backlog)
 <!-- TOC -->
 
 ## Requirements
 
 - docker for mac
   - enable VirtioFS in docker host settings (experimental features)
-  - alternatively, comment out the volume mount in the docker-compose.yml if you encounter bad local performance 
+  - alternatively, comment out the volume mount in the docker-compose.yml if you encounter bad local performance
 - node -> to run Playwright Tests or for local development (without docker) of your sites JavaScript
 - git lfs
 
@@ -76,15 +81,15 @@ Run `./kickstart.sh` and follow the instructions.
 - Supercronic
 - Bash-Highlighting (dev, staging, production)
 - Gitlab-CI Pipeline Config
-    - Kubernetes Deployment
-    - E2E Tests
-    - Functional Tests
-    - Unit Tests
+  - Kubernetes Deployment
+  - E2E Tests
+  - Functional Tests
+  - Unit Tests
 - Testsetup
-    - Functional and Unit
-    - Behavioural Tests
-        - Playwright Integration
-    - Playwright Testrunner
+  - Functional and Unit
+  - Behavioural Tests
+    - Playwright Integration
+  - Playwright Testrunner
 - Swiftmailer + Mailhog
 
 ## Initial Setup (required once)
@@ -154,10 +159,12 @@ docker compose exec neos bin/behat -c Packages/Sites/MyVendor.AwesomeNeosProject
    in `\MyVendor\AwesomeNeosProject\Command\StepGeneratorCommandController` to export only specific nodes for your
    fixtures
 3. Run and copy to clipboard with:
+
     ```
     docker compose exec -T neos ./flow stepgenerator:homepage | pbcopy
     docker compose exec -T neos ./flow stepgenerator:notfoundpage | pbcopy
     ```
+
 4. paste into your feature files and run tests
 
 #### raise curl-timeouts when using `And I pause for debugging`
@@ -168,6 +175,7 @@ vim Packages/Application/Sandstorm.E2ETestTools/Tests/Behavior/Bootstrap/Playwri
 ```
 
 on line 158 raise the `CURL_TIMEOUT` option to a very high value.
+
 ```shell
 :158
 ```
@@ -176,29 +184,33 @@ on line 158 raise the `CURL_TIMEOUT` option to a very high value.
 
 We have CI tasks for staging `a11y_test_staging` and production `a11y_test_production` which will create us an a11y test report as an job artifact.
 
-The test uses pa11y, so have a look at https://github.com/pa11y/pa11y-ci for possible configuration options.
+The test uses pa11y, so have a look at <https://github.com/pa11y/pa11y-ci> for possible configuration options.
 
 #### Testing without htaccess (e.g. production)
+
 If we don't have an htaccess in front of the page, we can use the `.pa11yci` file to define all urls of the page we want to test. Just rename `.pa11yci.sample` to `.pa11yci` and add the urls you want to be tested. We also can make screen captures if we want to (see `.pa11yci.sample`). When we use it this way, we don't have to use the `--config` flag like we do in the `a11y_test_staging` job because it will pick up the `.pa11yci` config automatically.
 
 #### Testing with htaccess (e.g. staging)
-If we have an htaccess in front of the page we can write the pa11y config like we would do with the `.pa11yci` file but store it in a gitlab variable. It's importent that the variable is of type `file` (Settings > CI/CD > Variables). For the kickstarter we use the variable `$A11Y_TEST`. If we want to add an url we want to test, we can just edit this variable. If you cannot see the Settings just ask another Sandstormee with access rights ;) 
+
+If we have an htaccess in front of the page we can write the pa11y config like we would do with the `.pa11yci` file but store it in a gitlab variable. It's importent that the variable is of type `file` (Settings > CI/CD > Variables). For the kickstarter we use the variable `$A11Y_TEST`. If we want to add an url we want to test, we can just edit this variable. If you cannot see the Settings just ask another Sandstormee with access rights ;)
 
 #### Results
+
 In both cases htaccess or not the results will be stored as job artifacts and can be downloaded. The html-report can be found in the directory `pa11y-ci-report` and if we decided to get some screenshots, they will be stored in the directory `pa11y-ci-report-images`.
 
 #### Hint
+
 We exclude the following rules for the kickstarter because they are more or less color contrast related. In the kickstarter we focus on structure-related issues. Nevertheless should the color contrast be checked in an actual project.
-* WCAG2AA.Principle1.Guideline1_4.1_4_3.G18 / WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Fail
-* WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Alpha
-* WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Abs
+- WCAG2AA.Principle1.Guideline1_4.1_4_3.G18 / WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Fail
+- WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Alpha
+- WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Abs
 
 Excluded Elements:
-* a[href='#open_cookie_punch_modal'] > Cookie Punch Package
-* .maplibregl-ctrl-attrib-inner > Maps Package
+- a[href='#open_cookie_punch_modal'] > Cookie Punch Package
+- .maplibregl-ctrl-attrib-inner > Maps Package
 
 Usage of components:
-* accordions should be used in a section with an h2 to keep the headline hierachy otherwise we have to update the accordion headlines accordingly
+- accordions should be used in a section with an h2 to keep the headline hierachy otherwise we have to update the accordion headlines accordingly
 
 ## Staging
 
@@ -225,15 +237,6 @@ sku ns myvendor-awesomeneosproject-staging
 Otherwise you may get an error that the pods could not be found.
 If you're not working at sandstorm update this command for your environment. :)
 
-## Automatic Translation with DeepL
-
-We use Sitegeist.LostInTranslation to translate documents and content automatically once editors choose to "create and
-copy" a version in another language. See
-the [package repository](https://github.com/sitegeist/Sitegeist.LostInTranslation) to check what you need to configure.
-
-DeepL is used for the translation, therefore you need to have an api key for it. For local development put the key
-in `.env`. For staging/production set the environment variable on the server, e.g. via rancher secret.
-
 ## Kickstart repository nodetypes
 
 We found that to create repository nodetypes with a parent, several children and some kind of aggregation ("show me all
@@ -243,16 +246,30 @@ use `dev generate-repository` to have all this work be done for you :)
 
 The command will create the following files:
 
-* NodeTypes/Document/Document.Repository.yaml
-* NodeTypes/Document/Document.Repository.Item.yaml
-* NodeTypes/Content/Content.Repository.List.yaml
-* Resources/Private/Fusion/Integration/Document/Document.Repository.fusion
-* Resources/Private/Fusion/Integration/Document/Document.Repository.Item.fusion
-* Resources/Private/Fusion/Integration/Content/Content.Repository.List.fusion
+- `NodeTypes/Document/Document.Repository.yaml`
+- `NodeTypes/Document/Document.Repository.Item.yaml`
+- `NodeTypes/Content/Content.Repository.List.yaml`
+- `Resources/Private/Fusion/Integration/Document/Document.Repository.fusion`
+- `Resources/Private/Fusion/Integration/Document/Document.Repository.Item.fusion`
+- `Resources/Private/Fusion/Integration/Content/Content.Repository.List.fusion`
+
+## Add components from the library to your project
+
+We have a little shell script `dev_components.sh` that helps you to add components from the library to your project.
+Run `dev list-components` to get a list of all available components. Run `dev add-component` to add a
+component to your project. If you already know the name of the component you want to install you can run e.g.`dev add-component Download`.
+
+### Development
+
+When developing the kickstarter we don't have to install the components, because the component library is included in the composer.json. 
+
+When you want to add a new component to the library you have to:
+1. Add all component files to the Library Package like you would in the Site Package
+2. Add update the `./app/DistributionPackages/Sandstorm.ComponentLibrary/Configuration/Settings.Components.yaml` to add the Settings for the component when being installed.
 
 ## Custom icon font with icomoon
 
-We use a custom icon font build with https://icomoon.io/app. Look at the Icons.md for more
+We use a custom icon font build with <https://icomoon.io/app>. Look at the Icons.md for more
 information: `DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public/Fonts/Icons.md`
 
 In the past we had rendering problems when we used the icon font as `<i class="icon-xyz"></i>`. To be safe we use
@@ -266,7 +283,7 @@ integrated fontawesome iconfont. But if we want to use our own icons anyway we c
 1. Export the SVGs of the icomoon font (e.g. in white)
 2. Copy those SVGs into the `Public/SVGs` folder
 3. Use the icon as SVG e.g. in the `Mixin.Icon` for the `SelectBoxEditor` by using the `resource://`
-   path (https://www.youtube.com/watch?v=Aq4w21pjriY)
+   path (<https://www.youtube.com/watch?v=Aq4w21pjriY>)
 
 ```yaml
 icon-angle-down:
@@ -278,7 +295,7 @@ icon-angle-down:
 
 To render maps we use [Sandstorm Maps](https://maps.sandstorm.de/). To get it running you need to configure an api key.
 
-To get an api key check https://intern.sandstorm.de/knowledge/maps-api-sandstorm-de-nutzung if you work at Sandstorm or
+To get an api key check <https://intern.sandstorm.de/knowledge/maps-api-sandstorm-de-nutzung> if you work at Sandstorm or
 get in contact with us otherwise :)
 
 For local development put the key in `.env`. For staging/production set the environment variable on the server, e.g. via
@@ -287,16 +304,7 @@ rancher secret.
 ## Menu
 
 We currently have two menu options implemented: a "normal" menu in a navigation bar style and a mega menu. You can
-switch between them in `AbstractPage.fusion`. You might consider removing the other option once you decided for one.
-
-```
-header = MyVendor.AwesomeNeosProject:Component.PageHeader {
-    menu = MyVendor.AwesomeNeosProject:Component.PageMenu {
-        // menuType has to be 'main' or 'mega'
-        menuType = 'main'
-    }
-}
-```
+choose between them during kickstart.
 
 ## Image sizes
 
@@ -323,18 +331,18 @@ Run `./kickstart.sh --restore-git` after testing changes you made to `./kickstar
 
 [//]: # (KICKSTART_INFO_SECTION__END)
 
-# Production Setup
+## Production Setup
 
-## Important URLs
+### Important URLs
 
-## Matomo
+### Matomo
 
 For Analytics, we usually use Matomo. Check here for tipps and tricks, e.g. on how to configure it so that we do not
 need a cookie consent: https://intern.sandstorm.de/knowledge/datenschutz/matomo-zugriffsstatistiken
 
-## Production Cookbook / Tips and Tricks
+### Production Cookbook / Tips and Tricks
 
-### my Neos container does not start, how do I debug?
+#### my Neos container does not start, how do I debug?
 
 **Symptom:** There is an error in the Entrypoint Neos container during `docker compose up -d`.
 
@@ -346,7 +354,8 @@ cd [project-name]
 
 docker compose run --entrypoint /bin/bash neos
 ```
-### Connecting to the production database
+
+#### Connecting to the production database
 
 When connecting to the system via SSH, use `-L` for a local port forward like this:
 
@@ -366,12 +375,12 @@ Then, you can use the built-in DB browser of IntelliJ to connect:
 
 ## Backlog
 
-* Examples for rights in Neos -> separate Distribution Package
-* Custom Backend Module Beispiel in extra Distribution Package
-* Frontendlogin in extra Distribution Package
-* DataPrivacy -> maybe change config of Neos
-* check caching config -> nginx e.g. images
-* Distribution Package with search
-* Check examples for accessibility issues
+- Examples for rights in Neos -> separate Distribution Package
+- Custom Backend Module Beispiel in extra Distribution Package
+- Frontendlogin in extra Distribution Package
+- DataPrivacy -> maybe change config of Neos
+- check caching config -> nginx e.g. images
+- Distribution Package with search
+- Check examples for accessibility issues
 
 [//]: # (KICKSTART_INFO_SECTION__END)

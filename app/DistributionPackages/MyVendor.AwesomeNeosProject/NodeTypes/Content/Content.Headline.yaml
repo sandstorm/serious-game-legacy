@@ -1,8 +1,27 @@
 'MyVendor.AwesomeNeosProject:Content.Headline':
   superTypes:
     'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
-    'MyVendor.AwesomeNeosProject:Mixin.Headline': true
   ui:
     label: i18n
     icon: icon-header
     position: 5
+  properties:
+    title:
+      type: string
+      defaultValue: '<h2>Headline</h2>'
+      ui:
+        label: i18n
+        inlineEditable: true
+        inline:
+          editorOptions:
+            placeholder: i18n
+            linking:
+              anchor: true
+              title: true
+              relNofollow: true
+              targetBlank: true
+            formatting:
+              h1: true
+              h2: true
+              h3: true
+              h4: true

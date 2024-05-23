@@ -1,0 +1,31 @@
+'Sandstorm.ComponentLibrary:Content.Spacer':
+  superTypes:
+    'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
+  ui:
+    label: i18n
+    icon: icon-arrows-v
+    position: 70
+  properties:
+    height:
+      type: string
+      defaultValue: 'medium'
+      ui:
+        label: i18n
+        reloadIfChanged: true
+        showInCreationDialog: true
+        inspector:
+          group: properties
+          editor: 'Neos.Neos/Inspector/Editors/SelectBoxEditor'
+          editorOptions:
+            allowEmpty: true
+            values:
+              small:
+                label: i18n
+              medium:
+                label: i18n
+              large:
+                label: i18n
+              xlarge:
+                label: i18n
+              xxlarge:
+                label: i18n

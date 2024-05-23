@@ -77,6 +77,23 @@ echo
 _yellow_echo "Hit RETURN to run the kickstart, or CTRL+C to exit"
 read -p ""
 
+############### Choosing menu ################
+_yellow_echo "Please choose the type of menu you want to for your project"
+read -p "Menu type 'main' or 'mega' (default='main'): " menuType
+menuType=${menuType:-"main"}
+
+if [ "$menuType" = "mega" ]
+    then
+        # replace Component.PageMenu.Main in AbstractPage.fusion
+        sed -i '' "s/${defaultVendorName}.${defaultPackageName}:Component.PageMenu.Main/${defaultVendorName}.${defaultPackageName}:Component.PageMenu.Mega/g" ./app/DistributionPackages/${defaultVendorName}.${defaultPackageName}/Resources/Private/Fusion/Integration/Document/AbstractPage.fusion
+        # remove main menu
+        rm -rf ./app/DistributionPackages/${defaultVendorName}.${defaultPackageName}/Resources/Private/Fusion/Presentation/Components/PageMenu/PageMenu.Main.fusion
+    else
+        # remove mega menu
+        rm -rf ./app/DistributionPackages/${defaultVendorName}.${defaultPackageName}/Resources/Private/Fusion/Presentation/Components/PageMenu/PageMenu.Mega.fusion
+fi
+
+
 ############### Preparations ################
 
 _yellow_echo "Removing Containers ..."
@@ -88,25 +105,21 @@ docker compose down
 gzip -dk ./app/ContentDump/Database.sql.gz
 rm ./app/ContentDump/Database.sql.gz
 
-findExcludePaths=""
-# Add new lines here if you want to exclude files and folders from being replaced
-findExcludePaths="${findExcludePaths} -not -name kickstart.sh"
-findExcludePaths="${findExcludePaths} -not -path */node_modules/*"
-findExcludePaths="${findExcludePaths} -not -path */.idea/*"
-findExcludePaths="${findExcludePaths} -not -path */.git/*"
-
 _yellow_echo "Renaming DistributionPackage ..."
 mv ./app/DistributionPackages/${defaultVendorName}.${defaultPackageName} ./app/DistributionPackages/${vendorName}.${packageName} 2> /dev/null
 
 _yellow_echo "Replacing Name of Vendor ..."
 _yellow_echo "Replacing Name of Package ..."
 
-# replace Vendor and Package name -> yaml, php, package.json ...
-find ./ -type f ${findExcludePaths} -exec grep -Iq . {} \; -print | xargs sed -i '' "s/${defaultVendorName}/${vendorName}/g"
-find ./ -type f ${findExcludePaths} -exec grep -Iq . {} \; -print | xargs sed -i '' "s/${defaultPackageName}/${packageName}/g"
+# regex pattern for excluding paths and files
+findExcludePaths="(/node_modules/|^./app/Packages|^./app/Build|^./tmp|.idea|.git|/kickstart.sh)"
 
-find ./ -type f ${findExcludePaths} -exec grep -Iq . {} \; -print | xargs sed -i '' "s/${defaultVendorNameLowerCase}/${vendorNameLowerCase}/g"
-find ./ -type f ${findExcludePaths} -exec grep -Iq . {} \; -print | xargs sed -i '' "s/${defaultPackageNameLowerCase}/${packageNameLowerCase}/g"
+# replace Vendor and Package name -> yaml, php, package.json ...
+# grep -I ignores binary files, q suppresses output, E allows for extended regex, v inverts the match
+find . -type f | grep -I -Ev ${findExcludePaths} | LC_CTYPE=C xargs -I% sed -i "" "s/${defaultVendorName}/${vendorName}/g" %
+find . -type f | grep -I -Ev ${findExcludePaths} | LC_CTYPE=C xargs -I% sed -i "" "s/${defaultPackageName}/${packageName}/g" %
+find . -type f | grep -I -Ev ${findExcludePaths} | LC_CTYPE=C xargs -I% sed -i "" "s/${defaultVendorNameLowerCase}/${vendorNameLowerCase}/g" %
+find . -type f | grep -I -Ev ${findExcludePaths} | LC_CTYPE=C xargs -I% sed -i "" "s/${defaultPackageNameLowerCase}/${packageNameLowerCase}/g" %
 
 # zip site export after replacing because importSite.sh expects a `Database.sql.gz`
 gzip ./app/ContentDump/Database.sql
@@ -214,7 +227,40 @@ EOF
     _yellow_echo "NO git repository was initialized."
 fi
 echo
+
+############### Remove assets include from AbstractPage.fusion ################
+# removes the assets include from the AbstractPage.fusion on kickstart
+
+_yellow_echo "Removing assets include from AbstractPage.fusion ..."
+sed -i '' '/javascripts.componentLibrary = Sandstorm.ComponentLibrary:Resources.HeaderAssets/d' ./app/DistributionPackages/${vendorName}.${packageName}/Resources/Private/Fusion/Integration/Document/AbstractPage.fusion
+
+############### Removing sandstorm/component-library from composer.json ################
+
+_yellow_echo "Removing sandstorm/component-library from composer.json ..."
+cd app || exit
+composer remove sandstorm/component-library
+cd ..
+
+############## Cleanup docker-compose.yml ################
+
+_yellow_echo "Cleanup docker-compose.yml ..."
+echo "$(sed '/start: delete on kickstart/,/end: delete on kickstart/d' docker-compose.yml)" > docker-compose.yml
+
+
+############### Add Alpine.start() to main.ts ################
+# remove workaround for dev mode from main.ts
+# from: // start: replace with Alpine.start() on kickstart //
+# to: // end: replace with Alpine.start() on kickstart //
+echo "$(sed '/start: replace with Alpine.start() on kickstart/,/end: replace wirth Alpine.start() on kickstart/d' ./app/DistributionPackages/"${vendorName}"."${packageName}"/Resources/Private/JavaScript/main.ts)" >  ./app/DistributionPackages/"${vendorName}"."${packageName}"/Resources/Private/JavaScript/main.ts
+
+# add 'Alpine.start()' to main.ts add end
+_yellow_echo "Adding Alpine.start() to main.ts ..."
+echo "Alpine.start()" >> ./app/DistributionPackages/"${vendorName}"."${packageName}"/Resources/Private/JavaScript/main.ts
+
+
+echo
 _green_echo "KICKSTART has finished successfully ;)"
-_green_echo "run 'dev start'"
+_green_echo "run 'dev start' to start the docker container"
+_green_echo "To add new components use 'dev add-component' or 'dev list-components' to see available components"
 
 
