@@ -1,5 +1,7 @@
 build_assets:
   stage: compile_resources
+  rules:
+    - when: always
   # keep in sync with .nvmrc
   image: node:20.11-slim
   needs: []
@@ -25,6 +27,8 @@ build_assets:
 ### start: delete on kickstart ###
 build_assets_component_library:
     stage: compile_resources
+    rules:
+      - when: always
     # keep in sync with .nvmrc
     image: node:20.11-slim
     needs: []

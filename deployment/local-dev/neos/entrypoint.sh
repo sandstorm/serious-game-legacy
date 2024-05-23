@@ -24,6 +24,7 @@ fi
 ./flow cache:warmup
 
 # e2e test
+echo "DUMMY_FILE to prevent download of real selenium server" > bin/selenium-server.jar
 ./flow behat:setup
 rm bin/selenium-server.jar # we do not need this
 

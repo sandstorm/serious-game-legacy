@@ -5,8 +5,10 @@ include:
 
 package_app_staging:
   stage: build
-  except:
-    - tags
+  rules:
+    - when: always
+    - if: '$CI_COMMIT_TAG'
+      when: never
   image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.1-v2
   needs:
     - build_assets
@@ -35,10 +37,11 @@ package_app_staging:
 
 deploy_staging:
   stage: deploy
-  only:
-    - main
-  except:
-    - tags
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: always
+    - if: '$CI_COMMIT_TAG'
+      when: never
   image:
     name: bitnami/kubectl:1.15.0
     entrypoint: ['']
@@ -58,10 +61,11 @@ deploy_staging:
 a11y_test_staging:
   image: registry.gitlab.com/gitlab-ci-utils/gitlab-pa11y-ci:latest
   stage: accessibility
-  only:
-    - main
-  except:
-    - tags
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: always
+    - if: '$CI_COMMIT_TAG'
+      when: never
   needs:
     - deploy_staging
   allow_failure: true
@@ -82,10 +86,11 @@ a11y_test_staging:
 
 quality_ci-lhci_staging:
   stage: quality-ci
-  only:
-    - main
-  except:
-    - tags
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: always
+    - if: '$CI_COMMIT_TAG'
+      when: never
   needs:
     - deploy_staging
   extends:
