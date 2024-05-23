@@ -46,14 +46,11 @@ services:
       - ./app/DistributionPackages/:/app/DistributionPackages/:cached
       - ./app/Build/Behat/:/app/Build/Behat/:cached
       - ./app/ContentDump/:/app/ContentDump/:cached
-      # Content is writable to enable content dumps from inside the container
-      - ./app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Private/Content:/app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Private/Content/:cached
-      - ./app/DistributionPackages/MyVendor.AwesomeNeosProject/Migrations/:/app/DistributionPackages/MyVendor.AwesomeNeosProject/Migrations/:cached
       # mount all packages - enable VirtioFS in your docker host settings or comment out this line
       #- ./app/Packages/:/app/Packages/:cached
       - ./app/Configuration/:/app/Configuration/:cached
       # Explicitly set up Composer cache for faster fetching of packages
-      - ./tmp/composer_cache:/composer_cache:cached
+      - composer-cache:/composer_cache
       - neos-resources:/app/Data/Persistent
     networks:
       - awesomeneosproject
@@ -76,10 +73,10 @@ services:
       - ./app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public:/app/src/Public/:cached
       ### start: delete on kickstart ###
       # also mount the fusion files of the component library so that tailwind knows all classes
-      - ./app/DistributionPackages/Sandstorm.ComponentLibrary/Resources/Private:/app/src/Private/Fusion/ComponentLibrary/:cached
+      - ./app/DistributionPackages/Sandstorm.ComponentLibrary/Resources/Private/Fusion:/app/src/Private/Fusion/ComponentLibrary/:ro,cached
       ### end: delete on kickstart ###
       # Explicitly set up Yarn cache for faster fetching of packages
-      - ./tmp/.yarn-cache/:/app/.yarn-cache/:cached
+      - yarn-cache:/app/.yarn-cache
     networks:
       - awesomeneosproject
 
@@ -93,7 +90,7 @@ services:
       - ./app/DistributionPackages/Sandstorm.ComponentLibrary/Resources/Private:/app/src/Private/:cached
       - ./app/DistributionPackages/Sandstorm.ComponentLibrary/Resources/Public:/app/src/Public/:cached
       # Explicitly set up Yarn cache for faster fetching of packages
-      - ./tmp/.yarn-cache/:/app/.yarn-cache/:cached
+      - yarn-cache:/app/.yarn-cache
     networks:
       - awesomeneosproject
   ### end: delete on kickstart ###
@@ -138,6 +135,8 @@ services:
 volumes:
   neos-assets-node-modules:
   neos-resources:
+  composer-cache:
+  yarn-cache:
 
 networks:
   # we need to use a custom network here to ensure that all services see each other; and that during prerendering, we can connect to this network (to reach the service facade)
