@@ -8,11 +8,9 @@
         "swiper": "^10.2.0"
     },
     "scripts": {
-        "watch": "concurrently \"yarn run watch:tailwind\" \"yarn run watch:js\" \"yarn run watch:typecheck\"",
-        "watch:tailwind": "npx tailwindcss -i ./tailwind.css -o ../Public/tailwind.css --watch",
+        "watch": "concurrently \"yarn run watch:js\" \"yarn run watch:typecheck\"",
         "watch:js": "node ./build.mjs --watch",
-        "build": "yarn run typecheck && yarn run build:tailwind && yarn run build:js",
-        "build:tailwind": "npx tailwindcss -i ./tailwind.css -o ../Public/tailwind.css",
+        "build": "yarn run typecheck && yarn run build:js",
         "build:js": "node ./build.mjs",
         "typecheck": "tsc -noEmit",
         "watch:typecheck": "nodemon -e ts -x \"yarn run typecheck || echo '!!!!!!!!!!!!!!!!!!!!!! TypeScript Errors, Please fix !!!!!!!!!!!!!!!!!!!!!!'\"",

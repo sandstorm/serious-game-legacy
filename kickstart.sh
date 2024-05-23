@@ -241,6 +241,12 @@ cd app || exit
 composer remove sandstorm/component-library
 cd ..
 
+############## Cleanup docker-compose.yml ################
+
+_yellow_echo "Cleanup docker-compose.yml ..."
+echo "$(sed '/start: delete on kickstart/,/end: delete on kickstart/d' docker-compose.yml)" > docker-compose.yml
+
+
 ############### Add Alpine.start() to main.ts ################
 # remove workaround for dev mode from main.ts
 # from: // start: replace with Alpine.start() on kickstart //
