@@ -13,18 +13,32 @@ build_assets:
     - yarn typecheck
     - yarn test
     - yarn build
-    - cd ../../../Sandstorm.ComponentLibrary/Resources/Private
-    - yarn
-    - yarn typecheck
-    - yarn build
   cache:
     paths:
       - app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Private/node_modules/
-      - app/DistributionPackages/Sandstorm.ComponentLibrary/Resources/Private/node_modules/
   artifacts:
     expire_in: 7 days
     paths:
       - app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public/tailwind.css
       - app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public/bundle.js
-      - app/DistributionPackages/Sandstorm.ComponentLibrary/Resources/Public/bundle.js
 
+### start: delete on kickstart ###
+build_assets_component_library:
+    stage: compile_resources
+    # keep in sync with .nvmrc
+    image: node:20.11-slim
+    needs: []
+    interruptible: true
+    script:
+        - cd app/DistributionPackages/Sandstorm.ComponentLibrary/Resources/Private
+        - yarn
+        - yarn typecheck
+        - yarn build
+    cache:
+        paths:
+        - app/DistributionPackages/Sandstorm.ComponentLibrary/Resources/Private/node_modules/
+    artifacts:
+        expire_in: 7 days
+        paths:
+        - app/DistributionPackages/Sandstorm.ComponentLibrary/Resources/Public/bundle.js
+### end: delete on kickstart ###
