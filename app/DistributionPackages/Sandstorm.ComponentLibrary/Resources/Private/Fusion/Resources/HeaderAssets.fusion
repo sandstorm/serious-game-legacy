@@ -1,4 +1,11 @@
 prototype(Sandstorm.ComponentLibrary:Resources.HeaderAssets) < prototype(Neos.Fusion:Array) {
+    componentTailwindCSS = Neos.Fusion:Tag {
+        tagName = 'link'
+        attributes.rel = 'stylesheet'
+        attributes.href = Neos.Fusion:ResourceUri {
+            path = 'resource://Sandstorm.ComponentLibrary/Public/tailwind.css'
+        }
+    }
     componentJs = Neos.Fusion:Tag {
         tagName = 'script'
         attributes.defer = true

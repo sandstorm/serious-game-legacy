@@ -8,9 +8,11 @@
         "swiper": "^10.2.0"
     },
     "scripts": {
-        "watch": "concurrently \"yarn run watch:js\" \"yarn run watch:typecheck\"",
+        "watch": "concurrently \"yarn run watch:tailwind\" \"yarn run watch:js\" \"yarn run watch:typecheck\"",
+        "watch:tailwind": "npx tailwindcss -i ./tailwind.css -o ../Public/tailwind.css --watch",
         "watch:js": "node ./build.mjs --watch",
-        "build": "yarn run typecheck && yarn run build:js",
+        "build": "yarn run typecheck && yarn run build:tailwind && yarn run build:js",
+        "build:tailwind": "npx tailwindcss -i ./tailwind.css -o ../Public/tailwind.css",
         "build:js": "node ./build.mjs",
         "typecheck": "tsc -noEmit",
         "watch:typecheck": "nodemon -e ts -x \"yarn run typecheck || echo '!!!!!!!!!!!!!!!!!!!!!! TypeScript Errors, Please fix !!!!!!!!!!!!!!!!!!!!!!'\"",
@@ -26,6 +28,7 @@
         "jsdom": "^24.0.0",
         "nodemon": "^2.0.12",
         "prettier": "^2.4.0",
+        "tailwindcss": "^3.4.1",
         "typescript": "^5.0.2",
         "vitest": "^1.3.1"
     }
