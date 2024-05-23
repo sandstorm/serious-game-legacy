@@ -138,6 +138,10 @@ function logs-assets {
 	docker compose logs -f neos-assets
 }
 
+function logs-assets-component-library {
+    docker compose logs -f neos-assets-component-library
+}
+
 # Flow exceptions
 function logs-flow-exceptions {
 	docker compose exec neos ./watchAndLogExceptions.sh
