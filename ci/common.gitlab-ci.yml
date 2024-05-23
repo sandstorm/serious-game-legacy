@@ -13,12 +13,18 @@ build_assets:
     - yarn typecheck
     - yarn test
     - yarn build
+    - cd ../../../Sandstorm.ComponentLibrary/Resources/Private
+    - yarn
+    - yarn typecheck
+    - yarn build
   cache:
     paths:
       - app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Private/node_modules/
+      - app/DistributionPackages/Sandstorm.ComponentLibrary/Resources/Private/node_modules/
   artifacts:
     expire_in: 7 days
     paths:
-      - app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public/bundle.css
       - app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public/tailwind.css
       - app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public/bundle.js
+      - app/DistributionPackages/Sandstorm.ComponentLibrary/Resources/Public/bundle.js
+
