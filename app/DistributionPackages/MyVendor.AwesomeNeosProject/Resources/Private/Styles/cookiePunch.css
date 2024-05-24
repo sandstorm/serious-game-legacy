@@ -26,20 +26,12 @@
     background-color: #00aeef;
 }
 
-#cookie-punch .klaro .context-notice {
-    max-width: 1400px;
-    position: relative;
-    width: 100%;
-    margin: 0 auto;
-    padding-left: 20px;
-    padding-right: 20px;
-    min-height: 300px;
-}
-
 /* Buttons */
 #cookie-punch .klaro .cookie-modal .cm-btn-accept-all,
 #cookie-punch .klaro .cookie-modal .cm-btn-accept,
-#cookie-punch .klaro .cookie-modal .cm-btn-decline {
+#cookie-punch .klaro .cookie-modal .cm-btn-decline,
+.klaro.cm-as-context-notice .context-notice .cm-btn.cm-btn-success,
+.klaro.cm-as-context-notice .context-notice .cm-btn.cm-btn-success-var {
     display: inline-block;
     height: 40px;
     padding: 0 20px;
@@ -49,21 +41,21 @@
     text-overflow: ellipsis;
     vertical-align: middle;
     overflow: hidden;
-    whitespace: nowrap;
-    border: 1p solid transparent;
+    white-space: nowrap;
+    border: 1px solid transparent;
 
     text-decoration: none;
     cursor: pointer;
     transition: 0.2s ease-in-out;
 }
 
-#cookie-punch .klaro .cookie-modal .cm-btn-accept-all:focus,
 #cookie-punch .klaro .cookie-modal .cm-btn-accept:focus,
 #cookie-punch .klaro .cookie-modal .cm-btn-decline:focus {
     outline: 1px solid #00aeef;
 }
 
-#cookie-punch .klaro .cookie-modal .cm-btn-accept-all {
+#cookie-punch .klaro .cookie-modal .cm-btn-accept-all,
+.klaro.cm-as-context-notice .context-notice .cm-btn.cm-btn-success-var {
     border-color: #00aeef;
     background: #00aeef;
     color: white;
@@ -73,14 +65,17 @@
 }
 
 #cookie-punch .klaro .cookie-modal .cm-btn-accept-all:hover,
-#cookie-punch .klaro .cookie-modal .cm-btn-accept-all:focus {
+.klaro.cm-as-context-notice .context-notice .cm-btn.cm-btn-success-var:hover,
+#cookie-punch .klaro .cookie-modal .cm-btn-accept-all:focus,
+.klaro.cm-as-context-notice .context-notice .cm-btn.cm-btn-success-var:focus {
     border-color: #0089bc;
     background: #0089bc;
     color: white;
 }
 
 #cookie-punch .klaro .cookie-modal .cm-btn-accept,
-#cookie-punch .klaro .cookie-modal .cm-btn-decline {
+#cookie-punch .klaro .cookie-modal .cm-btn-decline,
+.klaro.cm-as-context-notice .context-notice .cm-btn.cm-btn-success {
     border-color: #434343;
     background: #434343;
     color: white;
@@ -88,8 +83,10 @@
 
 #cookie-punch .klaro .cookie-modal .cm-btn-accept:hover,
 #cookie-punch .klaro .cookie-modal .cm-btn-decline:hover,
+.klaro.cm-as-context-notice .context-notice .cm-btn.cm-btn-success:hover,
 #cookie-punch .klaro .cookie-modal .cm-btn-accept:focus,
-#cookie-punch .klaro .cookie-modal .cm-btn-decline:focus {
+#cookie-punch .klaro .cookie-modal .cm-btn-decline:focus,
+.klaro.cm-as-context-notice .context-notice .cm-btn.cm-btn-success:focus {
     border-color: #282828;
     background: #282828;
     color: white;
@@ -101,4 +98,29 @@
     border-color: #222;
     background: #222;
     color: white;
+}
+
+/*youtube preview image hack*/
+div[data-name="youtube"] {
+    .klaro.cm-as-context-notice {
+        .context-notice {
+            position: relative;
+            aspect-ratio: 2/1;
+
+            &:after {
+                content: "";
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-position: center;
+                background-size: cover;
+                filter: blur(3px);
+                opacity: 0.2;
+            }
+
+            p {
+                z-index: 5;
+            }
+        }
+    }
 }
