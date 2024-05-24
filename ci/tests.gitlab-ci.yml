@@ -1,6 +1,8 @@
 php_code_analysis:
   image: composer:2
   stage: test
+  rules:
+    - when: always
   needs: []
   dependencies: []
   interruptible: true
@@ -24,8 +26,10 @@ php_code_analysis:
 
 build_e2e_testrunner:
   stage: build
-  except:
-    - tags
+  rules:
+    - when: always
+    - if: '$CI_COMMIT_TAG'
+      when: never
   image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.1-v2
   needs: []
   interruptible: true
@@ -39,9 +43,15 @@ build_e2e_testrunner:
 
 e2e_test:
   stage: test
+  # rules:
+  # - run on merge_requests when triggered manually as part of the pipeline
+  # - always run on main branch pipelines and tag pipelines
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_OPEN_MERGE_REQUESTS'
+      when: manual
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_TAG'
+      when: always
   interruptible: true
-  except:
-    - tags
   # we're running this job inside the production image we've just built previously
   image:
     name: $CI_REGISTRY_IMAGE/neos:$CI_COMMIT_REF_SLUG
@@ -101,10 +111,11 @@ e2e_test:
 
 code_metrics:
   stage: quality-ci
-  only:
-    - main
-  except:
-    - tags
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: always
+    - if: '$CI_COMMIT_TAG'
+      when: never
   needs: []
   extends:
     - .code-metrics-template

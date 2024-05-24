@@ -97,7 +97,7 @@ Run `./kickstart.sh` and follow the instructions.
 ### Install Dependencies
 
 - make sure [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) is installed on your system
-- run `./dev.sh setup` to install the Dev Script Runner. You can now use `dev <some-taks>` from anywhere
+- run `./dev.sh setup` to install the Dev Script Runner and other dependencies. You can now use `dev <some-taks>` from anywhere
   inside the project.
 
 ### Setting up IntelliJ
@@ -234,7 +234,7 @@ sku context k3s2021
 sku ns myvendor-awesomeneosproject-staging
 ```
 
-Otherwise you may get an error that the pods could not be found.
+Otherwise, you may get an error that the pods could not be found.
 If you're not working at sandstorm update this command for your environment. :)
 
 ## Kickstart repository nodetypes
@@ -333,7 +333,11 @@ Run `./kickstart.sh --restore-git` after testing changes you made to `./kickstar
 
 ## Production Setup
 
+TODO 
+
 ### Important URLs
+
+TODO
 
 ### Matomo
 

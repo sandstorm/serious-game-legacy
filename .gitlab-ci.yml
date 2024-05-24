@@ -1,3 +1,16 @@
+# This means your pipeline will run:
+# - for merge requests
+# - for branch pipelines UNLESS there is an open merge requests
+# - for other branch pipelines
+# - for tag pipelines
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS'
+      when: never
+    - if: '$CI_COMMIT_BRANCH'
+    - if: '$CI_COMMIT_TAG'
+
 stages:
   - compile_resources
   - build
