@@ -16,22 +16,11 @@ prototype(MyVendor.AwesomeNeosProject:Content.Repository.List) < prototype(Neos.
             items = ${q(site).find('[instanceof MyVendor.AwesomeNeosProject:Document.Repository.Item]')}
             itemRenderer = MyVendor.AwesomeNeosProject:Component.PreviewTiles.Tile {
                 title = ${q(item).property('title')}
-                image = MyVendor.AwesomeNeosProject:Component.Image {
-                    alternativeText = MyVendor.AwesomeNeosProject:Helper.ImageAltText {
-                        image = ${q(item).property('image')}
-                        node = ${q(item)}
-                    }
-                    imageUri = MyVendor.AwesomeNeosProject:Helper.ResourceUri {
-                        resource = ${q(item).property('image').resource}
-                    }
-                    imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
-                        asset = ${q(item).property('image')}
-                    }
-                    fileExtension = ${q(item).property('image').resource.fileExtension}
+                image = MyVendor.AwesomeNeosProject:Content.Image.Only {
+                    @context.node = ${item}
                     sizes = MyVendor.AwesomeNeosProject:Helper.ImageSizes {
                         type = 'three-column--wrap'
                     }
-                    class = 'absolute inset-0 w-full h-full flex flex-col flex-wrap mb-0'
                     pictureClasses = 'inline-block h-full w-full object-cover'
                     imgClasses = 'max-w-full h-full w-full object-cover'
                 }

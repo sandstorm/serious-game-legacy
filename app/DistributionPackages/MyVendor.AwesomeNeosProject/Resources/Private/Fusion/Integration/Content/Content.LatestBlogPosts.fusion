@@ -39,22 +39,11 @@ prototype(MyVendor.AwesomeNeosProject:Content.LatestBlogPosts) < prototype(Neos.
             items.@process.slice = ${q(value).slice(0,3)}
 
             itemRenderer = MyVendor.AwesomeNeosProject:Component.BlogPostPreview {
-                image = MyVendor.AwesomeNeosProject:Component.Image {
-                    alternativeText = MyVendor.AwesomeNeosProject:Helper.ImageAltText {
-                        image = ${q(post).property('image')}
-                        node = ${q(post)}
-                    }
-                    imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
-                        asset = ${q(post).property('image')}
-                    }
-                    imageUri = MyVendor.AwesomeNeosProject:Helper.ResourceUri {
-                        resource = ${q(post).property('image').resource}
-                    }
-                    fileExtension = ${q(post).property('image').resource.fileExtension}
+                image = MyVendor.AwesomeNeosProject:Content.Image.Only {
+                    @context.node = ${post}
                     sizes = MyVendor.AwesomeNeosProject:Helper.ImageSizes {
                         type = 'three-column--wrap'
                     }
-                    class = 'w-full h-48 flex flex-col flex-wrap mb-0'
                     pictureClasses = 'inline-block h-full w-full'
                     imgClasses = 'max-w-full h-full w-full block object-cover'
                 }
