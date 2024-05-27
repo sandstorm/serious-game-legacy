@@ -6,24 +6,11 @@ prototype(MyVendor.AwesomeNeosProject:Document.Blog.Post) < prototype(MyVendor.A
         }
         date = ${q(node).property('datePublished')}
 
-        image = MyVendor.AwesomeNeosProject:Component.Image {
-            alternativeText = MyVendor.AwesomeNeosProject:Helper.ImageAltText {
-                image = ${q(node).property('image')}
-            }
-            imageDescription = ${q(node).property('imageDescription')}
-            imageUri = MyVendor.AwesomeNeosProject:Helper.ResourceUri {
-                resource = ${q(node).property('image').resource}
-            }
-            imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
-                asset = ${q(node).property('image')}
-            }
-            fileExtension = ${q(node).property('image').resource.fileExtension}
-            align = 'center'
+        image = MyVendor.AwesomeNeosProject:Content.Image.Only {
             sizes = ${[
                 '(min-width: 400px) 400px',
                 '100vw'
             ]}
-            class = 'w-full h-full flex flex-col flex-wrap mb-5 [&>span]:w-96'
             pictureClasses = 'inline-block h-full'
             imgClasses = 'max-w-full h-auto w-96'
         }

@@ -1,16 +1,46 @@
+// Integration component for the image node type
 prototype(MyVendor.AwesomeNeosProject:Content.Image) < prototype(Neos.Neos:ContentComponent) {
-    class = 'w-full h-full flex flex-col flex-wrap mb-8'
-    pictureClasses = 'inline-block h-full'
-    imgClasses = 'max-w-full h-auto'
-
-    @propTypes {
-        @strict = true
-        class = ${PropTypes.string}
-        pictureClasses = ${PropTypes.string}
-        imgClasses = ${PropTypes.string}
-    }
-
     renderer = MyVendor.AwesomeNeosProject:Component.Image {
+        image = MyVendor.AwesomeNeosProject:Content.Image.Only
+
+        href = ${q(node).property('link')}
+        href.@process.convert = Neos.Neos:ConvertUris
+        isExternalLink = ${q(node).property('isExternalLink')}
+        align = ${q(node).property('align')}
+
+        imageDescription = ${q(node).property('imageDescription')}
+    }
+}
+
+// Single integration component to render only an image.
+// Expects that an image property is present on the node (image mixin is used)
+prototype(MyVendor.AwesomeNeosProject:Content.Image.Only) < prototype(Neos.Fusion:Component) {
+    // default sizes, can be overwritten
+    sizes = MyVendor.AwesomeNeosProject:Helper.ImageSizes {
+        type = Neos.Fusion:Case {
+            contentInFourColumn {
+                condition = ${q(node).parents('[instanceof MyVendor.AwesomeNeosProject:Content.FourColumn]').get()}
+                renderer = 'four-column'
+            }
+            contentInThreecolumn {
+                condition = ${q(node).parents('[instanceof MyVendor.AwesomeNeosProject:Content.ThreeColumn]').get()}
+                renderer = 'three-column'
+            }
+            contentInTwocolumn {
+                condition = ${q(node).parents('[instanceof MyVendor.AwesomeNeosProject:Content.TwoColumn]').get()}
+                renderer = 'two-column'
+            }
+            default {
+                condition = true
+                renderer = ''
+            }
+        }
+    }
+    // default classes, can be overwritten
+    imgClasses = 'max-w-full h-auto'
+    pictureClasses = 'inline-block h-full'
+
+    renderer = MyVendor.AwesomeNeosProject:Component.Image.Only {
         imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
             asset = ${q(node).property('image')}
         }
@@ -21,36 +51,9 @@ prototype(MyVendor.AwesomeNeosProject:Content.Image) < prototype(Neos.Neos:Conte
         alternativeText = MyVendor.AwesomeNeosProject:Helper.ImageAltText {
             image = ${q(node).property('image')}
         }
-        imageDescription = ${q(node).property('imageDescription')}
 
-        href = ${q(node).property('link')}
-        href.@process.convert = Neos.Neos:ConvertUris
-        isExternalLink = ${q(node).property('isExternalLink')}
-        align = ${q(node).property('align')}
-
-        sizes = MyVendor.AwesomeNeosProject:Helper.ImageSizes {
-            type = Neos.Fusion:Case {
-                contentInFourColumn {
-                    condition = ${q(node).parents('[instanceof MyVendor.AwesomeNeosProject:Content.FourColumn]').get()}
-                    renderer = 'four-column'
-                }
-                contentInThreecolumn {
-                    condition = ${q(node).parents('[instanceof MyVendor.AwesomeNeosProject:Content.ThreeColumn]').get()}
-                    renderer = 'three-column'
-                }
-                contentInTwocolumn {
-                    condition = ${q(node).parents('[instanceof MyVendor.AwesomeNeosProject:Content.TwoColumn]').get()}
-                    renderer = 'two-column'
-                }
-                default {
-                    condition = true
-                    renderer = ''
-                }
-            }
-        }
-
-        class =  ${props.class}
-        pictureClasses =  ${props.pictureClasses}
+        sizes = ${props.sizes}
         imgClasses = ${props.imgClasses}
+        pictureClasses = ${props.pictureClasses}
     }
 }

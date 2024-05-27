@@ -9,21 +9,10 @@ prototype(MyVendor.AwesomeNeosProject:Content.BlogPostPreview) < prototype(Neos.
         href = Neos.Neos:NodeUri {
             node = ${node}
         }
-        image = MyVendor.AwesomeNeosProject:Component.Image {
-            alternativeText = MyVendor.AwesomeNeosProject:Helper.ImageAltText {
-                image = ${q(node).property('image')}
-            }
-            imageSource = Sitegeist.Kaleidoscope:AssetImageSource {
-                asset = ${q(node).property('image')}
-            }
-            imageUri = MyVendor.AwesomeNeosProject:Helper.ResourceUri {
-                resource = ${q(node).property('image').resource}
-            }
-            fileExtension = ${q(node).property('image').resource.fileExtension}
+        image = MyVendor.AwesomeNeosProject:Content.Image.Only {
             sizes = MyVendor.AwesomeNeosProject:Helper.ImageSizes {
                 type = 'four-column--wrap'
             }
-            class = 'w-full h-48 flex flex-col flex-wrap mb-0'
             pictureClasses = 'inline-block h-full w-full'
             imgClasses = 'max-w-full h-full w-full block object-cover'
         }
