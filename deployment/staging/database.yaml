@@ -4,4 +4,4 @@ metadata:
   name: db
   namespace: myvendor-awesomeneosproject-staging
 spec:
-  databaseServer: mariadb1
+  databaseServer: mariadb4

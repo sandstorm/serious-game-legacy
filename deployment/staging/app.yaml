@@ -10,7 +10,7 @@ spec:
   hostNames:
     myvendor-awesomeneosproject-staging.cloud.sandstorm.de: []
 
-  node: worker1
+  node: worker4
   image: docker-hub.sandstorm.de/infrastructure/neos-on-docker-kickstart/neos:main
 
   port: 8081
