@@ -11,6 +11,7 @@
       'MyVendor.AwesomeNeosProject:Document.Events': true
       'MyVendor.AwesomeNeosProject:Document.Page': true
       'MyVendor.AwesomeNeosProject:Document.Shortcut': true
+      'MyVendor.AwesomeNeosProject:Document.Folder': true
       # template for generate repository helper
       # 'MyVendor.AwesomeNeosProject:Document.Repository': true
   childNodes:

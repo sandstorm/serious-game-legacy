@@ -36,7 +36,8 @@ prototype(MyVendor.AwesomeNeosProject:Component.PageMenu.Main.Inner) < prototype
             Neos.Neos:Document,
             !MyVendor.AwesomeNeosProject:Document.NotFoundPage,
             !MyVendor.AwesomeNeosProject:Document.Blog.Tags,
-            !MyVendor.AwesomeNeosProject:Document.Blog.Post
+            !MyVendor.AwesomeNeosProject:Document.Blog.Post,
+            !MyVendor.AwesomeNeosProject:Document.Folder,
         "
     }
 
