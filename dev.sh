@@ -83,7 +83,11 @@ function php-stan-json() {
 ######################## Useful Docker Aliases ########################
 
 function start {
-  build
+    build
+    # create external volume "yarn-cache" and "neos-composer-cache" if not existing
+    # wont be removed on down and volume removal
+    docker volume create --name yarn-cache
+    docker volume create --name neos-composer-cache
 	docker compose up -d
 }
 

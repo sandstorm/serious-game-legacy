@@ -50,7 +50,7 @@ services:
       #- ./app/Packages/:/app/Packages/:cached
       - ./app/Configuration/:/app/Configuration/:cached
       # Explicitly set up Composer cache for faster fetching of packages
-      - composer-cache:/composer_cache
+      - neos-composer-cache:/composer_cache
       - neos-resources:/app/Data/Persistent
     networks:
       - awesomeneosproject
@@ -135,8 +135,10 @@ services:
 volumes:
   neos-assets-node-modules:
   neos-resources:
-  composer-cache:
+  neos-composer-cache:
+    external: true
   yarn-cache:
+    external: true
 
 networks:
   # we need to use a custom network here to ensure that all services see each other; and that during prerendering, we can connect to this network (to reach the service facade)
