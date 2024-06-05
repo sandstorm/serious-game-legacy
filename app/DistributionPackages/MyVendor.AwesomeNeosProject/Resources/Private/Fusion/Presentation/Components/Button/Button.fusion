@@ -47,7 +47,6 @@ prototype(MyVendor.AwesomeNeosProject:Component.Button) < prototype(Neos.Fusion:
                     @if={!props.href}
                     title={props.title}
                     icon={props.icon}
-                    iconAlignment={props.iconAlignment}
                     classes={private.buttonClasses}
                     additionalAttributes={props.additionalAttributes}
                     isTypeLink={props.type == 'link'}
@@ -59,7 +58,6 @@ prototype(MyVendor.AwesomeNeosProject:Component.Button) < prototype(Neos.Fusion:
                 href={props.href}
                 isExternalLink={props.isExternalLink}
                 icon={props.icon}
-                iconAlignment={props.iconAlignment}
                 classes={private.buttonClasses}
                 isTypeLink={props.type == 'link'}
             />
@@ -68,7 +66,6 @@ prototype(MyVendor.AwesomeNeosProject:Component.Button) < prototype(Neos.Fusion:
                 @if={!props.href && !props.withButtonWrapper}
                 title={props.title}
                 icon={props.icon}
-                iconAlignment={props.iconAlignment}
                 classes={private.buttonClasses}
                 additionalAttributes={props.additionalAttributes}
                 isTypeLink={props.type == 'link'}
@@ -80,7 +77,6 @@ prototype(MyVendor.AwesomeNeosProject:Component.Button) < prototype(Neos.Fusion:
             href={props.href}
             isExternalLink={props.isExternalLink}
             icon={props.icon}
-            iconAlignment={props.iconAlignment}
             classes={private.buttonClasses}
             isTypeLink={props.type == 'link'}
         />
