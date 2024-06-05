@@ -3,7 +3,6 @@ prototype(MyVendor.AwesomeNeosProject:Component.Button.Link) < prototype(Neos.Fu
     href = ''
     isExternalLink = false
     icon = ''
-    iconAlignment = 'left'
     classes = ''
     isTypeLink = false
 
@@ -13,7 +12,6 @@ prototype(MyVendor.AwesomeNeosProject:Component.Button.Link) < prototype(Neos.Fu
         href = ${PropTypes.string}
         isExternalLink = ${PropTypes.boolean}
         icon = ${PropTypes.string}
-        iconAlignment = ${PropTypes.oneOf(['left', 'right'])}
         classes = ${PropTypes.string}
         isTypeLink = ${PropTypes.boolean}
     }
@@ -30,7 +28,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Button.Link) < prototype(Neos.Fu
             attributes.target={props.isExternalLink ? '_blank' : null}
             attributes.title={props.title}
         >
-            <span @if.hasIcon={props.icon} class={AtomicFusion.classNames(props.icon)}></span>
+            <i @if.hasIcon={props.icon} class={props.icon}></i>
             <span class={AtomicFusion.classNames(
                 {'text-ellipsis overflow-hidden whitespace-nowrap': !props.isTypeLink}
             )}>{props.title}</span>

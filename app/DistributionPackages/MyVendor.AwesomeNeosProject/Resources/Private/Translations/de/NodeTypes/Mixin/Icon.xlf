@@ -5,41 +5,20 @@
             <trans-unit id="properties.icon.selectBoxEditor.placeholder" xml:space="preserve">
                 <source>Icon wählen</source>
             </trans-unit>
-            <trans-unit id="properties.icon.selectBoxEditor.values.icon-mastodon" xml:space="preserve">
-                <source>Mastodon</source>
-            </trans-unit>
-            <trans-unit id="properties.icon.selectBoxEditor.values.icon-youtube" xml:space="preserve">
-                <source>YouTube</source>
-            </trans-unit>
             <trans-unit id="properties.icon.selectBoxEditor.values.icon-instagram" xml:space="preserve">
                 <source>Instagram</source>
+            </trans-unit>
+            <trans-unit id="properties.icon.selectBoxEditor.values.icon-youtube" xml:space="preserve">
+                <source>Youtube</source>
+            </trans-unit>
+            <trans-unit id="properties.icon.selectBoxEditor.values.icon-mastodon" xml:space="preserve">
+                <source>Mastodon</source>
             </trans-unit>
             <trans-unit id="properties.icon.selectBoxEditor.values.icon-twitter" xml:space="preserve">
                 <source>Twitter</source>
             </trans-unit>
             <trans-unit id="properties.icon.selectBoxEditor.values.icon-facebook" xml:space="preserve">
                 <source>Facebook</source>
-            </trans-unit>
-            <trans-unit id="properties.icon.selectBoxEditor.values.icon-arrow-down-to-line" xml:space="preserve">
-                <source>Pfeil nach unten zur Linie</source>
-            </trans-unit>
-            <trans-unit id="properties.icon.selectBoxEditor.values.icon-angle-left" xml:space="preserve">
-                <source>Pfeil nach links</source>
-            </trans-unit>
-            <trans-unit id="properties.icon.selectBoxEditor.values.icon-angle-right" xml:space="preserve">
-                <source>Pfeil nach rechts</source>
-            </trans-unit>
-            <trans-unit id="properties.icon.selectBoxEditor.values.icon-angle-up" xml:space="preserve">
-                <source>Pfeil nach oben</source>
-            </trans-unit>
-            <trans-unit id="properties.icon.selectBoxEditor.values.icon-angle-down" xml:space="preserve">
-                <source>Pfeil nach unten</source>
-            </trans-unit>
-            <trans-unit id="properties.iconAlign.selectBoxEditor.values.left" xml:space="preserve">
-                <source>Links</source>
-            </trans-unit>
-            <trans-unit id="properties.iconAlign.selectBoxEditor.values.right" xml:space="preserve">
-                <source>Rechts</source>
             </trans-unit>
         </body>
     </file>

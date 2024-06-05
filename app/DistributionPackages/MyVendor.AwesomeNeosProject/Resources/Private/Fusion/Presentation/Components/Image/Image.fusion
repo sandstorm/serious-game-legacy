@@ -94,6 +94,7 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image.Only) < prototype(Neos.Fus
     }
 
     renderer = Neos.Fusion:Case {
+        @if.showImage = ${props.imageSource || props.showImagePlaceholder}
         gifOrSvg {
             // WORKAROUND for crashing animated gifs:
             // It seems that if you throw a big animated gif to vips it needs a lot of resources and blocks
@@ -101,7 +102,6 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image.Only) < prototype(Neos.Fus
             // Thats why we do not touch gifs and just output them without any processing.
             // Also added svgs cause they need no different sizes.
             condition = ${props.fileExtension == 'gif' || props.fileExtension == 'svg'}
-            @if.showImage = ${props.imageSource || props.showImagePlaceholder}
             renderer = afx`
                 <MyVendor.AwesomeNeosProject:Component.ImagePlaceholder
                     @if.showPlaceholder={props.showImagePlaceholder && private.inBackend && !props.imageUri}
@@ -117,7 +117,6 @@ prototype(MyVendor.AwesomeNeosProject:Component.Image.Only) < prototype(Neos.Fus
 
         default {
             condition = true
-            @if.showImage = ${props.imageSource || props.showImagePlaceholder}
             renderer = afx`
                 <MyVendor.AwesomeNeosProject:Component.ImagePlaceholder
                     @if.showPlaceholder={props.showImagePlaceholder && private.inBackend && !props.imageSource}
