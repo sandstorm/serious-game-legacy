@@ -20,7 +20,7 @@ Flow_Mvc_Routing_Resolve:
 # Therefore, at one moment in the BDD test, we need to actively trigger the ContentCacheFlusher to invalidate the tags.
 # Since we have multiple Flow contexts during tests, the cache settings are unified for all contexts.
 # Explanation:
-#  - The system under test runs in Development/Docker/Behat; it writes cache entries
+#  - The system under test runs in Production/E2E-SUT; it writes cache entries
 #  - The Test Runner (behat) runs in Testing/Behat; it needs to invalidate cache for the SuT via service API call
 # For now, we simply keep the cache settings in sync between those two profiles (like we do with the DB config).
 Neos_Fusion_Content:

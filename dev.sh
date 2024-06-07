@@ -270,8 +270,8 @@ function check-e2e-testrunner {
 
 function run-e2e-tests {
 	docker compose exec maria-db "/createTestingDB.sh"
-	docker compose exec neos bash -c ". /etc/bash.vips-arm64-hotfix.sh; FLOW_CONTEXT=Development/Docker/Behat ./flow doctrine:migrate"
-	docker compose exec neos bash -c ". /etc/bash.vips-arm64-hotfix.sh; FLOW_CONTEXT=Development/Docker/Behat ./flow user:create --roles Administrator admin password LocalDev Admin || true"
+	docker compose exec neos bash -c ". /etc/bash.vips-arm64-hotfix.sh; FLOW_CONTEXT=Production/E2E-SUT ./flow doctrine:migrate"
+	docker compose exec neos bash -c ". /etc/bash.vips-arm64-hotfix.sh; FLOW_CONTEXT=Production/E2E-SUT ./flow user:create --roles Administrator admin password LocalDev Admin || true"
 
 	# Check if testrunner is running
 	check-e2e-testrunner
@@ -284,8 +284,8 @@ function run-e2e-tests {
 # use @dev at any scenario or feature that should be tested
 function run-e2e-tests-dev {
 	docker compose exec maria-db "/createTestingDB.sh"
-	docker compose exec neos bash -c ". /etc/bash.vips-arm64-hotfix.sh; FLOW_CONTEXT=Development/Docker/Behat ./flow doctrine:migrate"
-	docker compose exec neos bash -c ". /etc/bash.vips-arm64-hotfix.sh; FLOW_CONTEXT=Development/Docker/Behat ./flow user:create --roles Administrator admin password LocalDev Admin || true"
+	docker compose exec neos bash -c ". /etc/bash.vips-arm64-hotfix.sh; FLOW_CONTEXT=Production/E2E-SUT ./flow doctrine:migrate"
+	docker compose exec neos bash -c ". /etc/bash.vips-arm64-hotfix.sh; FLOW_CONTEXT=Production/E2E-SUT ./flow user:create --roles Administrator admin password LocalDev Admin || true"
 
 	# Check if testrunner is running
 	check-e2e-testrunner

@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/playwright:v1.42.0-focal
+FROM mcr.microsoft.com/playwright:v1.44.1-jammy
 
 #
 # THIS SCRIPT IS PART OF THE Sandstorm.E2ETestTools PACKAGE.

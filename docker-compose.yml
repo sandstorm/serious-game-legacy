@@ -36,7 +36,7 @@ services:
       PLAYWRIGHT_API_URL: 'http://host.docker.internal:3000'
       SYSTEM_UNDER_TEST_URL_FOR_PLAYWRIGHT: 'http://127.0.0.1:9090'
       # used for flushing caches before scenarios
-      E2E_FLOW_CONTEXT: 'Development/Docker/Behat'
+      E2E_FLOW_CONTEXT: 'Production/E2E-SUT'
       REDIS_HOST: 'redis-cache'
       REDIS_PORT: 6379
     volumes:
@@ -108,7 +108,7 @@ services:
       MYSQL_DATABASE: neos
       MYSQL_USER: neos
       MYSQL_PASSWORD: neos
-      DATABASE_E2ETEST: neos_e2etest
+      DB_NEOS_DATABASE_E2ETEST: 'neos_e2etest'
       MARIADB_AUTO_UPGRADE: 1
     # use Unicode encoding as default!
     volumes:
