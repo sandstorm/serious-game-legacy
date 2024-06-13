@@ -84,6 +84,7 @@ a11y_test_staging:
       - pa11y-ci-report-images/
     expire_in: 1 week
 
+# read https://gitlab.sandstorm.de/infrastructure/sandstorm-quality-ci for more information
 quality_ci-lhci_staging:
   stage: quality-ci
   rules:

@@ -23,45 +23,48 @@ Run `./kickstart.sh` and follow the instructions.
 [//]: # (KICKSTART_INFO_SECTION__END)
 
 <!-- TOC -->
-- [Sandstorm Neos on Docker Kickstart](#sandstorm-neos-on-docker-kickstart)
-  - [Requirements](#requirements)
-  - [Features](#features)
-  - [Initial Setup (required once)](#initial-setup-required-once)
-    - [Install Dependencies](#install-dependencies)
-    - [Setting up IntelliJ](#setting-up-intellij)
-  - [Local Development](#local-development)
-  - [Testing](#testing)
-    - [E2E Test](#e2e-test)
-      - [Debug Failing Tests](#debug-failing-tests)
-      - [Run Single BDD Feature Files / Scenarios](#run-single-bdd-feature-files--scenarios)
-      - [Generating content (node) fixtures workflow](#generating-content-node-fixtures-workflow)
-      - [raise curl-timeouts when using `And I pause for debugging`](#raise-curl-timeouts-when-using-and-i-pause-for-debugging)
-    - [Accessibility Tests](#accessibility-tests)
-      - [Testing without htaccess (e.g. production)](#testing-without-htaccess-eg-production)
-      - [Testing with htaccess (e.g. staging)](#testing-with-htaccess-eg-staging)
-      - [Results](#results)
-      - [Hint](#hint)
-  - [Staging](#staging)
-  - [Site Export / Site Import](#site-export--site-import)
-    - [Site Export Prod](#site-export-prod)
-  - [Kickstart repository nodetypes](#kickstart-repository-nodetypes)
-  - [Add components from the library to your project](#add-components-from-the-library-to-your-project)
-    - [Development](#development)
-  - [Custom icon font with icomoon](#custom-icon-font-with-icomoon)
-    - [Use custom icons in neos backend](#use-custom-icons-in-neos-backend)
-  - [Maps](#maps)
-  - [Menu](#menu)
-  - [Image sizes](#image-sizes)
-  - [Recommended Packages](#recommended-packages)
-  - [Coding Guidelines](#coding-guidelines)
-  - [Improving Kickstart Experience](#improving-kickstart-experience)
-  - [Production Setup](#production-setup)
-      - [Important URLs](#important-urls)
-      - [Matomo](#matomo)
-      - [Production Cookbook / Tips and Tricks](#production-cookbook--tips-and-tricks)
-          - [my Neos container does not start, how do I debug?](#my-neos-container-does-not-start-how-do-i-debug)
-          - [Connecting to the production database](#connecting-to-the-production-database)
-  - [Backlog](#backlog)
+* [Sandstorm Neos on Docker Kickstart](#sandstorm-neos-on-docker-kickstart)
+  * [Requirements](#requirements)
+  * [Features](#features)
+  * [Initial Setup (required once)](#initial-setup-required-once)
+    * [Install Dependencies](#install-dependencies)
+    * [Setting up IntelliJ](#setting-up-intellij)
+  * [Local Development](#local-development)
+  * [Testing](#testing)
+    * [E2E Test](#e2e-test)
+      * [Debug Failing Tests](#debug-failing-tests)
+      * [Run Single BDD Feature Files / Scenarios](#run-single-bdd-feature-files--scenarios)
+      * [Generating content (node) fixtures workflow](#generating-content-node-fixtures-workflow)
+      * [raise curl-timeouts when using `And I pause for debugging`](#raise-curl-timeouts-when-using-and-i-pause-for-debugging)
+    * [Accessibility Tests](#accessibility-tests)
+      * [Testing without htaccess (e.g. production)](#testing-without-htaccess-eg-production)
+      * [Testing with htaccess (e.g. staging)](#testing-with-htaccess-eg-staging)
+      * [Results](#results)
+      * [Hint](#hint)
+  * [Staging](#staging)
+    * [run site import on staging](#run-site-import-on-staging)
+    * [htaccess protection for staging](#htaccess-protection-for-staging)
+    * [quality dashboard for staging](#quality-dashboard-for-staging)
+  * [Site Export / Site Import](#site-export--site-import)
+    * [Site Export Prod](#site-export-prod)
+  * [Kickstart repository nodetypes](#kickstart-repository-nodetypes)
+  * [Add components from the library to your project](#add-components-from-the-library-to-your-project)
+    * [Development](#development)
+  * [Custom icon font with icomoon](#custom-icon-font-with-icomoon)
+    * [Use custom icons in neos backend](#use-custom-icons-in-neos-backend)
+  * [Maps](#maps)
+  * [Menu](#menu)
+  * [Image sizes](#image-sizes)
+  * [Recommended Packages](#recommended-packages)
+  * [Coding Guidelines](#coding-guidelines)
+  * [Improving Kickstart Experience](#improving-kickstart-experience)
+  * [Production Setup](#production-setup)
+    * [Important URLs](#important-urls)
+    * [Matomo](#matomo)
+    * [Production Cookbook / Tips and Tricks](#production-cookbook--tips-and-tricks)
+      * [my Neos container does not start, how do I debug?](#my-neos-container-does-not-start-how-do-i-debug)
+      * [Connecting to the production database](#connecting-to-the-production-database)
+  * [Backlog](#backlog)
 <!-- TOC -->
 
 ## Requirements
@@ -215,6 +218,35 @@ Usage of components:
 ## Staging
 
 run `dev open-staging` to open the staging url in the browser.
+
+Before you can use staging, you need to add a new namespace in rancher. 
+The namespace should be named like the project, e.g. `myvendor-awesomeneosproject-staging`.
+
+### run site import on staging
+
+Connect to the staging container via sku:
+- set the namespace to `sku ns myvendor-awesomeneosproject-staging`
+- enter the container with `sku enter`
+- run `./ContentDump/importSite.sh` to import the local content dump into staging
+
+!!! If you cant login into the neos backend do this:
+- connect to the staging db with `sku mysql sequelace` (or any other db tool)
+- open the table `neos_contentrepository_domain_model_workspace`
+- deleted all entries except the one with baseworkspace=null (the local admin one)
+
+### htaccess protection for staging
+
+Read the [htaccess documentation](https://gitlab.sandstorm.de/infrastructure/k8s/-/blob/main/operators/one-container-one-port/helm-charts/one-container-one-port/values.yaml#L220) for more information.
+Basically, you need to add a secret to the namespace in rancher.
+
+### quality dashboard for staging
+
+Read the [quality dashboard documentation](https://gitlab.sandstorm.de/infrastructure/sandstorm-quality-ci for more information) for more information.
+You need to set two env variables in your gitlab project:
+- $LHCI_URL_PASSWORD_STAGING (the ht access password for the staging website)
+- $LHCI_TOKEN_STAGING (see the quality dashboard documentation for more information on how to generate it)
+Adjust the `quality_ci-lhci_staging` job in the `ci/staging.gitlab-ci.yml` to your needs.
+
 
 ## Site Export / Site Import
 
