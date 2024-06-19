@@ -106,14 +106,16 @@ Run `./kickstart.sh` and follow the instructions.
 ### Setting up IntelliJ
 
 - recommended plugins:
-  - Neos Support
-  - PHP
-  - PHP Annotations
-  - PHP Toolbox
-  - Prettier
+  - [Neos Support](https://plugins.jetbrains.com/plugin/9362-neos-support)
+  - [PHP](https://plugins.jetbrains.com/plugin/6610-php)
+  - [PHP Annotations](https://plugins.jetbrains.com/plugin/7320-php-annotations)
+  - [PHP Toolbox](https://plugins.jetbrains.com/plugin/8133-php-toolbox)
+  - [Prettier](https://plugins.jetbrains.com/plugin/10456-prettier)
     - make sure Prettier is activated for the correct extensions
-  - Docker
-  - Behat Support
+  - [Docker](https://plugins.jetbrains.com/plugin/7724-docker)
+  - [Behat Support](https://plugins.jetbrains.com/plugin/7512-behat-support)
+  - [Symlink Excluder](https://plugins.jetbrains.com/plugin/16110-symlink-excluder)
+    - Prevents symlinked folders to be indexed by the IDE so that you don't have to exclude packages you're developing manually
 - check, if autocompletion works for NodeType and Configuration yaml-files
 - check, if it is possible to jump to Fusion Prototypes via cmd + click
 
