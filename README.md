@@ -117,6 +117,9 @@ Run `./kickstart.sh` and follow the instructions.
   - [Symlink Excluder](https://plugins.jetbrains.com/plugin/16110-symlink-excluder)
     - Prevents symlinked folders to be indexed by the IDE so that you don't have to exclude packages you're developing manually
 - All plugins are defined as required in the IDE config. You'll get a popup prompting you to install the plugins if you don't already have them.
+- Set the `rootFontSize` for the tailwind plugin:
+  - Settings -> Languages & Framework -> Style Sheets -> Tailwind CSS
+  - You can find your root font size in your tailwind.config.js
 - check, if autocompletion works for NodeType and Configuration yaml-files
 - check, if it is possible to jump to Fusion Prototypes via cmd + click
 
