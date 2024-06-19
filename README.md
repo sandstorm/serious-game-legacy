@@ -105,7 +105,7 @@ Run `./kickstart.sh` and follow the instructions.
 
 ### Setting up IntelliJ
 
-- recommended plugins:
+- Plugins:
   - [Neos Support](https://plugins.jetbrains.com/plugin/9362-neos-support)
   - [PHP](https://plugins.jetbrains.com/plugin/6610-php)
   - [PHP Annotations](https://plugins.jetbrains.com/plugin/7320-php-annotations)
@@ -116,6 +116,7 @@ Run `./kickstart.sh` and follow the instructions.
   - [Behat Support](https://plugins.jetbrains.com/plugin/7512-behat-support)
   - [Symlink Excluder](https://plugins.jetbrains.com/plugin/16110-symlink-excluder)
     - Prevents symlinked folders to be indexed by the IDE so that you don't have to exclude packages you're developing manually
+- All plugins are defined as required in the IDE config. You'll get a popup prompting you to install the plugins if you don't already have them.
 - check, if autocompletion works for NodeType and Configuration yaml-files
 - check, if it is possible to jump to Fusion Prototypes via cmd + click
 
