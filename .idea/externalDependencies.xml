@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ExternalDependencies">
-    <plugin id="Docker" />
-    <plugin id="NEON support" />
-    <plugin id="Symlink Excluder" />
-    <plugin id="com.jetbrains.php" />
-    <plugin id="com.jetbrains.php.behat" />
-    <plugin id="de.espend.idea.php.annotation" />
-    <plugin id="de.espend.idea.php.toolbox" />
-    <plugin id="intellij.prettierJS" />
-  </component>
+    <component name="ExternalDependencies">
+        <plugin id="Docker"/>
+        <plugin id="Symlink Excluder"/>
+        <plugin id="com.jetbrains.php"/>
+        <plugin id="com.jetbrains.php.behat"/>
+        <plugin id="de.espend.idea.php.annotation"/>
+        <plugin id="de.espend.idea.php.toolbox"/>
+        <plugin id="intellij.prettierJS"/>
+        <plugin id="vette.neos"/>
+    </component>
 </project>
