@@ -2,6 +2,10 @@ data_dir: "/app/Data/Logs"
 api:
   enabled: true
 
+log_schema:
+  # timestamp -> should contain encoding
+  timestamp_key: "timestamp_rfc3339"
+
 sources:
   flow_exceptions:
     type: file
@@ -40,12 +44,12 @@ transforms:
       - remove_http_request_from_flow_exceptions
     type: remap
     source: |
-      .customer.tenant = "${CUSTOMER_TENANT:?CUSTOMER_TENANT env must be specified, f.e. mycustomer}"
-      .customer.project = "${CUSTOMER_PROJECT:?CUSTOMER_PROJECT env must be specified, f.e. mycustomer.myproject}"
-      .host.name = "${HOST_NAME:?HOST_NAME env must be specified, f.e. myhost}"
-      .host.group = "${HOST_GROUP:?HOST_GROUP env must be specified, f.e. mygroup}"
-      .event.module = "flow"
-      .event.dataset = "flow.exceptions"
+      .customer_tenant = "${CUSTOMER_TENANT:?CUSTOMER_TENANT env must be specified, f.e. mycustomer}"
+      .customer_project = "${CUSTOMER_PROJECT:?CUSTOMER_PROJECT env must be specified, f.e. mycustomer.myproject}"
+      .host_name = "${HOST_NAME:?HOST_NAME env must be specified, f.e. myhost}"
+      .host_group = "${HOST_GROUP:?HOST_GROUP env must be specified, f.e. mygroup}"
+      .event_module = "flow"
+      .event_dataset = "flow.exceptions"
 sinks:
   v2_sandstorm_aggregation:
     inputs:
