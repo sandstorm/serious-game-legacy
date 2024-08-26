@@ -32,3 +32,8 @@ Neos:
       'MyVendor.AwesomeNeosProject:Thumbnails.XLarge.webp':
         width: 1600px
         format: webp
+    image:
+      defaultOptions:
+        convertFormats:
+          'image/tiff': 'image/jpeg'
+          'image/bmp': 'image/jpeg'
