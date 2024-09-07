@@ -47,6 +47,7 @@ deploy_production:
       ssh -p 29418 deploy@your-domain.de "
         docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY &&
         cd your-project &&
+        sed -ri 's/DOCKER_IMAGE_VERSION/$CI_COMMIT_REF_NAME/g' docker-compose.yml &&
         ([ -f .env ] || { echo 'ERROR: You manually need to create a .env file with secrets first.'; exit 1; }) &&
         docker compose pull &&
         docker compose up -d
