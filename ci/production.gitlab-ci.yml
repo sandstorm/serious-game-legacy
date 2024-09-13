@@ -43,13 +43,16 @@ deploy_production:
     # deploy the actual application
     - scp -P 29418 docker-compose-prod.yml deploy@your-domain.de:~/your-project/docker-compose.yml
     - scp -P 29418 deployment/production/vector.flow.yaml deploy@your-domain.de:~/your-project/vector.flow.yaml
+    # NOTE: to ensure vector always uses the most up-to-date config, we restart vector after deployment (because
+    # vector.flow.yaml is *mounted* into the container)
     - |
       ssh -p 29418 deploy@your-domain.de "
         docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY &&
         cd your-project &&
         ([ -f .env ] || { echo 'ERROR: You manually need to create a .env file with secrets first.'; exit 1; }) &&
         docker compose pull &&
-        docker compose up -d
+        docker compose up -d &&
+        docker compose restart vector
       "
 
 a11y_test_production:
