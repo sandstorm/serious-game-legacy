@@ -10,7 +10,7 @@ services:
   neos:
     # example image name "docker-hub.sandstorm.de/die/wbwebforum/wbweb-production:DOCKER_IMAGE_VERSION"
     # the DOCKER_IMAGE_VERSION is replaced with the actual tagged version during deployment by the `sed` command
-    image: TODO: ADD IMAGE FROM DOCKER REGISTRY
+    image: my.docker-registry/path-to/imagename:version
     restart: always
     environment:
       FLOW_CONTEXT: 'Production/Live'
