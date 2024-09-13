@@ -27,7 +27,7 @@ Flowpack:
           #- limit
           #- seed
           #- tab
-          #- documentIdentifier
+          - documentIdentifier
 
         # ignored arguments are not part of the cache identifier but do not
         # prevent caching either. Use this for arguments that are meaningless for
