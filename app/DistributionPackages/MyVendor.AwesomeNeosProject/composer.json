@@ -6,7 +6,8 @@
         "sandstorm/cookiepunch": "*",
         "flowpack/listable": "^3.5",
         "jonnitto/prettyembedvideoplatforms": "^2.1",
-        "breadlesscode/neos-nodetypes-folder": "^1.4"
+        "breadlesscode/neos-nodetypes-folder": "^1.4",
+        "flowpack/fullpagecache": "*"
     },
     "suggest": {
         "neos/seo": "*"
