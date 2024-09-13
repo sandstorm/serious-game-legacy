@@ -126,7 +126,7 @@ services:
       - awesomeneosproject
 
   redis-cache:
-    image: redis:6.2.2
+    image: redis:7
     ports:
       - 16379:6379
     networks:

@@ -64,7 +64,7 @@ services:
     command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 
   redis-cache:
-    image: redis:6.2.2
+    image: redis:7
     restart: always
     networks:
       - awesomeneosproject
