@@ -1,6 +1,8 @@
 #!/bin/bash
 set -ex
 
+./flow flow:cache:flush
+
 ./flow doctrine:migrate
 
 # NOTE: for Staging and PROD, we do not import the content dump here, as usually you want to do it
@@ -9,7 +11,6 @@ set -ex
 # NOTE: for Staging and PROD, we do not create users here, as we want secure users and passwords.
 
 ./flow resource:publish
-./flow flow:cache:flush
 ./flow cache:warmup
 
 # If you want to use cron:
