@@ -78,7 +78,7 @@ Run `./kickstart.sh` and follow the instructions.
 ## Features
 
 - Neos 8.3
-- PHP 8.2
+- PHP 8.3
 - MariaDB 10.11
 - Vips (instead of ImageMagick)
 - Supercronic

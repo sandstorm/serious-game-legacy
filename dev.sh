@@ -55,6 +55,7 @@ function setup {
 	nvm install
 	nvm use
 	npm install
+	npx playwright install
 	popd
 
 	# Running composer to install dependencies locally so you have autocompletion
@@ -247,6 +248,7 @@ function start-e2e-testrunner {
   source "$HOME/.nvm/nvm.sh"
   nvm use
   npm install
+  npx playwright install
   node index.js &
   _echo_green "Testrunner is running on port 3000"
   popd
