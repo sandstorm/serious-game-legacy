@@ -30,7 +30,7 @@ build_e2e_testrunner:
     - when: always
     - if: '$CI_COMMIT_TAG'
       when: never
-  image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.1-v2
+  image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v3
   needs: []
   interruptible: true
   script:

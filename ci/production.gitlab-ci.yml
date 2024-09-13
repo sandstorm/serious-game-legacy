@@ -3,7 +3,7 @@ package_app_production:
   rules:
     - if: '$CI_COMMIT_TAG'
       when: always
-  image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.1-v2
+  image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v3
   needs:
     - build_assets
   cache:
