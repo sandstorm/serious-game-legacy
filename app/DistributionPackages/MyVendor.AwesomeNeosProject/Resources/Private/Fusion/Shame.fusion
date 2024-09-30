@@ -1,11 +1,1 @@
-// WORKAROUND: AssetImageSource sets async=true by default.
-// this means: Instead of rendering the images during page render, image URLs are like /media/thumbnail/[uuid]
-// and are rendered by PHP on request (if not existing). This spins up a PHP interpreter for EVERY image fetch,
-// which is what we want to avoid.
-//
-// With async=false, the page will be slow for the unlucky person who arrives there when no images are rendered,
-// as lots of images will be rendered then (all srcsets of all images on the page); but as this is not just stored
-// in the content cache, but persisted (on disk and on DB) this will happen extremely rarely.
-prototype(Sitegeist.Kaleidoscope:AssetImageSource) {
-    async = false
-}
+# See 20240927_ImageRenderingAsyncIsGood.md for explanation why we switched back to async image rendering.
