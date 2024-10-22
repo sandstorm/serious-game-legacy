@@ -12,17 +12,7 @@ php_code_analysis:
     - cd Build/Behat
     - composer install --ignore-platform-reqs
     - cd ../..
-    - ./bin/phpstan analyse --no-progress --memory-limit 1G --error-format junit > phpstan.xml
-    - ./bin/phpstan analyse --no-progress --memory-limit 1G --error-format gitlab > phpstan.json
-  after_script:
-    - cp app/phpstan.xml $CI_PROJECT_DIR/phpstan.xml
-    - cp app/phpstan.json $CI_PROJECT_DIR/phpstan.json
-  artifacts:
-    expire_in: 5 days
-    when: always
-    reports:
-      junit: phpstan.xml
-      codequality: phpstan.json
+    - ./bin/phpstan analyse --no-progress --memory-limit 1G --error-format table
 
 build_e2e_testrunner:
   stage: build

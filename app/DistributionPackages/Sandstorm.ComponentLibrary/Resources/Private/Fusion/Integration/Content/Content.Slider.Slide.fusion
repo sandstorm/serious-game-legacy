@@ -1,4 +1,5 @@
-prototype(Sandstorm.ComponentLibrary:Content.Slider.Slide) < prototype(MyVendor.AwesomeNeosProject:Content.Image) {
+prototype(Sandstorm.ComponentLibrary:Content.Slider.Slide) < prototype(MyVendor.AwesomeNeosProject:Content.Image.Only) {
+    # TODO fix
     class = "w-full h-[400px] md:h-[700px] flex flex-col flex-wrap mb-8"
     pictureClasses = "flex justify-center items-center h-full"
     imgClasses = "max-w-full w-auto h-full object-contain"
