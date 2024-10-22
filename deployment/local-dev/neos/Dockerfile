@@ -1,5 +1,5 @@
 # NOTE: this file is executed from the ROOT DIRECTORY of the project, i.e. "../"
-FROM php:8.2-fpm-bookworm
+FROM php:8.3-fpm-bookworm
 
 ###################### START - Dev Container only ######################
 # IMPORTANT: we try to keep the production and local-dev the same      #
@@ -44,9 +44,9 @@ RUN apt-get update -y && \
     mkdir -p /var/log/supervisor && \
     rm -rf /var/lib/apt/lists/* && \
     docker-php-ext-install intl bcmath opcache pdo pdo_mysql xsl ffi && \
-    pecl install vips && \
+    pecl install vips excimer && \
     echo "extension=vips.so" > /usr/local/etc/php/conf.d/vips.ini && \
-    pecl install redis && docker-php-ext-enable redis
+    pecl install redis && docker-php-ext-enable redis excimer
 
 # for PHP 8.1, disable deprecations to temporarily make Neos/Flow work
 RUN echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT" >> /usr/local/etc/php/conf.d/error_reporting.ini
@@ -86,8 +86,14 @@ ADD /deployment/config-files/upload-limit-php.ini /usr/local/etc/php/conf.d/uplo
 RUN rm -Rf /usr/local/etc/php-fpm.* && rm -Rf /etc/nginx/conf.d/*
 ADD deployment/config-files/php-fpm.conf /usr/local/etc/php-fpm.conf
 
-ADD /deployment/config-files/nginx.conf /deployment/config-files/nginx-e2etest-server-dev.conf /etc/nginx/
+# performance profiling
+ADD /deployment/config-files/excimer.ini /usr/local/etc/php/conf.d/excimer.ini
+RUN mkdir -p /app/tracing/_traces/ \
+    && chown -R www-data:www-data /app/tracing
+ADD /deployment/config-files/auto_prepend_file.php /app/tracing/auto_prepend_file.php
 
+# nginx config
+ADD /deployment/config-files/nginx.conf /deployment/config-files/nginx-e2etest-server-dev.conf /etc/nginx/
 RUN mkdir -p /var/lib/nginx /usr/local/var/log/ && \
     chown -R www-data /var/lib/nginx /usr/local/var/log/ /etc/nginx/ &&\
     ln -s /etc/nginx/nginx-e2etest-server-dev.conf /etc/nginx/conf.d/nginx-e2etest-server-dev.conf

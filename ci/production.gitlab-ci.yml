@@ -3,7 +3,7 @@ package_app_production:
   rules:
     - if: '$CI_COMMIT_TAG'
       when: always
-  image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.1-v2
+  image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v3
   needs:
     - build_assets
   cache:
@@ -41,7 +41,7 @@ deploy_production:
     - ssh-keyscan -p 29418 -H your-domain.de >> ~/.ssh/known_hosts
 
     # deploy the actual application
-    - scp -P 29418 docker-compose-prod.yml deploy@your-domain.de:~/your-project/docker-compose.yml
+    - scp -P 29418 deployment/production/docker-compose-prod.yml deploy@your-domain.de:~/your-project/docker-compose.yml
     - scp -P 29418 deployment/production/vector.flow.yaml deploy@your-domain.de:~/your-project/vector.flow.yaml
     # NOTE: to ensure vector always uses the most up-to-date config, we restart vector after deployment (because
     # vector.flow.yaml is *mounted* into the container)

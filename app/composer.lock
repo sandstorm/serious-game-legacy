@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8440461d226ab880554713b8afe0b62f",
+    "content-hash": "35f95354da054b2098a9df5e35196a62",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2295,6 +2295,46 @@
             "time": "2022-03-28T21:32:22+00:00"
         },
         {
+            "name": "flowpack/fullpagecache",
+            "version": "3.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Flowpack/Flowpack.FullPageCache.git",
+                "reference": "a4b76accb55bb8e7d54ec38a3f80440cab0ab131"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Flowpack/Flowpack.FullPageCache/zipball/a4b76accb55bb8e7d54ec38a3f80440cab0ab131",
+                "reference": "a4b76accb55bb8e7d54ec38a3f80440cab0ab131",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/psr7": "^1.7, !=1.8.0 || ~2.0",
+                "neos/neos": "^8.0 || dev-master"
+            },
+            "type": "neos-package",
+            "extra": {
+                "neos": {
+                    "package-key": "Flowpack.FullPageCache"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Flowpack\\FullPageCache\\": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Cache full Neos page responses",
+            "support": {
+                "issues": "https://github.com/Flowpack/Flowpack.FullPageCache/issues",
+                "source": "https://github.com/Flowpack/Flowpack.FullPageCache/tree/3.0.1"
+            },
+            "time": "2022-12-06T20:10:14+00:00"
+        },
+        {
             "name": "flowpack/listable",
             "version": "3.6.0",
             "source": {
@@ -3518,7 +3558,7 @@
         },
         {
             "name": "myvendor/awesomeneosproject",
-            "version": "dev-main",
+            "version": "dev-setup-improvements",
             "dist": {
                 "type": "path",
                 "url": "./DistributionPackages/MyVendor.AwesomeNeosProject",
@@ -7549,7 +7589,7 @@
         },
         {
             "name": "sandstorm/component-library",
-            "version": "dev-main",
+            "version": "dev-setup-improvements",
             "dist": {
                 "type": "path",
                 "url": "./DistributionPackages/Sandstorm.ComponentLibrary",

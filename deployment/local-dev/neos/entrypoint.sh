@@ -10,6 +10,8 @@ composer config --global 'preferred-install.sandstorm/*' source
 
 composer install
 
+./flow flow:cache:flush
+
 ./flow doctrine:migrate
 
 # only run site import when nothing was imported before
@@ -22,7 +24,6 @@ fi
 ./flow user:create --roles Administrator $ADMIN_USERNAME $ADMIN_PASSWORD LocalDev Admin || true
 
 ./flow resource:publish
-./flow flow:cache:flush
 ./flow cache:warmup
 
 # e2e test
