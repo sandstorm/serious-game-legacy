@@ -19,14 +19,6 @@ Flowpack:
         # allowed params become part of the cache identifier, use this for
         # arguments that modify the response but still allow caching like pagination
         allow:
-          # MuseenDresden.Site:Content.Exhibitions.List
-          #- museum
-          #- topic
-          #- audience
-          #- date
-          #- limit
-          #- seed
-          #- tab
           - documentIdentifier
 
         # ignored arguments are not part of the cache identifier but do not

@@ -67,7 +67,10 @@ const Hapi = require("@hapi/hapi");
 const fs = require("fs").promises;
 
 const init = async () => {
-    const browser = await chromium.launch({ headless: true, devtools: false });
+    const args = process.argv.slice(2);
+    const isHeadless = !args.includes('--no-headless');
+
+    const browser = await chromium.launch({ headless: isHeadless, devtools: false, slowMo: 0 });
 
     // the "key" is the context identifier (from the URL)
     // the "value" is an object: {
