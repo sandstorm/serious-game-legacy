@@ -12,7 +12,7 @@ Neos:
     i18n:
       defaultLocale: 'de'
       fallbackRule:
-        order: ['de']
+        order: ['en']
   Neos:
     eventLog:
       enabled: true

@@ -7,7 +7,7 @@ prototype(Sandstorm.ComponentLibrary:Component.LogoBar.Slide) < prototype(Neos.F
     }
 
     renderer = afx`
-        <div class="swiper-slide logo-bar__slide">
+        <div class="swiper-slide text-center">
             {props.content}
         </div>
     `

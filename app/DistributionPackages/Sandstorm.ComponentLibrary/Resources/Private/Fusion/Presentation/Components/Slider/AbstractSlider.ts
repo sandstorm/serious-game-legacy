@@ -1,20 +1,16 @@
 import { AlpineComponent } from 'alpinejs'
-import Swiper from 'swiper/bundle'
 import { Swiper as SwiperType } from 'swiper'
 
-const CSS_CLASSES = {
+export const CSS_CLASSES = {
     // use the generic swiper classes here so the code works for all swipers inheriting this function
     slider: '.swiper',
-    slide: 'swiper-slide',
+    slide: '.swiper-slide',
     pagination: '.swiper-pagination',
-    // We need additional specific classnames for the navigation arrows to make sliders work separatly
-    // Otherwise all slider are connect, which means when I navigation in one slider another slider on the same
-    // page will also navigate to the next slide
-    nextEl: '.swiper-button-next.swiper-button-next--basic-slider',
-    prevEl: '.swiper-button-prev.swiper-button-prev--basic-slider',
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
 }
 
-export type SliderComponent = {
+export type AbstractSliderComponent = {
     inBackend: boolean
     prevSlideMessage: string
     nextSlideMessage: string
@@ -36,7 +32,7 @@ export default (
     prevSlideMessage: string,
     nextSlideMessage: string,
     inBackend: boolean = false
-): AlpineComponent<SliderComponent> => {
+): AlpineComponent<AbstractSliderComponent> => {
     return {
         inBackend: inBackend,
         prevSlideMessage: prevSlideMessage,
@@ -116,32 +112,9 @@ export default (
             }
         },
 
+        // overwrite this function in the component using this abstract slider
         _initSlider() {
-            const swiperRef = this.$refs.slider
 
-            const amountOfSlides = swiperRef.querySelectorAll(`.${CSS_CLASSES.slide}`).length
-
-            if (amountOfSlides === 0) {
-                return
-            }
-
-            const swiperOptions = {
-                loop: !this.inBackend,
-                pagination: {
-                    el: CSS_CLASSES.pagination,
-                    clickable: true,
-                },
-                navigation: {
-                    nextEl: CSS_CLASSES.nextEl,
-                    prevEl: CSS_CLASSES.prevEl,
-                },
-                a11y: {
-                    prevSlideMessage: this.prevSlideMessage,
-                    nextSlideMessage: this.nextSlideMessage,
-                },
-            }
-
-            this._swiper = new Swiper(swiperRef, swiperOptions)
         },
     }
 }

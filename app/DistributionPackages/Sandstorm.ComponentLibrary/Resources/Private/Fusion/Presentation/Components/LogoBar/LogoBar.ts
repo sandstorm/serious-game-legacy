@@ -1,13 +1,8 @@
 import {AlpineComponent} from 'alpinejs'
 import Swiper from 'swiper/bundle'
-import basicSlider, {SliderComponent} from './AbstractSlider'
+import basicSlider, {AbstractSliderComponent, CSS_CLASSES} from '../Slider/AbstractSlider'
 
-const CSS_CLASSES = {
-    // use the generic swiper classes here so the code works for all swipers inheriting this function
-    slide: '.swiper-slide',
-}
-
-export type LogoBarComponent = SliderComponent & {
+export type LogoBarComponent = AbstractSliderComponent & {
     amountOfLogos: number
     autoplayInterval: number
 }
@@ -26,7 +21,6 @@ const LogoBar = (
 
         _initSlider() {
             const swiperRef = this.$refs.slider
-
             const amountOfSlides = swiperRef.querySelectorAll(CSS_CLASSES.slide).length
 
             if (amountOfSlides === 0) {
