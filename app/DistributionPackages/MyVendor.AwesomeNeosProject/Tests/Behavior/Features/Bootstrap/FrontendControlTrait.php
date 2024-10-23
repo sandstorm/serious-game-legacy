@@ -204,4 +204,17 @@ trait FrontendControlTrait
 
         return $classList;
     }
+
+    /**
+     * @When I wait for the url to be :url
+     */
+    public function iWaitForTheUrlToBe(string $url): void
+    {
+        $this->playwrightConnector->execute(
+            $this->playwrightContext,
+            <<<JS
+                await vars.page.waitForURL("**$url**", { waitUntil: "domcontentloaded" });
+            JS,
+        );
+    }
 }

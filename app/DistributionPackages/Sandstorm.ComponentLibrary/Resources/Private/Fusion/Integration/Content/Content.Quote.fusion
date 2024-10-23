@@ -7,7 +7,7 @@ prototype(Sandstorm.ComponentLibrary:Content.Quote) < prototype(Neos.Neos:Conten
             property = 'person'
         }
         hasImageSource = ${q(node).property('image') ? true : false}
-        image= MyVendor.AwesomeNeosProject:Component.Image {
+        image = MyVendor.AwesomeNeosProject:Component.Image.Only {
             alternativeText = MyVendor.AwesomeNeosProject:Helper.ImageAltText {
                 image = ${q(node).property('image')}
             }
@@ -21,7 +21,6 @@ prototype(Sandstorm.ComponentLibrary:Content.Quote) < prototype(Neos.Neos:Conten
             sizes = MyVendor.AwesomeNeosProject:Helper.ImageSizes {
                 type = 'two-column'
             }
-            class = 'w-full h-full flex flex-col flex-wrap mb-0'
             pictureClasses = 'aspect-square inline-block h-full w-full'
             imgClasses = 'h-full w-full object-cover rounded-[50%]'
         }
