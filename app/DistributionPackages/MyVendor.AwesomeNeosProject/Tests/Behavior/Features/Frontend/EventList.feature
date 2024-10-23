@@ -27,17 +27,21 @@ Feature: Event list with filter
         Then the page title should be "Events - Website"
         And I see 3 events
 
-        Then I click on the filter button
+        When I click on the filter button
         And I click on the filter with title "Some Tag"
+        Then I wait for the url to be "/events?tags=some-tag"
         And I see 1 events
 
-        Then I click on the filter button
+        When I click on the filter button
         And I click on the filter with title "Another Tag"
+        Then I wait for the url to be "/events?tags=some-tag%2Canother-tag"
         And I see 2 events
 
-        Then I click on the filter button
+        When I click on the filter button
         And I click on the filter with title "Another Tag"
+        Then I wait for the url to be "/events?tags=some-tag"
         And I see 1 events
 
         Then I delete all filter
+        And I wait for the url to be "/events"
         And I see 3 events

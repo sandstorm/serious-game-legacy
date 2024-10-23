@@ -1,10 +1,6 @@
 <?php
 
 use function PHPUnit\Framework\assertEquals;
-use function PHPUnit\Framework\assertTrue;
-use function PHPUnit\Framework\assertFalse;
-use Neos\Neos\Fusion\Cache\ContentCacheFlusher;
-use Neos\Utility\ObjectAccess;
 
 trait EventListTrait
 {
@@ -17,10 +13,9 @@ trait EventListTrait
          * @var int $amount
          */
         $amount = $this->playwrightConnector->execute($this->playwrightContext,
-            // language=JavaScript
-            "
+            <<<JS
                 return await vars.page.getByTestId('event').count()
-            "// language=PHP
+            JS
         );
 
         assertEquals($expectedAmount, $amount, "Expected $expectedAmount events, but got $amount.");
@@ -32,10 +27,9 @@ trait EventListTrait
     public function iClickOnTheFilterButton(): void
     {
         $this->playwrightConnector->execute($this->playwrightContext,
-            // language=JavaScript
-            "
+            <<<JS
                 await vars.page.getByTestId('filterButton').click();
-            "// language=PHP
+            JS
         );
     }
 
@@ -44,16 +38,11 @@ trait EventListTrait
      */
     public function iClickOnTheFilterWithTitleX(string $title): void
     {
-        $this->playwrightConnector->execute($this->playwrightContext,
-        sprintf(
-            // language=JavaScript
-            "
-                await vars.page.getByTestId('eventFilterTag')
-                    .filter({ hasText: '%s' })
-                    .click()
-            ",// language=PHP
-            $title
-            )
+        $this->playwrightConnector->execute(
+            $this->playwrightContext,
+            <<<JS
+                await vars.page.getByTestId('eventFilterTag').filter({ hasText: '$title' }).click();
+            JS
         );
     }
 
@@ -63,11 +52,9 @@ trait EventListTrait
     public function iDeleteAllFilter(): void
     {
         $this->playwrightConnector->execute($this->playwrightContext,
-            // language=JavaScript
-            "
+            <<<JS
                 await vars.page.getByTestId('deleteFilterButton').click();
-            "// language=PHP
+            JS
         );
     }
-
 }

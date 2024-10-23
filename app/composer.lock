@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "35f95354da054b2098a9df5e35196a62",
+    "content-hash": "722a84416ed93d134258001a1e7b462f",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2295,6 +2295,53 @@
             "time": "2022-03-28T21:32:22+00:00"
         },
         {
+            "name": "flowpack/content-security-policy",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Flowpack/Flowpack.ContentSecurityPolicy.git",
+                "reference": "dba66ce2f84a707b03300945cbb8341685dc6f29"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Flowpack/Flowpack.ContentSecurityPolicy/zipball/dba66ce2f84a707b03300945cbb8341685dc6f29",
+                "reference": "dba66ce2f84a707b03300945cbb8341685dc6f29",
+                "shasum": ""
+            },
+            "require": {
+                "neos/flow": "^8.3",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan": "^1.12",
+                "phpstan/phpstan-phpunit": "^1.4",
+                "phpstan/phpstan-strict-rules": "^1.6",
+                "phpunit/phpunit": "^11.4"
+            },
+            "type": "neos-package",
+            "extra": {
+                "neos": {
+                    "package-key": "Flowpack.ContentSecurityPolicy"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Flowpack\\ContentSecurityPolicy\\": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Configure your content-security-policy header easily with yaml.",
+            "support": {
+                "issues": "https://github.com/Flowpack/Flowpack.ContentSecurityPolicy/issues",
+                "source": "https://github.com/Flowpack/Flowpack.ContentSecurityPolicy/tree/1.0.1"
+            },
+            "time": "2024-10-23T09:00:01+00:00"
+        },
+        {
             "name": "flowpack/fullpagecache",
             "version": "3.0.1",
             "source": {
@@ -3558,14 +3605,15 @@
         },
         {
             "name": "myvendor/awesomeneosproject",
-            "version": "dev-setup-improvements",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./DistributionPackages/MyVendor.AwesomeNeosProject",
-                "reference": "8ff32707e03951fa076e5435904d924b475ac8b1"
+                "reference": "1e72604a9d99b5386076462f88ab95e516e6be4e"
             },
             "require": {
                 "breadlesscode/neos-nodetypes-folder": "^1.4",
+                "flowpack/fullpagecache": "*",
                 "flowpack/listable": "^3.5",
                 "jonnitto/prettyembedvideoplatforms": "^2.1",
                 "neos/neos": "*",
@@ -7589,7 +7637,7 @@
         },
         {
             "name": "sandstorm/component-library",
-            "version": "dev-setup-improvements",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./DistributionPackages/Sandstorm.ComponentLibrary",
@@ -11810,7 +11858,7 @@
     "platform": [],
     "platform-dev": [],
     "platform-overrides": {
-        "php": "8.2.16",
+        "php": "8.3.11",
         "ext-vips": "1.0.8"
     },
     "plugin-api-version": "2.6.0"
