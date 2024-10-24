@@ -12,11 +12,13 @@
 !/Configuration/Production/
 /Configuration/Production/*
 !/Configuration/Production/Kubernetes
-!/Configuration/Production/Live
+!/Configuration/Production/E2E-SUT
 
 !/Configuration/Testing/
 /Configuration/Testing/*
 !/Configuration/Testing/Behat
+
+
 
 /Data/
 /Packages/

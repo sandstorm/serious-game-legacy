@@ -8,9 +8,10 @@ Neos:
         port: '%env:DB_NEOS_PORT%'
         password: '%env:DB_NEOS_PASSWORD%'
         user: '%env:DB_NEOS_USER%'
-        dbname: '%env:DB_NEOS_DATABASE%'
+        dbname: '%env:DB_NEOS_DATABASE_E2ETEST%'
     cache:
       applicationIdentifier: 'app'
+
   Imagine:
     driver: 'Vips'
     enabledDrivers:
@@ -24,7 +25,9 @@ Neos:
         # The Vips driver does not support interlace
         interlace: ~
 
-Sitegeist:
-  LostInTranslation:
-    DeepLApi:
-      authenticationKey: '%env:DEEPL_API_KEY%'
+  SwiftMailer:
+    transport:
+      type: 'Swift_SmtpTransport'
+      options:
+        host: mailpit
+        port: 1025

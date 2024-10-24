@@ -1,5 +1,0 @@
-Neos:
-  Flow:
-    persistence:
-      backendOptions:
-        dbname: '%env:DB_NEOS_DATABASE_E2ETEST%'
