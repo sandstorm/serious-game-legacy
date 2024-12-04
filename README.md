@@ -133,6 +133,13 @@ Run `./kickstart.sh` and follow the instructions.
 - run `dev open-site` you can login to the [neos backend](http://localhost:8081/neos) with the credentials `admin` and `password`
 - Have fun ;)
 
+### Local Development of Sandstorm Packages
+
+- run `composer config --global 'preferred-install.sandstorm/*' source` on your local machine to use the local packages for development
+- run `composer install` in the `app` folder to install the local packages or start the container, the Packages folder is mounted into the container
+- now you can develop the packages in the `Application/Packages` folder and the changes will be reflected in the docker container
+- the sandstorm packages should check out the branch specified in the `composer.json` of the kickstarter
+
 ## Testing
 
 - run `dev run-unit-tests` to run all unit tests

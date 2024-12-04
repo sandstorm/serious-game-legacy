@@ -6,6 +6,7 @@ source /etc/bash.vips-arm64-hotfix.sh
 
 mkdir -p /var/www/.composer || true
 composer config --global cache-dir /composer_cache
+# install composer dependencies for sandstorm packages from source (cool for development of sandstorm packages)
 composer config --global 'preferred-install.sandstorm/*' source
 
 composer install

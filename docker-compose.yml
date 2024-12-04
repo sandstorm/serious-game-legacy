@@ -47,7 +47,9 @@ services:
       - ./app/Build/Behat/:/app/Build/Behat/:cached
       - ./app/ContentDump/:/app/ContentDump/:cached
       # mount all packages - enable VirtioFS in your docker host settings or comment out this line
-      #- ./app/Packages/:/app/Packages/:cached
+      - ./app/Packages/:/app/Packages/:cached
+      #- ./app/Packages/Application/Sandstorm.CookiePunch/:/app/Packages/Application/Sandstorm.CookiePunch/:cached
+      #- ./app/Packages/Application/Sandstorm.E2ETestTools/:/app/Packages/Application/Sandstorm.E2ETestTools/:cached
       - ./app/Configuration/:/app/Configuration/:cached
       # Explicitly set up Composer cache for faster fetching of packages
       - neos-composer-cache:/composer_cache
