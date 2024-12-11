@@ -43,14 +43,14 @@
         "packagefactory/atomicfusion-proptypes": "~2.0.1",
         "packagefactory/atomicfusion-classnames": "^1.0",
         "sitegeist/kaleidoscope": "~v6.5.1",
-        "sandstorm/cookiepunch": "^4.4",
         "sandstorm/e2etesttools": "^8.3.0",
         "neos/swiftmailer": "^7.3.0",
         "flowpack/nodetemplates": "^1.3",
         "yoast/yoast-seo-for-neos": "^1.3",
         "carbon/eel": "^2.12",
         "flowpack/fullpagecache": "^3.0",
-        "flowpack/content-security-policy": "^1.0"
+        "flowpack/content-security-policy": "^1.0",
+        "sandstorm/cookiepunch": "^4.4"
     },
     "require-dev": {
         "neos/behat": "~8.3.0",

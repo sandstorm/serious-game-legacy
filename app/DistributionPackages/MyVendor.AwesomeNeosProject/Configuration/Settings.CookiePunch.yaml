@@ -18,6 +18,13 @@ Sandstorm:
           description: MyVendor.AwesomeNeosProject:CookiePunch:groups.media.description
           purposes:
             - mediaembeds
+          cookies:
+            -
+              pattern: "/^_ga(_.*)?/"
+              patternIsRegex: true
+          onInit: "console.log('test init');"
+          onAccept: "console.log('test accept');"
+          onDecline: "console.log('test decline');"
     blocking:
       tagPatterns:
         script:

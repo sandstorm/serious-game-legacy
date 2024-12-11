@@ -1,8 +1,4 @@
-.idea/*
 .git_back
-!.idea/runConfigurations
-!.idea/tailwindcss.xml
-!.idea/externalDependencies.xml
 *.iml
 /tmp
 .DS_Store
