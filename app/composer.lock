@@ -3605,7 +3605,7 @@
         },
         {
             "name": "myvendor/awesomeneosproject",
-            "version": "dev-task/dont-ignore-idea-folder",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./DistributionPackages/MyVendor.AwesomeNeosProject",
@@ -7638,7 +7638,7 @@
         },
         {
             "name": "sandstorm/component-library",
-            "version": "dev-task/dont-ignore-idea-folder",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./DistributionPackages/Sandstorm.ComponentLibrary",
@@ -7667,16 +7667,16 @@
         },
         {
             "name": "sandstorm/cookiepunch",
-            "version": "4.4.3",
+            "version": "4.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sandstorm/Sandstorm.CookiePunch.git",
-                "reference": "d3ee75e8a72ca67c917d13bf166044422feb88f2"
+                "reference": "6b61ab7fcf21a4f53ba3e432a1e955b86d33b278"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sandstorm/Sandstorm.CookiePunch/zipball/d3ee75e8a72ca67c917d13bf166044422feb88f2",
-                "reference": "d3ee75e8a72ca67c917d13bf166044422feb88f2",
+                "url": "https://api.github.com/repos/sandstorm/Sandstorm.CookiePunch/zipball/6b61ab7fcf21a4f53ba3e432a1e955b86d33b278",
+                "reference": "6b61ab7fcf21a4f53ba3e432a1e955b86d33b278",
                 "shasum": ""
             },
             "require": {
@@ -7713,7 +7713,7 @@
                 "issues": "https://github.com/sandstorm/Sandstorm.CookiePunch/issues",
                 "source": "https://github.com/sandstorm/Sandstorm.CookiePunch"
             },
-            "time": "2023-10-25T14:59:29+00:00"
+            "time": "2024-12-11T14:52:40+00:00"
         },
         {
             "name": "sandstorm/e2etesttools",
