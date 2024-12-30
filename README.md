@@ -2,6 +2,12 @@
 
 [//]: # (KICKSTART_INFO_SECTION__START)
 
+Features of Laravel kickstart:
+
+- Docker Compose setup very similar to our Neos setup
+- Filament with custom theme
+
+
 This packages helps you to quickly set up a Neos Project. Besides a basic Neos setup
 we provided examples and configuration that helps us to quickly provide a kickstart.
 
