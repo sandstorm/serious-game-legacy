@@ -158,13 +158,11 @@
       <path value="$PROJECT_DIR$/app/Build/Behat/vendor/guzzlehttp/promises" />
     </include_path>
   </component>
-  <component name="PhpProjectSharedConfiguration" php_language_level="7.4">
+  <component name="PhpProjectSharedConfiguration" php_language_level="8.3">
     <option name="suggestChangeDefaultLanguageLevel" value="false" />
   </component>
   <component name="PhpUnit">
     <phpunit_settings>
-      <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/app/Packages/Libraries/autoload.php" />
-      <PhpUnitSettings custom_loader_path="$PROJECT_DIR$/app/Build/Behat/vendor/autoload.php" />
     </phpunit_settings>
   </component>
 </project>
