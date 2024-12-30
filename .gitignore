@@ -1,5 +1,4 @@
 .git_back
-*.iml
 /tmp
 .DS_Store
 .npmrc
