@@ -60,7 +60,7 @@ services:
       - ./app/:/app/:cached
       # Explicitly set up Yarn cache for faster fetching of packages
       - yarn-cache:/app/.yarn-cache
-
+    stop_grace_period: 0s  # SIGKILL immediately
   #####
   # Maria DB
   maria-db:
