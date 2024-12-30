@@ -44,8 +44,10 @@ services:
       - 8090:8081
       - 9090:9090 # for laravel_scrambled
     depends_on:
-      - maria-db
-      - redis-cache
+      maria-db:
+        condition: service_healthy
+      redis-cache:
+        condition: service_started
 
   #####
   # assets build (watcher)
@@ -75,7 +77,12 @@ services:
     volumes:
       - ./deployment/local-dev/maria-db/createTestingDB.sh:/createTestingDB.sh:cached
     command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
-
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
   #####
   # Mailpit (local smtp)
   mailpit:
