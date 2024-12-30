@@ -9,10 +9,12 @@ Features of Laravel kickstart:
 - Prepare for multiple Filament panels (Admin area, Frontend area)
 - ULIDs for user IDs
 - Database Notifications set up
+- basic print.css style included
 - helpful packages configured
   - dutchcodingcompany/filament-developer-logins - one-click logins for all @example.com logins in Dev
   - `spatie/laravel-ignition` beautiful error pages in dev
   - barryvdh/laravel-ide-helper
+  - `awcodes/filament-tiptap-editor` - really extensible rich text editor
 
 Well working packages:
 
