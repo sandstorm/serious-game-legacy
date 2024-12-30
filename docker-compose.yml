@@ -41,7 +41,7 @@ services:
       # Explicitly set up Composer cache for faster fetching of packages
       - laravel-composer-cache:/composer_cache:cached
     ports:
-      - 8081:8081
+      - 8090:8081
       - 9090:9090 # for laravel_scrambled
     depends_on:
       - maria-db
@@ -49,18 +49,12 @@ services:
 
   #####
   # assets build (watcher)
-  filament-assets:
+  laravel-assets:
     build:
       context: .
-      dockerfile: ./deployment/local-dev/filament-assets/Dockerfile
+      dockerfile: ./deployment/local-dev/laravel-assets/Dockerfile
     volumes:
-      # everything is readonly except the "Public" folder (which contains the build results);
-      - ./app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Private:/app/src/Private/:cached
-      - ./app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public:/app/src/Public/:cached
-      ### start: delete on kickstart ###
-      # also mount the fusion files of the component library so that tailwind knows all classes
-      - ./app/DistributionPackages/Sandstorm.ComponentLibrary/Resources/Private/Fusion:/app/src/Private/Fusion/ComponentLibrary/:ro,cached
-      ### end: delete on kickstart ###
+      - ./app/:/app/:cached
       # Explicitly set up Yarn cache for faster fetching of packages
       - yarn-cache:/app/.yarn-cache
 
@@ -88,7 +82,7 @@ services:
     image: axllent/mailpit:latest
     hostname: mailpit
     ports:
-      - '8025:8025'
+      - '9025:8025'
 
   redis-cache:
     image: redis:7
@@ -99,7 +93,5 @@ volumes:
   neos-assets-node-modules:
   laravel-storage:
   laravel-composer-cache:
-    external: true
   yarn-cache:
-    external: true
 
