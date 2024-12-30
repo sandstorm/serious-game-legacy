@@ -6,7 +6,7 @@ Features of Laravel kickstart:
 
 - Docker Compose setup very similar to our Neos setup
 - Filament with custom theme
-
+- Prepare for multiple Filament panels (Admin area, Frontend area)
 
 This packages helps you to quickly set up a Neos Project. Besides a basic Neos setup
 we provided examples and configuration that helps us to quickly provide a kickstart.
