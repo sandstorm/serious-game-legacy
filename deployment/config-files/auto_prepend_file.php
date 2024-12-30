@@ -19,7 +19,7 @@ function startExcimer() {
     register_shutdown_function( function () use ( $excimer ) {
         $excimer->stop();
         $data = $excimer->getLog()->formatCollapsed();
-        file_put_contents('/app/tracing/_traces/' . getmypid(), $data, FILE_APPEND);
+        file_put_contents('/tracing/_traces/' . getmypid(), $data, FILE_APPEND);
     } );
 }
 

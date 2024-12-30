@@ -76,9 +76,9 @@ ADD /deployment/config-files/php-fpm.conf /usr/local/etc/php-fpm.conf
 
 # performance profiling
 ADD /deployment/config-files/excimer.ini /usr/local/etc/php/conf.d/excimer.ini
-RUN mkdir -p /app/tracing/_traces/ \
-    && chown -R www-data:www-data /app/tracing
-ADD /deployment/config-files/auto_prepend_file.php /app/tracing/auto_prepend_file.php
+RUN mkdir -p /tracing/_traces/ \
+    && chown -R www-data:www-data /tracing
+ADD /deployment/config-files/auto_prepend_file.php /tracing/auto_prepend_file.php
 
 # nginx config
 ADD /deployment/config-files/nginx.conf /deployment/config-files/nginx-e2etest-server-prod.conf /etc/nginx/
