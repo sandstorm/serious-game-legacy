@@ -1,0 +1,80 @@
+{
+    "name": "archilex/filament-filter-sets",
+    "description": "Advanced Tables, previously Filter Sets, supercharges your Filament Tables with advanced tabs, customizable views, reorderable columns, and more",
+    "keywords": [
+        "archilex",
+        "laravel",
+        "filament",
+        "filters",
+        "views",
+        "tables",
+        "advanced-tables"
+    ],
+    "homepage": "https://github.com/archilex/filament-filter-sets",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Kenneth Sese",
+            "email": "kmsese@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "archilex/filament-toggle-icon-column": "^3.0",
+        "filament/filament": "^3.2.63",
+        "illuminate/contracts": "^10.45|^11.0",
+        "spatie/eloquent-sortable": "^4.0",
+        "spatie/laravel-package-tools": "^1.13.5",
+        "spatie/once": "^3.1"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.0",
+        "nunomaduro/collision": "^7.0|^8.1",
+        "orchestra/testbench": "^8.0|^9.0",
+        "pestphp/pest": "^2.0",
+        "pestphp/pest-plugin-laravel": "^2.0",
+        "pestphp/pest-plugin-livewire": "^2.0",
+        "phpunit/phpunit": "^10.0",
+        "spatie/laravel-ray": "^1.26"
+    },
+    "autoload": {
+        "psr-4": {
+            "Archilex\\AdvancedTables\\": "src",
+            "Archilex\\AdvancedTables\\Database\\Factories\\": "database/factories"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Archilex\\AdvancedTables\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "pint": "vendor/bin/pint",
+        "test:pest": "vendor/bin/pest --parallel",
+        "test": [
+            "@test:pest",
+            "@test:phpstan"
+        ]
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Archilex\\AdvancedTables\\AdvancedTablesServiceProvider"
+            ],
+            "aliases": {
+                "AdvancedTables": "Archilex\\AdvancedTables\\Facades\\AdvancedTables"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

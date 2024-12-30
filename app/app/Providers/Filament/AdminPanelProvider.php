@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Models\User;
+use Archilex\AdvancedTables\Plugin\AdvancedTablesPlugin;
 use DutchCodingCompany\FilamentDeveloperLogins\FilamentDeveloperLoginsPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -20,6 +21,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use RalphJSmit\Filament\RecordFinder\FilamentRecordFinder;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -72,6 +74,15 @@ class AdminPanelProvider extends PanelProvider
                     /** @phpstan-ignore-next-line */
                     ->enabled(app()->environment('local'))
                     ->users(fn () => User::where('email', 'LIKE', '%@example.com')->pluck('email', 'email')->toArray())
+            )
+            ->plugin(
+                AdvancedTablesPlugin::make()
+                    ->quickSaveMakeGlobalFavorite() // every user can make a global favorite
+                    ->resourceNavigationGroup(AdminPanelProvider::NAVIGATION_GROUP_STAMMDATEN)
+                    ->resourceNavigationIcon(null)
+            )
+            ->plugin(
+                FilamentRecordFinder::make()
             );
     }
 }

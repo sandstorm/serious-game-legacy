@@ -1,0 +1,131 @@
+<?php
+
+namespace App\Policies;
+
+use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Database\Eloquent\Model;
+
+class UserViewPolicy
+{
+    use HandlesAuthorization;
+
+    /**
+     * Determine whether the user can view the User View resource.
+     *
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function viewAny(Model $user)
+    {
+        return $user->isAdmin();
+    }
+
+    /**
+     * Determine whether the user can view the User View.
+     *
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function view(Model $user, Model $userView)
+    {
+        return $user->isAdmin();
+    }
+
+    /**
+     * Determine whether the user can create User Views.
+     *
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function create(Model $user)
+    {
+        return true;
+    }
+
+    /**
+     * Determine whether the user can update the User View.
+     *
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function update(Model $user, Model $userView)
+    {
+        return $user->isAdmin() || $user->id === $userView->user_id;
+    }
+
+    /**
+     * Determine whether the user can delete the User View.
+     *
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function delete(Model $user, Model $userView)
+    {
+        return $user->isAdmin() || $user->id === $userView->user_id;
+    }
+
+    /**
+     * Determine whether the user can delete the User View.
+     *
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function deleteAny(Model $user)
+    {
+        return $user->isAdmin();
+    }
+
+    /**
+     * Determine whether the user can make User Views public.
+     *
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function makePublic(Model $user)
+    {
+        return true;
+    }
+
+    /**
+     * Determine whether the user can add User Views to the favorites bar.
+     *
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function makeFavorite(Model $user)
+    {
+        return true;
+    }
+
+    /**
+     * Determine whether the user can create global filters sets.
+     *
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function makeGlobalFavorite(Model $user)
+    {
+        return $user->isAdmin();
+    }
+
+    /**
+     * Determine whether the user can approve user views.
+     *
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function approve(Model $user, Model $userView)
+    {
+        return $user->isAdmin();
+    }
+
+    /**
+     * Determine whether the user can add icons to a User View.
+     *
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function selectIcon(Model $user)
+    {
+        return true;
+    }
+
+    /**
+     * Determine whether the user can add colors to a User View.
+     *
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function selectColor(Model $user)
+    {
+        return true;
+    }
+}

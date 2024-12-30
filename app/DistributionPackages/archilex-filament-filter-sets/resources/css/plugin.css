@@ -1,0 +1,29 @@
+.advanced-tables-icon-select .choices > .choices__list {
+    @apply px-2;
+}
+
+.advanced-tables-icon-select .choices > .choices__inner {
+    @apply h-10 py-0 flex items-center justify-center;
+}
+
+.advanced-tables-icon-select .choices > .choices__list .choices__list {
+    @apply py-2 gap-2;
+}
+
+.advanced-tables-icon-select .choices > .choices__list .choices__list .choices__item {
+    @apply border-[1px] rounded-lg shadow-sm dark:border-gray-600;
+}
+
+.advanced-tables-icon-select .choices > .choices__list .choices__list .choices__item.has-no-choices,
+.advanced-tables-icon-select .choices > .choices__list .choices__list .choices__item.has-no-results,
+.advanced-tables-icon-select .choices > .choices__list .choices__list .choices__item.choices__item--disabled {
+    @apply col-span-full border-none shadow-none;
+}
+
+.advanced-tables-icon-select .choices > .choices__list .choices__list {
+    @apply grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5;
+}
+
+.advanced-tables-filter-block div:first-of-type {
+    @apply items-end;
+}

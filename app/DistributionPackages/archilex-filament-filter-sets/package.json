@@ -1,0 +1,23 @@
+{
+    "private": true,
+    "scripts": {
+        "dev:styles": "npx tailwindcss -i resources/css/plugin.css -o resources/dist/advanced-tables.css --postcss --watch",
+        "build:styles": "npx tailwindcss -i resources/css/plugin.css -o resources/dist/advanced-tables.css --postcss --minify && npm run purge",
+        "purge": "filament-purge -i resources/dist/advanced-tables.css -o resources/dist/advanced-tables.css",
+        "dev": "npm-run-all --parallel dev:*",
+        "build": "npm-run-all build:*"
+    },
+    "devDependencies": {
+        "@awcodes/filament-plugin-purge": "^1.1.1",
+        "@tailwindcss/forms": "^0.5.3",
+        "@tailwindcss/typography": "^0.5.9",
+        "autoprefixer": "^10.4.7",
+        "choices.js": "^10.1.0",
+        "esbuild": "^0.8.57",
+        "npm-run-all": "^4.1.5",
+        "postcss": "^8.4.14",
+        "prettier": "^2.7.1",
+        "prettier-plugin-tailwindcss": "^0.1.13",
+        "tailwindcss": "^3.3.1"
+    }
+}

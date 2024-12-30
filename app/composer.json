@@ -1,19 +1,28 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/laravel",
+    "name": "sandstorm/project",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "An application by sandstorm",
     "keywords": ["laravel", "framework"],
-    "license": "MIT",
+    "license": "proprietary",
+    "repositories": {
+        "DistributionPackages": {
+            "type": "path",
+            "url": "./DistributionPackages/*"
+        }
+    },
     "require": {
         "php": "^8.2",
+        "archilex/filament-filter-sets": "^3.7",
         "awcodes/filament-tiptap-editor": "^3.4.22",
         "dutchcodingcompany/filament-developer-logins": "^1.5",
         "filament/filament": "^3.2",
         "laravel/framework": "^11.31",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "ralphjsmit/laravel-filament-record-finder": "dev-main"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^3.4",
         "fakerphp/faker": "^1.23",
         "laravel/pail": "^1.1",
         "laravel/pint": "^1.13",
@@ -67,11 +76,15 @@
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
+        "platform": {
+            "php": "8.3.10"
+        },
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "ralphjsmit/packages": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }

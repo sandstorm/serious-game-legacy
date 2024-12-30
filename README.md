@@ -15,6 +15,9 @@ Features of Laravel kickstart:
   - `spatie/laravel-ignition` beautiful error pages in dev
   - barryvdh/laravel-ide-helper
   - `awcodes/filament-tiptap-editor` - really extensible rich text editor
+    - TODO: custom extension
+  - commercial package: https://filamentphp.com/plugins/kenneth-sese-advanced-tables
+  - commercial package: https://filamentphp.com/plugins/ralphjsmit-record-finder-pro
 
 Well working packages:
 

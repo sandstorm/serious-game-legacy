@@ -153,13 +153,22 @@ function open-local-db {
 }
 
 ######################### Laravel / Filament Specifics #########################
+
+function setup-laravel-autocomplete() {
+  docker compose exec laravel ./artisan  ide-helper:models --filename _ide_helper_models.php  -n
+  docker compose exec laravel ./artisan  ide-helper:generate
+  docker compose exec laravel ./artisan  ide-helper:meta
+}
+function artisan() {
+  docker compose exec laravel /app/artisan $@
+}
 function composer-update-filament-advanced-tables() {
   cd app
 
   composer remove archilex/filament-filter-sets
 
   composer config repositories.advancedtables composer https://filament-filter-sets.composer.sh
-  _log_yellow "Now, go to **Filament Advanced Tables TEAM Lizenz** in Bitwarden and open the checkout.anystack.sh URL. Enter Username + Password (Project Specific)"
+  _echo_yellow "Now, go to **Filament Advanced Tables TEAM Lizenz** in Bitwarden and open the checkout.anystack.sh URL. Enter Username + Password (Project Specific)"
   composer require archilex/filament-filter-sets
   composer show -- archilex/filament-filter-sets > DistributionPackages/archilex-filament-filter-sets.md
 
@@ -176,7 +185,7 @@ function composer-update-filament-record-finder-pro() {
   composer remove ralphjsmit/laravel-filament-record-finder
 
   composer config repositories.laravelrecordfinder composer https://satis.ralphjsmit.com
-  _log_yellow "Now, go to **Filament Record Finder Pro TEAM Lizenz** in Bitwarden - enter Username + Password if prompted (always the same for all projects)"
+  _echo_yellow "Now, go to **Filament Record Finder Pro TEAM Lizenz** in Bitwarden - enter Username + Password if prompted (always the same for all projects)"
   composer require ralphjsmit/laravel-filament-record-finder
   composer show -- ralphjsmit/laravel-filament-record-finder > DistributionPackages/ralphjsmit-laravel-filament-record-finder.md
 
