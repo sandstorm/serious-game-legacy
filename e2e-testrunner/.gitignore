@@ -1,4 +1,0 @@
-# ignore playwright errors and reports
-/error_*
-/report_*
-/node_modules
