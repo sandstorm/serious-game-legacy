@@ -40,6 +40,7 @@ RUN apt-get update -y && \
         libpq-dev \
         vim \
         less \
+        gettext \
         && \
     mkdir -p /var/log/supervisor && \
     rm -rf /var/lib/apt/lists/* && \
