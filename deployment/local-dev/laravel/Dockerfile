@@ -32,19 +32,17 @@ RUN apt-get update -y && \
         libicu-dev \
         libxslt1-dev \
         nginx-light \
-        libvips42 \
-        libvips-dev \
-        libffi-dev \
         supervisor \
         procps \
         libpq-dev \
+        libzip-dev \
         vim \
         less \
         gettext \
         && \
     mkdir -p /var/log/supervisor && \
     rm -rf /var/lib/apt/lists/* && \
-    docker-php-ext-install intl bcmath opcache pdo pdo_mysql xsl ffi && \
+    docker-php-ext-install intl bcmath opcache pdo pdo_mysql xsl zip && \
     pecl install excimer && \
     pecl install redis && docker-php-ext-enable redis excimer
 
@@ -96,7 +94,7 @@ RUN mkdir -p /var/lib/nginx /usr/local/var/log/ && \
     ln -s /etc/nginx/nginx-e2etest-server-dev.conf /etc/nginx/conf.d/nginx-e2etest-server-dev.conf
 
 # cleanup & chown
-RUN mkdir -p /app/Data/Persistent /app/Configuration/Development/Docker /app/Build/Behat /composer_cache && \
+RUN mkdir -p /app/storage/app /app/vendor /app/storage/logs /app/storage/framework/sessions /app/storage/framework/views /app/storage/framework/cache /composer_cache && \
     chown -R www-data /app /composer_cache /var/www && \
     apt-get clean
 
