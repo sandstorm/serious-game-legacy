@@ -11,21 +11,7 @@ composer config --global 'preferred-install.sandstorm/*' source
 
 composer install
 
-./flow flow:cache:flush
-
-./flow doctrine:migrate
-
-# only run site import when nothing was imported before
-importedSites=`./flow site:list`
-if [ "$importedSites" = "No sites available" ]; then
-    echo "Importing content from ./ContentDump"
-    ./ContentDump/importSite.sh
-fi
-
-./flow user:create --roles Administrator $ADMIN_USERNAME $ADMIN_PASSWORD LocalDev Admin || true
-
-./flow resource:publish
-./flow cache:warmup
+./artisan migrate --force --seed
 
 # e2e test
 echo "DUMMY_FILE to prevent download of real selenium server" > bin/selenium-server.jar

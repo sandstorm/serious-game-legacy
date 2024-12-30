@@ -8,65 +8,51 @@
 
 services:
   #####
-  # Neos CMS (php-fpm)
-  neos:
+  # Laravel (php-fpm)
+  laravel:
     build:
       context: .
-      dockerfile: ./deployment/local-dev/neos/Dockerfile
+      dockerfile: ./deployment/local-dev/laravel/Dockerfile
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
-      FLOW_CONTEXT: 'Development/Docker'
       COMPOSER_CACHE_DIR: '/composer_cache'
       # DB connection
-      DB_NEOS_HOST: 'maria-db'
-      DB_NEOS_PORT: 3306
-      DB_NEOS_PASSWORD: 'neos'
-      DB_NEOS_USER: 'neos'
-      DB_NEOS_DATABASE: 'neos'
-      DB_NEOS_DATABASE_E2ETEST: 'neos_e2etest'
-      # DeepL Authentication Key
-      DEEPL_API_KEY: '${DEEPL_API_KEY}'
-      SANDSTORM_MAPS_API_KEY: '${SANDSTORM_MAPS_API_KEY}'
-      # auto site import
-      SITE_IMPORT_PACKAGE_KEY: 'MyVendor.AwesomeNeosProject'
-      # auto creation of admin user for Neos backend
-      ADMIN_USERNAME: 'admin'
-      ADMIN_PASSWORD: 'password'
-      PLAYWRIGHT_API_URL: 'http://host.docker.internal:3000'
-      SYSTEM_UNDER_TEST_URL_FOR_PLAYWRIGHT: 'http://127.0.0.1:9090'
-      # used for flushing caches before scenarios
-      E2E_FLOW_CONTEXT: 'Production/E2E-SUT'
+      DB_HOST: 'maria-db'
+      DB_PORT: 3306
+      DB_PASSWORD: 'laravel'
+      DB_USER: 'laravel'
+      DB_DATABASE: 'laravel'
+      DB_DATABASE_SCRAMBLED: 'laravel_scrambled'
+
+      APP_URL: http://127.0.0.1:8082
+      CACHE_DRIVER: redis
       REDIS_HOST: 'redis-cache'
       REDIS_PORT: 6379
+      QUEUE_CONNECTION: redis
+
+      IMAGOR_SECRET: iruendwsmacki9gu8hdewijsochudjsiuhu
+      IMAGOR_SIGNER_TYPE: sha256
+      IMAGOR_SIGNER_TRUNCATE: 40
+
     volumes:
-      - ./app/composer.json:/app/composer.json:cached
-      - ./app/composer.lock:/app/composer.lock:cached
-      - ./app/phpstan.neon:/app/phpstan.neon:cached
-      - ./app/DistributionPackages/:/app/DistributionPackages/:cached
-      - ./app/Build/Behat/:/app/Build/Behat/:cached
-      - ./app/ContentDump/:/app/ContentDump/:cached
-      # mount all packages - enable VirtioFS in your docker host settings or comment out this line
-      - ./app/Packages/:/app/Packages/:cached
-      #- ./app/Packages/Application/Sandstorm.CookiePunch/:/app/Packages/Application/Sandstorm.CookiePunch/:cached
-      #- ./app/Packages/Application/Sandstorm.E2ETestTools/:/app/Packages/Application/Sandstorm.E2ETestTools/:cached
-      - ./app/Configuration/:/app/Configuration/:cached
+      - ./app/:/app/:cached
+      - laravel-storage:/app/storage
       # Explicitly set up Composer cache for faster fetching of packages
-      - neos-composer-cache:/composer_cache
-      - neos-resources:/app/Data/Persistent
+      - laravel-composer-cache:/composer_cache:cached
     ports:
       - 8081:8081
-      - 9090:9090
+      - 9090:9090 # for laravel_scrambled
     depends_on:
       - maria-db
       - redis-cache
 
   #####
   # assets build (watcher)
-  neos-assets:
+  filament-assets:
     build:
       context: .
-      dockerfile: ./deployment/local-dev/neos-assets/Dockerfile
+      dockerfile: ./deployment/local-dev/filament-assets/Dockerfile
     volumes:
       # everything is readonly except the "Public" folder (which contains the build results);
       - ./app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Private:/app/src/Private/:cached
@@ -78,35 +64,18 @@ services:
       # Explicitly set up Yarn cache for faster fetching of packages
       - yarn-cache:/app/.yarn-cache
 
-  ### start: delete on kickstart ###
-  neos-assets-component-library:
-    build:
-      context: .
-      dockerfile: ./deployment/local-dev/neos-assets/Dockerfile
-    volumes:
-      # everything is readonly except the "Public" folder (which contains the build results);
-      - ./app/DistributionPackages/Sandstorm.ComponentLibrary/Resources/Private:/app/src/Private/:cached
-      - ./app/DistributionPackages/Sandstorm.ComponentLibrary/Resources/Public:/app/src/Public/:cached
-      # Explicitly set up Yarn cache for faster fetching of packages
-      - yarn-cache:/app/.yarn-cache
-    networks:
-      - awesomeneosproject
-  ### end: delete on kickstart ###
-
   #####
   # Maria DB
   maria-db:
     image: mariadb:10.11
     ports:
       - 13306:3306
-    networks:
-      - awesomeneosproject
     environment:
-      MYSQL_ROOT_PASSWORD: neos
-      MYSQL_DATABASE: neos
-      MYSQL_USER: neos
-      MYSQL_PASSWORD: neos
-      DB_NEOS_DATABASE_E2ETEST: 'neos_e2etest'
+      MYSQL_ROOT_PASSWORD: laravel
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: laravel
+      DB_DATABASE_SCRAMBLED: 'laravel_scrambled'
       MARIADB_AUTO_UPGRADE: 1
     # use Unicode encoding as default!
     volumes:
@@ -120,25 +89,17 @@ services:
     hostname: mailpit
     ports:
       - '8025:8025'
-    networks:
-      - awesomeneosproject
 
   redis-cache:
     image: redis:7
     ports:
       - 16379:6379
-    networks:
-      - awesomeneosproject
 
 volumes:
   neos-assets-node-modules:
-  neos-resources:
-  neos-composer-cache:
+  laravel-storage:
+  laravel-composer-cache:
     external: true
   yarn-cache:
     external: true
 
-networks:
-  # we need to use a custom network here to ensure that all services see each other; and that during prerendering, we can connect to this network (to reach the service facade)
-  awesomeneosproject:
-    name: awesomeneosproject

@@ -25,7 +25,7 @@ RUN echo '. /etc/bash.vips-arm64-hotfix.sh' >>  /etc/bash.bashrc
 
 ####################### END - Dev Container only ########################
 
-# Install intl, bcmath, pdo, pdo_mysql, mysqli, libvips
+# Install intl, bcmath, pdo, pdo_mysql, mysqli
 # debug tools: vim, inotify-tools
 RUN apt-get update -y && \
     apt-get install --no-install-recommends -y \
@@ -44,15 +44,11 @@ RUN apt-get update -y && \
     mkdir -p /var/log/supervisor && \
     rm -rf /var/lib/apt/lists/* && \
     docker-php-ext-install intl bcmath opcache pdo pdo_mysql xsl ffi && \
-    pecl install vips excimer && \
-    echo "extension=vips.so" > /usr/local/etc/php/conf.d/vips.ini && \
+    pecl install excimer && \
     pecl install redis && docker-php-ext-enable redis excimer
 
 # for PHP 8.1, disable deprecations to temporarily make Neos/Flow work
 RUN echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT" >> /usr/local/etc/php/conf.d/error_reporting.ini
-
-# enable FFI for VIPS in PHP config
-RUN echo "ffi.enable = true" >> /usr/local/etc/php/conf.d/ffi.ini
 
 # install composer
 # IMPORTANT:
@@ -79,7 +75,7 @@ RUN curl -fsSLO "$SUPERCRONIC_URL" \
  && ln -s "/usr/local/bin/${SUPERCRONIC}" /usr/local/bin/supercronic
 
 # application entrypoint
-ADD /deployment/local-dev/neos/entrypoint.sh /
+ADD /deployment/local-dev/laravel/entrypoint.sh /
 ADD /deployment/config-files/memory-limit-php.ini /usr/local/etc/php/conf.d/memory-limit-php.ini
 ADD /deployment/config-files/upload-limit-php.ini /usr/local/etc/php/conf.d/upload-limit-php.ini
 
