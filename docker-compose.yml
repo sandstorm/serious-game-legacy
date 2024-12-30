@@ -21,7 +21,7 @@ services:
       DB_HOST: 'maria-db'
       DB_PORT: 3306
       DB_PASSWORD: 'laravel'
-      DB_USER: 'laravel'
+      DB_USERNAME: 'laravel'
       DB_DATABASE: 'laravel'
       DB_DATABASE_SCRAMBLED: 'laravel_scrambled'
       SANDSTORM_MAPS_API_KEY: '${SANDSTORM_MAPS_API_KEY}'
