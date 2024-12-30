@@ -54,8 +54,6 @@ services:
       # Explicitly set up Composer cache for faster fetching of packages
       - neos-composer-cache:/composer_cache
       - neos-resources:/app/Data/Persistent
-    networks:
-      - awesomeneosproject
     ports:
       - 8081:8081
       - 9090:9090
@@ -79,8 +77,6 @@ services:
       ### end: delete on kickstart ###
       # Explicitly set up Yarn cache for faster fetching of packages
       - yarn-cache:/app/.yarn-cache
-    networks:
-      - awesomeneosproject
 
   ### start: delete on kickstart ###
   neos-assets-component-library:
