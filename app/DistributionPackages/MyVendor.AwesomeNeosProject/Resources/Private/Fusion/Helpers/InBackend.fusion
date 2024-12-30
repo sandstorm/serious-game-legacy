@@ -1,3 +1,0 @@
-prototype(MyVendor.AwesomeNeosProject:Helper.InBackend) < prototype(Neos.Fusion:Value) {
-    value = ${node.context.inBackend && node.context.currentRenderingMode.edit}
-}

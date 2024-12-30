@@ -1,9 +1,0 @@
-prototype(Sandstorm.ComponentLibrary:Content.Slider) < prototype(Neos.Neos:ContentComponent) {
-    renderer = Sandstorm.ComponentLibrary:Component.Slider {
-        slides = Neos.Neos:ContentCollection {
-            tagName = 'div'
-            nodePath = 'main'
-            attributes.class = 'swiper-wrapper slider__slides'
-        }
-    }
-}

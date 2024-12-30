@@ -1,9 +1,0 @@
-'MyVendor.AwesomeNeosProject:Constraints.Base':
-  abstract: true
-  constraints:
-    nodeTypes:
-      'MyVendor.AwesomeNeosProject:Content.Button': true
-      'MyVendor.AwesomeNeosProject:Content.Image': true
-      'MyVendor.AwesomeNeosProject:Content.Text': true
-      'MyVendor.AwesomeNeosProject:Content.Headline': true
-      'Jonnitto.PrettyEmbedVideoPlatforms:Content.Video': true

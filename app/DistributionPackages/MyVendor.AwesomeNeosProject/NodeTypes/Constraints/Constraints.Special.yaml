@@ -1,9 +1,0 @@
-'MyVendor.AwesomeNeosProject:Constraints.Special':
-  abstract: true
-  constraints:
-    nodeTypes:
-      'MyVendor.AwesomeNeosProject:Content.ContactForm': true
-      'MyVendor.AwesomeNeosProject:Content.Events.List': true
-      'MyVendor.AwesomeNeosProject:Content.LatestBlogPosts': true
-      # template for generate repository helper
-      # 'MyVendor.AwesomeNeosProject:Content.Repository.List': true

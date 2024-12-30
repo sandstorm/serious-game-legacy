@@ -1,5 +1,0 @@
-prototype(MyVendor.AwesomeNeosProject:Content.ContactForm) < prototype(Neos.Neos:ContentComponent) {
-    renderer = afx`
-        <MyVendor.AwesomeNeosProject:Content.ContactForm.Form/>
-    `
-}

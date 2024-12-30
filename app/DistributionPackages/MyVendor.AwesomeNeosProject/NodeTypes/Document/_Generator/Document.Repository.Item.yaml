@@ -1,8 +1,0 @@
-'MyVendor.AwesomeNeosProject:Document.Repository.Item':
-  superTypes:
-    'MyVendor.AwesomeNeosProject:Document.AbstractPage': true
-    'MyVendor.AwesomeNeosProject:Mixin.Image': true
-  ui:
-    group: general
-    label: 'Repository Item'
-    icon: icon-file

@@ -1,3 +1,0 @@
-prototype(MyVendor.AwesomeNeosProject:Component.Form.Input.FileUpload) < prototype(Neos.Fusion.Form:Input) {
-    attributes.class = 'sr-only [&_+_label]:focus:bg-white [&_+_label]:focus:border [&_+_label]:focus:border-primary-main [&_+_label]:focus:text-primary-main'
-}

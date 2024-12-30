@@ -1,7 +1,0 @@
-prototype(MyVendor.AwesomeNeosProject:Content.Headline) < prototype(Neos.Neos:ContentComponent) {
-    renderer = MyVendor.AwesomeNeosProject:Component.Headline {
-        title = Neos.Neos:Editable {
-            property = 'title'
-        }
-    }
-}

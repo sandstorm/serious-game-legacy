@@ -1,5 +1,0 @@
-prototype(Sandstorm.ComponentLibrary:Content.Spacer) < prototype(Neos.Neos:ContentComponent) {
-    renderer = Sandstorm.ComponentLibrary:Component.Spacer {
-        height = ${q(node).property('height')}
-    }
-}

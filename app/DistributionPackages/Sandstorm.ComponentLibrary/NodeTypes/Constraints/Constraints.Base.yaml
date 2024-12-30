@@ -1,8 +1,0 @@
-'MyVendor.AwesomeNeosProject:Constraints.Base':
-  abstract: true
-  constraints:
-    nodeTypes:
-      'Sandstorm.ComponentLibrary:Content.ButtonWithIcon': true
-      'Sandstorm.ComponentLibrary:Content.Download': true
-      'Sandstorm.ComponentLibrary:Content.Spacer': true
-

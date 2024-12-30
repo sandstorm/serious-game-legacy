@@ -1,5 +1,0 @@
-'MyVendor.AwesomeNeosProject:ContentCollection.PageFirstLevel':
-  superTypes:
-    'Neos.Neos:ContentCollection': true
-    'MyVendor.AwesomeNeosProject:Constraints.Structure': true
-

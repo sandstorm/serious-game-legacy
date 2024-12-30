@@ -1,7 +1,0 @@
-'MyVendor.AwesomeNeosProject:Content.Repository.List':
-  superTypes:
-    'MyVendor.AwesomeNeosProject:Content.AbstractContent': true
-  ui:
-    label: 'Repository List'
-    icon: icon-image
-    group: special

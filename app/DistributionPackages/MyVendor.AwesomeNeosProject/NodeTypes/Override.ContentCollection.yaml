@@ -1,7 +1,0 @@
-'Neos.Neos:ContentCollection':
-  constraints:
-    # Here we change the default behaviour of Neos, because
-    nodeTypes:
-      'Neos.Neos:Document': false
-      # This might break when using abstract NodeTypes -> see https://github.com/neos/neos-development-collection/issues/3212
-      '*': ~

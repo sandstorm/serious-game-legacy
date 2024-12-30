@@ -1,5 +1,0 @@
-'MyVendor.AwesomeNeosProject:Mixin.Column':
-  abstract: true
-  ui:
-    icon: icon-columns
-    group: columns

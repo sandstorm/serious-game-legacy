@@ -1,4 +1,0 @@
-'MyVendor.AwesomeNeosProject:Content.AbstractContent':
-  superTypes:
-    'Neos.Neos:Content': true
-    'MyVendor.AwesomeNeosProject:Mixin.InspectorGeneral': true
