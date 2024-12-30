@@ -7,6 +7,24 @@ Features of Laravel kickstart:
 - Docker Compose setup very similar to our Neos setup
 - Filament with custom theme
 - Prepare for multiple Filament panels (Admin area, Frontend area)
+- ULIDs for user IDs
+- Database Notifications set up
+- helpful packages configured
+  - dutchcodingcompany/filament-developer-logins - one-click logins for all @example.com logins in Dev
+  - `spatie/laravel-ignition` beautiful error pages in dev
+  - barryvdh/laravel-ide-helper
+
+Well working packages:
+
+- bezhansalleh/filament-language-switch
+- bezhansalleh/filament-shield
+- /jeffgreco13/filament-breezy
+- https://laravel.com/docs/11.x/telescope#local-only-installation
+
+Still open topics:
+
+- settings? filament/spatie-laravel-settings-plugin only meh
+- larastan etc
 
 This packages helps you to quickly set up a Neos Project. Besides a basic Neos setup
 we provided examples and configuration that helps us to quickly provide a kickstart.
