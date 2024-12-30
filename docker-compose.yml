@@ -101,5 +101,7 @@ volumes:
   neos-assets-node-modules:
   laravel-storage:
   laravel-composer-cache:
+    external: true
   yarn-cache:
+    external: true
 
