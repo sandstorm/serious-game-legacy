@@ -159,6 +159,12 @@ function setup-laravel-autocomplete() {
   docker compose exec laravel ./artisan  ide-helper:generate
   docker compose exec laravel ./artisan  ide-helper:meta
 }
+
+# run Laravel Pint Code Style fixer
+function pint() {
+  docker compose exec laravel /app/vendor/bin/pint --config /app/.pint.json $@
+}
+
 function artisan() {
   docker compose exec laravel /app/artisan $@
 }

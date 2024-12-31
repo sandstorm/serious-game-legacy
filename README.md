@@ -1,4 +1,4 @@
-# Sandstorm Neos on Docker Kickstart
+# Sandstorm Laravel on Docker Kickstart
 
 [//]: # (KICKSTART_INFO_SECTION__START)
 
@@ -46,41 +46,28 @@ make it easier to pull upcoming changes from the kickstarter to your project.**
     * [Install Dependencies](#install-dependencies)
     * [Setting up IntelliJ](#setting-up-intellij)
   * [Local Development](#local-development)
+    * [Local Development of Sandstorm Packages](#local-development-of-sandstorm-packages)
   * [Testing](#testing)
-    * [E2E Test](#e2e-test)
-      * [Debug Failing Tests](#debug-failing-tests)
-      * [Run Single BDD Feature Files / Scenarios](#run-single-bdd-feature-files--scenarios)
-      * [Generating content (node) fixtures workflow](#generating-content-node-fixtures-workflow)
-      * [raise curl-timeouts when using `And I pause for debugging`](#raise-curl-timeouts-when-using-and-i-pause-for-debugging)
-    * [Accessibility Tests](#accessibility-tests)
-      * [Testing without htaccess (e.g. production)](#testing-without-htaccess-eg-production)
-      * [Testing with htaccess (e.g. staging)](#testing-with-htaccess-eg-staging)
-      * [Results](#results)
-      * [Hint](#hint)
   * [Staging](#staging)
-    * [run site import on staging](#run-site-import-on-staging)
     * [htaccess protection for staging](#htaccess-protection-for-staging)
-    * [quality dashboard for staging](#quality-dashboard-for-staging)
-  * [Site Export / Site Import](#site-export--site-import)
-    * [Site Export Prod](#site-export-prod)
-  * [Kickstart repository nodetypes](#kickstart-repository-nodetypes)
-  * [Add components from the library to your project](#add-components-from-the-library-to-your-project)
-    * [Development](#development)
-  * [Custom icon font with icomoon](#custom-icon-font-with-icomoon)
-    * [Use custom icons in neos backend](#use-custom-icons-in-neos-backend)
-  * [Maps](#maps)
-  * [Menu](#menu)
-  * [Image sizes](#image-sizes)
-  * [Recommended Packages](#recommended-packages)
-  * [Coding Guidelines](#coding-guidelines)
-  * [Improving Kickstart Experience](#improving-kickstart-experience)
   * [Production Setup](#production-setup)
     * [Important URLs](#important-urls)
-    * [Matomo](#matomo)
     * [Production Cookbook / Tips and Tricks](#production-cookbook--tips-and-tricks)
-      * [my Neos container does not start, how do I debug?](#my-neos-container-does-not-start-how-do-i-debug)
+      * [my Laravel container does not start, how do I debug?](#my-laravel-container-does-not-start-how-do-i-debug)
       * [Connecting to the production database](#connecting-to-the-production-database)
   * [Backlog](#backlog)
+* [Sandstorm Laravel / Filament Best Practices](#sandstorm-laravel--filament-best-practices)
+  * [Filament fully set up](#filament-fully-set-up)
+  * [Prepared for Multiple Filament Panels](#prepared-for-multiple-filament-panels)
+  * [ULIDs as IDs](#ulids-as-ids)
+  * [Laravel Strict Mode](#laravel-strict-mode)
+  * [Installed Packages for Laravel / Filament](#installed-packages-for-laravel--filament)
+    * [archilex/filament-filter-sets (Advanced Tables - Commercial Plugin)](#archilexfilament-filter-sets-advanced-tables---commercial-plugin)
+    * [awcodes/filament-tiptap-editor (custom and extensible Rich Text Editor)](#awcodesfilament-tiptap-editor-custom-and-extensible-rich-text-editor)
+    * [Record Finder Pro (more advanced Record Selector)](#record-finder-pro-more-advanced-record-selector)
+    * [dutchcodingcompany/filament-developer-logins (development logins)](#dutchcodingcompanyfilament-developer-logins-development-logins)
+    * [spatie/laravel-ignition (beautiful error pages in dev)](#spatielaravel-ignition-beautiful-error-pages-in-dev)
+    * [barryvdh/laravel-ide-helper (IDE autocompletion)](#barryvdhlaravel-ide-helper-ide-autocompletion)
 <!-- TOC -->
 
 ## Requirements
@@ -147,6 +134,21 @@ make it easier to pull upcoming changes from the kickstarter to your project.**
 - run `dev run-unit-tests` to run all unit tests
 - run `dev run-functional-tests` to run all functional tests
 - run `dev start-e2e-testrunner` and in new console `dev run-e2e-tests` to run all e2e tests or use `dev run-e2e-tests --tags=<yourTestTag>` to run a single test, e.g a test which is annotated with `@EventList` can be run with `dev run-e2e-tests --tags=EventList`
+
+## Pint Code Style Fixer
+
+We include [Laravel Pint](https://laravel.com/docs/11.x/pint) which "is an opinionated
+PHP code style fixer for minimalists".
+
+```bash
+# dry run - which files would change?
+dev pint --test
+
+# pretty-print the files
+dev pint
+```
+
+runs the 
 
 ## Staging
 
@@ -222,7 +224,6 @@ Then, you can use the built-in DB browser of IntelliJ to connect:
 - Database Notifications set up
 - basic print.css style included
 
-
 ## Prepared for Multiple Filament Panels
 
 Contrary to the default Filament kickstart, we use `App\Filament\Admin` as namespace
@@ -241,6 +242,12 @@ have an incremental mode).
 see https://laravel-news.com/shouldbestrict - catches quite some errors. NOTE we only
 enable this in dev mode, as we want our dev mode to be more restrictive, and our prod
 mode more forgiving.
+
+## 
+
+## THROW for storages
+
+TODO WRITE ME AND FIX ME
 
 ## Installed Packages for Laravel / Filament
 

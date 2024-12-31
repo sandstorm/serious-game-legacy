@@ -1,0 +1,8 @@
+{
+  "preset": "laravel",
+  "exclude": [
+    "DistributionPackages/archilex-filament-filter-sets",
+    "DistributionPackages/ralphjsmit-laravel-filament-record-finder",
+    "DistributionPackages/ralphjsmit-packages"
+  ]
+}
