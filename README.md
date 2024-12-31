@@ -33,6 +33,9 @@ brew install composer
 
 To start, simply fork this repo and start coding :)
 
+**We suggest that you keep the history of the kickstarter in your project, as this will
+make it easier to pull upcoming changes from the kickstarter to your project.**
+
 [//]: # (KICKSTART_INFO_SECTION__END)
 
 <!-- TOC -->
