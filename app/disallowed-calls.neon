@@ -1,0 +1,28 @@
+parameters:
+    disallowedNamespaces:
+        -
+            namespace: 'Illuminate\Support\Facades\*'
+            message: 'it is forbidden to use laravel facades as it breaks encapsulation. Use dependency injection instead.'
+
+    disallowedFunctionCalls:
+        -
+            function:
+                - 'app()'
+                - 'auth()'
+                - 'broadcast()'
+                - 'cache()'
+                - 'config()'
+                - 'context()'
+                - 'dispatch()'
+                - 'dispatch_sync()'
+                - 'env()'
+                - 'event()'
+                - 'info()' # TODO: this might be OK
+                - 'logger()' # TODO: this might be OK
+                - 'policy()'
+                - 'request()'
+                - 'resolve()'
+                - 'session()'
+                - 'view()'
+            message: 'it is forbidden use global laravel functions which access global state. Use dependency injection instead.'
+

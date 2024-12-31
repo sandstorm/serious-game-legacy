@@ -1,9 +1,22 @@
 
-#includes:
-#    - vendor/larastan/larastan/extension.neon
+includes:
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+    - vendor/larastan/larastan/extension.neon
+    - vendor/tomasvotruba/bladestan/config/extension.neon
+    - vendor/staabm/phpstan-todo-by/extension.neon
+    - vendor/spaze/phpstan-disallowed-calls/extension.neon
+
+    - vendor/spaze/phpstan-disallowed-calls/disallowed-dangerous-calls.neon
+    - vendor/spaze/phpstan-disallowed-calls/disallowed-execution-calls.neon
+    - vendor/spaze/phpstan-disallowed-calls/disallowed-insecure-calls.neon
+    - disallowed-calls.neon
 
 parameters:
 
+    #############
+    # generic settings
+    #############
     paths:
         - app/
 
@@ -13,3 +26,15 @@ parameters:
 
     # Level 10 is the highest level
     level: 10
+
+    #############
+    # larastan: https://github.com/larastan/larastan/blob/3.x/docs/rules.md
+    #############
+    checkModelProperties: true
+    checkOctaneCompatibility: true
+    noEnvCallsOutsideOfConfig: true
+    checkModelAppends: true
+
+    #############
+    # spaze/phpstan-disallowed-calls
+    #############

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
 
 final class AppServiceProvider extends ServiceProvider
@@ -23,12 +22,13 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Model::preventLazyLoading(!App::isProduction());
-        Model::preventSilentlyDiscardingAttributes(!App::isProduction());
-        Model::preventAccessingMissingAttributes(!App::isProduction());
-
-        if (App::isProduction()) {
+        if ((bool)$this->app->environment('production')) {
             \URL::forceScheme('https');
+        } else {
+            // Not production
+            Model::preventLazyLoading();
+            Model::preventSilentlyDiscardingAttributes();
+            Model::preventAccessingMissingAttributes();
         }
     }
 }

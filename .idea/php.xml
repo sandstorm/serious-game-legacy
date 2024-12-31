@@ -5,6 +5,11 @@
       <LaravelPintConfiguration tool_path="$PROJECT_DIR$/app/vendor/bin/pint" />
     </laravel_pint_settings>
   </component>
+  <component name="PhpCodeSniffer">
+    <phpcs_settings>
+      <PhpCSConfiguration asDefaultInterpreter="true" />
+    </phpcs_settings>
+  </component>
   <component name="PhpIncludePathManager">
     <include_path>
       <path value="$PROJECT_DIR$/app/Packages/Libraries/psr/log" />
@@ -331,7 +336,6 @@
       <path value="$PROJECT_DIR$/app/vendor/barryvdh/reflection-docblock" />
       <path value="$PROJECT_DIR$/app/vendor/phpstan/phpstan-strict-rules" />
       <path value="$PROJECT_DIR$/app/vendor/phpstan/phpstan" />
-      <path value="$PROJECT_DIR$/app/vendor/phpstan/extension-installer" />
       <path value="$PROJECT_DIR$/app/vendor/phpstan/phpstan-deprecation-rules" />
       <path value="$PROJECT_DIR$/app/vendor/ralphjsmit/laravel-filament-record-finder" />
       <path value="$PROJECT_DIR$/app/vendor/pestphp/pest-plugin-watch" />
@@ -341,10 +345,20 @@
       <path value="$PROJECT_DIR$/app/vendor/evenement/evenement" />
       <path value="$PROJECT_DIR$/app/vendor/larastan/larastan" />
       <path value="$PROJECT_DIR$/app/vendor/phpmyadmin/sql-parser" />
+      <path value="$PROJECT_DIR$/app/vendor/tomasvotruba/bladestan" />
+      <path value="$PROJECT_DIR$/app/vendor/beberlei/assert" />
+      <path value="$PROJECT_DIR$/app/vendor/nikolaposa/version" />
+      <path value="$PROJECT_DIR$/app/vendor/staabm/phpstan-todo-by" />
+      <path value="$PROJECT_DIR$/app/vendor/spaze/phpstan-disallowed-calls" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2">
     <option name="suggestChangeDefaultLanguageLevel" value="false" />
+  </component>
+  <component name="PhpStan">
+    <PhpStan_settings>
+      <PhpStanConfiguration asDefaultInterpreter="true" />
+    </PhpStan_settings>
   </component>
   <component name="PhpUnit">
     <phpunit_settings>

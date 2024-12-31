@@ -162,11 +162,41 @@ TODO: Tests in CI
 
 ## PHPStan Static Code Analysis
 
+PHPStan is a very powerful static code analyzer.
+
+USAGE:
 
 ```bash
 # NOTE: we have a TEAM LICENSE for all of sandstorm - so feel free to use --watch // --pro web UI (all configured for it).
 dev phpstan --pro
 ```
+
+We use PHPStan with a few addons:
+- strict PHPStan rules via phpstan/phpstan-strict-rules
+- alert on calling `@deprecated` methods via phpstan/phpstan-deprecation-rules
+- larastan & bladestan (for laravel specific rules and blade template support)
+- spaze/phpstan-disallowed-calls with possible custom rules: https://github.com/spaze/phpstan-disallowed-calls/blob/main/docs/custom-rules.md
+  - this enables us to disallow Laravel Facades and helpers, and enforce dependency injection. see `disallowed-calls.neon` for docs.
+- TODOs which turn into errors via staabm/phpstan-todo-by - see [examples](https://github.com/staabm/phpstan-todo-by?tab=readme-ov-file#examples) for demo:
+  ```php
+  // TODO: 2023-12-14 This comment turns into a PHPStan error as of 14th december 2023
+  function doFoo() { /* ... */ }
+  
+  // TODO https://github.com/staabm/phpstan-todo-by/issues/91 fix me when this GitHub issue is closed
+  class FooClass {}
+  
+  // TODO: <1.0.0 This has to be in the first major release of this repo
+  function doBar() { /* ... */ }
+  
+  // FIXME: phpunit/phpunit:5.3 This has to be fixed when updating phpunit to 5.3.x or higher
+  function doFooBar() { /* ... */ }
+  
+  // XXX: php:8 drop this polyfill when php 8.x is required
+  
+  // TODO: APP-2137 A comment which errors when the issue tracker ticket gets resolved
+  function doBaz() { /* ... */ }
+  ```
+
 
 TODO: PHPStan in CI
 
@@ -250,6 +280,11 @@ Then, you can use the built-in DB browser of IntelliJ to connect:
 
 
 # Sandstorm Laravel / Filament Best Practices
+
+## Architecture of Laravel Applications
+
+TODO write - decoupled!!!
+Only use Dependency Injection, app() forbidden
 
 ## Filament fully set up
 

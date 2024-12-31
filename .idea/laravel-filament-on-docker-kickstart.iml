@@ -96,7 +96,6 @@
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/phpdocumentor/reflection-docblock" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/phpdocumentor/type-resolver" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/phpoption/phpoption" />
-      <excludeFolder url="file://$MODULE_DIR$/app/vendor/phpstan/extension-installer" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/phpstan/phpdoc-parser" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/phpstan/phpstan" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/phpstan/phpstan-deprecation-rules" />
@@ -189,13 +188,18 @@
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/webmozart/assert" />
       <excludeFolder url="file://$MODULE_DIR$/app/storage/app" />
       <excludeFolder url="file://$MODULE_DIR$/app/storage/framework" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/beberlei/assert" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/evenement/evenement" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/larastan/larastan" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/nikolaposa/version" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/pestphp/pest-plugin-watch" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/phpmyadmin/sql-parser" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/react/child-process" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/react/event-loop" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/react/stream" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/spaze/phpstan-disallowed-calls" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/staabm/phpstan-todo-by" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/tomasvotruba/bladestan" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
