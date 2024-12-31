@@ -73,7 +73,7 @@ class AdminPanelProvider extends PanelProvider
                 FilamentDeveloperLoginsPlugin::make()
                     /** @phpstan-ignore-next-line */
                     ->enabled(app()->environment('local'))
-                    ->users(fn() => User::where('email', 'LIKE', '%@example.com')->pluck('email', 'email')->toArray())
+                    ->users(fn () => User::where('email', 'LIKE', '%@example.com')->pluck('email', 'email')->toArray())
             )
             ->plugin(
                 AdvancedTablesPlugin::make()
@@ -83,7 +83,7 @@ class AdminPanelProvider extends PanelProvider
             )
             ->when( // while running "dev composer-update-filament-record-finder-pro", the existing plugin needs to be removed temporarily - this is to ensure we won't crash here
                 class_exists(FilamentRecordFinder::class),
-                fn($panel) => $panel->plugin(
+                fn ($panel) => $panel->plugin(
                     FilamentRecordFinder::make()
                 )
             );

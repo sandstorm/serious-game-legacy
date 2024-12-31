@@ -1,5 +1,5 @@
 {
-  "preset": "laravel",
+  "preset": "psr12",
   "exclude": [
     "DistributionPackages/archilex-filament-filter-sets",
     "DistributionPackages/ralphjsmit-laravel-filament-record-finder",

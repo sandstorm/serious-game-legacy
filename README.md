@@ -138,7 +138,7 @@ make it easier to pull upcoming changes from the kickstarter to your project.**
 ## Pint Code Style Fixer
 
 We include [Laravel Pint](https://laravel.com/docs/11.x/pint) which "is an opinionated
-PHP code style fixer for minimalists".
+PHP code style fixer for minimalists", which formats our code according to PSR-12.
 
 ```bash
 # dry run - which files would change?
@@ -147,8 +147,6 @@ dev pint --test
 # pretty-print the files
 dev pint
 ```
-
-runs the 
 
 ## Staging
 
