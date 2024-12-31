@@ -165,6 +165,16 @@ function pint() {
   docker compose exec laravel /app/vendor/bin/pint --config /app/.pint.json $@
 }
 
+# run PHPSTAN
+function phpstan() {
+  docker compose exec laravel /app/vendor/bin/phpstan $@
+}
+
+# run Pest (Unit Testing)
+function pest() {
+  docker compose exec -it laravel /app/vendor/bin/pest $@
+}
+
 function artisan() {
   docker compose exec laravel /app/artisan $@
 }

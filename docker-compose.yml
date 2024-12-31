@@ -36,14 +36,19 @@ services:
       IMAGOR_SIGNER_TYPE: sha256
       IMAGOR_SIGNER_TRUNCATE: 40
 
+      PHPSTAN_PRO_WEB_PORT: 11111
+
     volumes:
       - ./app/:/app/:cached
       - laravel-storage:/app/storage
       # Explicitly set up Composer cache for faster fetching of packages
       - laravel-composer-cache:/composer_cache:cached
+      # for PHPStan Pro
+      - ~/.local/share/phpstan-pro:/tmp/phpstan-fixer
     ports:
       - 8090:8081
       - 9090:9090 # for laravel_scrambled
+      - 127.0.0.1:11111:11111 # for PHPStan Pro
     depends_on:
       maria-db:
         condition: service_healthy

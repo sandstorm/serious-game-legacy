@@ -73,7 +73,6 @@ final class AdminPanelProvider extends PanelProvider
             ])
             ->plugin(
                 FilamentDeveloperLoginsPlugin::make()
-                    /** @phpstan-ignore-next-line */
                     ->enabled(app()->environment('local'))
                     ->users(fn () => User::where('email', 'LIKE', '%@example.com')->pluck('email', 'email')->toArray())
             )

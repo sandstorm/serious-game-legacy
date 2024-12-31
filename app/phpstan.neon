@@ -1,10 +1,15 @@
+
+#includes:
+#    - vendor/larastan/larastan/extension.neon
+
 parameters:
-    level: max
+
     paths:
-        - app
-        - tests
+        - app/
+
     scanFiles:
         - _ide_helper_models.php
-#    ignoreErrors:
-#        -
-#            identifier: missingType.generics
+        #- _ide_helper.php
+
+    # Level 10 is the highest level
+    level: 10

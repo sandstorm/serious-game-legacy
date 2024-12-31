@@ -339,9 +339,16 @@
       <path value="$PROJECT_DIR$/app/vendor/react/child-process" />
       <path value="$PROJECT_DIR$/app/vendor/react/event-loop" />
       <path value="$PROJECT_DIR$/app/vendor/evenement/evenement" />
+      <path value="$PROJECT_DIR$/app/vendor/larastan/larastan" />
+      <path value="$PROJECT_DIR$/app/vendor/phpmyadmin/sql-parser" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2">
     <option name="suggestChangeDefaultLanguageLevel" value="false" />
+  </component>
+  <component name="PhpUnit">
+    <phpunit_settings>
+      <PhpUnitSettings configuration_file_path="$PROJECT_DIR$/app/phpunit.xml" custom_loader_path="$PROJECT_DIR$/app/vendor/autoload.php" paratest_path="$PROJECT_DIR$/app/vendor/bin/paratest_for_phpstorm" use_configuration_file="true" />
+    </phpunit_settings>
   </component>
 </project>

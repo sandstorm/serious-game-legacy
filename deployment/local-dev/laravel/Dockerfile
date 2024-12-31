@@ -15,6 +15,7 @@ RUN apt-get update -y && \
     git \
     default-mysql-client \
     inotify-tools \
+    fswatch \
     vim \
     && \
     rm -rf /var/lib/apt/lists/*

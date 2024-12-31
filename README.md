@@ -107,6 +107,7 @@ make it easier to pull upcoming changes from the kickstarter to your project.**
   - [PHP](https://plugins.jetbrains.com/plugin/6610-php)
   - [PHP Annotations](https://plugins.jetbrains.com/plugin/7320-php-annotations)
   - [PHP Toolbox](https://plugins.jetbrains.com/plugin/8133-php-toolbox)
+  - [Pest](https://plugins.jetbrains.com/plugin/14636-pest)
   - [Docker](https://plugins.jetbrains.com/plugin/7724-docker)
   - [Symlink Excluder](https://plugins.jetbrains.com/plugin/16110-symlink-excluder)
     - Prevents symlinked folders to be indexed by the IDE so that you don't have to exclude packages you're developing manually
@@ -134,6 +135,40 @@ make it easier to pull upcoming changes from the kickstarter to your project.**
 - run `dev run-unit-tests` to run all unit tests
 - run `dev run-functional-tests` to run all functional tests
 - run `dev start-e2e-testrunner` and in new console `dev run-e2e-tests` to run all e2e tests or use `dev run-e2e-tests --tags=<yourTestTag>` to run a single test, e.g a test which is annotated with `@EventList` can be run with `dev run-e2e-tests --tags=EventList`
+
+We suggest to use [Pest](https://pestphp.com/) as testing framework, which builds upon
+PHPUnit and looks as if it provides quite some nice benefits on top,
+especially [Architectural Testing](https://pestphp.com/docs/arch-testing) and
+[Snapshot Testing](https://pestphp.com/docs/snapshot-testing) is something we
+always looked for in PHP Test Frameworks.
+Some features like
+[Stress Testing](https://pestphp.com/docs/stress-testing),
+[Mutation Testing](https://pestphp.com/docs/mutation-testing),
+[Team Management](https://pestphp.com/docs/team-management) might be useful as
+well.
+
+> NOTE: we might be able to archive architectural tests as well with PHPStan - we
+> still have to see which project does the job better.
+
+```bash
+# run the tests
+dev pest
+
+# run the tests - watching if something changes
+dev pest --watch
+```
+
+TODO: Tests in CI
+
+## PHPStan Static Code Analysis
+
+
+```bash
+# NOTE: we have a TEAM LICENSE for all of sandstorm - so feel free to use --watch // --pro web UI (all configured for it).
+dev phpstan --pro
+```
+
+TODO: PHPStan in CI
 
 ## Pint Code Style Fixer
 
