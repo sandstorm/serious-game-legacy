@@ -1,0 +1,5 @@
+vendor
+vendor.nosync
+.DS_Store
+.idea
+composer.lock

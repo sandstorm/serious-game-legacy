@@ -176,7 +176,7 @@ function composer-update-filament-advanced-tables() {
 
   cp -R vendor/archilex/filament-filter-sets DistributionPackages/archilex-filament-filter-sets
   composer config --unset repositories.advancedtables
-  composer require archilex/filament-filter-sets
+  composer require archilex/filament-filter-sets @dev
 }
 
 function composer-update-filament-record-finder-pro() {
@@ -188,12 +188,15 @@ function composer-update-filament-record-finder-pro() {
   _echo_yellow "Now, go to **Filament Record Finder Pro TEAM Lizenz** in Bitwarden - enter Username + Password if prompted (always the same for all projects)"
   composer require ralphjsmit/laravel-filament-record-finder
   composer show -- ralphjsmit/laravel-filament-record-finder > DistributionPackages/ralphjsmit-laravel-filament-record-finder.md
+  composer show -- ralphjsmit/packages > DistributionPackages/ralphjsmit-packages.md
 
   rm -Rf DistributionPackages/ralphjsmit-laravel-filament-record-finder
+  rm -Rf DistributionPackages/ralphjsmit-packages
 
   cp -R vendor/ralphjsmit/laravel-filament-record-finder DistributionPackages/ralphjsmit-laravel-filament-record-finder
+  cp -R vendor/ralphjsmit/packages DistributionPackages/ralphjsmit-packages
   composer config --unset repositories.laravelrecordfinder
-  composer require ralphjsmit/laravel-filament-record-finder
+  composer require ralphjsmit/packages "dev-main as 1.4.2" ralphjsmit/laravel-filament-record-finder @dev
 }
 _echo_green "------------- Running task $@ -------------"
 
