@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers\Filament;
 
 use App\Models\User;
@@ -23,7 +25,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use RalphJSmit\Filament\RecordFinder\FilamentRecordFinder;
 
-class AdminPanelProvider extends PanelProvider
+final class AdminPanelProvider extends PanelProvider
 {
     public const NAVIGATION_GROUP_STAMMDATEN = 'Stammdaten';
 
@@ -78,7 +80,7 @@ class AdminPanelProvider extends PanelProvider
             ->plugin(
                 AdvancedTablesPlugin::make()
                     ->quickSaveMakeGlobalFavorite() // every user can make a global favorite
-                    ->resourceNavigationGroup(AdminPanelProvider::NAVIGATION_GROUP_STAMMDATEN)
+                    ->resourceNavigationGroup(self::NAVIGATION_GROUP_STAMMDATEN)
                     ->resourceNavigationIcon(null)
             )
             ->when( // while running "dev composer-update-filament-record-finder-pro", the existing plugin needs to be removed temporarily - this is to ensure we won't crash here

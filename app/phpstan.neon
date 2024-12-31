@@ -1,0 +1,10 @@
+parameters:
+    level: max
+    paths:
+        - app
+        - tests
+    scanFiles:
+        - _ide_helper_models.php
+#    ignoreErrors:
+#        -
+#            identifier: missingType.generics

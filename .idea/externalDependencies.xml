@@ -5,6 +5,7 @@
     <plugin id="Symlink Excluder" />
     <plugin id="com.jetbrains.php" />
     <plugin id="com.laravel_idea.plugin" />
+    <plugin id="com.pestphp.pest-intellij" />
     <plugin id="de.espend.idea.php.annotation" />
     <plugin id="de.espend.idea.php.toolbox" />
     <plugin id="dev.ekvedaras.laravelquery" />

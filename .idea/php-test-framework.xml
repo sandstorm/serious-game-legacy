@@ -9,6 +9,13 @@
           </configurations>
         </settings>
       </tool>
+      <tool tool_name="Pest">
+        <settings>
+          <configurations>
+            <local_configuration configuration_file_path="$PROJECT_DIR$/app/phpunit.xml" executable_path="$PROJECT_DIR$/app/vendor/pestphp/pest/bin/pest" use_configuration_file="true" />
+          </configurations>
+        </settings>
+      </tool>
     </test_tools>
   </component>
 </project>
