@@ -23,3 +23,11 @@ arch()
 
 arch()->expect('App')
     ->toUseStrictEquality();
+
+arch()
+    ->note('We always want declare(strict_types=1) in ALL files')
+    ->expect('Domain')
+    ->toUseStrictTypes();
+
+arch()->expect('Domain')
+    ->toUseStrictEquality();

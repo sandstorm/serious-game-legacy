@@ -350,6 +350,7 @@
       <path value="$PROJECT_DIR$/app/vendor/nikolaposa/version" />
       <path value="$PROJECT_DIR$/app/vendor/staabm/phpstan-todo-by" />
       <path value="$PROJECT_DIR$/app/vendor/spaze/phpstan-disallowed-calls" />
+      <path value="$PROJECT_DIR$/app/vendor/wwwision/types" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2">
@@ -357,6 +358,7 @@
   </component>
   <component name="PhpStan">
     <PhpStan_settings>
+      <PhpStanConfiguration tool_path="$PROJECT_DIR$/app/vendor/bin/phpstan" />
       <PhpStanConfiguration asDefaultInterpreter="true" />
     </PhpStan_settings>
   </component>

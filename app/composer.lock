@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e35ac6255677b4a37a94387180c77f40",
+    "content-hash": "aef189323963cc7ba692b8d40da33a99",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -8305,6 +8305,68 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "wwwision/types",
+            "version": "1.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bwaidelich/types.git",
+                "reference": "0b96632ea60ac727cfc0117cc4903de5cc4826ca"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bwaidelich/types/zipball/0b96632ea60ac727cfc0117cc4903de5cc4826ca",
+                "reference": "0b96632ea60ac727cfc0117cc4903de5cc4826ca",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1",
+                "ramsey/uuid": "^4.7",
+                "webmozart/assert": "^1.11"
+            },
+            "require-dev": {
+                "phpbench/phpbench": "^1.2",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^10.1",
+                "roave/security-advisories": "dev-latest",
+                "squizlabs/php_codesniffer": "^4.0.x-dev"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/instantiate.php"
+                ],
+                "psr-4": {
+                    "Wwwision\\Types\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "bwaidelich",
+                    "email": "b.waidelich@wwwision.de"
+                }
+            ],
+            "description": "Tools to create PHP types that adhere to JSON schema like rules",
+            "support": {
+                "issues": "https://github.com/bwaidelich/types/issues",
+                "source": "https://github.com/bwaidelich/types/tree/1.3.2"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sponsors/bwaidelich",
+                    "type": "github"
+                },
+                {
+                    "url": "https://www.paypal.me/bwaidelich",
+                    "type": "paypal"
+                }
+            ],
+            "time": "2024-12-19T10:07:20+00:00"
         }
     ],
     "packages-dev": [

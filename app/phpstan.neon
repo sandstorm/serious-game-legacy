@@ -19,6 +19,7 @@ parameters:
     #############
     paths:
         - app/
+        - src/
 
     scanFiles:
         - _ide_helper_models.php

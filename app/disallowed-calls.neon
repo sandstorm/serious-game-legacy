@@ -1,11 +1,22 @@
+# Documentation: https://github.com/spaze/phpstan-disallowed-calls/blob/main/docs/custom-rules.md
 parameters:
+
     disallowedNamespaces:
-        -
+        -   # Core Domain should NEVER depend on laravel.
+            namespace:
+                - 'Illuminate\*'
+            message: 'it is FORBIDDEN TO USE LARAVEL inside the core domain. Create a Port instead.'
+            allowIn:
+                - app/*
+                - tests/*
+                # only forbidden in src/
+
+        -   # We do not want to use Facades. -> Dependency Injection
             namespace: 'Illuminate\Support\Facades\*'
             message: 'it is forbidden to use laravel facades as it breaks encapsulation. Use dependency injection instead.'
 
     disallowedFunctionCalls:
-        -
+        -   # We do not want to use helpers which access global state. -> Dependency Injection
             function:
                 - 'app()'
                 - 'auth()'

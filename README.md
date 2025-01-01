@@ -281,10 +281,74 @@ Then, you can use the built-in DB browser of IntelliJ to connect:
 
 # Sandstorm Laravel / Filament Best Practices
 
-## Architecture of Laravel Applications
+## Suggested Architecture of Laravel Applications: Ports & Adapters
 
-TODO write - decoupled!!!
-Only use Dependency Injection, app() forbidden
+**Problems with the standard "Framework" approach**
+
+A big problem with Laravel applications is that they are essentially **guiding you
+into the framework** - so that means all tutorials, guides, ... show you "the laravel
+way" and how to embrace this ecosystem.
+
+While, on the one side, this leads to pretty standardized applications in terms of
+where every component is located, it has the big problem that the **core domain
+of the software is spread out** across many controllers, services, event handlers,
+and many other framework constructs. We've teached the same with Flow applications,
+and in my current (Sebastian, 2025) understanding this is one of the biggest mistakes
+we made.
+
+
+**Goals**
+
+We want to focus on the business logic, and want to make code easily testable. Ports
+& Adapters **guide the code towards easy testability**.
+
+
+**When not to use Ports&Adapters**
+
+- a pure CRUD application with no core business logic (i.e. only "Datenpflege")
+
+
+**How to learn about Ports & Adapters**
+
+- a book: https://gitlab.sandstorm.de/sandstorm/books/-/blob/main/Tech/00__CONCEPTS_MUST_READ/2025_Hexagonal_Architecture_Explained.epub?ref_type=heads
+- a video for hexagonal architecture: https://www.youtube.com/watch?v=UwQSfyYrSrg
+  - core idea around 09:40
+- Talk to Sebastian, who learned this from Bastian Waidelich :)
+
+**Our Naming Convention**
+
+The Core Domain should reside inside `Domain\` namespace (OUTSIDE of the laravel
+`App\` namespace) in a SEPARATE Library package. Our suggested structure is:
+
+- `Domain\` (`src/` folder)
+  - `[Name of Core Domain]` -- can optionally be a separate package if this makes sense
+    - `DrivingPorts`
+      this is the EXTERNAL API ("upper layer"), (i.e. where some external code triggers your core
+      domain), f.e. when calling a REST API or rendering a certain UI page, this is
+      what gets executed
+      - `ForXY` -> just very few interfaces (depending on how many make sense for 
+        your application)
+    - `DrivenPorts`
+      these are APIs triggered by the core domain ("lower layers"), f.e. for
+      persistence, logging, ...
+      - `ForPersistence`
+      - `ForLogging`
+      - `...`
+    - `Dto`
+      Data Transfer Objects (immutable value objects) needed by ports (in both directions)
+      - either you write them by hand, or (suggestion) use https://github.com/bwaidelich/types for the DTOs.
+
+The Core Domain should NEVER depend on any Laravel class.
+
+The Adapters should reside in `\App\Adapters` in the Laravel application.
+
+## Only Use Dependency Injection, no stateful helpers or Laravel Facades
+
+Methods like `env()` or `app()` totally break encapsulation in Laravel; please DO NOT USE them but instead
+inject the underlying object via Dependency Injection. This way, we can more easily analyze the code base
+because we have less "magic connections" between classes which are invisible to the outside.
+
+in `disallowed-calls.neon`, we test for this; so phpstan fails in case this is violated.
 
 ## Filament fully set up
 

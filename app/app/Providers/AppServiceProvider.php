@@ -6,6 +6,9 @@ namespace App\Providers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
+use Domain\NameOfCoreDomainX\CoreDomainXApp;
+use Domain\NameOfCoreDomainX\DrivenPorts\ForLogging;
+use Domain\NameOfCoreDomainX\DrivingPorts\ForDoingCoreBusinessLogic;
 
 final class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +17,11 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Wire Driven Ports
+        $this->app->scoped(ForLogging::class, CoreDomainXApp::class);
+
+        // Wire Driving Ports (the driven ports as dependency are automatically found)
+        $this->app->scoped(ForDoingCoreBusinessLogic::class, CoreDomainXApp::class);
     }
 
     /**
