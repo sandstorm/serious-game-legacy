@@ -34,7 +34,7 @@ return [
             'driver' => 'local',
             'root' => storage_path('app/private'),
             'serve' => true,
-            'throw' => false,
+            'throw' => true, // throw exception on storage error (as otherwise we won't find out what's going wrong)
         ],
 
         'public' => [
@@ -42,7 +42,7 @@ return [
             'root' => storage_path('app/public'),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
-            'throw' => false,
+            'throw' => true, // throw exception on storage error (as otherwise we won't find out what's going wrong)
         ],
 
         's3' => [
@@ -54,7 +54,7 @@ return [
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
-            'throw' => false,
+            'throw' => true, // throw exception on storage error (as otherwise we won't find out what's going wrong)
         ],
 
     ],

@@ -16,5 +16,7 @@ composer install
 envsubst '${SANDSTORM_MAPS_API_KEY}' < /etc/nginx/nginx.conf > /tmp/nginx.conf && mv /tmp/nginx.conf /etc/nginx/nginx.conf
 nginx &
 
+./artisan queue:work &
+
 # start PHP-FPM
 exec /usr/local/sbin/php-fpm

@@ -17,8 +17,7 @@ Well working packages:
 Still open topics:
 
 - settings? filament/spatie-laravel-settings-plugin only meh
-- larastan etc
-
+- permissions based on casbin?
 
 
 This packages helps you to quickly set up a Laravel/Filament Project. Besides a basic Laravel and Filament setup we included lots of best practices in the application, so you'll be up and running in no time.
@@ -367,6 +366,9 @@ in `disallowed-calls.neon`, we test for this; so phpstan fails in case this is v
 - Filament with custom theme (needed for easy plugin integration)
 - Database Notifications set up
 - basic print.css style included
+- For Asynchronous work: Laravel Queues (with Redis) set up, with a running queue worker
+- Laravel Caches (with Redis) set up
+- TODO: Laravel Broadcast?
 
 ## Prepared for Multiple Filament Panels
 
@@ -387,9 +389,13 @@ see https://laravel-news.com/shouldbestrict - catches quite some errors. NOTE we
 enable this in dev mode, as we want our dev mode to be more restrictive, and our prod
 mode more forgiving.
 
-## THROW for storages
+## throw exceptions on error for file system storage
 
-TODO WRITE ME AND FIX ME
+By default, file storage errors do not throw exceptions but simply return `false`. This has the problem that
+we manually need to test for successful uploads; and we don't get good error messages what is going wrong.
+
+In our applications, we found it much better to throw on storage errors. This works easily with setting `'throw' => true`
+inside `config/filesystems.php` (this is already configured here).
 
 ## Installed Packages for Laravel / Filament
 
