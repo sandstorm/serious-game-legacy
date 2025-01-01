@@ -10,6 +10,12 @@ use Domain\NameOfCoreDomainX\Dto\UserName;
 /**
  * Main implementation of core business logic
  *
+ * This class implements the driving port {@see ForDoingCoreBusinessLogic} and
+ * coordinates the core domain operations. It:
+ * - Contains the actual business logic
+ * - Uses driven ports (e.g. ForLogging) to interact with external services
+ * - Never directly depends on framework code
+ *
  * @internal from the outside world, you'll always use the interface {@see ForDoingCoreBusinessLogic}, except when constructing this application
  */
 final class CoreDomainXApp implements ForDoingCoreBusinessLogic

@@ -3,15 +3,12 @@ declare(strict_types=1);
 namespace Domain\NameOfCoreDomainX\DrivenPorts;
 
 /**
- * This is the DRIVEN side of the Ports&Adapters pattern for this
- * core domain - so always when the core domain wants to interact with
- * the external world.
+ * Driven Port for logging operations
  *
- * The IMPLEMENTATION of the driven ports happens in Laravel Framework code.
- *
- * Examples:
- * - Logging
- * - Persistence
+ *  This interface represents a "driven" port in the Ports & Adapters pattern:
+ *  - The core domain USES this interface when it needs logging
+ *  - The actual implementation lives in the adapters layer (e.g. LaravelLogAdapter)
+ *  - This allows the core domain to remain framework-agnostic
  *
  * @api
  */

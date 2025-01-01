@@ -320,27 +320,39 @@ We want to focus on the business logic, and want to make code easily testable. P
 The Core Domain should reside inside `Domain\` namespace (OUTSIDE of the laravel
 `App\` namespace) in a SEPARATE Library package. Our suggested structure is:
 
-- `Domain\` (`src/` folder)
-  - `[Name of Core Domain]` -- can optionally be a separate package if this makes sense
-    - `DrivingPorts`
-      this is the EXTERNAL API ("upper layer"), (i.e. where some external code triggers your core
-      domain), f.e. when calling a REST API or rendering a certain UI page, this is
-      what gets executed
-      - `ForXY` -> just very few interfaces (depending on how many make sense for 
-        your application)
-    - `DrivenPorts`
-      these are APIs triggered by the core domain ("lower layers"), f.e. for
-      persistence, logging, ...
-      - `ForPersistence`
-      - `ForLogging`
-      - `...`
-    - `Dto`
-      Data Transfer Objects (immutable value objects) needed by ports (in both directions)
-      - either you write them by hand, or (suggestion) use https://github.com/bwaidelich/types for the DTOs.
+```
+src/ folder (Namespace Domain\)
+├── CoreDomainX/             # A bounded context of your domain
+│   ├── DrivingPorts/        # "Input" ports - how external code calls your domain
+│   │   └── ForXY.php        # Interface defining allowed operations
+│   ├── DrivenPorts/         # "Output" ports - how your domain calls external services
+│   │   ├── ForPersistence/  # f.e. Database operations, ...
+│   │   └── ForLogging/      # f.e. Logging operations, ...
+│   ├── Dto/                 # Data Transfer Objects (Immutable)
+│   └── CoreDomainXApp.php   # Main implementation of business logic
+```
+
+For DTOs, we recommend to use https://github.com/bwaidelich/types.
 
 The Core Domain should NEVER depend on any Laravel class.
 
 The Adapters should reside in `\App\Adapters` in the Laravel application.
+
+**Ports&Adapters Summary**
+
+❌ Don't Do This
+
+- Accessing Laravel facades or helpers in domain code
+- Putting business logic in adapters
+- Creating circular dependencies between ports
+- Using framework-specific types in DTOs
+
+✅ Do This Instead
+
+- Inject all dependencies through ports
+- Keep adapters thin and focused on translation
+- Design ports around business concepts, not technical ones
+- Use framework-agnostic value objects in DTOs
 
 ## Only Use Dependency Injection, no stateful helpers or Laravel Facades
 
@@ -374,8 +386,6 @@ have an incremental mode).
 see https://laravel-news.com/shouldbestrict - catches quite some errors. NOTE we only
 enable this in dev mode, as we want our dev mode to be more restrictive, and our prod
 mode more forgiving.
-
-## 
 
 ## THROW for storages
 
