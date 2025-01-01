@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Domain\NameOfCoreDomainX\DrivenPorts;
 
 /**
@@ -14,6 +16,5 @@ namespace Domain\NameOfCoreDomainX\DrivenPorts;
  */
 interface ForLogging
 {
-
     public function log(string $message): void;
 }

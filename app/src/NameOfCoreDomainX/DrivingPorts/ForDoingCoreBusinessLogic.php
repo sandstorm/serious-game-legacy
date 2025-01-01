@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Domain\NameOfCoreDomainX\DrivingPorts;
 
 use Domain\NameOfCoreDomainX\Dto\UserName;

@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Domain\NameOfCoreDomainX\DrivenPorts\Mocks;
 
 use Domain\NameOfCoreDomainX\DrivenPorts\ForLogging;

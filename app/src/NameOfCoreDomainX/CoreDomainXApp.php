@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\NameOfCoreDomainX;
@@ -22,8 +23,7 @@ final class CoreDomainXApp implements ForDoingCoreBusinessLogic
 {
     public function __construct(
         private readonly ForLogging $forLogging,
-    )
-    {
+    ) {
     }
 
     public function startTimeRecording(UserName $userName): void
