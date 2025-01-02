@@ -226,7 +226,7 @@ We have the following observability enabled:
 
 There is a `/up` health check endpoint configured, which response with status 200 if everything is basically up and running.
 
-TODO: DB and Redis connection
+In this health check, we also check for database and redis health (implemented in `App\Listeners\BasicHealthChecks`).
 
 ### Laravel Pulse - Server Metrics
 
