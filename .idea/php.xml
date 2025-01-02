@@ -351,6 +351,8 @@
       <path value="$PROJECT_DIR$/app/vendor/staabm/phpstan-todo-by" />
       <path value="$PROJECT_DIR$/app/vendor/spaze/phpstan-disallowed-calls" />
       <path value="$PROJECT_DIR$/app/vendor/wwwision/types" />
+      <path value="$PROJECT_DIR$/app/vendor/doctrine/sql-formatter" />
+      <path value="$PROJECT_DIR$/app/vendor/laravel/pulse" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2">

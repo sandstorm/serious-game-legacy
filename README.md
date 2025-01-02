@@ -38,7 +38,7 @@ make it easier to pull upcoming changes from the kickstarter to your project.**
 [//]: # (KICKSTART_INFO_SECTION__END)
 
 <!-- TOC -->
-* [Sandstorm Neos on Docker Kickstart](#sandstorm-neos-on-docker-kickstart)
+* [Sandstorm Laravel on Docker Kickstart](#sandstorm-laravel-on-docker-kickstart)
   * [Requirements](#requirements)
   * [Features](#features)
   * [Initial Setup (required once)](#initial-setup-required-once)
@@ -47,6 +47,8 @@ make it easier to pull upcoming changes from the kickstarter to your project.**
   * [Local Development](#local-development)
     * [Local Development of Sandstorm Packages](#local-development-of-sandstorm-packages)
   * [Testing](#testing)
+  * [PHPStan Static Code Analysis](#phpstan-static-code-analysis)
+  * [Pint Code Style Fixer](#pint-code-style-fixer)
   * [Staging](#staging)
     * [htaccess protection for staging](#htaccess-protection-for-staging)
   * [Production Setup](#production-setup)
@@ -56,10 +58,14 @@ make it easier to pull upcoming changes from the kickstarter to your project.**
       * [Connecting to the production database](#connecting-to-the-production-database)
   * [Backlog](#backlog)
 * [Sandstorm Laravel / Filament Best Practices](#sandstorm-laravel--filament-best-practices)
+  * [Suggested Architecture of Laravel Applications: Ports & Adapters](#suggested-architecture-of-laravel-applications-ports--adapters)
+  * [Only Use Dependency Injection, no stateful helpers or Laravel Facades](#only-use-dependency-injection-no-stateful-helpers-or-laravel-facades)
   * [Filament fully set up](#filament-fully-set-up)
+  * [Permissions with ...](#permissions-with-)
   * [Prepared for Multiple Filament Panels](#prepared-for-multiple-filament-panels)
   * [ULIDs as IDs](#ulids-as-ids)
   * [Laravel Strict Mode](#laravel-strict-mode)
+  * [throw exceptions on error for file system storage](#throw-exceptions-on-error-for-file-system-storage)
   * [Installed Packages for Laravel / Filament](#installed-packages-for-laravel--filament)
     * [archilex/filament-filter-sets (Advanced Tables - Commercial Plugin)](#archilexfilament-filter-sets-advanced-tables---commercial-plugin)
     * [awcodes/filament-tiptap-editor (custom and extensible Rich Text Editor)](#awcodesfilament-tiptap-editor-custom-and-extensible-rich-text-editor)
@@ -211,6 +217,31 @@ dev pint --test
 # pretty-print the files
 dev pint
 ```
+
+## Observability
+
+We have the following observability enabled:
+
+### Health Check Endpoint
+
+There is a `/up` health check endpoint configured, which response with status 200 if everything is basically up and running.
+
+TODO: DB and Redis connection
+
+### Laravel Pulse - Server Metrics
+
+At `/pulse`, an endpoint is configured which renders application metrics, including slow queries, caches, slow requests, ...
+
+In `AppServiceProvider`, the `viewPulse` permission gate is configured such that only logged-in filament users can reach
+this gate. This can be adjusted based on the application roles.
+
+TODO: only superusers.
+
+### 
+
+### Laravel Horizon - Queue Metrics - NOT INCLUDED BY DEFAULT
+
+In case your application does lots of things with queues, we suggest that you enable Laravel Horizon for monitoring them.
 
 ## Staging
 
@@ -367,8 +398,14 @@ in `disallowed-calls.neon`, we test for this; so phpstan fails in case this is v
 - Database Notifications set up
 - basic print.css style included
 - For Asynchronous work: Laravel Queues (with Redis) set up, with a running queue worker
+  - in case your application is queue heavy, install Laravel Horizon for monitoring
+- Laravel Scheduler set up, based on Supercronic /crontab
 - Laravel Caches (with Redis) set up
 - TODO: Laravel Broadcast?
+
+## Permissions with ...
+
+
 
 ## Prepared for Multiple Filament Panels
 

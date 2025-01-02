@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 use Domain\NameOfCoreDomainX\CoreDomainXApp;
@@ -37,5 +38,10 @@ final class AppServiceProvider extends ServiceProvider
             Model::preventSilentlyDiscardingAttributes();
             Model::preventAccessingMissingAttributes();
         }
+
+        \Gate::define('viewPulse', function (User $user) {
+            // by default, all users which are logged into Filament can access Pulse
+            return $user->exists;
+        });
     }
 }
