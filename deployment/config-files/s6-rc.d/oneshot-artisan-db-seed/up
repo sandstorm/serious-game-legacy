@@ -1,0 +1,12 @@
+#!/command/execlineb -P
+
+# NOTE: the DB Seeder is only registered in DEVELOPMENT mode -> via the Dockerfile
+
+####################################
+# start up service
+####################################
+
+# keep original environment
+with-contenv
+
+php /app/artisan db:seed

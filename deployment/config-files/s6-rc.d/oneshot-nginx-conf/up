@@ -1,0 +1,15 @@
+#!/command/execlineb -P
+
+# keep original environment
+with-contenv
+
+####################################
+# REPLACING ENV VARS IN NGINX.conf
+####################################
+
+pipeline {
+  redirfd -r 0 /etc/nginx/nginx.conf
+  envsubst ${SANDSTORM_MAPS_API_KEY}
+}
+redirfd -w 1 /etc/nginx/nginx.conf.replaced
+cat

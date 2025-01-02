@@ -1,0 +1,10 @@
+#!/command/execlineb -P
+
+####################################
+# start up service
+####################################
+
+# keep original environment
+with-contenv
+
+php /app/artisan migrate --force

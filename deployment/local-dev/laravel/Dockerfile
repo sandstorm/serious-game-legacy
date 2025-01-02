@@ -26,6 +26,15 @@ RUN echo '. /etc/bash.vips-arm64-hotfix.sh' >>  /etc/bash.bashrc
 
 ####################### END - Dev Container only ########################
 
+# add S6 Process Supervisor
+ARG S6_OVERLAY_VERSION=3.2.0.2
+# https://github.com/just-containers/s6-overlay?tab=readme-ov-file#which-architecture-to-use-depending-on-your-targetarch
+ARG S6_OVERLAY_ARCH=aarch64
+ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp
+RUN tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz
+ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-${S6_OVERLAY_ARCH}.tar.xz /tmp
+RUN tar -C / -Jxpf /tmp/s6-overlay-aarch64.tar.xz
+
 # Install intl, bcmath, pdo, pdo_mysql, mysqli
 # debug tools: vim, inotify-tools
 RUN apt-get update -y && \
@@ -33,9 +42,7 @@ RUN apt-get update -y && \
         libicu-dev \
         libxslt1-dev \
         nginx-light \
-        supervisor \
         procps \
-        libpq-dev \
         libzip-dev \
         vim \
         less \
@@ -75,7 +82,7 @@ RUN curl -fsSLO "$SUPERCRONIC_URL" \
  && ln -s "/usr/local/bin/${SUPERCRONIC}" /usr/local/bin/supercronic
 
 # application entrypoint
-ADD /deployment/local-dev/laravel/entrypoint.sh /
+ADD /deployment/config-files/s6-rc.d/ /etc/s6-overlay/s6-rc.d/
 ADD /deployment/config-files/memory-limit-php.ini /usr/local/etc/php/conf.d/memory-limit-php.ini
 ADD /deployment/config-files/upload-limit-php.ini /usr/local/etc/php/conf.d/upload-limit-php.ini
 
@@ -105,5 +112,14 @@ RUN chmod +x /app/watchAndLogExceptions.sh
 
 WORKDIR /app
 
+###################### START - Dev Container only ######################
+# IMPORTANT: we try to keep the production and local-dev the same      #
+# all local dev related changes should stay within this block. Also    #
+# consider making a diff with `production/Dockerfile` and copying over #
+# the latest changes to keep both containers in sync                   #
+########################################################################
+RUN touch /etc/s6-overlay/s6-rc.d/user/contents.d/oneshot-artisan-db-seed
+####################### END - Dev Container only ########################
+
 USER www-data
-ENTRYPOINT [ "/entrypoint.sh" ]
+ENTRYPOINT ["/init"]
