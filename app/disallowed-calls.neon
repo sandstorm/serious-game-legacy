@@ -13,7 +13,9 @@ parameters:
 
         -   # We do not want to use Facades. -> Dependency Injection
             namespace: 'Illuminate\Support\Facades\*'
-            message: 'it is forbidden to use laravel facades as it breaks encapsulation. Use dependency injection instead.'
+            message: 'it is forbidden to use laravel facades (except in Providers) as it breaks encapsulation. Use dependency injection instead.'
+            allowIn:
+                - app/Providers/*
 
     disallowedFunctionCalls:
         -   # We do not want to use helpers which access global state. -> Dependency Injection

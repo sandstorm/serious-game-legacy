@@ -26,7 +26,7 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->scoped(ForDoingCoreBusinessLogic::class, CoreDomainXApp::class);
 
         // Register Telescope only for local dev
-        if ($this->app->environment('local') && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
+        if ((bool)$this->app->environment('local') && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
             $this->app->register(TelescopeServiceProvider::class);
         }

@@ -1,16 +1,22 @@
 <?php
 
-namespace App\Http\Middleware;
+declare(strict_types=1);
 
+namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Log\LogManager;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class AssignRequestId
 {
+    public function __construct(
+        private readonly LogManager $log
+    ) {
+    }
+
     /**
      * Handle an incoming request.
      *
@@ -20,7 +26,7 @@ class AssignRequestId
     {
         $requestId = (string)Str::uuid();
 
-        Log::shareContext([
+        $this->log->shareContext([
             'request-id' => $requestId
         ]);
 

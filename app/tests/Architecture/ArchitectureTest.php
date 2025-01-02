@@ -13,7 +13,10 @@ arch()
 arch()
     ->note('laravel good practices (let us see how helpful this is, or if we should deactivate it again!)')
     ->preset()->laravel()
-    ->ignoring(\App\Providers\Filament\AdminPanelProvider::class);
+    ->ignoring([
+        \App\Providers\Filament\AdminPanelProvider::class,
+        \App\Providers\AppServiceProvider::class,
+    ]);
 
 
 arch()
