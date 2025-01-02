@@ -218,7 +218,7 @@ dev pint --test
 dev pint
 ```
 
-## Observability
+## Observability & Logging
 
 We have the following observability enabled:
 
@@ -244,7 +244,15 @@ commands, web requests, database queries, views rendered, and lots of deep-insig
 
 ### Laravel Horizon - Queue Metrics - NOT INCLUDED BY DEFAULT
 
-In case your application does lots of things with queues, we suggest that you enable Laravel Horizon for monitoring them.
+In case your application does lots of things with queues, we suggest that you install Laravel Horizon for monitoring them.
+
+### Structured Logging
+
+By default, we create JSON based logs and plain text logs.
+In local dev, they can be also seen in `/telescope`.
+
+For every request, we assign a Request ID which is stored as `request-id` on the log message, and returned
+via a `X-Request-Id` HTTP header to the client. This is implemented in the middleware `AssignRequestId`.
 
 ## Staging
 

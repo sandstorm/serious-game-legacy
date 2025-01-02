@@ -54,8 +54,25 @@ return [
 
         'stack' => [
             'driver' => 'stack',
-            'channels' => explode(',', env('LOG_STACK', 'single')),
+            'channels' => explode(',', env('LOG_STACK', 'json,daily')),
             'ignore_exceptions' => false,
+        ],
+
+        'json' => [
+            'driver' => 'monolog',
+            'path' => storage_path('logs/laravel.json.log'),
+            'level' => 'debug',
+            'handler' => Monolog\Handler\RotatingFileHandler::class,
+            'with' => [
+                'filename' => storage_path('logs/laravel.json.log')
+            ],
+            'processors' => [
+                \Monolog\Processor\WebProcessor::class
+            ],
+            'formatter' => Monolog\Formatter\JsonFormatter::class,
+            'formatter_with' => [
+                'includeStacktraces' => true
+            ],
         ],
 
         'single' => [
