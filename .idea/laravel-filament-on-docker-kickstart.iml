@@ -194,6 +194,7 @@
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/evenement/evenement" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/larastan/larastan" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/laravel/pulse" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/laravel/telescope" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/nikolaposa/version" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/pestphp/pest-plugin-watch" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/phpmyadmin/sql-parser" />

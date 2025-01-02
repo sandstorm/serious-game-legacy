@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Schedule;
 use Illuminate\Support\ServiceProvider;
 use Domain\NameOfCoreDomainX\CoreDomainXApp;
 use Domain\NameOfCoreDomainX\DrivenPorts\ForLogging;
@@ -23,6 +24,12 @@ final class AppServiceProvider extends ServiceProvider
 
         // Wire Driving Ports (the driven ports as dependency are automatically found)
         $this->app->scoped(ForDoingCoreBusinessLogic::class, CoreDomainXApp::class);
+
+        // Register Telescope only for local dev
+        if ($this->app->environment('local') && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
+            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
+            $this->app->register(TelescopeServiceProvider::class);
+        }
     }
 
     /**
@@ -37,6 +44,10 @@ final class AppServiceProvider extends ServiceProvider
             Model::preventLazyLoading();
             Model::preventSilentlyDiscardingAttributes();
             Model::preventAccessingMissingAttributes();
+
+            if (class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
+                Schedule::command('telescope:prune')->daily();
+            }
         }
 
         \Gate::define('viewPulse', function (User $user) {

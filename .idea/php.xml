@@ -353,6 +353,7 @@
       <path value="$PROJECT_DIR$/app/vendor/wwwision/types" />
       <path value="$PROJECT_DIR$/app/vendor/doctrine/sql-formatter" />
       <path value="$PROJECT_DIR$/app/vendor/laravel/pulse" />
+      <path value="$PROJECT_DIR$/app/vendor/laravel/telescope" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2">

@@ -237,7 +237,10 @@ this gate. This can be adjusted based on the application roles.
 
 TODO: only superusers.
 
-### 
+### Laravel Telescope - Local Development - Deep Insights
+
+For local dev, at `/telescope`, an endpoint is configured for deep insights. There you can find details about running
+commands, web requests, database queries, views rendered, and lots of deep-insight information.
 
 ### Laravel Horizon - Queue Metrics - NOT INCLUDED BY DEFAULT
 
