@@ -105,9 +105,13 @@ make it easier to pull upcoming changes from the kickstarter to your project.**
 
 ### Setting up IntelliJ
 
+All plugins are defined as required in the IDE config.
+You'll get a popup prompting you to install the plugins if you don't already have them.
+
 - Plugins:
   - [Laravel IDEA](https://plugins.jetbrains.com/plugin/13441-laravel-idea)
     - paid plugin, but REALLY good
+  - Blade Support (for template files)
   - [Laravel Query](https://plugins.jetbrains.com/plugin/16309-laravel-query)
   - [PHP](https://plugins.jetbrains.com/plugin/6610-php)
   - [PHP Annotations](https://plugins.jetbrains.com/plugin/7320-php-annotations)
@@ -116,7 +120,6 @@ make it easier to pull upcoming changes from the kickstarter to your project.**
   - [Docker](https://plugins.jetbrains.com/plugin/7724-docker)
   - [Symlink Excluder](https://plugins.jetbrains.com/plugin/16110-symlink-excluder)
     - Prevents symlinked folders to be indexed by the IDE so that you don't have to exclude packages you're developing manually
-- All plugins are defined as required in the IDE config. You'll get a popup prompting you to install the plugins if you don't already have them.
 
 ## Local Development
 
@@ -484,7 +487,10 @@ one-click logins for all `...@example.com` logins in Local Development.
 
 ### spatie/laravel-ignition (beautiful error pages in dev)
 
-beautiful error pages with lots of context and information in development mode
+beautiful error pages with lots of context and information in development mode.
+
+It is configured with path mapping, so you can DIRECTLY click on a stack trace line and IntelliJ opens the appropriate
+file.
 
 ### barryvdh/laravel-ide-helper (IDE autocompletion)
 
