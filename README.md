@@ -489,8 +489,8 @@ one-click logins for all `...@example.com` logins in Local Development.
 
 beautiful error pages with lots of context and information in development mode.
 
-It is configured with path mapping, so you can DIRECTLY click on a stack trace line and IntelliJ opens the appropriate
-file.
+It is configured with path mapping, so you can DIRECTLY click on a stack trace line and
+IntelliJ opens the appropriate file.
 
 ### barryvdh/laravel-ide-helper (IDE autocompletion)
 

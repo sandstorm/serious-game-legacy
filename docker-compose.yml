@@ -38,6 +38,11 @@ services:
 
       PHPSTAN_PRO_WEB_PORT: 11111
 
+      # DEV: spatie/ignition: config for exception screen
+      IGNITION_LOCAL_SITES_PATH: ${PWD}/app
+      IGNITION_EDITOR: idea
+      # IGNITION_OPEN_AI_KEY: TRY OUT for openai suggestions
+
     volumes:
       - ./app/:/app/:cached
       - laravel-storage:/app/storage
