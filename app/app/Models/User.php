@@ -25,7 +25,7 @@ final class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
+        'role_superadmin'
     ];
 
     /**
@@ -48,6 +48,7 @@ final class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'role_superadmin' => 'boolean',
         ];
     }
 }

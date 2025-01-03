@@ -163,7 +163,12 @@ return [
             'enabled' => env('TELESCOPE_GATE_WATCHER', true),
             'ignore_abilities' => [],
             'ignore_packages' => true,
-            'ignore_paths' => [],
+            'ignore_paths' => [
+                // we skip the first two levels from the stack trace of every file to display the origin location of the permission check,
+                // otherwise all checks will originate from AppAuthorizer.
+                'app/Authorization/AppAuthorizer.php',
+                'app/Providers/AppServiceProvider.php',
+            ],
         ],
 
         Watchers\JobWatcher::class => env('TELESCOPE_JOB_WATCHER', true),

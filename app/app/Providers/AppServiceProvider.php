@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Authorization\AppAuthorizer;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schedule;
@@ -35,7 +36,7 @@ final class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot(AppAuthorizer $appAuthorizer): void
     {
         if ((bool)$this->app->environment('production')) {
             \URL::forceScheme('https');
@@ -50,9 +51,12 @@ final class AppServiceProvider extends ServiceProvider
             }
         }
 
+        // Register our App Authorizer globally
+        \Gate::before(fn (?User $user, string $ability, ...$objectAndOtherArguments) => $appAuthorizer->authorize($user, $ability, $objectAndOtherArguments));
+
+        // we need to define the gate for accessing /pulse - the actual access check is done in AppAuthorizer.
         \Gate::define('viewPulse', function (User $user) {
-            // by default, all users which are logged into Filament can access Pulse
-            return $user->exists;
+            return false;
         });
     }
 }

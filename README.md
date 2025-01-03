@@ -49,6 +49,12 @@ make it easier to pull upcoming changes from the kickstarter to your project.**
   * [Testing](#testing)
   * [PHPStan Static Code Analysis](#phpstan-static-code-analysis)
   * [Pint Code Style Fixer](#pint-code-style-fixer)
+  * [Observability & Logging](#observability--logging)
+    * [Health Check Endpoint](#health-check-endpoint)
+    * [Laravel Pulse - Server Metrics](#laravel-pulse---server-metrics)
+    * [Laravel Telescope - Local Development - Deep Insights](#laravel-telescope---local-development---deep-insights)
+    * [Laravel Horizon - Queue Metrics - NOT INCLUDED BY DEFAULT](#laravel-horizon---queue-metrics---not-included-by-default)
+    * [Structured Logging](#structured-logging)
   * [Staging](#staging)
     * [htaccess protection for staging](#htaccess-protection-for-staging)
   * [Production Setup](#production-setup)
@@ -61,7 +67,7 @@ make it easier to pull upcoming changes from the kickstarter to your project.**
   * [Suggested Architecture of Laravel Applications: Ports & Adapters](#suggested-architecture-of-laravel-applications-ports--adapters)
   * [Only Use Dependency Injection, no stateful helpers or Laravel Facades](#only-use-dependency-injection-no-stateful-helpers-or-laravel-facades)
   * [Filament fully set up](#filament-fully-set-up)
-  * [Permissions with ...](#permissions-with-)
+  * [Lightweight Permissions with AppAuthorizer](#lightweight-permissions-with-appauthorizer)
   * [Prepared for Multiple Filament Panels](#prepared-for-multiple-filament-panels)
   * [ULIDs as IDs](#ulids-as-ids)
   * [Laravel Strict Mode](#laravel-strict-mode)
@@ -235,7 +241,7 @@ In this health check, we also check for database and redis health (implemented i
 
 At `/pulse`, an endpoint is configured which renders application metrics, including slow queries, caches, slow requests, ...
 
-In `AppServiceProvider`, the `viewPulse` permission gate is configured such that only logged-in filament users can reach
+In `AppAuthorizer`, the `viewPulse` permission gate is configured such that only superadmins can reach
 this gate. This can be adjusted based on the application roles.
 
 TODO: only superusers.
@@ -417,9 +423,15 @@ in `disallowed-calls.neon`, we test for this; so phpstan fails in case this is v
 - Laravel Caches (with Redis) set up
 - TODO: Laravel Broadcast?
 
-## Permissions with ...
+## Lightweight Permissions with AppAuthorizer
 
+NOTE: we tried permission systems based on spatie/laravel-permission, and based on casbin.org.
+For us, they were too complex on one side and too restrictive on the other side (both at the
+same time). That's why we are now rolling our own (very simple) permission system in
+`App\Authorization\AppAuthorizer`, which helps us centralize all permission logic at a single
+point.
 
+See `App\Authorization\AppAuthorizer` for further details.
 
 ## Prepared for Multiple Filament Panels
 
