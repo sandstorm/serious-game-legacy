@@ -119,9 +119,9 @@ function logs-db {
 	docker compose logs -f maria-db
 }
 
-# Neos logs
+# Larvel logs
 function logs-laravel {
-	docker compose logs -f laravel
+	docker compose exec -it laravel /bin/bash -c 'tail -f  /app/storage/logs/laravel-*.log'
 }
 
 # SCSS/Js compiler logs
