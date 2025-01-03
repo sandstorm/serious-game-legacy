@@ -13,6 +13,11 @@
     </option>
     <option name="frameworkFound" value="true" />
     <option name="laravelBasePath" value="app" />
+    <option name="runConsole">
+      <RunConsoleSettings>
+        <option name="artisanPrefix" value="dev artisan" />
+      </RunConsoleSettings>
+    </option>
     <option name="userClassName" value="\App\Models\User" />
   </component>
 </project>
