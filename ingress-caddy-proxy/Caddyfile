@@ -20,6 +20,11 @@
     # at services.neos.networks.sharedIngressNetwork.aliases
     reverse_proxy your-application-ingress:8081
 
+    handle_errors 502 {
+        root /etc/caddy/error-pages
+        rewrite * /application-unavailable.html
+        file_server
+    }
     handle_errors {
         respond "{err.status_code} {err.status_text}"
     }

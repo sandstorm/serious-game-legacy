@@ -178,6 +178,13 @@ function pest() {
 function artisan() {
   docker compose exec laravel /app/artisan $@
 }
+
+# render the "application is unavailable" page, shown during deployments
+function render-application-unavailable() {
+  mkdir -p ingress-caddy-proxy/error-pages
+  docker compose exec laravel /app/artisan app:render-application-unavailable > ingress-caddy-proxy/error-pages/application-unavailable.html
+}
+
 function composer-update-filament-advanced-tables() {
   cd app
 

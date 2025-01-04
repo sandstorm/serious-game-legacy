@@ -58,6 +58,7 @@ make it easier to pull upcoming changes from the kickstarter to your project.**
   * [Staging](#staging)
     * [htaccess protection for staging](#htaccess-protection-for-staging)
   * [Production Setup](#production-setup)
+    * [Error Page During Deployment](#error-page-during-deployment)
     * [Important URLs](#important-urls)
     * [Production Cookbook / Tips and Tricks](#production-cookbook--tips-and-tricks)
       * [my Laravel container does not start, how do I debug?](#my-laravel-container-does-not-start-how-do-i-debug)
@@ -278,6 +279,21 @@ Basically, you need to add a secret to the namespace in rancher.
 ## Production Setup
 
 TODO 
+
+### Error Page During Deployment
+
+During deployment, i.e. when the ingress-caddy-proxy is up and running, but the application is not responding,
+the `application-unavailable.html` page is shown. Its contents can be adjusted by modifying
+`app/resources/views/mail/application-unavailable.blade.php`, and then running:
+
+```bash
+# updates the application-unavailable.html page.
+./dev.sh render-application-unavailable
+
+# now, COMMIT AND DEPLOY!
+```
+
+The resulting page must be committed and deployed. This error page shows for 502 only.
 
 ### Important URLs
 
