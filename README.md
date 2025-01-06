@@ -7,17 +7,9 @@ Features of Laravel kickstart:
 - Docker Compose setup very similar to our Neos setup
 - helpful packages configured
 
-Well working packages:
-
-- bezhansalleh/filament-language-switch
-- bezhansalleh/filament-shield
-- /jeffgreco13/filament-breezy
-- https://laravel.com/docs/11.x/telescope#local-only-installation
-
 Still open topics:
 
 - settings? filament/spatie-laravel-settings-plugin only meh
-- permissions based on casbin?
 
 
 This packages helps you to quickly set up a Laravel/Filament Project. Besides a basic Laravel and Filament setup we included lots of best practices in the application, so you'll be up and running in no time.
@@ -80,6 +72,8 @@ make it easier to pull upcoming changes from the kickstarter to your project.**
     * [dutchcodingcompany/filament-developer-logins (development logins)](#dutchcodingcompanyfilament-developer-logins-development-logins)
     * [spatie/laravel-ignition (beautiful error pages in dev)](#spatielaravel-ignition-beautiful-error-pages-in-dev)
     * [barryvdh/laravel-ide-helper (IDE autocompletion)](#barryvdhlaravel-ide-helper-ide-autocompletion)
+    * [jeffgreco13/filament-breezy (Two Factor Authentication & My Profile Page)](#jeffgreco13filament-breezy-two-factor-authentication--my-profile-page)
+    * [Further Package Suggestions](#further-package-suggestions)
 <!-- TOC -->
 
 ## Requirements
@@ -441,7 +435,8 @@ in `disallowed-calls.neon`, we test for this; so phpstan fails in case this is v
 
 ## Lightweight Permissions with AppAuthorizer
 
-NOTE: we tried permission systems based on spatie/laravel-permission, and based on casbin.org.
+NOTE: we tried permission systems based on spatie/laravel-permission (using bezhansalleh/filament-shield),
+and based on casbin.org.
 For us, they were too complex on one side and too restrictive on the other side (both at the
 same time). That's why we are now rolling our own (very simple) permission system in
 `App\Authorization\AppAuthorizer`, which helps us centralize all permission logic at a single
@@ -530,3 +525,16 @@ Methods:
 /app/_ide_helper.php
 /app/_ide_helper_models.php
 
+### jeffgreco13/filament-breezy (Two Factor Authentication & My Profile Page)
+
+Includes a User Profile Page, so the users can:
+
+- Change Personal Information (Name, Email)
+- Change Password
+- Enable OTP based Two Factor Authentication
+- (optionally) manage API tokens via laravel/sanctum
+
+### Further Package Suggestions
+
+- bezhansalleh/filament-language-switch
+  - in case you need a language switcher

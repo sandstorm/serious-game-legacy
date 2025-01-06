@@ -354,6 +354,11 @@
       <path value="$PROJECT_DIR$/app/vendor/doctrine/sql-formatter" />
       <path value="$PROJECT_DIR$/app/vendor/laravel/pulse" />
       <path value="$PROJECT_DIR$/app/vendor/laravel/telescope" />
+      <path value="$PROJECT_DIR$/app/vendor/jeffgreco13/filament-breezy" />
+      <path value="$PROJECT_DIR$/app/vendor/dasprid/enum" />
+      <path value="$PROJECT_DIR$/app/vendor/pragmarx/google2fa" />
+      <path value="$PROJECT_DIR$/app/vendor/paragonie/constant_time_encoding" />
+      <path value="$PROJECT_DIR$/app/vendor/bacon/bacon-qr-code" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2">
@@ -362,7 +367,6 @@
   <component name="PhpStan">
     <PhpStan_settings>
       <PhpStanConfiguration tool_path="$PROJECT_DIR$/app/vendor/bin/phpstan" />
-      <PhpStanConfiguration asDefaultInterpreter="true" />
     </PhpStan_settings>
   </component>
   <component name="PhpUnit">

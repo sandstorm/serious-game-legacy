@@ -23,6 +23,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Jeffgreco13\FilamentBreezy\BreezyCore;
 use RalphJSmit\Filament\RecordFinder\FilamentRecordFinder;
 
 final class AdminPanelProvider extends PanelProvider
@@ -87,6 +88,15 @@ final class AdminPanelProvider extends PanelProvider
                 fn ($panel) => $panel->plugin(
                     FilamentRecordFinder::make()
                 )
+            )
+            ->plugin(
+                BreezyCore::make()
+                    ->myProfile(
+                        // for showing in main navigation: shouldRegisterNavigation: true,
+                    )
+                    ->enableTwoFactorAuthentication()
+                    // For API Access, install laravel/sanctum and enable the following line:
+                    // ->enableSanctumTokens()
             );
     }
 }

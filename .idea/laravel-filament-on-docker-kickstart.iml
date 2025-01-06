@@ -205,6 +205,11 @@
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/staabm/phpstan-todo-by" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/tomasvotruba/bladestan" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/wwwision/types" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/bacon/bacon-qr-code" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/dasprid/enum" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/jeffgreco13/filament-breezy" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/paragonie/constant_time_encoding" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/pragmarx/google2fa" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
