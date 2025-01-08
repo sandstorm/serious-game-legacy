@@ -1,9 +1,11 @@
+
 package_app_production:
   stage: build
   rules:
+    - when: always
     - if: '$CI_COMMIT_TAG'
       when: always
-  image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v3
+  image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v4
   needs:
     - build_assets
   cache:
@@ -13,24 +15,28 @@ package_app_production:
   interruptible: true
   script:
     - cd app
-    - COMPOSER_CACHE_DIR=.composer-cache composer install --no-dev --ignore-platform-reqs
+    # NOTE: for E2E tests we HAVE also to install DEV dependencies; otherwise we won't be able to run behavioral tests then.
+    - COMPOSER_CACHE_DIR=.composer-cache composer install --dev --ignore-platform-reqs
     - cd ..
 
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker pull $CI_REGISTRY_IMAGE/neos:main || true
-    - docker build --cache-from $CI_REGISTRY_IMAGE/neos:main -t $CI_REGISTRY_IMAGE/production:$CI_COMMIT_REF_NAME -f deployment/production/Dockerfile .
-    - docker tag $CI_REGISTRY_IMAGE/production:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE/production:latest
-    - docker push $CI_REGISTRY_IMAGE/production:$CI_COMMIT_REF_NAME
-    - docker push $CI_REGISTRY_IMAGE/production:latest
+    - docker pull $CI_REGISTRY_IMAGE/laravel:main || true
+    - docker build --cache-from $CI_REGISTRY_IMAGE/laravel:main -t $CI_REGISTRY_IMAGE/laravel:$CI_COMMIT_REF_SLUG -f deployment/production/Dockerfile .
+    - docker push $CI_REGISTRY_IMAGE/laravel:$CI_COMMIT_REF_SLUG
 
 deploy_production:
   stage: deploy
   rules:
-    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_COMMIT_BRANCH == "main"'
       when: always
-  image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v3
+    #- if: '$CI_COMMIT_TAG'
+    #  when: always
+  image:
+    name: bitnami/kubectl:1.15.0
+    entrypoint: ['']
   needs:
     - package_app_production
+    - test
   environment:
     name: production
   script:
@@ -55,28 +61,3 @@ deploy_production:
         docker compose up -d &&
         docker compose restart vector
       "
-
-a11y_test_production:
-  image: registry.gitlab.com/gitlab-ci-utils/gitlab-pa11y-ci:latest
-  stage: accessibility
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-      when: always
-    - if: '$CI_COMMIT_TAG'
-      when: never
-  needs:
-    - deploy_production
-  allow_failure: true
-  before_script:
-    - npm install pa11y-ci-reporter-html
-  script:
-    - mkdir pa11y-ci-report-images
-    - pa11y-ci --reporter=pa11y-ci-reporter-html
-  artifacts:
-    # Make sure artifacts are always saved, otherwise they will not be on failure.
-    when: always
-    expose_as: 'Accessibility Reports'
-    paths:
-      - pa11y-ci-report/
-      - pa11y-ci-report-images/
-    expire_in: 1 week

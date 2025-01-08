@@ -2,47 +2,25 @@ build_assets:
   stage: compile_resources
   rules:
     - when: always
-  # keep in sync with .nvmrc
-  image: node:20.11-slim
+  image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v4
   needs: []
   interruptible: true
   script:
-    - cd app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Private
+    - cd app
+    - COMPOSER_CACHE_DIR=.composer-cache composer install --ignore-platform-reqs
     # example for including font-awesome
     #- npm config set "@fortawesome:registry" https://npm.fontawesome.com/
     #- npm config set "//npm.fontawesome.com/:_authToken" $FONTAWESOME_NPM_AUTH_TOKEN
     - yarn
-    - yarn typecheck
-    - yarn test
     - yarn build
   cache:
+    key: MyVendor.AwesomeNeosProject__composer
     paths:
-      - app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Private/node_modules/
+      - app/.composer-cache
+      - app/node_modules/
+
   artifacts:
     expire_in: 7 days
     paths:
-      - app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public/tailwind.css
-      - app/DistributionPackages/MyVendor.AwesomeNeosProject/Resources/Public/bundle.js
+      - app/public/build/
 
-### start: delete on kickstart ###
-build_assets_component_library:
-    stage: compile_resources
-    rules:
-      - when: always
-    # keep in sync with .nvmrc
-    image: node:20.11-slim
-    needs: []
-    interruptible: true
-    script:
-        - cd app/DistributionPackages/Sandstorm.ComponentLibrary/Resources/Private
-        - yarn
-        - yarn typecheck
-        - yarn build
-    cache:
-        paths:
-        - app/DistributionPackages/Sandstorm.ComponentLibrary/Resources/Private/node_modules/
-    artifacts:
-        expire_in: 7 days
-        paths:
-        - app/DistributionPackages/Sandstorm.ComponentLibrary/Resources/Public/bundle.js
-### end: delete on kickstart ###

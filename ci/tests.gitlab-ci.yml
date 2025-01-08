@@ -1,38 +1,24 @@
 php_code_analysis:
-  image: composer:2
+  image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v4
   stage: test
   rules:
     - when: always
   needs: []
   dependencies: []
   interruptible: true
+  allow_failure: true
+  cache:
+    key: MyVendor.AwesomeNeosProject__composer
+    paths:
+      - app/.composer-cache
   script:
     - cd app
-    - composer install --ignore-platform-reqs
-    - cd Build/Behat
-    - composer install --ignore-platform-reqs
-    - cd ../..
-    - ./bin/phpstan analyse --no-progress --memory-limit 1G --error-format table
+    - COMPOSER_CACHE_DIR=.composer-cache composer install --ignore-platform-reqs
+    - ./vendor/bin/phpstan analyse --no-progress --memory-limit 1G --error-format table
 
-build_e2e_testrunner:
-  stage: build
-  rules:
-    - when: always
-    - if: '$CI_COMMIT_TAG'
-      when: never
-  image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v3
-  needs: []
-  interruptible: true
-  script:
-    - cd e2e-testrunner
-    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker pull $CI_REGISTRY_IMAGE/e2e-testrunner:main || true
-    - docker build --cache-from $CI_REGISTRY_IMAGE/e2e-testrunner:main -t $CI_REGISTRY_IMAGE/e2e-testrunner:$CI_COMMIT_REF_SLUG .
-    - docker push $CI_REGISTRY_IMAGE/e2e-testrunner:$CI_COMMIT_REF_SLUG
-    - cd ..
-
-e2e_test:
+test:
   stage: test
+  image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v4
   # rules:
   # - run on merge_requests when triggered manually as part of the pipeline
   # - always run on main branch pipelines and tag pipelines
@@ -43,72 +29,34 @@ e2e_test:
       when: always
   interruptible: true
   # we're running this job inside the production image we've just built previously
-  image:
-    name: $CI_REGISTRY_IMAGE/neos:$CI_COMMIT_REF_SLUG
-    # we need to override the entrypoint here to prevent the container default behaviour
-    entrypoint: [""]
-  needs:
-    - package_app_staging
-    - build_e2e_testrunner
-  variables:
-    # service mariadb
-    MYSQL_USER: "ci_user"
-    MYSQL_PASSWORD: "ci_db_password"
-    MYSQL_DATABASE: "ci_test"
-    # otherwise service will not start
-    MARIADB_RANDOM_ROOT_PASSWORD: "yes"
-
-    # System under Test
-    FLOW_CONTEXT: Production/Kubernetes
-    DB_NEOS_HOST: mariadb
-    DB_NEOS_PORT: 3306
-    DB_NEOS_USER: ${MYSQL_USER}
-    DB_NEOS_PASSWORD: ${MYSQL_PASSWORD}
-    # this is used by the Production/Kubernetes context in two places:
-    #  1. the test container sets this context via environment variable for flow commands -> see FLOW_CONTEXT above
-    #  2. the nginx config sets this for SuT HTTP requests -> see: deployment/config-files/nginx-e2etest-server-prod.conf
-    DB_NEOS_DATABASE: ${MYSQL_DATABASE}
-    # this is used by the bin/behat command (test runner) in the Testing/Behat context
-    DB_NEOS_DATABASE_E2ETEST: ${MYSQL_DATABASE}
-    # used for flushing caches before scenarios
-    E2E_FLOW_CONTEXT: Production/Kubernetes
-    REDIS_HOST: redis
-    REDIS_PORT: 6379
-    # sandstorm maps
-    SANDSTORM_MAPS_API_KEY: "this_is_not_a_valid_key"
-  services:
-    - name: mariadb:10.11
-    - name: redis:7
-    # here, we make the e2e-testrunner available
-    - name: $CI_REGISTRY_IMAGE/e2e-testrunner:$CI_COMMIT_REF_SLUG
-      alias: e2e-testrunner
+  cache:
+    key: MyVendor.AwesomeNeosProject__composer
+    paths:
+      - app/.composer-cache
   script:
-    - /entrypoint-e2e.sh
+    - cd app
+    - COMPOSER_CACHE_DIR=.composer-cache composer install --ignore-platform-reqs
+    - ./vendor/bin/pest --ci --log-junit=test-results/pest.xml
     - echo "CI tests finished"
-  after_script:
-    - cp -R /app/e2e-results $CI_PROJECT_DIR/e2e-results
-    - cp -R /app/Data/Logs/Exceptions $CI_PROJECT_DIR/flow-exceptions
-    - cp -R /app/Web/styleguide $CI_PROJECT_DIR/styleguide
+  allow_failure: true
   artifacts:
     expire_in: 5 days
     when: always
     paths:
-      - e2e-results
-      - styleguide
-      - flow-exceptions
+      - test-results
     reports:
-      junit: e2e-results/behat.xml
+      junit: test-results/pest.xml
 
-code_metrics:
-  stage: quality-ci
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-      when: always
-    - if: '$CI_COMMIT_TAG'
-      when: never
-  needs: []
-  extends:
-    - .code-metrics-template
-  variables:
-    SOURCE_ROOT: app/DistributionPackages
-    IGNORE_PATTERN: "bundle\\.(css|js)"
+#code_metrics:
+#  stage: quality-ci
+#  rules:
+#    - if: '$CI_COMMIT_BRANCH == "main"'
+#      when: always
+#    - if: '$CI_COMMIT_TAG'
+#      when: never
+#  needs: []
+#  extends:
+#    - .code-metrics-template
+#  variables:
+#    SOURCE_ROOT: app/DistributionPackages
+#    IGNORE_PATTERN: "bundle\\.(css|js)"

@@ -13,7 +13,3 @@ devenv.local.nix
 
 # pre-commit
 .pre-commit-config.yaml
-
-/app/.phpstorm.meta.php
-/app/_ide_helper.php
-/app/_ide_helper_models.php
