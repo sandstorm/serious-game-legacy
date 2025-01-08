@@ -5,7 +5,7 @@ metadata:
   name: app
 spec:
   appName: myvendor-awesomeneosproject-staging
-  description: 'Sample Neos Deployment in the Rancher Cluster.'
+  description: 'Sample Laravel Deployment in the Rancher Cluster.'
 
   hostNames:
     myvendor-awesomeneosproject-staging.cloud.sandstorm.de: []
@@ -18,19 +18,18 @@ spec:
   stagingCertificates: false
 
   env:
-    FLOW_CONTEXT: 'Production/Kubernetes'
     SHELL_ENV_DISPLAY: 'staging-myvendor-awesomeneosproject'
   extraPodEnvInK8sFormat:
-    -   name: DB_NEOS_HOST
-        value: "$(DB_HOST)"
-    -   name: DB_NEOS_PORT
-        value: "3306"
-    -   name: DB_NEOS_USER
-        value: "$(DB_USER)"
-    -   name: DB_NEOS_PASSWORD
-        value: "$(DB_PASSWORD)"
-    -   name: DB_NEOS_DATABASE
-        value: "$(DB_NAME)"
+    - name: DB_CONNECTION
+      value: "mariadb"
+    # DB_HOST matching already
+    - name: DB_PORT
+      value: "3306"
+    - name: DB_USERNAME
+      value: "$(DB_USER)"
+    # DB_PASSWORD is matching already
+    - name: DB_DATABASE
+      value: "$(DB_NAME)"
 
   envFromConfigMaps:
     - db
@@ -61,7 +60,7 @@ spec:
   extraVolumesInK8sFormat:
     - name: temporary
       # emptyDir are volumes that get created empty when a Pod is created. They are deleted when the Pod is deleted.
-      emptyDir: {}
+      emptyDir: { }
   extraVolumeMountsInK8sFormat:
     - mountPath: /app/Data/Temporary
       name: temporary

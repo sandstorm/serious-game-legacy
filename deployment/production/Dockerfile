@@ -4,11 +4,11 @@ FROM php:8.3-fpm-bookworm
 # add S6 Process Supervisor
 ARG S6_OVERLAY_VERSION=3.2.0.2
 # https://github.com/just-containers/s6-overlay?tab=readme-ov-file#which-architecture-to-use-depending-on-your-targetarch
-ARG S6_OVERLAY_ARCH=aarch64
+ARG S6_OVERLAY_ARCH=x86_64
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp
 RUN tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-${S6_OVERLAY_ARCH}.tar.xz /tmp
-RUN tar -C / -Jxpf /tmp/s6-overlay-aarch64.tar.xz
+RUN tar -C / -Jxpf /tmp/s6-overlay-${S6_OVERLAY_ARCH}.tar.xz
 
 # Install intl, bcmath, pdo, pdo_mysql, mysqli
 # debug tools: vim, inotify-tools
