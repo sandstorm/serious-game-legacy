@@ -77,11 +77,14 @@ final class AdminPanelProvider extends PanelProvider
                     ->enabled((bool)$this->app->environment('local'))
                     ->users(fn () => User::where('email', 'LIKE', '%@example.com')->pluck('email', 'email')->toArray())
             )
-            ->plugin(
-                AdvancedTablesPlugin::make()
-                    ->quickSaveMakeGlobalFavorite() // every user can make a global favorite
-                    ->resourceNavigationGroup(self::NAVIGATION_GROUP_STAMMDATEN)
-                    ->resourceNavigationIcon(null)
+            ->when(
+                class_exists(AdvancedTablesPlugin::class),
+                fn ($panel) => $panel->plugin(
+                    AdvancedTablesPlugin::make()
+                        ->quickSaveMakeGlobalFavorite() // every user can make a global favorite
+                        ->resourceNavigationGroup(self::NAVIGATION_GROUP_STAMMDATEN)
+                        ->resourceNavigationIcon(null)
+                )
             )
             ->when( // while running "dev composer-update-filament-record-finder-pro", the existing plugin needs to be removed temporarily - this is to ensure we won't crash here
                 class_exists(FilamentRecordFinder::class),
