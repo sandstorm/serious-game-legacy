@@ -26,6 +26,7 @@ services:
       DB_DATABASE_SCRAMBLED: 'laravel_scrambled'
       SANDSTORM_MAPS_API_KEY: '${SANDSTORM_MAPS_API_KEY}'
 
+      APP_ENV: local
       APP_URL: http://127.0.0.1:8090
       CACHE_STORE: redis
       REDIS_HOST: 'redis-cache'
