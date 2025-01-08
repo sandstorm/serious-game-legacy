@@ -14,8 +14,7 @@ Still open topics:
 
 This packages helps you to quickly set up a Laravel/Filament Project. Besides a basic Laravel and Filament setup we included lots of best practices in the application, so you'll be up and running in no time.
 
-This project is FORKED from neos-on-kickstart, so INFRASTRUCTURE changes can be
-downmerged from there.
+This project is FORKED from neos-on-kickstart, so infrastructure changes can be downmerged from there.
 
 You need composer on your machine to use kickstarter. If you don't have composer installed, you can install it via homebrew:
 ```
@@ -421,6 +420,16 @@ inject the underlying object via Dependency Injection. This way, we can more eas
 because we have less "magic connections" between classes which are invisible to the outside.
 
 in `disallowed-calls.neon`, we test for this; so phpstan fails in case this is violated.
+
+## Where to use Laravel Eloquent (ORM), and where not? TODO
+
+❌ Don't use Laravel Eloquent (ORM) for:
+
+TODO
+
+✅ Use Laravel Eloquent (ORM) for:
+
+TODO
 
 ## Filament fully set up
 
