@@ -269,6 +269,19 @@ The namespace should be named like the project, e.g. `myvendor-awesomeneosprojec
 Read the [htaccess documentation](https://gitlab.sandstorm.de/infrastructure/k8s/-/blob/main/operators/one-container-one-port/helm-charts/one-container-one-port/values.yaml#L220) for more information.
 Basically, you need to add a secret to the namespace in rancher.
 
+### Initial Staging Deployment: set Encryption Key
+
+You need to generate an encryption key locally:
+
+```bash
+ENCRYPTION_KEY=$(docker compose exec laravel /app/artisan key:generate --show)
+
+# make sure you are in correct namespace
+sku ns helvetikit-prod
+
+kubectl create secret generic laravel-encryption-key --from-literal=APP_KEY=$ENCRYPTION_KEY
+```
+
 ## Production Setup
 
 TODO 

@@ -35,6 +35,7 @@ spec:
     - db
   envFromSecrets:
     - db
+    - laravel-encryption-key
     #- deepl-api-key
     #- sandstorm-maps-api-key
 
