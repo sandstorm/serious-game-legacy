@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Mail\ApplicationUnavailable;
 use Illuminate\Console\Command;
-
 
 /**
  * Render a "application unavailable" page which can be shown by the upstream (ingress) webserver in case of unavailability.

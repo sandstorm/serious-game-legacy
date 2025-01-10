@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Listeners;
 
 use Illuminate\Contracts\Redis\Connection as RedisConnection;
@@ -14,8 +16,7 @@ final class BasicHealthChecks
     public function __construct(
         private readonly ConnectionInterface $dbConnection,
         private readonly RedisConnection $redisConnection
-    )
-    {
+    ) {
     }
 
     /**

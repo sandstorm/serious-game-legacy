@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Authorization;
 
 use App\Models\User;
@@ -41,8 +43,8 @@ use Illuminate\Support\Facades\DB;
  */
 final class AppAuthorizer
 {
-    // == predicates
     // Mapping from Ability to (potentially) grouping for an access decision.
+    // These are the predicates.
     private const ABILITY_GROUPS = [
         // Default Laravel / Filament abilities: https://filamentphp.com/docs/3.x/panels/resources/getting-started#authorization
         'viewAny' => 'viewAny',
@@ -65,13 +67,12 @@ final class AppAuthorizer
         UserView::class => self::OBJECT_GROUP_STAMMDATEN,
     ];
 
-    const OBJECT_GROUP_STAMMDATEN = 'STAMMDATEN';
+    public const OBJECT_GROUP_STAMMDATEN = 'STAMMDATEN';
 
     public function __construct(
         private readonly Connection $connection,
         private readonly Dispatcher $dispatcher,
-    )
-    {
+    ) {
     }
 
     public function authorize(?User $user, string $ability, array $objectAndOtherArguments): ?Response

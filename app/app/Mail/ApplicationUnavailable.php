@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mail;
 
 use App\Console\Commands\RenderApplicationUnavailable;
@@ -15,7 +17,8 @@ use Illuminate\Queue\SerializesModels;
  */
 class ApplicationUnavailable extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new message instance.

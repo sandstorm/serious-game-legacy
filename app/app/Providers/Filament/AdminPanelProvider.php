@@ -98,8 +98,8 @@ final class AdminPanelProvider extends PanelProvider
                         // for showing in main navigation: shouldRegisterNavigation: true,
                     )
                     ->enableTwoFactorAuthentication()
-                    // For API Access, install laravel/sanctum and enable the following line:
-                    // ->enableSanctumTokens()
+                // For API Access, install laravel/sanctum and enable the following line:
+                // ->enableSanctumTokens()
             );
     }
 }

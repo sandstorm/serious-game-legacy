@@ -11,7 +11,7 @@ spec:
     myvendor-awesomeneosproject-staging.cloud.sandstorm.de: []
 
   node: worker4
-  image: docker-hub.sandstorm.de/infrastructure/neos-on-docker-kickstart/neos:main
+  image: docker-hub.sandstorm.de/infrastructure/laravel-on-docker-kickstart/laravel:main
 
   port: 8081
   # Set to false when a real DNS entry for staging/staging exists
@@ -36,8 +36,8 @@ spec:
     - db
   envFromSecrets:
     - db
-    - deepl-api-key
-    - sandstorm-maps-api-key
+    #- deepl-api-key
+    #- sandstorm-maps-api-key
 
   httpBasicPasswordProtection:
     enabled: true
