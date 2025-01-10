@@ -43,11 +43,12 @@ make it easier to pull upcoming changes from the kickstarter to your project.**
   * [Observability & Logging](#observability--logging)
     * [Health Check Endpoint](#health-check-endpoint)
     * [Laravel Pulse - Server Metrics](#laravel-pulse---server-metrics)
+    * [Laravel Horizon - Queue Metrics](#laravel-horizon---queue-metrics)
     * [Laravel Telescope - Local Development - Deep Insights](#laravel-telescope---local-development---deep-insights)
-    * [Laravel Horizon - Queue Metrics - NOT INCLUDED BY DEFAULT](#laravel-horizon---queue-metrics---not-included-by-default)
     * [Structured Logging](#structured-logging)
   * [Staging](#staging)
     * [htaccess protection for staging](#htaccess-protection-for-staging)
+    * [Initial Staging Deployment: set Encryption Key](#initial-staging-deployment-set-encryption-key)
   * [Production Setup](#production-setup)
     * [Error Page During Deployment](#error-page-during-deployment)
     * [Important URLs](#important-urls)
@@ -58,6 +59,7 @@ make it easier to pull upcoming changes from the kickstarter to your project.**
 * [Sandstorm Laravel / Filament Best Practices](#sandstorm-laravel--filament-best-practices)
   * [Suggested Architecture of Laravel Applications: Ports & Adapters](#suggested-architecture-of-laravel-applications-ports--adapters)
   * [Only Use Dependency Injection, no stateful helpers or Laravel Facades](#only-use-dependency-injection-no-stateful-helpers-or-laravel-facades)
+  * [Where to use Laravel Eloquent (ORM), and where not? TODO](#where-to-use-laravel-eloquent-orm-and-where-not-todo)
   * [Filament fully set up](#filament-fully-set-up)
   * [Lightweight Permissions with AppAuthorizer](#lightweight-permissions-with-appauthorizer)
   * [Prepared for Multiple Filament Panels](#prepared-for-multiple-filament-panels)
@@ -238,16 +240,17 @@ At `/pulse`, an endpoint is configured which renders application metrics, includ
 In `AppAuthorizer`, the `viewPulse` permission gate is configured such that only superadmins can reach
 this gate. This can be adjusted based on the application roles.
 
-TODO: only superusers.
+### Laravel Horizon - Queue Metrics
+
+We have laravel horizon available and configured for monitoring queues at `/horizon`.
+
+In `AppAuthorizer`, the `viewHorizon` permission gate is configured such that only superadmins can reach
+this gate. This can be adjusted based on the application roles.
 
 ### Laravel Telescope - Local Development - Deep Insights
 
 For local dev, at `/telescope`, an endpoint is configured for deep insights. There you can find details about running
 commands, web requests, database queries, views rendered, and lots of deep-insight information.
-
-### Laravel Horizon - Queue Metrics - NOT INCLUDED BY DEFAULT
-
-In case your application does lots of things with queues, we suggest that you install Laravel Horizon for monitoring them.
 
 ### Structured Logging
 

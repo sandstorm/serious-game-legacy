@@ -171,6 +171,7 @@ return [
             ],
         ],
 
+        // NOTE: we disabled the job watcher in Telescope because it totally spams our Laravel Horizon Logs
         Watchers\JobWatcher::class => env('TELESCOPE_JOB_WATCHER', false),
 
         Watchers\LogWatcher::class => [
