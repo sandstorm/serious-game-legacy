@@ -19,28 +19,28 @@ trait HasOpenModalAction
 
     protected ?Closure $modifyOpenModalActionUsing = null;
 
-    protected string | Closure | null $openModalActionLabel = null;
+    protected string|Closure|null $openModalActionLabel = null;
 
-    protected array | string | Closure | null $openModalActionColor = null;
+    protected array|string|Closure|null $openModalActionColor = null;
 
-    protected string | Closure | null $openModalActionIcon = 'heroicon-o-link';
+    protected string|Closure|null $openModalActionIcon = 'heroicon-o-link';
 
-    protected string | Htmlable | Closure | null $openModalActionModalHeading = null;
+    protected string|Htmlable|Closure|null $openModalActionModalHeading = null;
 
-    protected string | Htmlable | Closure | null $openModalActionModalDescription = null;
+    protected string|Htmlable|Closure|null $openModalActionModalDescription = null;
 
-    protected string | Closure | null $openModalActionModalSubmitActionLabel = null;
+    protected string|Closure|null $openModalActionModalSubmitActionLabel = null;
 
-    protected bool | Closure $openModalActionIsModalSlideOver = false;
+    protected bool|Closure $openModalActionIsModalSlideOver = false;
 
-    protected MaxWidth | string | Closure | null $openModalActionModalWidth = null;
+    protected MaxWidth|string|Closure|null $openModalActionModalWidth = null;
 
-    protected string | Closure | null $recordFinderTableLivewireComponent = null;
+    protected string|Closure|null $recordFinderTableLivewireComponent = null;
 
     /**
      * @var array<string, mixed> | Closure
      */
-    protected array | Closure $recordFinderTableLivewireComponentData = [];
+    protected array|Closure $recordFinderTableLivewireComponentData = [];
 
     public function openModalAction(?Closure $callback): static
     {
@@ -49,102 +49,102 @@ trait HasOpenModalAction
         return $this;
     }
 
-    public function openModalActionLabel(null | string | Closure $label): static
+    public function openModalActionLabel(null|string|Closure $label): static
     {
         $this->openModalActionLabel = $label;
 
         return $this;
     }
 
-    public function openModalActionColor(array | string | Closure $label): static
+    public function openModalActionColor(array|string|Closure $label): static
     {
         $this->openModalActionColor = $label;
 
         return $this;
     }
 
-    public function openModalActionIcon(string | Closure $label): static
+    public function openModalActionIcon(string|Closure $label): static
     {
         $this->openModalActionIcon = $label;
 
         return $this;
     }
 
-    public function modalHeading(string | Htmlable | Closure | null $heading): static
+    public function modalHeading(string|Htmlable|Closure|null $heading): static
     {
         return $this->openModalActionModalHeading($heading);
     }
 
-    public function openModalActionModalHeading(string | Htmlable | Closure | null $heading): static
+    public function openModalActionModalHeading(string|Htmlable|Closure|null $heading): static
     {
         $this->openModalActionModalHeading = $heading;
 
         return $this;
     }
 
-    public function modalDescription(string | Htmlable | Closure | null $description): static
+    public function modalDescription(string|Htmlable|Closure|null $description): static
     {
         return $this->openModalActionModalDescription($description);
     }
 
-    public function openModalActionModalDescription(string | Htmlable | Closure | null $description): static
+    public function openModalActionModalDescription(string|Htmlable|Closure|null $description): static
     {
         $this->openModalActionModalDescription = $description;
 
         return $this;
     }
 
-    public function modalSubmitActionLabel(null | string | Closure $label): static
+    public function modalSubmitActionLabel(null|string|Closure $label): static
     {
         return $this->openModalActionModalSubmitActionLabel($label);
     }
 
-    public function openModalActionModalSubmitActionLabel(null | string | Closure $label): static
+    public function openModalActionModalSubmitActionLabel(null|string|Closure $label): static
     {
         $this->openModalActionModalSubmitActionLabel = $label;
 
         return $this;
     }
 
-    public function slideOver(bool | Closure $condition = true): static
+    public function slideOver(bool|Closure $condition = true): static
     {
         return $this->openModalActionSlideOver($condition);
     }
 
-    public function openModalActionSlideOver(bool | Closure $condition = true): static
+    public function openModalActionSlideOver(bool|Closure $condition = true): static
     {
         $this->openModalActionIsModalSlideOver = $condition;
 
         return $this;
     }
 
-    public function modalWidth(MaxWidth | string | Closure | null $width = null): static
+    public function modalWidth(MaxWidth|string|Closure|null $width = null): static
     {
         return $this->openModalActionModalWidth($width);
     }
 
-    public function openModalActionModalWidth(MaxWidth | string | Closure | null $width = null): static
+    public function openModalActionModalWidth(MaxWidth|string|Closure|null $width = null): static
     {
         $this->openModalActionModalWidth = $width;
 
         return $this;
     }
 
-    public function recordFinderTableLivewireComponent(string | Closure | null $component): static
+    public function recordFinderTableLivewireComponent(string|Closure|null $component): static
     {
         $this->recordFinderTableLivewireComponent = $component;
 
         return $this;
     }
 
-    public function recordFinderTableLivewireComponentData(array | Closure $data): static
+    public function recordFinderTableLivewireComponentData(array|Closure $data): static
     {
         $this->recordFinderTableLivewireComponentData = $data;
 
         return $this;
     }
 
-    public function getOpenModalActionColor(): array | string | null
+    public function getOpenModalActionColor(): array|string|null
     {
         return $this->evaluate($this->openModalActionColor);
     }
@@ -193,7 +193,7 @@ trait HasOpenModalAction
         return (bool) $this->evaluate($this->openModalActionIsModalSlideOver);
     }
 
-    public function getOpenModalActionModalWidth(): MaxWidth | string | null
+    public function getOpenModalActionModalWidth(): MaxWidth|string|null
     {
         return $this->evaluate($this->openModalActionModalWidth);
     }
@@ -253,7 +253,7 @@ trait HasOpenModalAction
                         // Note: this method is only called once when the modal is opened. So having a `Str::random()` would be enough.
                         // However, there could be a situation that a Livewire request is made to the parent component using eg a
                         // `->extraModalFooterActions()` action. Therefore, we will cache the key in the `Hidden` component.
-                        ->key(fn (Forms\Get $get) => $component->getKey() . '.actions.openModal.form.record_finder_table:' . $get('record_finder_table_key')),
+                        ->key(fn (Forms\Get $get) => $component->getKey().'.actions.openModal.form.record_finder_table:'.$get('record_finder_table_key')),
                     RecordFinderReceiver::make('selected_records')
                         ->default(Arr::wrap($component->getState() ?? []))
                         ->hiddenLabel()

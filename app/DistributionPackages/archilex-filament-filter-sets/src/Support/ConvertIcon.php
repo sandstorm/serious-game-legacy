@@ -144,6 +144,6 @@ class ConvertIcon
             return null;
         }
 
-        return $prefix . $lookup[$icon];
+        return $prefix.$lookup[$icon];
     }
 }

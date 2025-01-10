@@ -345,7 +345,6 @@
       <path value="$PROJECT_DIR$/app/vendor/evenement/evenement" />
       <path value="$PROJECT_DIR$/app/vendor/larastan/larastan" />
       <path value="$PROJECT_DIR$/app/vendor/phpmyadmin/sql-parser" />
-      <path value="$PROJECT_DIR$/app/vendor/tomasvotruba/bladestan" />
       <path value="$PROJECT_DIR$/app/vendor/beberlei/assert" />
       <path value="$PROJECT_DIR$/app/vendor/nikolaposa/version" />
       <path value="$PROJECT_DIR$/app/vendor/staabm/phpstan-todo-by" />

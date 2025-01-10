@@ -17,8 +17,6 @@ readonly class UserName
 
     public function __toString(): string
     {
-        return '[UserName: ' . $this->value . ']';
+        return '[UserName: '.$this->value.']';
     }
-
-
 }

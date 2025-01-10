@@ -157,7 +157,7 @@ class UserViewResource extends Resource
                     ->badge()
                     ->sortable()
                     ->toggleable(),
-                TextColumn::make('user.' . Config::getUserTableNameColumn())
+                TextColumn::make('user.'.Config::getUserTableNameColumn())
                     ->label(__('advanced-tables::advanced-tables.tables.columns.user'))
                     ->sortable()
                     ->searchable()
@@ -196,7 +196,7 @@ class UserViewResource extends Resource
             ])
             ->defaultSort('name')
             ->groups([
-                'user.' . Config::getUserTableNameColumn(),
+                'user.'.Config::getUserTableNameColumn(),
                 Group::make('resource')
                     ->getTitleFromRecordUsing(fn (UserView $record): string => $record->resource_name),
             ])
@@ -236,7 +236,7 @@ class UserViewResource extends Resource
 
                         $labels = collect($data['panels'])->join(', ', ' & ');
 
-                        return [__('advanced-tables::advanced-tables.forms.panels.label') . ': ' . $labels];
+                        return [__('advanced-tables::advanced-tables.forms.panels.label').': '.$labels];
                     })
                     ->visible(fn () => count(filament()->getPanels()) > 1),
                 SelectFilter::make('resource')
@@ -263,18 +263,18 @@ class UserViewResource extends Resource
                         }
 
                         if (static::isRelationManager($data['value'])) {
-                            return __('advanced-tables::advanced-tables.forms.resource') . ': ' . static::getRelationManagerResourceName($data['value']);
+                            return __('advanced-tables::advanced-tables.forms.resource').': '.static::getRelationManagerResourceName($data['value']);
                         }
 
                         if (static::isTableWidget($data['value'])) {
-                            return __('advanced-tables::advanced-tables.forms.resource') . ': ' . static::getTableWidgetName($data['value']);
+                            return __('advanced-tables::advanced-tables.forms.resource').': '.static::getTableWidgetName($data['value']);
                         }
 
                         if (static::isManageRelatedRecords($data['value'])) {
-                            return __('advanced-tables::advanced-tables.forms.resource') . ': ' . static::getManageRelatedRecordsName($data['value']);
+                            return __('advanced-tables::advanced-tables.forms.resource').': '.static::getManageRelatedRecordsName($data['value']);
                         }
 
-                        return __('advanced-tables::advanced-tables.forms.resource') . ': ' . Str::of(Str::replace('Archilex\FilamentFilterSets', 'Archilex\AdvancedTables', $data['value'])::getPluralModelLabel())->ucfirst();
+                        return __('advanced-tables::advanced-tables.forms.resource').': '.Str::of(Str::replace('Archilex\FilamentFilterSets', 'Archilex\AdvancedTables', $data['value'])::getPluralModelLabel())->ucfirst();
                     }),
                 TernaryFilter::make('is_public')
                     ->label(__('advanced-tables::advanced-tables.forms.public.toggle_label')),
@@ -366,7 +366,7 @@ class UserViewResource extends Resource
             ->headline()
             ->toString();
 
-        return Str::title($resource . ' > ' . $relationManager);
+        return Str::title($resource.' > '.$relationManager);
     }
 
     protected static function getTableWidgetName($class): string
@@ -384,7 +384,7 @@ class UserViewResource extends Resource
             ->headline()
             ->toString();
 
-        return Str::title($location . ' > ' . $widget);
+        return Str::title($location.' > '.$widget);
     }
 
     protected static function getManageRelatedRecordsName($class): string
@@ -402,6 +402,6 @@ class UserViewResource extends Resource
             ->headline()
             ->toString();
 
-        return Str::title($location . ' > ' . $page);
+        return Str::title($location.' > '.$page);
     }
 }

@@ -6,9 +6,9 @@ use Closure;
 
 trait HasIcons
 {
-    protected array | Closure $icons = [];
+    protected array|Closure $icons = [];
 
-    public function icons(array | Closure $icons): static
+    public function icons(array|Closure $icons): static
     {
         $this->icons = $icons;
 

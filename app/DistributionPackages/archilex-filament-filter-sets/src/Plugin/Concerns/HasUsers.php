@@ -10,36 +10,36 @@ trait HasUsers
 {
     use EvaluatesClosures;
 
-    protected string | Closure $user = User::class;
+    protected string|Closure $user = User::class;
 
-    protected string | Closure $userTable = 'users';
+    protected string|Closure $userTable = 'users';
 
-    protected string | Closure $userTableKeyColumn = 'id';
+    protected string|Closure $userTableKeyColumn = 'id';
 
-    protected string | Closure $userTableNameColumn = 'name';
+    protected string|Closure $userTableNameColumn = 'name';
 
-    public function user(string | Closure $user): static
+    public function user(string|Closure $user): static
     {
         $this->user = $user;
 
         return $this;
     }
 
-    public function userTable(string | Closure $table): static
+    public function userTable(string|Closure $table): static
     {
         $this->userTable = $table;
 
         return $this;
     }
 
-    public function userTableKeyColumn(string | Closure $column): static
+    public function userTableKeyColumn(string|Closure $column): static
     {
         $this->userTableKeyColumn = $column;
 
         return $this;
     }
 
-    public function userTableNameColumn(string | Closure $column): static
+    public function userTableNameColumn(string|Closure $column): static
     {
         $this->userTableNameColumn = $column;
 

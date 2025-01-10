@@ -6,12 +6,12 @@ namespace App\Providers;
 
 use App\Authorization\AppAuthorizer;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Schedule;
-use Illuminate\Support\ServiceProvider;
 use Domain\NameOfCoreDomainX\CoreDomainXApp;
 use Domain\NameOfCoreDomainX\DrivenPorts\ForLogging;
 use Domain\NameOfCoreDomainX\DrivingPorts\ForDoingCoreBusinessLogic;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Schedule;
+use Illuminate\Support\ServiceProvider;
 
 final class AppServiceProvider extends ServiceProvider
 {
@@ -27,7 +27,7 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->scoped(ForDoingCoreBusinessLogic::class, CoreDomainXApp::class);
 
         // Register Telescope only for local dev
-        if ((bool)$this->app->environment('local') && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
+        if ((bool) $this->app->environment('local') && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
             $this->app->register(TelescopeServiceProvider::class);
         }
@@ -38,7 +38,7 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(AppAuthorizer $appAuthorizer): void
     {
-        if ((bool)$this->app->environment('production')) {
+        if ((bool) $this->app->environment('production')) {
             \URL::forceScheme('https');
         } else {
             // Not production
@@ -52,6 +52,7 @@ final class AppServiceProvider extends ServiceProvider
         }
 
         // Register our App Authorizer globally
+        // @phpstan-ignore argument.type
         \Gate::before(fn (?User $user, string $ability, ...$objectAndOtherArguments) => $appAuthorizer->authorize($user, $ability, $objectAndOtherArguments));
 
         // we need to define the gate for accessing /pulse - the actual access check is done in AppAuthorizer.

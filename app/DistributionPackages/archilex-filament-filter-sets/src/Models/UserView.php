@@ -169,24 +169,24 @@ class UserView extends Model implements Sortable
 
     public function scopeManagedByCurrentUser($query)
     {
-        return $query->whereRelation('userManagedUserViews', '' . Config::getUserTable() . '.' . Config::getUserTableKeyColumn() . '', Config::auth()->id());
+        return $query->whereRelation('userManagedUserViews', ''.Config::getUserTable().'.'.Config::getUserTableKeyColumn().'', Config::auth()->id());
     }
 
     public function scopeUnManagedByCurrentUser($query)
     {
         return $query->whereDoesntHave('userManagedUserViews', function ($query) {
-            $query->where('' . Config::getUserTable() . '.' . Config::getUserTableKeyColumn() . '', Config::auth()->id());
+            $query->where(''.Config::getUserTable().'.'.Config::getUserTableKeyColumn().'', Config::auth()->id());
         });
     }
 
     public function scopeFavoritedByCurrentUser($query)
     {
-        return $query->whereRelation('favoritedUserManagedUserViews', '' . Config::getUserTable() . '.' . Config::getUserTableKeyColumn() . '', Config::auth()->id());
+        return $query->whereRelation('favoritedUserManagedUserViews', ''.Config::getUserTable().'.'.Config::getUserTableKeyColumn().'', Config::auth()->id());
     }
 
     public function scopeHiddenByCurrentUser($query)
     {
-        return $query->whereRelation('hiddenUserManagedUserViews', '' . Config::getUserTable() . '.' . Config::getUserTableKeyColumn() . '', Config::auth()->id());
+        return $query->whereRelation('hiddenUserManagedUserViews', ''.Config::getUserTable().'.'.Config::getUserTableKeyColumn().'', Config::auth()->id());
     }
 
     public function isGlobal(): bool
@@ -292,7 +292,7 @@ class UserView extends Model implements Sortable
             ->headline()
             ->toString();
 
-        return Str::title($resource . ' > ' . $relationManager);
+        return Str::title($resource.' > '.$relationManager);
     }
 
     protected function getTableWidgetName(): string
@@ -310,7 +310,7 @@ class UserView extends Model implements Sortable
             ->headline()
             ->toString();
 
-        return Str::title($location . ' > ' . $widget);
+        return Str::title($location.' > '.$widget);
     }
 
     protected function getManageRelatedRecordsName(): string
@@ -328,7 +328,7 @@ class UserView extends Model implements Sortable
             ->headline()
             ->toString();
 
-        return Str::title($location . ' > ' . $page);
+        return Str::title($location.' > '.$page);
     }
 
     protected static function getPanelsResources(array $panels): array

@@ -6,9 +6,9 @@ use Closure;
 
 trait HasOrGroups
 {
-    protected bool | Closure $hasOrGroups = true;
+    protected bool|Closure $hasOrGroups = true;
 
-    public function orGroups(bool | Closure $condition): static
+    public function orGroups(bool|Closure $condition): static
     {
         $this->hasOrGroups = $condition;
 

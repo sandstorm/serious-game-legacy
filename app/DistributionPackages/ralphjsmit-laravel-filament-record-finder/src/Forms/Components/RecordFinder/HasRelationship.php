@@ -24,14 +24,14 @@ use Znck\Eloquent\Relations\BelongsToThrough;
  */
 trait HasRelationship
 {
-    protected string | Closure | null $relationship = null;
+    protected string|Closure|null $relationship = null;
 
     /**
      * @var array<string, mixed> | Closure
      */
-    protected array | Closure $pivotData = [];
+    protected array|Closure $pivotData = [];
 
-    public function relationship(string | Closure | null $name = null, ?Closure $modifyQueryUsing = null, bool $ignoreRecord = false): static
+    public function relationship(string|Closure|null $name = null, ?Closure $modifyQueryUsing = null, bool $ignoreRecord = false): static
     {
         $this->relationship = $name ?? $this->getName();
 
@@ -232,14 +232,14 @@ trait HasRelationship
     /**
      * @param  array<string, mixed> | Closure  $data
      */
-    public function pivotData(array | Closure $data): static
+    public function pivotData(array|Closure $data): static
     {
         $this->pivotData = $data;
 
         return $this;
     }
 
-    public function getRelationship(): BelongsTo | BelongsToMany | HasOneOrMany | HasManyThrough | BelongsToThrough | null
+    public function getRelationship(): BelongsTo|BelongsToMany|HasOneOrMany|HasManyThrough|BelongsToThrough|null
     {
         if (blank($this->getRelationshipName())) {
             return null;

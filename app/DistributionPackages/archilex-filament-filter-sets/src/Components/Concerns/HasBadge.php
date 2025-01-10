@@ -6,11 +6,11 @@ use Closure;
 
 trait HasBadge
 {
-    protected string | Closure | null $badge = null;
+    protected string|Closure|null $badge = null;
 
-    protected string | Closure | null $badgeColor = null;
+    protected string|Closure|null $badgeColor = null;
 
-    public function badge(string | Closure | null $badge): static
+    public function badge(string|Closure|null $badge): static
     {
         $this->badge = $badge;
 
@@ -22,7 +22,7 @@ trait HasBadge
         return $this->evaluate($this->badge);
     }
 
-    public function badgeColor(string | Closure | null $badgeColor): static
+    public function badgeColor(string|Closure|null $badgeColor): static
     {
         $this->badgeColor = $badgeColor;
 

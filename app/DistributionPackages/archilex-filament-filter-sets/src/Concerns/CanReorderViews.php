@@ -30,9 +30,9 @@ trait CanReorderViews
             ->whereIn($modelKeyName, array_values($order))
             ->update([
                 'sort_order' => DB::raw(
-                    'case ' . collect($order)
-                        ->map(fn ($recordKey, int $recordIndex): string => 'when ' . $modelKeyName . ' = ' . DB::getPdo()->quote($recordKey) . ' then ' . ($recordIndex + 1))
-                        ->implode(' ') . ' end'
+                    'case '.collect($order)
+                        ->map(fn ($recordKey, int $recordIndex): string => 'when '.$modelKeyName.' = '.DB::getPdo()->quote($recordKey).' then '.($recordIndex + 1))
+                        ->implode(' ').' end'
                 ),
             ]);
     }

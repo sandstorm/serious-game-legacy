@@ -3,7 +3,6 @@ includes:
     - vendor/phpstan/phpstan-strict-rules/rules.neon
     - vendor/phpstan/phpstan-deprecation-rules/rules.neon
     - vendor/larastan/larastan/extension.neon
-    - vendor/tomasvotruba/bladestan/config/extension.neon
     - vendor/staabm/phpstan-todo-by/extension.neon
     - vendor/spaze/phpstan-disallowed-calls/extension.neon
 
@@ -27,6 +26,7 @@ parameters:
 
     # Level 10 is the highest level
     level: 10
+    reportMaybesInPropertyPhpDocTypes: false
 
     #############
     # larastan: https://github.com/larastan/larastan/blob/3.x/docs/rules.md

@@ -75,60 +75,66 @@ final class AppAuthorizer
     ) {
     }
 
-    public function authorize(?User $user, string $ability, array $objectAndOtherArguments): ?Response
+    /**
+     * @param  string[][]  $objectAndOtherArguments
+     */
+    public function authorize(?User $user, string $ability, array $objectAndOtherArguments): Response
     {
         $result = $this->authorizeInternal($user, $ability, $objectAndOtherArguments);
         // WORKAROUND: in Filament\authorize(), the GateEvaluated event is not triggered - thus we trigger it manually here
         // to ensure tracing in Telescope works properly for Filament screens..
-        $this->dispatcher->dispatch(new GateEvaluated($user, $ability, $result?->allowed(), $objectAndOtherArguments));
+        // @phpstan-ignore argument.type
+        $this->dispatcher->dispatch(new GateEvaluated($user, $ability, $result->allowed(), $objectAndOtherArguments));
+
         return $result;
     }
 
-    private function authorizeInternal(?User $user, string $ability, array $objectAndOtherArguments): ?Response
+    /**
+     * @param  string[][]|object[][]  $objectAndOtherArguments
+     */
+    private function authorizeInternal(?User $user, string $ability, array $objectAndOtherArguments): Response
     {
         $object = $objectAndOtherArguments[0][0] ?? '';
         if (is_object($object)) {
             $object = get_class($object);
         }
         $this->logUnknownAbilitiesAndObjects($ability, $object);
-        //$objectGroup = self::OBJECT_GROUPS[$object] ?? $object;
+        // $objectGroup = self::OBJECT_GROUPS[$object] ?? $object;
 
         if ($user === null) {
-            ////////////////////
+            // //////////////////
             // Anonymous case
-            ////////////////////
+            // //////////////////
 
-            return Response::denyAsNotFound("anonymous access not allowed");
+            return Response::denyAsNotFound('anonymous access not allowed');
         }
-
 
         if ($user->role_superadmin) {
-            ////////////////////
+            // //////////////////
             // Super Admins
-            ////////////////////
-            return Response::allow("role_superadmin");
+            // //////////////////
+            return Response::allow('role_superadmin');
         }
 
-        ////////////////////
+        // //////////////////
         // Specific Roles
-        ////////////////////
+        // //////////////////
         // for each role, specify the permissions here.
-        //if ($user->role_foo) {
+        // if ($user->role_foo) {
         //    switch ($objectGroup) {
         //        case self::OBJECT_GROUP_STAMMDATEN:
         //            // add new cases here if necessary to allow access
         //            return Response::allow('role_foo');
         //    }
         //    // if needed, add more complex logic here
-        //}
+        // }
 
-        return Response::deny("deny by default");
+        return Response::deny('deny by default');
     }
-
 
     private function logUnknownAbilitiesAndObjects(string $ability, string $object): void
     {
-        if (!array_key_exists($ability, self::ABILITY_GROUPS)) {
+        if (! array_key_exists($ability, self::ABILITY_GROUPS)) {
             $this->connection->table('unknown_permissions')->updateOrInsert(
                 [
                     'ability' => $ability,
@@ -139,7 +145,7 @@ final class AppAuthorizer
                 ]
             );
         }
-        if ($object !== "" && !array_key_exists($object, self::OBJECT_GROUPS)) {
+        if ($object !== '' && ! array_key_exists($object, self::OBJECT_GROUPS)) {
             $this->connection->table('unknown_permissions')->updateOrInsert(
                 [
                     'object' => $object,

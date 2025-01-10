@@ -182,7 +182,7 @@ dev phpstan --pro
 We use PHPStan with a few addons:
 - strict PHPStan rules via phpstan/phpstan-strict-rules
 - alert on calling `@deprecated` methods via phpstan/phpstan-deprecation-rules
-- larastan & bladestan (for laravel specific rules and blade template support)
+- larastan (for laravel specific rules)
 - spaze/phpstan-disallowed-calls with possible custom rules: https://github.com/spaze/phpstan-disallowed-calls/blob/main/docs/custom-rules.md
   - this enables us to disallow Laravel Facades and helpers, and enforce dependency injection. see `disallowed-calls.neon` for docs.
 - TODOs which turn into errors via staabm/phpstan-todo-by - see [examples](https://github.com/staabm/phpstan-todo-by?tab=readme-ov-file#examples) for demo:

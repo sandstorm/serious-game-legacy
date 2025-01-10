@@ -6,9 +6,9 @@ use Closure;
 
 trait HasIndicator
 {
-    protected string | Closure | null $indicator = null;
+    protected string|Closure|null $indicator = null;
 
-    public function indicator(string | Closure | null $indicator): static
+    public function indicator(string|Closure|null $indicator): static
     {
         $this->indicator = $indicator;
 

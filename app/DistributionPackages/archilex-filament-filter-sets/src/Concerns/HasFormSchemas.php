@@ -159,7 +159,7 @@ trait HasFormSchemas
                                 ->label(__('advanced-tables::advanced-tables.forms.note'))
                                 ->content(function () {
                                     if ($label = $this->getActivePresetViewLabel()) {
-                                        return new HtmlString('<span class="text-sm text-gray-600 dark:text-gray-300">' . __('advanced-tables::advanced-tables.forms.preset_view.helper_text_start') . '<span class="font-medium text-gray-700 dark:text-gray-300">' . $label . '</span>' . __('advanced-tables::advanced-tables.forms.preset_view.helper_text_end') . '</span>');
+                                        return new HtmlString('<span class="text-sm text-gray-600 dark:text-gray-300">'.__('advanced-tables::advanced-tables.forms.preset_view.helper_text_start').'<span class="font-medium text-gray-700 dark:text-gray-300">'.$label.'</span>'.__('advanced-tables::advanced-tables.forms.preset_view.helper_text_end').'</span>');
                                     }
                                 })
                                 ->visible(

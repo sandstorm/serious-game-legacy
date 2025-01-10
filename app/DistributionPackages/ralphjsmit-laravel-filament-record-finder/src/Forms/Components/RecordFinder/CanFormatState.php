@@ -11,28 +11,28 @@ trait CanFormatState
 {
     use Support\Concerns\HasAlignment;
 
-    protected bool | Closure $isBadge = false;
+    protected bool|Closure $isBadge = false;
 
     /**
      * @var string | array{50: string, 100: string, 200: string, 300: string, 400: string, 500: string, 600: string, 700: string, 800: string, 900: string, 950: string} | Closure | null
      */
-    protected string | array | Closure | null $badgeColor = null;
+    protected string|array|Closure|null $badgeColor = null;
 
-    protected string | Closure | null $badgeIcon = null;
+    protected string|Closure|null $badgeIcon = null;
 
-    protected IconPosition | string | Closure | null $badgeIconPosition = null;
+    protected IconPosition|string|Closure|null $badgeIconPosition = null;
 
-    protected bool | Closure $isBulleted = false;
+    protected bool|Closure $isBulleted = false;
 
-    protected bool | Closure $isListWithLineBreaks = false;
+    protected bool|Closure $isListWithLineBreaks = false;
 
-    protected int | Closure | null $listLimit = null;
+    protected int|Closure|null $listLimit = null;
 
-    protected bool | Closure $isLimitedListExpandable = false;
+    protected bool|Closure $isLimitedListExpandable = false;
 
     protected ?Closure $recordUrl = null;
 
-    public function badge(bool | Closure $condition = true): static
+    public function badge(bool|Closure $condition = true): static
     {
         $this->isBadge = $condition;
 
@@ -42,49 +42,49 @@ trait CanFormatState
     /**
      * @param  string | array{50: string, 100: string, 200: string, 300: string, 400: string, 500: string, 600: string, 700: string, 800: string, 900: string, 950: string} | Closure | null  $color
      */
-    public function badgeColor(string | array | Closure | null $color): static
+    public function badgeColor(string|array|Closure|null $color): static
     {
         $this->badgeColor = $color;
 
         return $this;
     }
 
-    public function badgeIcon(string | Closure | null $icon): static
+    public function badgeIcon(string|Closure|null $icon): static
     {
         $this->badgeIcon = $icon;
 
         return $this;
     }
 
-    public function badgeIconPosition(IconPosition | string | Closure | null $position): static
+    public function badgeIconPosition(IconPosition|string|Closure|null $position): static
     {
         $this->badgeIconPosition = $position;
 
         return $this;
     }
 
-    public function bulleted(bool | Closure $condition = true): static
+    public function bulleted(bool|Closure $condition = true): static
     {
         $this->isBulleted = $condition;
 
         return $this;
     }
 
-    public function listWithLineBreaks(bool | Closure $condition = true): static
+    public function listWithLineBreaks(bool|Closure $condition = true): static
     {
         $this->isListWithLineBreaks = $condition;
 
         return $this;
     }
 
-    public function limitList(int | Closure | null $limit = 3): static
+    public function limitList(int|Closure|null $limit = 3): static
     {
         $this->listLimit = $limit;
 
         return $this;
     }
 
-    public function expandableLimitedList(bool | Closure $condition = true): static
+    public function expandableLimitedList(bool|Closure $condition = true): static
     {
         $this->isLimitedListExpandable = $condition;
 
@@ -106,7 +106,7 @@ trait CanFormatState
     /**
      * @return string | array{50: string, 100: string, 200: string, 300: string, 400: string, 500: string, 600: string, 700: string, 800: string, 900: string, 950: string} | null
      */
-    public function getBadgeColor(Model $state): string | array | null
+    public function getBadgeColor(Model $state): string|array|null
     {
         return $this->evaluate(
             $this->badgeColor,
@@ -136,7 +136,7 @@ trait CanFormatState
         );
     }
 
-    public function getBadgeIconPosition(Model $state): IconPosition | string | null
+    public function getBadgeIconPosition(Model $state): IconPosition|string|null
     {
         return $this->evaluate(
             $this->badgeIconPosition,

@@ -10,9 +10,9 @@ trait HasManagedUserViews
 {
     use EvaluatesClosures;
 
-    protected string | Closure $managedUserView = ManagedUserView::class;
+    protected string|Closure $managedUserView = ManagedUserView::class;
 
-    public function managedUserView(string | Closure $managedUserView): static
+    public function managedUserView(string|Closure $managedUserView): static
     {
         $this->managedUserView = $managedUserView;
 

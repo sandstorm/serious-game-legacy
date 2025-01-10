@@ -118,9 +118,9 @@ trait HasUserViews
         return Config::getUserView()::query()
             ->select($columns)
             ->selectSub(function ($query) {
-                $query->selectRaw('COUNT(' . DB::getTablePrefix() . Config::getUserTable() . '.' . Config::getUserTableKeyColumn() . ')')
+                $query->selectRaw('COUNT('.DB::getTablePrefix().Config::getUserTable().'.'.Config::getUserTableKeyColumn().')')
                     ->from('filament_filter_set_user')
-                    ->join(Config::getUserTable(), Config::getUserTable() . '.' . Config::getUserTableKeyColumn() . '', '=', 'filament_filter_set_user.user_id')
+                    ->join(Config::getUserTable(), Config::getUserTable().'.'.Config::getUserTableKeyColumn().'', '=', 'filament_filter_set_user.user_id')
                     ->whereColumn('filament_filter_set_user.filter_set_id', 'filament_filter_sets.id')
                     ->where('filament_filter_set_user.user_id', Config::auth()->id());
             }, 'is_managed_by_current_user')
@@ -184,9 +184,9 @@ trait HasUserViews
             fn () => Config::getUserView()::query()
                 ->select($columns)
                 ->selectSub(function ($query) {
-                    $query->selectRaw('COUNT(' . DB::getTablePrefix() . Config::getUserTable() . '.' . Config::getUserTableKeyColumn() . ')')
+                    $query->selectRaw('COUNT('.DB::getTablePrefix().Config::getUserTable().'.'.Config::getUserTableKeyColumn().')')
                         ->from('filament_filter_set_user')
-                        ->join(Config::getUserTable(), Config::getUserTable() . '.' . Config::getUserTableKeyColumn() . '', '=', 'filament_filter_set_user.user_id')
+                        ->join(Config::getUserTable(), Config::getUserTable().'.'.Config::getUserTableKeyColumn().'', '=', 'filament_filter_set_user.user_id')
                         ->whereColumn('filament_filter_set_user.filter_set_id', 'filament_filter_sets.id')
                         ->where('filament_filter_set_user.user_id', Config::auth()->id());
                 }, 'is_managed_by_current_user')

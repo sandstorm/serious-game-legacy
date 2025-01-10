@@ -82,7 +82,7 @@ class Plugin implements EventSubscriberInterface, PluginInterface
             $directoryName = $this->getDefaultDirectoryName($directory);
         }
 
-        $identifier = gethostname() . '|' . sha1($directorySanitized) . '|' . $directoryName;
+        $identifier = gethostname().'|'.sha1($directorySanitized).'|'.$directoryName;
         $ralphjsmitPackagesVersion = static::PLUGIN_VERSION;
 
         // Modifying this code is against the product license. Just buy the dang thing and save yourself the effort.
@@ -95,7 +95,7 @@ class Plugin implements EventSubscriberInterface, PluginInterface
         $directorySeparator = preg_quote($this->directorySeparator, '#');
 
         return preg_replace(
-            '#' . $directorySeparator . 'releases' . $directorySeparator . '.*?' . $directorySeparator . 'vendor' . $directorySeparator . '#',
+            '#'.$directorySeparator.'releases'.$directorySeparator.'.*?'.$directorySeparator.'vendor'.$directorySeparator.'#',
             "{$directorySeparator}releases{$directorySeparator}{release}{$directorySeparator}vendor{$directorySeparator}",
             $directory
         );
@@ -129,8 +129,8 @@ class Plugin implements EventSubscriberInterface, PluginInterface
 
         // Pattern that will match the Ploi timestamp format of `ddmmyyyy_hhmmss`...
         return preg_replace(
-            '#' . $directorySeparator . '\d{8}_\d{6}' . $directorySeparator . '#',
-            $directorySeparator . '{release}' . $directorySeparator,
+            '#'.$directorySeparator.'\d{8}_\d{6}'.$directorySeparator.'#',
+            $directorySeparator.'{release}'.$directorySeparator,
             $directory
         );
     }
@@ -138,7 +138,7 @@ class Plugin implements EventSubscriberInterface, PluginInterface
     protected function getPloiDirectoryName(string $directory): string
     {
         // Str::after() implementation...
-        $partAfterDeployDash = array_reverse(explode('-deploy' . $this->directorySeparator, $directory, 2))[0];
+        $partAfterDeployDash = array_reverse(explode('-deploy'.$this->directorySeparator, $directory, 2))[0];
 
         // Str::before() implementation...
         return strstr($partAfterDeployDash, $this->directorySeparator, true);
@@ -154,7 +154,7 @@ class Plugin implements EventSubscriberInterface, PluginInterface
         }
 
         preg_match(
-            '#' . $directorySeparator . '([^' . $directorySeparator . ']+)' . $directorySeparator . 'vendor' . $directorySeparator . '#',
+            '#'.$directorySeparator.'([^'.$directorySeparator.']+)'.$directorySeparator.'vendor'.$directorySeparator.'#',
             $directory,
             $matches
         );
@@ -164,6 +164,6 @@ class Plugin implements EventSubscriberInterface, PluginInterface
 
     protected function isDocker(): bool
     {
-        return file_exists(($this->directoryResolver)() . '/../../../../.dockerenv');
+        return file_exists(($this->directoryResolver)().'/../../../../.dockerenv');
     }
 }

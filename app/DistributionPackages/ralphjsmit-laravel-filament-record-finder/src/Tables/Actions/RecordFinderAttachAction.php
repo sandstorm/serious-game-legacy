@@ -27,16 +27,16 @@ class RecordFinderAttachAction extends Action
     use Concerns\IsMultiple;
     use Serialize\Concerns\HasSerialization;
 
-    protected bool | Closure $canAttachAnother = true;
+    protected bool|Closure $canAttachAnother = true;
 
     protected ?Closure $modifyRecordFinderTableQueryUsing = null;
 
-    protected string | Closure | null $recordFinderTableLivewireComponent = null;
+    protected string|Closure|null $recordFinderTableLivewireComponent = null;
 
     /**
      * @var array<string, mixed> | Closure
      */
-    protected array | Closure $recordFinderTableLivewireComponentData = [];
+    protected array|Closure $recordFinderTableLivewireComponentData = [];
 
     public static function getDefaultName(): ?string
     {
@@ -119,7 +119,7 @@ class RecordFinderAttachAction extends Action
                         'state' => [],
                         ...$action->getRecordFinderTableLivewireComponentData(),
                     ])
-                        ->key($action->getName() . '.form.record_finder_table'),
+                        ->key($action->getName().'.form.record_finder_table'),
                     RecordFinderReceiver::make('selected_records')
                         ->default([])
                         ->hiddenLabel()
@@ -179,21 +179,21 @@ class RecordFinderAttachAction extends Action
             });
     }
 
-    public function attachAnother(bool | Closure $condition = true): static
+    public function attachAnother(bool|Closure $condition = true): static
     {
         $this->canAttachAnother = $condition;
 
         return $this;
     }
 
-    public function recordFinderTableLivewireComponent(string | Closure | null $component): static
+    public function recordFinderTableLivewireComponent(string|Closure|null $component): static
     {
         $this->recordFinderTableLivewireComponent = $component;
 
         return $this;
     }
 
-    public function recordFinderTableLivewireComponentData(array | Closure $data): static
+    public function recordFinderTableLivewireComponentData(array|Closure $data): static
     {
         $this->recordFinderTableLivewireComponentData = $data;
 

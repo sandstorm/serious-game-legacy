@@ -25,7 +25,7 @@ class AddTenancyCommand extends Command
 
         $now = Carbon::now();
 
-        $migrationsPath = realpath(__DIR__ . '/../../database/migrations');
+        $migrationsPath = realpath(__DIR__.'/../../database/migrations');
 
         $requiredMigrations = [
             'add_tenant_id_to_filter_sets_table',
@@ -77,12 +77,12 @@ class AddTenancyCommand extends Command
         }
 
         foreach (glob(database_path("{$migrationsPath}*.php")) as $filename) {
-            if ((substr($filename, -$len) === $migrationFileName . '.php')) {
+            if ((substr($filename, -$len) === $migrationFileName.'.php')) {
                 return $filename;
             }
         }
 
-        return database_path($migrationsPath . $now->format('Y_m_d_His') . '_' . Str::of($migrationFileName)->snake()->finish('.php'));
+        return database_path($migrationsPath.$now->format('Y_m_d_His').'_'.Str::of($migrationFileName)->snake()->finish('.php'));
     }
 
     protected function hasTenancy(): bool

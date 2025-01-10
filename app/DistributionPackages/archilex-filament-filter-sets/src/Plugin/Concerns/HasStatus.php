@@ -10,30 +10,30 @@ trait HasStatus
 {
     use EvaluatesClosures;
 
-    protected string | Status | Closure $minimumStatusForDisplay = Status::Pending;
+    protected string|Status|Closure $minimumStatusForDisplay = Status::Pending;
 
-    protected string | Status | Closure $initialStatus = Status::Pending;
+    protected string|Status|Closure $initialStatus = Status::Pending;
 
-    public function minimumStatusForDisplay(string | Status | Closure $status): static
+    public function minimumStatusForDisplay(string|Status|Closure $status): static
     {
         $this->minimumStatusForDisplay = $status;
 
         return $this;
     }
 
-    public function initialStatus(string | Status | Closure $status): static
+    public function initialStatus(string|Status|Closure $status): static
     {
         $this->initialStatus = $status;
 
         return $this;
     }
 
-    public function getMinimumStatusForDisplay(): string | Status
+    public function getMinimumStatusForDisplay(): string|Status
     {
         return $this->evaluate($this->minimumStatusForDisplay);
     }
 
-    public function getInitialStatus(): string | Status
+    public function getInitialStatus(): string|Status
     {
         return $this->evaluate($this->initialStatus);
     }

@@ -9,9 +9,9 @@ trait HasSupport
 {
     use EvaluatesClosures;
 
-    protected bool | Closure $convertsIcons = false;
+    protected bool|Closure $convertsIcons = false;
 
-    public function convertIcons(bool | Closure $condition = true): static
+    public function convertIcons(bool|Closure $condition = true): static
     {
         $this->convertsIcons = $condition;
 

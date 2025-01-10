@@ -73,7 +73,7 @@ class IconSelect extends Select
                                         ->filter(fn ($file) => Str::startsWith($file->getFileName(), 's-'))
                                 )
                                 ->map(
-                                    fn ($file) => $set['prefix'] . '-' . $file->getFilenameWithoutExtension()
+                                    fn ($file) => $set['prefix'].'-'.$file->getFilenameWithoutExtension()
                                 )
                         )
                 )

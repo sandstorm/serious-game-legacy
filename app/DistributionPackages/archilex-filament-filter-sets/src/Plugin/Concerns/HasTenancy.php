@@ -6,7 +6,7 @@ use Closure;
 
 trait HasTenancy
 {
-    protected bool | Closure $tenancyIsEnabled = true;
+    protected bool|Closure $tenancyIsEnabled = true;
 
     protected ?string $tenantModel = null;
 
@@ -15,14 +15,14 @@ trait HasTenancy
     /**
      * @deprecated Use `scopeToTenancy()` instead.
      */
-    public function tenancyEnabled(bool | Closure $condition = true): static
+    public function tenancyEnabled(bool|Closure $condition = true): static
     {
         $this->scopeToTenancy($condition);
 
         return $this;
     }
 
-    public function scopeToTenancy(bool | Closure $condition = true): static
+    public function scopeToTenancy(bool|Closure $condition = true): static
     {
         $this->tenancyIsEnabled = $condition;
 

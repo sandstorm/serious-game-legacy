@@ -74,7 +74,7 @@ final class AdminPanelProvider extends PanelProvider
             ])
             ->plugin(
                 FilamentDeveloperLoginsPlugin::make()
-                    ->enabled((bool)$this->app->environment('local'))
+                    ->enabled((bool) $this->app->environment('local'))
                     ->users(fn () => User::where('email', 'LIKE', '%@example.com')->pluck('email', 'email')->toArray())
             )
             ->when(
@@ -93,6 +93,7 @@ final class AdminPanelProvider extends PanelProvider
                 )
             )
             ->plugin(
+                // @phpstan-ignore method.nonObject,argument.type
                 BreezyCore::make()
                     ->myProfile(
                         // for showing in main navigation: shouldRegisterNavigation: true,

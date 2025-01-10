@@ -18,7 +18,7 @@ trait HasFavoritesBar
         return config('advanced-tables.favorites_bar.enabled', true);
     }
 
-    public static function getFavoritesBarTheme(): string | FavoritesBarTheme
+    public static function getFavoritesBarTheme(): string|FavoritesBarTheme
     {
         if (self::pluginRegistered()) {
             return AdvancedTablesPlugin::get()->getFavoritesBarTheme();
@@ -36,7 +36,7 @@ trait HasFavoritesBar
         return config('advanced-tables.favorites_bar.default_icon', 'heroicon-o-bars-4');
     }
 
-    public static function getFavoritesBarIconPosition(): null | string | IconPosition
+    public static function getFavoritesBarIconPosition(): null|string|IconPosition
     {
         if (self::pluginRegistered()) {
             return AdvancedTablesPlugin::get()->getFavoritesBarIconPosition();
@@ -45,7 +45,7 @@ trait HasFavoritesBar
         return config('advanced-tables.favorites_bar.icon_position', IconPosition::Before);
     }
 
-    public static function getFavoritesBarSize(): null | string | ActionSize
+    public static function getFavoritesBarSize(): null|string|ActionSize
     {
         if (self::pluginRegistered()) {
             return AdvancedTablesPlugin::get()->getFavoritesBarSize();
@@ -54,7 +54,7 @@ trait HasFavoritesBar
         return config('advanced-tables.favorites_bar.size', ActionSize::Medium);
     }
 
-    public static function favoritesBarHasDefaultView(): null | string | ActionSize
+    public static function favoritesBarHasDefaultView(): null|string|ActionSize
     {
         if (self::pluginRegistered()) {
             return AdvancedTablesPlugin::get()->favoritesBarHasDefaultView();

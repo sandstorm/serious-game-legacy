@@ -121,7 +121,7 @@ trait HasDefaultView
                     }
 
                     if (Str::afterLast($index, '.') === 'and_group') {
-                        data_set($defaultFilterState[$name], Str::beforeLast($index, '.data.') . '.type', 'filter_group');
+                        data_set($defaultFilterState[$name], Str::beforeLast($index, '.data.').'.type', 'filter_group');
                         data_set($defaultFilterState[$name], $index, $field->getDefaultState());
 
                         continue;

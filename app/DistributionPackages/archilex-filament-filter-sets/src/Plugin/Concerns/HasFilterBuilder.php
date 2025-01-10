@@ -9,9 +9,9 @@ trait HasFilterBuilder
 {
     use EvaluatesClosures;
 
-    protected array | Closure $expandViewStyles = ['right: 80px', 'top: 24px'];
+    protected array|Closure $expandViewStyles = ['right: 80px', 'top: 24px'];
 
-    public function filterBuilderExpandViewStyles(array | Closure $styles): static
+    public function filterBuilderExpandViewStyles(array|Closure $styles): static
     {
         $this->expandViewStyles = $styles;
 

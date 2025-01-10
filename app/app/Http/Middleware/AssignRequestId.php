@@ -20,14 +20,14 @@ class AssignRequestId
     /**
      * Handle an incoming request.
      *
-     * @param \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $requestId = (string)Str::uuid();
+        $requestId = (string) Str::uuid();
 
         $this->log->shareContext([
-            'request-id' => $requestId
+            'request-id' => $requestId,
         ]);
 
         $response = $next($request);

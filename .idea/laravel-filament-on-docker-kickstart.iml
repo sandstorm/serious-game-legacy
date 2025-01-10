@@ -203,7 +203,6 @@
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/react/stream" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/spaze/phpstan-disallowed-calls" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/staabm/phpstan-todo-by" />
-      <excludeFolder url="file://$MODULE_DIR$/app/vendor/tomasvotruba/bladestan" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/wwwision/types" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/bacon/bacon-qr-code" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/dasprid/enum" />

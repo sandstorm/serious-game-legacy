@@ -9,9 +9,9 @@ trait CanPersistViews
 {
     use EvaluatesClosures;
 
-    protected bool | Closure $persistsActiveViewInSession = false;
+    protected bool|Closure $persistsActiveViewInSession = false;
 
-    public function persistActiveViewInSession(bool | Closure $condition = true): static
+    public function persistActiveViewInSession(bool|Closure $condition = true): static
     {
         $this->persistsActiveViewInSession = $condition;
 

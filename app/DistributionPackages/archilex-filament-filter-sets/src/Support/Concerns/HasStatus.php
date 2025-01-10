@@ -7,7 +7,7 @@ use Archilex\AdvancedTables\Plugin\AdvancedTablesPlugin;
 
 trait HasStatus
 {
-    public static function getMinimumStatusForDisplay(): Status | string
+    public static function getMinimumStatusForDisplay(): Status|string
     {
         if (self::pluginRegistered()) {
             return AdvancedTablesPlugin::get()->getMinimumStatusForDisplay();
@@ -16,7 +16,7 @@ trait HasStatus
         return config('advanced-tables.status.minimum_status_for_display', Status::Pending);
     }
 
-    public static function getInitialStatus(): Status | string
+    public static function getInitialStatus(): Status|string
     {
         if (self::pluginRegistered()) {
             return AdvancedTablesPlugin::get()->getInitialStatus();

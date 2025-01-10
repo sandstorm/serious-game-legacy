@@ -17,24 +17,24 @@ trait HasSelect
     use HasPlaceholder;
     use HasRelationship;
 
-    protected string | Closure | null $attribute = null;
+    protected string|Closure|null $attribute = null;
 
-    protected bool | Closure $isMultiple = false;
+    protected bool|Closure $isMultiple = false;
 
-    protected bool | Closure $isNative = true;
+    protected bool|Closure $isNative = true;
 
     /**
      * @var bool | array<string> | Closure
      */
-    protected bool | array | Closure $searchable = false;
+    protected bool|array|Closure $searchable = false;
 
-    protected int | Closure $optionsLimit = 50;
+    protected int|Closure $optionsLimit = 50;
 
     protected ?Closure $getOptionLabelFromRecordUsing = null;
 
     protected bool $hasRelationship = false;
 
-    public function relationship(string | Closure | null $name, string | Closure | null $titleAttribute, ?Closure $modifyQueryUsing = null): static
+    public function relationship(string|Closure|null $name, string|Closure|null $titleAttribute, ?Closure $modifyQueryUsing = null): static
     {
         $this->hasRelationship = true;
 
@@ -45,14 +45,14 @@ trait HasSelect
         return $this;
     }
 
-    public function attribute(string | Closure | null $name): static
+    public function attribute(string|Closure|null $name): static
     {
         $this->attribute = $name;
 
         return $this;
     }
 
-    public function multiple(bool | Closure $condition = true): static
+    public function multiple(bool|Closure $condition = true): static
     {
         $this->isMultiple = $condition;
 
@@ -62,21 +62,21 @@ trait HasSelect
     /**
      * @param  bool | array<string> | Closure  $condition
      */
-    public function searchable(bool | array | Closure $condition = true): static
+    public function searchable(bool|array|Closure $condition = true): static
     {
         $this->searchable = $condition;
 
         return $this;
     }
 
-    public function optionsLimit(int | Closure $limit): static
+    public function optionsLimit(int|Closure $limit): static
     {
         $this->optionsLimit = $limit;
 
         return $this;
     }
 
-    public function native(bool | Closure $condition = true): static
+    public function native(bool|Closure $condition = true): static
     {
         $this->isNative = $condition;
 
@@ -98,7 +98,7 @@ trait HasSelect
     /**
      * @return bool | array<string> | Closure
      */
-    public function getSearchable(): bool | array | Closure
+    public function getSearchable(): bool|array|Closure
     {
         return $this->evaluate($this->searchable);
     }

@@ -9,63 +9,63 @@ trait CanReorderColumns
 {
     use EvaluatesClosures;
 
-    protected bool | Closure $reorderableColumnsAlwaysDisplayHiddenLabel = false;
+    protected bool|Closure $reorderableColumnsAlwaysDisplayHiddenLabel = false;
 
-    protected bool | Closure $reorderableColumnsAreEnabled = true;
+    protected bool|Closure $reorderableColumnsAreEnabled = true;
 
-    protected string | Closure | null $reorderIcon = 'heroicon-m-arrows-up-down';
+    protected string|Closure|null $reorderIcon = 'heroicon-m-arrows-up-down';
 
-    protected string | Closure | null $checkMarkIcon = 'heroicon-m-check';
+    protected string|Closure|null $checkMarkIcon = 'heroicon-m-check';
 
-    protected string | Closure | null $dragHandleIcon = 'heroicon-o-bars-2';
+    protected string|Closure|null $dragHandleIcon = 'heroicon-o-bars-2';
 
-    protected string | Closure | null $visibleIcon = 'heroicon-s-eye';
+    protected string|Closure|null $visibleIcon = 'heroicon-s-eye';
 
-    protected string | Closure | null $hiddenIcon = 'heroicon-o-eye-slash';
+    protected string|Closure|null $hiddenIcon = 'heroicon-o-eye-slash';
 
-    public function reorderableColumnsAlwaysDisplayHiddenLabel(bool | Closure $condition = true): static
+    public function reorderableColumnsAlwaysDisplayHiddenLabel(bool|Closure $condition = true): static
     {
         $this->reorderableColumnsAlwaysDisplayHiddenLabel = $condition;
 
         return $this;
     }
 
-    public function reorderableColumnsEnabled(bool | Closure $condition = true): static
+    public function reorderableColumnsEnabled(bool|Closure $condition = true): static
     {
         $this->reorderableColumnsAreEnabled = $condition;
 
         return $this;
     }
 
-    public function reorderIcon(string | Closure | null $icon = null): static
+    public function reorderIcon(string|Closure|null $icon = null): static
     {
         $this->reorderIcon = $icon;
 
         return $this;
     }
 
-    public function checkMarkIcon(string | Closure | null $icon = null): static
+    public function checkMarkIcon(string|Closure|null $icon = null): static
     {
         $this->checkMarkIcon = $icon;
 
         return $this;
     }
 
-    public function dragHandleIcon(string | Closure | null $icon = null): static
+    public function dragHandleIcon(string|Closure|null $icon = null): static
     {
         $this->dragHandleIcon = $icon;
 
         return $this;
     }
 
-    public function visibleIcon(string | Closure | null $icon = null): static
+    public function visibleIcon(string|Closure|null $icon = null): static
     {
         $this->visibleIcon = $icon;
 
         return $this;
     }
 
-    public function hiddenIcon(string | Closure | null $icon = null): static
+    public function hiddenIcon(string|Closure|null $icon = null): static
     {
         $this->hiddenIcon = $icon;
 

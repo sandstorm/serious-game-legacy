@@ -12,9 +12,9 @@ trait HasIndicators
 {
     protected array $indicatorColors = [];
 
-    protected bool | Closure $shouldPrependFilterGroupLabels = true;
+    protected bool|Closure $shouldPrependFilterGroupLabels = true;
 
-    protected bool | Closure $shouldPrependFilterGroupLabelWhenSoleGroup = true;
+    protected bool|Closure $shouldPrependFilterGroupLabelWhenSoleGroup = true;
 
     public function indicatorColors(array $colors): static
     {
@@ -23,7 +23,7 @@ trait HasIndicators
         return $this;
     }
 
-    public function prependFilterGroupLabels(bool | Closure $condition = true, bool | Closure $prependFilterGroupLabelWhenSoleGroup = true): static
+    public function prependFilterGroupLabels(bool|Closure $condition = true, bool|Closure $prependFilterGroupLabelWhenSoleGroup = true): static
     {
         $this->shouldPrependFilterGroupLabels = $condition;
 
@@ -170,7 +170,7 @@ trait HasIndicators
         }
     }
 
-    protected function getEvaluatedFilterIndicators(BaseFilter $filterObject, array $filterData): Indicator | array | string | null
+    protected function getEvaluatedFilterIndicators(BaseFilter $filterObject, array $filterData): Indicator|array|string|null
     {
         return $filterObject->evaluate($filterObject->indicateUsing, [
             'data' => $filterData,

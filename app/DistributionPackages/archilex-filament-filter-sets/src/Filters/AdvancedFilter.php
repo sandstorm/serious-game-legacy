@@ -43,7 +43,7 @@ class AdvancedFilter extends BaseFilter
 
     protected array $modifiedQuery = [];
 
-    protected int | string | null $liveDebounce = null;
+    protected int|string|null $liveDebounce = null;
 
     protected bool $isLiveOnBlur = false;
 
@@ -89,7 +89,7 @@ class AdvancedFilter extends BaseFilter
             return $indicatorGroups->map(function ($indicators, $index) use ($indicatorGroups) {
                 return collect($indicators)->map(function ($indicator, $field) use ($indicatorGroups, $index) {
                     if ($this->shouldPrependFilterGroup($indicatorGroups->count())) {
-                        $indicator = __('advanced-tables::filter-builder.filters.indicator_name') . ' ' . $index + 1 . ' - ' . $indicator;
+                        $indicator = __('advanced-tables::filter-builder.filters.indicator_name').' '.$index + 1 .' - '.$indicator;
                     }
 
                     return Indicator::make($indicator)->removeField($field)->color($this->getIndicatorColors()[$index]);
@@ -196,7 +196,7 @@ class AdvancedFilter extends BaseFilter
         return $this;
     }
 
-    public function live(bool $onBlur = false, int | string | null $debounce = null): static
+    public function live(bool $onBlur = false, int|string|null $debounce = null): static
     {
         $this->isLiveOnBlur = $onBlur;
         $this->liveDebounce = $debounce;
@@ -278,7 +278,7 @@ class AdvancedFilter extends BaseFilter
         return $this->isLiveOnBlur;
     }
 
-    public function getLiveDebounce(): int | string | null
+    public function getLiveDebounce(): int|string|null
     {
         return $this->liveDebounce;
     }

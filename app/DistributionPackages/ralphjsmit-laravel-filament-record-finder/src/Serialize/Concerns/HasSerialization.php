@@ -16,7 +16,7 @@ use RuntimeException;
 
 trait HasSerialization
 {
-    protected function serializeOriginal(array | null | int | float | string | bool | Closure | Support\Components\Component | Support\Components\ViewComponent | Builder $original): string
+    protected function serializeOriginal(array|null|int|float|string|bool|Closure|Support\Components\Component|Support\Components\ViewComponent|Builder $original): string
     {
         $serialized = match (true) {
             is_array($original) => $this->serializeOriginalFromArray($original),
@@ -48,7 +48,7 @@ trait HasSerialization
         return serialize($original);
     }
 
-    protected function serializeOriginalFromNumericStringBoolean(int | float | string | bool $original): string
+    protected function serializeOriginalFromNumericStringBoolean(int|float|string|bool $original): string
     {
         return serialize($original);
     }

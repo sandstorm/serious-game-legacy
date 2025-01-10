@@ -12,79 +12,79 @@ trait HasFavoritesBar
 {
     use EvaluatesClosures;
 
-    protected bool | Closure $favoritesBarIsEnabled = true;
+    protected bool|Closure $favoritesBarIsEnabled = true;
 
-    protected string | FavoritesBarTheme | Closure $favoritesBarTheme = FavoritesBarTheme::Github;
+    protected string|FavoritesBarTheme|Closure $favoritesBarTheme = FavoritesBarTheme::Github;
 
-    protected string | Closure | null $favoritesBarDefaultIcon = 'heroicon-o-bars-4';
+    protected string|Closure|null $favoritesBarDefaultIcon = 'heroicon-o-bars-4';
 
-    protected bool | Closure $favoritesBarHasDefaultView = true;
+    protected bool|Closure $favoritesBarHasDefaultView = true;
 
-    protected bool | Closure $favoritesBarHasDivider = true;
+    protected bool|Closure $favoritesBarHasDivider = true;
 
-    protected string | IconPosition | Closure $favoritesBarIconPosition = IconPosition::Before;
+    protected string|IconPosition|Closure $favoritesBarIconPosition = IconPosition::Before;
 
-    protected string | ActionSize | Closure $favoritesBarSize = ActionSize::Medium;
+    protected string|ActionSize|Closure $favoritesBarSize = ActionSize::Medium;
 
-    protected bool | Closure $favoritesBarHasLoadingIndicator = false;
+    protected bool|Closure $favoritesBarHasLoadingIndicator = false;
 
-    public function favoritesBarEnabled(bool | Closure $condition = true): static
+    public function favoritesBarEnabled(bool|Closure $condition = true): static
     {
         $this->favoritesBarIsEnabled = $condition;
 
         return $this;
     }
 
-    public function favoritesBarTheme(string | FavoritesBarTheme | Closure $theme): static
+    public function favoritesBarTheme(string|FavoritesBarTheme|Closure $theme): static
     {
         $this->favoritesBarTheme = $theme;
 
         return $this;
     }
 
-    public function favoritesBarDefaultIcon(string | Closure | null $icon = null): static
+    public function favoritesBarDefaultIcon(string|Closure|null $icon = null): static
     {
         $this->favoritesBarDefaultIcon = $icon;
 
         return $this;
     }
 
-    public function favoritesBarDefaultView(bool | Closure $condition = true): static
+    public function favoritesBarDefaultView(bool|Closure $condition = true): static
     {
         $this->favoritesBarHasDefaultView = $condition;
 
         return $this;
     }
 
-    public function favoritesBarDivider(bool | Closure $condition = true): static
+    public function favoritesBarDivider(bool|Closure $condition = true): static
     {
         $this->favoritesBarHasDivider = $condition;
 
         return $this;
     }
 
-    public function favoritesBarIconPosition(string | IconPosition | Closure $position = IconPosition::Before): static
+    public function favoritesBarIconPosition(string|IconPosition|Closure $position = IconPosition::Before): static
     {
         $this->favoritesBarIconPosition = $position;
 
         return $this;
     }
 
-    public function favoritesBarSize(string | ActionSize | Closure $size = ActionSize::Medium): static
+    public function favoritesBarSize(string|ActionSize|Closure $size = ActionSize::Medium): static
     {
         $this->favoritesBarSize = $size;
 
         return $this;
     }
 
-    public function favoritesBarLoadingIndicator(bool | Closure $condition = true): static
+    public function favoritesBarLoadingIndicator(bool|Closure $condition = true): static
     {
         $this->favoritesBarHasLoadingIndicator = $condition;
 
         return $this;
     }
 
-    public function getFavoritesBarTheme(): string | FavoritesBarTheme
+    public function getFavoritesBarTheme(): string|FavoritesBarTheme
     {
         return $this->evaluate($this->favoritesBarTheme);
     }
@@ -94,12 +94,12 @@ trait HasFavoritesBar
         return $this->evaluate($this->favoritesBarDefaultIcon);
     }
 
-    public function getFavoritesBarIconPosition(): string | IconPosition | null
+    public function getFavoritesBarIconPosition(): string|IconPosition|null
     {
         return $this->evaluate($this->favoritesBarIconPosition);
     }
 
-    public function getFavoritesBarSize(): string | ActionSize | null
+    public function getFavoritesBarSize(): string|ActionSize|null
     {
         return $this->evaluate($this->favoritesBarSize);
     }

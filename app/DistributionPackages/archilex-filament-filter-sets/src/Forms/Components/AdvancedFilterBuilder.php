@@ -17,9 +17,9 @@ class AdvancedFilterBuilder extends Builder
 
     protected $filters = [];
 
-    protected string | Closure | null $blockPickerMaxHeight = null;
+    protected string|Closure|null $blockPickerMaxHeight = null;
 
-    protected bool | Closure $blockPickerHasSearch = false;
+    protected bool|Closure $blockPickerHasSearch = false;
 
     protected bool $hasOrGroups = true;
 
@@ -94,7 +94,7 @@ class AdvancedFilterBuilder extends Builder
                 ) {
                     $newUuid = (string) Str::random(3);
 
-                    $newFilterGroup = 'advanced_filter_builder.or_group.' . $newUuid;
+                    $newFilterGroup = 'advanced_filter_builder.or_group.'.$newUuid;
 
                     data_set($component->getLivewire()->{$tableFilters}, $newFilterGroup, [
                         'type' => 'filter_group',
@@ -127,7 +127,7 @@ class AdvancedFilterBuilder extends Builder
                 if (! count($component->getLivewire()->{$tableFilters}['advanced_filter_builder']['or_group'])) {
                     $newUuid = (string) Str::random(3);
 
-                    $newFilterGroup = 'advanced_filter_builder.or_group.' . $newUuid;
+                    $newFilterGroup = 'advanced_filter_builder.or_group.'.$newUuid;
 
                     data_set($component->getLivewire()->{$tableFilters}, $newFilterGroup, [
                         'type' => 'filter_group',
@@ -172,7 +172,7 @@ class AdvancedFilterBuilder extends Builder
             ->size(ActionSize::Small);
     }
 
-    public function defaultFilters(array | Closure $filters): static
+    public function defaultFilters(array|Closure $filters): static
     {
         $this->default(static function (AdvancedFilterBuilder $component) use ($filters): array {
             $filters = $component->evaluate($filters);
@@ -204,14 +204,14 @@ class AdvancedFilterBuilder extends Builder
         return $this;
     }
 
-    public function blockPickerMaxHeight(string | Closure | null $height): static
+    public function blockPickerMaxHeight(string|Closure|null $height): static
     {
         $this->blockPickerMaxHeight = $height;
 
         return $this;
     }
 
-    public function blockPickerSearch(bool | Closure $condition): static
+    public function blockPickerSearch(bool|Closure $condition): static
     {
         $this->blockPickerHasSearch = $condition;
 

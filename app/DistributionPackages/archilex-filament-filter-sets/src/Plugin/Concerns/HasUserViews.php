@@ -10,36 +10,36 @@ trait HasUserViews
 {
     use EvaluatesClosures;
 
-    protected bool | Closure $canManageGlobalUserViews = true;
+    protected bool|Closure $canManageGlobalUserViews = true;
 
-    protected bool | Closure $userViewsAreEnabled = true;
+    protected bool|Closure $userViewsAreEnabled = true;
 
-    protected string | Closure $newGlobalUserViewSortPosition = 'before';
+    protected string|Closure $newGlobalUserViewSortPosition = 'before';
 
-    protected string | Closure $userView = UserView::class;
+    protected string|Closure $userView = UserView::class;
 
-    public function globalUserViewsManageable(bool | Closure $condition = true): static
+    public function globalUserViewsManageable(bool|Closure $condition = true): static
     {
         $this->canManageGlobalUserViews = $condition;
 
         return $this;
     }
 
-    public function newGlobalUserViewSortPosition(string | Closure $position = 'before'): static
+    public function newGlobalUserViewSortPosition(string|Closure $position = 'before'): static
     {
         $this->newGlobalUserViewSortPosition = $position;
 
         return $this;
     }
 
-    public function userView(string | Closure $userView): static
+    public function userView(string|Closure $userView): static
     {
         $this->userView = $userView;
 
         return $this;
     }
 
-    public function userViewsEnabled(bool | Closure $condition = true): static
+    public function userViewsEnabled(bool|Closure $condition = true): static
     {
         $this->userViewsAreEnabled = $condition;
 

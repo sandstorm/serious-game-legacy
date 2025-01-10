@@ -6,9 +6,9 @@ use Closure;
 
 trait CanBeFavorited
 {
-    protected bool | Closure $isFavorite = false;
+    protected bool|Closure $isFavorite = false;
 
-    public function favorite(bool | Closure $condition = true): static
+    public function favorite(bool|Closure $condition = true): static
     {
         $this->isFavorite = $condition;
 

@@ -9,11 +9,11 @@ use Illuminate\Support\HtmlString;
 
 trait HasRecordState
 {
-    protected string | Closure | null $recordLabelAttribute = null;
+    protected string|Closure|null $recordLabelAttribute = null;
 
     protected ?Closure $getRecordLabelFromRecordUsing = null;
 
-    public function getRecordState(): null | Model | Collection
+    public function getRecordState(): null|Model|Collection
     {
         $state = $this->getState();
 
@@ -42,7 +42,7 @@ trait HasRecordState
         return $tableQuery->getModel()::class;
     }
 
-    public function recordLabelAttribute(string | Closure | null $attribute): static
+    public function recordLabelAttribute(string|Closure|null $attribute): static
     {
         $this->recordLabelAttribute = $attribute;
 
@@ -71,7 +71,7 @@ trait HasRecordState
         );
     }
 
-    public function getRecordLabelFromRecord(Model $record): null | string | HtmlString
+    public function getRecordLabelFromRecord(Model $record): null|string|HtmlString
     {
         if ($this->recordLabelAttribute) {
             $recordLabelAttribute = $this->getRecordLabelAttribute($record);

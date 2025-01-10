@@ -6,19 +6,19 @@ use Closure;
 
 trait CanPreserve
 {
-    protected bool | Closure $shouldPreserveFilters = false;
+    protected bool|Closure $shouldPreserveFilters = false;
 
-    protected bool | Closure $shouldPreserveGrouping = false;
+    protected bool|Closure $shouldPreserveGrouping = false;
 
-    protected bool | Closure $shouldPreserveGroupingDirection = false;
+    protected bool|Closure $shouldPreserveGroupingDirection = false;
 
-    protected bool | Closure $shouldPreserveSortColumn = false;
+    protected bool|Closure $shouldPreserveSortColumn = false;
 
-    protected bool | Closure $shouldPreserveSortDirection = false;
+    protected bool|Closure $shouldPreserveSortDirection = false;
 
-    protected bool | Closure $shouldPreserveColumns = false;
+    protected bool|Closure $shouldPreserveColumns = false;
 
-    public function preserveAll(bool | Closure $condition = true): static
+    public function preserveAll(bool|Closure $condition = true): static
     {
         $this->shouldPreserveFilters = $condition;
         $this->shouldPreserveGrouping = $condition;
@@ -30,42 +30,42 @@ trait CanPreserve
         return $this;
     }
 
-    public function preserveFilters(bool | Closure $condition = true): static
+    public function preserveFilters(bool|Closure $condition = true): static
     {
         $this->shouldPreserveFilters = $condition;
 
         return $this;
     }
 
-    public function preserveGrouping(bool | Closure $condition = true): static
+    public function preserveGrouping(bool|Closure $condition = true): static
     {
         $this->shouldPreserveGrouping = $condition;
 
         return $this;
     }
 
-    public function preserveGroupingDirection(bool | Closure $condition = true): static
+    public function preserveGroupingDirection(bool|Closure $condition = true): static
     {
         $this->shouldPreserveGroupingDirection = $condition;
 
         return $this;
     }
 
-    public function preserveSortColumn(bool | Closure $condition = true): static
+    public function preserveSortColumn(bool|Closure $condition = true): static
     {
         $this->shouldPreserveSortColumn = $condition;
 
         return $this;
     }
 
-    public function preserveSortDirection(bool | Closure $condition = true): static
+    public function preserveSortDirection(bool|Closure $condition = true): static
     {
         $this->shouldPreserveSortDirection = $condition;
 
         return $this;
     }
 
-    public function preserveToggledColumns(bool | Closure $condition = true): static
+    public function preserveToggledColumns(bool|Closure $condition = true): static
     {
         $this->shouldPreserveColumns = $condition;
 

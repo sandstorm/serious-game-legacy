@@ -261,7 +261,7 @@ class TextFilter extends BaseFilter
         $operator = $data['operator'];
         $column = $this->getTable()->getColumns()[$filter->getName()];
         $columnLabel = strip_tags($column->getLabel());
-        $operatorLabel = __('advanced-tables::filter-builder.filters.text.' . $operator . '.indicator');
+        $operatorLabel = __('advanced-tables::filter-builder.filters.text.'.$operator.'.indicator');
 
         if (in_array($operator, [TextOperator::IS_EMPTY, TextOperator::IS_NOT_EMPTY])) {
 
@@ -335,8 +335,8 @@ class TextFilter extends BaseFilter
             }
 
             return collect($labels)
-                ->map(fn ($label) => '"' . $label . '"')
-                ->join(', ', ' ' . __('advanced-tables::filter-builder.filters.operators.or') . ' ');
+                ->map(fn ($label) => '"'.$label.'"')
+                ->join(', ', ' '.__('advanced-tables::filter-builder.filters.operators.or').' ');
         }
 
         if (
@@ -350,6 +350,6 @@ class TextFilter extends BaseFilter
                 ?->getAttributeValue($filter->getRelationshipTitleAttribute());
         }
 
-        return '"' . $state['value'] . '"';
+        return '"'.$state['value'].'"';
     }
 }

@@ -6,11 +6,11 @@ use Closure;
 
 trait IsReorderable
 {
-    protected bool | Closure $isReorderable = false;
+    protected bool|Closure $isReorderable = false;
 
-    protected string | Closure | null $relationshipReorderColumn = null;
+    protected string|Closure|null $relationshipReorderColumn = null;
 
-    public function reorderable(bool | Closure $condition = true, string | Closure | null $relationshipReorderColumn = null): static
+    public function reorderable(bool|Closure $condition = true, string|Closure|null $relationshipReorderColumn = null): static
     {
         $this->isReorderable = $condition;
         $this->relationshipReorderColumn = $relationshipReorderColumn;

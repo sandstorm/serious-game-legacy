@@ -124,7 +124,7 @@ trait HasViewManager
         return config('advanced-tables.view_manager.icon', 'heroicon-o-queue-list');
     }
 
-    public static function getViewManagerIconPosition(): null | string | IconPosition
+    public static function getViewManagerIconPosition(): null|string|IconPosition
     {
         if (self::pluginRegistered()) {
             return AdvancedTablesPlugin::get()->getViewManagerIconPosition();

@@ -6,27 +6,27 @@ use Closure;
 
 trait HasIcon
 {
-    protected string | Closure | null $icon = null;
+    protected string|Closure|null $icon = null;
 
-    protected string | Closure | null $iconColor = null;
+    protected string|Closure|null $iconColor = null;
 
-    protected string | Closure | null $iconPosition = null;
+    protected string|Closure|null $iconPosition = null;
 
-    public function icon(string | Closure | null $icon): static
+    public function icon(string|Closure|null $icon): static
     {
         $this->icon = $icon;
 
         return $this;
     }
 
-    public function iconPosition(string | Closure | null $position): static
+    public function iconPosition(string|Closure|null $position): static
     {
         $this->iconPosition = $position;
 
         return $this;
     }
 
-    public function iconColor(string | Closure | null $color): static
+    public function iconColor(string|Closure|null $color): static
     {
         $this->iconColor = $color;
 

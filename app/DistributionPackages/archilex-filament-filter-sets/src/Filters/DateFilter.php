@@ -271,11 +271,11 @@ class DateFilter extends BaseFilter
         $dateEnd = $this->formatDate($this->column, $data['date_end']);
 
         $columnLabel = strip_tags($this->column->getLabel());
-        $operatorLabel = __('advanced-tables::filter-builder.filters.date.' . $operator . '.indicator');
+        $operatorLabel = __('advanced-tables::filter-builder.filters.date.'.$operator.'.indicator');
 
         $unitLabel = $data['value'] == 1
-            ? __('advanced-tables::filter-builder.filters.date.unit.' . $data['unit'] . '.indicator_singular')
-            : __('advanced-tables::filter-builder.filters.date.unit.' . $data['unit'] . '.indicator');
+            ? __('advanced-tables::filter-builder.filters.date.unit.'.$data['unit'].'.indicator_singular')
+            : __('advanced-tables::filter-builder.filters.date.unit.'.$data['unit'].'.indicator');
 
         if (in_array($operator, [DateOperator::YESTERDAY, DateOperator::TODAY, DateOperator::TOMORROW])) {
             return ["{$columnLabel} {$operatorLabel}"];
@@ -294,10 +294,10 @@ class DateFilter extends BaseFilter
         }
 
         if (in_array($operator, [DateOperator::BETWEEN])) {
-            return ["{$columnLabel} {$operatorLabel} {$data['between_start']} " . __('advanced-tables::filter-builder.filters.operators.and') . " {$data['between_end']} {$unitLabel}"];
+            return ["{$columnLabel} {$operatorLabel} {$data['between_start']} ".__('advanced-tables::filter-builder.filters.operators.and')." {$data['between_end']} {$unitLabel}"];
         }
 
-        return ["{$columnLabel} {$operatorLabel} {$dateStart} " . __('advanced-tables::filter-builder.filters.operators.and') . " {$dateEnd}"];
+        return ["{$columnLabel} {$operatorLabel} {$dateStart} ".__('advanced-tables::filter-builder.filters.operators.and')." {$dateEnd}"];
     }
 
     protected function getOperators(): array

@@ -18,7 +18,7 @@ it('can generate an identifier and construct the URL', function () {
 
     $preFileDownloadEvent = new PreFileDownloadEvent(
         name: PluginEvents::PRE_FILE_DOWNLOAD,
-        httpDownloader: new HttpDownloader(new NullIO(), new Config()),
+        httpDownloader: new HttpDownloader(new NullIO, new Config),
         processedUrl: 'https://satis.ralphjsmit.com/dist/ralphjsmit/laravel-filament-media-library/ralphjsmit-laravel-filament-media-library-5aa15ac21255b3b617c3d14d116200e469b8e7af-zip-6bd925.zip',
         type: 'package'
     );
@@ -31,11 +31,11 @@ it('can generate an identifier and construct the URL', function () {
     // It won't add the ID multiple times if the event is (accidentally) triggered multiple times...
     $plugin->onPreFileDownload($preFileDownloadEvent);
 
-    $expectedIdentifier = urlencode(gethostname() . '|' . sha1($dir) . '|' . ('test-project'));
+    $expectedIdentifier = urlencode(gethostname().'|'.sha1($dir).'|'.('test-project'));
 
     expect($preFileDownloadEvent)
         ->getProcessedUrl()->toBe(
-            'https://satis.ralphjsmit.com/dist/ralphjsmit/laravel-filament-media-library/ralphjsmit-laravel-filament-media-library-5aa15ac21255b3b617c3d14d116200e469b8e7af-zip-6bd925.zip?id=' . $expectedIdentifier . '&ralphjsmit-packages-version=' . Plugin::PLUGIN_VERSION
+            'https://satis.ralphjsmit.com/dist/ralphjsmit/laravel-filament-media-library/ralphjsmit-laravel-filament-media-library-5aa15ac21255b3b617c3d14d116200e469b8e7af-zip-6bd925.zip?id='.$expectedIdentifier.'&ralphjsmit-packages-version='.Plugin::PLUGIN_VERSION
         );
 });
 
@@ -46,7 +46,7 @@ it('can generate an identifier and construct the URL for Windows', function () {
 
     $preFileDownloadEvent = new PreFileDownloadEvent(
         name: PluginEvents::PRE_FILE_DOWNLOAD,
-        httpDownloader: new HttpDownloader(new NullIO(), new Config()),
+        httpDownloader: new HttpDownloader(new NullIO, new Config),
         processedUrl: 'https://satis.ralphjsmit.com/dist/ralphjsmit/laravel-filament-media-library/ralphjsmit-laravel-filament-media-library-5aa15ac21255b3b617c3d14d116200e469b8e7af-zip-6bd925.zip',
         type: 'package'
     );
@@ -56,11 +56,11 @@ it('can generate an identifier and construct the URL for Windows', function () {
 
     $plugin->onPreFileDownload($preFileDownloadEvent);
 
-    $expectedIdentifier = urlencode(gethostname() . '|' . sha1($dir) . '|' . ('test-project'));
+    $expectedIdentifier = urlencode(gethostname().'|'.sha1($dir).'|'.('test-project'));
 
     expect($preFileDownloadEvent)
         ->getProcessedUrl()->toBe(
-            'https://satis.ralphjsmit.com/dist/ralphjsmit/laravel-filament-media-library/ralphjsmit-laravel-filament-media-library-5aa15ac21255b3b617c3d14d116200e469b8e7af-zip-6bd925.zip?id=' . $expectedIdentifier . '&ralphjsmit-packages-version=' . Plugin::PLUGIN_VERSION
+            'https://satis.ralphjsmit.com/dist/ralphjsmit/laravel-filament-media-library/ralphjsmit-laravel-filament-media-library-5aa15ac21255b3b617c3d14d116200e469b8e7af-zip-6bd925.zip?id='.$expectedIdentifier.'&ralphjsmit-packages-version='.Plugin::PLUGIN_VERSION
         );
 });
 
@@ -71,7 +71,7 @@ it('can generate an identifier and construct the URL for Laravel Envoyer', funct
 
     $preFileDownloadEvent = new PreFileDownloadEvent(
         name: PluginEvents::PRE_FILE_DOWNLOAD,
-        httpDownloader: new HttpDownloader(new NullIO(), new Config()),
+        httpDownloader: new HttpDownloader(new NullIO, new Config),
         processedUrl: 'https://satis.ralphjsmit.com/dist/ralphjsmit/laravel-filament-media-library/ralphjsmit-laravel-filament-media-library-5aa15ac21255b3b617c3d14d116200e469b8e7af-zip-6bd925.zip',
         type: 'package'
     );
@@ -81,11 +81,11 @@ it('can generate an identifier and construct the URL for Laravel Envoyer', funct
 
     $plugin->onPreFileDownload($preFileDownloadEvent);
 
-    $expectedIdentifier = urlencode(gethostname() . '|' . sha1('/Users/ralphjsmit/Code/Sites/test-project/releases/{release}/vendor/ralphjsmit/packages/src') . '|' . ('test-project'));
+    $expectedIdentifier = urlencode(gethostname().'|'.sha1('/Users/ralphjsmit/Code/Sites/test-project/releases/{release}/vendor/ralphjsmit/packages/src').'|'.('test-project'));
 
     expect($preFileDownloadEvent)
         ->getProcessedUrl()->toBe(
-            'https://satis.ralphjsmit.com/dist/ralphjsmit/laravel-filament-media-library/ralphjsmit-laravel-filament-media-library-5aa15ac21255b3b617c3d14d116200e469b8e7af-zip-6bd925.zip?id=' . $expectedIdentifier . '&ralphjsmit-packages-version=' . Plugin::PLUGIN_VERSION
+            'https://satis.ralphjsmit.com/dist/ralphjsmit/laravel-filament-media-library/ralphjsmit-laravel-filament-media-library-5aa15ac21255b3b617c3d14d116200e469b8e7af-zip-6bd925.zip?id='.$expectedIdentifier.'&ralphjsmit-packages-version='.Plugin::PLUGIN_VERSION
         );
 });
 
@@ -96,7 +96,7 @@ it('can generate an identifier and construct the URL for Laravel Envoyer on Wind
 
     $preFileDownloadEvent = new PreFileDownloadEvent(
         name: PluginEvents::PRE_FILE_DOWNLOAD,
-        httpDownloader: new HttpDownloader(new NullIO(), new Config()),
+        httpDownloader: new HttpDownloader(new NullIO, new Config),
         processedUrl: 'https://satis.ralphjsmit.com/dist/ralphjsmit/laravel-filament-media-library/ralphjsmit-laravel-filament-media-library-5aa15ac21255b3b617c3d14d116200e469b8e7af-zip-6bd925.zip',
         type: 'package'
     );
@@ -106,11 +106,11 @@ it('can generate an identifier and construct the URL for Laravel Envoyer on Wind
 
     $plugin->onPreFileDownload($preFileDownloadEvent);
 
-    $expectedIdentifier = urlencode(gethostname() . '|' . sha1('\Users\ralphjsmit\Code\Sites\test-project\releases\{release}\vendor\ralphjsmit\packages\src') . '|' . ('test-project'));
+    $expectedIdentifier = urlencode(gethostname().'|'.sha1('\Users\ralphjsmit\Code\Sites\test-project\releases\{release}\vendor\ralphjsmit\packages\src').'|'.('test-project'));
 
     expect($preFileDownloadEvent)
         ->getProcessedUrl()->toBe(
-            'https://satis.ralphjsmit.com/dist/ralphjsmit/laravel-filament-media-library/ralphjsmit-laravel-filament-media-library-5aa15ac21255b3b617c3d14d116200e469b8e7af-zip-6bd925.zip?id=' . $expectedIdentifier . '&ralphjsmit-packages-version=' . Plugin::PLUGIN_VERSION
+            'https://satis.ralphjsmit.com/dist/ralphjsmit/laravel-filament-media-library/ralphjsmit-laravel-filament-media-library-5aa15ac21255b3b617c3d14d116200e469b8e7af-zip-6bd925.zip?id='.$expectedIdentifier.'&ralphjsmit-packages-version='.Plugin::PLUGIN_VERSION
         );
 });
 
@@ -121,7 +121,7 @@ it('can generate an identifier and construct the URL for Ploi deployed servers',
 
     $preFileDownloadEvent = new PreFileDownloadEvent(
         name: PluginEvents::PRE_FILE_DOWNLOAD,
-        httpDownloader: new HttpDownloader(new NullIO(), new Config()),
+        httpDownloader: new HttpDownloader(new NullIO, new Config),
         processedUrl: 'https://satis.ralphjsmit.com/dist/ralphjsmit/laravel-filament-media-library/ralphjsmit-laravel-filament-media-library-5aa15ac21255b3b617c3d14d116200e469b8e7af-zip-6bd925.zip',
         type: 'package'
     );
@@ -131,11 +131,11 @@ it('can generate an identifier and construct the URL for Ploi deployed servers',
 
     $plugin->onPreFileDownload($preFileDownloadEvent);
 
-    $expectedIdentifier = urlencode(gethostname() . '|' . sha1('/home/ploi/mydomain.com-deploy/mydomain.com/{release}/vendor/ralphjsmit/packages/src') . '|' . ('mydomain.com'));
+    $expectedIdentifier = urlencode(gethostname().'|'.sha1('/home/ploi/mydomain.com-deploy/mydomain.com/{release}/vendor/ralphjsmit/packages/src').'|'.('mydomain.com'));
 
     expect($preFileDownloadEvent)
         ->getProcessedUrl()->toBe(
-            'https://satis.ralphjsmit.com/dist/ralphjsmit/laravel-filament-media-library/ralphjsmit-laravel-filament-media-library-5aa15ac21255b3b617c3d14d116200e469b8e7af-zip-6bd925.zip?id=' . $expectedIdentifier . '&ralphjsmit-packages-version=' . Plugin::PLUGIN_VERSION
+            'https://satis.ralphjsmit.com/dist/ralphjsmit/laravel-filament-media-library/ralphjsmit-laravel-filament-media-library-5aa15ac21255b3b617c3d14d116200e469b8e7af-zip-6bd925.zip?id='.$expectedIdentifier.'&ralphjsmit-packages-version='.Plugin::PLUGIN_VERSION
         );
 });
 
@@ -146,7 +146,7 @@ it('can generate an identifier and construct the URL for Ploi deployed servers o
 
     $preFileDownloadEvent = new PreFileDownloadEvent(
         name: PluginEvents::PRE_FILE_DOWNLOAD,
-        httpDownloader: new HttpDownloader(new NullIO(), new Config()),
+        httpDownloader: new HttpDownloader(new NullIO, new Config),
         processedUrl: 'https://satis.ralphjsmit.com/dist/ralphjsmit/laravel-filament-media-library/ralphjsmit-laravel-filament-media-library-5aa15ac21255b3b617c3d14d116200e469b8e7af-zip-6bd925.zip',
         type: 'package'
     );
@@ -156,10 +156,10 @@ it('can generate an identifier and construct the URL for Ploi deployed servers o
 
     $plugin->onPreFileDownload($preFileDownloadEvent);
 
-    $expectedIdentifier = urlencode(gethostname() . '|' . sha1('\home\ploi\mydomain.com-deploy\mydomain.com\{release}\vendor\ralphjsmit\packages\src') . '|' . ('mydomain.com'));
+    $expectedIdentifier = urlencode(gethostname().'|'.sha1('\home\ploi\mydomain.com-deploy\mydomain.com\{release}\vendor\ralphjsmit\packages\src').'|'.('mydomain.com'));
 
     expect($preFileDownloadEvent)
         ->getProcessedUrl()->toBe(
-            'https://satis.ralphjsmit.com/dist/ralphjsmit/laravel-filament-media-library/ralphjsmit-laravel-filament-media-library-5aa15ac21255b3b617c3d14d116200e469b8e7af-zip-6bd925.zip?id=' . $expectedIdentifier . '&ralphjsmit-packages-version=' . Plugin::PLUGIN_VERSION
+            'https://satis.ralphjsmit.com/dist/ralphjsmit/laravel-filament-media-library/ralphjsmit-laravel-filament-media-library-5aa15ac21255b3b617c3d14d116200e469b8e7af-zip-6bd925.zip?id='.$expectedIdentifier.'&ralphjsmit-packages-version='.Plugin::PLUGIN_VERSION
         );
 });

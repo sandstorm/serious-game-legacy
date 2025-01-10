@@ -64,14 +64,14 @@ return [
             'level' => 'debug',
             'handler' => Monolog\Handler\RotatingFileHandler::class,
             'with' => [
-                'filename' => storage_path('logs/laravel.json.log')
+                'filename' => storage_path('logs/laravel.json.log'),
             ],
             'processors' => [
-                \Monolog\Processor\WebProcessor::class
+                \Monolog\Processor\WebProcessor::class,
             ],
             'formatter' => Monolog\Formatter\JsonFormatter::class,
             'formatter_with' => [
-                'includeStacktraces' => true
+                'includeStacktraces' => true,
             ],
         ],
 

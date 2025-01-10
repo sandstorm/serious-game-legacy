@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Adapters;
 
-use Illuminate\Log\LogManager;
 use Domain\NameOfCoreDomainX\DrivenPorts\ForLogging;
+use Illuminate\Log\LogManager;
 
 /**
  * Laravel implementation of the ForLogging port

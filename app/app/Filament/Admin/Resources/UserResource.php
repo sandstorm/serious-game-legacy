@@ -23,7 +23,10 @@ class UserResource extends Resource
     public static function form(Form $form): Form
     {
         $isLoggedInUser = function (?User $record, Authenticatable $loggedInUser) {
+            // @phpstan-ignore function.impossibleType, instanceof.alwaysFalse
+            // @phpstan-ignore function.impossibleType, instanceof.alwaysFalse
             assert($loggedInUser instanceof User);
+
             return $loggedInUser->id === $record?->id;
         };
 
@@ -76,7 +79,7 @@ class UserResource extends Resource
             ])
             ->filters([
                 AdvancedFilter::make()
-                    ->includeColumns()
+                    ->includeColumns(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

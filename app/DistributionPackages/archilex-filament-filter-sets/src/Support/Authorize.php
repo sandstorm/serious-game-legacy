@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Gate;
 
 class Authorize
 {
-    public static function canPerformAction(string $action, Model | string | null $model = null): bool
+    public static function canPerformAction(string $action, Model|string|null $model = null): bool
     {
         return once(function () use ($action, $model) {
             $model = $model ?? Config::getUserView();

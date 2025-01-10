@@ -14,125 +14,125 @@ use Illuminate\Database\Eloquent\Relations\Relation;
  */
 trait HasTable
 {
-    protected Builder | Relation | Closure | null $tableQuery = null;
+    protected Builder|Relation|Closure|null $tableQuery = null;
 
-    protected bool | Closure $tableStandalone = false;
+    protected bool|Closure $tableStandalone = false;
 
-    protected array | Closure $tableColumns = [];
+    protected array|Closure $tableColumns = [];
 
-    protected array | Closure $tableGroups = [];
+    protected array|Closure $tableGroups = [];
 
-    protected Group | null | string $tableDefaultGroup = null;
+    protected Group|null|string $tableDefaultGroup = null;
 
-    protected bool | Closure $tableDeselectAllRecordsWhenFiltered = false;
+    protected bool|Closure $tableDeselectAllRecordsWhenFiltered = false;
 
-    protected bool | Closure $tableGroupingSettingsHidden = false;
+    protected bool|Closure $tableGroupingSettingsHidden = false;
 
-    protected array | Closure $tableFilters = [];
+    protected array|Closure $tableFilters = [];
 
-    protected array | Closure $tableHeaderActions = [];
+    protected array|Closure $tableHeaderActions = [];
 
-    protected array | Closure $tableActions = [];
+    protected array|Closure $tableActions = [];
 
-    protected array | Closure $tableBulkActions = [];
+    protected array|Closure $tableBulkActions = [];
 
-    protected array | Closure $tableEmptyStateActions = [];
+    protected array|Closure $tableEmptyStateActions = [];
 
     /**
      * @var array<int | string> | Closure | null
      */
-    protected array | Closure | null $tablePaginationPageOptions = null;
+    protected array|Closure|null $tablePaginationPageOptions = null;
 
     protected ?Closure $modifyTableCallback = null;
 
-    public function tableQuery(Builder | Relation | Closure | null $query): static
+    public function tableQuery(Builder|Relation|Closure|null $query): static
     {
         $this->tableQuery = $query;
 
         return $this;
     }
 
-    public function query(Builder | Relation | Closure | null $query): static
+    public function query(Builder|Relation|Closure|null $query): static
     {
         return $this->tableQuery($query);
     }
 
-    public function tableStandalone(bool | Closure $condition = true): static
+    public function tableStandalone(bool|Closure $condition = true): static
     {
         $this->tableStandalone = $condition;
 
         return $this;
     }
 
-    public function standalone(bool | Closure $condition = true): static
+    public function standalone(bool|Closure $condition = true): static
     {
         return $this->tableStandalone($condition);
     }
 
-    public function tableColumns(array | Closure $columns): static
+    public function tableColumns(array|Closure $columns): static
     {
         $this->tableColumns = $columns;
 
         return $this;
     }
 
-    public function tableGroups(array | Closure $groups): static
+    public function tableGroups(array|Closure $groups): static
     {
         $this->tableGroups = $groups;
 
         return $this;
     }
 
-    public function tableDefaultGroup(Group | null | string $group): static
+    public function tableDefaultGroup(Group|null|string $group): static
     {
         $this->tableDefaultGroup = $group;
 
         return $this;
     }
 
-    public function tableDeselectAllRecordsWhenFiltered(bool | Closure $condition = true): static
+    public function tableDeselectAllRecordsWhenFiltered(bool|Closure $condition = true): static
     {
         $this->tableDeselectAllRecordsWhenFiltered = $condition;
 
         return $this;
     }
 
-    public function tableGroupingSettingsHidden(bool | Closure $hidden = true): static
+    public function tableGroupingSettingsHidden(bool|Closure $hidden = true): static
     {
         $this->tableGroupingSettingsHidden = $hidden;
 
         return $this;
     }
 
-    public function tableFilters(array | Closure $filters): static
+    public function tableFilters(array|Closure $filters): static
     {
         $this->tableFilters = $filters;
 
         return $this;
     }
 
-    public function tableHeaderActions(array | Closure $actions): static
+    public function tableHeaderActions(array|Closure $actions): static
     {
         $this->tableHeaderActions = $actions;
 
         return $this;
     }
 
-    public function tableActions(array | Closure $actions): static
+    public function tableActions(array|Closure $actions): static
     {
         $this->tableActions = $actions;
 
         return $this;
     }
 
-    public function tableBulkActions(array | Closure $actions): static
+    public function tableBulkActions(array|Closure $actions): static
     {
         $this->tableBulkActions = $actions;
 
         return $this;
     }
 
-    public function tableEmptyStateActions(array | Closure $actions): static
+    public function tableEmptyStateActions(array|Closure $actions): static
     {
         $this->tableEmptyStateActions = $actions;
 
@@ -142,7 +142,7 @@ trait HasTable
     /**
      * @param  array<int | string> | Closure | null  $options
      */
-    public function tablePaginationPageOptions(array | Closure | null $options): static
+    public function tablePaginationPageOptions(array|Closure|null $options): static
     {
         $this->tablePaginationPageOptions = $options;
 
@@ -156,7 +156,7 @@ trait HasTable
         return $this;
     }
 
-    public function getTableQuery(): Builder | Relation
+    public function getTableQuery(): Builder|Relation
     {
         $tableQuery = $this->evaluate($this->tableQuery);
 
@@ -183,7 +183,7 @@ trait HasTable
         return $this->evaluate($this->tableGroups);
     }
 
-    public function getTableDefaultGroup(): Group | null | string
+    public function getTableDefaultGroup(): Group|null|string
     {
         return $this->evaluate($this->tableDefaultGroup);
     }

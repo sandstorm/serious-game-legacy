@@ -23,7 +23,7 @@ trait HasAutoTranslatorSupport
      */
     public static ?string $tableQueryModelResource;
 
-    public static function getTranslation(string $key, array $replace = [], Countable | float | int | null $number = null, bool $allowNull = false, ?PageTranslationContext $pageTranslationContext = null): mixed
+    public static function getTranslation(string $key, array $replace = [], Countable|float|int|null $number = null, bool $allowNull = false, ?PageTranslationContext $pageTranslationContext = null): mixed
     {
         if (static::$isStandalone || ! is_a(static::$tableQueryModelResource, HasTranslations::class, true)) {
             // Even if we return a the key when no resource, then it will produce weird translations that don't

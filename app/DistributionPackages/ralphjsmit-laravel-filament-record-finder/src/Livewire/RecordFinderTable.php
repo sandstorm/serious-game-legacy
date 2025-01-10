@@ -24,7 +24,7 @@ use RalphJSmit\Filament\RecordFinder\Serialize;
 // calls to the resource (if not standalone), so that the translations for that work.
 
 if (! interface_exists('RalphJSmit\Filament\AutoTranslator\Contracts\HasTranslations')) {
-    require __DIR__ . '/../AutoTranslator/Contracts/has_translations.php';
+    require __DIR__.'/../AutoTranslator/Contracts/has_translations.php';
 }
 
 class RecordFinderTable extends Component implements \RalphJSmit\Filament\AutoTranslator\Contracts\HasTranslations, HasActions, HasForms, HasTable
@@ -199,7 +199,7 @@ class RecordFinderTable extends Component implements \RalphJSmit\Filament\AutoTr
         return $this->unserializeSource($this->tableGroupsSource);
     }
 
-    public function getRecordFinderTableDefaultGroup(): Tables\Grouping\Group | null | string
+    public function getRecordFinderTableDefaultGroup(): Tables\Grouping\Group|null|string
     {
         return $this->unserializeSource($this->tableDefaultGroupSource);
     }

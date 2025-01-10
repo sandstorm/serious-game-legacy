@@ -10,7 +10,7 @@ trait CanIncludeColumns
 
     protected bool $mapColumns = false;
 
-    public function includeColumns(bool | array $columns = true): static
+    public function includeColumns(bool|array $columns = true): static
     {
         $this->mapColumns = true;
 

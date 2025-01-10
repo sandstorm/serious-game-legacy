@@ -6,27 +6,27 @@ use Closure;
 
 trait HasOperators
 {
-    protected string | Closure | null $defaultOperator = null;
+    protected string|Closure|null $defaultOperator = null;
 
-    protected array | Closure $excludedOperators = [];
+    protected array|Closure $excludedOperators = [];
 
-    protected array | Closure $includedOperators = [];
+    protected array|Closure $includedOperators = [];
 
-    public function defaultOperator(string | Closure | null $operator = null): static
+    public function defaultOperator(string|Closure|null $operator = null): static
     {
         $this->defaultOperator = $operator;
 
         return $this;
     }
 
-    public function excludeOperators(array | Closure $operators): static
+    public function excludeOperators(array|Closure $operators): static
     {
         $this->excludedOperators = $operators;
 
         return $this;
     }
 
-    public function includeOperators(array | Closure $operators): static
+    public function includeOperators(array|Closure $operators): static
     {
         $this->includedOperators = $operators;
 

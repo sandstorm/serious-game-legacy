@@ -28,7 +28,7 @@ final class CoreDomainXApp implements ForDoingCoreBusinessLogic
 
     public function startTimeRecording(UserName $userName): void
     {
-        $this->forLogging->log('starting time recording for ' . $userName);
+        $this->forLogging->log('starting time recording for '.$userName);
         if ($userName->value === 'sandstorm') {
             throw new \RuntimeException('no valid user name');
         }

@@ -57,12 +57,12 @@ class NumericFilter extends BaseFilter
 
     protected function getAggregateColumnAlias(string $index): string
     {
-        return strtolower($this->column->getName() . '_' . $index);
+        return strtolower($this->column->getName().'_'.$index);
     }
 
     protected function getAggregateRelatedTableAlias(string $relatedTable, string $index): string
     {
-        return strtolower('table_alias_' . $relatedTable . '_' . $index);
+        return strtolower('table_alias_'.$relatedTable.'_'.$index);
     }
 
     protected function getAggregateRelationshipQuery(Builder $query, string $index): Builder
@@ -96,7 +96,7 @@ class NumericFilter extends BaseFilter
         return $query->leftJoinSub(
             $joinQuery,
             $relatedTableAlias,
-            fn (JoinClause $join) => $join->on($query->getModel()->getTable() . '.' . $localKey, '=', $relatedTableAlias . '.' . $relatedTableForeignKey)
+            fn (JoinClause $join) => $join->on($query->getModel()->getTable().'.'.$localKey, '=', $relatedTableAlias.'.'.$relatedTableForeignKey)
         );
     }
 
@@ -118,8 +118,8 @@ class NumericFilter extends BaseFilter
 
         return $relatedModel
             ->newPivotStatement()
-            ->select($relatedTableForeignKey, DB::raw($aggregateOperator . '(' . $aggregateColumn . ') as ' . $columnAlias))
-            ->join($relatedTable, $relatedTable . '.' . $parentKey, '=', $pivotTable . '.' . $relatedPivotKey)
+            ->select($relatedTableForeignKey, DB::raw($aggregateOperator.'('.$aggregateColumn.') as '.$columnAlias))
+            ->join($relatedTable, $relatedTable.'.'.$parentKey, '=', $pivotTable.'.'.$relatedPivotKey)
             ->groupBy($relatedTableForeignKey);
     }
 
@@ -129,7 +129,7 @@ class NumericFilter extends BaseFilter
 
         return $relatedModel
             ->newQuery()
-            ->select($relatedTableForeignKey, DB::raw($aggregateOperator . '(' . $aggregateColumn . ') as ' . $columnAlias))
+            ->select($relatedTableForeignKey, DB::raw($aggregateOperator.'('.$aggregateColumn.') as '.$columnAlias))
             ->groupBy($relatedTableForeignKey);
     }
 
@@ -144,7 +144,7 @@ class NumericFilter extends BaseFilter
         };
     }
 
-    protected function getAggregateRelationship(string | array $aggregateOperator): mixed
+    protected function getAggregateRelationship(string|array $aggregateOperator): mixed
     {
         return match ($aggregateOperator) {
             AggregateOperator::COUNT => $this->column->getRelationshipsToCount(),
@@ -222,7 +222,7 @@ class NumericFilter extends BaseFilter
         $operator = $this->getOperator($data);
         $value = $this->getValue($data);
 
-        $qualifiedColumn = $relatedTableAlias . '.' . $this->getAggregateColumnAlias($index);
+        $qualifiedColumn = $relatedTableAlias.'.'.$this->getAggregateColumnAlias($index);
 
         if (
             $this->aggregatesRelationship() &&
@@ -419,7 +419,7 @@ class NumericFilter extends BaseFilter
         $operator = $data['operator'];
 
         $columnLabel = strip_tags($this->column->getLabel());
-        $operatorLabel = __('advanced-tables::filter-builder.filters.numeric.' . $operator . '.indicator');
+        $operatorLabel = __('advanced-tables::filter-builder.filters.numeric.'.$operator.'.indicator');
 
         if (in_array($operator, [NumericOperator::POSITIVE, NumericOperator::NEGATIVE])) {
             return ["{$columnLabel} {$operatorLabel}"];
@@ -433,7 +433,7 @@ class NumericFilter extends BaseFilter
             return [];
         }
 
-        return ["{$columnLabel} {$operatorLabel} {$data['value']} " . __('advanced-tables::filter-builder.filters.operators.and') . " {$data['end']}"];
+        return ["{$columnLabel} {$operatorLabel} {$data['value']} ".__('advanced-tables::filter-builder.filters.operators.and')." {$data['end']}"];
     }
 
     protected function getOperators(): array

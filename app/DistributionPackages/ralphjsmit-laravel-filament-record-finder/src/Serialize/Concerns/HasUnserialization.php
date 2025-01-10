@@ -15,7 +15,7 @@ use ReflectionFunction;
 
 trait HasUnserialization
 {
-    protected function unserializeSource(string $source): array | null | int | float | string | Closure | Support\Components\Component | Support\Components\ViewComponent | Builder
+    protected function unserializeSource(string $source): array|null|int|float|string|Closure|Support\Components\Component|Support\Components\ViewComponent|Builder
     {
         $unserialized = unserialize(
             decrypt($source, unserialize: false)
@@ -64,7 +64,7 @@ trait HasUnserialization
         return $source;
     }
 
-    protected function unserializeSourceFromNumericStringBoolean(int | float | string | bool $source): int | float | string | null | bool
+    protected function unserializeSourceFromNumericStringBoolean(int|float|string|bool $source): int|float|string|null|bool
     {
         return $source;
     }
@@ -74,7 +74,7 @@ trait HasUnserialization
         return $source->getClosure();
     }
 
-    protected function unserializeSourceFromSerializableClosureObject(SerializableClosureObject $source): Support\Components\Component | Support\Components\ViewComponent
+    protected function unserializeSourceFromSerializableClosureObject(SerializableClosureObject $source): Support\Components\Component|Support\Components\ViewComponent
     {
         // Clone the original object to prevent the reflection below to modify the properties on the original object, that might be reference elsewhere.
         $originalClone = clone $source->originalWithoutClosureProperties;

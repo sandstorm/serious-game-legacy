@@ -9,63 +9,63 @@ trait HasResource
 {
     use EvaluatesClosures;
 
-    protected bool | Closure $resourceIsEnabled = true;
+    protected bool|Closure $resourceIsEnabled = true;
 
-    protected bool | Closure $hasResourceNavigationBadge = true;
+    protected bool|Closure $hasResourceNavigationBadge = true;
 
-    protected string | Closure | null $resourceNavigationIcon = 'heroicon-o-funnel';
+    protected string|Closure|null $resourceNavigationIcon = 'heroicon-o-funnel';
 
-    protected string | Closure | null $resourceNavigationGroup = null;
+    protected string|Closure|null $resourceNavigationGroup = null;
 
-    protected int | Closure | null $resourceNavigationSort = null;
+    protected int|Closure|null $resourceNavigationSort = null;
 
-    protected bool | Closure $resourceLoadsAllUsers = true;
+    protected bool|Closure $resourceLoadsAllUsers = true;
 
-    protected array | Closure | null $resourcePanels = null;
+    protected array|Closure|null $resourcePanels = null;
 
-    public function resourceEnabled(bool | Closure $condition = true): static
+    public function resourceEnabled(bool|Closure $condition = true): static
     {
         $this->resourceIsEnabled = $condition;
 
         return $this;
     }
 
-    public function resourceNavigationBadge(bool | Closure $condition): static
+    public function resourceNavigationBadge(bool|Closure $condition): static
     {
         $this->hasResourceNavigationBadge = $condition;
 
         return $this;
     }
 
-    public function resourceNavigationIcon(string | Closure | null $icon = null): static
+    public function resourceNavigationIcon(string|Closure|null $icon = null): static
     {
         $this->resourceNavigationIcon = $icon;
 
         return $this;
     }
 
-    public function resourceNavigationGroup(string | closure $group): static
+    public function resourceNavigationGroup(string|closure $group): static
     {
         $this->resourceNavigationGroup = $group;
 
         return $this;
     }
 
-    public function resourceNavigationSort(int | closure $sort): static
+    public function resourceNavigationSort(int|closure $sort): static
     {
         $this->resourceNavigationSort = $sort;
 
         return $this;
     }
 
-    public function resourceLoadAllUsers(bool | closure $condition = true): static
+    public function resourceLoadAllUsers(bool|closure $condition = true): static
     {
         $this->resourceLoadsAllUsers = $condition;
 
         return $this;
     }
 
-    public function resourcePanels(array | Closure $panels): static
+    public function resourcePanels(array|Closure $panels): static
     {
         $this->resourcePanels = $panels;
 

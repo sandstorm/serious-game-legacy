@@ -324,10 +324,10 @@ trait HasViewActions
             return null;
         }
 
-        return collect(__('advanced-tables::advanced-tables.forms.preset_view.label') . ': ' . $this->getActivePresetViewLabel())
+        return collect(__('advanced-tables::advanced-tables.forms.preset_view.label').': '.$this->getActivePresetViewLabel())
             ->when(
                 $presetView->getIndicator(),
-                fn ($collection, $indicators) => $collection->merge(__('advanced-tables::advanced-tables.forms.preset_view.query_label') . ': ' . $indicators)
+                fn ($collection, $indicators) => $collection->merge(__('advanced-tables::advanced-tables.forms.preset_view.query_label').': '.$indicators)
             )
             ->toArray();
     }
@@ -352,7 +352,7 @@ trait HasViewActions
     protected function getTableColumnSearchQueryIndicators(): array
     {
         return collect($this->getTableColumnSearches())
-            ->map(fn ($searchQuery, $column) => $this->getTable()->getColumns()[$column]->getLabel() . ': ' . $searchQuery)
+            ->map(fn ($searchQuery, $column) => $this->getTable()->getColumns()[$column]->getLabel().': '.$searchQuery)
             ->values()
             ->toArray();
     }
@@ -360,28 +360,28 @@ trait HasViewActions
     protected function getTableGroupingIndicator(): ?string
     {
         return filled($this->tableGrouping) && $this->tableGrouping !== 'null'
-            ? __('filament-tables::table.grouping.fields.group.label') . ': ' . $this->getTable()->getGrouping()->getLabel()
+            ? __('filament-tables::table.grouping.fields.group.label').': '.$this->getTable()->getGrouping()->getLabel()
             : null;
     }
 
     protected function getTableGroupingDirectionIndicator(): ?string
     {
         return filled($this->tableGroupingDirection) && $this->tableGrouping !== 'null'
-            ? __('filament-tables::table.grouping.fields.direction.label') . ': ' . __('filament-tables::table.grouping.fields.direction.options.' . $this->tableGroupingDirection)
+            ? __('filament-tables::table.grouping.fields.direction.label').': '.__('filament-tables::table.grouping.fields.direction.options.'.$this->tableGroupingDirection)
             : null;
     }
 
     protected function getTableSortColumnIndicator(): ?string
     {
         return filled($this->tableSortColumn) && $this->tableSortColumn !== 'null' && $this->isValidTableColumn($this->tableSortColumn)
-            ? __('filament-tables::table.sorting.fields.column.label') . ': ' . $this->getTable()->getColumns()[$this->tableSortColumn]->getLabel()
+            ? __('filament-tables::table.sorting.fields.column.label').': '.$this->getTable()->getColumns()[$this->tableSortColumn]->getLabel()
             : null;
     }
 
     protected function getTableSortColumnDirectionIndicator(): ?string
     {
         return filled($this->tableSortDirection) && $this->tableSortDirection !== 'null' && $this->isValidTableColumn($this->tableSortColumn)
-            ? __('filament-tables::table.sorting.fields.direction.label') . ': ' . __('filament-tables::table.sorting.fields.direction.options.' . $this->tableSortDirection)
+            ? __('filament-tables::table.sorting.fields.direction.label').': '.__('filament-tables::table.sorting.fields.direction.options.'.$this->tableSortDirection)
             : null;
     }
 
@@ -407,7 +407,7 @@ trait HasViewActions
             )
             ->when(
                 $this->tableSearch,
-                fn ($collection, $searchQuery) => $collection->merge([__('filament-tables::table.fields.search.label') . ': ' . $searchQuery])
+                fn ($collection, $searchQuery) => $collection->merge([__('filament-tables::table.fields.search.label').': '.$searchQuery])
             )
             ->when(
                 $this->getTableSortColumnIndicator(),

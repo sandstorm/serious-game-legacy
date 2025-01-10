@@ -14,12 +14,12 @@ beforeEach(function () {
 });
 
 test('we can start time recording', function () {
-    $user = instantiate(UserName::class, "Sebastian");
+    $user = instantiate(UserName::class, 'Sebastian');
     $this->forDoingCoreBusinessLogic->startTimeRecording($user);
     expect(true)->toBeTrue();
 });
 
 test('error if prohibited Username', function () {
-    $user = instantiate(UserName::class, "sandstorm");
+    $user = instantiate(UserName::class, 'sandstorm');
     $this->forDoingCoreBusinessLogic->startTimeRecording($user);
 })->throws(\RuntimeException::class);
