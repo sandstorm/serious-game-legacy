@@ -8,4 +8,4 @@
 with-contenv
 
 # start service in foreground
-/app/artisan queue:work
+/app/artisan horizon

@@ -60,6 +60,7 @@ final class AppAuthorizer
 
         // Special abilities
         'viewPulse' => 'viewPulse',
+        'viewHorizon' => 'viewHorizon',
     ];
 
     private const OBJECT_GROUPS = [
