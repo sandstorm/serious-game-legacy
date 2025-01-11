@@ -7,10 +7,9 @@ namespace App\Providers;
 use App\Authorization\AppAuthorizer;
 use App\Models\User;
 use Domain\NameOfCoreDomainX\CoreDomainXApp;
-use Domain\NameOfCoreDomainX\DrivenPorts\ForLogging;
 use Domain\NameOfCoreDomainX\DrivingPorts\ForDoingCoreBusinessLogic;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Schedule;
 use Illuminate\Support\ServiceProvider;
 
 final class AppServiceProvider extends ServiceProvider
@@ -21,7 +20,7 @@ final class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         // Wire Driven Ports
-        $this->app->scoped(ForLogging::class, CoreDomainXApp::class);
+        // TODO add me here :)
 
         // Wire Driving Ports (the driven ports as dependency are automatically found)
         $this->app->scoped(ForDoingCoreBusinessLogic::class, CoreDomainXApp::class);
@@ -36,7 +35,7 @@ final class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(AppAuthorizer $appAuthorizer): void
+    public function boot(AppAuthorizer $appAuthorizer, Schedule $schedule): void
     {
         if ((bool) $this->app->environment('production')) {
             \URL::forceScheme('https');
@@ -47,9 +46,12 @@ final class AppServiceProvider extends ServiceProvider
             Model::preventAccessingMissingAttributes();
 
             if (class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
-                Schedule::command('telescope:prune')->daily();
+                $schedule->command('telescope:prune')->daily();
             }
         }
+
+        // Laravel Horizon snapshot
+        $schedule->command('horizon:snapshot')->everyFiveMinutes();
 
         // Register our App Authorizer globally
         // @phpstan-ignore argument.type

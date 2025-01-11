@@ -13,7 +13,10 @@ return [
     |
     */
 
-    'default' => env('QUEUE_CONNECTION', 'database'),
+    // Laravel Horizon requires that you use Redis to power your queue.
+    // Therefore, you should ensure that your queue connection is set to redis
+    // in your application's config/queue.php configuration file.
+    'default' => 'redis',
 
     /*
     |--------------------------------------------------------------------------
