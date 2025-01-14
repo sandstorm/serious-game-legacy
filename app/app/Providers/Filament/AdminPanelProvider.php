@@ -12,6 +12,7 @@ use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Navigation\NavigationGroup;
+use Filament\Navigation\NavigationItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -71,6 +72,25 @@ final class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            // use the configured guard in Filament as well - by default the "web" guard is used.
+            ->authGuard(config('auth.defaults.guard'))
+            ->navigationItems([
+                NavigationItem::make('Application Status (pulse)')
+                    ->url('/pulse')
+                    ->icon('heroicon-o-presentation-chart-line')
+                    ->group('Laravel Health')
+                    ->sort(3),
+                NavigationItem::make('Queue Monitoring (Horizon)')
+                    ->url('/horizon')
+                    ->icon('heroicon-o-presentation-chart-line')
+                    ->group('Laravel Health')
+                    ->sort(3),
+                NavigationItem::make('Health Check')
+                    ->url('/up')
+                    ->icon('heroicon-o-presentation-chart-line')
+                    ->group('Laravel Health')
+                    ->sort(3),
             ])
             ->plugin(
                 FilamentDeveloperLoginsPlugin::make()
