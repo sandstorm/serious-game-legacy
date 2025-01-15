@@ -18,7 +18,8 @@ return [
     |
     */
 
-    'driver' => env('SESSION_DRIVER', 'database'),
+    // we force the redis driver here, to ensure we stay logged in on redeployments.
+    'driver' => 'redis',
 
     /*
     |--------------------------------------------------------------------------
