@@ -23,7 +23,7 @@ services:
       DB_PASSWORD: 'laravel'
       DB_USERNAME: 'laravel'
       DB_DATABASE: 'laravel'
-      DB_DATABASE_SCRAMBLED: 'laravel_scrambled'
+      DB_DATABASE_TESTING: 'laravel_testing'
       SANDSTORM_MAPS_API_KEY: '${SANDSTORM_MAPS_API_KEY}'
 
       APP_ENV: local
@@ -83,11 +83,11 @@ services:
       MYSQL_DATABASE: laravel
       MYSQL_USER: laravel
       MYSQL_PASSWORD: laravel
-      DB_DATABASE_SCRAMBLED: 'laravel_scrambled'
+      DB_DATABASE_TESTING: 'laravel_testing'
       MARIADB_AUTO_UPGRADE: 1
     # use Unicode encoding as default!
     volumes:
-      - ./deployment/local-dev/maria-db/createTestingDB.sh:/createTestingDB.sh:cached
+      - ./deployment/local-dev/maria-db/createTestingDB.sh:/docker-entrypoint-initdb.d/createTestingDB.sh:cached
     command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]

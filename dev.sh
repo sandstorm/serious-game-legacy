@@ -172,7 +172,7 @@ function phpstan() {
 
 # run Pest (Unit Testing)
 function pest() {
-  docker compose exec -it laravel /app/vendor/bin/pest $@
+  docker compose exec -e DB_DATABASE=laravel_testing -it laravel /app/vendor/bin/pest $@
 }
 
 function artisan() {
