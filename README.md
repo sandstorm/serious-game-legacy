@@ -168,6 +168,23 @@ dev pest
 dev pest --watch
 ```
 
+**Tests in IntelliJ IDEA**
+
+You can run Pest tests directly in IntelliJ IDEA. To make this work, the following was configured:
+
+- Settings -> Languages&Frameworks -> PHP
+  - CLI Interpreters -> add new one **From Docker** - name it 'php-in-docker'
+    - pick *docker compose* and the right service `laravel`.
+    - after saving, underneath `Lifecycle` of the newly created record, say `docker compose exec`
+  - Choose the new `php-in-docker` as default CLI interpreter
+
+This allowed running full Pest files, but not single tests due to [this bug](https://youtrack.jetbrains.com/issue/WI-79139). A workaround is described here, which is also applied to the project:
+
+- Run -> Edit Configurations -> (at the very bottom left) Edit Configuration Templates ... -> Pest
+- select `<your...project...dir>/app` as custom working directory
+- As extra env, add `DB_DATABASE=laravel_testing` so that the testing DB is used.
+- on the top right, choose *Store as project file*
+
 TODO: Tests in CI
 
 ## PHPStan Static Code Analysis

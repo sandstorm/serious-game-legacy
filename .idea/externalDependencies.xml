@@ -10,5 +10,7 @@
     <plugin id="de.espend.idea.php.annotation" />
     <plugin id="de.espend.idea.php.toolbox" />
     <plugin id="dev.ekvedaras.laravelquery" />
+    <plugin id="org.jetbrains.plugins.phpstorm-docker" />
+    <plugin id="org.jetbrains.plugins.phpstorm-remote-interpreter" />
   </component>
 </project>
