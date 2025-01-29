@@ -9,12 +9,9 @@ package_app_staging:
     - when: always
     - if: '$CI_COMMIT_TAG'
       when: always
-  image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v3
+  image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v4
   needs:
     - build_assets
-    ### start: delete on kickstart ###
-    - build_assets_component_library
-    ### end: delete on kickstart ###
   cache:
     key: MyVendor.AwesomeNeosProject__composer
     paths:
@@ -26,14 +23,10 @@ package_app_staging:
     - COMPOSER_CACHE_DIR=.composer-cache composer install --dev --ignore-platform-reqs
     - cd ..
 
-    # set up Behat
-    - mkdir -p app/Build && cp -R app/Packages/Application/Neos.Behat/Resources/Private/Build/Behat app/Build/Behat
-    - cd app/Build/Behat && COMPOSER_CACHE_DIR=../../.composer-cache composer install && cd ../../../
-
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker pull $CI_REGISTRY_IMAGE/neos:main || true
-    - docker build --cache-from $CI_REGISTRY_IMAGE/neos:main -t $CI_REGISTRY_IMAGE/neos:$CI_COMMIT_REF_SLUG -f deployment/staging/Dockerfile .
-    - docker push $CI_REGISTRY_IMAGE/neos:$CI_COMMIT_REF_SLUG
+    - docker pull $CI_REGISTRY_IMAGE/laravel:main || true
+    - docker build --cache-from $CI_REGISTRY_IMAGE/laravel:main -t $CI_REGISTRY_IMAGE/laravel:$CI_COMMIT_REF_SLUG -f deployment/staging/Dockerfile .
+    - docker push $CI_REGISTRY_IMAGE/laravel:$CI_COMMIT_REF_SLUG
 
 deploy_staging:
   stage: deploy
@@ -47,55 +40,55 @@ deploy_staging:
     entrypoint: ['']
   needs:
     - package_app_staging
-    - e2e_test
+    - test
   environment:
     name: staging
   script:
     - export KUBECONFIG=$KUBECONFIG_K3S2021
-    - kubectl get namespace myvendor-awesomeneosproject-staging
+    - kubectl get namespace myvendor-laravelkickstart-staging
     - kubectl apply -f deployment/staging/database.yaml
     - kubectl apply -f deployment/staging/app.yaml
     # enforce a redeploy by changing the release identifier
     - 'kubectl -n myvendor-awesomeneosproject-staging patch --type merge OneContainerOnePort app -p "{\"spec\":{\"releaseIdentifier\": \"$CI_JOB_ID\"}}"'
 
-a11y_test_staging:
-  image: registry.gitlab.com/gitlab-ci-utils/gitlab-pa11y-ci:latest
-  stage: accessibility
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-      when: always
-    - if: '$CI_COMMIT_TAG'
-      when: always
-  needs:
-    - deploy_staging
-  allow_failure: true
-  before_script:
-    - npm install pa11y-ci-reporter-html
-  interruptible: true
-  script:
-    - mkdir pa11y-ci-report-images
-    - pa11y-ci --reporter=pa11y-ci-reporter-html --config=$A11Y_TEST
-  artifacts:
-    # Make sure artifacts are always saved, otherwise they will not be on failure.
-    when: always
-    expose_as: 'Accessibility Reports'
-    paths:
-      - pa11y-ci-report/
-      - pa11y-ci-report-images/
-    expire_in: 1 week
-
-# read https://gitlab.sandstorm.de/infrastructure/sandstorm-quality-ci for more information
-quality_ci-lhci_staging:
-  stage: quality-ci
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "main"'
-      when: always
-    - if: '$CI_COMMIT_TAG'
-      when: always
-  needs:
-    - deploy_staging
-  extends:
-    - .lhci-template
-  variables:
-    LHCI_URL: https://admin:$LHCI_URL_PASSWORD_STAGING@myvendor-awesomeneosproject-staging.cloud.sandstorm.de/
-    LHCI_TOKEN: $LHCI_TOKEN_STAGING
+#a11y_test_staging:
+#  image: registry.gitlab.com/gitlab-ci-utils/gitlab-pa11y-ci:latest
+#  stage: accessibility
+#  rules:
+#    - if: '$CI_COMMIT_BRANCH == "main"'
+#      when: always
+#    - if: '$CI_COMMIT_TAG'
+#      when: always
+#  needs:
+#    - deploy_staging
+#  allow_failure: true
+#  before_script:
+#    - npm install pa11y-ci-reporter-html
+#  interruptible: true
+#  script:
+#    - mkdir pa11y-ci-report-images
+#    - pa11y-ci --reporter=pa11y-ci-reporter-html --config=$A11Y_TEST
+#  artifacts:
+#    # Make sure artifacts are always saved, otherwise they will not be on failure.
+#    when: always
+#    expose_as: 'Accessibility Reports'
+#    paths:
+#      - pa11y-ci-report/
+#      - pa11y-ci-report-images/
+#    expire_in: 1 week
+#
+## read https://gitlab.sandstorm.de/infrastructure/sandstorm-quality-ci for more information
+#quality_ci-lhci_staging:
+#  stage: quality-ci
+#  rules:
+#    - if: '$CI_COMMIT_BRANCH == "main"'
+#      when: always
+#    - if: '$CI_COMMIT_TAG'
+#      when: always
+#  needs:
+#    - deploy_staging
+#  extends:
+#    - .lhci-template
+#  variables:
+#    LHCI_URL: https://admin:$LHCI_URL_PASSWORD_STAGING@myvendor-awesomeneosproject-staging.cloud.sandstorm.de/
+#    LHCI_TOKEN: $LHCI_TOKEN_STAGING
