@@ -50,7 +50,7 @@ spec:
     livenessProbe:
       enabled: false
 
-  redis: transient
+  redis: persistent
 
   sso:
     enabled: false
