@@ -1,16 +1,12 @@
 <?php
 
 use Domain\NameOfCoreDomainX\CoreDomainXApp;
-use Domain\NameOfCoreDomainX\DrivenPorts\Mocks\MockLogger;
 use Domain\NameOfCoreDomainX\Dto\UserName;
 
 use function Wwwision\Types\instantiate;
 
 beforeEach(function () {
-    $this->mockLogger = new MockLogger();
-    $this->forDoingCoreBusinessLogic = new CoreDomainXApp(
-        forLogging: $this->mockLogger,
-    );
+    $this->forDoingCoreBusinessLogic = new CoreDomainXApp();
 });
 
 test('we can start time recording', function () {
