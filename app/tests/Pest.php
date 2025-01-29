@@ -12,7 +12,13 @@
 */
 
 pest()->extend(Tests\TestCase::class)
+    ->beforeEach(function () {
+        // It is easier to debug broken tests if we disable exception handling
+        // by default with the next line. To opt out from this, use $this->withExceptionHandling() in the testcase.
+        $this->withoutExceptionHandling();
+    })
  // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+
     ->in('Feature', 'Unit');
 
 /*
