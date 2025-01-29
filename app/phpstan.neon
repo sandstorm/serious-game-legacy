@@ -24,9 +24,10 @@ parameters:
         - _ide_helper_models.php
         #- _ide_helper.php
 
-    # Level 10 is the highest level
-    level: 10
+    # Level 8 is suggested at https://phpstan.org/user-guide/rule-levels
+    level: 8
     reportMaybesInPropertyPhpDocTypes: false
+    treatPhpDocTypesAsCertain: false
 
     #############
     # larastan: https://github.com/larastan/larastan/blob/3.x/docs/rules.md

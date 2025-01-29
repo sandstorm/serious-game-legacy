@@ -10,7 +10,6 @@ use Illuminate\Auth\Access\Events\GateEvaluated;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Connection;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Central authorization service that enforces role-based access control across the application.
@@ -141,7 +140,7 @@ final class AppAuthorizer
                     'ability' => $ability,
                 ],
                 [
-                    'count' => DB::raw('count + 1'),
+                    'count' => $this->connection->raw('count + 1'),
                     'last_seen' => now(),
                 ]
             );
@@ -152,7 +151,7 @@ final class AppAuthorizer
                     'object' => $object,
                 ],
                 [
-                    'count' => DB::raw('count + 1'),
+                    'count' => $this->connection->raw('count + 1'),
                     'last_seen' => now(),
                 ]
             );

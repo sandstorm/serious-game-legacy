@@ -53,7 +53,6 @@ services:
       - ~/.local/share/phpstan-pro:/tmp/phpstan-fixer
     ports:
       - ${LARAVEL_PORT:-8090:8081}
-      - ${LARAVEL_SCRAMBLED_PORT:-9090:9090} # for laravel_scrambled
       - ${LARAVEL_PHPSTAN_PORT:-127.0.0.1:11111:11111} # for PHPStan Pro
     depends_on:
       maria-db:

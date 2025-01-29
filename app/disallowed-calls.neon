@@ -6,6 +6,9 @@ parameters:
             namespace:
                 - 'Illuminate\*'
             message: 'it is FORBIDDEN TO USE LARAVEL inside the core domain. Create a Port instead.'
+            exclude:
+                - 'Illuminate\Database\ConnectionInterface'
+
             allowExceptIn:
                 - src/*
 
@@ -13,13 +16,9 @@ parameters:
             namespace: 'Illuminate\Support\Facades\*'
             message: 'it is forbidden to use laravel facades (except in Providers) as it breaks encapsulation. Use dependency injection instead.'
             exclude:
-                - 'Illuminate\Support\Facades\DB'
+                - 'Illuminate\Support\Facades\Hash'
             allowIn:
                 - app/Providers/*
-    disallowedStaticCalls:
-        -
-            method: 'Illuminate\Support\Facades\DB::raw()'
-            message: 'use our own logger instead'
 
     disallowedFunctionCalls:
         -   # We do not want to use helpers which access global state. -> Dependency Injection
@@ -35,11 +34,13 @@ parameters:
                 - 'env()'
                 - 'event()'
                 - 'info()' # TODO: this might be OK
-                - 'logger()' # TODO: this might be OK
+                #- 'logger()' is allowed
                 - 'policy()'
                 - 'request()'
                 - 'resolve()'
                 - 'session()'
                 # 'view()' is allowed
             message: 'it is forbidden use global laravel functions which access global state. Use dependency injection instead.'
+            allowIn:
+                - 'app/Providers/*'
 

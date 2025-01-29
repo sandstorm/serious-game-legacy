@@ -113,7 +113,6 @@ final class AdminPanelProvider extends PanelProvider
                 )
             )
             ->plugin(
-                // @phpstan-ignore method.nonObject,argument.type
                 BreezyCore::make()
                     ->myProfile(
                         // for showing in main navigation: shouldRegisterNavigation: true,
