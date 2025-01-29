@@ -25,6 +25,9 @@ final class AppServiceProvider extends ServiceProvider
         // Wire Driving Ports (the driven ports as dependency are automatically found)
         $this->app->scoped(ForDoingCoreBusinessLogic::class, CoreDomainXApp::class);
 
+        //////////////////////
+        /// GENERIC
+        //////////////////////
         // Register Telescope only for local dev
         if ((bool) $this->app->environment('local') && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
@@ -37,6 +40,9 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(AppAuthorizer $appAuthorizer, Schedule $schedule): void
     {
+        //////////////////////
+        /// GENERIC
+        //////////////////////
         if ((bool) $this->app->environment('production')) {
             \URL::forceScheme('https');
         } else {
@@ -58,6 +64,11 @@ final class AppServiceProvider extends ServiceProvider
 
         // we need to define the gate for accessing /pulse - the actual access check is done in AppAuthorizer.
         \Gate::define('viewPulse', function (User $user) {
+            return false;
+        });
+
+        // we need to define the gate for accessing /horizon - the actual access check is done in AppAuthorizer.
+        \Gate::define('viewHorizon', function (User $user) {
             return false;
         });
     }
