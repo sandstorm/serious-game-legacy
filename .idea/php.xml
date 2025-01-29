@@ -5,9 +5,14 @@
       <LaravelPintConfiguration tool_path="$PROJECT_DIR$/app/vendor/bin/pint" />
     </laravel_pint_settings>
   </component>
+  <component name="MessDetector">
+    <phpmd_settings>
+      <phpmd_by_interpreter asDefaultInterpreter="true" interpreter_id="514a332a-0a67-412b-89f6-5bb8cebec009" timeout="30000" />
+    </phpmd_settings>
+  </component>
   <component name="PhpCodeSniffer">
     <phpcs_settings>
-      <PhpCSConfiguration asDefaultInterpreter="true" />
+      <phpcs_by_interpreter asDefaultInterpreter="true" interpreter_id="514a332a-0a67-412b-89f6-5bb8cebec009" />
     </phpcs_settings>
   </component>
   <component name="PhpIncludePathManager">
@@ -358,6 +363,7 @@
       <path value="$PROJECT_DIR$/app/vendor/pragmarx/google2fa" />
       <path value="$PROJECT_DIR$/app/vendor/paragonie/constant_time_encoding" />
       <path value="$PROJECT_DIR$/app/vendor/bacon/bacon-qr-code" />
+      <path value="$PROJECT_DIR$/app/vendor/laravel/horizon" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
