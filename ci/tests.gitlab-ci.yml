@@ -6,7 +6,6 @@ php_code_analysis:
   needs: []
   dependencies: []
   interruptible: true
-  allow_failure: true
   cache:
     key: MyVendor.AwesomeNeosProject__composer
     paths:
@@ -38,14 +37,37 @@ test:
     - COMPOSER_CACHE_DIR=.composer-cache composer install --ignore-platform-reqs
     - ./vendor/bin/pest --ci --log-junit=test-results/pest.xml
     - echo "CI tests finished"
-  allow_failure: true
+  variables:
+    # service mariadb
+    MYSQL_USER: "ci_user"
+    MYSQL_PASSWORD: "ci_db_password"
+    MYSQL_DATABASE: "ci_test"
+    # otherwise service will not start
+    MARIADB_RANDOM_ROOT_PASSWORD: "yes"
+
+    # laravel
+    # INSECURE; for local dev only
+    APP_KEY: base64:+cg1qRwOrn6qExb0tCCUJpKCemMY6PcZEax9qhcObbs=
+    DB_CONNECTION: mariadb
+    DB_HOST: mariadb
+    DB_PORT: 3306
+    DB_USERNAME: ${MYSQL_USER}
+    DB_PASSWORD: ${MYSQL_PASSWORD}
+    DB_DATABASE: ${MYSQL_DATABASE}
+    CACHE_STORE: redis
+    REDIS_HOST: redis
+    REDIS_PORT: 6379
+    QUEUE_CONNECTION: redis
+  services:
+    - name: mariadb:10.11
+    - name: redis:7
   artifacts:
     expire_in: 5 days
     when: always
     paths:
-      - test-results
+      - app/test-results
     reports:
-      junit: test-results/pest.xml
+      junit: app/test-results/pest.xml
 
 #code_metrics:
 #  stage: quality-ci
