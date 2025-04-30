@@ -14,7 +14,9 @@
       <sourceFolder url="file://$MODULE_DIR$/app/database/factories" isTestSource="false" packagePrefix="Database\Factories\" />
       <sourceFolder url="file://$MODULE_DIR$/app/database/seeders" isTestSource="false" packagePrefix="Database\Seeders\" />
       <sourceFolder url="file://$MODULE_DIR$/app/src" isTestSource="false" packagePrefix="Domain\" />
+      <sourceFolder url="file://$MODULE_DIR$/app/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/app/tests" isTestSource="true" packagePrefix="Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/app/Build/Behat/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/ralphjsmit/laravel-filament-record-finder" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/ralphjsmit/packages" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/anourvalar/eloquent-serialize" />

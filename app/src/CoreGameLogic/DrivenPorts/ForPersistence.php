@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\NameOfCoreDomainX\DrivenPorts;
+namespace Domain\CoreGameLogic\DrivenPorts;
 
 /**
  * Driven Port for persistence operations

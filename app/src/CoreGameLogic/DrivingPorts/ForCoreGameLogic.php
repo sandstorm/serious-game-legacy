@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Domain\NameOfCoreDomainX\DrivingPorts;
+namespace Domain\CoreGameLogic\DrivingPorts;
 
-use Domain\NameOfCoreDomainX\Dto\UserName;
+use Domain\CoreGameLogic\Dto\UserName;
 
 /**
  * Driving Port for core business operations
  *
  * This is the primary entry point into the domain from external code:
  * - External code (e.g. controllers) depend on this interface
- * - The implementation {@see CoreDomainXApp} contains the actual logic
+ * - The implementation {@see CoreGameLogicApp} contains the actual logic
  * - Methods define the allowed operations on this domain
  *
  * Because this is wired in AppServiceProvider, you can *inject this everywhere*
@@ -31,7 +31,7 @@ use Domain\NameOfCoreDomainX\Dto\UserName;
  *
  * @api Main entry point into the core domain
  */
-interface ForDoingCoreBusinessLogic
+interface ForCoreGameLogic
 {
     public function startTimeRecording(UserName $userName): void;
 }

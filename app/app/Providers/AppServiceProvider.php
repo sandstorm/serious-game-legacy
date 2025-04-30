@@ -6,8 +6,8 @@ namespace App\Providers;
 
 use App\Authorization\AppAuthorizer;
 use App\Models\User;
-use Domain\NameOfCoreDomainX\CoreDomainXApp;
-use Domain\NameOfCoreDomainX\DrivingPorts\ForDoingCoreBusinessLogic;
+use Domain\CoreGameLogic\CoreGameLogicApp;
+use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
@@ -23,7 +23,7 @@ final class AppServiceProvider extends ServiceProvider
         // TODO add me here :)
 
         // Wire Driving Ports (the driven ports as dependency are automatically found)
-        $this->app->scoped(ForDoingCoreBusinessLogic::class, CoreDomainXApp::class);
+        $this->app->scoped(ForCoreGameLogic::class, CoreGameLogicApp::class);
 
         //////////////////////
         /// GENERIC

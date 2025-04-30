@@ -1,35 +1,7 @@
-# Sandstorm Laravel on Docker Kickstart
-
-[//]: # (KICKSTART_INFO_SECTION__START)
-
-Features of Laravel kickstart:
-
-- Docker Compose setup very similar to our Neos setup
-- helpful packages configured
-
-Still open topics:
-
-- settings? filament/spatie-laravel-settings-plugin only meh
-
-
-This packages helps you to quickly set up a Laravel/Filament Project. Besides a basic Laravel and Filament setup we included lots of best practices in the application, so you'll be up and running in no time.
-
-This project is FORKED from neos-on-kickstart, so infrastructure changes can be downmerged from there.
-
-You need composer on your machine to use kickstarter. If you don't have composer installed, you can install it via homebrew:
-```
-brew install composer
-```
-
-To start, simply fork this repo and start coding :)
-
-**We suggest that you keep the history of the kickstarter in your project, as this will
-make it easier to pull upcoming changes from the kickstarter to your project.**
-
-[//]: # (KICKSTART_INFO_SECTION__END)
+#  Serious Game Legacy + Moonshot von Uni Konstanz
 
 <!-- TOC -->
-* [Sandstorm Laravel on Docker Kickstart](#sandstorm-laravel-on-docker-kickstart)
+* [Serious Game Legacy + Moonshot von Uni Konstanz](#serious-game-legacy--moonshot-von-uni-konstanz)
   * [Requirements](#requirements)
   * [Features](#features)
   * [Initial Setup (required once)](#initial-setup-required-once)

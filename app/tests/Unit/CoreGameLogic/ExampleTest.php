@@ -1,12 +1,12 @@
 <?php
 
-use Domain\NameOfCoreDomainX\CoreDomainXApp;
-use Domain\NameOfCoreDomainX\Dto\UserName;
+use Domain\CoreGameLogic\CoreGameLogicApp;
+use Domain\CoreGameLogic\Dto\UserName;
 
 use function Wwwision\Types\instantiate;
 
 beforeEach(function () {
-    $this->forDoingCoreBusinessLogic = new CoreDomainXApp();
+    $this->forDoingCoreBusinessLogic = new CoreGameLogicApp();
 });
 
 test('we can start time recording', function () {

@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Domain\NameOfCoreDomainX;
+namespace Domain\CoreGameLogic;
 
-use Domain\NameOfCoreDomainX\DrivingPorts\ForDoingCoreBusinessLogic;
-use Domain\NameOfCoreDomainX\Dto\UserName;
+use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
+use Domain\CoreGameLogic\Dto\UserName;
 
 /**
  * Main implementation of core business logic
  *
- * This class implements the driving port {@see ForDoingCoreBusinessLogic} and
+ * This class implements the driving port {@see ForCoreGameLogic} and
  * coordinates the core domain operations. It:
  * - Contains the actual business logic
  * - Uses driven ports (e.g. ForLogging) to interact with external services
  * - Never directly depends on framework code
  *
- * @internal from the outside world, you'll always use the interface {@see ForDoingCoreBusinessLogic}, except when constructing this application
+ * @internal from the outside world, you'll always use the interface {@see ForCoreGameLogic}, except when constructing this application
  */
-final class CoreDomainXApp implements ForDoingCoreBusinessLogic
+final class CoreGameLogicApp implements ForCoreGameLogic
 {
     public function __construct(
         // add driven ports here
