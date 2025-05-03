@@ -41,6 +41,7 @@ RUN apt-get update -y && \
     apt-get install --no-install-recommends -y \
         libicu-dev \
         libxslt1-dev \
+        libuv1-dev \
         nginx-light \
         procps \
         libzip-dev \
@@ -52,7 +53,8 @@ RUN apt-get update -y && \
     rm -rf /var/lib/apt/lists/* && \
     docker-php-ext-install intl bcmath opcache pdo pdo_mysql xsl zip pcntl && \
     pecl install excimer && \
-    pecl install redis && docker-php-ext-enable redis excimer
+    pecl install redis && docker-php-ext-enable redis excimer && \
+    pecl install channel://pecl.php.net/uv-0.3.0 && docker-php-ext-enable uv
 
 # for PHP 8.1, disable deprecations to temporarily make Neos/Flow work
 RUN echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT" >> /usr/local/etc/php/conf.d/error_reporting.ini

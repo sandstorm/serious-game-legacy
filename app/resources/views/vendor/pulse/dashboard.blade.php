@@ -18,4 +18,8 @@
     <livewire:pulse.slow-outgoing-requests cols="6" />
 
     <livewire:pulse.unknown-permissions cols="6" />
+
+    <livewire:reverb.connections cols="full" />
+
+    <livewire:reverb.messages cols="full" />
 </x-pulse>

@@ -8,6 +8,7 @@ RUN apt-get update -y && \
     apt-get install --no-install-recommends -y \
         libicu-dev \
         libxslt1-dev \
+        libuv1-dev \
         nginx-light \
         libvips42 \
         libvips-dev \
@@ -22,7 +23,8 @@ RUN apt-get update -y && \
     docker-php-ext-install intl bcmath opcache pdo pdo_mysql xsl ffi && \
     pecl install vips excimer && \
     echo "extension=vips.so" > /usr/local/etc/php/conf.d/vips.ini && \
-    pecl install redis && docker-php-ext-enable redis excimer
+    pecl install redis && docker-php-ext-enable redis excimer && \
+    pecl install channel://pecl.php.net/uv-0.3.0 && docker-php-ext-enable uv
 
 # ----------------
 # Development dependencies (should be equal on local-dev, staging and production):
