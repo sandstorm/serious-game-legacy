@@ -364,6 +364,17 @@
       <path value="$PROJECT_DIR$/app/vendor/paragonie/constant_time_encoding" />
       <path value="$PROJECT_DIR$/app/vendor/bacon/bacon-qr-code" />
       <path value="$PROJECT_DIR$/app/vendor/laravel/horizon" />
+      <path value="$PROJECT_DIR$/app/vendor/react/socket" />
+      <path value="$PROJECT_DIR$/app/vendor/react/dns" />
+      <path value="$PROJECT_DIR$/app/vendor/react/cache" />
+      <path value="$PROJECT_DIR$/app/vendor/react/promise-timer" />
+      <path value="$PROJECT_DIR$/app/vendor/react/promise" />
+      <path value="$PROJECT_DIR$/app/vendor/ratchet/rfc6455" />
+      <path value="$PROJECT_DIR$/app/vendor/paragonie/sodium_compat" />
+      <path value="$PROJECT_DIR$/app/vendor/laravel/reverb" />
+      <path value="$PROJECT_DIR$/app/vendor/pusher/pusher-php-server" />
+      <path value="$PROJECT_DIR$/app/vendor/clue/redis-react" />
+      <path value="$PROJECT_DIR$/app/vendor/clue/redis-protocol" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
