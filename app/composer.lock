@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5d65faeac2201ed26ede5f8906859acf",
+    "content-hash": "d9a506ba7eb20679714ea1e173060350",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -4283,6 +4283,54 @@
             "time": "2024-12-05T17:15:07+00:00"
         },
         {
+            "name": "neos/eventstore",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/neos/eventstore.git",
+                "reference": "d20730232be0dcdf571614a101162434237438eb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/neos/eventstore/zipball/d20730232be0dcdf571614a101162434237438eb",
+                "reference": "d20730232be0dcdf571614a101162434237438eb",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1",
+                "ramsey/uuid": "^4.3",
+                "webmozart/assert": "^1.10"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^10",
+                "roave/security-advisories": "dev-latest",
+                "squizlabs/php_codesniffer": "^4.0.x-dev"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Neos\\EventStore\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Store for Event-Sourced applications",
+            "support": {
+                "issues": "https://github.com/neos/eventstore/issues",
+                "source": "https://github.com/neos/eventstore/tree/1.0.2"
+            },
+            "funding": [
+                {
+                    "url": "https://www.neos.io/community/participate/supporting-neos.html",
+                    "type": "other"
+                }
+            ],
+            "time": "2025-04-01T15:34:07+00:00"
+        },
+        {
             "name": "nesbot/carbon",
             "version": "3.8.4",
             "source": {
@@ -6683,6 +6731,73 @@
                 }
             ],
             "time": "2024-02-26T18:08:49+00:00"
+        },
+        {
+            "name": "sandstorm/eventstore-laraveladapter",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "./DistributionPackages/eventstore-eloquentadapter",
+                "reference": "e745f4cc1dba24cdbbd9a9485630cf8b4af47be3"
+            },
+            "require": {
+                "laravel/framework": "^11",
+                "neos/eventstore": "^1",
+                "php": "^8.1",
+                "psr/clock": "^1",
+                "webmozart/assert": "^1.10"
+            },
+            "require-dev": {
+                "brianium/paratest": "^7.2",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^10",
+                "roave/security-advisories": "dev-latest",
+                "squizlabs/php_codesniffer": "^4.0.x-dev"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sandstorm\\EventStore\\LaravelAdapter\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Sandstorm\\EventStore\\LaravelAdapter\\Tests\\": "tests/",
+                    "Neos\\EventStore\\Tests\\": "vendor/neos/eventstore/tests/"
+                }
+            },
+            "scripts": {
+                "test:phpstan": [
+                    "phpstan"
+                ],
+                "test:cs": [
+                    "phpcs --colors src"
+                ],
+                "test:cs:fix": [
+                    "phpcbf --colors src"
+                ],
+                "test:integration": [
+                    "phpunit tests/Integration --exclude-group=parallel"
+                ],
+                "test:consistency": [
+                    "Sandstorm\\EventStore\\LaravelAdapter\\Tests\\Integration\\DoctrineEventStoreTest::consistency_prepare",
+                    "paratest tests/Integration --group=parallel --functional --processes 10",
+                    "Sandstorm\\EventStore\\LaravelAdapter\\Tests\\Integration\\DoctrineEventStoreTest::consistency_validateEvents"
+                ],
+                "test": [
+                    "@test:phpstan",
+                    "@test:cs",
+                    "@test:integration",
+                    "@test:consistency"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Laravel DB based implementation for the neos/eventstore",
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "scrivo/highlight.php",
@@ -9827,68 +9942,6 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
-        },
-        {
-            "name": "wwwision/types",
-            "version": "1.3.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/bwaidelich/types.git",
-                "reference": "0b96632ea60ac727cfc0117cc4903de5cc4826ca"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/bwaidelich/types/zipball/0b96632ea60ac727cfc0117cc4903de5cc4826ca",
-                "reference": "0b96632ea60ac727cfc0117cc4903de5cc4826ca",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.1",
-                "ramsey/uuid": "^4.7",
-                "webmozart/assert": "^1.11"
-            },
-            "require-dev": {
-                "phpbench/phpbench": "^1.2",
-                "phpstan/phpstan": "^1.10",
-                "phpunit/phpunit": "^10.1",
-                "roave/security-advisories": "dev-latest",
-                "squizlabs/php_codesniffer": "^4.0.x-dev"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/instantiate.php"
-                ],
-                "psr-4": {
-                    "Wwwision\\Types\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "bwaidelich",
-                    "email": "b.waidelich@wwwision.de"
-                }
-            ],
-            "description": "Tools to create PHP types that adhere to JSON schema like rules",
-            "support": {
-                "issues": "https://github.com/bwaidelich/types/issues",
-                "source": "https://github.com/bwaidelich/types/tree/1.3.2"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/sponsors/bwaidelich",
-                    "type": "github"
-                },
-                {
-                    "url": "https://www.paypal.me/bwaidelich",
-                    "type": "paypal"
-                }
-            ],
-            "time": "2024-12-19T10:07:20+00:00"
         }
     ],
     "packages-dev": [
@@ -14647,7 +14700,8 @@
     "stability-flags": {
         "archilex/filament-filter-sets": 20,
         "ralphjsmit/laravel-filament-record-finder": 20,
-        "ralphjsmit/packages": 20
+        "ralphjsmit/packages": 20,
+        "sandstorm/eventstore-laraveladapter": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

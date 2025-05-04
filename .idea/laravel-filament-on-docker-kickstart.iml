@@ -15,6 +15,7 @@
       <sourceFolder url="file://$MODULE_DIR$/app/database/seeders" isTestSource="false" packagePrefix="Database\Seeders\" />
       <sourceFolder url="file://$MODULE_DIR$/app/src" isTestSource="false" packagePrefix="Domain\" />
       <sourceFolder url="file://$MODULE_DIR$/app/tests" isTestSource="true" packagePrefix="Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/app/Build/Behat/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/ralphjsmit/laravel-filament-record-finder" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/ralphjsmit/packages" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/anourvalar/eloquent-serialize" />
@@ -203,7 +204,6 @@
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/react/stream" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/spaze/phpstan-disallowed-calls" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/staabm/phpstan-todo-by" />
-      <excludeFolder url="file://$MODULE_DIR$/app/vendor/wwwision/types" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/bacon/bacon-qr-code" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/dasprid/enum" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/jeffgreco13/filament-breezy" />
@@ -221,6 +221,8 @@
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/react/promise" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/react/promise-timer" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/react/socket" />
+      <excludeFolder url="file://$MODULE_DIR$/app/DistributionPackages/eventstore-laraveladapter/vendor" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/neos/eventstore" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

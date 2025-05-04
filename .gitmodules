@@ -1,0 +1,3 @@
+[submodule "app/DistributionPackages/eventstore-laraveladapter"]
+	path = app/DistributionPackages/eventstore-laraveladapter
+	url = https://github.com/sandstorm/eventstore-laraveladapter.git

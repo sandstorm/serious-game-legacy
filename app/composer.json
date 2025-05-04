@@ -23,9 +23,10 @@
         "laravel/pulse": "^1.3",
         "laravel/reverb": "^1.0",
         "laravel/tinker": "^2.9",
+        "neos/eventstore": "^1.0",
         "ralphjsmit/laravel-filament-record-finder": "@dev",
         "ralphjsmit/packages": "dev-main as 1.4.2",
-        "wwwision/types": "^1.3"
+        "sandstorm/eventstore-laraveladapter": "@dev"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.4",

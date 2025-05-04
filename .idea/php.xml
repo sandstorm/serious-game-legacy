@@ -354,7 +354,6 @@
       <path value="$PROJECT_DIR$/app/vendor/nikolaposa/version" />
       <path value="$PROJECT_DIR$/app/vendor/staabm/phpstan-todo-by" />
       <path value="$PROJECT_DIR$/app/vendor/spaze/phpstan-disallowed-calls" />
-      <path value="$PROJECT_DIR$/app/vendor/wwwision/types" />
       <path value="$PROJECT_DIR$/app/vendor/doctrine/sql-formatter" />
       <path value="$PROJECT_DIR$/app/vendor/laravel/pulse" />
       <path value="$PROJECT_DIR$/app/vendor/laravel/telescope" />
@@ -375,6 +374,7 @@
       <path value="$PROJECT_DIR$/app/vendor/pusher/pusher-php-server" />
       <path value="$PROJECT_DIR$/app/vendor/clue/redis-react" />
       <path value="$PROJECT_DIR$/app/vendor/clue/redis-protocol" />
+      <path value="$PROJECT_DIR$/app/vendor/neos/eventstore" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
