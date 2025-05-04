@@ -11,23 +11,34 @@ use Livewire\Mechanisms\HandleComponents\Synthesizers\Synth;
  */
 class ValueObjectSynth extends Synth
 {
-    public static $key = 'vo';
+    public static string $key = 'vo';
 
-    public static function match($target)
+    public static function match(mixed $target): bool
     {
         return $target instanceof ValueObjectInterface;
     }
 
-    public function dehydrate($target)
+    /**
+     * @param ValueObjectInterface $target
+     * @return array<mixed>
+     */
+    public function dehydrate(ValueObjectInterface $target): array
     {
+        // @phpstan-ignore property.notFound
         return [$target->value, [
             'type' => get_class($target),
         ]];
     }
 
-    public function hydrate($value, $metadata)
+    /**
+     * @param mixed $value
+     * @param array<mixed> $metadata
+     * @return ValueObjectInterface
+     */
+    public function hydrate(mixed $value, array $metadata): ValueObjectInterface
     {
         $type = $metadata['type'];
+        // @phpstan-ignore return.type
         return new $type($value);
     }
 }

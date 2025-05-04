@@ -60,7 +60,7 @@ final readonly class GameEvents implements \IteratorAggregate, \Countable
     /**
      * @template T
      * @param \Closure(GameEventInterface|DecoratedEvent $event): T $callback
-     * @return non-empty-list<T>
+     * @return non-empty-array<T>
      */
     public function map(\Closure $callback): array
     {
@@ -86,7 +86,7 @@ final readonly class GameEvents implements \IteratorAggregate, \Countable
     {
         $element = $this->findLastOrNull($className);
         if ($element === null) {
-            return new \RuntimeException('No event of type '.$className.' found');
+            throw new \RuntimeException('No event of type '.$className.' found');
         }
 
         return $element;
@@ -108,6 +108,11 @@ final readonly class GameEvents implements \IteratorAggregate, \Countable
         return null;
     }
 
+    /**
+     * @template T of object
+     * @param class-string<T> $className
+     * @return GameEvents
+     */
     public function findAllOfType(string $className): self
     {
         return self::fromArray(array_filter($this->events, fn($event) => $event instanceof $className));

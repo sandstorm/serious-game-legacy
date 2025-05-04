@@ -2,13 +2,18 @@
 
 namespace Domain\CoreGameLogic\Dto\ValueObject;
 
+use Domain\CoreGameLogic\Dto\Aktion\Aktion;
 use Traversable;
 
 /**
  * @immutable
+ * @implements \IteratorAggregate<\Domain\CoreGameLogic\Dto\ValueObject\Modifier>
  */
 readonly class ModifierCollection implements \IteratorAggregate
 {
+    /**
+     * @param Modifier[] $modifiers
+     */
     public function __construct(private array $modifiers)
     {
     }
@@ -27,7 +32,11 @@ readonly class ModifierCollection implements \IteratorAggregate
         return new \ArrayIterator($this->modifiers);
     }
 
-    public function applyToAvailableAktionen(array $applicableAktionen)
+    /**
+     * @param Aktion[] $applicableAktionen
+     * @return Aktion[]
+     */
+    public function applyToAvailableAktionen(array $applicableAktionen): array
     {
         foreach ($this->modifiers as $modifier) {
             assert($modifier instanceof Modifier);

@@ -21,7 +21,7 @@ class GameUi extends Component
     private ForCoreGameLogic $coreGameLogic;
     private GameEvents $gameStream;
 
-    public function mount()
+    public function mount(): void
     {
         /*$this->name = Auth::user()->name;
 
@@ -41,12 +41,12 @@ class GameUi extends Component
         return CurrentPlayerAccessor::forStream($this->gameStream);
     }
 
-    public function render()
+    public function render(): \Illuminate\View\View
     {
         return view('livewire.game-ui');
     }
 
-    public function spielzugAbschliessen()
+    public function spielzugAbschliessen(): void
     {
         $this->coreGameLogic->handle($this->gameId, new SpielzugAbschliessen($this->myself));
 
@@ -54,20 +54,23 @@ class GameUi extends Component
         $this->eventDispatcher->dispatch(new GameStateUpdated($this->gameId));
     }
 
-    public function triggerGameAction(string $gameAction)
+    public function triggerGameAction(string $gameAction): void
     {
         // TODO: IMPL ME
         $this->eventDispatcher->dispatch(new GameStateUpdated($this->gameId));
     }
 
-    public function getListeners()
+    /**
+     * @return string[]
+     */
+    public function getListeners(): array
     {
         return [
             "echo:game.{$this->gameId->value},GameStateUpdated" => 'notifyGameStateUpdated',
         ];
     }
 
-    public function notifyGameStateUpdated()
+    public function notifyGameStateUpdated(): void
     {
         // the component automatically recalculates; so we do not need to do anything.
     }

@@ -18,7 +18,7 @@ class GamePlayController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request, string $gameId, string $myselfId)
+    public function __invoke(Request $request, string $gameId, string $myselfId): \Illuminate\View\View
     {
         $gameId = new GameId($gameId);
         $myselfId = new PlayerId($myselfId);
