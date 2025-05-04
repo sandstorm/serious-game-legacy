@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
@@ -15,7 +16,7 @@ class GameStateUpdated implements ShouldBroadcastNow
     /**
      * Create a new event instance.
      */
-    public function __construct(private readonly string $playId)
+    public function __construct(private readonly GameId $gameId)
     {
     }
 
@@ -28,7 +29,7 @@ class GameStateUpdated implements ShouldBroadcastNow
     {
         return [
             //new PrivateChannel('game.' . $this->playId),
-            new Channel('game.' . $this->playId),
+            new Channel('game.' . $this->gameId->value),
         ];
     }
 }

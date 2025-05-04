@@ -1,0 +1,143 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Domain\CoreGameLogic\EventStore;
+
+use Domain\CoreGameLogic\Dto\Event\InitializePlayerOrdering;
+use Domain\CoreGameLogic\Dto\Event\JahreswechselEvent;
+use Domain\CoreGameLogic\Dto\Event\Player\CardActivated;
+use Domain\CoreGameLogic\Dto\Event\Player\CardSkipped;
+use Domain\CoreGameLogic\Dto\Event\Player\KontoJahresabschlussOnJahreswechsel;
+use Domain\CoreGameLogic\Dto\Event\Player\SpielzugWasCompleted;
+use Domain\CoreGameLogic\Dto\Event\Player\TriggeredEreignis;
+use Neos\EventStore\Model\Event;
+use Neos\EventStore\Model\Event\EventData;
+use Neos\EventStore\Model\Event\EventId;
+use Neos\EventStore\Model\Event\EventType;
+
+/**
+ * Central authority to convert Game domain events to Event Store EventData and EventType, vice versa.
+ *
+ * - For normalizing (from classes to event store)
+ * - For denormalizing (from event store to classes)
+ *
+ * @internal inside projections the event will already be denormalized
+ */
+final readonly class EventNormalizer
+{
+    private function __construct(
+        /**
+         * @var array<class-string<GameEventInterface>,EventType>
+         */
+        private array $fullClassNameToShortEventType,
+        /**
+         * @var array<string,class-string<GameEventInterface>>
+         */
+        private array $shortEventTypeToFullClassName,
+    ) {
+    }
+
+    /**
+     * @internal never instantiate this object yourself
+     */
+    public static function create(): self
+    {
+        $supportedEventClassNames = [
+            InitializePlayerOrdering::class,
+            JahreswechselEvent::class,
+            CardActivated::class,
+            CardSkipped::class,
+            KontoJahresabschlussOnJahreswechsel::class,
+            SpielzugWasCompleted::class,
+            TriggeredEreignis::class,
+        ];
+
+        $fullClassNameToShortEventType = [];
+        $shortEventTypeToFullClassName = [];
+
+        foreach ($supportedEventClassNames as $fullEventClassName) {
+            $shortEventClassName = substr($fullEventClassName, strrpos($fullEventClassName, '\\') + 1);
+
+            $fullClassNameToShortEventType[$fullEventClassName] = EventType::fromString($shortEventClassName);
+            $shortEventTypeToFullClassName[$shortEventClassName] = $fullEventClassName;
+        }
+
+        return new self(
+            fullClassNameToShortEventType: $fullClassNameToShortEventType,
+            shortEventTypeToFullClassName: $shortEventTypeToFullClassName
+        );
+    }
+
+    /**
+     * @return class-string<GameEventInterface>
+     */
+    public function getEventClassName(Event $event): string
+    {
+        return $this->shortEventTypeToFullClassName[$event->type->value] ?? throw new \InvalidArgumentException(
+            sprintf('Failed to denormalize event "%s" of type "%s"', $event->id->value, $event->type->value),
+            1651839705
+        );
+    }
+
+    public function normalize(GameEventInterface $event): Event
+    {
+        $eventId = $event instanceof DecoratedEvent && $event->eventId !== null ? $event->eventId : EventId::create();
+        $eventMetadata = $event instanceof DecoratedEvent ? $event->eventMetadata : null;
+        $causationId = $event instanceof DecoratedEvent ? $event->causationId : null;
+        $correlationId = $event instanceof DecoratedEvent ? $event->correlationId : null;
+        $event = $event instanceof DecoratedEvent ? $event->innerEvent : $event;
+        return new Event(
+            $eventId,
+            $this->getEventType($event),
+            $this->getEventData($event),
+            $eventMetadata,
+            $causationId,
+            $correlationId,
+        );
+    }
+
+    public function denormalize(Event $event): GameEventInterface
+    {
+        $eventClassName = $this->getEventClassName($event);
+        try {
+            $eventDataAsArray = json_decode($event->data->value, true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException $exception) {
+            throw new \InvalidArgumentException(
+                sprintf('Failed to decode data of event with type "%s" and id "%s": %s', $event->type->value, $event->id->value, $exception->getMessage()),
+                1651839461
+            );
+        }
+        if (!is_array($eventDataAsArray)) {
+            throw new \RuntimeException(sprintf('Expected array got %s', $eventDataAsArray));
+        }
+        /** {@see GameEventInterface::fromArray()} */
+        return $eventClassName::fromArray($eventDataAsArray);
+    }
+
+    private function getEventData(GameEventInterface $event): EventData
+    {
+        try {
+            $eventDataAsJson = json_encode($event, JSON_THROW_ON_ERROR);
+        } catch (\JsonException $exception) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Failed to normalize event of type "%s": %s',
+                    get_debug_type($event),
+                    $exception->getMessage()
+                ),
+                1651838981
+            );
+        }
+        return EventData::fromString($eventDataAsJson);
+    }
+
+    private function getEventType(GameEventInterface $event): EventType
+    {
+        $className = get_class($event);
+
+        return $this->fullClassNameToShortEventType[$className] ?? throw new \RuntimeException(
+            'Event type ' . get_class($event) . ' not registered'
+        );
+    }
+}

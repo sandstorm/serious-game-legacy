@@ -3,11 +3,10 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Dto\Event\Player;
 
 use Domain\CoreGameLogic\Dto\ValueObject\CardId;
-use Domain\CoreGameLogic\Dto\ValueObject\CurrentYear;
-use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\EventStore\GameEventInterface;
 
-readonly final class CardSkipped
+readonly final class CardSkipped implements GameEventInterface
 {
 
 
@@ -15,5 +14,21 @@ readonly final class CardSkipped
         public PlayerId $player, public CardId $card,
     )
     {
+    }
+
+    public static function fromArray(array $values): GameEventInterface
+    {
+        return new self(
+            player: new PlayerId($values['player']),
+            card: new CardId($values['card']),
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'player' => $this->player,
+            'card' => $this->card,
+        ];
     }
 }

@@ -1,3 +1,3 @@
 <x-layout>
-    <livewire:game-ui :playId="$playId"/>
+    <livewire:game-ui :gameId="$gameId" :myself="$myself" />
 </x-layout>

@@ -1,6 +1,10 @@
 <div>
-    Game: {{ $playId }}
+    Game: {{ $gameId }}<br />
+    Ich bin Spieler: {{ $myself }}<br />
+    <br />
+    <br />
 
-    <button type="button" wire:click="triggerGameAction('foo')">Game Action Foo</button>
-    <button type="button" wire:click="triggerGameAction('bar')">Game Action Bar</button>
+    Aktueller Spieler: {{ $this->currentPlayer()->value }}<br />
+    <button type="button" wire:click="triggerGameAction('foo')">Game Action Foo</button><br />
+    <button type="button" wire:click="spielzugAbschliessen()">Spielzug abschließen</button>
 </div>

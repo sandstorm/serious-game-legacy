@@ -4,8 +4,17 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic;
 
+use Domain\CoreGameLogic\CommandHandler\CommandBus;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
-use Domain\CoreGameLogic\Dto\UserName;
+use Domain\CoreGameLogic\Dto\Event\InitializePlayerOrdering;
+use Domain\CoreGameLogic\Dto\Event\JahreswechselEvent;
+use Domain\CoreGameLogic\Dto\ValueObject\CurrentYear;
+use Domain\CoreGameLogic\Dto\ValueObject\GameId;
+use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
+use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
+use Neos\EventStore\Model\EventStream\ExpectedVersion;
 
 /**
  * Main implementation of core business logic
@@ -20,16 +29,52 @@ use Domain\CoreGameLogic\Dto\UserName;
  */
 final class CoreGameLogicApp implements ForCoreGameLogic
 {
+    private CommandBus $commandBus;
+
     public function __construct(
-        // add driven ports here
-    ) {
+        private readonly GameEventStore $gameEventStore,
+    )
+    {
+        $this->commandBus = new CommandBus(
+            new SpielzugCommandHandler(),
+        );
     }
 
-    public function startTimeRecording(UserName $userName): void
+    public function startGameIfNotStarted(GameId $gameId): void
     {
-        logger()->info('starting time recording for '.$userName);
-        if ($userName->value === 'sandstorm') {
-            throw new \RuntimeException('no valid user name');
+        // TODO: DO NOT HARDCODE PLAYERS HERE -> TODO: COMMAND...
+        $p1 = new PlayerId('p1');
+        $p2 = new PlayerId('p2');
+        if (!$this->gameEventStore->hasGame($gameId)) {
+            logger()->info('starting game', ['gameId' => $gameId->value]);
+            $events = GameEvents::fromArray([
+                new InitializePlayerOrdering(
+                    playerOrdering: [
+                        $p1,
+                        $p2,
+                    ]
+                ),
+                new JahreswechselEvent(
+                    year: new CurrentYear(1),
+                    leitzins: new Leitzins(3)
+                ),
+            ]);
+            $this->gameEventStore->commit($gameId, $events, ExpectedVersion::NO_STREAM());
+        } else {
+            logger()->debug('game already started', ['gameId' => $gameId->value]);
         }
+    }
+
+    public function getGameStream(GameId $gameId): GameEvents
+    {
+        [$gameStream, ] = $this->gameEventStore->getGameStreamAndLastVersion($gameId);
+        return $gameStream;
+    }
+
+    public function handle(GameId $gameId, CommandHandler\CommandInterface $command): void
+    {
+        [$gameStream, $version] = $this->gameEventStore->getGameStreamAndLastVersion($gameId);
+        $eventsToPublish = $this->commandBus->handle($command, $gameStream);
+        $this->gameEventStore->commit($gameId, $eventsToPublish, ExpectedVersion::fromVersion($version));
     }
 }

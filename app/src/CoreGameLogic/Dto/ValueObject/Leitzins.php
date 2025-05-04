@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Dto\ValueObject;
 
-readonly class Leitzins
+readonly class Leitzins implements \JsonSerializable
 {
     /**
      * @param int $value in %
@@ -16,5 +16,10 @@ readonly class Leitzins
     public function __toString(): string
     {
         return '[Leitzins: '.$this->value.']';
+    }
+
+    public function jsonSerialize(): int
+    {
+        return $this->value;
     }
 }

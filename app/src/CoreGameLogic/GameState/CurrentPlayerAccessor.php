@@ -4,13 +4,13 @@ namespace Domain\CoreGameLogic\GameState;
 
 use Domain\CoreGameLogic\Dto\Event\InitializePlayerOrdering;
 use Domain\CoreGameLogic\Dto\Event\Player\SpielzugWasCompleted;
-use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\EventStore\GameEvents;
 
 class CurrentPlayerAccessor
 {
 
-    public static function forStream(\Domain\CoreGameLogic\Dto\Event\EventStream $stream): PlayerId
+    public static function forStream(GameEvents $stream): PlayerId
     {
         $currentPlayerOrdering = $stream->findLast(InitializePlayerOrdering::class)->playerOrdering;
 

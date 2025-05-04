@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Dto\ValueObject;
 
 use Domain\CoreGameLogic\Dto\ValueObjectInterface;
+use Neos\EventStore\Model\Event\StreamName;
 
-readonly class PlayerId implements \JsonSerializable, ValueObjectInterface
+readonly class GameId implements ValueObjectInterface
 {
     public function __construct(public string $value)
     {
@@ -14,16 +15,16 @@ readonly class PlayerId implements \JsonSerializable, ValueObjectInterface
 
     public function __toString(): string
     {
-        return '[Player: '.$this->value.']';
+        return '[Game ID: ' . $this->value . ']';
     }
 
-    public function equals(PlayerId $other):bool
+    public function equals(GameId $other): bool
     {
         return $this->value === $other->value;
     }
 
-    public function jsonSerialize(): string
+    public function streamName(): StreamName
     {
-        return $this->value;
+        return StreamName::fromString('game.'.$this->value);
     }
 }

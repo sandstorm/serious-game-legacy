@@ -1,18 +1,18 @@
 <?php
 
 namespace Domain\CoreGameLogic\GameState;
-use Domain\CoreGameLogic\Dto\Event\EventStream;
 use Domain\CoreGameLogic\Dto\Event\Player\ProvidesModifiers;
 use Domain\CoreGameLogic\Dto\ValueObject\ModifierCollection;
+use Domain\CoreGameLogic\EventStore\GameEvents;
 
 class ModifierCalculator
 {
-    private function __construct(private EventStream $stream)
+    private function __construct(private GameEvents $stream)
     {
 
     }
 
-    public static function forStream(\Domain\CoreGameLogic\Dto\Event\EventStream $stream): self
+    public static function forStream(GameEvents $stream): self
     {
         return new self($stream);
     }

@@ -11,5 +11,5 @@ if (app()->isLocal()) {
         return new App\Mail\ApplicationUnavailable();
     });
 
-    Route::get('/play/{playId}', \App\Http\Controllers\GamePlayController::class);
+    Route::get('/play/{gameId}/{myselfId}', \App\Http\Controllers\GamePlayController::class);
 }

@@ -4,8 +4,9 @@ namespace Domain\CoreGameLogic\Dto\Event\Player;
 
 use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\EventStore\GameEventInterface;
 
-readonly final class CardActivated
+readonly final class CardActivated implements GameEventInterface
 {
 
     public function __construct(
@@ -13,5 +14,22 @@ readonly final class CardActivated
         public CardId $card,
     )
     {
+    }
+
+
+    public static function fromArray(array $values): GameEventInterface
+    {
+        return new self(
+            player: new PlayerId($values['player']),
+            card: new CardId($values['card']),
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'player' => $this->player,
+            'card' => $this->card,
+        ];
     }
 }

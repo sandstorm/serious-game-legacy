@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\DrivingPorts;
 
-use Domain\CoreGameLogic\Dto\UserName;
+use Domain\CoreGameLogic\CommandHandler\CommandInterface;
+use Domain\CoreGameLogic\Dto\ValueObject\GameId;
+use Domain\CoreGameLogic\EventStore\GameEvents;
 
 /**
  * Driving Port for core business operations
@@ -33,5 +35,15 @@ use Domain\CoreGameLogic\Dto\UserName;
  */
 interface ForCoreGameLogic
 {
-    public function startTimeRecording(UserName $userName): void;
+    public function startGameIfNotStarted(GameId $gameId): void;
+
+    public function getGameStream(GameId $gameId): GameEvents;
+
+    /**
+     * Handle a command
+     * @param GameId $gameId
+     * @param CommandInterface $command
+     * @return void
+     */
+    public function handle(GameId $gameId, CommandInterface $command): void;
 }

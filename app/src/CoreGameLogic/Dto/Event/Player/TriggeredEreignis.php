@@ -6,8 +6,9 @@ use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
 use Domain\CoreGameLogic\Dto\ValueObject\Modifier;
 use Domain\CoreGameLogic\Dto\ValueObject\ModifierCollection;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\EventStore\GameEventInterface;
 
-readonly final class TriggeredEreignis implements ProvidesModifiers
+readonly final class TriggeredEreignis implements ProvidesModifiers, GameEventInterface
 {
 
 
@@ -23,5 +24,22 @@ readonly final class TriggeredEreignis implements ProvidesModifiers
             return new ModifierCollection([new Modifier("MODIFIER:ausetzen")]);
         }
         return new ModifierCollection([]);
+    }
+
+
+    public static function fromArray(array $values): GameEventInterface
+    {
+        return new self(
+            player: new PlayerId($values['player']),
+            ereignis: new EreignisId($values['ereignis']),
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'player' => $this->player,
+            'ereignis' => $this->ereignis,
+        ];
     }
 }

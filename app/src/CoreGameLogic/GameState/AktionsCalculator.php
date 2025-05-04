@@ -5,20 +5,18 @@ namespace Domain\CoreGameLogic\GameState;
 use Domain\CoreGameLogic\Dto\Aktion\Aktion;
 use Domain\CoreGameLogic\Dto\Aktion\PhaseWechseln;
 use Domain\CoreGameLogic\Dto\Aktion\ZeitsteinSetzen;
-use Domain\CoreGameLogic\Dto\Event\InitializePlayerOrdering;
-use Domain\CoreGameLogic\Dto\Event\Player\SpielzugWasCompleted;
-use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\EventStore\GameEvents;
 
 readonly final class AktionsCalculator
 {
     private function __construct(
-        private \Domain\CoreGameLogic\Dto\Event\EventStream $stream,
+        private GameEvents $stream,
     )
     {
     }
 
-    public static function forStream(\Domain\CoreGameLogic\Dto\Event\EventStream $stream): self
+    public static function forStream(GameEvents $stream): self
     {
         return new self($stream);
     }
