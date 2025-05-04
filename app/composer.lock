@@ -6737,11 +6737,11 @@
             "version": "dev-main",
             "dist": {
                 "type": "path",
-                "url": "./DistributionPackages/eventstore-eloquentadapter",
-                "reference": "e745f4cc1dba24cdbbd9a9485630cf8b4af47be3"
+                "url": "./DistributionPackages/eventstore-laraveladapter",
+                "reference": "cb983f64c5f11f99ef158ef5707b4d7735ebfbb3"
             },
             "require": {
-                "laravel/framework": "^11",
+                "illuminate/database": "^11",
                 "neos/eventstore": "^1",
                 "php": "^8.1",
                 "psr/clock": "^1",
@@ -6780,9 +6780,9 @@
                     "phpunit tests/Integration --exclude-group=parallel"
                 ],
                 "test:consistency": [
-                    "Sandstorm\\EventStore\\LaravelAdapter\\Tests\\Integration\\DoctrineEventStoreTest::consistency_prepare",
+                    "Sandstorm\\EventStore\\LaravelAdapter\\Tests\\Integration\\LaravelEventStoreTest::consistency_prepare",
                     "paratest tests/Integration --group=parallel --functional --processes 10",
-                    "Sandstorm\\EventStore\\LaravelAdapter\\Tests\\Integration\\DoctrineEventStoreTest::consistency_validateEvents"
+                    "Sandstorm\\EventStore\\LaravelAdapter\\Tests\\Integration\\LaravelEventStoreTest::consistency_validateEvents"
                 ],
                 "test": [
                     "@test:phpstan",
