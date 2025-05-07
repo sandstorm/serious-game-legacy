@@ -5,6 +5,66 @@ on:
     branches: [ main ]
 
 jobs:
+  build_assets:
+    name: Build Assets
+    runs-on: [self-hosted, linux]
+    container:
+      image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Cache composer dependencies
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: app/.composer-cache
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      # Cache yarn/node dependencies
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+        working-directory: ./app
+
+      - name: Cache Node modules
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-
+
+      # Install PHP dependencies
+      - name: Install Composer dependencies
+        run: |
+          COMPOSER_CACHE_DIR=.composer-cache composer install --ignore-platform-reqs
+        working-directory: ./app
+
+        # Uncomment if you need Font Awesome
+        # - name: Configure npm for Font Awesome
+        #   run: |
+        #     npm config set "@fortawesome:registry" https://npm.fontawesome.com/
+        #     npm config set "//npm.fontawesome.com/:_authToken" ${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}
+        #   working-directory: ./app
+
+      # Install Node.js dependencies and build
+      - name: Install Yarn dependencies
+        run: yarn
+        working-directory: ./app
+
+      - name: Build assets
+        run: yarn build
+        working-directory: ./app
+
+      # Upload build artifacts
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-assets
+          path: app/public/build/
+          retention-days: 7
+
   package_app_staging:
     name: Package App Staging
     runs-on: [self-hosted, linux]
