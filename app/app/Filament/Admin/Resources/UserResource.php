@@ -78,8 +78,8 @@ class UserResource extends Resource
                     ->toggleable(),
             ])
             ->filters([
-                AdvancedFilter::make()
-                    ->includeColumns(),
+                /*AdvancedFilter::make()
+                    ->includeColumns(),*/
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

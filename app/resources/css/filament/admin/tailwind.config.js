@@ -7,7 +7,7 @@ export default {
         './resources/views/filament/**/*.blade.php',
         './vendor/filament/**/*.blade.php',
         './vendor/awcodes/filament-tiptap-editor/resources/**/*.blade.php',
-        './vendor/archilex/filament-filter-sets/**/*.php',
-        './vendor/ralphjsmit/laravel-filament-record-finder/resources/**/*.blade.php',
+        //'./vendor/archilex/filament-filter-sets/**/*.php',
+        //'./vendor/ralphjsmit/laravel-filament-record-finder/resources/**/*.blade.php',
     ],
 }
