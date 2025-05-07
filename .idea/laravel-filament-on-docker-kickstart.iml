@@ -15,12 +15,10 @@
       <sourceFolder url="file://$MODULE_DIR$/app/database/seeders" isTestSource="false" packagePrefix="Database\Seeders\" />
       <sourceFolder url="file://$MODULE_DIR$/app/src" isTestSource="false" packagePrefix="Domain\" />
       <sourceFolder url="file://$MODULE_DIR$/app/tests" isTestSource="true" packagePrefix="Tests\" />
-      <sourceFolder url="file://$MODULE_DIR$/app/Build/Behat/tests" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/ralphjsmit/laravel-filament-record-finder" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/ralphjsmit/packages" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/anourvalar/eloquent-serialize" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/archilex/filament-filter-sets" />
-      <excludeFolder url="file://$MODULE_DIR$/app/vendor/archilex/filament-toggle-icon-column" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/awcodes/filament-tiptap-editor" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/barryvdh/laravel-ide-helper" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/barryvdh/reflection-docblock" />
@@ -140,16 +138,13 @@
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/sebastian/version" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/spatie/backtrace" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/spatie/color" />
-      <excludeFolder url="file://$MODULE_DIR$/app/vendor/spatie/eloquent-sortable" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/spatie/error-solutions" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/spatie/flare-client-php" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/spatie/ignition" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/spatie/invade" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/spatie/laravel-ignition" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/spatie/laravel-package-tools" />
-      <excludeFolder url="file://$MODULE_DIR$/app/vendor/spatie/macroable" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/spatie/shiki-php" />
-      <excludeFolder url="file://$MODULE_DIR$/app/vendor/spatie/url" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/staabm/side-effects-detector" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/clock" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/symfony/console" />

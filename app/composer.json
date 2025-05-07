@@ -13,7 +13,6 @@
     },
     "require": {
         "php": "^8.2",
-        "archilex/filament-filter-sets": "@dev",
         "awcodes/filament-tiptap-editor": "^3.4.22",
         "dutchcodingcompany/filament-developer-logins": "^1.5",
         "filament/filament": "^3.2",
@@ -24,8 +23,6 @@
         "laravel/reverb": "^1.0",
         "laravel/tinker": "^2.9",
         "neos/eventstore": "^1.0",
-        "ralphjsmit/laravel-filament-record-finder": "@dev",
-        "ralphjsmit/packages": "dev-main as 1.4.2",
         "sandstorm/eventstore-laraveladapter": "@dev"
     },
     "require-dev": {
@@ -99,8 +96,7 @@
         },
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true,
-            "ralphjsmit/packages": true
+            "php-http/discovery": true
         }
     },
     "minimum-stability": "dev",
