@@ -15,7 +15,7 @@ jobs:
     name: Build Assets
     runs-on: [self-hosted, linux]
     container:
-      image: shivammathur/node-php:8.3
+      image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v4
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
