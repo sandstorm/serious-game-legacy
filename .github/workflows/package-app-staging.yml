@@ -3,11 +3,6 @@ name: Package App Staging
 on:
   push:
     branches: [ main ]
-  pull_request:
-  # For running on tags (releases)
-  tags:
-    - '*'
-  workflow_dispatch:
 
 jobs:
   package_app_staging:
