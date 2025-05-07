@@ -72,6 +72,9 @@ jobs:
     container:
       image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v4
     needs: build_assets
+    permissions:
+      contents: read
+      packages: write    # This is critical for GHCR access
 
     steps:
       - name: Checkout code
