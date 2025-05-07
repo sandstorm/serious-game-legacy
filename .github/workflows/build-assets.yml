@@ -14,23 +14,11 @@ jobs:
   build_assets:
     name: Build Assets
     runs-on: [self-hosted, linux]
-
+    container:
+      image: shivammathur/node-php:8.3
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      # Setup PHP 8.3
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
-          tools: composer:v2
-
-      # Setup Node.js
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'  # Adjust based on your requirements
 
       # Cache composer dependencies
       - name: Cache Composer dependencies
