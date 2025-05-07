@@ -1,0 +1,133 @@
+name: PHP Tests and Analysis
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  # For running on tags (releases)
+  #workflow_dispatch:
+
+jobs:
+  php_code_analysis:
+    name: PHP Code Analysis
+    runs-on: [self-hosted, linux]
+    container:
+      image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Cache composer dependencies
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: app/.composer-cache
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      # Install PHP dependencies
+      - name: Install Composer dependencies
+        run: |
+          cd app
+          COMPOSER_CACHE_DIR=.composer-cache composer install --ignore-platform-reqs
+
+      # Run PHPStan
+      - name: Run PHPStan
+        run: |
+          cd app
+          ./vendor/bin/phpstan analyse --no-progress --memory-limit 1G --error-format table
+
+  test:
+    name: PHPUnit Tests
+    runs-on: [self-hosted, linux]
+    # This conditional execution maps to the GitLab rules
+    # For pull requests, this job will be manually triggered
+    # For main branch or tags, it runs automatically
+    #if: ${{ github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/') }}
+    container:
+      image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v4
+    services:
+      # MariaDB service
+      mariadb:
+        image: mariadb:10.11
+        env:
+          MYSQL_USER: ci_user
+          MYSQL_PASSWORD: ci_db_password
+          MYSQL_DATABASE: ci_test
+          MARIADB_RANDOM_ROOT_PASSWORD: "yes"
+        # Set health checks to wait until mysql is ready
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+      # Redis service
+      redis:
+        image: redis:7
+        # Set health checks to wait until redis is ready
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    env:
+      # laravel environment variables
+      APP_KEY: base64:+cg1qRwOrn6qExb0tCCUJpKCemMY6PcZEax9qhcObbs=
+      DB_CONNECTION: mariadb
+      DB_HOST: mariadb
+      DB_PORT: 3306
+      DB_USERNAME: ci_user
+      DB_PASSWORD: ci_db_password
+      DB_DATABASE: ci_test
+      CACHE_STORE: redis
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      QUEUE_CONNECTION: redis
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Cache composer dependencies
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: app/.composer-cache
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      # Install PHP dependencies
+      - name: Install Composer dependencies
+        run: |
+          cd app
+          COMPOSER_CACHE_DIR=.composer-cache composer install --ignore-platform-reqs
+
+      # Run tests
+      - name: Run Pest tests
+        run: |
+          cd app
+          ./vendor/bin/pest --ci --log-junit=test-results/pest.xml
+          echo "CI tests finished"
+
+      # Upload test results
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: app/test-results
+          retention-days: 5
+
+# Commented out as in original
+# code_metrics:
+#   name: Code Metrics
+#   runs-on: [self-hosted, linux]
+#   if: ${{ github.ref == 'refs/heads/main' }}
+#   needs: []
+#   steps:
+#     # You would implement the code metrics steps here
+#     # This would be based on your .code-metrics-template in GitLab
+#     # with SOURCE_ROOT: app/DistributionPackages
+#     # and IGNORE_PATTERN: "bundle\\.(css|js)"
