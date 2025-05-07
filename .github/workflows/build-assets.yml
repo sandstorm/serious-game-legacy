@@ -1,0 +1,84 @@
+name: Build Assets
+
+on:
+  # Run only on push to main branch
+  push:
+    branches:
+      - main
+  # You might also want to add pull_request trigger if needed
+  # pull_request:
+  #   branches:
+  #     - main
+
+jobs:
+  build_assets:
+    name: Build Assets
+    runs-on: [self-hosted, linux]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Setup PHP 8.3
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+
+      # Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'  # Adjust based on your requirements
+
+      # Cache composer dependencies
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: app/.composer-cache
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      # Cache yarn/node dependencies
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+        working-directory: ./app
+
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-
+
+      # Install PHP dependencies
+      - name: Install Composer dependencies
+        run: |
+          COMPOSER_CACHE_DIR=.composer-cache composer install --ignore-platform-reqs
+        working-directory: ./app
+
+        # Uncomment if you need Font Awesome
+        # - name: Configure npm for Font Awesome
+        #   run: |
+        #     npm config set "@fortawesome:registry" https://npm.fontawesome.com/
+        #     npm config set "//npm.fontawesome.com/:_authToken" ${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}
+        #   working-directory: ./app
+
+      # Install Node.js dependencies and build
+      - name: Install Yarn dependencies
+        run: yarn
+        working-directory: ./app
+
+      - name: Build assets
+        run: yarn build
+        working-directory: ./app
+
+      # Upload build artifacts
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-assets
+          path: app/public/build/
+          retention-days: 7
