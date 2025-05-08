@@ -1,18 +1,20 @@
 <?php
-declare(strict_types=1);
-namespace Domain\CoreGameLogic\Dto\Event\Player;
 
-use Domain\CoreGameLogic\Dto\ValueObject\CardId;
+declare(strict_types=1);
+
+namespace Domain\CoreGameLogic\Dto\Event;
+
+use Domain\CoreGameLogic\Dto\ValueObject\Lebensziel;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 
-readonly final class CardSkipped implements GameEventInterface
+readonly final class InitLebenszielEvent implements GameEventInterface
 {
 
-
     public function __construct(
-        public PlayerId $player,
-        public CardId $card,
+        public Lebensziel $lebensziel,
+        public PlayerId $player
+        // TODO phases, goals, etc
     )
     {
     }
@@ -20,16 +22,16 @@ readonly final class CardSkipped implements GameEventInterface
     public static function fromArray(array $values): GameEventInterface
     {
         return new self(
+            lebensziel: new Lebensziel($values['lebensziel']),
             player: new PlayerId($values['player']),
-            card: new CardId($values['card']),
         );
     }
 
     public function jsonSerialize(): array
     {
         return [
+            'lebensziel' => $this->lebensziel,
             'player' => $this->player,
-            'card' => $this->card,
         ];
     }
 }

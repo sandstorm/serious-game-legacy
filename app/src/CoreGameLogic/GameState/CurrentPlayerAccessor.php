@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Domain\CoreGameLogic\GameState;
 
 use Domain\CoreGameLogic\Dto\Event\InitializePlayerOrdering;
@@ -16,7 +18,7 @@ class CurrentPlayerAccessor
 
         $previousPlayer = $stream->findLastOrNull(SpielzugWasCompleted::class)?->player;
 
-        if (!$previousPlayer) {
+        if ($previousPlayer === null) {
             // Initial move -> first according to player ordering
             return reset($currentPlayerOrdering);
         }
@@ -34,7 +36,7 @@ class CurrentPlayerAccessor
             throw new \RuntimeException('Previous player not found in ordering');
         }
 
-        $nextIndex = ($index + 1) % count($currentPlayerOrdering);
+        $nextIndex = ((int) $index + 1) % count($currentPlayerOrdering);
         return $currentPlayerOrdering[$nextIndex];
     }
 }

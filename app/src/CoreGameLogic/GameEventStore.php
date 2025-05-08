@@ -38,7 +38,7 @@ final class GameEventStore
 
     /**
      * @param GameId $gameId
-     * @return [GameEvents, Version]
+     * @return array [GameEvents, Version]
      */
     public function getGameStreamAndLastVersion(GameId $gameId): array {
         $gameEvents = [];
@@ -50,10 +50,10 @@ final class GameEventStore
         return [GameEvents::fromArray($gameEvents), $version];
     }
 
-
     public function commit(GameId $gameId, GameEvents $events, ExpectedVersion $expectedVersion): void {
         $this->eventStore->commit($gameId->streamName(), $this->enrichAndNormalizeEvents($events), $expectedVersion);
     }
+
     private function enrichAndNormalizeEvents(GameEvents $events): Events
     {
         // TODO: $initiatingUserId = $this->authProvider->getAuthenticatedUserId() ?? UserId::forSystemUser();

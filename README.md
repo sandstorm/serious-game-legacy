@@ -102,8 +102,12 @@ You'll get a popup prompting you to install the plugins if you don't already hav
 - run `dev logs` to see the logs of all containers.
 - run `dev` to see all available development tasks
 - run `dev <sometaks> --help` to get detailed help for a task
-- run `dev open-site` you can login to the [neos backend](http://localhost:8081/neos) with the credentials `admin` and `password`
+- run `dev open-site`
 - Have fun ;)
+
+### Init git submodules
+
+- run `git submodule init && git submodule update` to initialize the git submodules (Sandstorm Eventstore Laravel Adapter)
 
 ### Local Development of Sandstorm Packages
 
@@ -114,9 +118,7 @@ You'll get a popup prompting you to install the plugins if you don't already hav
 
 ## Testing
 
-- run `dev run-unit-tests` to run all unit tests
-- run `dev run-functional-tests` to run all functional tests
-- run `dev start-e2e-testrunner` and in new console `dev run-e2e-tests` to run all e2e tests or use `dev run-e2e-tests --tags=<yourTestTag>` to run a single test, e.g a test which is annotated with `@EventList` can be run with `dev run-e2e-tests --tags=EventList`
+- run `dev pest` to run all unit tests
 
 We suggest to use [Pest](https://pestphp.com/) as testing framework, which builds upon
 PHPUnit and looks as if it provides quite some nice benefits on top,

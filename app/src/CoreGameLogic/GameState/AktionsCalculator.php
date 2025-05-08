@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Domain\CoreGameLogic\GameState;
 
 use Domain\CoreGameLogic\Dto\Aktion\Aktion;
