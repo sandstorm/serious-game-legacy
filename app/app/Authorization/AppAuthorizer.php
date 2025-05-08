@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Authorization;
 
 use App\Models\User;
-use Archilex\AdvancedTables\Models\UserView;
 use Illuminate\Auth\Access\Events\GateEvaluated;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Contracts\Events\Dispatcher;
@@ -64,7 +63,6 @@ final class AppAuthorizer
 
     private const OBJECT_GROUPS = [
         User::class => User::class,
-        UserView::class => self::OBJECT_GROUP_STAMMDATEN,
     ];
 
     public const OBJECT_GROUP_STAMMDATEN = 'STAMMDATEN';

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Providers\Filament;
 
 use App\Models\User;
-use Archilex\AdvancedTables\Plugin\AdvancedTablesPlugin;
 use DutchCodingCompany\FilamentDeveloperLogins\FilamentDeveloperLoginsPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -25,7 +24,6 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Jeffgreco13\FilamentBreezy\BreezyCore;
-use RalphJSmit\Filament\RecordFinder\FilamentRecordFinder;
 
 final class AdminPanelProvider extends PanelProvider
 {
@@ -96,21 +94,6 @@ final class AdminPanelProvider extends PanelProvider
                 FilamentDeveloperLoginsPlugin::make()
                     ->enabled((bool) $this->app->environment('local'))
                     ->users(fn () => User::where('email', 'LIKE', '%@example.com')->pluck('email', 'email')->toArray())
-            )
-            ->when(
-                class_exists(AdvancedTablesPlugin::class),
-                fn ($panel) => $panel->plugin(
-                    AdvancedTablesPlugin::make()
-                        ->quickSaveMakeGlobalFavorite() // every user can make a global favorite
-                        ->resourceNavigationGroup(self::NAVIGATION_GROUP_STAMMDATEN)
-                        ->resourceNavigationIcon(null)
-                )
-            )
-            ->when( // while running "dev composer-update-filament-record-finder-pro", the existing plugin needs to be removed temporarily - this is to ensure we won't crash here
-                class_exists(FilamentRecordFinder::class),
-                fn ($panel) => $panel->plugin(
-                    FilamentRecordFinder::make()
-                )
             )
             ->plugin(
                 BreezyCore::make()
