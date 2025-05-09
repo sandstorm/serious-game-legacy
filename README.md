@@ -99,6 +99,14 @@ You'll get a popup prompting you to install the plugins if you don't already hav
 ```bash
 git submodule init
 git submodule update
+
+dev setup
+
+# start everything
+dev start
+
+# now, access the frontend at http://127.0.0.1:8090
+# now, access the filament backend at http://127.0.0.1:8090/admin
 ```
 
 ## Local Development
@@ -116,16 +124,13 @@ git submodule update
 
 - run `composer config --global 'preferred-install.sandstorm/*' source` on your local machine to use the local packages for development
 - run `composer install` in the `app` folder to install the local packages or start the container, the Packages folder is mounted into the container
-- now you can develop the packages in the `Application/Packages` folder and the changes will be reflected in the docker container
+- now you can develop the packages in the `DistributionPackages` folder and the changes will be reflected in the docker container
 - the sandstorm packages should check out the branch specified in the `composer.json` of the kickstarter
 
 ## Testing
 
-- run `dev run-unit-tests` to run all unit tests
-- run `dev run-functional-tests` to run all functional tests
-- run `dev start-e2e-testrunner` and in new console `dev run-e2e-tests` to run all e2e tests or use `dev run-e2e-tests --tags=<yourTestTag>` to run a single test, e.g a test which is annotated with `@EventList` can be run with `dev run-e2e-tests --tags=EventList`
 
-We suggest to use [Pest](https://pestphp.com/) as testing framework, which builds upon
+We use [Pest](https://pestphp.com/) as testing framework, which builds upon
 PHPUnit and looks as if it provides quite some nice benefits on top,
 especially [Architectural Testing](https://pestphp.com/docs/arch-testing) and
 [Snapshot Testing](https://pestphp.com/docs/snapshot-testing) is something we

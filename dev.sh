@@ -50,7 +50,7 @@ function setup {
 	# Running composer to install dependencies locally so you have autocompletion
 	# in your IDE
 	pushd app
-	composer install --ignore-platform-reqs
+	composer install
 	popd
 }
 
