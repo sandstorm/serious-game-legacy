@@ -52,29 +52,9 @@ final class CoreGameLogicApp implements ForCoreGameLogic
         );
     }
 
-    public function startGameIfNotStarted(GameId $gameId): void
+    public function hasGame(GameId $gameId): bool
     {
-        // TODO: DO NOT HARDCODE PLAYERS HERE -> TODO: COMMAND...
-        $p1 = new PlayerId('p1');
-        $p2 = new PlayerId('p2');
-        if (!$this->gameEventStore->hasGame($gameId)) {
-            logger()->info('starting game', ['gameId' => $gameId->value]);
-            $events = GameEventsToPersist::with(
-                new PlayerOrderingWasDefined(
-                    playerOrdering: [
-                        $p1,
-                        $p2,
-                    ]
-                ),
-                new NewYearWasStarted(
-                    newYear: new CurrentYear(1),
-                    leitzins: new Leitzins(3)
-                ),
-            );
-            $this->gameEventStore->commit($gameId, $events, ExpectedVersion::NO_STREAM());
-        } else {
-            logger()->debug('game already started', ['gameId' => $gameId->value]);
-        }
+        return $this->gameEventStore->hasGame($gameId);
     }
 
     public function getGameStream(GameId $gameId): GameEvents

@@ -9,7 +9,7 @@ namespace Domain\CoreGameLogic\EventStore;
  *
  * This is only used on the READ SIDE of the event stream.
  *
- * @implements \IteratorAggregate<GameEventInterface|DecoratedEvent>
+ * @implements \IteratorAggregate<GameEventInterface>
  * @internal only used during event publishing (from within command handlers) - and their implementation is not API
  */
 final readonly class GameEvents implements \IteratorAggregate, \Countable
@@ -46,7 +46,7 @@ final readonly class GameEvents implements \IteratorAggregate, \Countable
 
     /**
      * @template T
-     * @param \Closure(GameEventInterface|DecoratedEvent $event): T $callback
+     * @param \Closure(GameEventInterface $event): T $callback
      * @return non-empty-array<T>
      */
     public function map(\Closure $callback): array

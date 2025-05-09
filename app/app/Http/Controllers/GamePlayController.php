@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Illuminate\Http\Request;
 
 class GamePlayController extends Controller
@@ -25,7 +26,15 @@ class GamePlayController extends Controller
         $gameId = new GameId($gameId);
         $myselfId = new PlayerId($myselfId);
 
-        $this->coreGameLogic->startGameIfNotStarted($gameId);
+        $p1 = new PlayerId('p1');
+        $p2 = new PlayerId('p2');
+
+        if (!$this->coreGameLogic->hasGame($gameId)) {
+            $this->coreGameLogic->handle($gameId, new StartGame(
+                playerOrdering: [$p1, $p2],
+            ));
+        }
+
         return view('game-play', [
             'gameId' => $gameId,
             'myself' => $myselfId,

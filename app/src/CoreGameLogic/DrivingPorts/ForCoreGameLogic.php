@@ -35,7 +35,7 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
  */
 interface ForCoreGameLogic
 {
-    public function startGameIfNotStarted(GameId $gameId): void;
+    public function hasGame(GameId $gameId): bool;
 
     public function getGameStream(GameId $gameId): GameEvents;
 
@@ -46,4 +46,5 @@ interface ForCoreGameLogic
      * @return void
      */
     public function handle(GameId $gameId, CommandInterface $command): void;
+
 }

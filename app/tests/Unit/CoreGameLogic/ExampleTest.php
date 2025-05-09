@@ -12,6 +12,7 @@ use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
+use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerOrderingWasDefined;
 use Domain\CoreGameLogic\Feature\Initialization\State\LebenszielAccessor;
@@ -46,7 +47,9 @@ test('Event stream can be accessed', function () {
 });
 
 test('Test Command Handler', function () {
-    $this->coreGameLogic->startGameIfNotStarted(new GameId('game1'));
+    $this->coreGameLogic->handle(new GameId('game1'),new StartGame(
+        playerOrdering: [new PlayerId('p1'), new PlayerId('p2')],
+    ));
 
     $lebenszielAuswaehlenP1 = new LebenszielAuswaehlen(
         playerId: new PlayerId('p1'),
