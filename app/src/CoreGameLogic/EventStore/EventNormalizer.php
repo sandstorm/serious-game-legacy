@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\EventStore;
 
-use Domain\CoreGameLogic\Dto\Event\Player\KontoJahresabschlussOnJahreswechsel;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerOrderingWasDefined;
 use Domain\CoreGameLogic\Feature\Jahreswechsel\Event\NewYearWasStarted;
@@ -50,7 +49,6 @@ final readonly class EventNormalizer
             NewYearWasStarted::class,
             CardWasActivated::class,
             CardWasSkipped::class,
-            KontoJahresabschlussOnJahreswechsel::class,
             SpielzugWasCompleted::class,
             TriggeredEreignis::class,
             LebenszielChosen::class

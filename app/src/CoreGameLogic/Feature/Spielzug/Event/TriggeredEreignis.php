@@ -2,12 +2,12 @@
 declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
-use Domain\CoreGameLogic\Dto\Event\Player\ProvidesModifiers;
 use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
 use Domain\CoreGameLogic\Dto\ValueObject\Modifier;
 use Domain\CoreGameLogic\Dto\ValueObject\ModifierCollection;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
 
 readonly final class TriggeredEreignis implements ProvidesModifiers, GameEventInterface
 {

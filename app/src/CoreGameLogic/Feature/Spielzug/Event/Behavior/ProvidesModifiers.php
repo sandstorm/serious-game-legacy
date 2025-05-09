@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Dto\Event\Player;
+namespace Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior;
 
 use Domain\CoreGameLogic\Dto\ValueObject\ModifierCollection;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
-use Domain\CoreGameLogic\EventStore\GameEventInterface;
 
 /**
  * This interface is usually applied on GameEvents which also provide some modifiers.
