@@ -8,6 +8,7 @@ use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\EventStore\EventNormalizer;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Neos\EventStore\EventStoreInterface;
 use Neos\EventStore\Model\Event\SequenceNumber;
 use Neos\EventStore\Model\Event\Version;
@@ -40,11 +41,11 @@ final readonly class GameEventStore
 
     /**
      * @param GameId $gameId
-     * @return array{0: GameEvents, 1: Version}
+     * @return array{0: GameEvents, 1: Version|null}
      */
     public function getGameStreamAndLastVersion(GameId $gameId): array {
         $gameEvents = [];
-        $version = Version::first();
+        $version = null;
         foreach ($this->eventStore->load($gameId->streamName()) as $eventEnvelope) {
             $gameEvents[] = $this->eventNormalizer->denormalize($eventEnvelope->event);
             $version = $eventEnvelope->version;
@@ -52,11 +53,11 @@ final readonly class GameEventStore
         return [GameEvents::fromArray($gameEvents), $version];
     }
 
-    public function commit(GameId $gameId, GameEvents $events, ExpectedVersion $expectedVersion): void {
+    public function commit(GameId $gameId, GameEventsToPersist $events, ExpectedVersion $expectedVersion): void {
         $this->eventStore->commit($gameId->streamName(), $this->enrichAndNormalizeEvents($events), $expectedVersion);
     }
 
-    private function enrichAndNormalizeEvents(GameEvents $events): Events
+    private function enrichAndNormalizeEvents(GameEventsToPersist $events): Events
     {
         // TODO: $initiatingUserId = $this->authProvider->getAuthenticatedUserId() ?? UserId::forSystemUser();
         // TODO: $initiatingTimestamp = $this->clock->now();

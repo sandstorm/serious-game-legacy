@@ -6,6 +6,7 @@ namespace Domain\CoreGameLogic\Dto\Aktion;
 
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 
 class ZeitsteinSetzen extends Aktion
 {
@@ -19,9 +20,9 @@ class ZeitsteinSetzen extends Aktion
         return true;
     }
 
-    public function execute(PlayerId $player, GameEvents $eventStream): GameEvents
+    public function execute(PlayerId $player, GameEvents $eventStream): GameEventsToPersist
     {
         // TODO: Implement execute() method.
-        return GameEvents::fromArray([]);
+        return GameEventsToPersist::empty();
     }
 }

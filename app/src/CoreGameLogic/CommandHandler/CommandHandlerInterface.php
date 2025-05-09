@@ -6,6 +6,7 @@ namespace Domain\CoreGameLogic\CommandHandler;
 
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 
 /**
  * Common interface for all Game Command command handlers
@@ -16,5 +17,5 @@ interface CommandHandlerInterface
 {
     public function canHandle(CommandInterface $command): bool;
 
-    public function handle(CommandInterface $command, GameEvents $gameState): GameEvents;
+    public function handle(CommandInterface $command, GameEvents $gameState): GameEventsToPersist;
 }

@@ -1,17 +1,17 @@
 <?php
 declare(strict_types=1);
-namespace Domain\CoreGameLogic\Dto\Event;
+namespace Domain\CoreGameLogic\Feature\Jahreswechsel\Event;
 
 use Domain\CoreGameLogic\Dto\ValueObject\CurrentYear;
 use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 
-readonly final class JahreswechselEvent implements GameEventInterface
+readonly final class NewYearWasStarted implements GameEventInterface
 {
 
     public function __construct(
-        public CurrentYear $year,
-        public Leitzins $leitzins,
+        public CurrentYear $newYear,
+        public Leitzins    $leitzins,
     )
     {
     }
@@ -19,7 +19,7 @@ readonly final class JahreswechselEvent implements GameEventInterface
     public static function fromArray(array $values): GameEventInterface
     {
         return new self(
-            year: new CurrentYear($values['year']),
+            newYear: new CurrentYear($values['newYear']),
             leitzins: new Leitzins($values['leitzins']),
         );
     }
@@ -27,7 +27,7 @@ readonly final class JahreswechselEvent implements GameEventInterface
     public function jsonSerialize(): array
     {
         return [
-            'year' => $this->year,
+            'newYear' => $this->newYear,
             'leitzins' => $this->leitzins,
         ];
     }

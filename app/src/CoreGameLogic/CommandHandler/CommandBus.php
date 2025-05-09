@@ -6,6 +6,7 @@ namespace Domain\CoreGameLogic\CommandHandler;
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 
 /**
  * Implementation Detail of {@see CoreGameLogicApp::handle}, which does the command dispatching to the different
@@ -32,9 +33,9 @@ final readonly class CommandBus
      *
      * @param CommandInterface $command
      * @param GameEvents $gameState
-     * @return GameEvents
+     * @return GameEventsToPersist
      */
-    public function handle(CommandInterface $command, GameEvents $gameState): GameEvents
+    public function handle(CommandInterface $command, GameEvents $gameState): GameEventsToPersist
     {
         // multiple handlers must not handle the same command
         foreach ($this->handlers as $handler) {

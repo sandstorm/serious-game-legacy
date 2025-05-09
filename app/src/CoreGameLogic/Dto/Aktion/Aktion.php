@@ -6,6 +6,7 @@ namespace Domain\CoreGameLogic\Dto\Aktion;
 
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 
 abstract class Aktion
 {
@@ -21,5 +22,5 @@ abstract class Aktion
      */
     abstract public function canExecute(PlayerId $player, GameEvents $eventStream): bool;
 
-    abstract public function execute(PlayerId $player, GameEvents $eventStream): GameEvents;
+    abstract public function execute(PlayerId $player, GameEvents $eventStream): GameEventsToPersist;
 }

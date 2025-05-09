@@ -6,6 +6,7 @@ namespace Domain\CoreGameLogic\Dto\Aktion;
 
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 
 class PhaseWechseln extends Aktion
 {
@@ -28,9 +29,9 @@ class PhaseWechseln extends Aktion
         return false;
     }
 
-    public function execute(PlayerId $player, GameEvents $eventStream): GameEvents
+    public function execute(PlayerId $player, GameEvents $eventStream): GameEventsToPersist
     {
         // TODO: Implement execute() method.
-        return GameEvents::fromArray([]);
+        return GameEventsToPersist::empty();
     }
 }

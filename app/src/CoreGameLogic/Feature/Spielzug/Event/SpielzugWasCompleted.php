@@ -1,27 +1,23 @@
 <?php
 declare(strict_types=1);
-namespace Domain\CoreGameLogic\Dto\Event\Player;
+namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
-use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 
-readonly final class CardActivated implements GameEventInterface
+readonly final class SpielzugWasCompleted implements GameEventInterface
 {
 
     public function __construct(
         public PlayerId $player,
-        public CardId $card,
     )
     {
     }
-
 
     public static function fromArray(array $values): GameEventInterface
     {
         return new self(
             player: new PlayerId($values['player']),
-            card: new CardId($values['card']),
         );
     }
 
@@ -29,7 +25,6 @@ readonly final class CardActivated implements GameEventInterface
     {
         return [
             'player' => $this->player,
-            'card' => $this->card,
         ];
     }
 }

@@ -4,18 +4,10 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\EventStore;
 
-use Neos\EventStore\EventStoreInterface;
-
 /**
- * A set of Game "domain events"
+ * A set of Game "domain events", as loaded from the Event Store.
  *
- * For better type checking we ensure that this collection is never empty.
- * That is because {@see EventStoreInterface::commit()} will throw an exception if there are 0 events passed:
- *
- * > Writable events must contain at least one event
- *
- * We do not skip the case for 0 events to ensure each command always maps to a mutation.
- * Forgiving noop behaviour is not intended for this low level code.
+ * This is only used on the READ SIDE of the event stream.
  *
  * @implements \IteratorAggregate<GameEventInterface|DecoratedEvent>
  * @internal only used during event publishing (from within command handlers) - and their implementation is not API
@@ -23,28 +15,23 @@ use Neos\EventStore\EventStoreInterface;
 final readonly class GameEvents implements \IteratorAggregate, \Countable
 {
     /**
-     * @var non-empty-array<GameEventInterface|DecoratedEvent>
+     * @var non-empty-array<GameEventInterface>
      */
     public array $events;
 
-    private function __construct(GameEventInterface|DecoratedEvent ...$events)
+    private function __construct(GameEventInterface ...$events)
     {
-        /** @var non-empty-array<GameEventInterface|DecoratedEvent> $events */
+        /** @var non-empty-array<GameEventInterface> $events */
         $this->events = $events;
     }
 
-    public static function with(GameEventInterface|DecoratedEvent $event): self
+    public static function with(GameEventInterface $event): self
     {
         return new self($event);
     }
 
-    public function withAppendedEvents(GameEvents $events): self
-    {
-        return new self(...$this->events, ...$events->events);
-    }
-
     /**
-     * @param array<GameEventInterface|DecoratedEvent> $events
+     * @param array<GameEventInterface> $events
      * @return static
      */
     public static function fromArray(array $events): self

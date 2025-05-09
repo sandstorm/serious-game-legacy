@@ -7,8 +7,11 @@ namespace Domain\CoreGameLogic\Feature\Initialization;
 use Domain\CoreGameLogic\CommandHandler\CommandHandlerInterface;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
+use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
+use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerOrderingWasDefined;
 use Domain\CoreGameLogic\GameState\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\GameState\LebenszielAccessor;
 
@@ -19,18 +22,27 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
 {
     public function canHandle(CommandInterface $command): bool
     {
-        return $command instanceof LebenszielAuswaehlen;
+        return $command instanceof DefinePlayerOrdering
+            || $command instanceof LebenszielAuswaehlen;
     }
 
-    public function handle(CommandInterface $command, GameEvents $gameState): GameEvents
+    public function handle(CommandInterface $command, GameEvents $gameState): GameEventsToPersist
     {
         /** @phpstan-ignore-next-line */
         return match ($command::class) {
+            DefinePlayerOrdering::class => $this->handleDefinePlayerOrdering($command, $gameState),
             LebenszielAuswaehlen::class => $this->handleLebenszielAuswaehlen($command, $gameState),
         };
     }
 
-    private function handleLebenszielAuswaehlen(LebenszielAuswaehlen $command, GameEvents $gameState): GameEvents
+    private function handleDefinePlayerOrdering(DefinePlayerOrdering $command, GameEvents $gameState): GameEventsToPersist
+    {
+        return GameEventsToPersist::with(
+            new PlayerOrderingWasDefined(playerOrdering: $command->playerOrdering),
+        );
+    }
+
+    private function handleLebenszielAuswaehlen(LebenszielAuswaehlen $command, GameEvents $gameState): GameEventsToPersist
     {
         $currentPlayer = CurrentPlayerAccessor::forStream($gameState);
         if (!$currentPlayer->equals($command->playerId)) {
@@ -42,11 +54,11 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
             throw new \RuntimeException('Player has already selected a Lebensziel', 1746713490);
         }
 
-        return $gameState->withAppendedEvents(GameEvents::fromArray([
+        return GameEventsToPersist::with(
             new LebenszielChosen(
                 player: $command->playerId,
                 lebensziel: $command->lebensziel,
             )
-        ]));
+        );
     }
 }

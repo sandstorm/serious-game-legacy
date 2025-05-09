@@ -1,7 +1,8 @@
 <?php
 declare(strict_types=1);
-namespace Domain\CoreGameLogic\Dto\Event\Player;
+namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
+use Domain\CoreGameLogic\Dto\Event\Player\ProvidesModifiers;
 use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
 use Domain\CoreGameLogic\Dto\ValueObject\Modifier;
 use Domain\CoreGameLogic\Dto\ValueObject\ModifierCollection;

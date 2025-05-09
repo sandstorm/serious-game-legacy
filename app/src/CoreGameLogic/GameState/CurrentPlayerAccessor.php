@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\GameState;
 
-use Domain\CoreGameLogic\Dto\Event\InitializePlayerOrdering;
-use Domain\CoreGameLogic\Dto\Event\Player\SpielzugWasCompleted;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerOrderingWasDefined;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasCompleted;
 
 class CurrentPlayerAccessor
 {
 
     public static function forStream(GameEvents $stream): PlayerId
     {
-        $currentPlayerOrdering = $stream->findLast(InitializePlayerOrdering::class)->playerOrdering;
+        $currentPlayerOrdering = $stream->findLast(PlayerOrderingWasDefined::class)->playerOrdering;
 
         $previousPlayer = $stream->findLastOrNull(SpielzugWasCompleted::class)?->player;
 
@@ -34,7 +34,7 @@ class CurrentPlayerAccessor
         }
 
         if ($index === null) {
-            throw new \RuntimeException('Previous player not found in ordering');
+            throw new \RuntimeException('Previous player "' . $previousPlayer . '" not found in ordering');
         }
 
         $nextIndex = ((int) $index + 1) % count($currentPlayerOrdering);

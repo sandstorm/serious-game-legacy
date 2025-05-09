@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\EventStore;
 
-use Domain\CoreGameLogic\Dto\Event\InitializePlayerOrdering;
-use Domain\CoreGameLogic\Dto\Event\JahreswechselEvent;
-use Domain\CoreGameLogic\Dto\Event\Player\CardActivated;
-use Domain\CoreGameLogic\Dto\Event\Player\CardSkipped;
 use Domain\CoreGameLogic\Dto\Event\Player\KontoJahresabschlussOnJahreswechsel;
-use Domain\CoreGameLogic\Dto\Event\Player\SpielzugWasCompleted;
-use Domain\CoreGameLogic\Dto\Event\Player\TriggeredEreignis;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
+use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerOrderingWasDefined;
+use Domain\CoreGameLogic\Feature\Jahreswechsel\Event\NewYearWasStarted;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasCompleted;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\TriggeredEreignis;
 use Neos\EventStore\Model\Event;
 use Neos\EventStore\Model\Event\EventData;
 use Neos\EventStore\Model\Event\EventId;
@@ -46,10 +46,10 @@ final readonly class EventNormalizer
     {
         /** @var array<class-string<GameEventInterface>> $supportedEventClassNames */
         $supportedEventClassNames = [
-            InitializePlayerOrdering::class,
-            JahreswechselEvent::class,
-            CardActivated::class,
-            CardSkipped::class,
+            PlayerOrderingWasDefined::class,
+            NewYearWasStarted::class,
+            CardWasActivated::class,
+            CardWasSkipped::class,
             KontoJahresabschlussOnJahreswechsel::class,
             SpielzugWasCompleted::class,
             TriggeredEreignis::class,
