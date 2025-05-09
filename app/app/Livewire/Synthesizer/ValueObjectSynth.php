@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Synthesizer;
 
 use Domain\CoreGameLogic\Dto\ValueObjectInterface;

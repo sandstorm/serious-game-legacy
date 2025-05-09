@@ -30,6 +30,8 @@ final readonly class CommandBus
      * The handler only calculate which events they want to have published,
      * but do not do the publishing themselves
      *
+     * @param CommandInterface $command
+     * @param GameEvents $gameState
      * @return GameEvents
      */
     public function handle(CommandInterface $command, GameEvents $gameState): GameEvents

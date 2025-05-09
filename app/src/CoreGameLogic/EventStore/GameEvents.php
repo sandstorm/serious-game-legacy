@@ -72,6 +72,11 @@ final readonly class GameEvents implements \IteratorAggregate, \Countable
         return array_reduce($this->events, $callback, $initial);
     }
 
+    public function filter(callable $callback): mixed
+    {
+        return array_values(array_filter($this->events, $callback));
+    }
+
     public function count(): int
     {
         return count($this->events);

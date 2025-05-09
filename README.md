@@ -116,9 +116,14 @@ dev start
 - run `dev logs` to see the logs of all containers.
 - run `dev` to see all available development tasks
 - run `dev <sometaks> --help` to get detailed help for a task
-- Frontend: http://127.0.0.1:8090/
-- Admin UI: http://127.0.0.1:8090/admin 
+- run `dev open-site`
+  - Frontend: http://127.0.0.1:8090/
+  - Admin UI: http://127.0.0.1:8090/admin 
 - Have fun ;)
+
+### Init git submodules
+
+- run `git submodule init && git submodule update` to initialize the git submodules (Sandstorm Eventstore Laravel Adapter)
 
 ### Local Development of Sandstorm Packages
 
@@ -129,6 +134,7 @@ dev start
 
 ## Testing
 
+Run `dev pest` to run all unit tests.
 
 We use [Pest](https://pestphp.com/) as testing framework, which builds upon
 PHPUnit and looks as if it provides quite some nice benefits on top,

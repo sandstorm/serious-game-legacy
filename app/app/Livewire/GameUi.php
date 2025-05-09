@@ -1,12 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire;
 
 use App\Events\GameStateUpdated;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
+use Domain\CoreGameLogic\Dto\ValueObject\Lebensziel;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
 use Domain\CoreGameLogic\GameState\CurrentPlayerAccessor;
 use Illuminate\Events\Dispatcher;
@@ -52,6 +56,11 @@ class GameUi extends Component
 
         // Notify all connected clients that a Spielzug has happened
         $this->eventDispatcher->dispatch(new GameStateUpdated($this->gameId));
+    }
+
+    public function lebenszielAuswaehlen(string $lebensziel): void
+    {
+        $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen($this->myself, new Lebensziel($lebensziel)));
     }
 
     public function triggerGameAction(string $gameAction): void

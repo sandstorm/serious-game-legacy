@@ -71,7 +71,7 @@ function php-stan-json() {
 
 function start {
     build
-    # create external volume "yarn-cache" and "neos-composer-cache" if not existing
+    # create external volume "yarn-cache" and "laravel-composer-cache" if not existing
     # wont be removed on down and volume removal
     docker volume create --name yarn-cache
     docker volume create --name laravel-composer-cache
@@ -142,9 +142,9 @@ function ps {
 
 ######################### Open Urls in Browser / UIs #########################
 
-# Open site and site/neos in browser
+# Open site and site in browser
 function open-site {
-	open http://127.0.0.1:8090/admin
+	open http://127.0.0.1:8090
 }
 
 # Open local db with your default UI
