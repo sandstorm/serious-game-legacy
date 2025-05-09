@@ -109,7 +109,7 @@ final readonly class GameEvents implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @template T of GameEventInterface|DecoratedEvent
+     * @template T
      * @param class-string<T> $className
      * @return GameEvents
      */

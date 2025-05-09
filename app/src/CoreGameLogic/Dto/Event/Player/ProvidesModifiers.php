@@ -6,7 +6,12 @@ use Domain\CoreGameLogic\Dto\ValueObject\ModifierCollection;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 
-interface ProvidesModifiers extends GameEventInterface
+/**
+ * This interface is usually applied on GameEvents which also provide some modifiers.
+ *
+ * Ein "Modifier" verändert den Spielverlauf in der Zukunft.
+ */
+interface ProvidesModifiers
 {
     public function getModifiers(PlayerId $playerId): ModifierCollection;
 }
