@@ -86,7 +86,6 @@ You'll get a popup prompting you to install the plugins if you don't already hav
   - [Laravel IDEA](https://plugins.jetbrains.com/plugin/13441-laravel-idea)
     - paid plugin, but REALLY good
   - Blade Support (for template files)
-  - [Laravel Query](https://plugins.jetbrains.com/plugin/16309-laravel-query)
   - [PHP](https://plugins.jetbrains.com/plugin/6610-php)
   - [PHP Annotations](https://plugins.jetbrains.com/plugin/7320-php-annotations)
   - [PHP Toolbox](https://plugins.jetbrains.com/plugin/8133-php-toolbox)
@@ -95,6 +94,13 @@ You'll get a popup prompting you to install the plugins if you don't already hav
   - [Symlink Excluder](https://plugins.jetbrains.com/plugin/16110-symlink-excluder)
     - Prevents symlinked folders to be indexed by the IDE so that you don't have to exclude packages you're developing manually
 
+### Starting the Development Environment
+
+```bash
+git submodule init
+git submodule update
+```
+
 ## Local Development
 
 - run `dev start` to start all needed container of the project (see `docker-compose.yml` for details)
@@ -102,7 +108,8 @@ You'll get a popup prompting you to install the plugins if you don't already hav
 - run `dev logs` to see the logs of all containers.
 - run `dev` to see all available development tasks
 - run `dev <sometaks> --help` to get detailed help for a task
-- run `dev open-site` you can login to the [neos backend](http://localhost:8081/neos) with the credentials `admin` and `password`
+- Frontend: http://127.0.0.1:8090/
+- Admin UI: http://127.0.0.1:8090/admin 
 - Have fun ;)
 
 ### Local Development of Sandstorm Packages
