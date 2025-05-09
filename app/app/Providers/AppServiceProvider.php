@@ -30,7 +30,6 @@ final class AppServiceProvider extends ServiceProvider
             DB::connection(),
             'app_game_events'
         ));
-        $this->app->scoped(EventNormalizer::class, fn() => EventNormalizer::create());
 
         // Support Value Objects in Livewire
         Livewire::propertySynthesizer(ValueObjectSynth::class);

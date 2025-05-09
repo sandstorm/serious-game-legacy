@@ -14,6 +14,7 @@ use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
+use Neos\EventStore\Helper\InMemoryEventStore;
 use Neos\EventStore\Model\EventStream\ExpectedVersion;
 
 /**
@@ -30,6 +31,12 @@ use Neos\EventStore\Model\EventStream\ExpectedVersion;
 final class CoreGameLogicApp implements ForCoreGameLogic
 {
     private CommandBus $commandBus;
+
+    public static function createInMemoryForTesting(): ForCoreGameLogic
+    {
+        $eventStore = new GameEventStore(new InMemoryEventStore());
+        return new self($eventStore);
+    }
 
     public function __construct(
         private readonly GameEventStore $gameEventStore,
@@ -67,7 +74,7 @@ final class CoreGameLogicApp implements ForCoreGameLogic
 
     public function getGameStream(GameId $gameId): GameEvents
     {
-        [$gameStream, ] = $this->gameEventStore->getGameStreamAndLastVersion($gameId);
+        [$gameStream,] = $this->gameEventStore->getGameStreamAndLastVersion($gameId);
         return $gameStream;
     }
 

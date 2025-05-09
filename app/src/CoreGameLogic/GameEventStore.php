@@ -17,13 +17,14 @@ use Neos\EventStore\Model\EventStream\ExpectedVersion;
 /**
  * @internal from the outside world, you'll always use {@see CoreGameLogicApp})
  */
-final class GameEventStore
+final readonly class GameEventStore
 {
+    private EventNormalizer $eventNormalizer;
     public function __construct(
-        private readonly EventStoreInterface $eventStore,
-        private readonly EventNormalizer $eventNormalizer,
+        private EventStoreInterface $eventStore,
     )
     {
+        $this->eventNormalizer = EventNormalizer::create();
     }
 
     public function hasGame(GameId $gameId): bool
