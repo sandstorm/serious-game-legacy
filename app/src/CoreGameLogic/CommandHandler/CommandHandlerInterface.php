@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\CommandHandler;
 
+use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 
 /**
  * Common interface for all Game Command command handlers
  *
- * @internal no public API, because commands are no extension points
+ * @internal no public API, because commands are no extension points. ALWAYS USE {@see ForCoreGameLogic::handle()} to trigger commands.
  */
 interface CommandHandlerInterface
 {

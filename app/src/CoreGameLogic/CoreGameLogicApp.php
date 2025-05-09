@@ -13,6 +13,7 @@ use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Initialization\InitializationCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Neos\EventStore\Helper\InMemoryEventStore;
 use Neos\EventStore\Model\EventStream\ExpectedVersion;
@@ -43,6 +44,7 @@ final class CoreGameLogicApp implements ForCoreGameLogic
     )
     {
         $this->commandBus = new CommandBus(
+            new InitializationCommandHandler(),
             new SpielzugCommandHandler(),
         );
     }

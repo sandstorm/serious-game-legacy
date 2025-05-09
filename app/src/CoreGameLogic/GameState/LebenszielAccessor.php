@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\GameState;
 
-use Domain\CoreGameLogic\Dto\Event\Player\LebenszielChosen;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 
 class LebenszielAccessor
 {

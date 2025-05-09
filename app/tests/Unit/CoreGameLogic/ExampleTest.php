@@ -1,23 +1,24 @@
 <?php
 
+use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\Dto\Aktion\ZeitsteinSetzen;
 use Domain\CoreGameLogic\Dto\Event\InitializePlayerOrdering;
 use Domain\CoreGameLogic\Dto\Event\JahreswechselEvent;
 use Domain\CoreGameLogic\Dto\Event\Player\CardActivated;
 use Domain\CoreGameLogic\Dto\Event\Player\CardSkipped;
-use Domain\CoreGameLogic\Dto\Event\Player\LebenszielChosen;
 use Domain\CoreGameLogic\Dto\Event\Player\SpielzugWasCompleted;
 use Domain\CoreGameLogic\Dto\Event\Player\TriggeredEreignis;
 use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\CurrentYear;
 use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
+use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\Lebensziel;
 use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\LebenszielAuswaehlen;
+use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
+use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
-use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Domain\CoreGameLogic\GameState\AktionsCalculator;
 use Domain\CoreGameLogic\GameState\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\GameState\LebenszielAccessor;
@@ -25,7 +26,8 @@ use Domain\CoreGameLogic\GameState\LeitzinsAccessor;
 use Domain\CoreGameLogic\GameState\ModifierCalculator;
 
 beforeEach(function () {
-    //$this->forDoingCoreBusinessLogic = new CoreGameLogicApp();
+    $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
+    $this->gameId = new GameId('game1');
 });
 
 test('Event stream can be accessed', function () {
@@ -44,27 +46,20 @@ test('Event stream can be accessed', function () {
 });
 
 test('Test Command Handler', function () {
-    $commandHandler = new SpielzugCommandHandler();
-    $stream = GameEvents::with(
-        new InitializePlayerOrdering(
-            playerOrdering: [
-                new PlayerId('p1'),
-                new PlayerId('p2'),
-            ]
-        ),
-    );
+    $this->coreGameLogic->startGameIfNotStarted(new GameId('game1'));
 
     $lebenszielAuswaehlenP1 = new LebenszielAuswaehlen(
         playerId: new PlayerId('p1'),
         lebensziel: new Lebensziel('Lebensziel XYZ'),
     );
-    $stream = $commandHandler->handle($lebenszielAuswaehlenP1, $stream);
+    $this->coreGameLogic->handle($this->gameId, $lebenszielAuswaehlenP1);
+    $stream = $this->coreGameLogic->getGameStream($this->gameId);
 
     expect(LebenszielAccessor::forStream($stream)->forPlayer(new PlayerId('p1'))->lebensziel->name)->toBe('Lebensziel XYZ');
 
     // catch exception if player tries to set Lebensziel again
     try {
-        $stream = $commandHandler->handle($lebenszielAuswaehlenP1, $stream);
+        $this->coreGameLogic->handle($this->gameId, $lebenszielAuswaehlenP1);
     } catch (\RuntimeException $e) {
         expect($e->getCode())->toBe(1746713490);
     }
@@ -76,7 +71,7 @@ test('Test Command Handler', function () {
 
     // catch exception if not the current player tries to set Lebensziel
     try {
-        $stream = $commandHandler->handle($lebenszielAuswaehlenP2, $stream);
+        $this->coreGameLogic->handle($this->gameId, $lebenszielAuswaehlenP2);
     } catch (\RuntimeException $e) {
         expect($e->getCode())->toBe(1746700791);
     }
@@ -84,7 +79,8 @@ test('Test Command Handler', function () {
     $spielzugAbschliessen = new SpielzugAbschliessen(
         playerId: new PlayerId('p1'),
     );
-    $stream = $commandHandler->handle($spielzugAbschliessen, $stream);
+    $this->coreGameLogic->handle($this->gameId, $spielzugAbschliessen);
+    $stream = $this->coreGameLogic->getGameStream($this->gameId);
 
     expect(CurrentPlayerAccessor::forStream($stream)->value)->toBe('p2');
 });

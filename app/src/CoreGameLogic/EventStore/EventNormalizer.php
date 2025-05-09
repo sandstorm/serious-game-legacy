@@ -11,6 +11,7 @@ use Domain\CoreGameLogic\Dto\Event\Player\CardSkipped;
 use Domain\CoreGameLogic\Dto\Event\Player\KontoJahresabschlussOnJahreswechsel;
 use Domain\CoreGameLogic\Dto\Event\Player\SpielzugWasCompleted;
 use Domain\CoreGameLogic\Dto\Event\Player\TriggeredEreignis;
+use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Neos\EventStore\Model\Event;
 use Neos\EventStore\Model\Event\EventData;
 use Neos\EventStore\Model\Event\EventId;
@@ -52,6 +53,7 @@ final readonly class EventNormalizer
             KontoJahresabschlussOnJahreswechsel::class,
             SpielzugWasCompleted::class,
             TriggeredEreignis::class,
+            LebenszielChosen::class
         ];
 
         $fullClassNameToShortEventType = [];
