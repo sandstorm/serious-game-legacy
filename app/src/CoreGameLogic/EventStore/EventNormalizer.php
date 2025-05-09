@@ -43,6 +43,7 @@ final readonly class EventNormalizer
      */
     public static function create(): self
     {
+        /** @var array<class-string<GameEventInterface>> $supportedEventClassNames */
         $supportedEventClassNames = [
             InitializePlayerOrdering::class,
             JahreswechselEvent::class,
@@ -57,7 +58,8 @@ final readonly class EventNormalizer
         $shortEventTypeToFullClassName = [];
 
         foreach ($supportedEventClassNames as $fullEventClassName) {
-            $shortEventClassName = substr($fullEventClassName, strrpos($fullEventClassName, '\\') + 1);
+            $shortEventClassPosition = strrpos($fullEventClassName, '\\') !== false ? strrpos($fullEventClassName, '\\') : 0;
+            $shortEventClassName = substr($fullEventClassName,  $shortEventClassPosition + 1);
 
             $fullClassNameToShortEventType[$fullEventClassName] = EventType::fromString($shortEventClassName);
             $shortEventTypeToFullClassName[$shortEventClassName] = $fullEventClassName;
@@ -80,7 +82,7 @@ final readonly class EventNormalizer
         );
     }
 
-    public function normalize(GameEventInterface $event): Event
+    public function normalize(DecoratedEvent|GameEventInterface $event): Event
     {
         $eventId = $event instanceof DecoratedEvent && $event->eventId !== null ? $event->eventId : EventId::create();
         $eventMetadata = $event instanceof DecoratedEvent ? $event->eventMetadata : null;
