@@ -44,7 +44,7 @@ final readonly class GameEvents implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @param non-empty-array<GameEventInterface|DecoratedEvent> $events
+     * @param array<GameEventInterface|DecoratedEvent> $events
      * @return static
      */
     public static function fromArray(array $events): self
@@ -109,7 +109,7 @@ final readonly class GameEvents implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @template T of object
+     * @template T of GameEventInterface|DecoratedEvent
      * @param class-string<T> $className
      * @return GameEvents
      */

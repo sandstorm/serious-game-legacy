@@ -10,6 +10,7 @@ use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Neos\EventStore\EventStoreInterface;
 use Neos\EventStore\Model\Event\SequenceNumber;
+use Neos\EventStore\Model\Event\Version;
 use Neos\EventStore\Model\Events;
 use Neos\EventStore\Model\EventStream\ExpectedVersion;
 
@@ -38,11 +39,11 @@ final class GameEventStore
 
     /**
      * @param GameId $gameId
-     * @return [GameEvents, Version]
+     * @return array{0: GameEvents, 1: Version}
      */
     public function getGameStreamAndLastVersion(GameId $gameId): array {
         $gameEvents = [];
-        $version = SequenceNumber::none();
+        $version = Version::first();
         foreach ($this->eventStore->load($gameId->streamName()) as $eventEnvelope) {
             $gameEvents[] = $this->eventNormalizer->denormalize($eventEnvelope->event);
             $version = $eventEnvelope->version;
