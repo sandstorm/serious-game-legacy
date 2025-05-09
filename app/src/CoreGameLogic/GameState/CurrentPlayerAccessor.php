@@ -20,10 +20,11 @@ class CurrentPlayerAccessor
 
         if ($previousPlayer === null) {
             // Initial move -> first according to player ordering
-            return reset($currentPlayerOrdering);
+            return $currentPlayerOrdering[0];
         }
 
         $index = null;
+        /** @var int $i */
         foreach ($currentPlayerOrdering as $i => $player) {
             assert($player instanceof PlayerId);
             if ($player->equals($previousPlayer)) {

@@ -31,5 +31,6 @@ class PhaseWechseln extends Aktion
     public function execute(PlayerId $player, GameEvents $eventStream): GameEvents
     {
         // TODO: Implement execute() method.
+        return GameEvents::fromArray([]);
     }
 }

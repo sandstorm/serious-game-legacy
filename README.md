@@ -86,7 +86,6 @@ You'll get a popup prompting you to install the plugins if you don't already hav
   - [Laravel IDEA](https://plugins.jetbrains.com/plugin/13441-laravel-idea)
     - paid plugin, but REALLY good
   - Blade Support (for template files)
-  - [Laravel Query](https://plugins.jetbrains.com/plugin/16309-laravel-query)
   - [PHP](https://plugins.jetbrains.com/plugin/6610-php)
   - [PHP Annotations](https://plugins.jetbrains.com/plugin/7320-php-annotations)
   - [PHP Toolbox](https://plugins.jetbrains.com/plugin/8133-php-toolbox)
@@ -94,6 +93,21 @@ You'll get a popup prompting you to install the plugins if you don't already hav
   - [Docker](https://plugins.jetbrains.com/plugin/7724-docker)
   - [Symlink Excluder](https://plugins.jetbrains.com/plugin/16110-symlink-excluder)
     - Prevents symlinked folders to be indexed by the IDE so that you don't have to exclude packages you're developing manually
+
+### Starting the Development Environment
+
+```bash
+git submodule init
+git submodule update
+
+dev setup
+
+# start everything
+dev start
+
+# now, access the frontend at http://127.0.0.1:8090
+# now, access the filament backend at http://127.0.0.1:8090/admin
+```
 
 ## Local Development
 
@@ -103,6 +117,8 @@ You'll get a popup prompting you to install the plugins if you don't already hav
 - run `dev` to see all available development tasks
 - run `dev <sometaks> --help` to get detailed help for a task
 - run `dev open-site`
+  - Frontend: http://127.0.0.1:8090/
+  - Admin UI: http://127.0.0.1:8090/admin 
 - Have fun ;)
 
 ### Init git submodules
@@ -113,14 +129,14 @@ You'll get a popup prompting you to install the plugins if you don't already hav
 
 - run `composer config --global 'preferred-install.sandstorm/*' source` on your local machine to use the local packages for development
 - run `composer install` in the `app` folder to install the local packages or start the container, the Packages folder is mounted into the container
-- now you can develop the packages in the `Application/Packages` folder and the changes will be reflected in the docker container
+- now you can develop the packages in the `DistributionPackages` folder and the changes will be reflected in the docker container
 - the sandstorm packages should check out the branch specified in the `composer.json` of the kickstarter
 
 ## Testing
 
-- run `dev pest` to run all unit tests
+Run `dev pest` to run all unit tests.
 
-We suggest to use [Pest](https://pestphp.com/) as testing framework, which builds upon
+We use [Pest](https://pestphp.com/) as testing framework, which builds upon
 PHPUnit and looks as if it provides quite some nice benefits on top,
 especially [Architectural Testing](https://pestphp.com/docs/arch-testing) and
 [Snapshot Testing](https://pestphp.com/docs/snapshot-testing) is something we
@@ -199,7 +215,7 @@ We use PHPStan with a few addons:
   ```
 
 
-TODO: PHPStan in CI
+PHPStan is ran in CI.
 
 ## Pint Code Style Fixer
 

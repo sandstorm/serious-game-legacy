@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/laravel-filament-on-docker-kickstart.iml" filepath="$PROJECT_DIR$/.idea/laravel-filament-on-docker-kickstart.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/serious-game-legacy.iml" filepath="$PROJECT_DIR$/.idea/serious-game-legacy.iml" />
     </modules>
   </component>
 </project>
