@@ -12,7 +12,7 @@ use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
-use Domain\CoreGameLogic\GameState\CurrentPlayerAccessor;
+use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Illuminate\Events\Dispatcher;
 use Livewire\Component;
 

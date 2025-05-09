@@ -14,20 +14,16 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerOrderingWasDefined;
+use Domain\CoreGameLogic\Feature\Initialization\State\LebenszielAccessor;
 use Domain\CoreGameLogic\Feature\Jahreswechsel\Command\StartNewYear;
 use Domain\CoreGameLogic\Feature\Jahreswechsel\Event\NewYearWasStarted;
+use Domain\CoreGameLogic\Feature\Jahreswechsel\State\LeitzinsAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasCompleted;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\TriggeredEreignis;
-use Domain\CoreGameLogic\GameState\AktionsCalculator;
-use Domain\CoreGameLogic\GameState\CurrentPlayerAccessor;
-use Domain\CoreGameLogic\GameState\LebenszielAccessor;
-use Domain\CoreGameLogic\GameState\LeitzinsAccessor;
-use Domain\CoreGameLogic\GameState\ModifierCalculator;
+use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
+use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
+use Domain\CoreGameLogic\Feature\Spielzug\State\ModifierCalculator;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();

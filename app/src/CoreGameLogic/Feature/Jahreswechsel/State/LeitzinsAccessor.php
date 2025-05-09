@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\GameState;
+namespace Domain\CoreGameLogic\Feature\Jahreswechsel\State;
 
 use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
 use Domain\CoreGameLogic\EventStore\GameEvents;

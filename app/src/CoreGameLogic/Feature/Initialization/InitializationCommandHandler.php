@@ -12,8 +12,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerOrderingWasDefined;
-use Domain\CoreGameLogic\GameState\CurrentPlayerAccessor;
-use Domain\CoreGameLogic\GameState\LebenszielAccessor;
+use Domain\CoreGameLogic\Feature\Initialization\State\LebenszielAccessor;
 
 /**
  * @internal no public API, because commands are no extension points. ALWAYS USE {@see ForCoreGameLogic::handle()} to trigger commands.
@@ -44,11 +43,6 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
 
     private function handleLebenszielAuswaehlen(LebenszielAuswaehlen $command, GameEvents $gameState): GameEventsToPersist
     {
-        $currentPlayer = CurrentPlayerAccessor::forStream($gameState);
-        if (!$currentPlayer->equals($command->playerId)) {
-            throw new \RuntimeException('Only the current player can complete a turn', 1746700791);
-        }
-
         $hasLebensziel = LebenszielAccessor::forStream($gameState)->forPlayer($command->playerId);
         if ($hasLebensziel !== null) {
             throw new \RuntimeException('Player has already selected a Lebensziel', 1746713490);

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\GameState;
+namespace Domain\CoreGameLogic\Feature\Spielzug\State;
 use Domain\CoreGameLogic\Dto\Event\Player\ProvidesModifiers;
 use Domain\CoreGameLogic\Dto\ValueObject\ModifierCollection;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
