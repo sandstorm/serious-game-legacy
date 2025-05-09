@@ -209,7 +209,7 @@ We use PHPStan with a few addons:
   ```
 
 
-TODO: PHPStan in CI
+PHPStan is ran in CI.
 
 ## Pint Code Style Fixer
 
