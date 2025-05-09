@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\GameState;
 
-use Domain\CoreGameLogic\Dto\Event\InitLebenszielEvent;
+use Domain\CoreGameLogic\Dto\Event\Player\LebenszielChosen;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 
@@ -20,9 +20,9 @@ class LebenszielAccessor
         return new self($stream);
     }
 
-    public function forPlayer(PlayerId $playerId): ?InitLebenszielEvent
+    public function forPlayer(PlayerId $playerId): ?LebenszielChosen
     {
-        return $this->stream->findAllOfType(InitLebenszielEvent::class)->filter(function($event) use ($playerId) {
+        return $this->stream->findAllOfType(LebenszielChosen::class)->filter(function($event) use ($playerId) {
             return $event->player->equals($playerId);
         })[0] ?? null;
     }

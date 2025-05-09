@@ -2,10 +2,10 @@
 
 use Domain\CoreGameLogic\Dto\Aktion\ZeitsteinSetzen;
 use Domain\CoreGameLogic\Dto\Event\InitializePlayerOrdering;
-use Domain\CoreGameLogic\Dto\Event\InitLebenszielEvent;
 use Domain\CoreGameLogic\Dto\Event\JahreswechselEvent;
 use Domain\CoreGameLogic\Dto\Event\Player\CardActivated;
 use Domain\CoreGameLogic\Dto\Event\Player\CardSkipped;
+use Domain\CoreGameLogic\Dto\Event\Player\LebenszielChosen;
 use Domain\CoreGameLogic\Dto\Event\Player\SpielzugWasCompleted;
 use Domain\CoreGameLogic\Dto\Event\Player\TriggeredEreignis;
 use Domain\CoreGameLogic\Dto\ValueObject\CardId;
@@ -144,11 +144,11 @@ test('Init Lebensziel', function () {
                 new PlayerId('p2'),
             ]
         ),
-        new InitLebenszielEvent(
+        new LebenszielChosen(
             lebensziel : new Lebensziel('Lebensziel XYZ'),
             player: new PlayerId('p1'),
         ),
-        new InitLebenszielEvent(
+        new LebenszielChosen(
             lebensziel : new Lebensziel('Lebensziel ABC'),
             player: new PlayerId('p2'),
         ),

@@ -6,7 +6,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug;
 
 use Domain\CoreGameLogic\CommandHandler\CommandHandlerInterface;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
-use Domain\CoreGameLogic\Dto\Event\InitLebenszielEvent;
+use Domain\CoreGameLogic\Dto\Event\Player\LebenszielChosen;
 use Domain\CoreGameLogic\Dto\Event\Player\SpielzugWasCompleted;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\LebenszielAuswaehlen;
@@ -56,7 +56,10 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
         }
 
         return $gameState->withAppendedEvents(GameEvents::fromArray([
-            new InitLebenszielEvent($command->lebensziel, $command->playerId)
+            new LebenszielChosen(
+                player: $command->playerId,
+                lebensziel: $command->lebensziel,
+            )
         ]));
     }
 }
