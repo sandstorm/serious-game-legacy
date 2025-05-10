@@ -7,7 +7,9 @@
   * [Initial Setup (required once)](#initial-setup-required-once)
     * [Install Dependencies](#install-dependencies)
     * [Setting up IntelliJ](#setting-up-intellij)
+    * [Starting the Development Environment](#starting-the-development-environment)
   * [Local Development](#local-development)
+    * [Init git submodules](#init-git-submodules)
     * [Local Development of Sandstorm Packages](#local-development-of-sandstorm-packages)
   * [Testing](#testing)
   * [PHPStan Static Code Analysis](#phpstan-static-code-analysis)
@@ -175,7 +177,18 @@ This allowed running full Pest files, but not single tests due to [this bug](htt
 - As extra env, add `DB_DATABASE=laravel_testing` so that the testing DB is used.
 - on the top right, choose *Store as project file*
 
-TODO: Tests in CI
+Now, to run tests from your IDE, make sure the server is started via `dev start`; then press "play" on the gutter of a
+PEST Test.
+
+**Tests are executed in CI.**
+
+### Testing Tricks
+
+- If you need a database initialized in your tests (`laravel_testing` is used in our case), add
+
+  ```php
+  uses(RefreshDatabase::class);
+  ```
 
 ## PHPStan Static Code Analysis
 
@@ -215,7 +228,7 @@ We use PHPStan with a few addons:
   ```
 
 
-PHPStan is ran in CI.
+**PHPStan is executed in CI.**
 
 ## Pint Code Style Fixer
 
