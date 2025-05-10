@@ -1,5 +1,9 @@
 #  Serious Game Legacy + Moonshot von Uni Konstanz
 
+Entwickelt als Open Source von Sandstorm Media GmbH.
+
+[README](README.md) [CODE_STYLE](CODE_STYLE.md) [ARCHITECTURE](ARCHITECTURE.md)
+
 <!-- TOC -->
 * [Serious Game Legacy + Moonshot von Uni Konstanz](#serious-game-legacy--moonshot-von-uni-konstanz)
 * [Initial Setup (required once)](#initial-setup-required-once)

@@ -1,4 +1,6 @@
-# Sandstorm Laravel / Filament Best Practices
+# CODE STYLE: andstorm Laravel / Filament Best Practices
+
+[README](README.md) [CODE_STYLE](CODE_STYLE.md) [ARCHITECTURE](ARCHITECTURE.md) 
 
 <!-- TOC -->
 * [Sandstorm Laravel / Filament Best Practices](#sandstorm-laravel--filament-best-practices)
