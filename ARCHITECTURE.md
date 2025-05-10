@@ -79,3 +79,29 @@ The synchronous UI works as follows:
 - we use commands to create desired state.
 - `CoreGameLogicApp::createInMemoryForTesting()` creates a purely in-memory game logic, without persistence to database.
   Helpful for testing :)
+
+# Implementierung der Spiellogik
+
+## Spielphasen
+
+Alle Spielphasen sollten vrsl. Teil des selben Event Streams werden. Ich dachte zuerst, die PreGame-Phase vorher
+zu machen; aber auch dafür macht die EventSourced + Livewire Architektur Sinn; und es wird einfacher wenn alles
+Teil eines Streams ist (single source of truth).
+
+- **PreGame-Phase**: Bis alle Spielende ihren Namen + Lebensziel definiert haben.
+  - Input: Wie viele Spieler?
+  - Spielende stellen Namen + Lebensziel ein (gleichzeitig)
+  - wenn alle fertig sind: `StartGame`
+- **Game-Phase**: Rundenbasiert; mit Jahren; i.d.R. nacheinander.
+
+## Aktionen
+
+**Aktionen** beschreiben die Möglichkeiten, die ein Spieler, wenn er dran ist, prinzipiell hat.
+
+Aufgrund des vorherigen Spielverlaufes können Aktionen aktuell deaktiviert sein; oder es können
+zusätzliche Aktionen vorhanden sein. Dies wird über die **aktiven Modifier** gesteuert.
+
+### Modifier
+
+TODO: Describe
+TODO: Ablauf"Datum"
