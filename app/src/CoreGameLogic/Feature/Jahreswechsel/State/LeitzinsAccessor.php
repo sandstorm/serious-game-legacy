@@ -10,10 +10,9 @@ use Domain\CoreGameLogic\Feature\Jahreswechsel\Event\NewYearWasStarted;
 
 class LeitzinsAccessor
 {
-
     public static function forStream(GameEvents $stream): Leitzins
     {
-        $leitzins = $stream->reduce(function($state, $event) {
+        $leitzins = $stream->reduce(function ($state, $event) {
             if ($event instanceof NewYearWasStarted) {
                 return $event->leitzins;
             }

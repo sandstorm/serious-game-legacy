@@ -8,15 +8,13 @@ use Domain\CoreGameLogic\Dto\ValueObject\Lebensziel;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 
-readonly final class LebenszielChosen implements GameEventInterface
+final readonly class LebenszielChosen implements GameEventInterface
 {
-
     public function __construct(
         public PlayerId $player,
         public Lebensziel $lebensziel,
         // TODO phases, goals, etc
-    )
-    {
+    ) {
     }
 
     public static function fromArray(array $values): GameEventInterface

@@ -107,6 +107,6 @@ final readonly class GameEvents implements \IteratorAggregate, \Countable
      */
     public function findAllOfType(string $className): self
     {
-        return self::fromArray(array_filter($this->events, fn($event) => $event instanceof $className));
+        return self::fromArray(array_filter($this->events, fn ($event) => $event instanceof $className));
     }
 }

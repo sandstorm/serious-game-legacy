@@ -10,12 +10,11 @@ use Domain\CoreGameLogic\Dto\Aktion\ZeitsteinSetzen;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 
-readonly final class AktionsCalculator
+final readonly class AktionsCalculator
 {
     private function __construct(
         private GameEvents $stream,
-    )
-    {
+    ) {
     }
 
     public static function forStream(GameEvents $stream): self
@@ -30,7 +29,7 @@ readonly final class AktionsCalculator
     {
         $aktionen = self::standardAktionen();
         $modifiersForPlayer = ModifierCalculator::forStream($this->stream)->forPlayer($player);
-        $applicableAktionen = array_values(array_filter($aktionen, fn(Aktion $aktion) => $aktion->canExecute($player, $this->stream)));
+        $applicableAktionen = array_values(array_filter($aktionen, fn (Aktion $aktion) => $aktion->canExecute($player, $this->stream)));
         return $modifiersForPlayer->applyToAvailableAktionen($applicableAktionen);
     }
 

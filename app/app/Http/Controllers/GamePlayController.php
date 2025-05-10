@@ -14,8 +14,7 @@ class GamePlayController extends Controller
 {
     public function __construct(
         private readonly ForCoreGameLogic $coreGameLogic,
-    )
-    {
+    ) {
     }
 
     /**

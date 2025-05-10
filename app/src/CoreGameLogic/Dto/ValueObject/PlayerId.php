@@ -17,7 +17,7 @@ readonly class PlayerId implements \JsonSerializable, ValueObjectInterface
         return '[Player: '.$this->value.']';
     }
 
-    public function equals(PlayerId $other):bool
+    public function equals(PlayerId $other): bool
     {
         return $this->value === $other->value;
     }

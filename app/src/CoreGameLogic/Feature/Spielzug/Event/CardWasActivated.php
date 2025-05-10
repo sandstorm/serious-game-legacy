@@ -1,19 +1,19 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 
-readonly final class CardWasActivated implements GameEventInterface
+final readonly class CardWasActivated implements GameEventInterface
 {
-
     public function __construct(
         public PlayerId $player,
         public CardId $card,
-    )
-    {
+    ) {
     }
 
     public static function fromArray(array $values): GameEventInterface

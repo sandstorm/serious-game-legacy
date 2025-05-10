@@ -1,19 +1,19 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Domain\CoreGameLogic\Feature\Jahreswechsel\Event;
 
 use Domain\CoreGameLogic\Dto\ValueObject\CurrentYear;
 use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 
-readonly final class NewYearWasStarted implements GameEventInterface
+final readonly class NewYearWasStarted implements GameEventInterface
 {
-
     public function __construct(
         public CurrentYear $newYear,
         public Leitzins    $leitzins,
-    )
-    {
+    ) {
     }
 
     public static function fromArray(array $values): GameEventInterface

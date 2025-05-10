@@ -59,7 +59,7 @@ final readonly class EventNormalizer
 
         foreach ($supportedEventClassNames as $fullEventClassName) {
             $shortEventClassPosition = strrpos($fullEventClassName, '\\') !== false ? strrpos($fullEventClassName, '\\') : 0;
-            $shortEventClassName = substr($fullEventClassName,  $shortEventClassPosition + 1);
+            $shortEventClassName = substr($fullEventClassName, $shortEventClassPosition + 1);
 
             $fullClassNameToShortEventType[$fullEventClassName] = EventType::fromString($shortEventClassName);
             $shortEventTypeToFullClassName[$shortEventClassName] = $fullEventClassName;

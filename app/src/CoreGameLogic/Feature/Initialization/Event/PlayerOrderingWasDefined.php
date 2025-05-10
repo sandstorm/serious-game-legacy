@@ -9,7 +9,6 @@ use Domain\CoreGameLogic\EventStore\GameEventInterface;
 
 final readonly class PlayerOrderingWasDefined implements GameEventInterface
 {
-
     /**
      * @param PlayerId[] $playerOrdering
      */
@@ -22,7 +21,7 @@ final readonly class PlayerOrderingWasDefined implements GameEventInterface
 
     public static function fromArray(array $values): GameEventInterface
     {
-        $playerOrdering = array_map(fn(string $playerId) => new PlayerId($playerId), $values['playerOrdering']);
+        $playerOrdering = array_map(fn (string $playerId) => new PlayerId($playerId), $values['playerOrdering']);
         return new self($playerOrdering);
     }
 

@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Domain\CoreGameLogic\Feature\Spielzug\Command;
 
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
@@ -7,14 +9,12 @@ use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 
-readonly final class ActivateCard implements CommandInterface
+final readonly class ActivateCard implements CommandInterface
 {
-
     public function __construct(
         public PlayerId $player,
         public CardId $card,
         public ?EreignisId $attachedEreignis = null,
-    )
-    {
+    ) {
     }
 }

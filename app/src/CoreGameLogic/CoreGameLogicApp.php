@@ -6,15 +6,9 @@ namespace Domain\CoreGameLogic;
 
 use Domain\CoreGameLogic\CommandHandler\CommandBus;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
-use Domain\CoreGameLogic\Dto\ValueObject\CurrentYear;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
-use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
-use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
-use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerOrderingWasDefined;
 use Domain\CoreGameLogic\Feature\Initialization\InitializationCommandHandler;
-use Domain\CoreGameLogic\Feature\Jahreswechsel\Event\NewYearWasStarted;
 use Domain\CoreGameLogic\Feature\Jahreswechsel\JahreswechselCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Neos\EventStore\Helper\InMemoryEventStore;
@@ -43,8 +37,7 @@ final class CoreGameLogicApp implements ForCoreGameLogic
 
     public function __construct(
         private readonly GameEventStore $gameEventStore,
-    )
-    {
+    ) {
         $this->commandBus = new CommandBus(
             new InitializationCommandHandler(),
             new JahreswechselCommandHandler(),

@@ -9,7 +9,6 @@ use App\Livewire\Synthesizer\ValueObjectSynth;
 use App\Models\User;
 use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
-use Domain\CoreGameLogic\EventStore\EventNormalizer;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +25,7 @@ final class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         // make Event Store accessible in application
-        $this->app->scoped(EventStoreInterface::class, fn() => new LaravelEventStore(
+        $this->app->scoped(EventStoreInterface::class, fn () => new LaravelEventStore(
             DB::connection(),
             'app_game_events'
         ));
@@ -74,7 +73,7 @@ final class AppServiceProvider extends ServiceProvider
         $schedule->command('horizon:snapshot')->everyFiveMinutes();
 
         // Register our App Authorizer globally
-        \Gate::before(fn(?User $user, string $ability, ...$objectAndOtherArguments) => $appAuthorizer->authorize($user, $ability, $objectAndOtherArguments));
+        \Gate::before(fn (?User $user, string $ability, ...$objectAndOtherArguments) => $appAuthorizer->authorize($user, $ability, $objectAndOtherArguments));
 
         // we need to define the gate for accessing /pulse - the actual access check is done in AppAuthorizer.
         \Gate::define('viewPulse', function (User $user) {

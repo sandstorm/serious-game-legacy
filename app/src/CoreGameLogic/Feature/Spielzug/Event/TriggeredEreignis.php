@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
@@ -9,14 +11,12 @@ use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
 
-readonly final class TriggeredEreignis implements ProvidesModifiers, GameEventInterface
+final readonly class TriggeredEreignis implements ProvidesModifiers, GameEventInterface
 {
-
-
     public function __construct(
-        public PlayerId $player, public EreignisId $ereignis,
-    )
-    {
+        public PlayerId $player,
+        public EreignisId $ereignis,
+    ) {
     }
 
     public function getModifiers(PlayerId $playerId): ModifierCollection

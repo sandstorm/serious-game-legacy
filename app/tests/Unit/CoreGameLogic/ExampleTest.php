@@ -47,7 +47,7 @@ test('Event stream can be accessed', function () {
 });
 
 test('Test Command Handler', function () {
-    $this->coreGameLogic->handle(new GameId('game1'),new StartGame(
+    $this->coreGameLogic->handle(new GameId('game1'), new StartGame(
         playerOrdering: [new PlayerId('p1'), new PlayerId('p2')],
     ));
 
@@ -186,4 +186,3 @@ test('welche Spielzüge hat player zur Verfügung', function () {
     expect(AktionsCalculator::forStream($stream)->availableActionsForPlayer($p1))->toBeEmpty();
     expect(AktionsCalculator::forStream($stream)->availableActionsForPlayer($p2)[0])->toBeInstanceOf(ZeitsteinSetzen::class); // TODO: VALUE OBJECTS ETC
 });
-

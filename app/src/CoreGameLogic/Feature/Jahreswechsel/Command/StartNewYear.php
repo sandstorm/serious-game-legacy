@@ -13,7 +13,6 @@ final readonly class StartNewYear implements CommandInterface
     public function __construct(
         public CurrentYear $newYear,
         public Leitzins    $leitzins
-    )
-    {
+    ) {
     }
 }

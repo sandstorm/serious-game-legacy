@@ -10,7 +10,6 @@ use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Neos\EventStore\EventStoreInterface;
-use Neos\EventStore\Model\Event\SequenceNumber;
 use Neos\EventStore\Model\Event\Version;
 use Neos\EventStore\Model\Events;
 use Neos\EventStore\Model\EventStream\ExpectedVersion;
@@ -23,8 +22,7 @@ final readonly class GameEventStore
     private EventNormalizer $eventNormalizer;
     public function __construct(
         private EventStoreInterface $eventStore,
-    )
-    {
+    ) {
         $this->eventNormalizer = EventNormalizer::create();
     }
 
@@ -43,7 +41,8 @@ final readonly class GameEventStore
      * @param GameId $gameId
      * @return array{0: GameEvents, 1: Version|null}
      */
-    public function getGameStreamAndLastVersion(GameId $gameId): array {
+    public function getGameStreamAndLastVersion(GameId $gameId): array
+    {
         $gameEvents = [];
         $version = null;
         foreach ($this->eventStore->load($gameId->streamName()) as $eventEnvelope) {
@@ -53,7 +52,8 @@ final readonly class GameEventStore
         return [GameEvents::fromArray($gameEvents), $version];
     }
 
-    public function commit(GameId $gameId, GameEventsToPersist $events, ExpectedVersion $expectedVersion): void {
+    public function commit(GameId $gameId, GameEventsToPersist $events, ExpectedVersion $expectedVersion): void
+    {
         $this->eventStore->commit($gameId->streamName(), $this->enrichAndNormalizeEvents($events), $expectedVersion);
     }
 

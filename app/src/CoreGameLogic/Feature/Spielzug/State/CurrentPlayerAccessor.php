@@ -11,7 +11,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasCompleted;
 
 class CurrentPlayerAccessor
 {
-
     public static function forStream(GameEvents $stream): PlayerId
     {
         $currentPlayerOrdering = $stream->findLast(PlayerOrderingWasDefined::class)->playerOrdering;

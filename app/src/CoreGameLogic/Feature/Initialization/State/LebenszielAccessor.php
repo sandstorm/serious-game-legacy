@@ -22,7 +22,7 @@ class LebenszielAccessor
 
     public function forPlayer(PlayerId $playerId): ?LebenszielChosen
     {
-        return $this->stream->findAllOfType(LebenszielChosen::class)->filter(function($event) use ($playerId) {
+        return $this->stream->findAllOfType(LebenszielChosen::class)->filter(function ($event) use ($playerId) {
             return $event->player->equals($playerId);
         })[0] ?? null;
     }
