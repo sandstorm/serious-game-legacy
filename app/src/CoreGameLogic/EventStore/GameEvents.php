@@ -78,7 +78,7 @@ final readonly class GameEvents implements \IteratorAggregate, \Countable
     {
         $element = $this->findLastOrNull($className);
         if ($element === null) {
-            throw new \RuntimeException('No event of type '.$className.' found');
+            throw new \RuntimeException('No event of type ' . $className . ' found');
         }
 
         return $element;
@@ -91,7 +91,49 @@ final readonly class GameEvents implements \IteratorAggregate, \Countable
      */
     public function findLastOrNull(string $className): ?object
     {
+        // @phpstan-ignore return.type
+        return $this->findLastOrNullWhere(fn($event) => $event instanceof $className);
+    }
+
+    /**
+     * @param callable(GameEventInterface):bool $filter
+     * @return GameEventInterface|null
+     */
+    public function findLastOrNullWhere(callable $filter): ?object
+    {
         for ($i = count($this->events) - 1; $i >= 0; $i--) {
+            if ($filter($this->events[$i])) {
+                return $this->events[$i];
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @template T of object
+     * @param class-string<T> $className
+     * @return T
+     */
+    public function findFirst(string $className): object
+    {
+        $element = $this->findFirstOrNull($className);
+        if ($element === null) {
+            throw new \RuntimeException('No event of type ' . $className . ' found');
+        }
+
+        return $element;
+    }
+
+
+    /**
+     * @template T of object
+     * @param class-string<T> $className
+     * @return T|null
+     */
+    public function findFirstOrNull(string $className): ?object
+    {
+        for ($i = 0; $i <= count($this->events) - 1; $i++) {
             if ($this->events[$i] instanceof $className) {
                 return $this->events[$i];
             }
@@ -107,6 +149,6 @@ final readonly class GameEvents implements \IteratorAggregate, \Countable
      */
     public function findAllOfType(string $className): self
     {
-        return self::fromArray(array_filter($this->events, fn ($event) => $event instanceof $className));
+        return self::fromArray(array_filter($this->events, fn($event) => $event instanceof $className));
     }
 }

@@ -19,7 +19,7 @@ final readonly class CardWasActivated implements GameEventInterface
     public static function fromArray(array $values): GameEventInterface
     {
         return new self(
-            player: new PlayerId($values['player']),
+            player: PlayerId::fromString($values['player']),
             card: new CardId($values['card']),
         );
     }

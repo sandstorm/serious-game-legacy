@@ -31,7 +31,7 @@ final readonly class TriggeredEreignis implements ProvidesModifiers, GameEventIn
     public static function fromArray(array $values): GameEventInterface
     {
         return new self(
-            player: new PlayerId($values['player']),
+            player: PlayerId::fromString($values['player']),
             ereignis: new EreignisId($values['ereignis']),
         );
     }

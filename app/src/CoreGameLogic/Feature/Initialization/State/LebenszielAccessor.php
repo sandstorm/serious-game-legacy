@@ -20,10 +20,13 @@ class LebenszielAccessor
         return new self($stream);
     }
 
+    /**
+     * @deprecated  please remove me and use PreGameState::lebenszielForPlayer instead.
+     */
     public function forPlayer(PlayerId $playerId): ?LebenszielChosen
     {
         return $this->stream->findAllOfType(LebenszielChosen::class)->filter(function ($event) use ($playerId) {
-            return $event->player->equals($playerId);
+            return $event->playerId->equals($playerId);
         })[0] ?? null;
     }
 }

@@ -23,10 +23,10 @@ class GamePlayController extends Controller
     public function __invoke(Request $request, string $gameId, string $myselfId): \Illuminate\View\View
     {
         $gameId = new GameId($gameId);
-        $myselfId = new PlayerId($myselfId);
+        $myselfId = PlayerId::fromString($myselfId);
 
-        $p1 = new PlayerId('p1');
-        $p2 = new PlayerId('p2');
+        $p1 = PlayerId::fromString('p1');
+        $p2 = PlayerId::fromString('p2');
 
         if (!$this->coreGameLogic->hasGame($gameId)) {
             $this->coreGameLogic->handle($gameId, new StartGame(

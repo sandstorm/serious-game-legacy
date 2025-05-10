@@ -11,16 +11,15 @@ use Domain\CoreGameLogic\EventStore\GameEventInterface;
 final readonly class LebenszielChosen implements GameEventInterface
 {
     public function __construct(
-        public PlayerId $player,
+        public PlayerId   $playerId,
         public Lebensziel $lebensziel,
-        // TODO phases, goals, etc
     ) {
     }
 
     public static function fromArray(array $values): GameEventInterface
     {
         return new self(
-            player: new PlayerId($values['player']),
+            playerId: PlayerId::fromString($values['playerId']),
             lebensziel: new Lebensziel($values['lebensziel']),
         );
     }
@@ -28,7 +27,7 @@ final readonly class LebenszielChosen implements GameEventInterface
     public function jsonSerialize(): array
     {
         return [
-            'player' => $this->player,
+            'playerId' => $this->playerId,
             'lebensziel' => $this->lebensziel,
         ];
     }

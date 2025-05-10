@@ -21,7 +21,7 @@ final readonly class PlayerOrderingWasDefined implements GameEventInterface
 
     public static function fromArray(array $values): GameEventInterface
     {
-        $playerOrdering = array_map(fn (string $playerId) => new PlayerId($playerId), $values['playerOrdering']);
+        $playerOrdering = array_map(fn (string $playerId) => PlayerId::fromString($playerId), $values['playerOrdering']);
         return new self($playerOrdering);
     }
 

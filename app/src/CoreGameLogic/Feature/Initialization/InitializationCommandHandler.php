@@ -8,14 +8,20 @@ use Domain\CoreGameLogic\CommandHandler\CommandHandlerInterface;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\Dto\ValueObject\CurrentYear;
 use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
+use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
+use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
+use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGamePhase;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
+use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerOrderingWasDefined;
+use Domain\CoreGameLogic\Feature\Initialization\Event\PreGamePhaseStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\LebenszielAccessor;
+use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Jahreswechsel\Event\NewYearWasStarted;
 
 /**
@@ -27,7 +33,9 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
     {
         return $command instanceof DefinePlayerOrdering
             || $command instanceof LebenszielAuswaehlen
-            || $command instanceof StartGame;
+            || $command instanceof StartGame
+            || $command instanceof StartPreGamePhase
+            || $command instanceof SetNameForPlayer;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameState): GameEventsToPersist
@@ -37,6 +45,9 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
             DefinePlayerOrdering::class => $this->handleDefinePlayerOrdering($command, $gameState),
             LebenszielAuswaehlen::class => $this->handleLebenszielAuswaehlen($command, $gameState),
             StartGame::class => $this->handleStartGame($command, $gameState),
+
+            StartPreGamePhase::class => $this->handleStartPreGamePhase($command, $gameState),
+            SetNameForPlayer::class => $this->handleSetNameForPlayer($command, $gameState),
         };
     }
 
@@ -49,14 +60,14 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
 
     private function handleLebenszielAuswaehlen(LebenszielAuswaehlen $command, GameEvents $gameState): GameEventsToPersist
     {
-        $hasLebensziel = LebenszielAccessor::forStream($gameState)->forPlayer($command->playerId);
-        if ($hasLebensziel !== null) {
+        $lebensziel = PreGameState::lebenszielForPlayerOrNull($gameState, $command->playerId);
+        if ($lebensziel !== null) {
             throw new \RuntimeException('Player has already selected a Lebensziel', 1746713490);
         }
 
         return GameEventsToPersist::with(
             new LebenszielChosen(
-                player: $command->playerId,
+                playerId: $command->playerId,
                 lebensziel: $command->lebensziel,
             )
         );
@@ -76,6 +87,49 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
             new NewYearWasStarted(
                 newYear: new CurrentYear(1),
                 leitzins: new Leitzins(3)
+            ),
+        );
+    }
+
+    private function handleStartPreGamePhase(StartPreGamePhase $command, GameEvents $gameState): GameEventsToPersist
+    {
+        if (count($gameState) > 0) {
+            throw new \RuntimeException('Game has already started', 1746713490);
+        }
+
+        if (count($command->fixedPlayerIdsForTesting) > 0) {
+            return GameEventsToPersist::with(
+                new PreGamePhaseStarted(
+                    playerIds: $command->fixedPlayerIdsForTesting
+                ),
+            );
+        }
+
+        // Generate random, short PlayerIds
+        $playerIds = [];
+        for ($i = 0; $i < $command->numberOfPlayers; $i++) {
+            // Generate a random 6-character alphanumeric string
+            $randomId = substr(bin2hex(random_bytes(4)), 0, 6);
+            $playerIds[] = PlayerId::fromString($randomId);
+        }
+
+        return GameEventsToPersist::with(
+            new PreGamePhaseStarted(
+                playerIds: $playerIds
+            ),
+        );
+    }
+
+    public function handleSetNameForPlayer(SetNameForPlayer $command, GameEvents $gameState): GameEventsToPersist
+    {
+        if (!in_array($command->playerId, PreGameState::playerIds($gameState), true)) {
+            throw new \RuntimeException('wrong PlayerId given');
+        }
+
+        return GameEventsToPersist::with(
+            new NameForPlayerWasSet(
+                playerId: $command->playerId,
+                name: $command->name
             ),
         );
     }

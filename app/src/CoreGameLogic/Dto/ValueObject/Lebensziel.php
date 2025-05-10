@@ -6,17 +6,18 @@ namespace Domain\CoreGameLogic\Dto\ValueObject;
 
 readonly class Lebensziel implements \JsonSerializable
 {
-    public function __construct(public string $name)
+    // TODO phases, goals, etc
+    public function __construct(public string $value)
     {
     }
 
     public function __toString(): string
     {
-        return '[Lebensziel: '.$this->name.']';
+        return '[Lebensziel: '.$this->value.']';
     }
 
     public function jsonSerialize(): string
     {
-        return $this->name;
+        return $this->value;
     }
 }

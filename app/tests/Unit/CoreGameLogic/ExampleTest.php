@@ -48,17 +48,17 @@ test('Event stream can be accessed', function () {
 
 test('Test Command Handler', function () {
     $this->coreGameLogic->handle(new GameId('game1'), new StartGame(
-        playerOrdering: [new PlayerId('p1'), new PlayerId('p2')],
+        playerOrdering: [PlayerId::fromString('p1'), PlayerId::fromString('p2')],
     ));
 
     $lebenszielAuswaehlenP1 = new LebenszielAuswaehlen(
-        playerId: new PlayerId('p1'),
+        playerId: PlayerId::fromString('p1'),
         lebensziel: new Lebensziel('Lebensziel XYZ'),
     );
     $this->coreGameLogic->handle($this->gameId, $lebenszielAuswaehlenP1);
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
 
-    expect(LebenszielAccessor::forStream($stream)->forPlayer(new PlayerId('p1'))->lebensziel->name)->toBe('Lebensziel XYZ');
+    expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p1'))->lebensziel->value)->toBe('Lebensziel XYZ');
 
     // catch exception if player tries to set Lebensziel again
     try {
@@ -68,7 +68,7 @@ test('Test Command Handler', function () {
     }
 
     $lebenszielAuswaehlenP2 = new LebenszielAuswaehlen(
-        playerId: new PlayerId('p2'),
+        playerId: PlayerId::fromString('p2'),
         lebensziel: new Lebensziel('Lebensziel ABC'),
     );
 
@@ -80,7 +80,7 @@ test('Test Command Handler', function () {
     }
 
     $spielzugAbschliessen = new SpielzugAbschliessen(
-        player: new PlayerId('p1'),
+        player: PlayerId::fromString('p1'),
     );
     $this->coreGameLogic->handle($this->gameId, $spielzugAbschliessen);
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
@@ -92,8 +92,8 @@ test('Test Command Handler', function () {
 test('Current Player Handling', function () {
     $this->coreGameLogic->handle($this->gameId, new DefinePlayerOrdering(
         playerOrdering: [
-            new PlayerId('p1'),
-            new PlayerId('p2'),
+            PlayerId::fromString('p1'),
+            PlayerId::fromString('p2'),
         ]
     ));
     $this->coreGameLogic->handle($this->gameId, new StartNewYear(
@@ -106,14 +106,14 @@ test('Current Player Handling', function () {
 
     // Spielerwechsel
     $this->coreGameLogic->handle($this->gameId, new SpielzugAbschliessen(
-        player: new PlayerId('p1'),
+        player: PlayerId::fromString('p1'),
     ));
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
     expect(CurrentPlayerAccessor::forStream($stream)->value)->toBe('p2');
 
     // Spielerwechsel mit wieder vorn beginnen
     $this->coreGameLogic->handle($this->gameId, new SpielzugAbschliessen(
-        player: new PlayerId('p2'),
+        player: PlayerId::fromString('p2'),
     ));
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
     expect(CurrentPlayerAccessor::forStream($stream)->value)->toBe('p1');
@@ -122,12 +122,12 @@ test('Current Player Handling', function () {
     // Player pausieren / ersetzen.
     $this->coreGameLogic->handle($this->gameId, new DefinePlayerOrdering(
         playerOrdering: [
-            new PlayerId('p1'),
-            new PlayerId('p3'),
+            PlayerId::fromString('p1'),
+            PlayerId::fromString('p3'),
         ]
     ));
     $this->coreGameLogic->handle($this->gameId, new SpielzugAbschliessen(
-        player: new PlayerId('p1'),
+        player: PlayerId::fromString('p1'),
     ));
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
     expect(CurrentPlayerAccessor::forStream($stream)->value)->toBe('p3');
@@ -138,29 +138,29 @@ test('Init Lebensziel', function () {
     $stream = GameEvents::fromArray([
         new PlayerOrderingWasDefined(
             playerOrdering: [
-                new PlayerId('p1'),
-                new PlayerId('p2'),
+                PlayerId::fromString('p1'),
+                PlayerId::fromString('p2'),
             ]
         ),
         new LebenszielChosen(
             lebensziel: new Lebensziel('Lebensziel XYZ'),
-            player: new PlayerId('p1'),
+            playerId: PlayerId::fromString('p1'),
         ),
         new LebenszielChosen(
             lebensziel: new Lebensziel('Lebensziel ABC'),
-            player: new PlayerId('p2'),
+            playerId: PlayerId::fromString('p2'),
         ),
     ]);
     expect(CurrentPlayerAccessor::forStream($stream)->value)->toBe('p1');
-    expect(LebenszielAccessor::forStream($stream)->forPlayer(new PlayerId('p1'))->lebensziel->name)->toBe('Lebensziel XYZ');
-    expect(LebenszielAccessor::forStream($stream)->forPlayer(new PlayerId('p2'))->lebensziel->name)->toBe('Lebensziel ABC');
-    expect(LebenszielAccessor::forStream($stream)->forPlayer(new PlayerId('p3')))->toBe(null);
+    expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p1'))->lebensziel->value)->toBe('Lebensziel XYZ');
+    expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p2'))->lebensziel->value)->toBe('Lebensziel ABC');
+    expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p3')))->toBe(null);
 });
 
 
 test('welche Spielzüge hat player zur Verfügung', function () {
-    $p1 = new PlayerId('p1');
-    $p2 = new PlayerId('p2');
+    $p1 = PlayerId::fromString('p1');
+    $p2 = PlayerId::fromString('p2');
 
     $this->coreGameLogic->handle($this->gameId, new DefinePlayerOrdering(
         playerOrdering: [

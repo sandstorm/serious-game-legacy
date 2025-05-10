@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\EventStore;
 
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
+use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerOrderingWasDefined;
+use Domain\CoreGameLogic\Feature\Initialization\Event\PreGamePhaseStarted;
 use Domain\CoreGameLogic\Feature\Jahreswechsel\Event\NewYearWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
@@ -51,7 +53,9 @@ final readonly class EventNormalizer
             CardWasSkipped::class,
             SpielzugWasCompleted::class,
             TriggeredEreignis::class,
-            LebenszielChosen::class
+            LebenszielChosen::class,
+            PreGamePhaseStarted::class,
+            NameForPlayerWasSet::class,
         ];
 
         $fullClassNameToShortEventType = [];
