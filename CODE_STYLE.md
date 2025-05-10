@@ -1,9 +1,9 @@
-# CODE STYLE: andstorm Laravel / Filament Best Practices
+# CODE STYLE: sandstorm Laravel / Filament Best Practices
 
 [README](README.md) [CODE_STYLE](CODE_STYLE.md) [ARCHITECTURE](ARCHITECTURE.md) 
 
 <!-- TOC -->
-* [Sandstorm Laravel / Filament Best Practices](#sandstorm-laravel--filament-best-practices)
+* [CODE STYLE: sandstorm Laravel / Filament Best Practices](#code-style-sandstorm-laravel--filament-best-practices)
 * [Architecture](#architecture)
   * [Suggested Architecture of Laravel Applications: Ports & Adapters](#suggested-architecture-of-laravel-applications-ports--adapters)
   * [Only Use Dependency Injection, no stateful helpers or Laravel Facades](#only-use-dependency-injection-no-stateful-helpers-or-laravel-facades)
