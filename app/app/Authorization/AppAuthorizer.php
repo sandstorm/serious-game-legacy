@@ -81,7 +81,6 @@ final class AppAuthorizer
         $result = $this->authorizeInternal($user, $ability, $objectAndOtherArguments);
         // WORKAROUND: in Filament\authorize(), the GateEvaluated event is not triggered - thus we trigger it manually here
         // to ensure tracing in Telescope works properly for Filament screens..
-        // @phpstan-ignore argument.type
         $this->dispatcher->dispatch(new GateEvaluated($user, $ability, $result->allowed(), $objectAndOtherArguments));
 
         return $result;

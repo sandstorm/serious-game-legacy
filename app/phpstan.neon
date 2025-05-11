@@ -20,10 +20,6 @@ parameters:
         - app/
         - src/
 
-    scanFiles:
-        - _ide_helper_models.php
-        #- _ide_helper.php
-
     # Level 8 is suggested at https://phpstan.org/user-guide/rule-levels
     level: 8
     reportMaybesInPropertyPhpDocTypes: false

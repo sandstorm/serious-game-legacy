@@ -10,6 +10,7 @@ Entwickelt als Open Source von Sandstorm Media GmbH.
   * [Requirements](#requirements)
   * [Install Dependencies](#install-dependencies)
   * [Setting up IntelliJ](#setting-up-intellij)
+  * [Generate Helper Code](#generate-helper-code)
   * [Starting the Development Environment](#starting-the-development-environment)
 * [Local Development](#local-development)
   * [Testing](#testing)
@@ -62,6 +63,13 @@ You'll get a popup prompting you to install the plugins if you don't already hav
   - [Docker](https://plugins.jetbrains.com/plugin/7724-docker)
   - [Symlink Excluder](https://plugins.jetbrains.com/plugin/16110-symlink-excluder)
     - Prevents symlinked folders to be indexed by the IDE so that you don't have to exclude packages you're developing manually
+
+## Generate Helper Code
+
+When using IntelliJ/PHPStorm, install the (paid) Laravel IDEA Plugin.
+Then, in the main menu (top bar), go to **Laravel -> Generate Helper Code.**
+
+This will generate (invisible) code which helps with autocompletion on Model properties etc.
 
 ## Starting the Development Environment
 
