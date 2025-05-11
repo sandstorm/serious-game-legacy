@@ -70,12 +70,25 @@ function php-stan-json() {
 ######################## Useful Docker Aliases ########################
 
 function start {
+    build-js
     build
     # create external volume "yarn-cache" and "laravel-composer-cache" if not existing
     # wont be removed on down and volume removal
     docker volume create --name yarn-cache
     docker volume create --name laravel-composer-cache
 	docker compose up -d
+}
+
+function build-js {
+    cd app
+    npm install
+    npm run build
+}
+
+function watch-js {
+    cd app
+    npm install
+    npm run dev
 }
 
 function build {

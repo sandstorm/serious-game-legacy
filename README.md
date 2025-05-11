@@ -44,6 +44,7 @@ Entwickelt als Open Source von Sandstorm Media GmbH.
 ## Requirements
 
 - docker for mac
+- Node.js / NPM
 
 ## Install Dependencies
 
@@ -84,6 +85,9 @@ dev setup
 
 # start everything
 dev start
+
+# start JS/CSS watcher
+dev watch-js
 
 # now, access the frontend at http://127.0.0.1:8090
 # now, access the filament backend at http://127.0.0.1:8090/admin
