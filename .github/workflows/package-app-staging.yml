@@ -100,6 +100,9 @@ jobs:
       # Set up Docker Buildx
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+        with: # allow using host docker
+          driver: docker
+          buildkitd-flags: --allow-insecure-entitlement security.insecure
 
       # Login to GitHub Container Registry
       - name: Login to GitHub Container Registry
@@ -124,4 +127,7 @@ jobs:
           file: deployment/staging/Dockerfile
           push: true
           tags: ${{ vars.CI_REGISTRY_IMAGE || format('ghcr.io/{0}', github.repository) }}/laravel:${{ steps.get-ref-slug.outputs.REF_SLUG }}
-          cache-from: ${{ vars.CI_REGISTRY_IMAGE || format('ghcr.io/{0}', github.repository) }}/laravel:main
+
+          # local cache
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
