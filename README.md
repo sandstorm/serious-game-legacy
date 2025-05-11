@@ -1,5 +1,8 @@
 #  Serious Game Legacy + Moonshot von Uni Konstanz
 
+[![PHP Tests and Analysis](https://github.com/sandstorm/serious-game-legacy/actions/workflows/php-tests.yml/badge.svg)](https://github.com/sandstorm/serious-game-legacy/actions/workflows/php-tests.yml) [![Package App Staging](https://github.com/sandstorm/serious-game-legacy/actions/workflows/package-app-staging.yml/badge.svg)](https://github.com/sandstorm/serious-game-legacy/actions/workflows/package-app-staging.yml)
+
+
 Entwickelt als Open Source von Sandstorm Media GmbH.
 
 [README](README.md) [CODE_STYLE](CODE_STYLE.md) [ARCHITECTURE](ARCHITECTURE.md)
