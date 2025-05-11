@@ -7,31 +7,55 @@ namespace App\Http\Controllers;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
-use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
+use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
+use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
+use Illuminate\Session\Store as SessionStore;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 
 class GamePlayController extends Controller
 {
     public function __construct(
         private readonly ForCoreGameLogic $coreGameLogic,
-    ) {
+    )
+    {
     }
 
-    /**
-     * Handle the incoming request.
-     */
-    public function __invoke(Request $request, string $gameId, string $myselfId): \Illuminate\View\View
+    public function newGame(Request $request): View
     {
-        $gameId = new GameId($gameId);
+        return view('game-play/new');
+    }
+
+    public function playerLinks(Request $request, SessionStore $session, string $gameId): View
+    {
+        $gameId = GameId::fromString($gameId);
+        $validated = Validator::make($request->all(), [
+            'numberOfPlayers' => 'required|integer|gte:1',
+        ])->validate();
+        if (!$this->coreGameLogic->hasGame($gameId)) {
+            $this->coreGameLogic->handle($gameId, StartPreGame::create(
+                numberOfPlayers: intval($validated['numberOfPlayers'])
+            ));
+            $session->flash('success', 'Game started');
+        }
+
+        $gameStream = $this->coreGameLogic->getGameStream($gameId);
+        return view('game-play/player-links', [
+            'gameId' => $gameId,
+            'playerIds' => PreGameState::playerIds($gameStream)
+        ]);
+    }
+
+    public function game(Request $request, string $gameId, string $myselfId): View|RedirectResponse
+    {
+        $gameId = GameId::fromString($gameId);
         $myselfId = PlayerId::fromString($myselfId);
 
-        $p1 = PlayerId::fromString('p1');
-        $p2 = PlayerId::fromString('p2');
-
         if (!$this->coreGameLogic->hasGame($gameId)) {
-            $this->coreGameLogic->handle($gameId, new StartGame(
-                playerOrdering: [$p1, $p2],
-            ));
+            // TODO: Flash
+            return redirect()->route('game-play.new');
         }
 
         return view('game-play', [

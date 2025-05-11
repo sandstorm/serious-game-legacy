@@ -40,7 +40,6 @@ class ValueObjectSynth extends Synth
     public function hydrate(mixed $value, array $metadata): ValueObjectInterface
     {
         $type = $metadata['type'];
-        // @phpstan-ignore return.type
-        return new $type($value);
+        return $type::fromString($value);
     }
 }

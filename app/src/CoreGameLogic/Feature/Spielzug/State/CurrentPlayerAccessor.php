@@ -6,14 +6,14 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\State;
 
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerOrderingWasDefined;
+use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasCompleted;
 
 class CurrentPlayerAccessor
 {
     public static function forStream(GameEvents $stream): PlayerId
     {
-        $currentPlayerOrdering = $stream->findLast(PlayerOrderingWasDefined::class)->playerOrdering;
+        $currentPlayerOrdering = $stream->findLast(GameWasStarted::class)->playerOrdering;
 
         $previousPlayer = $stream->findLastOrNull(SpielzugWasCompleted::class)?->player;
 

@@ -9,8 +9,9 @@ namespace Domain\CoreGameLogic\Dto;
  * convert them transparently in Livewire components:
  *
  * - They need to expose their property with a public property "value"
- * - They need to have a public, 1 element constructor.
+ * - They need to have static {@see self::fromString()} factory method.
  */
 interface ValueObjectInterface
 {
+    public static function fromString(string $value): self;
 }

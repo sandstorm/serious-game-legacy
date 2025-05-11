@@ -7,7 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Initialization\Event;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 
-final readonly class PreGamePhaseStarted implements GameEventInterface
+final readonly class PreGameStarted implements GameEventInterface
 {
     /**
      * @param PlayerId[] $playerIds

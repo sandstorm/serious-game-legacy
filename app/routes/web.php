@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GamePlayController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -11,5 +12,7 @@ if (app()->isLocal()) {
         return new App\Mail\ApplicationUnavailable();
     });
 
-    Route::get('/play/{gameId}/{myselfId}', \App\Http\Controllers\GamePlayController::class);
+    Route::get('/play', [GamePlayController::class, 'newGame'])->name('game-play.new-game');
+    Route::get('/play/{gameId}', [GamePlayController::class, 'playerLinks'])->name('game-play.player-links');
+    Route::get('/play/{gameId}/{myselfId}', [GamePlayController::class, 'game'])->name('game-play.game');
 }

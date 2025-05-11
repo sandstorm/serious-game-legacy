@@ -213,6 +213,7 @@
       <excludeFolder url="file://$MODULE_DIR$/app/DistributionPackages/eventstore-laraveladapter/vendor" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/neos/eventstore" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/sandstorm/eventstore-laraveladapter" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor/_laravel_idea" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

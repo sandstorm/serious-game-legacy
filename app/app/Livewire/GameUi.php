@@ -5,12 +5,18 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use App\Events\GameStateUpdated;
+use App\Livewire\Forms\PreGameNameLebensziel;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\Lebensziel;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
+use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
+use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
+use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
+use Domain\CoreGameLogic\Feature\Initialization\State\Dto\NameAndLebensziel;
+use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Illuminate\Events\Dispatcher;
@@ -30,6 +36,33 @@ class GameUi extends Component
         /*$this->name = Auth::user()->name;
 
         $this->email = Auth::user()->email;*/
+
+        $this->nameLebenszielForm->name = PreGameState::nameForPlayerOrNull($this->gameStream, $this->myself) ?? '';
+        $this->nameLebenszielForm->lebensziel = PreGameState::lebenszielForPlayerOrNull($this->gameStream, $this->myself)->value ?? '';
+    }
+
+
+    public function startGame(): void
+    {
+        $this->coreGameLogic->handle($this->gameId, new StartGame(
+            playerOrdering: PreGameState::playerIds($this->gameStream),
+        ));
+        $this->broadcastNotify();
+    }
+
+    public PreGameNameLebensziel $nameLebenszielForm;
+
+    public function preGameSetNameAndLebensziel(): void
+    {
+        $this->nameLebenszielForm->validate();
+        $this->coreGameLogic->handle($this->gameId, new SetNameForPlayer($this->myself, $this->nameLebenszielForm->name));
+        $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen($this->myself, new Lebensziel($this->nameLebenszielForm->lebensziel)));
+        $this->broadcastNotify();
+    }
+
+    public function gameStream(): GameEvents
+    {
+        return $this->gameStream;
     }
 
 
@@ -54,19 +87,7 @@ class GameUi extends Component
     {
         $this->coreGameLogic->handle($this->gameId, new SpielzugAbschliessen($this->myself));
 
-        // Notify all connected clients that a Spielzug has happened
-        $this->eventDispatcher->dispatch(new GameStateUpdated($this->gameId));
-    }
-
-    public function lebenszielAuswaehlen(string $lebensziel): void
-    {
-        $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen($this->myself, new Lebensziel($lebensziel)));
-    }
-
-    public function triggerGameAction(string $gameAction): void
-    {
-        // TODO: IMPL ME
-        $this->eventDispatcher->dispatch(new GameStateUpdated($this->gameId));
+        $this->broadcastNotify();
     }
 
     /**
@@ -82,5 +103,13 @@ class GameUi extends Component
     public function notifyGameStateUpdated(): void
     {
         // the component automatically recalculates; so we do not need to do anything.
+    }
+
+    /**
+     * Notify all connected clients that a Spielzug has happened
+     */
+    private function broadcastNotify(): void
+    {
+        $this->eventDispatcher->dispatch(new GameStateUpdated($this->gameId));
     }
 }

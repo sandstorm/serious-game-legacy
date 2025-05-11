@@ -371,6 +371,7 @@
       <path value="$PROJECT_DIR$/app/vendor/clue/redis-protocol" />
       <path value="$PROJECT_DIR$/app/vendor/neos/eventstore" />
       <path value="$PROJECT_DIR$/app/vendor/sandstorm/eventstore-laraveladapter" />
+      <path value="$PROJECT_DIR$/app/vendor/_laravel_idea" />
     </include_path>
   </component>
   <component name="PhpInterpreters">

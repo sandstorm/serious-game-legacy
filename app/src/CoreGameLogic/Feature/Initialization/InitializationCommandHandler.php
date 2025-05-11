@@ -15,11 +15,12 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
-use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGamePhase;
+use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
-use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerOrderingWasDefined;
-use Domain\CoreGameLogic\Feature\Initialization\Event\PreGamePhaseStarted;
+use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
+use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
+use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Initialization\State\LebenszielAccessor;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Jahreswechsel\Event\NewYearWasStarted;
@@ -34,7 +35,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
         return $command instanceof DefinePlayerOrdering
             || $command instanceof LebenszielAuswaehlen
             || $command instanceof StartGame
-            || $command instanceof StartPreGamePhase
+            || $command instanceof StartPreGame
             || $command instanceof SetNameForPlayer;
     }
 
@@ -46,7 +47,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
             LebenszielAuswaehlen::class => $this->handleLebenszielAuswaehlen($command, $gameState),
             StartGame::class => $this->handleStartGame($command, $gameState),
 
-            StartPreGamePhase::class => $this->handleStartPreGamePhase($command, $gameState),
+            StartPreGame::class => $this->handleStartPreGame($command, $gameState),
             SetNameForPlayer::class => $this->handleSetNameForPlayer($command, $gameState),
         };
     }
@@ -54,7 +55,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
     private function handleDefinePlayerOrdering(DefinePlayerOrdering $command, GameEvents $gameState): GameEventsToPersist
     {
         return GameEventsToPersist::with(
-            new PlayerOrderingWasDefined(playerOrdering: $command->playerOrdering),
+            new GameWasStarted(playerOrdering: $command->playerOrdering),
         );
     }
 
@@ -75,12 +76,17 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
 
     private function handleStartGame(StartGame $command, GameEvents $gameState): GameEventsToPersist
     {
-        if (count($gameState) > 0) {
-            throw new \RuntimeException('Game has already started', 1746713490);
+
+        if (!PreGameState::isReadyForGame($gameState)) {
+            throw new \RuntimeException('not ready for game', 1746713490);
+        }
+
+        if (GamePhaseState::isInGamePhase($gameState)) {
+            throw new \RuntimeException('game already started', 1746713490);
         }
 
         return GameEventsToPersist::with(
-            new PlayerOrderingWasDefined(
+            new GameWasStarted(
                 playerOrdering: $command->playerOrdering
             ),
             // TODO: this cannot be hardcoded here :) Maybe delegate to the other command handler??
@@ -91,7 +97,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
         );
     }
 
-    private function handleStartPreGamePhase(StartPreGamePhase $command, GameEvents $gameState): GameEventsToPersist
+    private function handleStartPreGame(StartPreGame $command, GameEvents $gameState): GameEventsToPersist
     {
         if (count($gameState) > 0) {
             throw new \RuntimeException('Game has already started', 1746713490);
@@ -99,7 +105,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
 
         if (count($command->fixedPlayerIdsForTesting) > 0) {
             return GameEventsToPersist::with(
-                new PreGamePhaseStarted(
+                new PreGameStarted(
                     playerIds: $command->fixedPlayerIdsForTesting
                 ),
             );
@@ -108,13 +114,11 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
         // Generate random, short PlayerIds
         $playerIds = [];
         for ($i = 0; $i < $command->numberOfPlayers; $i++) {
-            // Generate a random 6-character alphanumeric string
-            $randomId = substr(bin2hex(random_bytes(4)), 0, 6);
-            $playerIds[] = PlayerId::fromString($randomId);
+            $playerIds[] = PlayerId::random();
         }
 
         return GameEventsToPersist::with(
-            new PreGamePhaseStarted(
+            new PreGameStarted(
                 playerIds: $playerIds
             ),
         );

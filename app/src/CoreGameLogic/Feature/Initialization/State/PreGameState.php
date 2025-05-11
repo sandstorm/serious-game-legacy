@@ -7,9 +7,10 @@ namespace Domain\CoreGameLogic\Feature\Initialization\State;
 use Domain\CoreGameLogic\Dto\ValueObject\Lebensziel;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
-use Domain\CoreGameLogic\Feature\Initialization\Event\PreGamePhaseStarted;
+use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\Dto\NameAndLebensziel;
 
 class PreGameState
@@ -23,8 +24,7 @@ class PreGameState
     public static function isReadyForGame(GameEvents $gameStream): bool
     {
         $playersWithNameAndLebensziel = self::playersWithNameAndLebensziel($gameStream);
-        foreach ($playersWithNameAndLebensziel as $playerId) {
-            $nameAndLebensziel = $playersWithNameAndLebensziel[$playerId];
+        foreach ($playersWithNameAndLebensziel as $nameAndLebensziel) {
             if ($nameAndLebensziel->lebensziel === null || $nameAndLebensziel->name === null) {
                 return false;
             }
@@ -32,23 +32,27 @@ class PreGameState
         return true;
     }
 
+    public static function isInPreGamePhase(GameEvents $gameStream): bool
+    {
+        return $gameStream->findFirstOrNull(GameWasStarted::class) === null;
+    }
+
     /**
      * Ready for game if all players have chosen a Name and a Lebensziel
      * @param GameEvents $gameStream
-     * @return \SplObjectStorage<PlayerId,NameAndLebensziel>
+     * @return array<string,NameAndLebensziel>
      */
-    public static function playersWithNameAndLebensziel(GameEvents $gameStream): \SplObjectStorage
+    public static function playersWithNameAndLebensziel(GameEvents $gameStream): array
     {
-        /* @var $playerIdsToNameMap \SplObjectStorage<PlayerId,NameAndLebensziel> */
-        $playerIdsToNameMap = new \SplObjectStorage();
+        /* @var $playerIdsToNameMap array<string,NameAndLebensziel> */
+        $playerIdsToNameMap = [];
         foreach (self::playerIds($gameStream) as $playerId) {
-            $playerIdsToNameMap->attach($playerId, new NameAndLebensziel(
+            $playerIdsToNameMap[$playerId->value] = new NameAndLebensziel(
+                playerId: $playerId,
                 name: self::nameForPlayerOrNull($gameStream, $playerId),
                 lebensziel: self::lebenszielForPlayerOrNull($gameStream, $playerId),
-            ));
+            );
         }
-
-        // @phpstan-ignore return.type
         return $playerIdsToNameMap;
     }
 
@@ -61,6 +65,7 @@ class PreGameState
 
         return $lebensziel;
     }
+
     public static function lebenszielForPlayerOrNull(GameEvents $gameStream, PlayerId $playerId): ?Lebensziel
     {
         // @phpstan-ignore property.notFound
@@ -76,6 +81,7 @@ class PreGameState
 
         return $name;
     }
+
     public static function nameForPlayerOrNull(GameEvents $gameStream, PlayerId $playerId): ?string
     {
         // @phpstan-ignore property.notFound
@@ -89,6 +95,6 @@ class PreGameState
      */
     public static function playerIds(GameEvents $gameStream): array
     {
-        return $gameStream->findFirst(PreGamePhaseStarted::class)->playerIds;
+        return $gameStream->findFirst(PreGameStarted::class)->playerIds;
     }
 }

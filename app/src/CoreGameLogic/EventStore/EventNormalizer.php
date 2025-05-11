@@ -6,8 +6,8 @@ namespace Domain\CoreGameLogic\EventStore;
 
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
-use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerOrderingWasDefined;
-use Domain\CoreGameLogic\Feature\Initialization\Event\PreGamePhaseStarted;
+use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
+use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Jahreswechsel\Event\NewYearWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
@@ -47,14 +47,14 @@ final readonly class EventNormalizer
     {
         /** @var array<class-string<GameEventInterface>> $supportedEventClassNames */
         $supportedEventClassNames = [
-            PlayerOrderingWasDefined::class,
+            GameWasStarted::class,
             NewYearWasStarted::class,
             CardWasActivated::class,
             CardWasSkipped::class,
             SpielzugWasCompleted::class,
             TriggeredEreignis::class,
             LebenszielChosen::class,
-            PreGamePhaseStarted::class,
+            PreGameStarted::class,
             NameForPlayerWasSet::class,
         ];
 

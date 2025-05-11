@@ -7,7 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Initialization\Command;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 
-readonly class StartPreGamePhase implements CommandInterface
+readonly class StartPreGame implements CommandInterface
 {
     public static function create(int $numberOfPlayers): self
     {

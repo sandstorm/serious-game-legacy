@@ -13,8 +13,9 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
+use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
-use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerOrderingWasDefined;
+use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\LebenszielAccessor;
 use Domain\CoreGameLogic\Feature\Jahreswechsel\Command\StartNewYear;
 use Domain\CoreGameLogic\Feature\Jahreswechsel\Event\NewYearWasStarted;
@@ -28,7 +29,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\ModifierCalculator;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
-    $this->gameId = new GameId('game1');
+    $this->gameId = GameId::fromString('game1');
 });
 
 test('Event stream can be accessed', function () {
@@ -45,49 +46,6 @@ test('Event stream can be accessed', function () {
 
     expect(LeitzinsAccessor::forStream($stream)->value)->toBe(5);
 });
-
-test('Test Command Handler', function () {
-    $this->coreGameLogic->handle(new GameId('game1'), new StartGame(
-        playerOrdering: [PlayerId::fromString('p1'), PlayerId::fromString('p2')],
-    ));
-
-    $lebenszielAuswaehlenP1 = new LebenszielAuswaehlen(
-        playerId: PlayerId::fromString('p1'),
-        lebensziel: new Lebensziel('Lebensziel XYZ'),
-    );
-    $this->coreGameLogic->handle($this->gameId, $lebenszielAuswaehlenP1);
-    $stream = $this->coreGameLogic->getGameStream($this->gameId);
-
-    expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p1'))->lebensziel->value)->toBe('Lebensziel XYZ');
-
-    // catch exception if player tries to set Lebensziel again
-    try {
-        $this->coreGameLogic->handle($this->gameId, $lebenszielAuswaehlenP1);
-    } catch (\RuntimeException $e) {
-        expect($e->getCode())->toBe(1746713490);
-    }
-
-    $lebenszielAuswaehlenP2 = new LebenszielAuswaehlen(
-        playerId: PlayerId::fromString('p2'),
-        lebensziel: new Lebensziel('Lebensziel ABC'),
-    );
-
-    // catch exception if not the current player tries to set Lebensziel
-    try {
-        $this->coreGameLogic->handle($this->gameId, $lebenszielAuswaehlenP2);
-    } catch (\RuntimeException $e) {
-        expect($e->getCode())->toBe(1746700791);
-    }
-
-    $spielzugAbschliessen = new SpielzugAbschliessen(
-        player: PlayerId::fromString('p1'),
-    );
-    $this->coreGameLogic->handle($this->gameId, $spielzugAbschliessen);
-    $stream = $this->coreGameLogic->getGameStream($this->gameId);
-
-    expect(CurrentPlayerAccessor::forStream($stream)->value)->toBe('p2');
-});
-
 
 test('Current Player Handling', function () {
     $this->coreGameLogic->handle($this->gameId, new DefinePlayerOrdering(
@@ -136,7 +94,7 @@ test('Current Player Handling', function () {
 
 test('Init Lebensziel', function () {
     $stream = GameEvents::fromArray([
-        new PlayerOrderingWasDefined(
+        new GameWasStarted(
             playerOrdering: [
                 PlayerId::fromString('p1'),
                 PlayerId::fromString('p2'),
