@@ -10,6 +10,11 @@ Entwickelt als Open Source von Sandstorm Media GmbH.
 * [Event Sourcing & CQRS](#event-sourcing--cqrs)
 * [Laravel UI: Livewire + Laravel Broadcast / Echo](#laravel-ui-livewire--laravel-broadcast--echo)
 * [Testing: via commands](#testing-via-commands)
+* [Implementierung der Spiellogik](#implementierung-der-spiellogik)
+  * [Definition == Stammdaten (vs Bewegungsdaten)](#definition--stammdaten-vs-bewegungsdaten)
+  * [Spielphasen](#spielphasen)
+  * [Aktionen](#aktionen)
+    * [Modifier](#modifier)
 <!-- TOC -->
 
 # File and Package Structure
@@ -81,6 +86,29 @@ The synchronous UI works as follows:
   Helpful for testing :)
 
 # Implementierung der Spiellogik
+
+## Definition == Stammdaten (vs Bewegungsdaten)
+
+TODO IMPLEMENT ME
+
+Stammdaten sind Daten, welche sich **nicht** während des Spielverlaufes ändern. Diese sollten im Namen `Definition`
+haben, damit sie klar von den anderen Daten abgrenzbar sind.
+
+Stammdaten sollten in `Domain\CoreGameLogic\Definition` liegen:
+
+```
+Domain\CoreGameLogic\Definition\
+    Actions               welche Actions gibts im System (Spielaktionen für den Spieler, welcher an der Reihe ist)
+        ActionDefinition 
+    Lebensziele           welche Lebensziele gibt es
+        LebenszielDefinition
+    Ereignisse
+    Jahr - also Gesamtspielzustand (TODO: wie nennt man das?)
+    "Karten" (wie nennt man das?)
+
+    # auch Teil der Definitionen, bzw. daran attached:
+    Modifiers
+```
 
 ## Spielphasen
 
