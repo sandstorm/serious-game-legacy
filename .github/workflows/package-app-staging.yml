@@ -129,5 +129,5 @@ jobs:
           tags: ${{ vars.CI_REGISTRY_IMAGE || format('ghcr.io/{0}', github.repository) }}/laravel:${{ steps.get-ref-slug.outputs.REF_SLUG }}
 
           # local cache
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
+          cache-from: type=registry,ref=${{ vars.CI_REGISTRY_IMAGE || format('ghcr.io/{0}', github.repository) }}/cache:latest
+          cache-to: type=registry,ref=${{ vars.CI_REGISTRY_IMAGE || format('ghcr.io/{0}', github.repository) }}/cache:latest,mode=max
