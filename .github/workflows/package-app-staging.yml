@@ -101,17 +101,8 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
         with: # allow using host docker
-          driver: docker
+          driver: docker-container
           buildkitd-flags: --allow-insecure-entitlement security.insecure
-          buildkitd-config-inline: |
-            [worker.oci]
-              gc = true
-              gc.keepstorage = 20GB
-            [worker.oci.gcpolicy]
-              keepBytes = 20000000000
-              keepDuration = "168h"
-              filters = ["type==source.local", "type==exec.cachemount"]
-
 
     # Login to GitHub Container Registry
       - name: Login to GitHub Container Registry
