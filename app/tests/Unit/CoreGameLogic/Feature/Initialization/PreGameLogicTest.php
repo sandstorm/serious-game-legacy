@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
@@ -22,9 +23,9 @@ test('PreGameLogic normal flow', function () {
     )->withFixedPlayerIdsForTesting($this->p1, $this->p2));
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
 
-    expect(PreGameState::isReadyForGame($gameStream))->toBeFalse();
-    expect(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->name)->toEqual(null);
-    expect(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p2->value]->name)->toEqual(null);
+    expect(PreGameState::isReadyForGame($gameStream))->toBeFalse()
+        ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->name)->toEqual(null)
+        ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p2->value]->name)->toEqual(null);
 
     $this->coreGameLogic->handle($this->gameId, new SetNameForPlayer(
         playerId: $this->p1,
@@ -32,9 +33,9 @@ test('PreGameLogic normal flow', function () {
     ));
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
 
-    expect(PreGameState::isReadyForGame($gameStream))->toBeFalse();
-    expect(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->name)->toEqual('Player 1');
-    expect(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p2->value]->name)->toEqual(null);
+    expect(PreGameState::isReadyForGame($gameStream))->toBeFalse()
+        ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->name)->toEqual('Player 1')
+        ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p2->value]->name)->toEqual(null);
 
     $this->coreGameLogic->handle($this->gameId, new SetNameForPlayer(
         playerId: $this->p1,
@@ -42,9 +43,9 @@ test('PreGameLogic normal flow', function () {
     ));
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
 
-    expect(PreGameState::isReadyForGame($gameStream))->toBeFalse();
-    expect(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->name)->toEqual('Player 1a');
-    expect(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p2->value]->name)->toEqual(null);
+    expect(PreGameState::isReadyForGame($gameStream))->toBeFalse()
+        ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->name)->toEqual('Player 1a')
+        ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p2->value]->name)->toEqual(null);
 
     $this->coreGameLogic->handle($this->gameId, new SetNameForPlayer(
         playerId: $this->p2,
@@ -52,9 +53,9 @@ test('PreGameLogic normal flow', function () {
     ));
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
 
-    expect(PreGameState::isReadyForGame($gameStream))->toBeFalse();
-    expect(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->name)->toEqual('Player 1a');
-    expect(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p2->value]->name)->toEqual('Player 2');
+    expect(PreGameState::isReadyForGame($gameStream))->toBeFalse()
+        ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->name)->toEqual('Player 1a')
+        ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p2->value]->name)->toEqual('Player 2');
 
     $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
         playerId: $this->p2,
@@ -65,9 +66,9 @@ test('PreGameLogic normal flow', function () {
         lebensziel: new Lebensziel('Lebensziel AAA'),
     ));
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
-    expect(PreGameState::isReadyForGame($gameStream))->toBeTrue();
-    expect(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->lebensziel->value)->toEqual('Lebensziel AAA');
-    expect(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p2->value]->lebensziel->value)->toEqual('Lebensziel XYZ');
+    expect(PreGameState::isReadyForGame($gameStream))->toBeTrue()
+        ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->lebensziel->value)->toEqual('Lebensziel AAA')
+        ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p2->value]->lebensziel->value)->toEqual('Lebensziel XYZ');
 });
 
 test('PreGameLogic can only start once', function () {
