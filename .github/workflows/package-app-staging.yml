@@ -135,6 +135,7 @@ jobs:
     name: Deploy to Staging
     runs-on: [self-hosted, linux]
     #needs: package_app_staging
+    environment: staging
     container:
       image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.4-v4
 
