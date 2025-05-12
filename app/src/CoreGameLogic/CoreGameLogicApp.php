@@ -9,6 +9,7 @@ use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\InitializationCommandHandler;
+use Domain\CoreGameLogic\Feature\Pile\PileCommandHandler;
 use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\KonjunkturzykluswechselCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Neos\EventStore\Helper\InMemoryEventStore;
@@ -42,6 +43,7 @@ final class CoreGameLogicApp implements ForCoreGameLogic
             new InitializationCommandHandler(),
             new KonjunkturzykluswechselCommandHandler(),
             new SpielzugCommandHandler(),
+            new PileCommandHandler(),
         );
     }
 

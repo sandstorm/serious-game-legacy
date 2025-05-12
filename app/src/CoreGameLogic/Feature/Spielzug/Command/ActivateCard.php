@@ -7,6 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Command;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
+use Domain\CoreGameLogic\Dto\ValueObject\PileId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 
 final readonly class ActivateCard implements CommandInterface
@@ -14,6 +15,7 @@ final readonly class ActivateCard implements CommandInterface
     public function __construct(
         public PlayerId $player,
         public CardId $cardId,
+        public PileId $pile,
         public ?EreignisId $attachedEreignis = null,
     ) {
     }
