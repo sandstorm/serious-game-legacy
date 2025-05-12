@@ -155,7 +155,10 @@ jobs:
           kubectl get namespace serious-game-staging
 
           # update image tag
-          sed -i "s|IMAGE_TAG|${{ steps.get-ref-slug.outputs.REF_SLUG }}|g" deployment/staging/app.yaml
+          REF_SLUG=$(echo "${{ steps.get-ref-slug.outputs.REF_SLUG }}" | xargs)
+          sed -i "s|IMAGE_TAG|${REF_SLUG}|g" deployment/staging/app.yaml
+          # Verify the result
+          grep -A1 -B1 "${REF_SLUG}" deployment/staging/app.yaml
 
           kubectl apply -f deployment/staging/database.yaml
           kubectl apply -f deployment/staging/app.yaml
