@@ -8,7 +8,7 @@ use Traversable;
 
 /**
  * @immutable
- * @implements \IteratorAggregate<\Domain\CoreGameLogic\Dto\ValueObject\Modifier>
+ * @implements \IteratorAggregate<\Domain\CoreGameLogic\Dto\ValueObject\ResourceChange>
  */
 readonly class ResourceChangeCollection implements \IteratorAggregate
 {
@@ -26,7 +26,7 @@ readonly class ResourceChangeCollection implements \IteratorAggregate
     }
 
     /**
-     * @return Traversable<Resource>
+     * @return Traversable<ResourceChange>
      */
     public function getIterator(): Traversable
     {
@@ -43,8 +43,7 @@ readonly class ResourceChangeCollection implements \IteratorAggregate
     }
 
     /**
-     * @template T
-     * @param \Closure(T $carry, ResourceChange $modifier): T $callback
+     * @param \Closure(ResourceChange $carry, ResourceChange $modifier): ResourceChange $callback
      * @param mixed $initial
      * @return mixed
      */

@@ -11,9 +11,9 @@ use Domain\CoreGameLogic\Dto\ValueObject\GuthabenChange;
 final readonly class InitPlayerGuthaben implements CommandInterface
 {
     /**
-     * @param Guthaben $initialGuthaben initial guthaben for all players
+     * @param GuthabenChange $initialGuthabenChange initial guthaben change for all players
      */
-    public function __construct(public GuthabenChange $initialGuthaben)
+    public function __construct(public GuthabenChange $initialGuthabenChange)
     {
 
     }

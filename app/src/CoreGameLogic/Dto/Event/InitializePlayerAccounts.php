@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Domain\CoreGameLogic\Dto\Event;
 
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
@@ -21,7 +23,7 @@ final readonly class InitializePlayerAccounts implements GameEventInterface
 
     public static function fromArray(array $values): GameEventInterface
     {
-        $playerOrdering = array_map(fn(string $playerId) => new PlayerId($playerId), $values['playerOrdering']);
+        $playerOrdering = array_map(fn(string $playerId) => PlayerId::fromString($playerId), $values['playerOrdering']);
         return new self($playerOrdering);
     }
 

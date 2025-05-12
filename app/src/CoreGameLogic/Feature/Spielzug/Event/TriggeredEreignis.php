@@ -37,6 +37,7 @@ final readonly class TriggeredEreignis implements ProvidesModifiers, ProvidesRes
         if ($this->ereignis->value === "EVENT:Lotteriegewinn" && $this->player->equals($playerId)) {
             return new ResourceChangeCollection([new GuthabenChange(1000)]);
         }
+        return new ResourceChangeCollection([]);
     }
 
 

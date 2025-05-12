@@ -148,7 +148,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
         foreach (PreGameState::playerIds($gameState) as $playerId) {
             $eventsToPersist[] = new GuthabenInitialized(
                 $playerId,
-                $command->initialGuthaben,
+                $command->initialGuthabenChange,
             );
         }
         return GameEventsToPersist::with(...$eventsToPersist);

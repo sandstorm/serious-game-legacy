@@ -6,7 +6,6 @@ namespace Domain\CoreGameLogic\Feature\Initialization\State;
 
 use Domain\CoreGameLogic\Dto\ValueObject\Guthaben;
 use Domain\CoreGameLogic\Dto\ValueObject\GuthabenChange;
-use Domain\CoreGameLogic\Dto\ValueObject\Modifier;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Dto\ValueObject\ResourceChange;
 use Domain\CoreGameLogic\EventStore\GameEvents;
@@ -29,6 +28,7 @@ class GuthabenCalculator
         return $this->stream->findAllOfType(ProvidesResourceChanges::class)->reduce(function (Guthaben $guthaben, ProvidesResourceChanges $event) use ($playerId) {
             $guthabenChange = $event->getResourceChanges($playerId)
                 ->filter(fn(ResourceChange $resourceChange) => $resourceChange instanceof GuthabenChange)
+                /**@phpstan-ignore argument.type */
                 ->reduce(fn(GuthabenChange $accumulator, GuthabenChange $change) => $accumulator->accumulate($change), new GuthabenChange(0));
             return $guthaben->withChange($guthabenChange);
 
