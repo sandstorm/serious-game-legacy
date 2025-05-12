@@ -24,7 +24,6 @@ services:
       DB_USERNAME: 'laravel'
       DB_DATABASE: 'laravel'
       DB_DATABASE_TESTING: 'laravel_testing'
-      SANDSTORM_MAPS_API_KEY: '${SANDSTORM_MAPS_API_KEY}'
 
       APP_ENV: local
       APP_URL: http://127.0.0.1:8090
