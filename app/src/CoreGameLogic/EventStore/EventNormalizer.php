@@ -8,6 +8,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
+use Domain\CoreGameLogic\Feature\Pile\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\Event\KonjunkturzyklusWechselExecuted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
@@ -56,6 +57,7 @@ final readonly class EventNormalizer
             PreGameStarted::class,
             NameForPlayerWasSet::class,
             KonjunkturzyklusWechselExecuted::class,
+            CardsWereShuffled::class,
         ];
 
         $fullClassNameToShortEventType = [];

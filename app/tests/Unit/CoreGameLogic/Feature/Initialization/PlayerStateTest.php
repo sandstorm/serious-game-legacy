@@ -3,21 +3,27 @@
 declare(strict_types=1);
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
-use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
+use Domain\CoreGameLogic\Dto\ValueObject\PileId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\LebenszielAccessor;
+use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
+use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
+use Domain\Definitions\Kompetenzbereich\Enum\KompetenzbereichEnum;
+use Domain\Definitions\Pile\PileFinder;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
     $this->gameId = GameId::fromString('game1');
     $this->p1 = PlayerId::fromString('p1');
     $this->p2 = PlayerId::fromString('p2');
+    $this->cardsBildung = PileFinder::getCardsForBildungAndKarriere();
+    $this->pileIdBildung = new PileId(KompetenzbereichEnum::BILDUNG);
 });
 
 
@@ -41,6 +47,12 @@ test('kompetenzstein state', function () {
         ]
     ));
 
+    $this->coreGameLogic->handle(
+        $this->gameId,
+        ShuffleCards::create()->withFixedCardIdOrderForTesting(
+            new Pile( pileId: $this->pileIdBildung, cards: $this->cardsBildung),
+        ));
+
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
     // player 1
     // bildung
@@ -58,7 +70,7 @@ test('kompetenzstein state', function () {
     expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->definition->freizeitKompetenzSlots)->toBe(3);
     expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->placedKompetenzsteineFreizeit)->toBe(0);
 
-    $this->coreGameLogic->handle($this->gameId, new ActivateCard($this->p1, new CardId("sprachkurs")));
+    $this->coreGameLogic->handle($this->gameId, new ActivateCard($this->p1, $this->cardsBildung[0], $this->pileIdBildung));
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
 
     // player 1

@@ -11,10 +11,6 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\Command\KonjunkturzyklusWechseln;
-use Domain\Definitions\Kompetenzbereich\Enum\KompetenzbereichEnum;
-use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
-use Domain\Definitions\Lebensziel\Model\LebenszielKompetenzbereichDefinition;
-use Domain\Definitions\Lebensziel\Model\LebenszielPhaseDefinition;
 use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\KonjunkturzykluswechselCommandHandler;
 use Domain\Definitions\Konjunkturzyklus\KonjunkturzyklusFinder;
 

@@ -19,4 +19,9 @@ final readonly class CardId implements \JsonSerializable
     {
         return $this->value;
     }
+
+    public function equals(CardId $other): bool
+    {
+        return $this->value === $other->value;
+    }
 }

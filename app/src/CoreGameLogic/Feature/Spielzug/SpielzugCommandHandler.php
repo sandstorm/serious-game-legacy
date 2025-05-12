@@ -9,6 +9,7 @@ use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
+use Domain\CoreGameLogic\Feature\Pile\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
@@ -48,6 +49,11 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             throw new \RuntimeException('Only the current player can complete a turn', 1649582779);
         }
 
+        $topCardOnPile = PileState::topCardForPile($gameState, $command->pile);
+        if (!$topCardOnPile->equals($command->cardId)) {
+            throw new \RuntimeException('Only the top card of the pile can be activated', 1747326086);
+        }
+
         // TODO: replace with repository
         $card = match ($command->cardId->value) {
             "neues Hobby" => new CardDefinition(
@@ -70,7 +76,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             )
         };
         $events = GameEventsToPersist::with(
-            new CardWasActivated($command->player, $card)
+            new CardWasActivated($command->player, $card, $command->pile)
         );
 
         if ($command->attachedEreignis !== null) {
@@ -89,8 +95,13 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             throw new \RuntimeException('Only the current player can complete a turn', 1649582779);
         }
 
+        $topCardOnPile = PileState::topCardForPile($gameState, $command->pile);
+        if (!$topCardOnPile->equals($command->card)) {
+            throw new \RuntimeException('Only the top card of the pile can be skipped', 1747325793);
+        }
+
         return GameEventsToPersist::with(
-            new CardWasSkipped($command->player, $command->card)
+            new CardWasSkipped($command->player, $command->card, $command->pile)
         );
     }
 
