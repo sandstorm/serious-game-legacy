@@ -11,7 +11,7 @@ spec:
     serious-game-staging.cloud.sandstorm.de: []
 
   node: worker4
-  image: ghcr.io/sandstorm/serious-game-legacy/laravel:main
+  image: ghcr.io/sandstorm/serious-game-legacy/laravel:IMAGE_TAG
 
   port: 8081
   # Set to false when a real DNS entry for staging/staging exists

@@ -153,6 +153,10 @@ jobs:
 
           # Verify connection and apply manifests
           kubectl get namespace serious-game-staging
+
+          # update image tag
+          sed -i "s|IMAGE_TAG|${{ steps.get-ref-slug.outputs.REF_SLUG }}|g" deployment/staging/app.yaml
+
           kubectl apply -f deployment/staging/database.yaml
           kubectl apply -f deployment/staging/app.yaml
 
