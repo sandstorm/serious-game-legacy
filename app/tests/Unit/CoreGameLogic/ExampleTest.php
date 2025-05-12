@@ -6,16 +6,19 @@ use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\CurrentYear;
 use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
+use Domain\CoreGameLogic\Dto\ValueObject\Guthaben;
 use Domain\CoreGameLogic\Dto\ValueObject\Lebensziel;
 use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
+use Domain\CoreGameLogic\Feature\Initialization\Command\InitPlayerGuthaben;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
+use Domain\CoreGameLogic\Feature\Initialization\State\GuthabenCalculator;
 use Domain\CoreGameLogic\Feature\Initialization\State\LebenszielAccessor;
 use Domain\CoreGameLogic\Feature\Jahreswechsel\Command\StartNewYear;
 use Domain\CoreGameLogic\Feature\Jahreswechsel\Event\NewYearWasStarted;
@@ -143,4 +146,16 @@ test('welche Spielzüge hat player zur Verfügung', function () {
     expect(iterator_to_array(ModifierCalculator::forStream($stream)->forPlayer($p1))[0]->value)->toBe("MODIFIER:ausetzen");
     expect(AktionsCalculator::forStream($stream)->availableActionsForPlayer($p1))->toBeEmpty();
     expect(AktionsCalculator::forStream($stream)->availableActionsForPlayer($p2)[0])->toBeInstanceOf(ZeitsteinSetzen::class); // TODO: VALUE OBJECTS ETC
+});
+
+
+test('wie viel Guthaben hat Player zur Verfügung', function () {
+    $p1 = PlayerId::fromString('p1');
+    $p2 = PlayerId::fromString('p2');
+    $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
+        numberOfPlayers: 2,
+    )->withFixedPlayerIdsForTesting($p1, $p2));
+    $this->coreGameLogic->handle($this->gameId, new InitPlayerGuthaben(new Guthaben(50000)));
+    $stream = $this->coreGameLogic->getGameStream($this->gameId);
+    expect(GuthabenCalculator::forStream($stream)->forPlayer($p1)->value)->toBe(50000);
 });

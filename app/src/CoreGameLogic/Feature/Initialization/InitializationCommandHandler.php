@@ -12,10 +12,12 @@ use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
+use Domain\CoreGameLogic\Feature\Initialization\Command\InitPlayerGuthaben;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
+use Domain\CoreGameLogic\Feature\Initialization\Event\GuthabenInitialized;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
@@ -36,7 +38,8 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
             || $command instanceof LebenszielAuswaehlen
             || $command instanceof StartGame
             || $command instanceof StartPreGame
-            || $command instanceof SetNameForPlayer;
+            || $command instanceof SetNameForPlayer
+            || $command instanceof InitPlayerGuthaben;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameState): GameEventsToPersist
@@ -49,6 +52,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
 
             StartPreGame::class => $this->handleStartPreGame($command, $gameState),
             SetNameForPlayer::class => $this->handleSetNameForPlayer($command, $gameState),
+            InitPlayerGuthaben::class => $this->handleInitPlayerGuthaben($command, $gameState),
         };
     }
 
@@ -136,5 +140,17 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
                 name: $command->name
             ),
         );
+    }
+
+    public function handleInitPlayerGuthaben(InitPlayerGuthaben $command, GameEvents $gameState): GameEventsToPersist
+    {
+        $eventsToPersist = [];
+        foreach (PreGameState::playerIds($gameState) as $playerId) {
+            $eventsToPersist[] = new GuthabenInitialized(
+                $playerId,
+                $command->initialGuthaben,
+            );
+        }
+        return GameEventsToPersist::with(...$eventsToPersist);
     }
 }

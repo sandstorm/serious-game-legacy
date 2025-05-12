@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\EventStore;
 
+use Domain\CoreGameLogic\Feature\Initialization\Command\InitPlayerGuthaben;
+use Domain\CoreGameLogic\Feature\Initialization\Event\GuthabenInitialized;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
@@ -56,6 +58,7 @@ final readonly class EventNormalizer
             LebenszielChosen::class,
             PreGameStarted::class,
             NameForPlayerWasSet::class,
+            GuthabenInitialized::class
         ];
 
         $fullClassNameToShortEventType = [];
