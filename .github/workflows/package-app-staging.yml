@@ -135,28 +135,26 @@ jobs:
     name: Deploy to Staging
     runs-on: [self-hosted, linux]
     needs: package_app_staging
+    container:
+      image: bitnami/kubectl:1.15.0
+      entrypoint: ['']
 
     steps:
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v3
-        with:
-          version: '1.28.0'  # Specify your desired kubectl version
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Configure kubectl
+      - name: Deploy to Kubernetes
         run: |
+          # Create kubeconfig from secret
           mkdir -p $HOME/.kube
           echo "${{ secrets.K3S2021_KUBECONFIG_DEPLOY }}" > $HOME/.kube/config
           chmod 600 $HOME/.kube/config
+          export KUBECONFIG=$HOME/.kube/config
 
-      - name: Get namespace status
-        run: kubectl get namespace serious-game-staging
+          # Verify connection and apply manifests
+          kubectl get namespace serious-game-staging
+          kubectl apply -f deployment/staging/database.yaml
+          kubectl apply -f deployment/staging/app.yaml
 
-      - name: Apply database configuration
-        run: kubectl apply -f deployment/staging/database.yaml
-
-      - name: Apply application configuration
-        run: kubectl apply -f deployment/staging/app.yaml
-
-      - name: Force redeploy
-        run: |
-          kubectl -n myvendor-awesomeneosproject-staging patch --type merge OneContainerOnePort app -p "{\"spec\":{\"releaseIdentifier\": \"${{ github.run_id }}\"}}"
+          # Force redeploy by updating the releaseIdentifier
+          kubectl -n serious-game-staging patch --type merge OneContainerOnePort app -p "{\"spec\":{\"releaseIdentifier\": \"${{ github.run_id }}\"}}"
