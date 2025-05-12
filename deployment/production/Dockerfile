@@ -73,8 +73,8 @@ RUN mkdir -p /tracing/_traces/ \
 ADD /deployment/config-files/auto_prepend_file.php /tracing/auto_prepend_file.php
 
 # nginx config
-ADD /deployment/config-files/nginx.conf /deployment/config-files/nginx-e2etest-server-prod.conf /etc/nginx/
-RUN mkdir -p /var/lib/nginx /usr/local/var/log/ & \
+ADD /deployment/config-files/nginx.conf /etc/nginx/
+RUN mkdir -p /var/lib/nginx /usr/local/var/log/ && \
     chown -R www-data /var/lib/nginx /usr/local/var/log/ /etc/nginx/
 
 # cleanup & chown

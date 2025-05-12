@@ -2,6 +2,6 @@ apiVersion: k8s.sandstorm.de/v1alpha1
 kind: Database
 metadata:
   name: db
-  namespace: myvendor-awesomeneosproject-staging
+  namespace: serious-game-staging
 spec:
   databaseServer: mariadb4
