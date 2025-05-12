@@ -83,6 +83,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Download build artifacts from previous job
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-assets
+          path: app/public/build/
+
       # Cache composer dependencies
       - name: Cache Composer dependencies
         uses: actions/cache@v4
