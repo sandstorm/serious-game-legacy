@@ -33,7 +33,7 @@ ARG S6_OVERLAY_ARCH=aarch64
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-noarch.tar.xz /tmp
 RUN tar -C / -Jxpf /tmp/s6-overlay-noarch.tar.xz
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_VERSION}/s6-overlay-${S6_OVERLAY_ARCH}.tar.xz /tmp
-RUN tar -C / -Jxpf /tmp/s6-overlay-aarch64.tar.xz
+RUN tar -C / -Jxpf /tmp/s6-overlay-${S6_OVERLAY_ARCH}.tar.xz
 
 # Install intl, bcmath, pdo, pdo_mysql, mysqli
 # debug tools: vim, inotify-tools
@@ -101,19 +101,14 @@ RUN mkdir -p /tracing/_traces/ \
 ADD /deployment/config-files/auto_prepend_file.php /tracing/auto_prepend_file.php
 
 # nginx config
-ADD /deployment/config-files/nginx.conf /deployment/config-files/nginx-e2etest-server-dev.conf /etc/nginx/
+ADD /deployment/config-files/nginx.conf /etc/nginx/
 RUN mkdir -p /var/lib/nginx /usr/local/var/log/ && \
-    chown -R www-data /var/lib/nginx /usr/local/var/log/ /etc/nginx/ &&\
-    ln -s /etc/nginx/nginx-e2etest-server-dev.conf /etc/nginx/conf.d/nginx-e2etest-server-dev.conf
+    chown -R www-data /var/lib/nginx /usr/local/var/log/ /etc/nginx/
 
 # cleanup & chown
 RUN mkdir -p /app/storage/app /app/vendor /app/storage/logs /app/storage/framework/sessions /app/storage/framework/views /app/storage/framework/cache /composer_cache && \
     chown -R www-data /app /composer_cache /var/www && \
     apt-get clean
-
-# utility scripts
-ADD deployment/utilities/watchAndLogExceptions.sh /app/watchAndLogExceptions.sh
-RUN chmod +x /app/watchAndLogExceptions.sh
 
 WORKDIR /app
 
@@ -124,6 +119,11 @@ WORKDIR /app
 # the latest changes to keep both containers in sync                   #
 ########################################################################
 RUN touch /etc/s6-overlay/s6-rc.d/user/contents.d/oneshot-artisan-db-seed
+
+# utility scripts
+ADD deployment/utilities/watchAndLogExceptions.sh /app/watchAndLogExceptions.sh
+RUN chmod +x /app/watchAndLogExceptions.sh
+
 ####################### END - Dev Container only ########################
 
 USER www-data

@@ -5,136 +5,136 @@ on:
     branches: [ main, staging_build ]
 
 jobs:
-#  build_assets:
-#    name: Build Assets
-#    runs-on: [self-hosted, linux]
-#    container:
-#      image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v4
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v4
-#        with:
-#          submodules: recursive
-#
-#      # Cache composer dependencies
-#      - name: Cache Composer dependencies
-#        uses: actions/cache@v4
-#        with:
-#          path: app/.composer-cache
-#          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-#          restore-keys: ${{ runner.os }}-composer-
-#
-#      # Cache yarn/node dependencies
-#      - name: Get yarn cache directory path
-#        id: yarn-cache-dir-path
-#        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-#        working-directory: ./app
-#
-#      - name: Cache Node modules
-#        uses: actions/cache@v4
-#        with:
-#          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-#          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-#          restore-keys: ${{ runner.os }}-yarn-
-#
-#      # Install PHP dependencies
-#      - name: Install Composer dependencies
-#        run: |
-#          COMPOSER_CACHE_DIR=.composer-cache composer install --ignore-platform-reqs
-#        working-directory: ./app
-#
-#        # Uncomment if you need Font Awesome
-#        # - name: Configure npm for Font Awesome
-#        #   run: |
-#        #     npm config set "@fortawesome:registry" https://npm.fontawesome.com/
-#        #     npm config set "//npm.fontawesome.com/:_authToken" ${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}
-#        #   working-directory: ./app
-#
-#      # Install Node.js dependencies and build
-#      - name: Install Yarn dependencies
-#        run: yarn
-#        working-directory: ./app
-#
-#      - name: Build assets
-#        run: yarn build
-#        working-directory: ./app
-#
-#      # Upload build artifacts
-#      - name: Upload build artifacts
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: build-assets
-#          path: app/public/build/
-#          retention-days: 7
-#
-#  package_app_staging:
-#    name: Package App Staging
-#    runs-on: [self-hosted, linux]
-#    container:
-#      image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v4
-#    needs: build_assets
-#    permissions:
-#      contents: read
-#      packages: write    # This is critical for GHCR access
-#
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v4
-#
-#      # Cache composer dependencies
-#      - name: Cache Composer dependencies
-#        uses: actions/cache@v4
-#        with:
-#          path: app/.composer-cache
-#          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-#          restore-keys: ${{ runner.os }}-composer-
-#
-#      # Install PHP dependencies including dev dependencies
-#      - name: Install Composer dependencies
-#        run: |
-#          cd app
-#          COMPOSER_CACHE_DIR=.composer-cache composer install --dev --ignore-platform-reqs
-#          cd ..
-#
-#      # Set up Docker Buildx
-#      - name: Set up Docker Buildx
-#        uses: docker/setup-buildx-action@v3
-#        with: # allow using host docker
-#          driver: docker-container
-#          buildkitd-flags: --allow-insecure-entitlement security.insecure
-#
-#    # Login to GitHub Container Registry
-#      - name: Login to GitHub Container Registry
-#        uses: docker/login-action@v3
-#        with:
-#          registry: ${{ vars.CI_REGISTRY || 'ghcr.io' }}
-#          username: ${{ github.actor }}
-#          password: ${{ secrets.GITHUB_TOKEN }}
-#
-#      # Determine ref slug for Docker tag (similar to CI_COMMIT_REF_SLUG)
-#      - name: Get ref slug
-#        id: get-ref-slug
-#        run: |
-#          REF_SLUG=$(echo "${{ github.ref_name }}" | sed -e 's/[^a-zA-Z0-9]/-/g' | tr '[:upper:]' '[:lower:]')
-#          echo "REF_SLUG=$REF_SLUG" >> $GITHUB_OUTPUT
-#
-#      # Build and push Docker image
-#      - name: Build and push Docker image
-#        uses: docker/build-push-action@v5
-#        with:
-#          context: .
-#          file: deployment/staging/Dockerfile
-#          push: true
-#          tags: ${{ vars.CI_REGISTRY_IMAGE || format('ghcr.io/{0}', github.repository) }}/laravel:${{ steps.get-ref-slug.outputs.REF_SLUG }}
-#
-#          # local cache
-#          cache-from: type=registry,ref=${{ vars.CI_REGISTRY_IMAGE || format('ghcr.io/{0}', github.repository) }}/cache:latest
-#          cache-to: type=registry,ref=${{ vars.CI_REGISTRY_IMAGE || format('ghcr.io/{0}', github.repository) }}/cache:latest,mode=max
+  build_assets:
+    name: Build Assets
+    runs-on: [self-hosted, linux]
+    container:
+      image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v4
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # Cache composer dependencies
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: app/.composer-cache
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      # Cache yarn/node dependencies
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+        working-directory: ./app
+
+      - name: Cache Node modules
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-
+
+      # Install PHP dependencies
+      - name: Install Composer dependencies
+        run: |
+          COMPOSER_CACHE_DIR=.composer-cache composer install --ignore-platform-reqs
+        working-directory: ./app
+
+        # Uncomment if you need Font Awesome
+        # - name: Configure npm for Font Awesome
+        #   run: |
+        #     npm config set "@fortawesome:registry" https://npm.fontawesome.com/
+        #     npm config set "//npm.fontawesome.com/:_authToken" ${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}
+        #   working-directory: ./app
+
+      # Install Node.js dependencies and build
+      - name: Install Yarn dependencies
+        run: yarn
+        working-directory: ./app
+
+      - name: Build assets
+        run: yarn build
+        working-directory: ./app
+
+      # Upload build artifacts
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-assets
+          path: app/public/build/
+          retention-days: 7
+
+  package_app_staging:
+    name: Package App Staging
+    runs-on: [self-hosted, linux]
+    container:
+      image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v4
+    needs: build_assets
+    permissions:
+      contents: read
+      packages: write    # This is critical for GHCR access
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Cache composer dependencies
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: app/.composer-cache
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      # Install PHP dependencies including dev dependencies
+      - name: Install Composer dependencies
+        run: |
+          cd app
+          COMPOSER_CACHE_DIR=.composer-cache composer install --dev --ignore-platform-reqs
+          cd ..
+
+      # Set up Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with: # allow using host docker
+          driver: docker-container
+          buildkitd-flags: --allow-insecure-entitlement security.insecure
+
+    # Login to GitHub Container Registry
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ vars.CI_REGISTRY || 'ghcr.io' }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Determine ref slug for Docker tag (similar to CI_COMMIT_REF_SLUG)
+      - name: Get ref slug
+        id: get-ref-slug
+        run: |
+          REF_SLUG=$(echo "${{ github.ref_name }}" | sed -e 's/[^a-zA-Z0-9]/-/g' | tr '[:upper:]' '[:lower:]')
+          echo "REF_SLUG=$REF_SLUG" >> $GITHUB_OUTPUT
+
+      # Build and push Docker image
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: deployment/staging/Dockerfile
+          push: true
+          tags: ${{ vars.CI_REGISTRY_IMAGE || format('ghcr.io/{0}', github.repository) }}/laravel:${{ steps.get-ref-slug.outputs.REF_SLUG }}
+
+          # local cache
+          cache-from: type=registry,ref=${{ vars.CI_REGISTRY_IMAGE || format('ghcr.io/{0}', github.repository) }}/cache:latest
+          cache-to: type=registry,ref=${{ vars.CI_REGISTRY_IMAGE || format('ghcr.io/{0}', github.repository) }}/cache:latest,mode=max
 
   deploy_staging:
     name: Deploy to Staging
     runs-on: [self-hosted, linux]
-    #needs: package_app_staging
+    needs: package_app_staging
     environment: staging
     container:
       image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.4-v4
