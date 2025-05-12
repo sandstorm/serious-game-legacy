@@ -1,8 +1,10 @@
 name: Package App Staging
 
 on:
+  # manual triggering - currently disabled
+  #workflow_dispatch: {}
   push:
-    branches: [ main, staging_build ]
+    branches: [ main ]
 
 jobs:
   build_assets:
