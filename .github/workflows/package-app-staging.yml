@@ -143,6 +143,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Determine ref slug for Docker tag (similar to CI_COMMIT_REF_SLUG)
+      - name: Get ref slug
+        id: get-ref-slug
+        run: |
+          REF_SLUG=$(echo "${{ github.ref_name }}" | sed -e 's/[^a-zA-Z0-9]/-/g' | tr '[:upper:]' '[:lower:]')
+          echo "REF_SLUG=$REF_SLUG" >> $GITHUB_OUTPUT
+
       - name: Deploy to Kubernetes
         run: |
           # Create kubeconfig from secret
