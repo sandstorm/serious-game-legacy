@@ -2,7 +2,7 @@ name: Package App Staging
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, staging_build ]
 
 jobs:
   build_assets:
@@ -135,7 +135,6 @@ jobs:
     name: Deploy to Staging
     runs-on: [self-hosted, linux]
     needs: package_app_staging
-    if: github.ref == 'refs/heads/staging_build'
 
     steps:
       - name: Set up kubectl
