@@ -143,7 +143,7 @@ test('welche Spielzüge hat player zur Verfügung', function () {
     $this->coreGameLogic->handle($this->gameId, new SpielzugAbschliessen($p1));
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
 
-    expect(iterator_to_array(ModifierCalculator::forStream($stream)->forPlayer($p1))[0]->value)->toBe("MODIFIER:ausetzen");
+    expect(iterator_to_array(ModifierCalculator::forStream($stream)->forPlayer($p1))[0]->id->value)->toBe("MODIFIER:ausetzen");
     expect(AktionsCalculator::forStream($stream)->availableActionsForPlayer($p1))->toBeEmpty();
     expect(AktionsCalculator::forStream($stream)->availableActionsForPlayer($p2)[0])->toBeInstanceOf(ZeitsteinSetzen::class); // TODO: VALUE OBJECTS ETC
 });
