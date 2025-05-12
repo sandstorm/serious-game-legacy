@@ -134,7 +134,7 @@ jobs:
   deploy_staging:
     name: Deploy to Staging
     runs-on: [self-hosted, linux]
-    needs: package_app_staging
+    #needs: package_app_staging
     container:
       image: bitnami/kubectl:1.15.0
 
