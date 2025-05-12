@@ -70,7 +70,6 @@ jobs:
   package_app_staging:
     name: Package App Staging
     runs-on: [self-hosted, linux]
-    # Always run this job, including on tags
     container:
       image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v4
     needs: build_assets
@@ -131,3 +130,34 @@ jobs:
           # local cache
           cache-from: type=registry,ref=${{ vars.CI_REGISTRY_IMAGE || format('ghcr.io/{0}', github.repository) }}/cache:latest
           cache-to: type=registry,ref=${{ vars.CI_REGISTRY_IMAGE || format('ghcr.io/{0}', github.repository) }}/cache:latest,mode=max
+
+  deploy_staging:
+    name: Deploy to Staging
+    runs-on: [self-hosted, linux]
+    needs: package_app_staging
+    if: github.ref == 'refs/heads/staging_build'
+
+    steps:
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: '1.28.0'  # Specify your desired kubectl version
+
+      - name: Configure kubectl
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.K3S2021_KUBECONFIG_DEPLOY }}" > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
+
+      - name: Get namespace status
+        run: kubectl get namespace serious-game-staging
+
+      - name: Apply database configuration
+        run: kubectl apply -f deployment/staging/database.yaml
+
+      - name: Apply application configuration
+        run: kubectl apply -f deployment/staging/app.yaml
+
+      - name: Force redeploy
+        run: |
+          kubectl -n myvendor-awesomeneosproject-staging patch --type merge OneContainerOnePort app -p "{\"spec\":{\"releaseIdentifier\": \"${{ github.run_id }}\"}}"
