@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Initialization\Event;
 
-use Domain\CoreGameLogic\Dto\ValueObject\Guthaben;
 use Domain\CoreGameLogic\Dto\ValueObject\GuthabenChange;
-use Domain\CoreGameLogic\Dto\ValueObject\ModifierCollection;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\Dto\ValueObject\ResourceChangeCollection;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 
-final readonly class GuthabenInitialized implements ProvidesModifiers, GameEventInterface
+final readonly class GuthabenInitialized implements ProvidesResourceChanges, GameEventInterface
 {
     public function __construct(
         public PlayerId   $playerId,
-        public Guthaben $initialGuthaben,
+        public GuthabenChange $guthabenChange,
     ) {
     }
 
@@ -23,7 +22,7 @@ final readonly class GuthabenInitialized implements ProvidesModifiers, GameEvent
     {
         return new self(
             playerId: PlayerId::fromString($values['playerId']),
-            initialGuthaben: new Guthaben($values['guthaben']),
+            guthabenChange: new GuthabenChange($values['guthabenChange']),
         );
     }
 
@@ -31,15 +30,15 @@ final readonly class GuthabenInitialized implements ProvidesModifiers, GameEvent
     {
         return [
             'playerId' => $this->playerId,
-            'guthaben' => $this->initialGuthaben,
+            'guthabenChange' => $this->guthabenChange,
         ];
     }
 
-    public function getModifiers(PlayerId $playerId): ModifierCollection
+    public function getResourceChanges(PlayerId $playerId): ResourceChangeCollection
     {
         if ($this->playerId->equals($playerId)) {
-            return new ModifierCollection([new GuthabenChange($this->initialGuthaben->value)]);
+            return new ResourceChangeCollection([new GuthabenChange($this->guthabenChange->value)]);
         }
-        return new ModifierCollection([]);
+        return new ResourceChangeCollection([]);
     }
 }

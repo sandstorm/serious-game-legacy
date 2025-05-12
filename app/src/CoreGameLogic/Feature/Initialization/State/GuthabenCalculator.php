@@ -7,10 +7,10 @@ namespace Domain\CoreGameLogic\Feature\Initialization\State;
 use Domain\CoreGameLogic\Dto\ValueObject\Guthaben;
 use Domain\CoreGameLogic\Dto\ValueObject\GuthabenChange;
 use Domain\CoreGameLogic\Dto\ValueObject\Modifier;
-use Domain\CoreGameLogic\Dto\ValueObject\ModifierCollection;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\Dto\ValueObject\ResourceChange;
 use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 
 class GuthabenCalculator
 {
@@ -26,10 +26,10 @@ class GuthabenCalculator
 
     public function forPlayer(PlayerId $playerId): Guthaben
     {
-        return $this->stream->findAllOfType(ProvidesModifiers::class)->reduce(function (Guthaben $guthaben, ProvidesModifiers $event) use ($playerId) {
-            $guthabenChange = $event->getModifiers($playerId)
-                ->filter(fn(Modifier $modifier) => $modifier instanceof GuthabenChange)
-                ->reduce(fn(int $guthabenChange, GuthabenChange $modifier) => $guthabenChange+$modifier->guthabenChange, 0);
+        return $this->stream->findAllOfType(ProvidesResourceChanges::class)->reduce(function (Guthaben $guthaben, ProvidesResourceChanges $event) use ($playerId) {
+            $guthabenChange = $event->getResourceChanges($playerId)
+                ->filter(fn(ResourceChange $resourceChange) => $resourceChange instanceof GuthabenChange)
+                ->reduce(fn(GuthabenChange $accumulator, GuthabenChange $change) => $accumulator->accumulate($change), new GuthabenChange(0));
             return $guthaben->withChange($guthabenChange);
 
         }, new Guthaben(0));

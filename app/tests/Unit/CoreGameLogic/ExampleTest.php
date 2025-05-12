@@ -6,7 +6,7 @@ use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\CurrentYear;
 use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
-use Domain\CoreGameLogic\Dto\ValueObject\Guthaben;
+use Domain\CoreGameLogic\Dto\ValueObject\GuthabenChange;
 use Domain\CoreGameLogic\Dto\ValueObject\Lebensziel;
 use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
@@ -162,7 +162,7 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
             $p2,
         ]
     ));
-    $this->coreGameLogic->handle($this->gameId, new InitPlayerGuthaben(new Guthaben(50000)));
+    $this->coreGameLogic->handle($this->gameId, new InitPlayerGuthaben(new GuthabenChange(50000)));
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
     expect(GuthabenCalculator::forStream($stream)->forPlayer($p1)->value)->toBe(50000);
     //</editor-fold>
