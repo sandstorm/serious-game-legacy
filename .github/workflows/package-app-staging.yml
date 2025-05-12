@@ -137,7 +137,6 @@ jobs:
     needs: package_app_staging
     container:
       image: bitnami/kubectl:1.15.0
-      entrypoint: ['']
 
     steps:
       - name: Checkout code
