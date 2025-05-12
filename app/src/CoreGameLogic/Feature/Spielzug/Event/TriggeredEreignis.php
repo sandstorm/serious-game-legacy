@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
+use Domain\CoreGameLogic\Dto\ValueObject\GuthabenChange;
 use Domain\CoreGameLogic\Dto\ValueObject\Modifier;
 use Domain\CoreGameLogic\Dto\ValueObject\ModifierCollection;
+use Domain\CoreGameLogic\Dto\ValueObject\ModifierId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
@@ -22,7 +24,10 @@ final readonly class TriggeredEreignis implements ProvidesModifiers, GameEventIn
     public function getModifiers(PlayerId $playerId): ModifierCollection
     {
         if ($this->ereignis->value === "EVENT:OmaKrank" && $this->player->equals($playerId)) {
-            return new ModifierCollection([new Modifier("MODIFIER:ausetzen")]);
+            return new ModifierCollection([new Modifier(new ModifierId("MODIFIER:ausetzen"))]);
+        }
+        if ($this->ereignis->value === "EVENT:Lotteriegewinn" && $this->player->equals($playerId)) {
+            return new ModifierCollection([new GuthabenChange(1000)]);
         }
         return new ModifierCollection([]);
     }

@@ -150,12 +150,26 @@ test('welche Spielzüge hat player zur Verfügung', function () {
 
 
 test('wie viel Guthaben hat Player zur Verfügung', function () {
+    //<editor-fold desc="initialize guthaben">
     $p1 = PlayerId::fromString('p1');
     $p2 = PlayerId::fromString('p2');
     $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
         numberOfPlayers: 2,
     )->withFixedPlayerIdsForTesting($p1, $p2));
+    $this->coreGameLogic->handle($this->gameId, new DefinePlayerOrdering(
+        playerOrdering: [
+            $p1,
+            $p2,
+        ]
+    ));
     $this->coreGameLogic->handle($this->gameId, new InitPlayerGuthaben(new Guthaben(50000)));
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
     expect(GuthabenCalculator::forStream($stream)->forPlayer($p1)->value)->toBe(50000);
+    //</editor-fold>
+
+    //<editor-fold desc="modify guthaben">
+    $this->coreGameLogic->handle($this->gameId, new ActivateCard($p1, new CardId("neues Hobby"), new EreignisId("EVENT:Lotteriegewinn")));
+    $stream = $this->coreGameLogic->getGameStream($this->gameId);
+    expect(GuthabenCalculator::forStream($stream)->forPlayer($p1)->value)->toBe(50500);
+    //</editor-fold>
 });

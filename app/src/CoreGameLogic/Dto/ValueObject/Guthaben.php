@@ -19,4 +19,9 @@ readonly class Guthaben implements \JsonSerializable
     {
         return $this->value;
     }
+
+    public function withChange(int $guthabenChange)
+    {
+        return new self($this->value + $guthabenChange);
+    }
 }
