@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Application'),
+    'name' => env('APP_NAME', 'Legacy - Serious Game'),
 
     /*
     |--------------------------------------------------------------------------
