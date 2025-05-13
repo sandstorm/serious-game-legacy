@@ -9,4 +9,4 @@ with-contenv
 
 # start service in foreground
 # for debugging, add "--debug"
-/app/artisan reverb:start --port=8090
+/app/artisan reverb:start --port=8899
