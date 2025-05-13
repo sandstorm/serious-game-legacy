@@ -12,16 +12,17 @@ use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
+use Domain\CoreGameLogic\Feature\Initialization\Command\JahrWechseln;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
+use Domain\CoreGameLogic\Feature\Initialization\Event\JahreswechselExecuted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
-use Domain\CoreGameLogic\Feature\Initialization\State\LebenszielAccessor;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Jahreswechsel\Event\NewYearWasStarted;
 
@@ -36,7 +37,8 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
             || $command instanceof LebenszielAuswaehlen
             || $command instanceof StartGame
             || $command instanceof StartPreGame
-            || $command instanceof SetNameForPlayer;
+            || $command instanceof SetNameForPlayer
+            || $command instanceof JahrWechseln;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameState): GameEventsToPersist
@@ -49,6 +51,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
 
             StartPreGame::class => $this->handleStartPreGame($command, $gameState),
             SetNameForPlayer::class => $this->handleSetNameForPlayer($command, $gameState),
+            JahrWechseln::class => $this->handleJahreswechsel($command, $gameState),
         };
     }
 
@@ -134,6 +137,20 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
             new NameForPlayerWasSet(
                 playerId: $command->playerId,
                 name: $command->name
+            ),
+        );
+    }
+
+    public function handleJahreswechsel(JahrWechseln $command, GameEvents $gameState): GameEventsToPersist
+    {
+        if (!GamePhaseState::isInGamePhase($gameState)) {
+            throw new \RuntimeException('not in game phase', 1746713490);
+        }
+
+        return GameEventsToPersist::with(
+            new JahreswechselExecuted(
+                name: $command->name,
+                szenario: $command->szenario,
             ),
         );
     }
