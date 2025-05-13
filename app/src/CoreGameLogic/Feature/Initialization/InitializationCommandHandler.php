@@ -12,19 +12,16 @@ use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
-use Domain\CoreGameLogic\Feature\Initialization\Command\KonjunkturzyklusWechseln;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
-use Domain\CoreGameLogic\Feature\Initialization\Event\KonjunkturzyklusWechselExecuted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
-use Domain\CoreGameLogic\Feature\Jahreswechsel\Event\NewYearWasStarted;
 
 /**
  * @internal no public API, because commands are no extension points. ALWAYS USE {@see ForCoreGameLogic::handle()} to trigger commands.
@@ -37,8 +34,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
             || $command instanceof LebenszielAuswaehlen
             || $command instanceof StartGame
             || $command instanceof StartPreGame
-            || $command instanceof SetNameForPlayer
-            || $command instanceof KonjunkturzyklusWechseln;
+            || $command instanceof SetNameForPlayer;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameState): GameEventsToPersist
@@ -51,7 +47,6 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
 
             StartPreGame::class => $this->handleStartPreGame($command, $gameState),
             SetNameForPlayer::class => $this->handleSetNameForPlayer($command, $gameState),
-            KonjunkturzyklusWechseln::class => $this->handleJahreswechsel($command, $gameState),
         };
     }
 
@@ -91,11 +86,6 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
         return GameEventsToPersist::with(
             new GameWasStarted(
                 playerOrdering: $command->playerOrdering
-            ),
-            // TODO: this cannot be hardcoded here :) Maybe delegate to the other command handler??
-            new NewYearWasStarted(
-                newYear: new CurrentYear(1),
-                leitzins: new Leitzins(3)
             ),
         );
     }
@@ -141,17 +131,4 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
         );
     }
 
-    public function handleJahreswechsel(KonjunkturzyklusWechseln $command, GameEvents $gameState): GameEventsToPersist
-    {
-        if (!GamePhaseState::isInGamePhase($gameState)) {
-            throw new \RuntimeException('not in game phase', 1746713490);
-        }
-
-        return GameEventsToPersist::with(
-            new KonjunkturzyklusWechselExecuted(
-                year: $command->year,
-                konjunkturzyklus: $command->konjunkturzyklus,
-            ),
-        );
-    }
 }
