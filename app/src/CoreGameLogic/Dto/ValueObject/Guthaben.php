@@ -21,8 +21,8 @@ readonly class Guthaben extends Resource implements \JsonSerializable
         return $this->value;
     }
 
-    public function withChange(GuthabenChange $guthabenChange): self
+    public function withChange(ResourceChanges $resourceChangeChange): self
     {
-        return new self($this->value + $guthabenChange->value);
+        return new self($this->value + $resourceChangeChange->guthabenChange);
     }
 }

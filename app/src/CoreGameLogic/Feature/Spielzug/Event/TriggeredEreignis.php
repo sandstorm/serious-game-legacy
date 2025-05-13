@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
-use Domain\CoreGameLogic\Dto\ValueObject\GuthabenChange;
 use Domain\CoreGameLogic\Dto\ValueObject\Modifier;
 use Domain\CoreGameLogic\Dto\ValueObject\ModifierCollection;
 use Domain\CoreGameLogic\Dto\ValueObject\ModifierId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\Dto\ValueObject\ResourceChangeCollection;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
@@ -35,7 +35,7 @@ final readonly class TriggeredEreignis implements ProvidesModifiers, ProvidesRes
     public function getResourceChanges(PlayerId $playerId): ResourceChangeCollection
     {
         if ($this->ereignis->value === "EVENT:Lotteriegewinn" && $this->player->equals($playerId)) {
-            return new ResourceChangeCollection([new GuthabenChange(1000)]);
+            return new ResourceChangeCollection([new ResourceChanges(guthabenChange: 1000)]);
         }
         return new ResourceChangeCollection([]);
     }

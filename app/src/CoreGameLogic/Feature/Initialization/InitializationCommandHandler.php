@@ -7,9 +7,9 @@ namespace Domain\CoreGameLogic\Feature\Initialization;
 use Domain\CoreGameLogic\CommandHandler\CommandHandlerInterface;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\Dto\ValueObject\CurrentYear;
-use Domain\CoreGameLogic\Dto\ValueObject\GuthabenChange;
 use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
@@ -149,7 +149,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
         foreach (PreGameState::playerIds($gameState) as $playerId) {
             $eventsToPersist[] = new GuthabenInitialized(
                 $playerId,
-                new GuthabenChange(50000),
+                new ResourceChanges(guthabenChange: 50000),
             );
         }
         return GameEventsToPersist::with(...$eventsToPersist);

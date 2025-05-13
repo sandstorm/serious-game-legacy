@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Initialization\Event;
 
-use Domain\CoreGameLogic\Dto\ValueObject\GuthabenChange;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\Dto\ValueObject\ResourceChangeCollection;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
@@ -14,7 +14,7 @@ final readonly class GuthabenInitialized implements ProvidesResourceChanges, Gam
 {
     public function __construct(
         public PlayerId   $playerId,
-        public GuthabenChange $guthabenChange,
+        public ResourceChanges $guthabenChange,
     ) {
     }
 
@@ -22,7 +22,7 @@ final readonly class GuthabenInitialized implements ProvidesResourceChanges, Gam
     {
         return new self(
             playerId: PlayerId::fromString($values['playerId']),
-            guthabenChange: new GuthabenChange($values['guthabenChange']),
+            guthabenChange: new ResourceChanges(guthabenChange: $values['guthabenChange']),
         );
     }
 
@@ -30,14 +30,14 @@ final readonly class GuthabenInitialized implements ProvidesResourceChanges, Gam
     {
         return [
             'playerId' => $this->playerId,
-            'guthabenChange' => $this->guthabenChange,
+            'guthabenChange' => $this->guthabenChange->guthabenChange,
         ];
     }
 
     public function getResourceChanges(PlayerId $playerId): ResourceChangeCollection
     {
         if ($this->playerId->equals($playerId)) {
-            return new ResourceChangeCollection([new GuthabenChange($this->guthabenChange->value)]);
+            return new ResourceChangeCollection([new ResourceChanges(guthabenChange: $this->guthabenChange->guthabenChange)]);
         }
         return new ResourceChangeCollection([]);
     }
