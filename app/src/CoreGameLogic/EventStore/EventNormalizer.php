@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\EventStore;
 
+use Domain\CoreGameLogic\Feature\Initialization\Event\JahreswechselExecuted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
@@ -56,6 +57,7 @@ final readonly class EventNormalizer
             LebenszielChosen::class,
             PreGameStarted::class,
             NameForPlayerWasSet::class,
+            JahreswechselExecuted::class,
         ];
 
         $fullClassNameToShortEventType = [];

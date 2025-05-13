@@ -87,6 +87,7 @@ dev setup
 dev start
 
 # start JS/CSS watcher
+# may need to run `nvm use` inside /app 
 dev watch-js
 
 # now, access the frontend at http://127.0.0.1:8090
