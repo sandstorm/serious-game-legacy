@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Dto\ValueObject;
 
-use Domain\CoreGameLogic\Dto\Enum\KonjunkturzyklusType;
+use Domain\CoreGameLogic\Dto\Enum\KonjunkturzyklusTypeEnum;
 
 readonly class Konjunkturzyklus implements \JsonSerializable
 {
     /**
-     * @param KonjunkturzyklusType $type
-     * @param string $description
-     * @param Kategorie[] $categories
+     * @param KonjunkturzyklusTypeEnum $type
+     * @param Leitzins $leitzins
+     * @param Kompetenzbereich[] $kompetenzbereiche
      */
     public function __construct(
-        public KonjunkturzyklusType $type,
-        public string               $description,
-        public array                $categories
+        public int                      $id,
+        public KonjunkturzyklusTypeEnum $type,
+        public Leitzins                 $leitzins,
+        public array                    $kompetenzbereiche
     )
     {
     }
@@ -24,13 +25,15 @@ readonly class Konjunkturzyklus implements \JsonSerializable
     /**
      * @param array<string,mixed> $in
      */
-    public static function fromArray(array $in): self {
+    public static function fromArray(array $in): self
+    {
         return new self(
-            type: KonjunkturzyklusType::fromString($in['type']),
-            description: $in['description'],
-            categories: array_map(
-                static fn(array $category) => Kategorie::fromArray($category),
-                $in['categories']
+            id: $in['id'],
+            type: KonjunkturzyklusTypeEnum::fromString($in['type']),
+            leitzins: new Leitzins($in['leitzins']),
+            kompetenzbereiche: array_map(
+                static fn(array $kompetenzbereich) => Kompetenzbereich::fromArray($kompetenzbereich),
+                $in['kompetenzbereiche']
             )
         );
     }
@@ -46,9 +49,10 @@ readonly class Konjunkturzyklus implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return [
+            'id' => $this->id,
             'type' => $this->type,
-            'description' => $this->description,
-            'categories' => $this->categories
+            'leitzins' => $this->leitzins,
+            'kompetenzbereiche' => $this->kompetenzbereiche
         ];
     }
 }

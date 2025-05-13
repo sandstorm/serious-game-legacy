@@ -6,8 +6,6 @@ namespace Domain\CoreGameLogic\Feature\Initialization;
 
 use Domain\CoreGameLogic\CommandHandler\CommandHandlerInterface;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
-use Domain\CoreGameLogic\Dto\ValueObject\CurrentYear;
-use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
