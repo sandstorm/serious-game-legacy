@@ -162,7 +162,7 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
             $p2,
         ]
     ));
-    $this->coreGameLogic->handle($this->gameId, new InitPlayerGuthaben(new GuthabenChange(50000)));
+    $this->coreGameLogic->handle($this->gameId, new InitPlayerGuthaben());
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
     expect(GuthabenCalculator::forStream($stream)->forPlayer($p1)->value)->toBe(50000);
     //</editor-fold>
