@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Dto\ValueObject;
 
+use Domain\CoreGameLogic\Dto\Enum\Kompetenzbereiche;
+
 readonly class Kategorie implements \JsonSerializable
 {
     public function __construct(
-        public string $name,
+        public Kompetenzbereiche $name,
         public int $zeitSlots = 0,
     ) {
     }
 
     public function __toString(): string
     {
-        return '[Kategorie: '.$this->name.']';
+        return '[Kategorie: '.$this->name->value.']';
     }
 
     /**
@@ -23,7 +25,7 @@ readonly class Kategorie implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'name' => $this->name,
+            'name' => $this->name->value,
             'zeitSlots' => $this->zeitSlots,
         ];
     }

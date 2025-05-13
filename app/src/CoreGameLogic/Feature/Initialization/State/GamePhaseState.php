@@ -6,7 +6,7 @@ namespace Domain\CoreGameLogic\Feature\Initialization\State;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
-use Domain\CoreGameLogic\Feature\Initialization\Event\JahreswechselExecuted;
+use Domain\CoreGameLogic\Feature\Initialization\Event\KonjunkturzyklusWechselExecuted;
 
 class GamePhaseState
 {
@@ -16,8 +16,8 @@ class GamePhaseState
         return $gameStream->findFirstOrNull(GameWasStarted::class) !== null;
     }
 
-    public static function currentYear(GameEvents $gameStream): ?JahreswechselExecuted
+    public static function currentYear(GameEvents $gameStream): ?KonjunkturzyklusWechselExecuted
     {
-        return $gameStream->findLastOrNull(JahreswechselExecuted::class);
+        return $gameStream->findLastOrNull(KonjunkturzyklusWechselExecuted::class);
     }
 }

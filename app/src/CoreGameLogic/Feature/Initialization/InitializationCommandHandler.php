@@ -12,12 +12,12 @@ use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
-use Domain\CoreGameLogic\Feature\Initialization\Command\JahrWechseln;
+use Domain\CoreGameLogic\Feature\Initialization\Command\KonjunkturzyklusWechseln;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
-use Domain\CoreGameLogic\Feature\Initialization\Event\JahreswechselExecuted;
+use Domain\CoreGameLogic\Feature\Initialization\Event\KonjunkturzyklusWechselExecuted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
@@ -38,7 +38,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
             || $command instanceof StartGame
             || $command instanceof StartPreGame
             || $command instanceof SetNameForPlayer
-            || $command instanceof JahrWechseln;
+            || $command instanceof KonjunkturzyklusWechseln;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameState): GameEventsToPersist
@@ -51,7 +51,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
 
             StartPreGame::class => $this->handleStartPreGame($command, $gameState),
             SetNameForPlayer::class => $this->handleSetNameForPlayer($command, $gameState),
-            JahrWechseln::class => $this->handleJahreswechsel($command, $gameState),
+            KonjunkturzyklusWechseln::class => $this->handleJahreswechsel($command, $gameState),
         };
     }
 
@@ -141,16 +141,16 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
         );
     }
 
-    public function handleJahreswechsel(JahrWechseln $command, GameEvents $gameState): GameEventsToPersist
+    public function handleJahreswechsel(KonjunkturzyklusWechseln $command, GameEvents $gameState): GameEventsToPersist
     {
         if (!GamePhaseState::isInGamePhase($gameState)) {
             throw new \RuntimeException('not in game phase', 1746713490);
         }
 
         return GameEventsToPersist::with(
-            new JahreswechselExecuted(
-                name: $command->name,
-                szenario: $command->szenario,
+            new KonjunkturzyklusWechselExecuted(
+                year: $command->year,
+                konjunkturzyklus: $command->konjunkturzyklus,
             ),
         );
     }

@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Dto\ValueObject;
 
-readonly class Szenario implements \JsonSerializable
+use Domain\CoreGameLogic\Dto\Enum\KonjunkturzyklusType;
+
+readonly class Konjunkturzyklus implements \JsonSerializable
 {
     /**
-     * @param string $value
+     * @param KonjunkturzyklusType $type
      * @param string $description
      * @param Kategorie[] $categories
      */
     public function __construct(
-        public string $value,
+        public KonjunkturzyklusType $type,
         public string $description,
         public array $categories
     ) {
@@ -20,7 +22,7 @@ readonly class Szenario implements \JsonSerializable
 
     public function __toString(): string
     {
-        return '[Szenario: '.$this->value.']';
+        return '[Konjunkturzyklus: '.$this->type->value.']';
     }
 
     /**
@@ -29,7 +31,7 @@ readonly class Szenario implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'value' => $this->value,
+            'type' => $this->type,
             'description' => $this->description,
             'categories' => array_map(
                 static fn (Kategorie $category) => $category->jsonSerialize(),
