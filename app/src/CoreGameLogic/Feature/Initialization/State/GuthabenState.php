@@ -11,21 +11,11 @@ use Domain\CoreGameLogic\Dto\ValueObject\ResourceChange;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 
-class GuthabenCalculator
+class GuthabenState
 {
-    private function __construct(private GameEvents $stream)
+    public static function forPlayer(GameEvents $gameStream, PlayerId $playerId): Guthaben
     {
-
-    }
-
-    public static function forStream(GameEvents $stream): self
-    {
-        return new self($stream);
-    }
-
-    public function forPlayer(PlayerId $playerId): Guthaben
-    {
-        return $this->stream->findAllOfType(ProvidesResourceChanges::class)->reduce(function (Guthaben $guthaben, ProvidesResourceChanges $event) use ($playerId) {
+        return $gameStream->findAllOfType(ProvidesResourceChanges::class)->reduce(function (Guthaben $guthaben, ProvidesResourceChanges $event) use ($playerId) {
             $guthabenChange = $event->getResourceChanges($playerId)
                 ->filter(fn(ResourceChange $resourceChange) => $resourceChange instanceof GuthabenChange)
                 /**@phpstan-ignore argument.type */

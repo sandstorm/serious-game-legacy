@@ -18,7 +18,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
-use Domain\CoreGameLogic\Feature\Initialization\State\GuthabenCalculator;
+use Domain\CoreGameLogic\Feature\Initialization\State\GuthabenState;
 use Domain\CoreGameLogic\Feature\Initialization\State\LebenszielAccessor;
 use Domain\CoreGameLogic\Feature\Jahreswechsel\Command\StartNewYear;
 use Domain\CoreGameLogic\Feature\Jahreswechsel\Event\NewYearWasStarted;
@@ -164,12 +164,12 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
     ));
     $this->coreGameLogic->handle($this->gameId, new InitPlayerGuthaben());
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
-    expect(GuthabenCalculator::forStream($stream)->forPlayer($p1)->value)->toBe(50000);
+    expect(GuthabenState::forPlayer($stream, $p1)->value)->toBe(50000);
     //</editor-fold>
 
     //<editor-fold desc="modify guthaben">
     $this->coreGameLogic->handle($this->gameId, new ActivateCard($p1, new CardId("neues Hobby"), new EreignisId("EVENT:Lotteriegewinn")));
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
-    expect(GuthabenCalculator::forStream($stream)->forPlayer($p1)->value)->toBe(50500);
+    expect(GuthabenState::forPlayer($stream, $p1)->value)->toBe(50500);
     //</editor-fold>
 });
