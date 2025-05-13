@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Dto\Enum;
 
-enum Kompetenzbereiche: string
+enum Kompetenzbereich: string
 {
     case BILDUNG = 'Bildung & Karriere';
     case FREIZEIT = 'Freizeit & Sozial';
