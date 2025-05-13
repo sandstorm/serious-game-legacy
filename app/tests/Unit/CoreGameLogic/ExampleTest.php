@@ -3,12 +3,11 @@
 use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\Dto\Aktion\ZeitsteinSetzen;
 use Domain\CoreGameLogic\Dto\ValueObject\CardId;
-use Domain\CoreGameLogic\Dto\ValueObject\CurrentYear;
 use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\Lebensziel;
-use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Command\InitPlayerGuthaben;
@@ -136,7 +135,6 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
             $p2,
         ]
     ));
-    $this->coreGameLogic->handle($this->gameId, new InitPlayerGuthaben());
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
     expect(GuthabenState::forPlayer($stream, $p1)->value)->toBe(50000);
     //</editor-fold>

@@ -5,30 +5,42 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Initialization\Event;
 
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\Dto\ValueObject\ResourceChangeCollection;
+use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 
-final readonly class PreGameStarted implements GameEventInterface
+final readonly class PreGameStarted implements GameEventInterface, ProvidesResourceChanges
 {
     /**
      * @param PlayerId[] $playerIds
      */
-    public function __construct(public array $playerIds)
-    {
+    public function __construct(
+        public array $playerIds,
+        public ResourceChanges $resourceChanges,
+    ) {
         foreach ($this->playerIds as $playerId) {
             assert($playerId instanceof PlayerId, 'Player ID must be an instance of PlayerId');
         }
     }
 
+    public function getResourceChanges(PlayerId $playerId): ResourceChangeCollection
+    {
+        return new ResourceChangeCollection([$this->resourceChanges]);
+    }
+
     public static function fromArray(array $values): GameEventInterface
     {
         $playerIds = array_map(fn (string $playerId) => PlayerId::fromString($playerId), $values['playerIds']);
-        return new self($playerIds);
+        $resourceChanges = ResourceChanges::fromArray($values['resourceChanges']);
+        return new self($playerIds, $resourceChanges);
     }
 
     public function jsonSerialize(): array
     {
         return [
             'playerIds' => $this->playerIds,
+            'resourceChanges' => $this->resourceChanges->jsonSerialize(),
         ];
     }
 }

@@ -6,8 +6,6 @@ namespace Domain\CoreGameLogic\Feature\Initialization;
 
 use Domain\CoreGameLogic\CommandHandler\CommandHandlerInterface;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
-use Domain\CoreGameLogic\Dto\ValueObject\CurrentYear;
-use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
@@ -18,7 +16,6 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
-use Domain\CoreGameLogic\Feature\Initialization\Event\GuthabenInitialized;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
@@ -37,8 +34,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
             || $command instanceof LebenszielAuswaehlen
             || $command instanceof StartGame
             || $command instanceof StartPreGame
-            || $command instanceof SetNameForPlayer
-            || $command instanceof InitPlayerGuthaben;
+            || $command instanceof SetNameForPlayer;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameState): GameEventsToPersist
@@ -51,7 +47,6 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
 
             StartPreGame::class => $this->handleStartPreGame($command, $gameState),
             SetNameForPlayer::class => $this->handleSetNameForPlayer($command, $gameState),
-            InitPlayerGuthaben::class => $this->handleInitPlayerGuthaben($command, $gameState),
         };
     }
 
@@ -104,7 +99,8 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
         if (count($command->fixedPlayerIdsForTesting) > 0) {
             return GameEventsToPersist::with(
                 new PreGameStarted(
-                    playerIds: $command->fixedPlayerIdsForTesting
+                    playerIds: $command->fixedPlayerIdsForTesting,
+                    resourceChanges: new ResourceChanges(guthabenChange: 50000),
                 ),
             );
         }
@@ -117,7 +113,8 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
 
         return GameEventsToPersist::with(
             new PreGameStarted(
-                playerIds: $playerIds
+                playerIds: $playerIds,
+                resourceChanges: new ResourceChanges(guthabenChange: 50000),
             ),
         );
     }
@@ -134,17 +131,5 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
                 name: $command->name
             ),
         );
-    }
-
-    public function handleInitPlayerGuthaben(InitPlayerGuthaben $command, GameEvents $gameState): GameEventsToPersist
-    {
-        $eventsToPersist = [];
-        foreach (PreGameState::playerIds($gameState) as $playerId) {
-            $eventsToPersist[] = new GuthabenInitialized(
-                $playerId,
-                new ResourceChanges(guthabenChange: 50000),
-            );
-        }
-        return GameEventsToPersist::with(...$eventsToPersist);
     }
 }
