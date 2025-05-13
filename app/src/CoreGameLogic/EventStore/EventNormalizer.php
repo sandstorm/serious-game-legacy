@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\EventStore;
 
-use Domain\CoreGameLogic\Feature\Initialization\Event\KonjunkturzyklusWechselExecuted;
+use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
-use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
-use Domain\CoreGameLogic\Feature\Jahreswechsel\Event\NewYearWasStarted;
+use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\Event\KonjunkturzyklusWechselExecuted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasCompleted;
@@ -49,7 +48,6 @@ final readonly class EventNormalizer
         /** @var array<class-string<GameEventInterface>> $supportedEventClassNames */
         $supportedEventClassNames = [
             GameWasStarted::class,
-            NewYearWasStarted::class,
             CardWasActivated::class,
             CardWasSkipped::class,
             SpielzugWasCompleted::class,

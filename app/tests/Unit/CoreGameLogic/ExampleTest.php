@@ -14,9 +14,9 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\LebenszielAccessor;
-use Domain\CoreGameLogic\Feature\Jahreswechsel\Command\StartNewYear;
-use Domain\CoreGameLogic\Feature\Jahreswechsel\Event\NewYearWasStarted;
-use Domain\CoreGameLogic\Feature\Jahreswechsel\State\LeitzinsAccessor;
+use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\Command\StartNewYear;
+use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\Event\NewYearWasStarted;
+use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\State\LeitzinsAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
@@ -29,31 +29,12 @@ beforeEach(function () {
     $this->gameId = GameId::fromString('game1');
 });
 
-test('Event stream can be accessed', function () {
-    $stream = GameEvents::fromArray([
-        new NewYearWasStarted(
-            newYear: new CurrentYear(1),
-            leitzins: new Leitzins(3)
-        ),
-        new NewYearWasStarted(
-            newYear: new CurrentYear(1),
-            leitzins: new Leitzins(5)
-        )
-    ]);
-
-    expect(LeitzinsAccessor::forStream($stream)->value)->toBe(5);
-});
-
 test('Current Player Handling', function () {
     $this->coreGameLogic->handle($this->gameId, new DefinePlayerOrdering(
         playerOrdering: [
             PlayerId::fromString('p1'),
             PlayerId::fromString('p2'),
         ]
-    ));
-    $this->coreGameLogic->handle($this->gameId, new StartNewYear(
-        newYear: new CurrentYear(1),
-        leitzins: new Leitzins(3)
     ));
 
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
@@ -122,10 +103,6 @@ test('welche Spielzüge hat player zur Verfügung', function () {
             $p1,
             $p2
         ]
-    ));
-    $this->coreGameLogic->handle($this->gameId, new StartNewYear(
-        newYear: new CurrentYear(1),
-        leitzins: new Leitzins(3)
     ));
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
 

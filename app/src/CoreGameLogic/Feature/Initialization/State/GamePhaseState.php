@@ -6,7 +6,7 @@ namespace Domain\CoreGameLogic\Feature\Initialization\State;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
-use Domain\CoreGameLogic\Feature\Initialization\Event\KonjunkturzyklusWechselExecuted;
+use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\Event\KonjunkturzyklusWechselExecuted;
 
 class GamePhaseState
 {
