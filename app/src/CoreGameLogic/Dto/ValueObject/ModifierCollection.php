@@ -46,4 +46,24 @@ readonly class ModifierCollection implements \IteratorAggregate
         }
         return $applicableAktionen;
     }
+
+    /**
+     * @param \Closure(Modifier $modifier): bool $callback
+     * @return self
+     */
+    public function filter(\Closure $callback): self
+    {
+        return new self(array_filter($this->modifiers, $callback));
+    }
+
+    /**
+     * @template T
+     * @param \Closure(T $carry, Modifier $modifier): T $callback
+     * @param mixed $initial
+     * @return mixed
+     */
+    public function reduce(callable $callback, mixed $initial): mixed
+    {
+        return array_reduce($this->modifiers, $callback, $initial);
+    }
 }

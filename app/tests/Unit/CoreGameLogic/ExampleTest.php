@@ -3,16 +3,18 @@
 use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\Dto\Aktion\ZeitsteinSetzen;
 use Domain\CoreGameLogic\Dto\ValueObject\CardId;
-use Domain\CoreGameLogic\Dto\ValueObject\CurrentYear;
 use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\Lebensziel;
-use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
+use Domain\CoreGameLogic\Feature\Initialization\Command\InitPlayerGuthaben;
+use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
+use Domain\CoreGameLogic\Feature\Initialization\State\GuthabenState;
 use Domain\CoreGameLogic\Feature\Initialization\State\LebenszielAccessor;
 use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\Command\StartNewYear;
 use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\Event\NewYearWasStarted;
@@ -114,7 +116,32 @@ test('welche Spielzüge hat player zur Verfügung', function () {
     $this->coreGameLogic->handle($this->gameId, new SpielzugAbschliessen($p1));
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
 
-    expect(iterator_to_array(ModifierCalculator::forStream($stream)->forPlayer($p1))[0]->value)->toBe("MODIFIER:ausetzen");
+    expect(iterator_to_array(ModifierCalculator::forStream($stream)->forPlayer($p1))[0]->id->value)->toBe("MODIFIER:ausetzen");
     expect(AktionsCalculator::forStream($stream)->availableActionsForPlayer($p1))->toBeEmpty();
     expect(AktionsCalculator::forStream($stream)->availableActionsForPlayer($p2)[0])->toBeInstanceOf(ZeitsteinSetzen::class); // TODO: VALUE OBJECTS ETC
+});
+
+
+test('wie viel Guthaben hat Player zur Verfügung', function () {
+    //<editor-fold desc="initialize guthaben">
+    $p1 = PlayerId::fromString('p1');
+    $p2 = PlayerId::fromString('p2');
+    $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
+        numberOfPlayers: 2,
+    )->withFixedPlayerIdsForTesting($p1, $p2));
+    $this->coreGameLogic->handle($this->gameId, new DefinePlayerOrdering(
+        playerOrdering: [
+            $p1,
+            $p2,
+        ]
+    ));
+    $stream = $this->coreGameLogic->getGameStream($this->gameId);
+    expect(GuthabenState::forPlayer($stream, $p1)->value)->toBe(50000);
+    //</editor-fold>
+
+    //<editor-fold desc="modify guthaben">
+    $this->coreGameLogic->handle($this->gameId, new ActivateCard($p1, new CardId("neues Hobby"), new EreignisId("EVENT:Lotteriegewinn")));
+    $stream = $this->coreGameLogic->getGameStream($this->gameId);
+    expect(GuthabenState::forPlayer($stream, $p1)->value)->toBe(50500);
+    //</editor-fold>
 });

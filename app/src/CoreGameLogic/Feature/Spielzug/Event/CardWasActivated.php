@@ -5,15 +5,33 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\Dto\ValueObject\CardId;
+use Domain\CoreGameLogic\Dto\ValueObject\ModifierCollection;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
+use Domain\CoreGameLogic\Dto\ValueObject\ResourceChangeCollection;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 
-final readonly class CardWasActivated implements GameEventInterface
+final readonly class CardWasActivated implements ProvidesModifiers, ProvidesResourceChanges, GameEventInterface
 {
     public function __construct(
         public PlayerId $player,
         public CardId $card,
     ) {
+    }
+
+    public function getModifiers(PlayerId $playerId): ModifierCollection
+    {
+        return new ModifierCollection([]);
+    }
+
+    public function getResourceChanges(PlayerId $playerId): ResourceChangeCollection
+    {
+        if ($this->card->value === "neues Hobby" && $this->player->equals($playerId)) {
+            return new ResourceChangeCollection([new ResourceChanges(guthabenChange: -500)]);
+        }
+        return new ResourceChangeCollection([]);
     }
 
     public static function fromArray(array $values): GameEventInterface

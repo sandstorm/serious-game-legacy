@@ -11,13 +11,13 @@ use Domain\CoreGameLogic\Dto\Aktion\Aktion;
  */
 readonly class Modifier
 {
-    public function __construct(public string $value)
+    public function __construct(public ModifierId $id)
     {
     }
 
     public function __toString(): string
     {
-        return '[ModifierId: '.$this->value.']';
+        return '[ModifierId: '.$this->id.']';
     }
 
     /**
@@ -26,7 +26,7 @@ readonly class Modifier
      */
     public function applyToAvailableAktionen(mixed $applicableAktionen): array
     {
-        if ($this->value === "MODIFIER:ausetzen") {
+        if ($this->id->value === "MODIFIER:ausetzen") {
             return [];
         }
         return $applicableAktionen;
