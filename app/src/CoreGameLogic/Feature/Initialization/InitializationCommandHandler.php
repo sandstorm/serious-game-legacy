@@ -24,9 +24,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
-use Domain\CoreGameLogic\Feature\Initialization\State\LebenszielAccessor;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
-use Domain\CoreGameLogic\Feature\Jahreswechsel\Event\NewYearWasStarted;
 
 /**
  * @internal no public API, because commands are no extension points. ALWAYS USE {@see ForCoreGameLogic::handle()} to trigger commands.
@@ -93,11 +91,6 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
         return GameEventsToPersist::with(
             new GameWasStarted(
                 playerOrdering: $command->playerOrdering
-            ),
-            // TODO: this cannot be hardcoded here :) Maybe delegate to the other command handler??
-            new NewYearWasStarted(
-                newYear: new CurrentYear(1),
-                leitzins: new Leitzins(3)
             ),
         );
     }

@@ -1,24 +1,25 @@
 apiVersion: k8s.sandstorm.de/v1alpha1
 kind: OneContainerOnePort
 metadata:
-  namespace: myvendor-awesomeneosproject-staging
+  namespace: serious-game-staging
   name: app
 spec:
-  appName: myvendor-awesomeneosproject-staging
+  appName: serious-game-staging
   description: 'Sample Laravel Deployment in the Rancher Cluster.'
 
   hostNames:
-    myvendor-awesomeneosproject-staging.cloud.sandstorm.de: []
+    serious-game-staging.cloud.sandstorm.de: []
 
   node: worker4
-  image: docker-hub.sandstorm.de/infrastructure/laravel-on-docker-kickstart/laravel:main
+  image: ghcr.io/sandstorm/serious-game-legacy/laravel:IMAGE_TAG
 
   port: 8081
   # Set to false when a real DNS entry for staging/staging exists
   stagingCertificates: false
 
   env:
-    SHELL_ENV_DISPLAY: 'staging-myvendor-awesomeneosproject'
+    SHELL_ENV_DISPLAY: 'staging-serious-game'
+    APP_ENV: 'production'
   extraPodEnvInK8sFormat:
     - name: DB_CONNECTION
       value: "mariadb"
@@ -39,9 +40,9 @@ spec:
     #- deepl-api-key
     #- sandstorm-maps-api-key
 
-#  httpBasicPasswordProtection:
-#    enabled: true
-#    secretName: basic-auth
+  httpBasicPasswordProtection:
+    enabled: true
+    secretName: basic-auth
 
   healthChecks:
     readinessProbe:

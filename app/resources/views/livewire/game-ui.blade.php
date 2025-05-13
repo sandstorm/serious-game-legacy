@@ -1,7 +1,6 @@
 @use('Domain\CoreGameLogic\Feature\Initialization\State\PreGameState')
 <div>
     Game: {{ $gameId }}<br/>
-    Ich bin Spieler: {{ PreGameState::nameForPlayer($this->gameStream(), $myself) }}<br/>
 
     @if(PreGameState::isInPreGamePhase($this->gameStream()))
         PRE GAME<br/>
@@ -33,6 +32,7 @@
     @else
 
         GAME
+        Ich bin Spieler: {{ PreGameState::nameForPlayer($this->gameStream(), $myself) }}<br/>
 
         <br/>
         <br/>

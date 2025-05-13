@@ -46,11 +46,11 @@ deploy_staging:
   script:
     - export KUBECONFIG=$KUBECONFIG_K3S2021
     # TODO: comment-me-in for REAL deployment
-    #- kubectl get namespace myvendor-laravelkickstart-staging
-    #- kubectl apply -f deployment/staging/database.yaml
-    #- kubectl apply -f deployment/staging/app.yaml
-    # enforce a redeploy by changing the release identifier
-    #- 'kubectl -n myvendor-awesomeneosproject-staging patch --type merge OneContainerOnePort app -p "{\"spec\":{\"releaseIdentifier\": \"$CI_JOB_ID\"}}"'
+    - kubectl get namespace myvendor-laravelkickstart-staging
+    - kubectl apply -f deployment/staging/database.yaml
+    - kubectl apply -f deployment/staging/app.yaml
+     enforce a redeploy by changing the release identifier
+    - 'kubectl -n myvendor-awesomeneosproject-staging patch --type merge OneContainerOnePort app -p "{\"spec\":{\"releaseIdentifier\": \"$CI_JOB_ID\"}}"'
 
 #a11y_test_staging:
 #  image: registry.gitlab.com/gitlab-ci-utils/gitlab-pa11y-ci:latest

@@ -4,6 +4,10 @@
 <head>
     <title>{{ $title ?? 'Game' }}</title>
 
+    <meta name="app-config-js" content="{{ json_encode([
+        'reverbAppKey' => config('broadcasting.connections.reverb.key'),
+    ]) }}">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>

@@ -1,6 +1,8 @@
 name: Package App Staging
 
 on:
+  # manual triggering - currently disabled
+  #workflow_dispatch: {}
   push:
     branches: [ main ]
 
@@ -70,7 +72,6 @@ jobs:
   package_app_staging:
     name: Package App Staging
     runs-on: [self-hosted, linux]
-    # Always run this job, including on tags
     container:
       image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v4
     needs: build_assets
@@ -81,6 +82,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      # Download build artifacts from previous job
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-assets
+          path: app/public/build/
 
       # Cache composer dependencies
       - name: Cache Composer dependencies
@@ -131,3 +139,45 @@ jobs:
           # local cache
           cache-from: type=registry,ref=${{ vars.CI_REGISTRY_IMAGE || format('ghcr.io/{0}', github.repository) }}/cache:latest
           cache-to: type=registry,ref=${{ vars.CI_REGISTRY_IMAGE || format('ghcr.io/{0}', github.repository) }}/cache:latest,mode=max
+
+  deploy_staging:
+    name: Deploy to Staging
+    runs-on: [self-hosted, linux]
+    needs: package_app_staging
+    environment: staging
+    container:
+      image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.4-v4
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Determine ref slug for Docker tag (similar to CI_COMMIT_REF_SLUG)
+      - name: Get ref slug
+        id: get-ref-slug
+        run: |
+          REF_SLUG=$(echo "${{ github.ref_name }}" | sed -e 's/[^a-zA-Z0-9]/-/g' | tr '[:upper:]' '[:lower:]')
+          echo "REF_SLUG=$REF_SLUG" >> $GITHUB_OUTPUT
+
+      - name: Deploy to Kubernetes
+        run: |
+          # Create kubeconfig from secret
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.K3S2021_KUBECONFIG_DEPLOY }}" > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
+          export KUBECONFIG=$HOME/.kube/config
+
+          # Verify connection and apply manifests
+          kubectl get namespace serious-game-staging
+
+          # update image tag
+          REF_SLUG=$(echo "${{ steps.get-ref-slug.outputs.REF_SLUG }}" | xargs)
+          sed -i "s|IMAGE_TAG|${REF_SLUG}|g" deployment/staging/app.yaml
+          # Verify the result
+          grep -A1 -B1 "${REF_SLUG}" deployment/staging/app.yaml
+
+          kubectl apply -f deployment/staging/database.yaml
+          kubectl apply -f deployment/staging/app.yaml
+
+          # Force redeploy by updating the releaseIdentifier
+          kubectl -n serious-game-staging patch --type merge OneContainerOnePort app -p "{\"spec\":{\"releaseIdentifier\": \"${{ github.run_id }}\"}}"
