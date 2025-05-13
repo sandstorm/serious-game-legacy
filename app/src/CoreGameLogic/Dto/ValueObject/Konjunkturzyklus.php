@@ -15,14 +15,29 @@ readonly class Konjunkturzyklus implements \JsonSerializable
      */
     public function __construct(
         public KonjunkturzyklusType $type,
-        public string $description,
-        public array $categories
-    ) {
+        public string               $description,
+        public array                $categories
+    )
+    {
+    }
+
+    /**
+     * @param array<string,mixed> $in
+     */
+    public static function fromArray(array $in): self {
+        return new self(
+            type: KonjunkturzyklusType::fromString($in['type']),
+            description: $in['description'],
+            categories: array_map(
+                static fn(array $category) => Kategorie::fromArray($category),
+                $in['categories']
+            )
+        );
     }
 
     public function __toString(): string
     {
-        return '[Konjunkturzyklus: '.$this->type->value.']';
+        return '[Konjunkturzyklus: ' . $this->type->value . ']';
     }
 
     /**
@@ -33,10 +48,7 @@ readonly class Konjunkturzyklus implements \JsonSerializable
         return [
             'type' => $this->type,
             'description' => $this->description,
-            'categories' => array_map(
-                static fn (Kategorie $category) => $category->jsonSerialize(),
-                $this->categories
-            ),
+            'categories' => $this->categories
         ];
     }
 }

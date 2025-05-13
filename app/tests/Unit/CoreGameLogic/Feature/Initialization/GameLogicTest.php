@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
-use Domain\CoreGameLogic\Dto\Enum\Kompetenzbereiche;
+use Domain\CoreGameLogic\Dto\Enum\Kompetenzbereich;
 use Domain\CoreGameLogic\Dto\Enum\KonjunkturzyklusType;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\Kategorie;
@@ -50,10 +50,10 @@ test('Game logic - Jahr wechseln', function () {
             KonjunkturzyklusType::AUFSCHWUNG,
             'Beschreibung',
             [
-                new Kategorie(Kompetenzbereiche::BILDUNG, 2),
-                new Kategorie(Kompetenzbereiche::FREIZEIT, 3),
-                new Kategorie(Kompetenzbereiche::INVESTITIONEN, 0),
-                new Kategorie(Kompetenzbereiche::ERWEBSEINKOMMEN, 4),
+                new Kategorie(Kompetenzbereich::BILDUNG, 2),
+                new Kategorie(Kompetenzbereich::FREIZEIT, 3),
+                new Kategorie(Kompetenzbereich::INVESTITIONEN, 0),
+                new Kategorie(Kompetenzbereich::ERWEBSEINKOMMEN, 4),
             ],
         ),
     ));
@@ -62,7 +62,7 @@ test('Game logic - Jahr wechseln', function () {
     expect(GamePhaseState::currentYear($gameStream)->year->value)->toEqual(1);
     expect(GamePhaseState::currentYear($gameStream)->konjunkturzyklus->type)->toEqual(KonjunkturzyklusType::AUFSCHWUNG);
     expect(count(GamePhaseState::currentYear($gameStream)->konjunkturzyklus->categories))->toEqual(4);
-    expect(GamePhaseState::currentYear($gameStream)->konjunkturzyklus->categories[0]->name)->toEqual(Kompetenzbereiche::BILDUNG);
+    expect(GamePhaseState::currentYear($gameStream)->konjunkturzyklus->categories[0]->name)->toEqual(Kompetenzbereich::BILDUNG);
     expect(GamePhaseState::currentYear($gameStream)->konjunkturzyklus->categories[0]->zeitSlots)->toEqual(2);
 
     $this->coreGameLogic->handle($this->gameId, new KonjunkturzyklusWechseln(
