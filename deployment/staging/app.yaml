@@ -19,6 +19,7 @@ spec:
 
   env:
     SHELL_ENV_DISPLAY: 'staging-serious-game'
+    APP_ENV: 'production'
   extraPodEnvInK8sFormat:
     - name: DB_CONNECTION
       value: "mariadb"
