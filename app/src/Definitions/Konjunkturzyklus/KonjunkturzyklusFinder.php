@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\Definitions\Konjunkturzyklus;
 
+use Domain\Definitions\Auswirkung\AuswirkungDefinition;
+use Domain\Definitions\Auswirkung\Enum\AuswirkungScopeEnum;
 use Domain\Definitions\Kompetenzbereich\Enum\KompetenzbereichEnum;
 use Domain\Definitions\Kompetenzbereich\KompetenzbereichDefinition;
 use Domain\Definitions\Konjunkturzyklus\Enum\KonjunkturzyklusTypeEnum;
@@ -22,6 +24,10 @@ class KonjunkturzyklusFinder
 Die Notenbank ändert den Leitszins. Aus diesem Grund kann jede Person zu folgendem Zinnsatz Geld leihen: 5 %
 Das geliehene Geld muss innerhalb 20 Raten zurückgezahlt werden, d.h. es werden pro Jahr 5 % des Anfangsbetrags gefordert.
 Alle erhalten ihr jährliches Einkommen und begleichen ihre Verbindlichkeiten.',
+            additionalEvents: 'Immobilienmarkt - die jähliche Grundsteuer für Immobilien
+wird fällig. 1000 €/Immobilie müssen bezahlt werden.
+
+Der steigende Leitzins erhöht die Deflation, die Kaufkraft der Barreserven erhöht sich: Die auf den Karten angegebenen Kosten müssen in diesem Jahr nur zu 90 % beglichen werden.',
             leitzins: 5,
             kompetenzbereiche: [
                 new KompetenzbereichDefinition(
@@ -41,6 +47,24 @@ Alle erhalten ihr jährliches Einkommen und begleichen ihre Verbindlichkeiten.',
                     kompetenzsteine: 4,
                 ),
             ],
+            auswirkungen: [
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::BILDUNG,
+                    modifier: '90 % der Kosten',
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::FREIZEIT,
+                    modifier: '90 % der Kosten',
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::INVESTITIONEN,
+                    modifier: '-1000 €/Immobilie',
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::INVESTITIONEN,
+                    modifier: '90 % der Kosten',
+                ),
+            ]
         );
 
         $year2 = new KonjunkturzyklusDefinition(
@@ -50,6 +74,10 @@ Alle erhalten ihr jährliches Einkommen und begleichen ihre Verbindlichkeiten.',
 Die Notenbank ändert den Leitszins. Aus diesem Grund kann jede Person zu folgendem Zinnsatz Geld leihen: 5 %
 Das geliehene Geld muss innerhalb 20 Raten zurückgezahlt werden, d.h. es werden pro Jahr 5 % des Anfangsbetrags gefordert.
 Alle erhalten ihr jährliches Einkommen und begleichen ihre Verbindlichkeiten.',
+            additionalEvents: 'An der Börse herrscht große Unsicherheit und der Aktienindex
+verliert zunehmend an Wert. Jede verliert 20 % ihrer Aktien.
+
+Die Regierung fördert eine neue Bilungsoffensive. Jede erhält - wenn gewünscht - eine Karte (Bildung/Karriere), ohne einen Zeitstein setzten zu müssen. ',
             leitzins: 5,
             kompetenzbereiche: [
                 new KompetenzbereichDefinition(
@@ -69,6 +97,16 @@ Alle erhalten ihr jährliches Einkommen und begleichen ihre Verbindlichkeiten.',
                     kompetenzsteine: 3,
                 ),
             ],
+            auswirkungen: [
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::BILDUNG,
+                    modifier: 'eine Karte ohne Zeitstein',
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::INVESTITIONEN,
+                    modifier: 'Jede verliert 20 % ihrer Aktien. ',
+                ),
+            ]
         );
 
         $year3 = new KonjunkturzyklusDefinition(
@@ -77,6 +115,14 @@ Alle erhalten ihr jährliches Einkommen und begleichen ihre Verbindlichkeiten.',
             description: 'Viele Staaten leiden immer noch unter den Folgen der Finanzkrise. Die Notenbank ändert den Leitszins. Aus diesem Grund kann jede Person zu folgendem Zinnsatz Geld leihen: 0 %
 Das geliehene Geld muss innerhalb 20 Raten zurückgezahlt werden, d.h. es werden pro Jahr 5 % des Anfangsbetrags gefordert.
 Alle erhalten ihr jährliches Einkommen und begleichen ihre Verbindlichkeiten.',
+            additionalEvents: 'Durch den niedrigen Leitzins erhöht sich die Geldmenge
+und damit auch die Lebenshaltungskosten, was zu einer
+Steigerung der Inflation führt.
+Jede zahlt 2.000 € zusätzlich.
+
+Eine Naturkatastrophe bricht über das Land hinein: Sturm
+Olga verwüstet ganze Städte. Die Bewohnerinnen werden
+dazu aufgerufen, bei den Räumungsarbeiten zu helfen (Kosten = 1 Zeitstein). Alle haben in dieser Runde nur 2 Zeitsteine zur Verfügung. ',
             leitzins: 0,
             kompetenzbereiche: [
                 new KompetenzbereichDefinition(
@@ -96,6 +142,16 @@ Alle erhalten ihr jährliches Einkommen und begleichen ihre Verbindlichkeiten.',
                     kompetenzsteine: 3,
                 ),
             ],
+            auswirkungen: [
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::ZEITSTEINE,
+                    modifier: '-1 Zeitstein',
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LEBENSERHALTUNGSKOSTEN,
+                    modifier: '-2.000 € zusätzlich',
+                )
+            ]
         );
 
         return [
