@@ -2,21 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Domain\Definitions\KonjunkturzyklusDefinition\Model;
+namespace Domain\Definitions\Konjunkturzyklus;
 
-use Domain\CoreGameLogic\Dto\Enum\KonjunkturzyklusTypeEnum;
+use Domain\Definitions\Kompetenzbereich\KompetenzbereichDefinition;
+use Domain\Definitions\Konjunkturzyklus\Enum\KonjunkturzyklusTypeEnum;
 
 /**
  * represents the model of the konjunkturzyklus used by the repository to fill the game with data
  */
-class Konjunkturzyklus
+class
+KonjunkturzyklusDefinition
 {
     /**
      * @param int $id
      * @param KonjunkturzyklusTypeEnum $type
      * @param string $description
      * @param int $leitzins
-     * @param Kompetenzbereich[] $kompetenzbereiche
+     * @param KompetenzbereichDefinition[] $kompetenzbereiche
      */
     public function __construct(
         public int                      $id,

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Dto\Enum;
+namespace Domain\Definitions\Konjunkturzyklus\Enum;
 
 enum KonjunkturzyklusTypeEnum: string
 {
