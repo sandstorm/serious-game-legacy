@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\Definitions\Lebensziel\Model;
 
-use Domain\CoreGameLogic\Dto\Enum\KompetenzbereichEnum;
+
+use Domain\Definitions\Kompetenzbereich\Enum\KompetenzbereichEnum;
 
 readonly class LebenszielKompetenzbereichDefinition
 {

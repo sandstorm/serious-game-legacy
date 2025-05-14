@@ -2,7 +2,6 @@
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\Dto\Aktion\ZeitsteinSetzen;
-use Domain\CoreGameLogic\Dto\Enum\KompetenzbereichEnum;
 use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
@@ -20,6 +19,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\ModifierCalculator;
+use Domain\Definitions\Kompetenzbereich\Enum\KompetenzbereichEnum;
 use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
 use Domain\Definitions\Lebensziel\Model\LebenszielKompetenzbereichDefinition;
 use Domain\Definitions\Lebensziel\Model\LebenszielPhaseDefinition;

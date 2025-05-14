@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
-use Domain\CoreGameLogic\Dto\Enum\KompetenzbereichEnum;
 use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
@@ -12,6 +11,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\LebenszielAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
+use Domain\Definitions\Kompetenzbereich\Enum\KompetenzbereichEnum;
 use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
 use Domain\Definitions\Lebensziel\Model\LebenszielKompetenzbereichDefinition;
 use Domain\Definitions\Lebensziel\Model\LebenszielPhaseDefinition;
