@@ -2,11 +2,7 @@
 declare(strict_types=1);
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
-use Domain\CoreGameLogic\Dto\Enum\Kompetenzbereich;
-use Domain\CoreGameLogic\Dto\Enum\KonjunkturzyklusType;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
-use Domain\CoreGameLogic\Dto\ValueObject\Kategorie;
-use Domain\CoreGameLogic\Dto\ValueObject\Konjunkturzyklus;
 use Domain\CoreGameLogic\Dto\ValueObject\Lebensziel;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
@@ -45,31 +41,27 @@ beforeEach(function () {
 
 test('Game logic - Jahr wechseln', function () {
     $this->coreGameLogic->handle($this->gameId, new StartGame([$this->p1, $this->p2]));
-    $this->coreGameLogic->handle($this->gameId, new KonjunkturzyklusWechseln(
-        konjunkturzyklus: new Konjunkturzyklus(
-            KonjunkturzyklusType::AUFSCHWUNG,
-            'Beschreibung',
-            [
-                new Kategorie(Kompetenzbereich::BILDUNG, 2),
-                new Kategorie(Kompetenzbereich::FREIZEIT, 3),
-                new Kategorie(Kompetenzbereich::INVESTITIONEN, 0),
-                new Kategorie(Kompetenzbereich::ERWEBSEINKOMMEN, 4),
-            ],
-        ),
-    ));
 
+    // year 1
+    $this->coreGameLogic->handle($this->gameId, new KonjunkturzyklusWechseln());
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
-    expect(GamePhaseState::currentYear($gameStream)->year->value)->toEqual(1);
-    expect(GamePhaseState::currentYear($gameStream)->konjunkturzyklus->type)->toEqual(KonjunkturzyklusType::AUFSCHWUNG);
-    expect(count(GamePhaseState::currentYear($gameStream)->konjunkturzyklus->categories))->toEqual(4);
-    expect(GamePhaseState::currentYear($gameStream)->konjunkturzyklus->categories[0]->name)->toEqual(Kompetenzbereich::BILDUNG);
-    expect(GamePhaseState::currentYear($gameStream)->konjunkturzyklus->categories[0]->zeitSlots)->toEqual(2);
+    $year1 = GamePhaseState::currentKonjunkturzyklus($gameStream);
+    expect($year1->year->value)->toEqual(1);
 
-    $this->coreGameLogic->handle($this->gameId, new KonjunkturzyklusWechseln(
-        konjunkturzyklus: new Konjunkturzyklus(KonjunkturzyklusType::REZESSION, 'Beschreibung', []),
-    ));
-
+    // year 2
+    $this->coreGameLogic->handle($this->gameId, new KonjunkturzyklusWechseln());
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
-    expect(GamePhaseState::currentYear($gameStream)->year->value)->toEqual(2);
-    expect(GamePhaseState::currentYear($gameStream)->konjunkturzyklus->type)->toEqual(KonjunkturzyklusType::REZESSION);
+    $year2 = GamePhaseState::currentKonjunkturzyklus($gameStream);
+    expect($year2->year->value)->toEqual(2);
+
+    // year 3
+    $this->coreGameLogic->handle($this->gameId, new KonjunkturzyklusWechseln());
+    $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
+    $year3 = GamePhaseState::currentKonjunkturzyklus($gameStream);
+    expect($year3->year->value)->toEqual(3);
+
+    // check that the years have different konjunkturzyklus
+    expect($year1->konjunkturzyklus->id)->not->toEqual($year2->konjunkturzyklus->id)
+        ->and($year2->konjunkturzyklus->id)->not->toEqual($year3->konjunkturzyklus->id)
+        ->and($year1->konjunkturzyklus->id)->not->toEqual($year3->konjunkturzyklus->id);
 });

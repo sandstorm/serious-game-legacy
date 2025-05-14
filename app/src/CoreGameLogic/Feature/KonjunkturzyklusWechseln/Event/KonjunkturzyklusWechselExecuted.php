@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\Event;
 
-use Domain\CoreGameLogic\Dto\Enum\Kompetenzbereich;
-use Domain\CoreGameLogic\Dto\Enum\KonjunkturzyklusType;
 use Domain\CoreGameLogic\Dto\ValueObject\CurrentYear;
-use Domain\CoreGameLogic\Dto\ValueObject\Kategorie;
 use Domain\CoreGameLogic\Dto\ValueObject\Konjunkturzyklus;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 

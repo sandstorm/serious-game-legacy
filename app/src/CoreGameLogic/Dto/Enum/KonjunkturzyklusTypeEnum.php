@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Dto\Enum;
 
-enum KonjunkturzyklusType: string
+enum KonjunkturzyklusTypeEnum: string
 {
     case AUFSCHWUNG = 'Aufschwung';
     case REZESSION = 'Rezession';
