@@ -1,0 +1,6 @@
+.form__button {
+    &.isPrimary {
+        background: var(--color-primary);
+        color: var(--color-primary-fg);
+    }
+}
