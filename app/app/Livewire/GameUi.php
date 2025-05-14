@@ -8,17 +8,15 @@ use App\Events\GameStateUpdated;
 use App\Livewire\Forms\PreGameNameLebensziel;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
-use Domain\CoreGameLogic\Dto\ValueObject\Lebensziel;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
-use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
-use Domain\CoreGameLogic\Feature\Initialization\State\Dto\NameAndLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
+use Domain\Definitions\Lebensziel\Model\Lebensziel;
 use Illuminate\Events\Dispatcher;
 use Livewire\Component;
 

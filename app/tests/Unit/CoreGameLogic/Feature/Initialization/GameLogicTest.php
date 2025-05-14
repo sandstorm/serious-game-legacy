@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
-use Domain\CoreGameLogic\Dto\ValueObject\Lebensziel;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
@@ -11,6 +10,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\Command\KonjunkturzyklusWechseln;
+use Domain\Definitions\Lebensziel\Model\Lebensziel;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();

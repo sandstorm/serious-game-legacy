@@ -5,15 +5,12 @@ use Domain\CoreGameLogic\Dto\Aktion\ZeitsteinSetzen;
 use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
-use Domain\CoreGameLogic\Dto\ValueObject\Lebensziel;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
-use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
-use Domain\CoreGameLogic\Feature\Initialization\Command\InitPlayerGuthaben;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
-use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
+use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\State\GuthabenState;
 use Domain\CoreGameLogic\Feature\Initialization\State\LebenszielAccessor;
 use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\Command\StartNewYear;
@@ -25,6 +22,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\ModifierCalculator;
+use Domain\Definitions\Lebensziel\Model\Lebensziel;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
