@@ -1,0 +1,10 @@
+@import "./reset.css";
+@import "./colors.css";
+@import "./spacing.css";
+@import "./typography.css";
+
+/* NOTE: Components are included automatically via Vite, see app.js */
+
+body {
+    font-family: var(--font-family-sans);
+}

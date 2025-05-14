@@ -85,6 +85,13 @@ The synchronous UI works as follows:
 - `CoreGameLogicApp::createInMemoryForTesting()` creates a purely in-memory game logic, without persistence to database.
   Helpful for testing :)
 
+# CSS Component Architecture
+
+- We use Plain CSS which is concatenated.
+- We use CSS Variables for a "design system". The Design System resides in `resources/css/*.css`.
+- (suggestion) For CSS naming, we use BEM, with the slight modification that the "modifiers" do not need the full prefix, but can simply start with `is...`
+- CSS Files for components reside next to the components.
+
 # Implementierung der Spiellogik
 
 ## Definition == Stammdaten (vs Bewegungsdaten)
