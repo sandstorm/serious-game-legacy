@@ -6,13 +6,13 @@ namespace Domain\CoreGameLogic\Feature\Initialization\Event;
 
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
-use Domain\Definitions\Lebensziel\Model\Lebensziel;
+use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
 
 final readonly class LebenszielChosen implements GameEventInterface
 {
     public function __construct(
         public PlayerId   $playerId,
-        public Lebensziel $lebensziel,
+        public LebenszielDefinition $lebensziel,
     ) {
     }
 
@@ -20,7 +20,7 @@ final readonly class LebenszielChosen implements GameEventInterface
     {
         return new self(
             playerId: PlayerId::fromString($values['playerId']),
-            lebensziel: Lebensziel::fromArray($values['lebensziel']),
+            lebensziel: LebenszielDefinition::fromArray($values['lebensziel']),
         );
     }
 

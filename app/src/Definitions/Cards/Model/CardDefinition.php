@@ -7,7 +7,7 @@ namespace Domain\Definitions\Cards\Model;
 use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\ResourceChangeCollection;
 
-class Card
+class CardDefinition
 {
     public function __construct(
         public CardId $id,

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Domain\Definitions\Lebensziel\Model;
 
-readonly class Lebensziel implements \JsonSerializable
+readonly class LebenszielDefinition implements \JsonSerializable
 {
     // TODO phases, goals, etc
     /**
      * @param string $value
-     * @param LebenszielPhase[] $phases
+     * @param LebenszielPhaseDefinition[] $phases
      */
     public function __construct(
         public string $value,
@@ -21,7 +21,7 @@ readonly class Lebensziel implements \JsonSerializable
     {
         $phases = [];
         foreach ($values['phases'] as $phase) {
-            $phases[] = LebenszielPhase::fromArray($phase);
+            $phases[] = LebenszielPhaseDefinition::fromArray($phase);
         }
         return new self(
             value: $values['value'],

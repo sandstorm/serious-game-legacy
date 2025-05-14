@@ -4,10 +4,10 @@ namespace Domain\Definitions\Lebensziel\Model;
 
 use Domain\CoreGameLogic\Dto\Enum\KompetenzbereichEnum;
 
-class LebenszielPhase
+class LebenszielPhaseDefinition
 {
     /**
-     * @param array<KompetenzbereichEnum, LebenszielKompetenzbereich> $kompetenzen
+     * @param array<KompetenzbereichEnum, LebenszielKompetenzbereichDefinition> $kompetenzen
      */
     public function __construct(
         public array $kompetenzen,
@@ -18,7 +18,7 @@ class LebenszielPhase
     {
         $kompetenzen = [];
         foreach ($values['kompetenzen'] as $bereich => $kompetenz) {
-            $kompetenzen[$bereich] = LebenszielKompetenzbereich::fromArray($kompetenz);
+            $kompetenzen[$bereich] = LebenszielKompetenzbereichDefinition::fromArray($kompetenz);
         }
         return new self(
             kompetenzen: $kompetenzen,

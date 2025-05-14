@@ -8,7 +8,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
-use Domain\Definitions\Lebensziel\Model\Lebensziel;
+use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
@@ -59,11 +59,11 @@ test('PreGameLogic normal flow', function () {
 
     $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
         playerId: $this->p2,
-        lebensziel: new Lebensziel('Lebensziel XYZ'),
+        lebensziel: new LebenszielDefinition('Lebensziel XYZ'),
     ));
     $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
         playerId: $this->p1,
-        lebensziel: new Lebensziel('Lebensziel AAA'),
+        lebensziel: new LebenszielDefinition('Lebensziel AAA'),
     ));
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
     expect(PreGameState::isReadyForGame($gameStream))->toBeTrue()

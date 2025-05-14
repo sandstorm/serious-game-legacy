@@ -22,7 +22,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\ModifierCalculator;
-use Domain\Definitions\Lebensziel\Model\Lebensziel;
+use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
@@ -79,11 +79,11 @@ test('Init Lebensziel', function () {
             ]
         ),
         new LebenszielChosen(
-            lebensziel: new Lebensziel('Lebensziel XYZ'),
+            lebensziel: new LebenszielDefinition('Lebensziel XYZ'),
             playerId: PlayerId::fromString('p1'),
         ),
         new LebenszielChosen(
-            lebensziel: new Lebensziel('Lebensziel ABC'),
+            lebensziel: new LebenszielDefinition('Lebensziel ABC'),
             playerId: PlayerId::fromString('p2'),
         ),
     ]);

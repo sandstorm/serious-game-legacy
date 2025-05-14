@@ -4,7 +4,7 @@ namespace Domain\Definitions\Lebensziel\Model;
 
 use Domain\CoreGameLogic\Dto\Enum\KompetenzbereichEnum;
 
-class LebenszielKompetenzbereich
+class LebenszielKompetenzbereichDefinition
 {
     public function __construct(
         public KompetenzbereichEnum $name,

@@ -10,7 +10,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\Command\KonjunkturzyklusWechseln;
-use Domain\Definitions\Lebensziel\Model\Lebensziel;
+use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
@@ -31,11 +31,11 @@ beforeEach(function () {
     ));
     $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
         playerId: $this->p2,
-        lebensziel: new Lebensziel('Lebensziel XYZ'),
+        lebensziel: new LebenszielDefinition('Lebensziel XYZ'),
     ));
     $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
         playerId: $this->p1,
-        lebensziel: new Lebensziel('Lebensziel AAA'),
+        lebensziel: new LebenszielDefinition('Lebensziel AAA'),
     ));
 });
 

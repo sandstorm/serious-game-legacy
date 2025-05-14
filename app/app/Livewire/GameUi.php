@@ -16,7 +16,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
-use Domain\Definitions\Lebensziel\Model\Lebensziel;
+use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
 use Illuminate\Events\Dispatcher;
 use Livewire\Component;
 
@@ -54,7 +54,7 @@ class GameUi extends Component
     {
         $this->nameLebenszielForm->validate();
         $this->coreGameLogic->handle($this->gameId, new SetNameForPlayer($this->myself, $this->nameLebenszielForm->name));
-        $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen($this->myself, new Lebensziel($this->nameLebenszielForm->lebensziel)));
+        $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen($this->myself, new LebenszielDefinition($this->nameLebenszielForm->lebensziel)));
         $this->broadcastNotify();
     }
 
