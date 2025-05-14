@@ -3,8 +3,9 @@
 namespace Domain\Definitions\Lebensziel\Model;
 
 use Domain\CoreGameLogic\Dto\Enum\KompetenzbereichEnum;
+use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 
-class LebenszielKompetenzbereichDefinition
+readonly class LebenszielKompetenzbereichDefinition
 {
     public function __construct(
         public KompetenzbereichEnum $name,
@@ -29,5 +30,14 @@ class LebenszielKompetenzbereichDefinition
             'slots' => $this->slots,
             'placed' => $this->placed,
         ];
+    }
+
+    public function accumulate(int $changePlaced): self
+    {
+        return new self(
+            name: $this->name,
+            slots: $this->slots,
+            placed: $this->placed + $changePlaced,
+        );
     }
 }

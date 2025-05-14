@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
-use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\ModifierCollection;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
@@ -12,12 +11,13 @@ use Domain\CoreGameLogic\Dto\ValueObject\ResourceChangeCollection;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
+use Domain\Definitions\Cards\Model\CardDefinition;
 
 final readonly class CardWasActivated implements ProvidesModifiers, ProvidesResourceChanges, GameEventInterface
 {
     public function __construct(
         public PlayerId $player,
-        public CardId $card,
+        public CardDefinition $card,
     ) {
     }
 
@@ -26,19 +26,19 @@ final readonly class CardWasActivated implements ProvidesModifiers, ProvidesReso
         return new ModifierCollection([]);
     }
 
-    public function getResourceChanges(PlayerId $playerId): ResourceChangeCollection
+    public function getResourceChanges(PlayerId $playerId): ResourceChanges
     {
-        if ($this->card->value === "neues Hobby" && $this->player->equals($playerId)) {
-            return new ResourceChangeCollection([new ResourceChanges(guthabenChange: -500)]);
+        if ($this->player->equals($playerId)) {
+            return $this->card->resourceChanges;
         }
-        return new ResourceChangeCollection([]);
+        return new ResourceChanges();
     }
 
     public static function fromArray(array $values): GameEventInterface
     {
         return new self(
             player: PlayerId::fromString($values['player']),
-            card: new CardId($values['card']),
+            card: CardDefinition::fromString($values['card']),
         );
     }
 
@@ -46,7 +46,7 @@ final readonly class CardWasActivated implements ProvidesModifiers, ProvidesReso
     {
         return [
             'player' => $this->player,
-            'card' => $this->card,
+            'card' => $this->card->jsonSerialize(),
         ];
     }
 }

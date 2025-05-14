@@ -19,6 +19,15 @@ readonly class ResourceChangeCollection implements \IteratorAggregate
     {
     }
 
+    public static function fromArray(array $values): self
+    {
+        $resourceChanges = [];
+        foreach ($values as $value) {
+            $resourceChanges = ResourceChanges::fromArray($values['resourceChanges']);
+        }
+        return new self(resourceChanges: $resourceChanges);
+    }
+
 
     public function withAdditional(self $resourceChangeCollection): self
     {
@@ -50,5 +59,16 @@ readonly class ResourceChangeCollection implements \IteratorAggregate
     public function reduce(callable $callback, mixed $initial): mixed
     {
         return array_reduce($this->resourceChanges, $callback, $initial);
+    }
+
+    public function jsonSerialize(): array
+    {
+        $resourceChanges = [];
+        foreach ($this->resourceChanges as $resourceChange) {
+            $resourceChanges[] = $resourceChange->jsonSerialize();
+        }
+        return [
+            'resourceChanges' => $resourceChanges,
+        ];
     }
 }

@@ -6,8 +6,11 @@ namespace Domain\CoreGameLogic\Dto\ValueObject;
 
 readonly class ResourceChanges implements \JsonSerializable
 {
-    public function __construct(public int $guthabenChange)
-    {
+    public function __construct(
+        public int $guthabenChange = 0,
+        public int $bildungKompetenzsteinChange = 0,
+        public int $freizeitKompetenzsteinChange = 0,
+    ) {
     }
 
     /**
@@ -15,7 +18,11 @@ readonly class ResourceChanges implements \JsonSerializable
      */
     public static function fromArray(array $values): self
     {
-        return new self(guthabenChange: $values['guthabenChange']);
+        return new self(
+            guthabenChange: $values['guthabenChange'],
+            bildungKompetenzsteinChange: $values['bildungKompetenzsteinChange'],
+            freizeitKompetenzsteinChange: $values['freizeitKompetenzsteinChange'],
+        );
     }
 
     public function __toString(): string
@@ -26,7 +33,9 @@ readonly class ResourceChanges implements \JsonSerializable
     public function accumulate(self $change): self
     {
         return new self(
-            guthabenChange: $this->guthabenChange + $change->guthabenChange
+            guthabenChange: $this->guthabenChange + $change->guthabenChange,
+            bildungKompetenzsteinChange: $this->bildungKompetenzsteinChange + $change->bildungKompetenzsteinChange,
+            freizeitKompetenzsteinChange: $this->freizeitKompetenzsteinChange + $change->freizeitKompetenzsteinChange,
         );
     }
 
@@ -34,6 +43,8 @@ readonly class ResourceChanges implements \JsonSerializable
     {
         return [
             'guthabenChange' => $this->guthabenChange,
+            'bildungKompetenzsteinChange' => $this->bildungKompetenzsteinChange,
+            'freizeitKompetenzsteinChange' => $this->freizeitKompetenzsteinChange,
         ];
     }
 }

@@ -17,6 +17,16 @@ readonly class LebenszielDefinition implements \JsonSerializable
     ) {
     }
 
+    public function withUpdatedPhase(int $index, LebenszielPhaseDefinition $phase): self
+    {
+        $phases = $this->phases;
+        $phases[$index] = $phase;
+        return new self(
+            value: $this->value,
+            phases: $phases,
+        );
+    }
+
     public static function fromArray(array $values): self
     {
         $phases = [];

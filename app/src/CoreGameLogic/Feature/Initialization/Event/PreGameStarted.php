@@ -24,9 +24,9 @@ final readonly class PreGameStarted implements GameEventInterface, ProvidesResou
         }
     }
 
-    public function getResourceChanges(PlayerId $playerId): ResourceChangeCollection
+    public function getResourceChanges(PlayerId $playerId): ResourceChanges
     {
-        return new ResourceChangeCollection([$this->resourceChanges]);
+        return $this->resourceChanges;
     }
 
     public static function fromArray(array $values): GameEventInterface

@@ -7,6 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior;
 use Domain\CoreGameLogic\Dto\ValueObject\ModifierCollection;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Dto\ValueObject\ResourceChangeCollection;
+use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 
 /**
  * This interface is usually applied on GameEvents which also provide resource modifications.
@@ -15,5 +16,5 @@ use Domain\CoreGameLogic\Dto\ValueObject\ResourceChangeCollection;
  */
 interface ProvidesResourceChanges
 {
-    public function getResourceChanges(PlayerId $playerId): ResourceChangeCollection;
+    public function getResourceChanges(PlayerId $playerId): ResourceChanges;
 }
