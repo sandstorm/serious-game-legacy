@@ -13,7 +13,8 @@ class KompetenzbereichDefinition
 {
     public function __construct(
         public KompetenzbereichEnum $name,
-        public int $kompetenzsteine = 0,
-    ) {
+        public int                  $kompetenzsteine = 0,
+    )
+    {
     }
 }
