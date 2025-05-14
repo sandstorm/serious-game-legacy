@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Dto\ValueObject;
 
-use Domain\CoreGameLogic\Dto\Enum\KonjunkturzyklusTypeEnum;
+use Domain\Definitions\Konjunkturzyklus\Enum\KonjunkturzyklusTypeEnum;
 
 readonly class Konjunkturzyklus implements \JsonSerializable
 {
