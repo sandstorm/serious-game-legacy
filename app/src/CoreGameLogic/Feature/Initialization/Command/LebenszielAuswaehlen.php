@@ -11,7 +11,9 @@ use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
 final readonly class LebenszielAuswaehlen implements CommandInterface
 {
     // TODO selected lebensziel value object
-    public function __construct(public PlayerId $playerId, public LebenszielDefinition $lebensziel)
-    {
+    public function __construct(
+        public PlayerId $playerId,
+        public LebenszielDefinition $lebensziel,
+    ) {
     }
 }

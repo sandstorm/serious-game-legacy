@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Domain\Definitions\Lebensziel\Model;
 
 use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
@@ -12,6 +14,10 @@ class LebenszielPhaseDefinition
     ) {
     }
 
+    /**
+     * @param array{bildungsKompetenz: mixed, freizeitKompetenz: mixed} $values
+     * @return self
+     */
     public static function fromArray(array $values): self
     {
         return new self(
@@ -20,6 +26,9 @@ class LebenszielPhaseDefinition
         );
     }
 
+    /**
+     * @return array{bildungsKompetenz: mixed, freizeitKompetenz: mixed}
+     */
     public function jsonSerialize(): array
     {
         return [
@@ -28,7 +37,7 @@ class LebenszielPhaseDefinition
         ];
     }
 
-    public function accumulate(ResourceChanges $resourceChanges): self
+    public function withChange(ResourceChanges $resourceChanges): self
     {
         return new self(
             bildungsKompetenz: $this->bildungsKompetenz->accumulate($resourceChanges->bildungKompetenzsteinChange),

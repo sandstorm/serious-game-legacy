@@ -42,7 +42,7 @@ test('kompetenzstein state', function () {
                         name: KompetenzbereichEnum::FREIZEIT,
                         slots: 1,
                     ),
-                )
+                ),
             ]
         ),
     ));
@@ -60,7 +60,7 @@ test('kompetenzstein state', function () {
                         name: KompetenzbereichEnum::FREIZEIT,
                         slots: 3,
                     ),
-                )
+                ),
             ]
         ),
     ));

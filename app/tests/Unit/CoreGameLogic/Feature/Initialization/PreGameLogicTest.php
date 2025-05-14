@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
+use Domain\CoreGameLogic\Dto\Enum\KompetenzbereichEnum;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
@@ -9,6 +10,8 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
+use Domain\Definitions\Lebensziel\Model\LebenszielKompetenzbereichDefinition;
+use Domain\Definitions\Lebensziel\Model\LebenszielPhaseDefinition;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
@@ -59,11 +62,39 @@ test('PreGameLogic normal flow', function () {
 
     $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
         playerId: $this->p2,
-        lebensziel: new LebenszielDefinition('Lebensziel XYZ'),
+        lebensziel: new LebenszielDefinition(
+            value: 'Lebensziel XYZ',
+            phases: [
+                new LebenszielPhaseDefinition(
+                    bildungsKompetenz: new LebenszielKompetenzbereichDefinition(
+                        name: KompetenzbereichEnum::BILDUNG,
+                        slots: 2,
+                    ),
+                    freizeitKompetenz: new LebenszielKompetenzbereichDefinition(
+                        name: KompetenzbereichEnum::FREIZEIT,
+                        slots: 1,
+                    ),
+                ),
+            ],
+        ),
     ));
     $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
         playerId: $this->p1,
-        lebensziel: new LebenszielDefinition('Lebensziel AAA'),
+        lebensziel: new LebenszielDefinition(
+            value: 'Lebensziel AAA',
+            phases: [
+                new LebenszielPhaseDefinition(
+                    bildungsKompetenz: new LebenszielKompetenzbereichDefinition(
+                        name: KompetenzbereichEnum::BILDUNG,
+                        slots: 2,
+                    ),
+                    freizeitKompetenz: new LebenszielKompetenzbereichDefinition(
+                        name: KompetenzbereichEnum::FREIZEIT,
+                        slots: 1,
+                    ),
+                ),
+            ],
+        ),
     ));
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
     expect(PreGameState::isReadyForGame($gameStream))->toBeTrue()

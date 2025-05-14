@@ -39,7 +39,7 @@ class LebenszielAccessor
             ->findAllOfType(ProvidesResourceChanges::class)
             ->reduce(fn(ResourceChanges $accumulator, ProvidesResourceChanges $event) => $accumulator->accumulate($event->getResourceChanges($playerId)), new ResourceChanges());
         // TODO: place kompetenzsteine in the currently active phase in the future
-        $newPhase0 = $lebensziel->phases[0]->accumulate($kompetenzsteinChanges);
+        $newPhase0 = $lebensziel->phases[0]->withChange($kompetenzsteinChanges);
         $lebensziel = $lebensziel->withUpdatedPhase(0, $newPhase0);
         return $lebensziel;
     }

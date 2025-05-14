@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Domain\Definitions\Lebensziel\Model;
 
 use Domain\CoreGameLogic\Dto\Enum\KompetenzbereichEnum;
-use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 
 readonly class LebenszielKompetenzbereichDefinition
 {
@@ -14,7 +15,11 @@ readonly class LebenszielKompetenzbereichDefinition
     ) {
     }
 
-    public static function fromArray(mixed $values): self
+    /**
+     * @param array{name: string, slots: int, placed: int} $values
+     * @return self
+     */
+    public static function fromArray(array $values): self
     {
         return new self(
             name: KompetenzbereichEnum::fromString($values['name']),
@@ -23,6 +28,9 @@ readonly class LebenszielKompetenzbereichDefinition
         );
     }
 
+    /**
+     * @return array{name: string, slots: int, placed: int}
+     */
     public function jsonSerialize(): array
     {
         return [

@@ -17,6 +17,10 @@ class CardDefinition
 
     }
 
+    /**
+     * @param array{id: string, resourceChanges: mixed} $values
+     * @return self
+     */
     public static function fromString(array $values): self
     {
         return new self(
@@ -25,6 +29,9 @@ class CardDefinition
         );
     }
 
+    /**
+     * @return array{id: string, resourceChanges: string}
+     */
     public function jsonSerialize(): array
     {
         return [

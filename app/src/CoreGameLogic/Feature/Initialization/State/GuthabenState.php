@@ -15,10 +15,7 @@ class GuthabenState
     public static function forPlayer(GameEvents $gameStream, PlayerId $playerId): Guthaben
     {
         return $gameStream->findAllOfType(ProvidesResourceChanges::class)->reduce(function (Guthaben $guthaben, ProvidesResourceChanges $event) use ($playerId) {
-            $guthabenChange = $event->getResourceChanges($playerId)
-                ->reduce(fn(ResourceChanges $accumulator, ResourceChanges $change) => $accumulator->accumulate($change), new ResourceChanges(guthabenChange: 0));
-            return $guthaben->withChange($guthabenChange);
-
+            return $guthaben->withChange($event->getResourceChanges($playerId));
         }, new Guthaben(0));
     }
 }

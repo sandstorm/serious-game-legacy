@@ -27,6 +27,10 @@ readonly class LebenszielDefinition implements \JsonSerializable
         );
     }
 
+    /**
+     * @param array{value: string, phases: array<string, mixed>} $values
+     * @return self
+     */
     public static function fromArray(array $values): self
     {
         $phases = [];
@@ -44,6 +48,9 @@ readonly class LebenszielDefinition implements \JsonSerializable
         return '[Lebensziel: '.$this->value.']';
     }
 
+    /**
+     * @return array{value: string, phases: array<string, mixed>}
+     */
     public function jsonSerialize(): array
     {
         return [
