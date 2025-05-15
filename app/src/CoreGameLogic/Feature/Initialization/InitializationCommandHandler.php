@@ -11,7 +11,6 @@ use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
-use Domain\CoreGameLogic\Feature\Initialization\Command\InitPlayerGuthaben;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
@@ -100,7 +99,10 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
             return GameEventsToPersist::with(
                 new PreGameStarted(
                     playerIds: $command->fixedPlayerIdsForTesting,
-                    resourceChanges: new ResourceChanges(guthabenChange: 50000),
+                    resourceChanges: new ResourceChanges(
+                        guthabenChange: 50000,
+                        zeitsteineChange: 3
+                    ),
                 ),
             );
         }
@@ -114,7 +116,10 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
         return GameEventsToPersist::with(
             new PreGameStarted(
                 playerIds: $playerIds,
-                resourceChanges: new ResourceChanges(guthabenChange: 50000),
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: 50000,
+                    zeitsteineChange: 3
+                ),
             ),
         );
     }

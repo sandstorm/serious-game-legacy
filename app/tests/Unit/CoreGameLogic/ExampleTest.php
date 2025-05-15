@@ -7,18 +7,14 @@ use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\Lebensziel;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
-use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
-use Domain\CoreGameLogic\Feature\Initialization\Command\InitPlayerGuthaben;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\GuthabenState;
 use Domain\CoreGameLogic\Feature\Initialization\State\LebenszielAccessor;
-use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\Command\StartNewYear;
-use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\Event\NewYearWasStarted;
-use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\State\LeitzinsAccessor;
+use Domain\CoreGameLogic\Feature\Initialization\State\ZeitsteineState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
@@ -137,11 +133,13 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
     ));
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
     expect(GuthabenState::forPlayer($stream, $p1)->value)->toBe(50000);
+    expect(ZeitsteineState::forPlayer($stream, $p1)->value)->toBe(3);
     //</editor-fold>
 
     //<editor-fold desc="modify guthaben">
     $this->coreGameLogic->handle($this->gameId, new ActivateCard($p1, new CardId("neues Hobby"), new EreignisId("EVENT:Lotteriegewinn")));
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
     expect(GuthabenState::forPlayer($stream, $p1)->value)->toBe(50500);
+    expect(ZeitsteineState::forPlayer($stream, $p1)->value)->toBe(2);
     //</editor-fold>
 });

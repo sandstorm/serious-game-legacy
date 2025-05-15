@@ -29,7 +29,7 @@ final readonly class CardWasActivated implements ProvidesModifiers, ProvidesReso
     public function getResourceChanges(PlayerId $playerId): ResourceChangeCollection
     {
         if ($this->card->value === "neues Hobby" && $this->player->equals($playerId)) {
-            return new ResourceChangeCollection([new ResourceChanges(guthabenChange: -500)]);
+            return new ResourceChangeCollection([new ResourceChanges(guthabenChange: -500, zeitsteineChange: -1)]);
         }
         return new ResourceChangeCollection([]);
     }
