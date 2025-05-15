@@ -129,7 +129,10 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
             return GameEventsToPersist::with(
                 new PreGameStarted(
                     playerIds: $command->fixedPlayerIdsForTesting,
-                    resourceChanges: new ResourceChanges(guthabenChange: 50000),
+                    resourceChanges: new ResourceChanges(
+                        guthabenChange: 50000,
+                        zeitsteineChange: 3
+                    ),
                 ),
             );
         }
@@ -143,7 +146,10 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
         return GameEventsToPersist::with(
             new PreGameStarted(
                 playerIds: $playerIds,
-                resourceChanges: new ResourceChanges(guthabenChange: 50000),
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: 50000,
+                    zeitsteineChange: 3
+                ),
             ),
         );
     }

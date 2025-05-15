@@ -8,11 +8,10 @@ use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
+use Domain\CoreGameLogic\Feature\Initialization\State\GuthabenState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
-use Domain\Definitions\Kompetenzbereich\Enum\KompetenzbereichEnum;
-use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
+use Domain\CoreGameLogic\Feature\Initialization\State\ZeitsteineState;
 use Domain\Definitions\Lebensziel\Model\LebenszielKompetenzbereichDefinition;
-use Domain\Definitions\Lebensziel\Model\LebenszielPhaseDefinition;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
@@ -73,6 +72,9 @@ test('PreGameLogic normal flow', function () {
     expect(PreGameState::isReadyForGame($gameStream))->toBeTrue()
         ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->lebensziel->id->value)->toEqual('Lebensziel AAA')
         ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p2->value]->lebensziel->id->value)->toEqual('Lebensziel XYZ');
+
+    expect(ZeitsteineState::forPlayer($gameStream, $this->p1)->value)->toBe(3);
+    expect(GuthabenState::forPlayer($gameStream, $this->p1)->value)->toBe(50000);
 });
 
 test('PreGameLogic can only start once', function () {

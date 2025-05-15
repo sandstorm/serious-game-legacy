@@ -52,7 +52,10 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
         $card = match ($command->cardId->value) {
             "neues Hobby" => new CardDefinition(
                 id: $command->cardId,
-                resourceChanges: new ResourceChanges(guthabenChange: -500),
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: -500,
+                    zeitsteineChange: -1,
+                ),
             ),
             "sprachkurs" => new CardDefinition(
                 id: $command->cardId,
