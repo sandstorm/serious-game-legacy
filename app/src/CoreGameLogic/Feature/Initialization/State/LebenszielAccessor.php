@@ -9,9 +9,9 @@ use Domain\CoreGameLogic\Dto\ValueObject\LebenszielPhase;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
+use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielWasSelected;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
-use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
+use Domain\Definitions\Lebensziel\LebenszielDefinition;
 
 class LebenszielAccessor
 {
@@ -31,7 +31,7 @@ class LebenszielAccessor
     public function forPlayer(PlayerId $playerId): ?Lebensziel
     {
         /** @var LebenszielDefinition $lebenszielDefinition */
-        $lebenszielDefinition = $this->stream->findAllOfType(LebenszielChosen::class)->filter(function ($event) use ($playerId) {
+        $lebenszielDefinition = $this->stream->findAllOfType(LebenszielWasSelected::class)->filter(function ($event) use ($playerId) {
             return $event->playerId->equals($playerId);
         })[0]->lebensziel ?? null;
         if ($lebenszielDefinition === null) {

@@ -6,7 +6,7 @@ namespace Domain\CoreGameLogic\Dto\ValueObject;
 
 readonly class LebenszielId implements \JsonSerializable
 {
-    public function __construct(public string $value)
+    public function __construct(public int $value)
     {
     }
 
@@ -15,7 +15,7 @@ readonly class LebenszielId implements \JsonSerializable
         return '[LebenszielId: '.$this->value.']';
     }
 
-    public function jsonSerialize(): string
+    public function jsonSerialize(): int
     {
         return $this->value;
     }

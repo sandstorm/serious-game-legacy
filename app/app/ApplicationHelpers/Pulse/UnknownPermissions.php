@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Pulse;
+namespace App\ApplicationHelpers\Pulse;
 
 use Carbon\Carbon;
 use Illuminate\Database\Connection;

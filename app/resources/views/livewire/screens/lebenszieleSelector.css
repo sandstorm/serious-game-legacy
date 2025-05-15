@@ -1,0 +1,28 @@
+.lebensziele-selector {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    margin-top: var(--spacing-100);
+    gap: var(--spacing-100);
+    list-style: none;
+
+}
+
+.lebensziel-to-select {
+    padding: var(--spacing-100);
+    display: flex;
+    flex-direction: column;
+
+    border: 1px solid #ccc;
+
+    > .button {
+        margin: auto;
+        margin-top: var(--spacing-100);
+    }
+}
+
+.lebensziel-to-select--is-selected {
+    background-color: var(--color-primary);
+    color: var(--color-primary-fg);
+}

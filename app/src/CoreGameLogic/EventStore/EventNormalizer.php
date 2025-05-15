@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\EventStore;
 
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
-use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
+use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Pile\Event\CardsWereShuffled;
@@ -53,7 +53,7 @@ final readonly class EventNormalizer
             CardWasSkipped::class,
             SpielzugWasCompleted::class,
             TriggeredEreignis::class,
-            LebenszielChosen::class,
+            LebenszielWasSelected::class,
             PreGameStarted::class,
             NameForPlayerWasSet::class,
             KonjunkturzyklusWechselExecuted::class,

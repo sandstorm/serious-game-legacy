@@ -8,14 +8,15 @@ use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
-use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
+use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
-use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
+use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\TriggeredEreignis;
+use Domain\Definitions\Lebensziel\LebenszielFinder;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
@@ -33,13 +34,13 @@ beforeEach(function () {
         playerId: $this->p2,
         name: 'Player 2',
     ));
-    $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
+    $this->coreGameLogic->handle($this->gameId, new SelectLebensziel(
         playerId: $this->p2,
-        lebensziel: new LebenszielId('Lebensziel XYZ'),
+        lebensziel: new LebenszielId(1),
     ));
-    $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
+    $this->coreGameLogic->handle($this->gameId, new SelectLebensziel(
         playerId: $this->p1,
-        lebensziel: new LebenszielId('Lebensziel AAA'),
+        lebensziel: new LebenszielId(2),
     ));
     $this->coreGameLogic->handle($this->gameId, new StartGame(
         playerOrdering: [$this->p1, $this->p2]
@@ -54,10 +55,14 @@ describe('find all after last of type', function () {
         expect($eventsAfterSelectedEvent->count())->toBe(3);
 
         $events = iterator_to_array($eventsAfterSelectedEvent->getIterator());
-        expect($events[0]::class)->toBe(LebenszielChosen::class)
-            ->and($events[0]->lebensziel->id->value)->toBe('Lebensziel XYZ')
-            ->and($events[1]::class)->toBe(LebenszielChosen::class)
-            ->and($events[1]->lebensziel->id->value)->toBe('Lebensziel AAA')
+
+        $expectedLebenszielForP1 = LebenszielFinder::findLebenszielById(1);
+        $expectedLebenszielForP2 = LebenszielFinder::findLebenszielById(2);
+
+        expect($events[0]::class)->toBe(LebenszielWasSelected::class)
+            ->and($events[0]->lebensziel->name)->toBe($expectedLebenszielForP1->name)
+            ->and($events[1]::class)->toBe(LebenszielWasSelected::class)
+            ->and($events[1]->lebensziel->name)->toBe($expectedLebenszielForP2->name)
             ->and($events[2]::class)->toBe(GameWasStarted::class)
             ->and($events[2]->playerOrdering[0])->toBe($this->p1);
     });

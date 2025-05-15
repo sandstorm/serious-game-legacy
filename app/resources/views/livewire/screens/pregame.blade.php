@@ -1,38 +1,47 @@
 @use('Domain\CoreGameLogic\Feature\Initialization\State\PreGameState')
 
-<h3>PRE GAME</h3>
+<h3>Vorbereitung des Spiels</h3>
 
 @foreach(PreGameState::playersWithNameAndLebensziel($this->gameStream()) as $nameAndLebensziel)
     @if($nameAndLebensziel->playerId->equals($myself))
-        SPIELER (ICH)
-        {{$nameAndLebensziel->playerId->value }}
-        <form wire:submit="preGameSetNameAndLebensziel">
-            <div class="form__group">
-                <label for="name">Name:</label>
-                <x-form.textfield wire:model="nameLebenszielForm.name" id="name" name="name" type="text" required="true" />
-            </div>
-            <div class="form__group">
-                <label>Lebensziel:</label>
-                <input class="form__textfield" type="text" wire:model="nameLebenszielForm.lebensziel">
+        @if(!$nameAndLebensziel->hasNameAndLebensziel())
+            <form wire:submit="preGameSetNameAndLebensziel">
+                <div class="form__group">
+                    <label for="name">Dein Name:</label>
+                    <x-form.textfield wire:model="nameLebenszielForm.name" id="name" name="name" type="text" />
+                    @error('nameLebenszielForm.name') <span class="form__error">{{ $message }}</span> @enderror
+                </div>
+                <div class="form__group">
+                    <h4>Wähle ein Lebensziel aus</h4>
+                    @error('nameLebenszielForm.lebensziel') <span class="form__error">{{ $message }}</span> @enderror
 
-                <h4>Lebensziele zur Auswahl</h4>
-                <ul class="lebensziele">
-                    <li class="lebensziel" wire:click="selectLebensZiel('Lebensziel ABC')">Lebensziel ABC</li>
-                    <li class="lebensziel" wire:click="selectLebensZiel('Lebensziel XYZ')">Lebensziel XYZ</li>
-                </ul>
-            </div>
+                    <ul class="lebensziele-selector">
+                        @foreach($lebensziele as $lebensziel)
+                            <li class="lebensziel-to-select @if($nameLebenszielForm->lebensziel == $lebensziel->id) lebensziel-to-select--is-selected @endif">
+                                <x-lebensziel :lebensziel="$lebensziel" />
 
-            @if(!$nameAndLebensziel->hasNameAndLebensziel())
+                                @if($nameLebenszielForm->lebensziel != $lebensziel->id)
+                                    <button type="button" class="button button--type-primary" wire:click="selectLebensZiel({{ $lebensziel->id }})">Dieses Lebensziel auswählen</button>
+                                @endif
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+
                 <x-form.submit>Speichern</x-form.submit>
-            @endif
-        </form>
-        {{$nameAndLebensziel->name}} - {{$nameAndLebensziel->lebensziel?->value}} <br/>
+            </form>
+        @else
+            <div>
+                Du hast folgendes Lebensziel ausgewählt:
+                {{$nameAndLebensziel->name}} - {{$nameAndLebensziel->lebensziel?->name}}
+            </div>
+        @endif
     @else
         SPIELER {{$nameAndLebensziel->playerId->value }}: {{$nameAndLebensziel->name}}
-        - {{$nameAndLebensziel->lebensziel?->value}} <br/>
+        - {{$nameAndLebensziel->lebensziel?->name}} <br/>
     @endif
 @endforeach
 
 @if(PreGameState::isReadyForGame($this->gameStream()))
-    <a wire:click="startGame">EVERYTHING READY - START GAME</a>
+    <button type="button" class="button button--type-primary" wire:click="startGame">Spiel starten</button>
 @endif

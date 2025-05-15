@@ -5,13 +5,13 @@ use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
-use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
+use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\GuthabenState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Initialization\State\ZeitsteineState;
-use Domain\Definitions\Lebensziel\Model\LebenszielKompetenzbereichDefinition;
+use Domain\Definitions\Lebensziel\LebenszielFinder;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
@@ -60,18 +60,22 @@ test('PreGameLogic normal flow', function () {
         ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->name)->toEqual('Player 1a')
         ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p2->value]->name)->toEqual('Player 2');
 
-    $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
-        playerId: $this->p2,
-        lebensziel: new LebenszielId('Lebensziel XYZ'),
-    ));
-    $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
+    $this->coreGameLogic->handle($this->gameId, new SelectLebensziel(
         playerId: $this->p1,
-        lebensziel: new LebenszielId("Lebensziel AAA")
+        lebensziel: new LebenszielId(1)
     ));
+    $this->coreGameLogic->handle($this->gameId, new SelectLebensziel(
+        playerId: $this->p2,
+        lebensziel: new LebenszielId(2),
+    ));
+
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
+    $expectedLebenszielForP1 = LebenszielFinder::findLebenszielById(1);
+    $expectedLebenszielForP2 = LebenszielFinder::findLebenszielById(2);
+
     expect(PreGameState::isReadyForGame($gameStream))->toBeTrue()
-        ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->lebensziel->id->value)->toEqual('Lebensziel AAA')
-        ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p2->value]->lebensziel->id->value)->toEqual('Lebensziel XYZ');
+        ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->lebensziel->name)->toEqual($expectedLebenszielForP1->name)
+        ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p2->value]->lebensziel->name)->toEqual($expectedLebenszielForP2->name);
 
     expect(ZeitsteineState::forPlayer($gameStream, $this->p1)->value)->toBe(3);
     expect(GuthabenState::forPlayer($gameStream, $this->p1)->value)->toBe(50000);

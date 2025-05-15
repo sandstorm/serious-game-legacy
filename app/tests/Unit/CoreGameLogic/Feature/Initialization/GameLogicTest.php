@@ -5,7 +5,7 @@ use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
-use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
+use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
@@ -31,13 +31,13 @@ beforeEach(function () {
         playerId: $this->p2,
         name: 'Player 2',
     ));
-    $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
+    $this->coreGameLogic->handle($this->gameId, new SelectLebensziel(
         playerId: $this->p2,
-        lebensziel: new LebenszielId('Lebensziel XYZ'),
+        lebensziel: new LebenszielId(1),
     ));
-    $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
+    $this->coreGameLogic->handle($this->gameId, new SelectLebensziel(
         playerId: $this->p1,
-        lebensziel: new LebenszielId('Lebensziel AAA'),
+        lebensziel: new LebenszielId(2),
     ));
 });
 
