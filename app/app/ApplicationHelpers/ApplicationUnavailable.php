@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Mail;
+namespace App\ApplicationHelpers;
 
 use App\Console\Commands\RenderApplicationUnavailable;
 use Illuminate\Bus\Queueable;
@@ -43,7 +43,7 @@ class ApplicationUnavailable extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.application-unavailable',
+            markdown: 'applicationHelpers.application-unavailable',
         );
     }
 

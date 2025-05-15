@@ -9,6 +9,7 @@ use Domain\Definitions\Konjunkturzyklus\Enum\KonjunkturzyklusTypeEnum;
 readonly class Konjunkturzyklus implements \JsonSerializable
 {
     /**
+     * @param int $id
      * @param KonjunkturzyklusTypeEnum $type
      * @param Leitzins $leitzins
      * @param Kompetenzbereich[] $kompetenzbereiche

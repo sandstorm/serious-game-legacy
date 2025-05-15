@@ -25,7 +25,7 @@ class GamePlayController extends Controller
 
     public function newGame(Request $request): View
     {
-        return view('game-play/new');
+        return view('controllers.gameplay.new');
     }
 
     public function playerLinks(Request $request, SessionStore $session, string $gameId): View
@@ -42,7 +42,7 @@ class GamePlayController extends Controller
         }
 
         $gameStream = $this->coreGameLogic->getGameStream($gameId);
-        return view('game-play/player-links', [
+        return view('controllers.gameplay.player-links', [
             'gameId' => $gameId,
             'playerIds' => PreGameState::playerIds($gameStream)
         ]);
@@ -58,7 +58,7 @@ class GamePlayController extends Controller
             return redirect()->route('game-play.new');
         }
 
-        return view('game-play', [
+        return view('controllers.gameplay.game-play', [
             'gameId' => $gameId,
             'myself' => $myselfId,
         ]);

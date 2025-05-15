@@ -14,8 +14,6 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
-use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
-use Domain\CoreGameLogic\Feature\Initialization\State\Dto\NameAndLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
@@ -41,7 +39,6 @@ class GameUi extends Component
         $this->nameLebenszielForm->lebensziel = PreGameState::lebenszielForPlayerOrNull($this->gameStream, $this->myself)->value ?? '';
     }
 
-
     public function startGame(): void
     {
         $this->coreGameLogic->handle($this->gameId, new StartGame(
@@ -60,11 +57,15 @@ class GameUi extends Component
         $this->broadcastNotify();
     }
 
+    public function selectLebensZiel(String $lebensziel): void
+    {
+        $this->nameLebenszielForm->lebensziel = $lebensziel;
+    }
+
     public function gameStream(): GameEvents
     {
         return $this->gameStream;
     }
-
 
     public function boot(Dispatcher $eventDispatcher, ForCoreGameLogic $coreGameLogic): void
     {

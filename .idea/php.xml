@@ -459,4 +459,9 @@
       <PhpUnitSettings configuration_file_path="$PROJECT_DIR$/app/phpunit.xml" custom_loader_path="$PROJECT_DIR$/app/vendor/autoload.php" paratest_path="$PROJECT_DIR$/app/vendor/bin/paratest_for_phpstorm" use_configuration_file="true" />
     </phpunit_settings>
   </component>
+  <component name="Psalm">
+    <Psalm_settings>
+      <psalm_fixer_by_interpreter asDefaultInterpreter="true" interpreter_id="34323081-6f96-48fd-a224-7ddbd1776485" timeout="60000" />
+    </Psalm_settings>
+  </component>
 </project>

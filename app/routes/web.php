@@ -1,10 +1,11 @@
 <?php
 
+use App\ApplicationHelpers\ApplicationUnavailable;
 use App\Http\Controllers\GamePlayController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('controllers.welcome');
 });
 
 Route::get('/play', [GamePlayController::class, 'newGame'])->name('game-play.new-game');
@@ -13,6 +14,6 @@ Route::get('/play/{gameId}/{myselfId}', [GamePlayController::class, 'game'])->na
 
 if (app()->isLocal()) {
     Route::get('/preview-application-unavailable', function () {
-        return new App\Mail\ApplicationUnavailable();
+        return new ApplicationUnavailable();
     });
 }
