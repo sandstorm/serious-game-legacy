@@ -1,9 +1,10 @@
 <!-- resources/views/components/layout.blade.php -->
 
-<html>
+<html lang="de">
 <head>
     <title>{{ $title ?? 'Game' }}</title>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="app-config-js" content="{{ json_encode([
         'reverbAppKey' => config('broadcasting.connections.reverb.key'),
     ]) }}" />
@@ -11,6 +12,11 @@
     @vite(['resources/js/app.js'])
 </head>
 <body>
-{{ $slot }}
+<header>
+
+</header>
+<main class="container">
+    {{ $slot }}
+</main>
 </body>
 </html>

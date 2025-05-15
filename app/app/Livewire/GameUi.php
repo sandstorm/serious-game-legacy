@@ -39,7 +39,6 @@ class GameUi extends Component
         $this->nameLebenszielForm->lebensziel = PreGameState::lebenszielForPlayerOrNull($this->gameStream, $this->myself)->id->value ?? '';
     }
 
-
     public function startGame(): void
     {
         $this->coreGameLogic->handle($this->gameId, new StartGame(
@@ -58,11 +57,15 @@ class GameUi extends Component
         $this->broadcastNotify();
     }
 
+    public function selectLebensZiel(String $lebensziel): void
+    {
+        $this->nameLebenszielForm->lebensziel = $lebensziel;
+    }
+
     public function gameStream(): GameEvents
     {
         return $this->gameStream;
     }
-
 
     public function boot(Dispatcher $eventDispatcher, ForCoreGameLogic $coreGameLogic): void
     {

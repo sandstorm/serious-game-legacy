@@ -27,7 +27,7 @@ class UnknownPermissions extends Card
                 return $item;
             });
 
-        return view('livewire.pulse.unknown-permissions', [
+        return view('applicationHelpers.pulse.unknown-permissions', [
             'unknownPermissions' => $unknownPermissions,
         ]);
     }

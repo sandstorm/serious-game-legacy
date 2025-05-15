@@ -1,0 +1,10 @@
+.form__group {
+    margin-bottom: var(--spacing-100);
+    display: flex;
+    flex-direction: column;
+
+    label {
+        margin-bottom:  var(--spacing-50);
+    }
+
+}

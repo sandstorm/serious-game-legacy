@@ -30,6 +30,8 @@ ol[role='list'] {
 body {
     min-height: 100vh;
     line-height: 1.5;
+    padding: 0;
+    margin: 0;
 }
 
 /* Set shorter line heights on headings and interactive elements */

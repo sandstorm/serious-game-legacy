@@ -1,3 +1,3 @@
-<button type="submit" class="form__button isPrimary">
+<button type="submit" class="button button--type-primary">
     {{ $slot }}
 </button>
