@@ -37,6 +37,7 @@ final readonly class CardWasActivated implements ProvidesModifiers, ProvidesReso
     {
         return new self(
             player: PlayerId::fromString($values['player']),
+            //TODO: replace with CardId, when we have a CardRepository or similar
             card: CardDefinition::fromString($values['card']),
         );
     }
