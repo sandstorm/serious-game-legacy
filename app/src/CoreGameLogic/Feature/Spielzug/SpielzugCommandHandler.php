@@ -6,6 +6,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug;
 
 use Domain\CoreGameLogic\CommandHandler\CommandHandlerInterface;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
+use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
@@ -16,6 +17,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasCompleted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\TriggeredEreignis;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
+use Domain\Definitions\Cards\Model\CardDefinition;
 
 /**
  * @internal no public API, because commands are no extension points. ALWAYS USE {@see ForCoreGameLogic::handle()} to trigger commands.
@@ -46,8 +48,29 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             throw new \RuntimeException('Only the current player can complete a turn', 1649582779);
         }
 
+        // TODO: replace with repository
+        $card = match ($command->cardId->value) {
+            "neues Hobby" => new CardDefinition(
+                id: $command->cardId,
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: -500,
+                    zeitsteineChange: -1,
+                ),
+            ),
+            "sprachkurs" => new CardDefinition(
+                id: $command->cardId,
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: -100,
+                    bildungKompetenzsteinChange: +1,
+                ),
+            ),
+            default => new CardDefinition(
+                id: $command->cardId,
+                resourceChanges: new ResourceChanges(),
+            )
+        };
         $events = GameEventsToPersist::with(
-            new CardWasActivated($command->player, $command->card)
+            new CardWasActivated($command->player, $card)
         );
 
         if ($command->attachedEreignis !== null) {

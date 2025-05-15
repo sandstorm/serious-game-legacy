@@ -15,10 +15,7 @@ class ZeitsteineState
     public static function forPlayer(GameEvents $gameStream, PlayerId $playerId): Zeitsteine
     {
         return $gameStream->findAllOfType(ProvidesResourceChanges::class)->reduce(function (Zeitsteine $zeitsteine, ProvidesResourceChanges $event) use ($playerId) {
-            $zeitsteineChange = $event->getResourceChanges($playerId)
-                ->reduce(fn(ResourceChanges $accumulator, ResourceChanges $change) => $accumulator->accumulate($change), new ResourceChanges(guthabenChange: 0, zeitsteineChange: 0));
-            return $zeitsteine->withChange($zeitsteineChange);
-
+            return $zeitsteine->withChange($event->getResourceChanges($playerId));
         }, new Zeitsteine(0));
     }
 }

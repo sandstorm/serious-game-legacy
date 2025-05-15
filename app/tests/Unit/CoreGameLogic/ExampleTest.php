@@ -5,13 +5,13 @@ use Domain\CoreGameLogic\Dto\Aktion\ZeitsteinSetzen;
 use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
-use Domain\CoreGameLogic\Dto\ValueObject\Lebensziel;
+use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
-use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
+use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\State\GuthabenState;
 use Domain\CoreGameLogic\Feature\Initialization\State\LebenszielAccessor;
 use Domain\CoreGameLogic\Feature\Initialization\State\ZeitsteineState;
@@ -21,6 +21,8 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\ModifierCalculator;
+use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
+use Domain\Definitions\Lebensziel\Model\LebenszielPhaseDefinition;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
@@ -77,17 +79,33 @@ test('Init Lebensziel', function () {
             ]
         ),
         new LebenszielChosen(
-            lebensziel: new Lebensziel('Lebensziel XYZ'),
             playerId: PlayerId::fromString('p1'),
+            lebensziel: new LebenszielDefinition(
+                id: new LebenszielId('Lebensziel XYZ'),
+                phaseDefinitions: [
+                    new LebenszielPhaseDefinition(
+                        bildungsKompetenzSlots:2,
+                        freizeitKompetenzSlots:1,
+                    ),
+                ],
+            ),
         ),
         new LebenszielChosen(
-            lebensziel: new Lebensziel('Lebensziel ABC'),
             playerId: PlayerId::fromString('p2'),
+            lebensziel: new LebenszielDefinition(
+                id: new LebenszielId('Lebensziel ABC'),
+                phaseDefinitions: [
+                    new LebenszielPhaseDefinition(
+                        bildungsKompetenzSlots:2,
+                        freizeitKompetenzSlots:1,
+                    ),
+                ],
+            ),
         ),
     ]);
     expect(CurrentPlayerAccessor::forStream($stream)->value)->toBe('p1');
-    expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p1'))->lebensziel->value)->toBe('Lebensziel XYZ');
-    expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p2'))->lebensziel->value)->toBe('Lebensziel ABC');
+    expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p1'))->definition->id->value ?? null)->toBe('Lebensziel XYZ');
+    expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p2'))->definition->id->value ?? null)->toBe('Lebensziel ABC');
     expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p3')))->toBe(null);
 });
 

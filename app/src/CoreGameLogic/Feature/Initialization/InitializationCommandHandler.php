@@ -21,6 +21,10 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
+use Domain\Definitions\Kompetenzbereich\Enum\KompetenzbereichEnum;
+use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
+use Domain\Definitions\Lebensziel\Model\LebenszielKompetenzbereichDefinition;
+use Domain\Definitions\Lebensziel\Model\LebenszielPhaseDefinition;
 
 /**
  * @internal no public API, because commands are no extension points. ALWAYS USE {@see ForCoreGameLogic::handle()} to trigger commands.
@@ -63,10 +67,36 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
             throw new \RuntimeException('Player has already selected a Lebensziel', 1746713490);
         }
 
+        // TODO: use repository
+        $phases = match ($command->lebensziel->value) {
+            "Influencer" => [
+                new LebenszielPhaseDefinition(
+                    bildungsKompetenzSlots: 2,
+                    freizeitKompetenzSlots: 1,
+                ),
+            ],
+            "Selbstversorger Kanada" => [
+                new LebenszielPhaseDefinition(
+                    bildungsKompetenzSlots: 1,
+                    freizeitKompetenzSlots: 3,
+                ),
+            ],
+            default => [
+                new LebenszielPhaseDefinition(
+                    bildungsKompetenzSlots: 2,
+                    freizeitKompetenzSlots: 1,
+                ),
+            ]
+        };
+        $lebensziel = new LebenszielDefinition(
+            id: $command->lebensziel,
+            phaseDefinitions: $phases,
+        );
+
         return GameEventsToPersist::with(
             new LebenszielChosen(
                 playerId: $command->playerId,
-                lebensziel: $command->lebensziel,
+                lebensziel: $lebensziel,
             )
         );
     }

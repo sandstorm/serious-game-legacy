@@ -13,7 +13,7 @@ final readonly class ActivateCard implements CommandInterface
 {
     public function __construct(
         public PlayerId $player,
-        public CardId $card,
+        public CardId $cardId,
         public ?EreignisId $attachedEreignis = null,
     ) {
     }
