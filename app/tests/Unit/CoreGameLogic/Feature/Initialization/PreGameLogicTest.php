@@ -11,7 +11,6 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\GuthabenState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Initialization\State\ZeitsteineState;
-use Domain\Definitions\Lebensziel\Model\LebenszielKompetenzbereichDefinition;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
@@ -61,17 +60,18 @@ test('PreGameLogic normal flow', function () {
         ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p2->value]->name)->toEqual('Player 2');
 
     $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
-        playerId: $this->p2,
-        lebensziel: new LebenszielId('Lebensziel XYZ'),
+        playerId: $this->p1,
+        lebensziel: new LebenszielId(1)
     ));
     $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
-        playerId: $this->p1,
-        lebensziel: new LebenszielId("Lebensziel AAA")
+        playerId: $this->p2,
+        lebensziel: new LebenszielId(2),
     ));
+
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
     expect(PreGameState::isReadyForGame($gameStream))->toBeTrue()
-        ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->lebensziel->id->value)->toEqual('Lebensziel AAA')
-        ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p2->value]->lebensziel->id->value)->toEqual('Lebensziel XYZ');
+        ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->lebensziel->name)->toEqual("Aufforstung der Sahara in Niger")
+        ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p2->value]->lebensziel->name)->toEqual("TODO");
 
     expect(ZeitsteineState::forPlayer($gameStream, $this->p1)->value)->toBe(3);
     expect(GuthabenState::forPlayer($gameStream, $this->p1)->value)->toBe(50000);
