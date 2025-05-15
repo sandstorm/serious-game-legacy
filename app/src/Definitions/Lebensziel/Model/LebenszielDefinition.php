@@ -11,22 +11,12 @@ readonly class LebenszielDefinition implements \JsonSerializable
     // TODO phases, goals, etc
     /**
      * @param LebenszielId $id
-     * @param LebenszielPhaseDefinition[] $phases
+     * @param LebenszielPhaseDefinition[] $phaseDefinitions
      */
     public function __construct(
         public LebenszielId $id,
-        public array $phases,
+        public array $phaseDefinitions,
     ) {
-    }
-
-    public function withUpdatedPhase(int $index, LebenszielPhaseDefinition $phase): self
-    {
-        $phases = $this->phases;
-        $phases[$index] = $phase;
-        return new self(
-            id: $this->id,
-            phases: $phases,
-        );
     }
 
     /**
@@ -41,7 +31,7 @@ readonly class LebenszielDefinition implements \JsonSerializable
         }
         return new self(
             id: new LebenszielId($values['value']),
-            phases: $phases,
+            phaseDefinitions: $phases,
         );
     }
 
@@ -57,7 +47,7 @@ readonly class LebenszielDefinition implements \JsonSerializable
     {
         return [
             'value' => $this->id->jsonSerialize(),
-            'phases' => $this->phases
+            'phases' => $this->phaseDefinitions
         ];
     }
 }

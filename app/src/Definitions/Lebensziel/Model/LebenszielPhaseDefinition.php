@@ -4,44 +4,34 @@ declare(strict_types=1);
 
 namespace Domain\Definitions\Lebensziel\Model;
 
-use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
-
-class LebenszielPhaseDefinition
+readonly class LebenszielPhaseDefinition
 {
     public function __construct(
-        public LebenszielKompetenzbereichDefinition $bildungsKompetenz,
-        public LebenszielKompetenzbereichDefinition $freizeitKompetenz,
+        public int $bildungsKompetenzSlots,
+        public int $freizeitKompetenzSlots,
     ) {
     }
 
     /**
-     * @param array{bildungsKompetenz: mixed, freizeitKompetenz: mixed} $values
+     * @param array{bildungsKompetenzSlots: mixed, freizeitKompetenzSlots: mixed} $values
      * @return self
      */
     public static function fromArray(array $values): self
     {
         return new self(
-            bildungsKompetenz: LebenszielKompetenzbereichDefinition::fromArray($values['bildungsKompetenz']),
-            freizeitKompetenz: LebenszielKompetenzbereichDefinition::fromArray($values['freizeitKompetenz']),
+            bildungsKompetenzSlots: $values['bildungsKompetenzSlots'],
+            freizeitKompetenzSlots: $values['freizeitKompetenzSlots'],
         );
     }
 
     /**
-     * @return array{bildungsKompetenz: mixed, freizeitKompetenz: mixed}
+     * @return array{bildungsKompetenzSlots: mixed, freizeitKompetenzSlots: mixed}
      */
     public function jsonSerialize(): array
     {
         return [
-            'bildungsKompetenz' => $this->bildungsKompetenz->jsonSerialize(),
-            'freizeitKompetenz' => $this->freizeitKompetenz->jsonSerialize(),
+            'bildungsKompetenzSlots' => $this->bildungsKompetenzSlots,
+            'freizeitKompetenzSlots' => $this->freizeitKompetenzSlots,
         ];
-    }
-
-    public function withChange(ResourceChanges $resourceChanges): self
-    {
-        return new self(
-            bildungsKompetenz: $this->bildungsKompetenz->accumulate($resourceChanges->bildungKompetenzsteinChange),
-            freizeitKompetenz: $this->freizeitKompetenz->accumulate($resourceChanges->freizeitKompetenzsteinChange),
-        );
     }
 }

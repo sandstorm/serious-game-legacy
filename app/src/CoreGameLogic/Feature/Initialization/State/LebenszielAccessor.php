@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Initialization\State;
 
+use Domain\CoreGameLogic\Dto\ValueObject\Lebensziel;
+use Domain\CoreGameLogic\Dto\ValueObject\LebenszielPhase;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
@@ -26,21 +28,29 @@ class LebenszielAccessor
     /**
      * @deprecated  please remove me and use PreGameState::lebenszielForPlayer instead.
      */
-    public function forPlayer(PlayerId $playerId): ?LebenszielDefinition
+    public function forPlayer(PlayerId $playerId): ?Lebensziel
     {
-        /** @var LebenszielDefinition $lebensziel */
-        $lebensziel = $this->stream->findAllOfType(LebenszielChosen::class)->filter(function ($event) use ($playerId) {
+        /** @var LebenszielDefinition $lebenszielDefinition */
+        $lebenszielDefinition = $this->stream->findAllOfType(LebenszielChosen::class)->filter(function ($event) use ($playerId) {
             return $event->playerId->equals($playerId);
         })[0]->lebensziel ?? null;
-        if ($lebensziel === null) {
+        if ($lebenszielDefinition === null) {
             return null;
         }
+        $phases = [];
+        foreach ($lebenszielDefinition->phaseDefinitions as $phaseDefinition) {
+            $phases[] = LebenszielPhase::fromDefinition($phaseDefinition);
+        }
+        $lebensziel = new Lebensziel(
+            definition: $lebenszielDefinition,
+            phases: $phases,
+        );
         $kompetenzsteinChanges = $this->stream
             ->findAllOfType(ProvidesResourceChanges::class)
             ->reduce(fn(ResourceChanges $accumulator, ProvidesResourceChanges $event) => $accumulator->accumulate($event->getResourceChanges($playerId)), new ResourceChanges());
         // TODO: place kompetenzsteine in the currently active phase in the future
         $newPhase0 = $lebensziel->phases[0]->withChange($kompetenzsteinChanges);
-        $lebensziel = $lebensziel->withUpdatedPhase(0, $newPhase0);
-        return $lebensziel;
+        $lebenszielDefinition = $lebensziel->withUpdatedPhase(0, $newPhase0);
+        return $lebenszielDefinition;
     }
 }

@@ -20,9 +20,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\ModifierCalculator;
-use Domain\Definitions\Kompetenzbereich\Enum\KompetenzbereichEnum;
 use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
-use Domain\Definitions\Lebensziel\Model\LebenszielKompetenzbereichDefinition;
 use Domain\Definitions\Lebensziel\Model\LebenszielPhaseDefinition;
 
 beforeEach(function () {
@@ -83,16 +81,10 @@ test('Init Lebensziel', function () {
             playerId: PlayerId::fromString('p1'),
             lebensziel: new LebenszielDefinition(
                 id: new LebenszielId('Lebensziel XYZ'),
-                phases: [
+                phaseDefinitions: [
                     new LebenszielPhaseDefinition(
-                        bildungsKompetenz: new LebenszielKompetenzbereichDefinition(
-                            name: KompetenzbereichEnum::BILDUNG,
-                            slots: 2,
-                        ),
-                        freizeitKompetenz: new LebenszielKompetenzbereichDefinition(
-                            name: KompetenzbereichEnum::FREIZEIT,
-                            slots: 1,
-                        ),
+                        bildungsKompetenzSlots:2,
+                        freizeitKompetenzSlots:1,
                     ),
                 ],
             ),
@@ -101,24 +93,18 @@ test('Init Lebensziel', function () {
             playerId: PlayerId::fromString('p2'),
             lebensziel: new LebenszielDefinition(
                 id: new LebenszielId('Lebensziel ABC'),
-                phases: [
+                phaseDefinitions: [
                     new LebenszielPhaseDefinition(
-                        bildungsKompetenz: new LebenszielKompetenzbereichDefinition(
-                            name: KompetenzbereichEnum::BILDUNG,
-                            slots: 2,
-                        ),
-                        freizeitKompetenz: new LebenszielKompetenzbereichDefinition(
-                            name: KompetenzbereichEnum::FREIZEIT,
-                            slots: 1,
-                        ),
+                        bildungsKompetenzSlots:2,
+                        freizeitKompetenzSlots:1,
                     ),
                 ],
             ),
         ),
     ]);
     expect(CurrentPlayerAccessor::forStream($stream)->value)->toBe('p1');
-    expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p1'))->id->value ?? null)->toBe('Lebensziel XYZ');
-    expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p2'))->id->value ?? null)->toBe('Lebensziel ABC');
+    expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p1'))->definition->id->value ?? null)->toBe('Lebensziel XYZ');
+    expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p2'))->definition->id->value ?? null)->toBe('Lebensziel ABC');
     expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p3')))->toBe(null);
 });
 

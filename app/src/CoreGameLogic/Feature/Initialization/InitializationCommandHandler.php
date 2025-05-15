@@ -71,44 +71,26 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
         $phases = match ($command->lebensziel->value) {
             "Influencer" => [
                 new LebenszielPhaseDefinition(
-                    bildungsKompetenz: new LebenszielKompetenzbereichDefinition(
-                        name: KompetenzbereichEnum::BILDUNG,
-                        slots: 2,
-                    ),
-                    freizeitKompetenz: new LebenszielKompetenzbereichDefinition(
-                        name: KompetenzbereichEnum::FREIZEIT,
-                        slots: 1,
-                    ),
+                    bildungsKompetenzSlots: 2,
+                    freizeitKompetenzSlots: 1,
                 ),
             ],
             "Selbstversorger Kanada" => [
                 new LebenszielPhaseDefinition(
-                    bildungsKompetenz: new LebenszielKompetenzbereichDefinition(
-                        name: KompetenzbereichEnum::BILDUNG,
-                        slots: 1,
-                    ),
-                    freizeitKompetenz: new LebenszielKompetenzbereichDefinition(
-                        name: KompetenzbereichEnum::FREIZEIT,
-                        slots: 3,
-                    ),
+                    bildungsKompetenzSlots: 1,
+                    freizeitKompetenzSlots: 3,
                 ),
             ],
             default => [
                 new LebenszielPhaseDefinition(
-                    bildungsKompetenz: new LebenszielKompetenzbereichDefinition(
-                        name: KompetenzbereichEnum::BILDUNG,
-                        slots: 2,
-                    ),
-                    freizeitKompetenz: new LebenszielKompetenzbereichDefinition(
-                        name: KompetenzbereichEnum::FREIZEIT,
-                        slots: 1,
-                    ),
+                    bildungsKompetenzSlots: 2,
+                    freizeitKompetenzSlots: 1,
                 ),
             ]
         };
         $lebensziel = new LebenszielDefinition(
             id: $command->lebensziel,
-            phases: $phases,
+            phaseDefinitions: $phases,
         );
 
         return GameEventsToPersist::with(

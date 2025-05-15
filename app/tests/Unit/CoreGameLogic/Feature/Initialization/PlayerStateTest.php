@@ -44,36 +44,36 @@ test('kompetenzstein state', function () {
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
     // player 1
     // bildung
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->bildungsKompetenz->slots)->toBe(2);
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->bildungsKompetenz->placed)->toBe(0);
+    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->definition->bildungsKompetenzSlots)->toBe(2);
+    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->placedKompetenzsteineBildung)->toBe(0);
     // freizeit
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->freizeitKompetenz->slots)->toBe(1);
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->freizeitKompetenz->placed)->toBe(0);
+    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->definition->freizeitKompetenzSlots)->toBe(1);
+    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->placedKompetenzsteineFreizeit)->toBe(0);
 
     //player 2
     // bildung
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->bildungsKompetenz->slots)->toBe(1);
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->bildungsKompetenz->placed)->toBe(0);
+    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->definition->bildungsKompetenzSlots)->toBe(1);
+    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->placedKompetenzsteineBildung)->toBe(0);
     //freizeit
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->freizeitKompetenz->slots)->toBe(3);
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->freizeitKompetenz->placed)->toBe(0);
+    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->definition->freizeitKompetenzSlots)->toBe(3);
+    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->placedKompetenzsteineFreizeit)->toBe(0);
 
     $this->coreGameLogic->handle($this->gameId, new ActivateCard($this->p1, new CardId("sprachkurs")));
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
 
     // player 1
     // bildung
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->bildungsKompetenz->slots)->toBe(2);
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->bildungsKompetenz->placed)->toBe(1);
+    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->definition->bildungsKompetenzSlots)->toBe(2);
+    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->placedKompetenzsteineBildung)->toBe(1);
     // freizeit
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->freizeitKompetenz->slots)->toBe(1);
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->freizeitKompetenz->placed)->toBe(0);
+    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->definition->freizeitKompetenzSlots)->toBe(1);
+    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->placedKompetenzsteineFreizeit)->toBe(0);
 
     //player 2 unchanged
     // bildung
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->bildungsKompetenz->slots)->toBe(1);
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->bildungsKompetenz->placed)->toBe(0);
+    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->definition->bildungsKompetenzSlots)->toBe(1);
+    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->placedKompetenzsteineBildung)->toBe(0);
     //freizeit
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->freizeitKompetenz->slots)->toBe(3);
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->freizeitKompetenz->placed)->toBe(0);
+    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->definition->freizeitKompetenzSlots)->toBe(3);
+    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->placedKompetenzsteineFreizeit)->toBe(0);
 });
