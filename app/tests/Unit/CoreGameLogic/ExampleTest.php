@@ -5,7 +5,6 @@ use Domain\CoreGameLogic\Dto\Aktion\ZeitsteinSetzen;
 use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
-use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
@@ -21,8 +20,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\ModifierCalculator;
-use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
-use Domain\Definitions\Lebensziel\Model\LebenszielPhaseDefinition;
+use Domain\Definitions\Lebensziel\LebenszielFinder;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
@@ -80,32 +78,16 @@ test('Init Lebensziel', function () {
         ),
         new LebenszielChosen(
             playerId: PlayerId::fromString('p1'),
-            lebensziel: new LebenszielDefinition(
-                id: new LebenszielId('Lebensziel XYZ'),
-                phaseDefinitions: [
-                    new LebenszielPhaseDefinition(
-                        bildungsKompetenzSlots:2,
-                        freizeitKompetenzSlots:1,
-                    ),
-                ],
-            ),
+            lebensziel: LebenszielFinder::findLebenszielById(1),
         ),
         new LebenszielChosen(
             playerId: PlayerId::fromString('p2'),
-            lebensziel: new LebenszielDefinition(
-                id: new LebenszielId('Lebensziel ABC'),
-                phaseDefinitions: [
-                    new LebenszielPhaseDefinition(
-                        bildungsKompetenzSlots:2,
-                        freizeitKompetenzSlots:1,
-                    ),
-                ],
-            ),
+            lebensziel: LebenszielFinder::findLebenszielById(2),
         ),
     ]);
     expect(CurrentPlayerAccessor::forStream($stream)->value)->toBe('p1');
-    expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p1'))->definition->id->value ?? null)->toBe('Lebensziel XYZ');
-    expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p2'))->definition->id->value ?? null)->toBe('Lebensziel ABC');
+    expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p1'))->definition->name)->toBe('Aufforstung der Sahara in Niger');
+    expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p2'))->definition->name)->toBe('TODO');
     expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p3')))->toBe(null);
 });
 

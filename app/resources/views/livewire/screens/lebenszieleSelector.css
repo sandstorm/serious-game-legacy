@@ -1,4 +1,4 @@
-.lebensziele {
+.lebensziele-selector {
     display: flex;
     flex-direction: column;
     gap: var(--spacing-100);
@@ -7,11 +7,16 @@
     padding: 0;
 }
 
-.lebensziel {
+.lebensziel-to-select {
     padding: var(--spacing-100);
     border: 1px solid #ccc;
 
-    &:hover {
+    &:not(.lebensziel-to-select--is-selected):hover {
         background-color: #f0f0f0;
     }
+}
+
+.lebensziel-to-select--is-selected {
+    background-color: var(--color-primary);
+    color: var(--color-primary-fg);
 }

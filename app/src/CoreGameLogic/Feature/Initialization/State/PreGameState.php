@@ -11,7 +11,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\Dto\NameAndLebensziel;
-use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
+use Domain\Definitions\Lebensziel\LebenszielDefinition;
 
 class PreGameState
 {
