@@ -11,7 +11,6 @@ use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
-use Domain\CoreGameLogic\Feature\Initialization\Command\InitPlayerGuthaben;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
@@ -22,6 +21,10 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
+use Domain\Definitions\Kompetenzbereich\Enum\KompetenzbereichEnum;
+use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
+use Domain\Definitions\Lebensziel\Model\LebenszielKompetenzbereichDefinition;
+use Domain\Definitions\Lebensziel\Model\LebenszielPhaseDefinition;
 
 /**
  * @internal no public API, because commands are no extension points. ALWAYS USE {@see ForCoreGameLogic::handle()} to trigger commands.
@@ -64,10 +67,54 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
             throw new \RuntimeException('Player has already selected a Lebensziel', 1746713490);
         }
 
+        // TODO: use repository
+        $phases = match ($command->lebensziel->value) {
+            "Influencer" => [
+                new LebenszielPhaseDefinition(
+                    bildungsKompetenz: new LebenszielKompetenzbereichDefinition(
+                        name: KompetenzbereichEnum::BILDUNG,
+                        slots: 2,
+                    ),
+                    freizeitKompetenz: new LebenszielKompetenzbereichDefinition(
+                        name: KompetenzbereichEnum::FREIZEIT,
+                        slots: 1,
+                    ),
+                ),
+            ],
+            "Selbstversorger Kanada" => [
+                new LebenszielPhaseDefinition(
+                    bildungsKompetenz: new LebenszielKompetenzbereichDefinition(
+                        name: KompetenzbereichEnum::BILDUNG,
+                        slots: 1,
+                    ),
+                    freizeitKompetenz: new LebenszielKompetenzbereichDefinition(
+                        name: KompetenzbereichEnum::FREIZEIT,
+                        slots: 3,
+                    ),
+                ),
+            ],
+            default => [
+                new LebenszielPhaseDefinition(
+                    bildungsKompetenz: new LebenszielKompetenzbereichDefinition(
+                        name: KompetenzbereichEnum::BILDUNG,
+                        slots: 2,
+                    ),
+                    freizeitKompetenz: new LebenszielKompetenzbereichDefinition(
+                        name: KompetenzbereichEnum::FREIZEIT,
+                        slots: 1,
+                    ),
+                ),
+            ]
+        };
+        $lebensziel = new LebenszielDefinition(
+            id: $command->lebensziel,
+            phases: $phases,
+        );
+
         return GameEventsToPersist::with(
             new LebenszielChosen(
                 playerId: $command->playerId,
-                lebensziel: $command->lebensziel,
+                lebensziel: $lebensziel,
             )
         );
     }

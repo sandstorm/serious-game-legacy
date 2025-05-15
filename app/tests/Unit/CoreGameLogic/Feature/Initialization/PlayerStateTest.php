@@ -5,16 +5,13 @@ declare(strict_types=1);
 use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
+use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\LebenszielAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
-use Domain\Definitions\Kompetenzbereich\Enum\KompetenzbereichEnum;
-use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
-use Domain\Definitions\Lebensziel\Model\LebenszielKompetenzbereichDefinition;
-use Domain\Definitions\Lebensziel\Model\LebenszielPhaseDefinition;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
@@ -30,39 +27,11 @@ test('kompetenzstein state', function () {
     )->withFixedPlayerIdsForTesting($this->p1, $this->p2));
     $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
         playerId: $this->p1,
-        lebensziel: new LebenszielDefinition(
-            'Influencer',
-            phases: [
-                new LebenszielPhaseDefinition(
-                    bildungsKompetenz: new LebenszielKompetenzbereichDefinition(
-                            name: KompetenzbereichEnum::BILDUNG,
-                            slots: 2,
-                        ),
-                    freizeitKompetenz: new LebenszielKompetenzbereichDefinition(
-                        name: KompetenzbereichEnum::FREIZEIT,
-                        slots: 1,
-                    ),
-                ),
-            ]
-        ),
+        lebensziel: new LebenszielId('Influencer'),
     ));
     $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
         playerId: $this->p2,
-        lebensziel: new LebenszielDefinition(
-            'Selbstversorger Kanada',
-            phases: [
-                new LebenszielPhaseDefinition(
-                    bildungsKompetenz: new LebenszielKompetenzbereichDefinition(
-                        name: KompetenzbereichEnum::BILDUNG,
-                        slots: 1,
-                    ),
-                    freizeitKompetenz: new LebenszielKompetenzbereichDefinition(
-                        name: KompetenzbereichEnum::FREIZEIT,
-                        slots: 3,
-                    ),
-                ),
-            ]
-        ),
+        lebensziel: new LebenszielId("Selbstversorger Kanada"),
     ));
 
     $this->coreGameLogic->handle($this->gameId, new DefinePlayerOrdering(

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
+use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
@@ -62,44 +63,16 @@ test('PreGameLogic normal flow', function () {
 
     $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
         playerId: $this->p2,
-        lebensziel: new LebenszielDefinition(
-            value: 'Lebensziel XYZ',
-            phases: [
-                new LebenszielPhaseDefinition(
-                    bildungsKompetenz: new LebenszielKompetenzbereichDefinition(
-                        name: KompetenzbereichEnum::BILDUNG,
-                        slots: 2,
-                    ),
-                    freizeitKompetenz: new LebenszielKompetenzbereichDefinition(
-                        name: KompetenzbereichEnum::FREIZEIT,
-                        slots: 1,
-                    ),
-                ),
-            ],
-        ),
+        lebensziel: new LebenszielId('Lebensziel XYZ'),
     ));
     $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
         playerId: $this->p1,
-        lebensziel: new LebenszielDefinition(
-            value: 'Lebensziel AAA',
-            phases: [
-                new LebenszielPhaseDefinition(
-                    bildungsKompetenz: new LebenszielKompetenzbereichDefinition(
-                        name: KompetenzbereichEnum::BILDUNG,
-                        slots: 2,
-                    ),
-                    freizeitKompetenz: new LebenszielKompetenzbereichDefinition(
-                        name: KompetenzbereichEnum::FREIZEIT,
-                        slots: 1,
-                    ),
-                ),
-            ],
-        ),
+        lebensziel: new LebenszielId("Lebensziel AAA")
     ));
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
     expect(PreGameState::isReadyForGame($gameStream))->toBeTrue()
-        ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->lebensziel->value)->toEqual('Lebensziel AAA')
-        ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p2->value]->lebensziel->value)->toEqual('Lebensziel XYZ');
+        ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->lebensziel->id->value)->toEqual('Lebensziel AAA')
+        ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p2->value]->lebensziel->id->value)->toEqual('Lebensziel XYZ');
 });
 
 test('PreGameLogic can only start once', function () {

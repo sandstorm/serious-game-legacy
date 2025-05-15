@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
+use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
@@ -36,39 +37,11 @@ beforeEach(function () {
     ));
     $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
         playerId: $this->p2,
-        lebensziel: new LebenszielDefinition(
-            value: 'Lebensziel XYZ',
-            phases: [
-                new LebenszielPhaseDefinition(
-                    bildungsKompetenz: new LebenszielKompetenzbereichDefinition(
-                        name: KompetenzbereichEnum::BILDUNG,
-                        slots: 2,
-                    ),
-                    freizeitKompetenz: new LebenszielKompetenzbereichDefinition(
-                        name: KompetenzbereichEnum::FREIZEIT,
-                        slots: 1,
-                    ),
-                ),
-            ],
-        ),
+        lebensziel: new LebenszielId('Lebensziel XYZ'),
     ));
     $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
         playerId: $this->p1,
-        lebensziel: new LebenszielDefinition(
-            value: 'Lebensziel AAA',
-            phases: [
-                new LebenszielPhaseDefinition(
-                    bildungsKompetenz: new LebenszielKompetenzbereichDefinition(
-                        name: KompetenzbereichEnum::BILDUNG,
-                        slots: 2,
-                    ),
-                    freizeitKompetenz: new LebenszielKompetenzbereichDefinition(
-                        name: KompetenzbereichEnum::FREIZEIT,
-                        slots: 1,
-                    ),
-                ),
-            ],
-        ),
+        lebensziel: new LebenszielId('Lebensziel AAA'),
     ));
 });
 

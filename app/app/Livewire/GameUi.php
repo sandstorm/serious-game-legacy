@@ -8,6 +8,7 @@ use App\Events\GameStateUpdated;
 use App\Livewire\Forms\PreGameNameLebensziel;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
+use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
@@ -16,10 +17,6 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
-use Domain\Definitions\Kompetenzbereich\Enum\KompetenzbereichEnum;
-use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
-use Domain\Definitions\Lebensziel\Model\LebenszielKompetenzbereichDefinition;
-use Domain\Definitions\Lebensziel\Model\LebenszielPhaseDefinition;
 use Illuminate\Events\Dispatcher;
 use Livewire\Component;
 
@@ -39,7 +36,7 @@ class GameUi extends Component
         $this->email = Auth::user()->email;*/
 
         $this->nameLebenszielForm->name = PreGameState::nameForPlayerOrNull($this->gameStream, $this->myself) ?? '';
-        $this->nameLebenszielForm->lebensziel = PreGameState::lebenszielForPlayerOrNull($this->gameStream, $this->myself)->value ?? '';
+        $this->nameLebenszielForm->lebensziel = PreGameState::lebenszielForPlayerOrNull($this->gameStream, $this->myself)->id->value ?? '';
     }
 
 
@@ -57,21 +54,7 @@ class GameUi extends Component
     {
         $this->nameLebenszielForm->validate();
         $this->coreGameLogic->handle($this->gameId, new SetNameForPlayer($this->myself, $this->nameLebenszielForm->name));
-        $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen($this->myself, new LebenszielDefinition(
-            value: $this->nameLebenszielForm->lebensziel,
-            phases: [
-                new LebenszielPhaseDefinition(
-                    bildungsKompetenz: new LebenszielKompetenzbereichDefinition(
-                        name: KompetenzbereichEnum::BILDUNG,
-                        slots: 2,
-                    ),
-                    freizeitKompetenz: new LebenszielKompetenzbereichDefinition(
-                        name: KompetenzbereichEnum::FREIZEIT,
-                        slots: 1,
-                    ),
-                ),
-            ],
-        )));
+        $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen($this->myself, new LebenszielId($this->nameLebenszielForm->lebensziel)));
         $this->broadcastNotify();
     }
 

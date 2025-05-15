@@ -5,6 +5,7 @@ use Domain\CoreGameLogic\Dto\Aktion\ZeitsteinSetzen;
 use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
+use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
@@ -81,7 +82,7 @@ test('Init Lebensziel', function () {
         new LebenszielChosen(
             playerId: PlayerId::fromString('p1'),
             lebensziel: new LebenszielDefinition(
-                value: 'Lebensziel XYZ',
+                id: new LebenszielId('Lebensziel XYZ'),
                 phases: [
                     new LebenszielPhaseDefinition(
                         bildungsKompetenz: new LebenszielKompetenzbereichDefinition(
@@ -99,7 +100,7 @@ test('Init Lebensziel', function () {
         new LebenszielChosen(
             playerId: PlayerId::fromString('p2'),
             lebensziel: new LebenszielDefinition(
-                value: 'Lebensziel ABC',
+                id: new LebenszielId('Lebensziel ABC'),
                 phases: [
                     new LebenszielPhaseDefinition(
                         bildungsKompetenz: new LebenszielKompetenzbereichDefinition(
@@ -116,8 +117,8 @@ test('Init Lebensziel', function () {
         ),
     ]);
     expect(CurrentPlayerAccessor::forStream($stream)->value)->toBe('p1');
-    expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p1'))->value ?? null)->toBe('Lebensziel XYZ');
-    expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p2'))->value ?? null)->toBe('Lebensziel ABC');
+    expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p1'))->id->value ?? null)->toBe('Lebensziel XYZ');
+    expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p2'))->id->value ?? null)->toBe('Lebensziel ABC');
     expect(LebenszielAccessor::forStream($stream)->forPlayer(PlayerId::fromString('p3')))->toBe(null);
 });
 

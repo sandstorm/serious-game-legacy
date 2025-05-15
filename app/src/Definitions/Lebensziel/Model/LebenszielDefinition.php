@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Domain\Definitions\Lebensziel\Model;
 
+use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
+
 readonly class LebenszielDefinition implements \JsonSerializable
 {
     // TODO phases, goals, etc
     /**
-     * @param string $value
+     * @param LebenszielId $id
      * @param LebenszielPhaseDefinition[] $phases
      */
     public function __construct(
-        public string $value,
+        public LebenszielId $id,
         public array $phases,
     ) {
     }
@@ -22,7 +24,7 @@ readonly class LebenszielDefinition implements \JsonSerializable
         $phases = $this->phases;
         $phases[$index] = $phase;
         return new self(
-            value: $this->value,
+            id: $this->id,
             phases: $phases,
         );
     }
@@ -38,14 +40,14 @@ readonly class LebenszielDefinition implements \JsonSerializable
             $phases[] = LebenszielPhaseDefinition::fromArray($phase);
         }
         return new self(
-            value: $values['value'],
+            id: new LebenszielId($values['value']),
             phases: $phases,
         );
     }
 
     public function __toString(): string
     {
-        return '[Lebensziel: '.$this->value.']';
+        return '[Lebensziel: '.$this->id->value.']';
     }
 
     /**
@@ -54,7 +56,7 @@ readonly class LebenszielDefinition implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'value' => $this->value,
+            'value' => $this->id->jsonSerialize(),
             'phases' => $this->phases
         ];
     }
