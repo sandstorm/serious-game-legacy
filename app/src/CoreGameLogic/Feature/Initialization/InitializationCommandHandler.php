@@ -21,9 +21,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
-use Domain\Definitions\Kompetenzbereich\Enum\KompetenzbereichEnum;
 use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
-use Domain\Definitions\Lebensziel\Model\LebenszielKompetenzbereichDefinition;
 use Domain\Definitions\Lebensziel\Model\LebenszielPhaseDefinition;
 
 /**
@@ -105,11 +103,11 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
     {
 
         if (!PreGameState::isReadyForGame($gameState)) {
-            throw new \RuntimeException('not ready for game', 1746713490);
+            throw new \RuntimeException('not ready for game', 1746713491);
         }
 
         if (GamePhaseState::isInGamePhase($gameState)) {
-            throw new \RuntimeException('game already started', 1746713490);
+            throw new \RuntimeException('game already started', 1746713492);
         }
 
         return GameEventsToPersist::with(
@@ -122,7 +120,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
     private function handleStartPreGame(StartPreGame $command, GameEvents $gameState): GameEventsToPersist
     {
         if (count($gameState) > 0) {
-            throw new \RuntimeException('Game has already started', 1746713490);
+            throw new \RuntimeException('Game has already started', 1746713493);
         }
 
         if (count($command->fixedPlayerIdsForTesting) > 0) {
