@@ -11,7 +11,12 @@
     padding: var(--spacing-100);
     border: 1px solid #ccc;
 
-    &:hover {
+    &:not(.lebensziel--is-selected):hover {
         background-color: #f0f0f0;
     }
+}
+
+.lebensziel--is-selected {
+    background-color: var(--color-primary);
+    color: var(--color-primary-fg);
 }

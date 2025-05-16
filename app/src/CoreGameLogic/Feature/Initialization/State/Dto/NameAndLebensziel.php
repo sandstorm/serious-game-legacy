@@ -3,7 +3,7 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Initialization\State\Dto;
 
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
-use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
+use Domain\Definitions\Lebensziel\LebenszielDefinition;
 
 readonly final class NameAndLebensziel
 {

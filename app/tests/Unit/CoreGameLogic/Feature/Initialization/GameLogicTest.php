@@ -11,10 +11,6 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\Command\KonjunkturzyklusWechseln;
-use Domain\Definitions\Kompetenzbereich\Enum\KompetenzbereichEnum;
-use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
-use Domain\Definitions\Lebensziel\Model\LebenszielKompetenzbereichDefinition;
-use Domain\Definitions\Lebensziel\Model\LebenszielPhaseDefinition;
 use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\KonjunkturzykluswechselCommandHandler;
 use Domain\Definitions\Konjunkturzyklus\KonjunkturzyklusFinder;
 
@@ -37,11 +33,11 @@ beforeEach(function () {
     ));
     $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
         playerId: $this->p2,
-        lebensziel: new LebenszielId('Lebensziel XYZ'),
+        lebensziel: new LebenszielId(1),
     ));
     $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen(
         playerId: $this->p1,
-        lebensziel: new LebenszielId('Lebensziel AAA'),
+        lebensziel: new LebenszielId(2),
     ));
 });
 
