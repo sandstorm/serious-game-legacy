@@ -20,21 +20,12 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\ModifierCalculator;
 use Domain\Definitions\Kompetenzbereich\Enum\KompetenzbereichEnum;
+use Domain\Definitions\Pile\Enum\PileEnum;
 use Domain\Definitions\Pile\PileFinder;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
     $this->gameId = GameId::fromString('game1');
-    $this->cardsBildung = PileFinder::getCardsForBildungAndKarriere();
-    $this->pileIdBildung = new PileId(KompetenzbereichEnum::BILDUNG);
-    $this->cardsInvest = PileFinder::getCardsForInvestition();
-    $this->pileIdInvest = new PileId(KompetenzbereichEnum::INVESTITIONEN);
-    $this->coreGameLogic->handle(
-        $this->gameId,
-        ShuffleCards::create()->withFixedCardIdOrderForTesting(
-            new Pile( pileId: $this->pileIdBildung, cards: $this->cardsBildung),
-            new Pile( pileId: $this->pileIdInvest, cards: $this->cardsInvest),
-        ));
 });
 
 test('welche Spielzüge hat player zur Verfügung', function () {
@@ -48,14 +39,25 @@ test('welche Spielzüge hat player zur Verfügung', function () {
         ]
     ));
 
+    $pileIdBildung = new PileId(PileEnum::BILDUNG_PHASE_1);
+    $cardsBildung = PileFinder::getCardsIdsForPile($pileIdBildung);
+    $this->coreGameLogic->handle(
+        $this->gameId,
+        ShuffleCards::create()->withFixedCardIdOrderForTesting(
+            new Pile( pileId: $pileIdBildung, cards: $cardsBildung),
+        ));
+
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
 
     expect(CurrentPlayerAccessor::forStream($stream)->value)->toBe('p1')
         ->and(AktionsCalculator::forStream($stream)->availableActionsForPlayer($p1)[0])->toBeInstanceOf(ZeitsteinSetzen::class);
     // TODO: VALUE OBJECTS ETC
 
-    $this->coreGameLogic->handle($this->gameId, new SkipCard($p1, $this->cardsBildung[0], $this->pileIdBildung));
-    $this->coreGameLogic->handle($this->gameId, new ActivateCard($p1, $this->cardsBildung[1], $this->pileIdBildung, new EreignisId("EVENT:OmaKrank")));
+    $this->coreGameLogic->handle($this->gameId, new SkipCard($p1, array_shift($cardsBildung), $pileIdBildung));
+    $this->coreGameLogic->handle(
+        $this->gameId,
+        ActivateCard::create($p1, array_shift($cardsBildung), $pileIdBildung)
+            ->withEreignis(new EreignisId("EVENT:OmaKrank")));
     $this->coreGameLogic->handle($this->gameId, new SpielzugAbschliessen($p1));
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
 

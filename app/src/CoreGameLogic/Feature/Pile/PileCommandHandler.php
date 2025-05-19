@@ -13,7 +13,7 @@ use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Pile\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
-use Domain\Definitions\Kompetenzbereich\Enum\KompetenzbereichEnum;
+use Domain\Definitions\Pile\Enum\PileEnum;
 use Domain\Definitions\Pile\PileFinder;
 use Random\Randomizer;
 
@@ -53,25 +53,16 @@ final readonly class PileCommandHandler implements CommandHandlerInterface
             );
         }
 
+        $piles = [];
+        foreach (PileEnum::cases() as $case) {
+            $piles[] = new Pile(
+                pileId: new PileId($case),
+                cards: $this->shuffleCards(PileFinder::getCardsIdsForPile(new PileId($case)))
+            );
+        }
+
         return GameEventsToPersist::with(
-            new CardsWereShuffled([
-                new Pile (
-                    pileId: new PileId(KompetenzbereichEnum::BILDUNG),
-                    cards: $this->shuffleCards(PileFinder::getCardsForBildungAndKarriere()),
-                ),
-                new Pile (
-                    pileId: new PileId(KompetenzbereichEnum::FREIZEIT),
-                    cards: $this->shuffleCards(PileFinder::getCardsForSozialesAndFreizeit()),
-                ),
-                new Pile (
-                    pileId: new PileId(KompetenzbereichEnum::ERWEBSEINKOMMEN),
-                    cards: $this->shuffleCards(PileFinder::getCardsForErwerbseinkommen()),
-                ),
-                new Pile (
-                    pileId: new PileId(KompetenzbereichEnum::INVESTITIONEN),
-                    cards: $this->shuffleCards(PileFinder::getCardsForInvestition()),
-                ),
-            ])
+            new CardsWereShuffled($piles)
         );
     }
 }
