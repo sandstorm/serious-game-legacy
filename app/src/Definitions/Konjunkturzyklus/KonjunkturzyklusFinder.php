@@ -186,7 +186,7 @@ dazu aufgerufen, bei den Räumungsarbeiten zu helfen (Kosten = 1 Zeitstein). All
                 return $konjunkturzyklus;
             }
         }
-        throw new \RuntimeException('Konjunkturzyklus not found', 1747148685);
+        throw new \InvalidArgumentException('Konjunkturzyklus not found');
     }
 
 }

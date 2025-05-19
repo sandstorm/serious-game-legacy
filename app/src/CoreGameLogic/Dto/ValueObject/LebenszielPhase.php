@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Dto\ValueObject;
 
-use Domain\Definitions\Lebensziel\Model\LebenszielPhaseDefinition;
+use Domain\Definitions\Lebensziel\LebenszielPhaseDefinition;
 
 class LebenszielPhase implements \JsonSerializable
 {

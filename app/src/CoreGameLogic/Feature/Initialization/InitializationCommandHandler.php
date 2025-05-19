@@ -11,18 +11,17 @@ use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
-use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
+use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
-use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
-use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
+use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielWasSelected;
+use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
-use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
-use Domain\Definitions\Lebensziel\Model\LebenszielPhaseDefinition;
+use Domain\Definitions\Lebensziel\LebenszielFinder;
 
 /**
  * @internal no public API, because commands are no extension points. ALWAYS USE {@see ForCoreGameLogic::handle()} to trigger commands.
@@ -32,7 +31,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
     public function canHandle(CommandInterface $command): bool
     {
         return $command instanceof DefinePlayerOrdering
-            || $command instanceof LebenszielAuswaehlen
+            || $command instanceof SelectLebensziel
             || $command instanceof StartGame
             || $command instanceof StartPreGame
             || $command instanceof SetNameForPlayer;
@@ -43,7 +42,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
         /** @phpstan-ignore-next-line */
         return match ($command::class) {
             DefinePlayerOrdering::class => $this->handleDefinePlayerOrdering($command, $gameState),
-            LebenszielAuswaehlen::class => $this->handleLebenszielAuswaehlen($command, $gameState),
+            SelectLebensziel::class => $this->handleLebenszielAuswaehlen($command, $gameState),
             StartGame::class => $this->handleStartGame($command, $gameState),
 
             StartPreGame::class => $this->handleStartPreGame($command, $gameState),
@@ -58,41 +57,17 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
         );
     }
 
-    private function handleLebenszielAuswaehlen(LebenszielAuswaehlen $command, GameEvents $gameState): GameEventsToPersist
+    private function handleLebenszielAuswaehlen(SelectLebensziel $command, GameEvents $gameState): GameEventsToPersist
     {
         $lebensziel = PreGameState::lebenszielForPlayerOrNull($gameState, $command->playerId);
         if ($lebensziel !== null) {
             throw new \RuntimeException('Player has already selected a Lebensziel', 1746713490);
         }
 
-        // TODO: use repository
-        $phases = match ($command->lebensziel->value) {
-            "Influencer" => [
-                new LebenszielPhaseDefinition(
-                    bildungsKompetenzSlots: 2,
-                    freizeitKompetenzSlots: 1,
-                ),
-            ],
-            "Selbstversorger Kanada" => [
-                new LebenszielPhaseDefinition(
-                    bildungsKompetenzSlots: 1,
-                    freizeitKompetenzSlots: 3,
-                ),
-            ],
-            default => [
-                new LebenszielPhaseDefinition(
-                    bildungsKompetenzSlots: 2,
-                    freizeitKompetenzSlots: 1,
-                ),
-            ]
-        };
-        $lebensziel = new LebenszielDefinition(
-            id: $command->lebensziel,
-            phaseDefinitions: $phases,
-        );
+        $lebensziel = LebenszielFinder::findLebenszielById($command->lebensziel->value);
 
         return GameEventsToPersist::with(
-            new LebenszielChosen(
+            new LebenszielWasSelected(
                 playerId: $command->playerId,
                 lebensziel: $lebensziel,
             )

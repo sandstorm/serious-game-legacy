@@ -6,9 +6,9 @@ namespace Domain\CoreGameLogic\Feature\Initialization\Event;
 
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
-use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
+use Domain\Definitions\Lebensziel\LebenszielDefinition;
 
-final readonly class LebenszielChosen implements GameEventInterface
+final readonly class LebenszielWasSelected implements GameEventInterface
 {
     public function __construct(
         public PlayerId   $playerId,

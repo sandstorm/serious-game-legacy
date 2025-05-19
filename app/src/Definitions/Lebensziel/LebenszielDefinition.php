@@ -2,25 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Domain\Definitions\Lebensziel\Model;
+namespace Domain\Definitions\Lebensziel;
 
-use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
 
 readonly class LebenszielDefinition implements \JsonSerializable
 {
-    // TODO phases, goals, etc
     /**
-     * @param LebenszielId $id
+     * @param int $id
+     * @param string $name
      * @param LebenszielPhaseDefinition[] $phaseDefinitions
      */
     public function __construct(
-        public LebenszielId $id,
+        public int $id,
+        public string $name,
         public array $phaseDefinitions,
     ) {
     }
 
     /**
-     * @param array{value: string, phases: array<string, mixed>} $values
+     * @param array{id: int, name: string, phases: array<string, mixed>} $values
      * @return self
      */
     public static function fromArray(array $values): self
@@ -30,23 +30,25 @@ readonly class LebenszielDefinition implements \JsonSerializable
             $phases[] = LebenszielPhaseDefinition::fromArray($phase);
         }
         return new self(
-            id: new LebenszielId($values['value']),
+            id: $values['id'],
+            name: $values['name'],
             phaseDefinitions: $phases,
         );
     }
 
     public function __toString(): string
     {
-        return '[Lebensziel: '.$this->id->value.']';
+        return '[Lebensziel: '.$this->name.']';
     }
 
     /**
-     * @return array{value: string, phases: array<string, mixed>}
+     * @return array{id: int, name: string, phases: array<LebenszielPhaseDefinition>}
      */
     public function jsonSerialize(): array
     {
         return [
-            'value' => $this->id->jsonSerialize(),
+            'id' => $this->id,
+            'name' => $this->name,
             'phases' => $this->phaseDefinitions
         ];
     }

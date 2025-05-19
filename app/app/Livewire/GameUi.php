@@ -11,12 +11,13 @@ use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\Feature\Initialization\Command\LebenszielAuswaehlen;
+use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
+use Domain\Definitions\Lebensziel\LebenszielFinder;
 use Illuminate\Events\Dispatcher;
 use Livewire\Component;
 
@@ -29,6 +30,8 @@ class GameUi extends Component
     private ForCoreGameLogic $coreGameLogic;
     private GameEvents $gameStream;
 
+    public PreGameNameLebensziel $nameLebenszielForm;
+
     public function mount(): void
     {
         /*$this->name = Auth::user()->name;
@@ -36,35 +39,7 @@ class GameUi extends Component
         $this->email = Auth::user()->email;*/
 
         $this->nameLebenszielForm->name = PreGameState::nameForPlayerOrNull($this->gameStream, $this->myself) ?? '';
-        $this->nameLebenszielForm->lebensziel = PreGameState::lebenszielForPlayerOrNull($this->gameStream, $this->myself)->id->value ?? '';
-    }
-
-    public function startGame(): void
-    {
-        $this->coreGameLogic->handle($this->gameId, new StartGame(
-            playerOrdering: PreGameState::playerIds($this->gameStream),
-        ));
-        $this->broadcastNotify();
-    }
-
-    public PreGameNameLebensziel $nameLebenszielForm;
-
-    public function preGameSetNameAndLebensziel(): void
-    {
-        $this->nameLebenszielForm->validate();
-        $this->coreGameLogic->handle($this->gameId, new SetNameForPlayer($this->myself, $this->nameLebenszielForm->name));
-        $this->coreGameLogic->handle($this->gameId, new LebenszielAuswaehlen($this->myself, new LebenszielId($this->nameLebenszielForm->lebensziel)));
-        $this->broadcastNotify();
-    }
-
-    public function selectLebensZiel(String $lebensziel): void
-    {
-        $this->nameLebenszielForm->lebensziel = $lebensziel;
-    }
-
-    public function gameStream(): GameEvents
-    {
-        return $this->gameStream;
+        $this->nameLebenszielForm->lebensziel = PreGameState::lebenszielForPlayerOrNull($this->gameStream, $this->myself)->id ?? null;
     }
 
     public function boot(Dispatcher $eventDispatcher, ForCoreGameLogic $coreGameLogic): void
@@ -72,23 +47,6 @@ class GameUi extends Component
         $this->eventDispatcher = $eventDispatcher;
         $this->coreGameLogic = $coreGameLogic;
         $this->gameStream = $this->coreGameLogic->getGameStream($this->gameId);
-    }
-
-    public function currentPlayer(): PlayerId
-    {
-        return CurrentPlayerAccessor::forStream($this->gameStream);
-    }
-
-    public function render(): \Illuminate\View\View
-    {
-        return view('livewire.game-ui');
-    }
-
-    public function spielzugAbschliessen(): void
-    {
-        $this->coreGameLogic->handle($this->gameId, new SpielzugAbschliessen($this->myself));
-
-        $this->broadcastNotify();
     }
 
     /**
@@ -99,6 +57,55 @@ class GameUi extends Component
         return [
             "echo:game.{$this->gameId->value},GameStateUpdated" => 'notifyGameStateUpdated',
         ];
+    }
+
+    public function render(): \Illuminate\View\View
+    {
+        $lebensziele = LebenszielFinder::getAllLebensziele();
+
+        return view('livewire.game-ui', [
+            'lebensziele' => $lebensziele
+        ]);
+    }
+
+    public function startGame(): void
+    {
+        $this->coreGameLogic->handle($this->gameId, new StartGame(
+            playerOrdering: PreGameState::playerIds($this->gameStream),
+        ));
+        $this->broadcastNotify();
+    }
+
+    public function preGameSetNameAndLebensziel(): void
+    {
+        $this->nameLebenszielForm->validate();
+        $this->coreGameLogic->handle($this->gameId, new SetNameForPlayer($this->myself, $this->nameLebenszielForm->name));
+        if ($this->nameLebenszielForm->lebensziel !== null) {
+            $this->coreGameLogic->handle($this->gameId, new SelectLebensziel($this->myself, new LebenszielId($this->nameLebenszielForm->lebensziel)));
+        }
+        $this->broadcastNotify();
+    }
+
+    public function selectLebensZiel(int $lebensziel): void
+    {
+        $this->nameLebenszielForm->lebensziel = $lebensziel;
+    }
+
+    public function gameStream(): GameEvents
+    {
+        return $this->gameStream;
+    }
+
+    public function currentPlayer(): PlayerId
+    {
+        return CurrentPlayerAccessor::forStream($this->gameStream);
+    }
+
+    public function spielzugAbschliessen(): void
+    {
+        $this->coreGameLogic->handle($this->gameId, new SpielzugAbschliessen($this->myself));
+
+        $this->broadcastNotify();
     }
 
     public function notifyGameStateUpdated(): void

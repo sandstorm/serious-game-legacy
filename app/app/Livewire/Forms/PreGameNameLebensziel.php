@@ -10,6 +10,6 @@ class PreGameNameLebensziel extends Form
     #[Validate('required|min:2')]
     public string $name = '';
 
-    #[Validate('required')]
-    public string $lebensziel = '';
+    #[Validate('required', message: 'Bitte Lebensziel auswählen')]
+    public ?int $lebensziel = null;
 }

@@ -7,11 +7,11 @@ namespace Domain\CoreGameLogic\Feature\Initialization\State;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
-use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielChosen;
+use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\Dto\NameAndLebensziel;
-use Domain\Definitions\Lebensziel\Model\LebenszielDefinition;
+use Domain\Definitions\Lebensziel\LebenszielDefinition;
 
 class PreGameState
 {
@@ -69,7 +69,7 @@ class PreGameState
     public static function lebenszielForPlayerOrNull(GameEvents $gameStream, PlayerId $playerId): ?LebenszielDefinition
     {
         // @phpstan-ignore property.notFound
-        return $gameStream->findLastOrNullWhere(fn($e) => $e instanceof LebenszielChosen && $e->playerId->equals($playerId))?->lebensziel;
+        return $gameStream->findLastOrNullWhere(fn($e) => $e instanceof LebenszielWasSelected && $e->playerId->equals($playerId))?->lebensziel;
     }
 
     public static function nameForPlayer(GameEvents $gameStream, PlayerId $playerId): string
