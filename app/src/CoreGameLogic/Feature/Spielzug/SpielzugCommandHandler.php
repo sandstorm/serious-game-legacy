@@ -92,7 +92,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
     {
         $currentPlayer = CurrentPlayerAccessor::forStream($gameState);
         if (!$currentPlayer->equals($command->player)) {
-            throw new \RuntimeException('Only the current player can complete a turn', 1649582779);
+            throw new \RuntimeException('Only the current player can skip a card', 1649582789);
         }
 
         $topCardOnPile = PileState::topCardForPile($gameState, $command->pile);
