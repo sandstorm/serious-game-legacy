@@ -16,7 +16,7 @@ use Domain\CoreGameLogic\Feature\Pile\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
-use Domain\Definitions\Kompetenzbereich\Enum\KompetenzbereichEnum;
+use Domain\Definitions\Pile\Enum\PileEnum;
 use Domain\Definitions\Pile\PileFinder;
 
 beforeEach(function () {
@@ -25,10 +25,10 @@ beforeEach(function () {
     $this->p1 = PlayerId::fromString('p1');
     $this->p2 = PlayerId::fromString('p2');
 
-    $this->cardsBildung = PileFinder::getCardsForBildungAndKarriere();
-    $this->pileIdBildung = new PileId(KompetenzbereichEnum::BILDUNG);
-    $this->cardsInvest = PileFinder::getCardsForInvestition();
-    $this->pileIdInvest = new PileId(KompetenzbereichEnum::INVESTITIONEN);
+    $this->pileIdBildung = new PileId(PileEnum::BILDUNG_PHASE_1);
+    $this->cardsBildung = PileFinder::getCardsIdsForPile($this->pileIdBildung);
+    $this->pileIdFreizeit = new PileId(PileEnum::FREIZEIT_PHASE_1);
+    $this->cardsFreizeit = PileFinder::getCardsIdsForPile($this->pileIdFreizeit);
 
     $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
         numberOfPlayers: 2,
@@ -58,14 +58,14 @@ beforeEach(function () {
         $this->gameId,
         ShuffleCards::create()->withFixedCardIdOrderForTesting(
             new Pile( pileId: $this->pileIdBildung, cards: $this->cardsBildung),
-            new Pile( pileId: $this->pileIdInvest, cards: $this->cardsInvest),
+            new Pile( pileId: $this->pileIdFreizeit, cards: $this->cardsFreizeit),
         ));
 });
 
 test('Piles can be shuffled', function () {
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
     expect(PileState::topCardForPile($stream, $this->pileIdBildung)->value)->toBe($this->cardsBildung[0]->value)
-        ->and(PileState::topCardForPile($stream, $this->pileIdInvest)->value)->toBe($this->cardsInvest[0]->value);
+        ->and(PileState::topCardForPile($stream, $this->pileIdFreizeit)->value)->toBe($this->cardsFreizeit[0]->value);
 });
 
 test('Cards can be drawn from piles', function () {
@@ -76,11 +76,11 @@ test('Cards can be drawn from piles', function () {
 
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
     expect(PileState::topCardForPile($stream, $this->pileIdBildung)->value)->toBe($this->cardsBildung[1]->value)
-        ->and(PileState::topCardForPile($stream, $this->pileIdInvest)->value)->toBe($this->cardsInvest[0]->value);
+        ->and(PileState::topCardForPile($stream, $this->pileIdFreizeit)->value)->toBe($this->cardsFreizeit[0]->value);
 
     $this->coreGameLogic->handle(
         $this->gameId,
-        new ActivateCard($this->p1, $this->cardsBildung[1], $this->pileIdBildung)
+        ActivateCard::create($this->p1, $this->cardsBildung[1], $this->pileIdBildung)
     );
 
     $this->coreGameLogic->handle(
@@ -90,21 +90,21 @@ test('Cards can be drawn from piles', function () {
 
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
     expect(PileState::topCardForPile($stream, $this->pileIdBildung)->value)->toBe($this->cardsBildung[2]->value)
-        ->and(PileState::topCardForPile($stream, $this->pileIdInvest)->value)->toBe($this->cardsInvest[0]->value);
+        ->and(PileState::topCardForPile($stream, $this->pileIdFreizeit)->value)->toBe($this->cardsFreizeit[0]->value);
 
     $this->coreGameLogic->handle(
         $this->gameId,
-        new ActivateCard($this->p2, $this->cardsInvest[0], $this->pileIdInvest)
+        ActivateCard::create($this->p2, $this->cardsFreizeit[0], $this->pileIdFreizeit)
     );
 
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
     expect(PileState::topCardForPile($stream, $this->pileIdBildung)->value)->toBe($this->cardsBildung[2]->value)
-        ->and(PileState::topCardForPile($stream, $this->pileIdInvest)->value)->toBe($this->cardsInvest[1]->value);
+        ->and(PileState::topCardForPile($stream, $this->pileIdFreizeit)->value)->toBe($this->cardsFreizeit[1]->value);
 });
 
 test('Shuffling resets draw counter', function () {
     $this->coreGameLogic->handle($this->gameId, new SkipCard($this->p1, $this->cardsBildung[0], $this->pileIdBildung));
-    $this->coreGameLogic->handle($this->gameId, new ActivateCard($this->p1, $this->cardsBildung[1], $this->pileIdBildung));
+    $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->p1, $this->cardsBildung[1], $this->pileIdBildung));
 
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
     expect(PileState::topCardForPile($stream, $this->pileIdBildung)->value)->toBe($this->cardsBildung[2]->value);
@@ -113,7 +113,7 @@ test('Shuffling resets draw counter', function () {
         $this->gameId,
         ShuffleCards::create()->withFixedCardIdOrderForTesting(
             new Pile( pileId: $this->pileIdBildung, cards: array_reverse($this->cardsBildung)),
-            new Pile( pileId: $this->pileIdInvest, cards: $this->cardsInvest),
+            new Pile( pileId: $this->pileIdFreizeit, cards: $this->cardsFreizeit),
         ));
 
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
@@ -126,10 +126,10 @@ test('Can only skip top card of pile', function () {
 })->throws(\RuntimeException::class, 'Only the top card of the pile can be skipped', 1747325793);
 
 test('Can only activate top card of pile', function () {
-    $this->coreGameLogic->handle($this->gameId, new ActivateCard($this->p1, $this->cardsBildung[1], $this->pileIdBildung));
+    $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->p1, $this->cardsBildung[1], $this->pileIdBildung));
 })->throws(\RuntimeException::class, 'Only the top card of the pile can be activated', 1747326086);
 
 test('Cannot activate a card twice', function () {
-    $this->coreGameLogic->handle($this->gameId, new ActivateCard($this->p1, $this->cardsBildung[0], $this->pileIdBildung));
-    $this->coreGameLogic->handle($this->gameId, new ActivateCard($this->p1, $this->cardsBildung[0], $this->pileIdBildung));
+    $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->p1, $this->cardsBildung[0], $this->pileIdBildung));
+    $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->p1, $this->cardsBildung[0], $this->pileIdBildung));
 })->throws(\RuntimeException::class, 'Only the top card of the pile can be activated', 1747326086);

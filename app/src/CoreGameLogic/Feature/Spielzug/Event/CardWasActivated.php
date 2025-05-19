@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
+use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\ModifierCollection;
 use Domain\CoreGameLogic\Dto\ValueObject\PileId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
@@ -12,14 +13,14 @@ use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Pile\Event\Behavior\DrawsCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
-use Domain\Definitions\Cards\Model\CardDefinition;
 
 final readonly class CardWasActivated implements ProvidesModifiers, ProvidesResourceChanges, DrawsCard, GameEventInterface
 {
     public function __construct(
-        public PlayerId $player,
-        public CardDefinition $card,
-        public PileId $pile,
+        public PlayerId $playerId,
+        public PileId $pileId,
+        public CardId $cardId,
+        public ResourceChanges $resourceChanges
     ) {
     }
 
@@ -30,8 +31,8 @@ final readonly class CardWasActivated implements ProvidesModifiers, ProvidesReso
 
     public function getResourceChanges(PlayerId $playerId): ResourceChanges
     {
-        if ($this->player->equals($playerId)) {
-            return $this->card->resourceChanges;
+        if ($this->playerId->equals($playerId)) {
+            return $this->resourceChanges;
         }
         return new ResourceChanges();
     }
@@ -39,24 +40,25 @@ final readonly class CardWasActivated implements ProvidesModifiers, ProvidesReso
     public static function fromArray(array $values): GameEventInterface
     {
         return new self(
-            player: PlayerId::fromString($values['player']),
-            //TODO: replace with CardId, when we have a CardRepository or similar
-            card: CardDefinition::fromString($values['card']),
-            pile: PileId::fromString($values['pile'])
+            playerId: PlayerId::fromString($values['playerId']),
+            pileId: PileId::fromString($values['pileId']),
+            cardId: new CardId($values['cardId']),
+            resourceChanges: ResourceChanges::fromArray($values['resourceChanges']),
         );
     }
 
     public function jsonSerialize(): array
     {
         return [
-            'player' => $this->player,
-            'card' => $this->card->jsonSerialize(),
-            'pile' => $this->pile,
+            'playerId' => $this->playerId,
+            'pileId' => $this->pileId,
+            'cardId' => $this->cardId->jsonSerialize(),
+            'resourceChanges' => $this->resourceChanges,
         ];
     }
 
     public function getPileId(): PileId
     {
-        return $this->pile;
+        return $this->pileId;
     }
 }

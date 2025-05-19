@@ -18,6 +18,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasCompleted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\TriggeredEreignis;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
+use Domain\Definitions\Cards\CardFinder;
 use Domain\Definitions\Cards\Model\CardDefinition;
 
 /**
@@ -44,6 +45,8 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
 
     private function handleActivateCard(ActivateCard $command, GameEvents $gameState): GameEventsToPersist
     {
+        // TODO use up one Zeitstein when activating a card?
+
         $currentPlayer = CurrentPlayerAccessor::forStream($gameState);
         if (!$currentPlayer->equals($command->player)) {
             throw new \RuntimeException('Only the current player can complete a turn', 1649582779);
@@ -54,29 +57,12 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             throw new \RuntimeException('Only the top card of the pile can be activated', 1747326086);
         }
 
-        // TODO: replace with repository
-        $card = match ($command->cardId->value) {
-            "neues Hobby" => new CardDefinition(
-                id: $command->cardId,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: -500,
-                    zeitsteineChange: -1,
-                ),
-            ),
-            "sprachkurs" => new CardDefinition(
-                id: $command->cardId,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: -100,
-                    bildungKompetenzsteinChange: +1,
-                ),
-            ),
-            default => new CardDefinition(
-                id: $command->cardId,
-                resourceChanges: new ResourceChanges(),
-            )
-        };
+        $card = $command->fixedCardDefinitionForTesting !== null
+            ? $command->fixedCardDefinitionForTesting
+            : CardFinder::getCardById($command->cardId);
+
         $events = GameEventsToPersist::with(
-            new CardWasActivated($command->player, $card, $command->pile)
+            new CardWasActivated($command->player, $command->pile, $card->id, $card->resourceChanges)
         );
 
         if ($command->attachedEreignis !== null) {
