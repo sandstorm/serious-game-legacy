@@ -6,6 +6,7 @@ namespace App\Livewire;
 
 use App\Events\GameStateUpdated;
 use App\Livewire\Forms\PreGameNameLebensziel;
+use App\Livewire\Traits\PlayerDetailsModalTrait;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
@@ -23,6 +24,8 @@ use Livewire\Component;
 
 class GameUi extends Component
 {
+    use PlayerDetailsModalTrait;
+
     // Not the current player, but the player connected to THIS SESSION
     public PlayerId $myself;
     public GameId $gameId;
@@ -91,12 +94,14 @@ class GameUi extends Component
         $this->nameLebenszielForm->lebensziel = $lebensziel;
     }
 
+
+
     public function gameStream(): GameEvents
     {
         return $this->gameStream;
     }
 
-    public function currentPlayer(): PlayerId
+    public function getCurrentPlayer(): PlayerId
     {
         return CurrentPlayerAccessor::forStream($this->gameStream);
     }

@@ -10,11 +10,11 @@
       <sourceFolder url="file://$MODULE_DIR$/app/tests" isTestSource="true" packagePrefix="Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/app/Build/Behat/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/app/DistributionPackages/eventstore-laraveladapter/src" isTestSource="false" packagePrefix="Sandstorm\EventStore\LaravelAdapter\" />
+      <sourceFolder url="file://$MODULE_DIR$/app/DistributionPackages/eventstore-laraveladapter/src" isTestSource="false" packagePrefix="Sandstorm\EventStore\LaravelAdapter\" />
       <sourceFolder url="file://$MODULE_DIR$/app/DistributionPackages/eventstore-laraveladapter/tests" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/app/DistributionPackages/eventstore-laraveladapter/tests" isTestSource="true" packagePrefix="Sandstorm\EventStore\LaravelAdapter\Tests\" />
-      <sourceFolder url="file://$MODULE_DIR$/app/DistributionPackages/eventstore-laraveladapter/vendor/neos/eventstore/tests" isTestSource="true" packagePrefix="Neos\EventStore\Tests\" />
-      <sourceFolder url="file://$MODULE_DIR$/app/DistributionPackages/eventstore-laraveladapter/src" isTestSource="false" packagePrefix="Sandstorm\EventStore\LaravelAdapter\" />
       <sourceFolder url="file://$MODULE_DIR$/app/DistributionPackages/eventstore-laraveladapter/tests" isTestSource="true" packagePrefix="Sandstorm\EventStore\LaravelAdapter\Tests\" />
+      <sourceFolder url="file://$MODULE_DIR$/app/DistributionPackages/eventstore-laraveladapter/vendor/neos/eventstore/tests" isTestSource="true" packagePrefix="Neos\EventStore\Tests\" />
       <sourceFolder url="file://$MODULE_DIR$/app/DistributionPackages/eventstore-laraveladapter/vendor/neos/eventstore/tests" isTestSource="true" packagePrefix="Neos\EventStore\Tests\" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/ralphjsmit/laravel-filament-record-finder" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/ralphjsmit/packages" />
@@ -221,6 +221,7 @@
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/neos/eventstore" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/sandstorm/eventstore-laraveladapter" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/_laravel_idea" />
+      <excludeFolder url="file://$MODULE_DIR$/app/public" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

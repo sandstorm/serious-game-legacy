@@ -2,7 +2,7 @@
 
 <div class="lebensziel">
     <header>
-        Dein Lebensziel: {{$lebensziel->name}}
+        Lebensziel: {{$lebensziel->name}}
     </header>
 
     <ul class="lebensziel__phasen">
@@ -30,8 +30,6 @@
                         </div>
                     </div>
                 </div>
-
-
 
                 @if($phase->invenstition > 0)
                 <div>
