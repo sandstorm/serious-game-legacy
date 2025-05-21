@@ -5,6 +5,7 @@
 @import "./app/layout.css";
 @import "./app/button.css";
 @import "./app/form.css";
+@import "./app/modal.css";
 
 /* NOTE: Components are included automatically via Vite, see app.js */
 

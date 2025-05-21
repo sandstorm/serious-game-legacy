@@ -1,0 +1,17 @@
+.gameboard {
+
+
+}
+
+.gameboard__header {
+    display: flex;
+    flex-direction: row;
+    align-items:  center;
+    gap: var(--spacing-100);
+    padding-top: var(--spacing-100);
+    padding-bottom: var(--spacing-100);
+
+    > h2 {
+        margin: 0;
+    }
+}

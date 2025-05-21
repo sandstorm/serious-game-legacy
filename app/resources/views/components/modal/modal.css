@@ -1,0 +1,56 @@
+.modal {
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal__content {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-primary-fg);
+    margin: auto; /* 15% from the top and centered */
+    border: 1px solid var(--color-grey);
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 800px;
+    max-height: 80%;
+
+    > header {
+        flex-shrink: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-inline: var(--spacing-100);
+        padding-top: var(--spacing-50);
+        padding-bottom: var(--spacing-50);
+
+        border-bottom: 1px solid var(--color-grey);
+
+        font-size: 1.5rem;
+    }
+
+    > footer {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding-inline: var(--spacing-100);
+        padding-top: var(--spacing-50);
+        padding-bottom: var(--spacing-50);
+
+        border-top: 1px solid var(--color-grey);
+    }
+}
+
+.modal__body {
+    padding: var(--spacing-100);
+    overflow-y: auto;
+    max-height: 70%;
+}

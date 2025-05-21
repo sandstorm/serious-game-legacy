@@ -1,0 +1,17 @@
+.player-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-75);
+}
+
+
+.player-list__player {
+
+}
+
+.player-list__player--is-active {
+    border-bottom: 2px solid var(--color-primary);
+}

@@ -1,5 +1,6 @@
 @use('Domain\CoreGameLogic\Feature\Initialization\State\PreGameState')
 
+<h2>Spiel ID: {{ $gameId }}</h2>
 <h3>Vorbereitung des Spiels</h3>
 
 @foreach(PreGameState::playersWithNameAndLebensziel($this->gameStream()) as $nameAndLebensziel)
@@ -32,16 +33,20 @@
             </form>
         @else
             <div>
+                Deine ID: {{$nameAndLebensziel->playerId->value }}<br/>
                 Du hast folgendes Lebensziel ausgewählt:
                 {{$nameAndLebensziel->name}} - {{$nameAndLebensziel->lebensziel?->name}}
             </div>
+            <hr />
         @endif
     @else
-        SPIELER {{$nameAndLebensziel->playerId->value }}: {{$nameAndLebensziel->name}}
-        - {{$nameAndLebensziel->lebensziel?->name}} <br/>
+        <div>
+            Spieler {{$nameAndLebensziel->playerId->value }}: {{$nameAndLebensziel->name}}
+            - {{$nameAndLebensziel->lebensziel?->name}}
+        </div>
+        <hr />
     @endif
 @endforeach
-
 @if(PreGameState::isReadyForGame($this->gameStream()))
     <button type="button" class="button button--type-primary" wire:click="startGame">Spiel starten</button>
 @endif
