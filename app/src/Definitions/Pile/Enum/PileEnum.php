@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Definitions\Pile\Enum;
 
-enum
-PileEnum: string
+enum PileEnum: string
 {
     case BILDUNG_PHASE_1 = 'Bildung & Karriere | Phase 1';
     case BILDUNG_PHASE_2 = 'Bildung & Karriere | Phase 2';

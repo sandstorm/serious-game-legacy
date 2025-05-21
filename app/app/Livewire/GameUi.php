@@ -6,10 +6,12 @@ namespace App\Livewire;
 
 use App\Events\GameStateUpdated;
 use App\Livewire\Forms\PreGameNameLebensziel;
+use App\Livewire\Traits\CardTrait;
 use App\Livewire\Traits\PlayerDetailsModalTrait;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
+use Domain\CoreGameLogic\Dto\ValueObject\PileId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
@@ -19,12 +21,14 @@ use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\Definitions\Lebensziel\LebenszielFinder;
+use Domain\Definitions\Pile\Enum\PileEnum;
 use Illuminate\Events\Dispatcher;
 use Livewire\Component;
 
 class GameUi extends Component
 {
     use PlayerDetailsModalTrait;
+    use CardTrait;
 
     // Not the current player, but the player connected to THIS SESSION
     public PlayerId $myself;
@@ -65,9 +69,15 @@ class GameUi extends Component
     public function render(): \Illuminate\View\View
     {
         $lebensziele = LebenszielFinder::getAllLebensziele();
+        $cardPiles = [
+            PileEnum::BILDUNG_PHASE_1->value,
+            PileEnum::FREIZEIT_PHASE_1->value,
+            PileEnum::ERWERBSEINKOMMEN_PHASE_1->value,
+        ];
 
         return view('livewire.game-ui', [
-            'lebensziele' => $lebensziele
+            'lebensziele' => $lebensziele,
+            'cardPiles' => $cardPiles,
         ]);
     }
 
@@ -93,8 +103,6 @@ class GameUi extends Component
     {
         $this->nameLebenszielForm->lebensziel = $lebensziel;
     }
-
-
 
     public function gameStream(): GameEvents
     {
