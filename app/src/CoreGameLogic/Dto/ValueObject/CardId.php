@@ -15,6 +15,11 @@ final readonly class CardId implements \JsonSerializable
         return '[CardId: '.$this->value.']';
     }
 
+    public static function fromString(string $value): self
+    {
+        return new self($value);
+    }
+
     public function jsonSerialize(): string
     {
         return $this->value;
