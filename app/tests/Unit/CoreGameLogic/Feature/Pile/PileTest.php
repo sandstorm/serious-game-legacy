@@ -11,6 +11,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
+use Domain\CoreGameLogic\Feature\Pile\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
 use Domain\CoreGameLogic\Feature\Pile\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
@@ -133,3 +134,11 @@ test('Cannot activate a card twice', function () {
     $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->p1, $this->cardsBildung[0], $this->pileIdBildung));
     $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->p1, $this->cardsBildung[0], $this->pileIdBildung));
 })->throws(\RuntimeException::class, 'Only the top card of the pile can be activated', 1747326086);
+
+test('Test shuffle event', function () {
+    $this->coreGameLogic->handle($this->gameId, ShuffleCards::create());
+    $stream = $this->coreGameLogic->getGameStream($this->gameId);
+    expect($stream->findLast(CardsWereShuffled::class)->piles)->toBeArray();
+    expect($stream->findLast(CardsWereShuffled::class)->piles[0]->cards)->toBeArray();
+    expect(count($stream->findLast(CardsWereShuffled::class)->piles))->toBe(9);
+});

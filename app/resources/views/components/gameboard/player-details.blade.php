@@ -5,6 +5,8 @@
 
 @section('content')
     {{$playerDetails?->name}} ({{$playerDetails?->playerId->value}}) <br/>
+    Guthaben: {{$playerDetails?->guthaben}}€
+    <hr />
     @if($playerDetails?->lebensziel)
         <x-lebensziel :lebensziel="$playerDetails?->lebensziel" />
     @endif

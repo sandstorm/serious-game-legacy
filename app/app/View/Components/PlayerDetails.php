@@ -7,6 +7,7 @@ namespace App\View\Components;
 use App\Livewire\Dto\PlayerDetailsDto;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Initialization\State\GuthabenState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Illuminate\View\Component;
 use Illuminate\View\View;
@@ -49,6 +50,7 @@ class PlayerDetails extends Component
             name: PreGameState::nameForPlayer($this->gameStream, $playerId),
             playerId: $playerId,
             lebensziel: PreGameState::lebenszielForPlayer($this->gameStream, $playerId),
+            guthaben: GuthabenState::forPlayer($this->gameStream, $playerId)->value,
         );
     }
 

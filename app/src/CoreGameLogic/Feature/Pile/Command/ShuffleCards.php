@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Pile\Command;
 
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
-use Domain\CoreGameLogic\Dto\ValueObject\CardId;
-use Domain\CoreGameLogic\Dto\ValueObject\PileId;
 use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
 
 final readonly class ShuffleCards implements CommandInterface

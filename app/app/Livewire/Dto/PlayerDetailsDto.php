@@ -13,6 +13,7 @@ class PlayerDetailsDto
         public string $name,
         public PlayerId $playerId,
         public LebenszielDefinition $lebensziel,
+        public int $guthaben,
     ) {
     }
 

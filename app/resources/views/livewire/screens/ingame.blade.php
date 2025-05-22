@@ -5,6 +5,8 @@
         <x-gameboard.player-list :myself="$myself" />
     </header>
 
+    <button type="button" class="button button--type-primary" wire:click="shuffleCards()">Shuffle</button>
+
     <x-player-details :player-id="$currentPlayerId" :game-stream="$this->gameStream" />
 
     <div class="card-piles">
