@@ -38,10 +38,9 @@ final readonly class AktionsCalculator
     }
 
     // TODO maybe return an object with failed requirements?
-    public function canPlayerActivateCard(PlayerId $playerId, CardId $cardId, ?CardDefinition $cardDefinitionForTesting = null): bool
+    public function canPlayerActivateCard(PlayerId $playerId, CardDefinition $card): bool
     {
-        $cardDefinition = $cardDefinitionForTesting ?? CardFinder::getCardById($cardId);
-        $cardRequirements = $cardDefinition->requirements;
+        $cardRequirements = $card->requirements;
         $playerResources = PlayerState::getResourcesForPlayer($this->stream, $playerId);
         if (
             $cardRequirements->guthaben <= $playerResources->guthabenChange &&

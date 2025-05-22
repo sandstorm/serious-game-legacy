@@ -15,6 +15,7 @@ use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
+use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
@@ -37,6 +38,9 @@ beforeEach(function () {
 test('welche Spielzüge hat player zur Verfügung', function () {
     $p1 = PlayerId::fromString('p1');
     $p2 = PlayerId::fromString('p2');
+
+    $this->coreGameLogic->handle($this->gameId, StartPreGame::create(2)
+        ->withFixedPlayerIdsForTesting($p1, $p2));
 
     $this->coreGameLogic->handle($this->gameId, new DefinePlayerOrdering(
         playerOrdering: [
@@ -97,9 +101,8 @@ describe('canPlayerActivateCard', function () {
 
     it('returns true when player can activate the card', function () {
         $pileId = new PileId(PileEnum::BILDUNG_PHASE_1);
-        $cardId = new CardId('testcard');
         $cardToTest = new CardDefinition(
-            id: $cardId,
+            id: new CardId('testcard-1'),
             pileId: $pileId,
             kurzversion: 'for testing',
             langversion: '...',
@@ -113,7 +116,7 @@ describe('canPlayerActivateCard', function () {
             ),
         );
         $cardToTest2 = new CardDefinition(
-            id: $cardId,
+            id: new CardId('testcard-2'),
             pileId: $pileId,
             kurzversion: 'for testing',
             langversion: '...',
@@ -129,20 +132,19 @@ describe('canPlayerActivateCard', function () {
         $this->coreGameLogic->handle(
             $this->gameId,
             ShuffleCards::create()->withFixedCardIdOrderForTesting(
-                new Pile( pileId: $pileId, cards: [$cardId]),
+                new Pile( pileId: $pileId, cards: [$cardToTest->id, $cardToTest2->id]),
             ));
 
         $stream = $this->stream;
         $actionsCalculatorUnderTest = AktionsCalculator::forStream($stream);
-        expect($actionsCalculatorUnderTest->canPlayerActivateCard($this->playerId1, $cardId, $cardToTest))->toBeTrue()
-            ->and($actionsCalculatorUnderTest->canPlayerActivateCard($this->playerId1, $cardId, $cardToTest2))->toBeTrue();
+        expect($actionsCalculatorUnderTest->canPlayerActivateCard($this->playerId1, $cardToTest))->toBeTrue()
+            ->and($actionsCalculatorUnderTest->canPlayerActivateCard($this->playerId1, $cardToTest2))->toBeTrue();
     });
 
     it('returns false when player cannot activate the card', function () {
         $pileId = new PileId(PileEnum::BILDUNG_PHASE_1);
-        $cardId = new CardId('testcard');
         $cardToTest1 = new CardDefinition(
-            id: $cardId,
+            id: new CardId('testcard-1'),
             pileId: $pileId,
             kurzversion: 'for testing',
             langversion: '...',
@@ -155,7 +157,7 @@ describe('canPlayerActivateCard', function () {
             ),
         );
         $cardToTest2 = new CardDefinition(
-            id: $cardId,
+            id: new CardId('testcard-2'),
             pileId: $pileId,
             kurzversion: 'for testing',
             langversion: '...',
@@ -171,13 +173,13 @@ describe('canPlayerActivateCard', function () {
         $this->coreGameLogic->handle(
             $this->gameId,
             ShuffleCards::create()->withFixedCardIdOrderForTesting(
-                new Pile( pileId: $pileId, cards: [$cardId]),
+                new Pile( pileId: $pileId, cards: [$cardToTest1->id, $cardToTest2->id]),
             ));
 
         $stream = $this->stream;
         $actionsCalculatorUnderTest = AktionsCalculator::forStream($stream);
-        expect($actionsCalculatorUnderTest->canPlayerActivateCard($this->playerId1, $cardId, $cardToTest1))->toBeFalse()
-            ->and($actionsCalculatorUnderTest->canPlayerActivateCard($this->playerId1, $cardId, $cardToTest2))->toBeFalse();
+        expect($actionsCalculatorUnderTest->canPlayerActivateCard($this->playerId1, $cardToTest1))->toBeFalse()
+            ->and($actionsCalculatorUnderTest->canPlayerActivateCard($this->playerId1, $cardToTest2))->toBeFalse();
     });
 });
 

@@ -6,7 +6,6 @@ namespace Domain\CoreGameLogic\Feature\Spielzug;
 
 use Domain\CoreGameLogic\CommandHandler\CommandHandlerInterface;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
-use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Pile\State\PileState;
@@ -20,7 +19,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\TriggeredEreignis;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\Definitions\Cards\CardFinder;
-use Domain\Definitions\Cards\Model\CardDefinition;
 
 /**
  * @internal no public API, because commands are no extension points. ALWAYS USE {@see ForCoreGameLogic::handle()} to trigger commands.
@@ -58,12 +56,10 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             throw new \RuntimeException('Only the top card of the pile can be activated', 1747326086);
         }
 
-        $card = $command->fixedCardDefinitionForTesting !== null
-            ? $command->fixedCardDefinitionForTesting
-            : CardFinder::getCardById($command->cardId);
+        $card = $command->fixedCardDefinitionForTesting !== null ? $command->fixedCardDefinitionForTesting : CardFinder::getCardById($command->cardId);
 
-        if (!AktionsCalculator::forStream($gameState)->canPlayerActivateCard($command->player, $command->cardId, $card)) {
-            throw new \RuntimeException('Player ' . $command->player->value . ' does not have the required resources to activate the card ' . $command->cardId->value, 1747920761);
+        if (!AktionsCalculator::forStream($gameState)->canPlayerActivateCard($command->player, $card)) {
+            throw new \RuntimeException('Player ' . $command->player->value . ' does not have the required resources to activate the card ' . $card->id->value, 1747920761);
         }
 
         $events = GameEventsToPersist::with(

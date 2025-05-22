@@ -13,7 +13,6 @@ use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
 use Domain\CoreGameLogic\Dto\ValueObject\PileId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
-use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
@@ -33,7 +32,6 @@ beforeEach(function () {
     $this->playerId2 = PlayerId::fromString('p2');
 
     $this->pileIdBildung = new PileId(PileEnum::BILDUNG_PHASE_1);
-    $this->cardId = new CardId('testcard');
 
     $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
         numberOfPlayers: 2,
@@ -57,19 +55,13 @@ beforeEach(function () {
     $this->coreGameLogic->handle(
         $this->gameId,
         new StartGame(playerOrdering: [$this->playerId1]));
-
-    $this->coreGameLogic->handle(
-        $this->gameId,
-        ShuffleCards::create()->withFixedCardIdOrderForTesting(
-            new Pile( pileId: $this->pileIdBildung, cards: [$this->cardId]),
-        ));
 });
 
 describe('handleActivateCard', function () {
 
     it('Will activate a card if requirements are met', function (){
         $cardToTest = new CardDefinition(
-            id: $this->cardId,
+            id: new CardId('testcard'),
             pileId: $this->pileIdBildung,
             kurzversion: 'for testing',
             langversion: '...',
@@ -83,23 +75,29 @@ describe('handleActivateCard', function () {
             ),
         );
 
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ShuffleCards::create()->withFixedCardIdOrderForTesting(
+                new Pile( pileId: $this->pileIdBildung, cards: [$cardToTest->id]),
+            ));
+
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
             player: $this->playerId1,
-            cardId: $this->cardId,
+            cardId: $cardToTest->id,
             pile: $this->pileIdBildung,
         )->withFixedCardDefinitionForTesting($cardToTest));
 
         $stream = $this->coreGameLogic->getGameStream($this->gameId);
         /** @var CardWasActivated $actualEvent */
         $actualEvent = $stream->findLast(CardWasActivated::class);
-        expect($actualEvent->cardId)->toEqual($this->cardId)
+        expect($actualEvent->cardId)->toEqual($cardToTest->id)
             ->and($actualEvent->playerId)->toEqual($this->playerId1)
             ->and($actualEvent->resourceChanges)->toEqual($cardToTest->resourceChanges);
     });
 
     it("will not activate the card if it's not the players turn", function () {
         $cardToTest = new CardDefinition(
-            id: $this->cardId,
+            id: new CardId('testcard'),
             pileId: $this->pileIdBildung,
             kurzversion: 'for testing',
             langversion: '...',
@@ -113,16 +111,22 @@ describe('handleActivateCard', function () {
             ),
         );
 
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ShuffleCards::create()->withFixedCardIdOrderForTesting(
+                new Pile( pileId: $this->pileIdBildung, cards: [$cardToTest->id]),
+            ));
+
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
             player: $this->playerId2,
-            cardId: $this->cardId,
+            cardId: $cardToTest->id,
             pile: $this->pileIdBildung,
         )->withFixedCardDefinitionForTesting($cardToTest));
     })->throws(\RuntimeException::class, 'Only the current player can activate a card', 1747917492);
 
     it("will not activate the card if the requirements are not met", function () {
         $cardToTest = new CardDefinition(
-            id: $this->cardId,
+            id: new CardId('testcard'),
             pileId: $this->pileIdBildung,
             kurzversion: 'for testing',
             langversion: '...',
@@ -136,9 +140,15 @@ describe('handleActivateCard', function () {
             ),
         );
 
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ShuffleCards::create()->withFixedCardIdOrderForTesting(
+                new Pile( pileId: $this->pileIdBildung, cards: [$cardToTest->id]),
+            ));
+
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
             player: $this->playerId1,
-            cardId: $this->cardId,
+            cardId: $cardToTest->id,
             pile: $this->pileIdBildung,
         )->withFixedCardDefinitionForTesting($cardToTest));
     })->throws(\RuntimeException::class, 'Player p1 does not have the required resources to activate the card testcard', 1747920761);
