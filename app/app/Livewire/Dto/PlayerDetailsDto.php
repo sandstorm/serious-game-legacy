@@ -14,6 +14,9 @@ class PlayerDetailsDto
         public PlayerId $playerId,
         public LebenszielDefinition $lebensziel,
         public int $guthaben,
+        public int $zeitsteine,
+        public int $kompetenzsteineBildung,
+        public int $kompetenzsteineFreizeit,
     ) {
     }
 

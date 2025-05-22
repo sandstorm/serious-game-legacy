@@ -32,6 +32,10 @@ class PreGameState
         return true;
     }
 
+    /**
+     * @param GameEvents $gameStream
+     * @return bool
+     */
     public static function isInPreGamePhase(GameEvents $gameStream): bool
     {
         return $gameStream->findFirstOrNull(GameWasStarted::class) === null;
@@ -62,6 +66,11 @@ class PreGameState
         return $playerIdsToNameMap;
     }
 
+    /**
+     * @param GameEvents $gameStream
+     * @param PlayerId $playerId
+     * @return LebenszielDefinition
+     */
     public static function lebenszielForPlayer(GameEvents $gameStream, PlayerId $playerId): LebenszielDefinition
     {
         $lebensziel = self::lebenszielForPlayerOrNull($gameStream, $playerId);
@@ -72,12 +81,22 @@ class PreGameState
         return $lebensziel;
     }
 
+    /**
+     * @param GameEvents $gameStream
+     * @param PlayerId $playerId
+     * @return LebenszielDefinition|null
+     */
     public static function lebenszielForPlayerOrNull(GameEvents $gameStream, PlayerId $playerId): ?LebenszielDefinition
     {
         // @phpstan-ignore property.notFound
         return $gameStream->findLastOrNullWhere(fn($e) => $e instanceof LebenszielWasSelected && $e->playerId->equals($playerId))?->lebensziel;
     }
 
+    /**
+     * @param GameEvents $gameStream
+     * @param PlayerId $playerId
+     * @return string
+     */
     public static function nameForPlayer(GameEvents $gameStream, PlayerId $playerId): string
     {
         $name = self::nameForPlayerOrNull($gameStream, $playerId);
@@ -88,12 +107,16 @@ class PreGameState
         return $name;
     }
 
+    /**
+     * @param GameEvents $gameStream
+     * @param PlayerId $playerId
+     * @return string|null
+     */
     public static function nameForPlayerOrNull(GameEvents $gameStream, PlayerId $playerId): ?string
     {
         // @phpstan-ignore property.notFound
         return $gameStream->findLastOrNullWhere(fn($e) => $e instanceof NameForPlayerWasSet && $e->playerId->equals($playerId))?->name;
     }
-
 
     /**
      * @param GameEvents $gameStream

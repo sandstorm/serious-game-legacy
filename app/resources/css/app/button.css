@@ -20,7 +20,7 @@
 }
 
 .button--type-outline-primary {
-    background: transparent;
+    background: var(--color-primary-fg);
     border: 1px solid var(--color-primary);
     color: var(--color-primary);
 
