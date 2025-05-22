@@ -28,11 +28,12 @@ class PileState
 
     /**
      * Returns the CardId of the Card that is currently on top of a given pile.
+     *
      * @param GameEvents $stream
      * @param PileId $pileId
      * @return CardId
      */
-    public static function topCardForPile(GameEvents $stream, PileId $pileId): CardId
+    public static function topCardIdForPile(GameEvents $stream, PileId $pileId): CardId
     {
         $currentPiles = $stream->findLast(CardsWereShuffled::class)->piles;
         foreach ($currentPiles as $pile) {

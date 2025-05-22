@@ -8,9 +8,14 @@ trait CardTrait
 {
     public ?string $activeCardId = null;
 
+    // TODO rename tob showCardActions or something
     public function activateCard(string $cardId): void
     {
-        $this->activeCardId = $cardId;
+        if ($this->activeCardId === $cardId) {
+            $this->activeCardId = null;
+        } else {
+            $this->activeCardId = $cardId;
+        }
     }
 
     public function cardIsActive(string $cardId): bool
@@ -19,6 +24,7 @@ trait CardTrait
         return $this->activeCardId === $cardId;
     }
 
+    // TODO rename to activateCard
     public function playCard(string $cardId): void
     {
         // TODO implement this

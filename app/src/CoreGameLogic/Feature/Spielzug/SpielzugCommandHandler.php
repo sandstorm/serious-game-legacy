@@ -52,7 +52,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             throw new \RuntimeException('Only the current player can complete a turn', 1649582779);
         }
 
-        $topCardOnPile = PileState::topCardForPile($gameState, $command->pile);
+        $topCardOnPile = PileState::topCardIdForPile($gameState, $command->pile);
         if (!$topCardOnPile->equals($command->cardId)) {
             throw new \RuntimeException('Only the top card of the pile can be activated', 1747326086);
         }
@@ -81,7 +81,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             throw new \RuntimeException('Only the current player can skip a card', 1649582789);
         }
 
-        $topCardOnPile = PileState::topCardForPile($gameState, $command->pile);
+        $topCardOnPile = PileState::topCardIdForPile($gameState, $command->pile);
         if (!$topCardOnPile->equals($command->card)) {
             throw new \RuntimeException('Only the top card of the pile can be skipped', 1747325793);
         }
