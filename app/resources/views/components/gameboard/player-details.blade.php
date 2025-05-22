@@ -5,7 +5,10 @@
 
 @section('content')
     {{$playerDetails?->name}} ({{$playerDetails?->playerId->value}}) <br/>
-    Guthaben: {{$playerDetails?->guthaben}}€
+    Guthaben: {{$playerDetails?->guthaben}}€ <br/>
+    Zeitsteine: {{$playerDetails?->zeitsteine}} <br/>
+    Kompetenzen Bildung & Karriere: {{$playerDetails?->kompetenzsteineBildung}} <br/>
+    Kompetenzen Soziales & Freizeit: {{$playerDetails?->kompetenzsteineFreizeit}} <br/>
     <hr />
     @if($playerDetails?->lebensziel)
         <x-lebensziel :lebensziel="$playerDetails?->lebensziel" />

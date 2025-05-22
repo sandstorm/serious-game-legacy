@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Initialization\State;
 
+use Domain\CoreGameLogic\Dto\ValueObject\Lebensziel;
+use Domain\CoreGameLogic\Dto\ValueObject\LebenszielPhase;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\Dto\NameAndLebensziel;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\Definitions\Lebensziel\LebenszielDefinition;
 
 class PreGameState
@@ -32,6 +36,10 @@ class PreGameState
         return true;
     }
 
+    /**
+     * @param GameEvents $gameStream
+     * @return bool
+     */
     public static function isInPreGamePhase(GameEvents $gameStream): bool
     {
         return $gameStream->findFirstOrNull(GameWasStarted::class) === null;
@@ -48,7 +56,6 @@ class PreGameState
         $playerIdsToNameMap = [];
         $playerOrder = 1;
         foreach (self::playerIds($gameStream) as $playerId) {
-
             // TODO create new object with better naming and maybe different ones for different use cases
             $playerIdsToNameMap[$playerId->value] = new NameAndLebensziel(
                 order: $playerOrder,
@@ -62,7 +69,12 @@ class PreGameState
         return $playerIdsToNameMap;
     }
 
-    public static function lebenszielForPlayer(GameEvents $gameStream, PlayerId $playerId): LebenszielDefinition
+    /**
+     * @param GameEvents $gameStream
+     * @param PlayerId $playerId
+     * @return LebenszielDefinition
+     */
+    public static function lebenszielDefinitionForPlayer(GameEvents $gameStream, PlayerId $playerId): LebenszielDefinition
     {
         $lebensziel = self::lebenszielForPlayerOrNull($gameStream, $playerId);
         if ($lebensziel === null) {
@@ -72,12 +84,46 @@ class PreGameState
         return $lebensziel;
     }
 
+    /**
+     * @param GameEvents $gameStream
+     * @param PlayerId $playerId
+     * @return LebenszielDefinition|null
+     */
     public static function lebenszielForPlayerOrNull(GameEvents $gameStream, PlayerId $playerId): ?LebenszielDefinition
     {
         // @phpstan-ignore property.notFound
         return $gameStream->findLastOrNullWhere(fn($e) => $e instanceof LebenszielWasSelected && $e->playerId->equals($playerId))?->lebensziel;
     }
 
+    /**
+     * @param GameEvents $gameStream
+     * @param PlayerId $playerId
+     * @return Lebensziel
+     */
+    public static function lebenszielForPlayer(GameEvents $gameStream, PlayerId $playerId): Lebensziel
+    {
+        $lebenszielDefinition = self::lebenszielDefinitionForPlayer($gameStream, $playerId);
+        $phases = [];
+        foreach ($lebenszielDefinition->phaseDefinitions as $phaseDefinition) {
+            $phases[] = LebenszielPhase::fromDefinition($phaseDefinition);
+        }
+        $lebensziel = new Lebensziel(
+            definition: $lebenszielDefinition,
+            phases: $phases,
+        );
+        $kompetenzsteinChanges = $gameStream
+            ->findAllOfType(ProvidesResourceChanges::class)
+            ->reduce(fn(ResourceChanges $accumulator, ProvidesResourceChanges $event) => $accumulator->accumulate($event->getResourceChanges($playerId)), new ResourceChanges());
+        // TODO: place kompetenzsteine in the currently active phase in the future
+        $newPhase0 = $lebensziel->phases[0]->withChange($kompetenzsteinChanges);
+        return $lebensziel->withUpdatedPhase(0, $newPhase0);
+    }
+
+    /**
+     * @param GameEvents $gameStream
+     * @param PlayerId $playerId
+     * @return string
+     */
     public static function nameForPlayer(GameEvents $gameStream, PlayerId $playerId): string
     {
         $name = self::nameForPlayerOrNull($gameStream, $playerId);
@@ -88,12 +134,16 @@ class PreGameState
         return $name;
     }
 
+    /**
+     * @param GameEvents $gameStream
+     * @param PlayerId $playerId
+     * @return string|null
+     */
     public static function nameForPlayerOrNull(GameEvents $gameStream, PlayerId $playerId): ?string
     {
         // @phpstan-ignore property.notFound
         return $gameStream->findLastOrNullWhere(fn($e) => $e instanceof NameForPlayerWasSet && $e->playerId->equals($playerId))?->name;
     }
-
 
     /**
      * @param GameEvents $gameStream

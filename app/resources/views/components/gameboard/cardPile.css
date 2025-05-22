@@ -21,9 +21,7 @@
 .card-pile__card {
     display: flex;
     flex-direction: column;
-    position: absolute;
-    left: 0;
-    top: 0;
+    position: relative;
     width: 250px;
     height: 400px;
     max-width: 100%;
@@ -36,11 +34,32 @@
     overflow-x: hidden;
 }
 
+.card-pile__card-details {
+    transition: all 0.5s ease;
+}
+
+.card-pile__card--show-actions .card-pile__card-details {
+    filter: blur(1.1px);
+}
+
 .card-pile__card-actions {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-100);
     gap: var(--spacing-50);
     margin-top: auto;
+
+    background-color: rgba(255, 255, 255, 0.5);
+    filter: blur(0);
+
+    z-index: 10;
 
     .button {
         width: 100%;

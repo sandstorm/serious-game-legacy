@@ -2,18 +2,13 @@
     <h3>{{ $title }}</h3>
     <ul class="card-pile__cards">
         @if ($card)
-        <li class="card-pile__card" wire:click="showCardActions('{{$card->id->value}}')">
-            <h4>#{{ $card->id->value }} - {{ $card->kurzversion }}</h4>
-            <p>
-                {{ $card->langversion }}
-            </p>
+        <li class="card-pile__card @if ($this->cardActionsVisible($card->id->value)) card-pile__card--show-actions @endif" wire:click="showCardActions('{{$card->id->value}}')">
+            <div class="card-pile__card-details">
+                <h4>#{{ $card->id->value }} - {{ $card->kurzversion }}</h4>
+                <p>
+                    {{ $card->langversion }}
+                </p>
 
-            @if ($this->cardActionsVisible($card->id->value))
-                <div class="card-pile__card-actions">
-                    <button type="button" class="button button--type-outline-primary" wire:click="skipCard('{{$card->id->value}}')">Karte skippen</button>
-                    <button type="button" class="button button--type-primary" wire:click="activateCard('{{$card->id->value}}')">Karte spielen</button>
-                </div>
-            @else
                 <h5>Voraussetzungen:</h5>
                 <ul>
                     @if ($card->requirements->guthaben)<li>Guthaben: {{ $card->requirements->guthaben}}€</li>@endif
@@ -31,6 +26,13 @@
                     @if ($card->resourceChanges->newErwerbseinkommen)<li>Erwerbseinkommen: {{ $card->resourceChanges->newErwerbseinkommen}}€</li>@endif
                     @if ($card->resourceChanges->erwerbseinkommenChangeInPercent)<li>Erwebseinkommen %: {{ $card->resourceChanges->erwerbseinkommenChangeInPercent}}%</li>@endif
                 </ul>
+            </div>
+
+            @if ($this->cardActionsVisible($card->id->value))
+                <div class="card-pile__card-actions">
+                    <button type="button" class="button button--type-outline-primary" wire:click="skipCard('{{$card->id->value}}')">Karte skippen</button>
+                    <button type="button" class="button button--type-primary" wire:click="activateCard('{{$card->id->value}}')">Karte spielen</button>
+                </div>
             @endif
         </li>
         @endif
