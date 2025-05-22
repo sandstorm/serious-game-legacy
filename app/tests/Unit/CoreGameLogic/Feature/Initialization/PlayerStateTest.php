@@ -13,7 +13,7 @@ use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
-use Domain\CoreGameLogic\Feature\Initialization\State\LebenszielAccessor;
+use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
@@ -61,19 +61,19 @@ test('kompetenzstein state', function () {
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
     // player 1
     // bildung
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->definition->bildungsKompetenzSlots)->toBe(2);
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->placedKompetenzsteineBildung)->toBe(0);
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->p1)->phases[0]->definition->bildungsKompetenzSlots)->toBe(2);
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->p1)->phases[0]->placedKompetenzsteineBildung)->toBe(0);
     // freizeit
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->definition->freizeitKompetenzSlots)->toBe(1);
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->placedKompetenzsteineFreizeit)->toBe(0);
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->p1)->phases[0]->definition->freizeitKompetenzSlots)->toBe(1);
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->p1)->phases[0]->placedKompetenzsteineFreizeit)->toBe(0);
 
     //player 2
     // bildung
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->definition->bildungsKompetenzSlots)->toBe(2);
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->placedKompetenzsteineBildung)->toBe(0);
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->p2)->phases[0]->definition->bildungsKompetenzSlots)->toBe(2);
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->p2)->phases[0]->placedKompetenzsteineBildung)->toBe(0);
     //freizeit
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->definition->freizeitKompetenzSlots)->toBe(1);
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->placedKompetenzsteineFreizeit)->toBe(0);
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->p2)->phases[0]->definition->freizeitKompetenzSlots)->toBe(1);
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->p2)->phases[0]->placedKompetenzsteineFreizeit)->toBe(0);
 
     $this->coreGameLogic->handle(
         $this->gameId,
@@ -97,17 +97,17 @@ test('kompetenzstein state', function () {
 
     // player 1
     // bildung
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->definition->bildungsKompetenzSlots)->toBe(2);
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->placedKompetenzsteineBildung)->toBe(1);
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->p1)->phases[0]->definition->bildungsKompetenzSlots)->toBe(2);
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->p1)->phases[0]->placedKompetenzsteineBildung)->toBe(1);
     // freizeit
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->definition->freizeitKompetenzSlots)->toBe(1);
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p1)->phases[0]->placedKompetenzsteineFreizeit)->toBe(0);
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->p1)->phases[0]->definition->freizeitKompetenzSlots)->toBe(1);
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->p1)->phases[0]->placedKompetenzsteineFreizeit)->toBe(0);
 
     //player 2 unchanged
     // bildung
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->definition->bildungsKompetenzSlots)->toBe(2);
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->placedKompetenzsteineBildung)->toBe(0);
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->p2)->phases[0]->definition->bildungsKompetenzSlots)->toBe(2);
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->p2)->phases[0]->placedKompetenzsteineBildung)->toBe(0);
     //freizeit
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->definition->freizeitKompetenzSlots)->toBe(1);
-    expect(LebenszielAccessor::forStream($gameStream)->forPlayer($this->p2)->phases[0]->placedKompetenzsteineFreizeit)->toBe(0);
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->p2)->phases[0]->definition->freizeitKompetenzSlots)->toBe(1);
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->p2)->phases[0]->placedKompetenzsteineFreizeit)->toBe(0);
 });

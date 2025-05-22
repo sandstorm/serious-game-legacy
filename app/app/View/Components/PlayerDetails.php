@@ -8,7 +8,6 @@ use App\Livewire\Dto\PlayerDetailsDto;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\State\GuthabenState;
-use Domain\CoreGameLogic\Feature\Initialization\State\LebenszielAccessor;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Initialization\State\ZeitsteineState;
 use Illuminate\View\Component;
@@ -47,18 +46,16 @@ class PlayerDetails extends Component
         }
 
         $playerId = PlayerId::fromString($playerId);
-
-        $kompetenzsteineBildung = LebenszielAccessor::forStream($this->gameStream)->forPlayer($playerId)->phases[0]->placedKompetenzsteineBildung;
-        $kompetenzsteineFreizeit = LebenszielAccessor::forStream($this->gameStream)->forPlayer($playerId)->phases[0]->placedKompetenzsteineFreizeit;
+        $lebensziel = PreGameState::lebenszielForPlayer($this->gameStream, $playerId);
 
         return new PlayerDetailsDto(
             name: PreGameState::nameForPlayer($this->gameStream, $playerId),
             playerId: $playerId,
-            lebensziel: PreGameState::lebenszielForPlayer($this->gameStream, $playerId),
+            lebensziel: $lebensziel->definition,
             guthaben: GuthabenState::forPlayer($this->gameStream, $playerId)->value,
             zeitsteine: ZeitsteineState::forPlayer($this->gameStream, $playerId)->value,
-            kompetenzsteineBildung: $kompetenzsteineBildung,
-            kompetenzsteineFreizeit: $kompetenzsteineFreizeit,
+            kompetenzsteineBildung: $lebensziel->phases[0]->placedKompetenzsteineBildung,
+            kompetenzsteineFreizeit: $lebensziel->phases[0]->placedKompetenzsteineFreizeit,
         );
     }
 
