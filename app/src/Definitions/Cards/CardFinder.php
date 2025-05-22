@@ -26,7 +26,13 @@ readonly final class CardFinder
             PileEnum::BILDUNG_PHASE_1 => self::getCardsForBildungAndKarriere1(),
             PileEnum::FREIZEIT_PHASE_1 => self::getCardsForSozialesAndFreizeit1(),
             PileEnum::ERWERBSEINKOMMEN_PHASE_1 => self::getCardsForErwerbseinkommen1(),
-            default => throw new \RuntimeException('Pile ' . $pileId . ' does not exist')
+            // TODO
+            PileEnum::BILDUNG_PHASE_2 => [],
+            PileEnum::FREIZEIT_PHASE_2 => [],
+            PileEnum::ERWERBSEINKOMMEN_PHASE_2 => [],
+            PileEnum::BILDUNG_PHASE_3 => [],
+            PileEnum::FREIZEIT_PHASE_3 => [],
+            PileEnum::ERWERBSEINKOMMEN_PHASE_3 => [],
         };
     }
 

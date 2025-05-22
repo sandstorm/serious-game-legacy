@@ -42,6 +42,6 @@ class PileState
             }
         }
 
-        throw new \RuntimeException('Pile not found');
+        throw new \RuntimeException("Pile ($pileId) not found");
     }
 }

@@ -6,26 +6,24 @@ namespace App\Livewire\Traits;
 
 trait CardTrait
 {
-    public ?string $activeCardId = null;
+    public ?string $showCardActionsForCard = null;
 
-    // TODO rename tob showCardActions or something
-    public function activateCard(string $cardId): void
+    public function showCardActions(string $cardId): void
     {
-        if ($this->activeCardId === $cardId) {
-            $this->activeCardId = null;
+        if ($this->showCardActionsForCard === $cardId) {
+            $this->showCardActionsForCard = null;
         } else {
-            $this->activeCardId = $cardId;
+            $this->showCardActionsForCard = $cardId;
         }
     }
 
-    public function cardIsActive(string $cardId): bool
+    public function cardActionsVisible(string $cardId): bool
     {
         // todo check if requirements are met
-        return $this->activeCardId === $cardId;
+        return $this->showCardActionsForCard === $cardId;
     }
 
-    // TODO rename to activateCard
-    public function playCard(string $cardId): void
+    public function activateCard(string $cardId): void
     {
         // TODO implement this
         // $this->gameStream->playCard($cardId);

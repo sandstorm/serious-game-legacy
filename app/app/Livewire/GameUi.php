@@ -89,15 +89,14 @@ class GameUi extends Component
         $this->coreGameLogic->handle($this->gameId, new StartGame(
             playerOrdering: PreGameState::playerIds($this->gameStream),
         ));
-        $pileIdBildung = new PileId(PileEnum::BILDUNG_PHASE_1);
-        $pileIdFreizeit = new PileId(PileEnum::FREIZEIT_PHASE_1);
-        $pileIdErwerbseinkommen = new PileId(PileEnum::ERWERBSEINKOMMEN_PHASE_1);
 
-        $this->coreGameLogic->handle($this->gameId, ShuffleCards::create()->withFixedCardIdOrderForTesting(
-            new Pile( pileId: $pileIdBildung, cards: PileFinder::getCardsIdsForPile($pileIdBildung)),
-            new Pile( pileId: $pileIdFreizeit, cards: PileFinder::getCardsIdsForPile($pileIdFreizeit)),
-            new Pile( pileId: $pileIdErwerbseinkommen, cards: PileFinder::getCardsIdsForPile($pileIdErwerbseinkommen)),
-        ));
+        $this->coreGameLogic->handle($this->gameId, ShuffleCards::create());
+        $this->broadcastNotify();
+    }
+
+    public function shuffleCards(): void
+    {
+        $this->coreGameLogic->handle($this->gameId, ShuffleCards::create());
         $this->broadcastNotify();
     }
 

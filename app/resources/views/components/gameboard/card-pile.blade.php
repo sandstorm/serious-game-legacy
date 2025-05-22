@@ -1,16 +1,17 @@
 <div class="card-pile">
     <h3>{{ $title }}</h3>
     <ul class="card-pile__cards">
-        <li class="card-pile__card" wire:click="activateCard('{{$card->id->value}}')">
+        @if ($card)
+        <li class="card-pile__card" wire:click="showCardActions('{{$card->id->value}}')">
             <h4>#{{ $card->id->value }} - {{ $card->kurzversion }}</h4>
             <p>
                 {{ $card->langversion }}
             </p>
 
-            @if ($this->cardIsActive($card->id->value))
+            @if ($this->cardActionsVisible($card->id->value))
                 <div class="card-pile__card-actions">
                     <button type="button" class="button button--type-outline-primary" wire:click="skipCard('{{$card->id->value}}')">Karte skippen</button>
-                    <button type="button" class="button button--type-primary" wire:click="playCard('{{$card->id->value}}')">Karte spielen</button>
+                    <button type="button" class="button button--type-primary" wire:click="activateCard('{{$card->id->value}}')">Karte spielen</button>
                 </div>
             @else
                 <h5>Voraussetzungen:</h5>
@@ -32,5 +33,6 @@
                 </ul>
             @endif
         </li>
+        @endif
     </ul>
 </div>

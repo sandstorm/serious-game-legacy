@@ -35,19 +35,9 @@ final readonly class PileCommandHandler implements CommandHandlerInterface
         };
     }
 
-    /**
-     * @param CardId[] $cards
-     * @return CardId[]
-     */
-    private function shuffleCards(array $cards): array
-    {
-        $randomizer = new Randomizer();
-        return $randomizer->shuffleArray($cards);
-    }
-
     private function handleShuffleCards(ShuffleCards $command): GameEventsToPersist
     {
-        if (isset($command->fixedCardIdOrderingForTesting) && is_array($command->fixedCardIdOrderingForTesting)) {
+        if (isset($command->fixedCardIdOrderingForTesting) && count($command->fixedCardIdOrderingForTesting) > 0) {
             return GameEventsToPersist::with(
                 new CardsWereShuffled($command->fixedCardIdOrderingForTesting)
             );
@@ -64,5 +54,15 @@ final readonly class PileCommandHandler implements CommandHandlerInterface
         return GameEventsToPersist::with(
             new CardsWereShuffled($piles)
         );
+    }
+
+    /**
+     * @param CardId[] $cards
+     * @return CardId[]
+     */
+    private function shuffleCards(array $cards): array
+    {
+        $randomizer = new Randomizer();
+        return $randomizer->shuffleArray($cards);
     }
 }
