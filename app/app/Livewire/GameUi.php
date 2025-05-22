@@ -18,10 +18,13 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
+use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
+use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\Definitions\Lebensziel\LebenszielFinder;
 use Domain\Definitions\Pile\Enum\PileEnum;
+use Domain\Definitions\Pile\PileFinder;
 use Illuminate\Events\Dispatcher;
 use Livewire\Component;
 
@@ -85,6 +88,15 @@ class GameUi extends Component
     {
         $this->coreGameLogic->handle($this->gameId, new StartGame(
             playerOrdering: PreGameState::playerIds($this->gameStream),
+        ));
+        $pileIdBildung = new PileId(PileEnum::BILDUNG_PHASE_1);
+        $pileIdFreizeit = new PileId(PileEnum::FREIZEIT_PHASE_1);
+        $pileIdErwerbseinkommen = new PileId(PileEnum::ERWERBSEINKOMMEN_PHASE_1);
+
+        $this->coreGameLogic->handle($this->gameId, ShuffleCards::create()->withFixedCardIdOrderForTesting(
+            new Pile( pileId: $pileIdBildung, cards: PileFinder::getCardsIdsForPile($pileIdBildung)),
+            new Pile( pileId: $pileIdFreizeit, cards: PileFinder::getCardsIdsForPile($pileIdFreizeit)),
+            new Pile( pileId: $pileIdErwerbseinkommen, cards: PileFinder::getCardsIdsForPile($pileIdErwerbseinkommen)),
         ));
         $this->broadcastNotify();
     }
