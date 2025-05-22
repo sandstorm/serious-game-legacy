@@ -6,7 +6,6 @@ namespace Domain\CoreGameLogic\Feature\Initialization\State;
 
 use Domain\CoreGameLogic\Dto\ValueObject\Guthaben;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
-use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 

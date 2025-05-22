@@ -20,9 +20,7 @@ use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\Definitions\Cards\Model\CardDefinition;
-use Domain\Definitions\Kompetenzbereich\Enum\KompetenzbereichEnum;
 use Domain\Definitions\Pile\Enum\PileEnum;
-use Domain\Definitions\Pile\PileFinder;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
@@ -43,9 +41,12 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
             $p2,
         ]
     ));
-    $cardsSozialesAndFreizeit = [new CardDefinition(
-        id: new CardId('testId'),
-        pileId: new PileId(PileEnum::FREIZEIT_PHASE_1),
+
+    $pileIdSozialesAndFreizeit = new PileId(PileEnum::FREIZEIT_PHASE_1);
+
+    $testCard = new CardDefinition(
+        id: new CardId('testcard'),
+        pileId: $pileIdSozialesAndFreizeit,
         kurzversion: 'Ehrenamtliches Engagement',
         langversion: 'Du engagierst dich ehrenamtlich für eine Organisation, die es Menschen mit Behinderung ermöglicht einen genialen Urlaub mit Sonne, Strand und Meer zu erleben. Du musst die Kosten dafür allerdings selbst tragen.',
         resourceChanges: new ResourceChanges(
@@ -56,13 +57,12 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
         requirements: new CardRequirements(
             guthaben: 500,
         ),
-    )];
-    $pileIdSozialesAndFreizeit = new PileId(PileEnum::FREIZEIT_PHASE_1);
+    );
 
     $this->coreGameLogic->handle(
         $this->gameId,
         ShuffleCards::create()->withFixedCardIdOrderForTesting(
-            new Pile( pileId: $pileIdSozialesAndFreizeit, cards: [$cardsSozialesAndFreizeit[0]->id]),
+            new Pile( pileId: $pileIdSozialesAndFreizeit, cards: [$testCard->id]),
         ));
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
     expect(GuthabenState::forPlayer($stream, $p1)->value)->toBe(50000)
@@ -72,9 +72,9 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
     //<editor-fold desc="modify guthaben">
     $this->coreGameLogic->handle(
         $this->gameId,
-        ActivateCard::create($p1, $cardsSozialesAndFreizeit[0]->id, $pileIdSozialesAndFreizeit)
+        ActivateCard::create($p1, $testCard->id, $pileIdSozialesAndFreizeit)
             ->withEreignis(new EreignisId("EVENT:Lotteriegewinn"))
-            ->withFixedCardDefinitionForTesting($cardsSozialesAndFreizeit[0])
+            ->withFixedCardDefinitionForTesting($testCard)
     );
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
     expect(GuthabenState::forPlayer($stream, $p1)->value)->toBe(50500)

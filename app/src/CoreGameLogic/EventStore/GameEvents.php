@@ -54,6 +54,12 @@ final readonly class GameEvents implements \IteratorAggregate, \Countable
         return array_map($callback, $this->events);
     }
 
+    /**
+     * @template T
+     * @param callable $callback
+     * @param T $initial
+     * @return T
+     */
     public function reduce(callable $callback, mixed $initial): mixed
     {
         return array_reduce($this->events, $callback, $initial);

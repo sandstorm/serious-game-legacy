@@ -25,7 +25,10 @@ final readonly class PreGameStarted implements GameEventInterface, ProvidesResou
 
     public function getResourceChanges(PlayerId $playerId): ResourceChanges
     {
-        return $this->resourceChanges;
+        if (in_array(needle: $playerId, haystack: $this->playerIds, strict: true)) {
+            return $this->resourceChanges;
+        }
+        throw new \RuntimeException('Player ' . $playerId . ' does not exist', 1747827331);
     }
 
     public static function fromArray(array $values): GameEventInterface
