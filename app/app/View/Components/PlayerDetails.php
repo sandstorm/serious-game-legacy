@@ -34,11 +34,6 @@ class PlayerDetails extends Component
         ]);
     }
 
-    public function getIsVisible(): bool
-    {
-        return $this->playerId !== null;
-    }
-
     private function getPlayerDetailsForPlayerId(?string $playerId): ?PlayerDetailsDto
     {
         if ($playerId === null) {
