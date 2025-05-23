@@ -167,10 +167,28 @@ final readonly class GameEvents implements \IteratorAggregate, \Countable
      */
     public function findAllAfterLastOfType(string $className): self
     {
+       $result = $this->findAllAfterLastOfTypeOrNull($className);
+
+       if ($result === null) {
+            throw new \RuntimeException('No element of type ' . $className . ' found', 1747412985);
+       }
+
+        return $result;
+    }
+
+    /**
+     * Returns all events that happened after the last event of the given type.
+     * Returns null if the given event is not found.
+     * @template T
+     * @param class-string<T> $className
+     * @return GameEvents|null
+     */
+    public function findAllAfterLastOfTypeOrNull(string $className): ?self
+    {
         $indexOfLast = $this->findIndexOfLastOrNull($className);
 
         if ($indexOfLast === null) {
-            throw new \RuntimeException('No element of type ' . $className . ' found', 1747412985);
+            return null;
         }
 
         if ($this->count() === $indexOfLast + 1) {

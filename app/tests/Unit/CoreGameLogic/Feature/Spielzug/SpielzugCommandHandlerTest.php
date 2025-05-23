@@ -19,11 +19,13 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
+use Domain\CoreGameLogic\Feature\Player\State\PlayerState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\Definitions\Cards\Model\CardDefinition;
 use Domain\Definitions\Pile\Enum\PileEnum;
-use Domain\Definitions\Pile\PileFinder;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
@@ -54,10 +56,147 @@ beforeEach(function () {
     ));
     $this->coreGameLogic->handle(
         $this->gameId,
-        new StartGame(playerOrdering: [$this->playerId1]));
+        new StartGame(playerOrdering: [$this->playerId1, $this->playerId2]));
+});
+
+
+describe('handleSkipCard', function () {
+
+    it('will consume a Zeitstein', function () {
+        $skipThisCard = new CardId('skipped');
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ShuffleCards::create()->withFixedCardIdOrderForTesting(
+                new Pile( pileId: $this->pileIdBildung, cards: [$skipThisCard]),
+            ));
+
+        $this->coreGameLogic->handle($this->gameId, new SkipCard(
+            player: $this->playerId1,
+            card: $skipThisCard,
+            pile: $this->pileIdBildung,
+        ));
+
+        $stream = $this->coreGameLogic->getGameStream($this->gameId);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->playerId1))->toBe(2);
+    });
 });
 
 describe('handleActivateCard', function () {
+
+    it('will consume a Zeitstein (first turn)', function (){
+        $cardToTest = new CardDefinition(
+            id: new CardId('testcard'),
+            pileId: $this->pileIdBildung,
+            kurzversion: 'for testing',
+            langversion: '...',
+            resourceChanges: new ResourceChanges(
+                guthabenChange: -200,
+                bildungKompetenzsteinChange: +1,
+            ),
+            additionalRequirements: new CardRequirements(
+                guthaben: 200,
+            ),
+        );
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ShuffleCards::create()->withFixedCardIdOrderForTesting(
+                new Pile( pileId: $this->pileIdBildung, cards: [$cardToTest->id]),
+            ));
+
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
+            player: $this->playerId1,
+            cardId: $cardToTest->id,
+            pile: $this->pileIdBildung,
+        )->withFixedCardDefinitionForTesting($cardToTest));
+
+        $stream = $this->coreGameLogic->getGameStream($this->gameId);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->playerId1))->toBe(2);
+    });
+
+    it('will consume a Zeitstein (later turns)', function (){
+        $skipThisCard = new CardId('skipped');
+        $cardToTest = new CardDefinition(
+            id: new CardId('testcard'),
+            pileId: $this->pileIdBildung,
+            kurzversion: 'for testing',
+            langversion: '...',
+            resourceChanges: new ResourceChanges(
+                guthabenChange: -200,
+                bildungKompetenzsteinChange: +1,
+            ),
+            additionalRequirements: new CardRequirements(
+                guthaben: 200,
+            ),
+        );
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ShuffleCards::create()->withFixedCardIdOrderForTesting(
+                new Pile( pileId: $this->pileIdBildung, cards: [$skipThisCard, $cardToTest->id]),
+            ));
+
+        $this->coreGameLogic->handle($this->gameId, new SkipCard(
+            player: $this->playerId1,
+            card: $skipThisCard,
+            pile: $this->pileIdBildung,
+        ));
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new SpielzugAbschliessen($this->playerId1)
+        );
+
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
+            player: $this->playerId2,
+            cardId: $cardToTest->id,
+            pile: $this->pileIdBildung,
+        )->withFixedCardDefinitionForTesting($cardToTest));
+
+        $stream = $this->coreGameLogic->getGameStream($this->gameId);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->playerId2))->toBe(2);
+    });
+
+    it('will not consume a Zeitstein after skipping a Card', function (){
+        $skipThisCard = new CardId('skipped');
+        $cardToTest = new CardDefinition(
+            id: new CardId('testcard'),
+            pileId: $this->pileIdBildung,
+            kurzversion: 'for testing',
+            langversion: '...',
+            resourceChanges: new ResourceChanges(
+                guthabenChange: -200,
+                bildungKompetenzsteinChange: +1,
+            ),
+            additionalRequirements: new CardRequirements(
+                guthaben: 200,
+            ),
+        );
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ShuffleCards::create()->withFixedCardIdOrderForTesting(
+                new Pile( pileId: $this->pileIdBildung, cards: [$skipThisCard, $cardToTest->id]),
+            ));
+
+        $this->coreGameLogic->handle($this->gameId, new SkipCard(
+            player: $this->playerId1,
+            card: $skipThisCard,
+            pile: $this->pileIdBildung,
+        ));
+
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
+            player: $this->playerId1,
+            cardId: $cardToTest->id,
+            pile: $this->pileIdBildung,
+        )->withFixedCardDefinitionForTesting($cardToTest));
+
+        $stream = $this->coreGameLogic->getGameStream($this->gameId);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->playerId1))->toBe(2);
+    });
+
+
 
     it('Will activate a card if requirements are met', function (){
         $cardToTest = new CardDefinition(
@@ -69,9 +208,8 @@ describe('handleActivateCard', function () {
                 guthabenChange: -200,
                 bildungKompetenzsteinChange: +1,
             ),
-            requirements: new CardRequirements(
+            additionalRequirements: new CardRequirements(
                 guthaben: 200,
-                zeitsteine: 1
             ),
         );
 
@@ -90,9 +228,11 @@ describe('handleActivateCard', function () {
         $stream = $this->coreGameLogic->getGameStream($this->gameId);
         /** @var CardWasActivated $actualEvent */
         $actualEvent = $stream->findLast(CardWasActivated::class);
+        // expect to lose an additional Zeitstein for activating the card
+        $expectedResourceChanges = $cardToTest->resourceChanges->accumulate(new ResourceChanges(zeitsteineChange: -1));
         expect($actualEvent->cardId)->toEqual($cardToTest->id)
             ->and($actualEvent->playerId)->toEqual($this->playerId1)
-            ->and($actualEvent->resourceChanges)->toEqual($cardToTest->resourceChanges);
+            ->and($actualEvent->resourceChanges)->toEqual($expectedResourceChanges);
     });
 
     it("will not activate the card if it's not the players turn", function () {
@@ -105,7 +245,7 @@ describe('handleActivateCard', function () {
                 guthabenChange: -200,
                 bildungKompetenzsteinChange: +1,
             ),
-            requirements: new CardRequirements(
+            additionalRequirements: new CardRequirements(
                 guthaben: 200,
                 zeitsteine: 1
             ),
@@ -131,13 +271,10 @@ describe('handleActivateCard', function () {
             kurzversion: 'for testing',
             langversion: '...',
             resourceChanges: new ResourceChanges(
-                guthabenChange: -200,
+                guthabenChange: -50001,
                 bildungKompetenzsteinChange: +1,
             ),
-            requirements: new CardRequirements(
-                guthaben: 50001,
-                zeitsteine: 1
-            ),
+            additionalRequirements: new CardRequirements(),
         );
 
         $this->coreGameLogic->handle(
@@ -151,6 +288,6 @@ describe('handleActivateCard', function () {
             cardId: $cardToTest->id,
             pile: $this->pileIdBildung,
         )->withFixedCardDefinitionForTesting($cardToTest));
-    })->throws(\RuntimeException::class, 'Player p1 does not have the required resources to activate the card testcard', 1747920761);
+    })->throws(\RuntimeException::class, 'Player p1 does not have the required resources ([guthabenChange: 50000 zeitsteineChange: 3] to activate the card testcard ([guthabenChange: -50001 zeitsteineChange: -1])', 1747920761);
 
 });

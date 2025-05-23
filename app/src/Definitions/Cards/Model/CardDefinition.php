@@ -17,7 +17,7 @@ class CardDefinition
         public string $kurzversion,
         public string $langversion,
         public ResourceChanges $resourceChanges,
-        public CardRequirements $requirements,
+        public CardRequirements $additionalRequirements,
     ) {
     }
 }

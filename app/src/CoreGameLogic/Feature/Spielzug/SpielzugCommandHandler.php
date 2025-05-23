@@ -6,9 +6,13 @@ namespace Domain\CoreGameLogic\Feature\Spielzug;
 
 use Domain\CoreGameLogic\CommandHandler\CommandHandlerInterface;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
+use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
+use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Pile\State\PileState;
+use Domain\CoreGameLogic\Feature\Player\State\PlayerState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
@@ -44,8 +48,6 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
 
     private function handleActivateCard(ActivateCard $command, GameEvents $gameState): GameEventsToPersist
     {
-        // TODO use up one Zeitstein when activating a card?
-
         $currentPlayer = CurrentPlayerAccessor::forStream($gameState);
         if (!$currentPlayer->equals($command->player)) {
             throw new \RuntimeException('Only the current player can activate a card', 1747917492);
@@ -58,12 +60,16 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
 
         $card = $command->fixedCardDefinitionForTesting !== null ? $command->fixedCardDefinitionForTesting : CardFinder::getCardById($command->cardId);
 
-        if (!AktionsCalculator::forStream($gameState)->canPlayerActivateCard($command->player, $card)) {
-            throw new \RuntimeException('Player ' . $command->player->value . ' does not have the required resources to activate the card ' . $card->id->value, 1747920761);
+        $costToActivate = new ResourceChanges(
+            zeitsteineChange: AktionsCalculator::forStream($gameState)->hasPlayerSkippedACardThisRound($command->player) ? 0 : -1
+        );
+        $totalCosts = $costToActivate->accumulate($card->resourceChanges);
+        if (!AktionsCalculator::forStream($gameState)->canPlayerAffordAction($command->player, $totalCosts)) {
+            throw new \RuntimeException('Player ' . $command->player->value . ' does not have the required resources ('. PlayerState::getResourcesForPlayer($gameState, $command->player).' to activate the card ' . $card->id->value . ' (' . $totalCosts .')', 1747920761);
         }
 
         $events = GameEventsToPersist::with(
-            new CardWasActivated($command->player, $command->pile, $card->id, $card->resourceChanges)
+            new CardWasActivated($command->player, $command->pile, $card->id, $totalCosts)
         );
 
         if ($command->attachedEreignis !== null) {
@@ -85,6 +91,10 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
         $topCardOnPile = PileState::topCardIdForPile($gameState, $command->pile);
         if (!$topCardOnPile->equals($command->card)) {
             throw new \RuntimeException('Only the top card of the pile can be skipped', 1747325793);
+        }
+
+        if (!AktionsCalculator::forStream($gameState)->canPlayerAffordAction($command->player, new ResourceChanges(zeitsteineChange: 1))) {
+            throw new \RuntimeException('Player ' . $command->player->value . ' does not have the required resources to skip the card ' . $command->card->value, 1747991385);
         }
 
         return GameEventsToPersist::with(
