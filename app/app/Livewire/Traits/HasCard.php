@@ -12,7 +12,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\Definitions\Cards\CardFinder;
 
-trait CardTrait
+trait HasCard
 {
     public ?string $showCardActionsForCard = null;
 

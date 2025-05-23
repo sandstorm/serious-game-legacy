@@ -6,7 +6,7 @@ namespace App\Livewire\Traits;
 
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 
-trait PlayerDetailsModalTrait
+trait HasPlayerDetails
 {
     public ?PlayerId $showDetailsForPlayer;
 
