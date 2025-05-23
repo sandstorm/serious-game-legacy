@@ -6,6 +6,7 @@ namespace App\Livewire\Traits;
 
 use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\PileId;
+use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
@@ -94,4 +95,10 @@ trait CardTrait
         ));
     }
 
+    // TODO for testing, is not in final game
+    public function shuffleCards(): void
+    {
+        $this->coreGameLogic->handle($this->gameId, ShuffleCards::create());
+        $this->broadcastNotify();
+    }
 }

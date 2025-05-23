@@ -1,3 +1,4 @@
+{{-- !!! Livewire components MUST have a single root element !!! --}}
 <div class="gameboard">
     <header class="gameboard__header">
         <h2>Spiel ID: {{ $gameId }}</h2>
@@ -13,6 +14,11 @@
         @foreach($cardPiles as $pile)
             <x-card-pile :title="$pile" :game-stream="$this->gameStream" />
         @endforeach
+    </div>
+
+    <div class="konjunktur-zyklus">
+        Jahr: {{ $konjunkturzyklus->year->value }} - {{ $konjunkturzyklus->type }} <br />
+        {{ $konjunkturzyklusDefinition->description }}
     </div>
 
     <footer>

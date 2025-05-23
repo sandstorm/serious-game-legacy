@@ -10,12 +10,14 @@ readonly class Konjunkturzyklus implements \JsonSerializable
 {
     /**
      * @param int $id
+     * @param CurrentYear $year
      * @param KonjunkturzyklusTypeEnum $type
      * @param Leitzins $leitzins
      * @param Kompetenzbereich[] $kompetenzbereiche
      */
     public function __construct(
         public int                      $id,
+        public CurrentYear              $year,
         public KonjunkturzyklusTypeEnum $type,
         public Leitzins                 $leitzins,
         public array                    $kompetenzbereiche
@@ -30,6 +32,7 @@ readonly class Konjunkturzyklus implements \JsonSerializable
     {
         return new self(
             id: $in['id'],
+            year: new CurrentYear($in['year']),
             type: KonjunkturzyklusTypeEnum::fromString($in['type']),
             leitzins: new Leitzins($in['leitzins']),
             kompetenzbereiche: array_map(
@@ -51,6 +54,7 @@ readonly class Konjunkturzyklus implements \JsonSerializable
     {
         return [
             'id' => $this->id,
+            'year' => $this->year,
             'type' => $this->type,
             'leitzins' => $this->leitzins,
             'kompetenzbereiche' => $this->kompetenzbereiche
