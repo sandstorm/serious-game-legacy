@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use App\Events\GameStateUpdated;
-use App\Livewire\Traits\CardTrait;
-use App\Livewire\Traits\GameTrait;
-use App\Livewire\Traits\KonjunkturzyklusTrait;
-use App\Livewire\Traits\PlayerDetailsModalTrait;
-use App\Livewire\Traits\PreGameTrait;
+use App\Livewire\Traits\HasCard;
+use App\Livewire\Traits\HasGamePhase;
+use App\Livewire\Traits\HasKonjunkturphase;
+use App\Livewire\Traits\HasPlayerDetails;
+use App\Livewire\Traits\HasPreGamePhase;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
@@ -22,11 +22,11 @@ use Livewire\Component;
 
 class GameUi extends Component
 {
-    use PlayerDetailsModalTrait;
-    use CardTrait;
-    use KonjunkturzyklusTrait;
-    use PreGameTrait;
-    use GameTrait;
+    use HasPlayerDetails;
+    use HasCard;
+    use HasKonjunkturphase;
+    use HasPreGamePhase;
+    use HasGamePhase;
 
     // injected from outside -> game-play.blade.php
     // Not the current player, but the player connected to THIS SESSION
@@ -39,7 +39,6 @@ class GameUi extends Component
 
     public function mount(): void
     {
-        $this->mountPreGame();
     }
 
     public function boot(Dispatcher $eventDispatcher, ForCoreGameLogic $coreGameLogic): void
@@ -62,9 +61,9 @@ class GameUi extends Component
     public function render(): View
     {
         if (PreGameState::isInPreGamePhase($this->gameStream)) {
-            return $this->renderPreGame();
+            return $this->renderPreGamePhase();
         } else {
-            return $this->renderGame();
+            return $this->renderGamePhase();
         }
     }
 

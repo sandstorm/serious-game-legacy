@@ -9,9 +9,9 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
 use Domain\Definitions\Pile\Enum\PileEnum;
 use Illuminate\View\View;
 
-trait GameTrait
+trait HasGamePhase
 {
-    public function renderGame(): View
+    public function renderGamePhase(): View
     {
         $cardPiles = [
             PileEnum::BILDUNG_PHASE_1->value,

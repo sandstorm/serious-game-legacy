@@ -15,17 +15,24 @@ use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
 use Domain\Definitions\Lebensziel\LebenszielFinder;
 use Illuminate\View\View;
 
-trait PreGameTrait
+trait HasPreGamePhase
 {
     public PreGameNameLebensziel $nameLebenszielForm;
 
-    public function mountPreGame(): void
+    /**
+     * Prefixed with "mount" to avoid conflicts with Livewire's mount method.
+     * Is automatically called by Livewire.
+     * See https://livewire.laravel.com/docs/lifecycle-hooks#using-hooks-inside-a-trait
+     *
+     * @return void
+     */
+    public function mountHasPreGamePhase(): void
     {
         $this->nameLebenszielForm->name = PreGameState::nameForPlayerOrNull($this->gameStream, $this->myself) ?? '';
         $this->nameLebenszielForm->lebensziel = PreGameState::lebenszielForPlayerOrNull($this->gameStream, $this->myself)->id ?? null;
     }
 
-    public function renderPreGame(): View
+    public function renderPreGamePhase(): View
     {
         $lebensziele = LebenszielFinder::getAllLebensziele();
 
