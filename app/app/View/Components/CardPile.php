@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\View\Components;
 
-use Closure;
 use Domain\CoreGameLogic\Dto\ValueObject\PileId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Pile\State\PileState;
@@ -25,8 +24,9 @@ class CardPile extends Component
     /**
      * Get the view / contents that represent the component.
      */
-    public function render(): View|Closure|string
+    public function render(): View
     {
+        // TODO get next card when played/skipped
         $topCardIdForPile = PileState::topCardIdForPile($this->gameStream, PileId::fromString($this->title));
         return view('components.gameboard.card-pile', [
             'title' => $this->title,

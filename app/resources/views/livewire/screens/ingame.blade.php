@@ -25,7 +25,7 @@
     </div>
 
     <footer>
-        @if ($this->getCurrentPlayer() == $myself)
+        @if ($this->currentPlayerIsMyself())
             <button type="button" class="button button--type-primary" wire:click="spielzugAbschliessen()">Spielzug abschließen</button>
         @endif
     </footer>

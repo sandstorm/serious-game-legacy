@@ -34,13 +34,19 @@
     overflow-x: hidden;
 }
 
+.card-pile__card--show-actions {
+    overflow: hidden;
+
+    .card-pile__card-details {
+        filter: blur(1.1px);
+    }
+}
+
 .card-pile__card-details {
     transition: all 0.5s ease;
 }
 
-.card-pile__card--show-actions .card-pile__card-details {
-    filter: blur(1.1px);
-}
+.card-pile__card--show-actions
 
 .card-pile__card-actions {
     position: absolute;
