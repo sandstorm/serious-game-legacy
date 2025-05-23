@@ -13,8 +13,8 @@ use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\SwitchKonjunkturphase;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasSwitched;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 
 /**
@@ -24,18 +24,18 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
 {
     public function canHandle(CommandInterface $command): bool
     {
-        return $command instanceof SwitchKonjunkturphase;
+        return $command instanceof ChangeKonjunkturphase;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameState): GameEventsToPersist
     {
         /** @phpstan-ignore-next-line */
         return match ($command::class) {
-            SwitchKonjunkturphase::class => $this->handleKonjunkturphasewechsel($command, $gameState),
+            ChangeKonjunkturphase::class => $this->handleKonjunkturphasewechsel($command, $gameState),
         };
     }
 
-    public function handleKonjunkturphasewechsel(SwitchKonjunkturphase $command, GameEvents $gameState): GameEventsToPersist
+    public function handleKonjunkturphasewechsel(ChangeKonjunkturphase $command, GameEvents $gameState): GameEventsToPersist
     {
         if (!GamePhaseState::isInGamePhase($gameState)) {
             throw new \RuntimeException('not in game phase', 1747148685);
@@ -54,7 +54,7 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
         $nextKonjunkturphase = $command->fixedKonjunkturphaseForTesting ?? KonjunkturphaseFinder::getUnusedRandomKonjunkturphase($idsOfPastKonjunkturphasen);
 
         return GameEventsToPersist::with(
-            new KonjunkturphaseWasSwitched(
+            new KonjunkturphaseWasChanged(
                 konjunkturphase: new Konjunkturphase(
                     id: $nextKonjunkturphase->id,
                     year: new CurrentYear($year),

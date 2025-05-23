@@ -15,7 +15,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\TriggeredEreignis;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\Definitions\Lebensziel\LebenszielFinder;
 
 beforeEach(function () {
@@ -75,6 +75,6 @@ describe('find all after last of type', function () {
 
     it('throws if no event of type is found', function () {
         $stream = $this->coreGameLogic->getGameStream($this->gameId);
-        $stream->findAllAfterLastOfType(TriggeredEreignis::class);
-    })->throws(\RuntimeException::class, 'No element of type ' . TriggeredEreignis::class . ' found');
+        $stream->findAllAfterLastOfType(EreignisWasTriggered::class);
+    })->throws(\RuntimeException::class, 'No element of type ' . EreignisWasTriggered::class . ' found');
 });

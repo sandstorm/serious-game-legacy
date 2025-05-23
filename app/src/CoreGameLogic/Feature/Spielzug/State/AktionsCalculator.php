@@ -14,7 +14,7 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Player\State\PlayerState;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasCompleted;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\Definitions\Cards\Model\CardDefinition;
 
 final readonly class AktionsCalculator
@@ -74,7 +74,7 @@ final readonly class AktionsCalculator
 
     public function hasPlayerSkippedACardThisRound(PlayerId $playerId): bool
     {
-        $eventsThisTurn = $this->stream->findAllAfterLastOfTypeOrNull(SpielzugWasCompleted::class);
+        $eventsThisTurn = $this->stream->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class);
         if ($eventsThisTurn === null) {
             $skipEventsThisTurn = count($this->stream->findAllAfterLastOfType(GameWasStarted::class)
                 ->filter(fn ($event) => $event instanceof CardWasSkipped));

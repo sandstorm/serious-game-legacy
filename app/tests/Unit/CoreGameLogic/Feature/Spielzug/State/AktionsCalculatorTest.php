@@ -22,7 +22,7 @@ use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\ModifierCalculator;
@@ -68,7 +68,7 @@ test('welche Spielzüge hat player zur Verfügung', function () {
         $this->gameId,
         ActivateCard::create($p1, array_shift($cardsBildung), $pileIdBildung)
             ->withEreignis(new EreignisId("EVENT:OmaKrank")));
-    $this->coreGameLogic->handle($this->gameId, new SpielzugAbschliessen($p1));
+    $this->coreGameLogic->handle($this->gameId, new EndSpielzug($p1));
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
 
     expect(iterator_to_array(ModifierCalculator::forStream($stream)->forPlayer($p1))[0]->id->value)->toBe("MODIFIER:ausetzen")

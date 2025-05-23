@@ -7,7 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 
-final readonly class SpielzugWasCompleted implements GameEventInterface
+final readonly class SpielzugWasEnded implements GameEventInterface
 {
     public function __construct(
         public PlayerId $player,

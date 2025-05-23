@@ -7,7 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Initialization\State;
 use Domain\CoreGameLogic\Dto\ValueObject\Konjunkturphase;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasSwitched;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 
 class GamePhaseState
 {
@@ -27,7 +27,7 @@ class GamePhaseState
 
     public static function currentKonjunkturphaseOrNull(GameEvents $gameStream): ?Konjunkturphase
     {
-        return $gameStream->findLastOrNull(KonjunkturphaseWasSwitched::class)?->konjunkturphase;
+        return $gameStream->findLastOrNull(KonjunkturphaseWasChanged::class)?->konjunkturphase;
     }
 
     /**
@@ -37,9 +37,9 @@ class GamePhaseState
     public static function idsOfPastKonjunkturphasen(GameEvents $gameStream): array
     {
         // get all ids of the KonjunkturphaseWechselExecuted events
-        $events = $gameStream->findAllOfType(KonjunkturphaseWasSwitched::class);
+        $events = $gameStream->findAllOfType(KonjunkturphaseWasChanged::class);
         $ids = [];
-        /** @var KonjunkturphaseWasSwitched $event */
+        /** @var KonjunkturphaseWasChanged $event */
         foreach ($events as $event) {
             $ids[] = $event->konjunkturphase->id;
         }

@@ -4,7 +4,7 @@ use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 
 beforeEach(function () {
@@ -24,14 +24,14 @@ test('Current Player Handling', function () {
     expect(CurrentPlayerAccessor::forStream($stream)->value)->toBe('p1');
 
     // Spielerwechsel
-    $this->coreGameLogic->handle($this->gameId, new SpielzugAbschliessen(
+    $this->coreGameLogic->handle($this->gameId, new EndSpielzug(
         player: PlayerId::fromString('p1'),
     ));
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
     expect(CurrentPlayerAccessor::forStream($stream)->value)->toBe('p2');
 
     // Spielerwechsel mit wieder vorn beginnen
-    $this->coreGameLogic->handle($this->gameId, new SpielzugAbschliessen(
+    $this->coreGameLogic->handle($this->gameId, new EndSpielzug(
         player: PlayerId::fromString('p2'),
     ));
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
@@ -45,7 +45,7 @@ test('Current Player Handling', function () {
             PlayerId::fromString('p3'),
         ]
     ));
-    $this->coreGameLogic->handle($this->gameId, new SpielzugAbschliessen(
+    $this->coreGameLogic->handle($this->gameId, new EndSpielzug(
         player: PlayerId::fromString('p1'),
     ));
     $stream = $this->coreGameLogic->getGameStream($this->gameId);

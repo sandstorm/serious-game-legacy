@@ -7,7 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\State;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasCompleted;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 
 class CurrentPlayerAccessor
 {
@@ -15,7 +15,7 @@ class CurrentPlayerAccessor
     {
         $currentPlayerOrdering = $stream->findLast(GameWasStarted::class)->playerOrdering;
 
-        $previousPlayer = $stream->findLastOrNull(SpielzugWasCompleted::class)?->player;
+        $previousPlayer = $stream->findLastOrNull(SpielzugWasEnded::class)?->player;
 
         if ($previousPlayer === null) {
             // Initial move -> first according to player ordering

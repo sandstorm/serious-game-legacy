@@ -14,7 +14,7 @@ use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 
-final readonly class TriggeredEreignis implements ProvidesModifiers, ProvidesResourceChanges, GameEventInterface
+final readonly class EreignisWasTriggered implements ProvidesModifiers, ProvidesResourceChanges, GameEventInterface
 {
     public function __construct(
         public PlayerId $player,
