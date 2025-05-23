@@ -16,7 +16,7 @@ use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
 use Domain\CoreGameLogic\Feature\Pile\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\Definitions\Pile\Enum\PileEnum;
 use Domain\Definitions\Pile\PileFinder;
 
@@ -86,7 +86,7 @@ test('Cards can be drawn from piles', function () {
 
     $this->coreGameLogic->handle(
         $this->gameId,
-        new SpielzugAbschliessen($this->p1)
+        new EndSpielzug($this->p1)
     );
 
     $stream = $this->coreGameLogic->getGameStream($this->gameId);

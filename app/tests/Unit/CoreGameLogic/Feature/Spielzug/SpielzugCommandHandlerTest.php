@@ -22,7 +22,7 @@ use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
 use Domain\CoreGameLogic\Feature\Player\State\PlayerState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\Definitions\Cards\Model\CardDefinition;
 use Domain\Definitions\Pile\Enum\PileEnum;
@@ -145,7 +145,7 @@ describe('handleActivateCard', function () {
 
         $this->coreGameLogic->handle(
             $this->gameId,
-            new SpielzugAbschliessen($this->playerId1)
+            new EndSpielzug($this->playerId1)
         );
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(

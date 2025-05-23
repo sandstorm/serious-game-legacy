@@ -15,11 +15,11 @@ use Domain\CoreGameLogic\Feature\Pile\State\PileState;
 use Domain\CoreGameLogic\Feature\Player\State\PlayerState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasCompleted;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\TriggeredEreignis;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\Definitions\Cards\CardFinder;
@@ -33,7 +33,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
     {
         return $command instanceof ActivateCard
             || $command instanceof SkipCard
-            || $command instanceof SpielzugAbschliessen;
+            || $command instanceof EndSpielzug;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameState): GameEventsToPersist
@@ -42,7 +42,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
         return match ($command::class) {
             ActivateCard::class => $this->handleActivateCard($command, $gameState),
             SkipCard::class => $this->handleSkipCard($command, $gameState),
-            SpielzugAbschliessen::class => $this->handleSpielzugAbschliessen($command, $gameState),
+            EndSpielzug::class => $this->handleSpielzugAbschliessen($command, $gameState),
         };
     }
 
@@ -74,7 +74,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
 
         if ($command->attachedEreignis !== null) {
             $events = $events->withAppendedEvents(
-                new TriggeredEreignis($command->player, $command->attachedEreignis)
+                new EreignisWasTriggered($command->player, $command->attachedEreignis)
             );
         }
 
@@ -102,7 +102,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
         );
     }
 
-    private function handleSpielzugAbschliessen(SpielzugAbschliessen $command, GameEvents $gameState): GameEventsToPersist
+    private function handleSpielzugAbschliessen(EndSpielzug $command, GameEvents $gameState): GameEventsToPersist
     {
         $currentPlayer = CurrentPlayerAccessor::forStream($gameState);
         if (!$currentPlayer->equals($command->player)) {
@@ -110,7 +110,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
         }
 
         return GameEventsToPersist::with(
-            new SpielzugWasCompleted($command->player)
+            new SpielzugWasEnded($command->player)
         );
     }
 }

@@ -8,12 +8,12 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasSwitched;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Pile\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasCompleted;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\TriggeredEreignis;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Neos\EventStore\Model\Event;
 use Neos\EventStore\Model\Event\EventData;
 use Neos\EventStore\Model\Event\EventId;
@@ -51,12 +51,12 @@ final readonly class EventNormalizer
             GameWasStarted::class,
             CardWasActivated::class,
             CardWasSkipped::class,
-            SpielzugWasCompleted::class,
-            TriggeredEreignis::class,
+            SpielzugWasEnded::class,
+            EreignisWasTriggered::class,
             LebenszielWasSelected::class,
             PreGameStarted::class,
             NameForPlayerWasSet::class,
-            KonjunkturphaseWasSwitched::class,
+            KonjunkturphaseWasChanged::class,
             CardsWereShuffled::class,
         ];
 

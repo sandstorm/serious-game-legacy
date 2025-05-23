@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Traits;
 
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\SpielzugAbschliessen;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\Definitions\Pile\Enum\PileEnum;
 use Illuminate\View\View;
 
@@ -29,7 +29,7 @@ trait HasGamePhase
 
     public function spielzugAbschliessen(): void
     {
-        $this->coreGameLogic->handle($this->gameId, new SpielzugAbschliessen($this->myself));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->myself));
         $this->broadcastNotify();
     }
 

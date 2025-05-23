@@ -7,7 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Command;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 
-final readonly class SwitchKonjunkturphase implements CommandInterface
+final readonly class ChangeKonjunkturphase implements CommandInterface
 {
     public static function create(): self
     {

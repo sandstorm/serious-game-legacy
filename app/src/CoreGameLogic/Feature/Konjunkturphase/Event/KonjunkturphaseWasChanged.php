@@ -7,7 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Event;
 use Domain\CoreGameLogic\Dto\ValueObject\Konjunkturphase;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 
-final readonly class KonjunkturphaseWasSwitched implements GameEventInterface
+final readonly class KonjunkturphaseWasChanged implements GameEventInterface
 {
     public function __construct(
         public Konjunkturphase $konjunkturphase,
