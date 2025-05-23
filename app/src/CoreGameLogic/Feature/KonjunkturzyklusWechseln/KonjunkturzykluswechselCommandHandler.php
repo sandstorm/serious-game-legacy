@@ -43,7 +43,7 @@ final readonly class KonjunkturzykluswechselCommandHandler implements CommandHan
 
         $year = 1;
         // increment year
-        if (GamePhaseState::currentKonjunkturzyklus($gameState)?->year->value > 0) {
+        if (GamePhaseState::currentKonjunkturzyklusOrNull($gameState)?->year->value > 0) {
             $year = GamePhaseState::currentKonjunkturzyklus($gameState)->year->value + 1;
         }
 
@@ -55,9 +55,9 @@ final readonly class KonjunkturzykluswechselCommandHandler implements CommandHan
 
         return GameEventsToPersist::with(
             new KonjunkturzyklusWechselExecuted(
-                year: new CurrentYear($year),
                 konjunkturzyklus: new Konjunkturzyklus(
                     id: $nextKonjunkturZyklus->id,
+                    year: new CurrentYear($year),
                     type: $nextKonjunkturZyklus->type,
                     leitzins: new Leitzins($nextKonjunkturZyklus->leitzins),
                     kompetenzbereiche: array_map(

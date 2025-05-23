@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\Event;
 
-use Domain\CoreGameLogic\Dto\ValueObject\CurrentYear;
 use Domain\CoreGameLogic\Dto\ValueObject\Konjunkturzyklus;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 
 final readonly class KonjunkturzyklusWechselExecuted implements GameEventInterface
 {
     public function __construct(
-        public CurrentYear $year,
         public Konjunkturzyklus $konjunkturzyklus,
     ) {
     }
@@ -19,7 +17,6 @@ final readonly class KonjunkturzyklusWechselExecuted implements GameEventInterfa
     public static function fromArray(array $values): GameEventInterface
     {
         return new self(
-            year: new CurrentYear($values['year']),
             konjunkturzyklus: Konjunkturzyklus::fromArray($values['konjunkturzyklus']),
         );
     }
@@ -30,7 +27,6 @@ final readonly class KonjunkturzyklusWechselExecuted implements GameEventInterfa
     public function jsonSerialize(): array
     {
         return [
-            'year' => $this->year,
             'konjunkturzyklus' => $this->konjunkturzyklus,
         ];
     }
