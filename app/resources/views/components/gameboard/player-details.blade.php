@@ -1,4 +1,4 @@
-@extends ('components.modal.modal', ['isVisible' => $getIsVisible(), 'closeModal' => "closePlayerDetails()"])
+@extends ('components.modal.modal', ['closeModal' => "closePlayerDetails()"])
 @section('title')
     Spieler Details
 @endsection

@@ -8,15 +8,15 @@ use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 
 trait PlayerDetailsModalTrait
 {
-    public ?PlayerId $currentPlayerId;
+    public ?PlayerId $showDetailsForPlayer;
 
     public function showPlayerDetails(string $playerId): void
     {
-        $this->currentPlayerId = PlayerId::fromString($playerId);
+        $this->showDetailsForPlayer = PlayerId::fromString($playerId);
     }
 
     public function closePlayerDetails(): void
     {
-        $this->currentPlayerId = null;
+        $this->showDetailsForPlayer = null;
     }
 }
