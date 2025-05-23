@@ -9,10 +9,10 @@
         @endif
     </header>
     <div class="konjunktur-zyklus">
-        Jahr: {{ $konjunkturzyklus->year->value }} - {{ $konjunkturzyklus->type }} <br />
-        <button type="button" class="button button--type-primary" wire:click="showKonjunkturzyklusDetails()">Zeige Details</button>
-        @if ($konjunkturzyklusDetailsVisible)
-            <x-konjunkturzyklus-detais :game-stream="$this->gameStream" />
+        Jahr: {{ $konjunkturphase->year->value }} - {{ $konjunkturphase->type }} <br />
+        <button type="button" class="button button--type-primary" wire:click="showKonjunkturphaseDetails()">Zeige Details</button>
+        @if ($konjunkturphaseDetailsVisible)
+            <x-konjunkturphase-detais :game-stream="$this->gameStream" />
         @endif
     </div>
     <hr />

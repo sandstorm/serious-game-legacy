@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Domain\Definitions\Konjunkturzyklus\Enum;
+namespace Domain\Definitions\Konjunkturphase\Enum;
 
-enum KonjunkturzyklusTypeEnum: string
+enum KonjunkturphaseTypeEnum: string
 {
     case AUFSCHWUNG = 'Aufschwung';
     case REZESSION = 'Rezession';
@@ -18,7 +18,7 @@ enum KonjunkturzyklusTypeEnum: string
             'Rezession' => self::REZESSION,
             'Boom' => self::BOOM,
             'Depression' => self::DEPRESSION,
-            default => throw new \InvalidArgumentException('Invalid KonjunkturzyklusType: '.$value),
+            default => throw new \InvalidArgumentException('Invalid KonjunkturphaseType: '.$value),
         };
     }
 }

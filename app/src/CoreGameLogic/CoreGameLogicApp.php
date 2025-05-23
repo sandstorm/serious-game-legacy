@@ -10,7 +10,7 @@ use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\InitializationCommandHandler;
 use Domain\CoreGameLogic\Feature\Pile\PileCommandHandler;
-use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\KonjunkturzykluswechselCommandHandler;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\KonjunkturphaseCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Neos\EventStore\Helper\InMemoryEventStore;
 use Neos\EventStore\Model\EventStream\ExpectedVersion;
@@ -41,7 +41,7 @@ final class CoreGameLogicApp implements ForCoreGameLogic
     ) {
         $this->commandBus = new CommandBus(
             new InitializationCommandHandler(),
-            new KonjunkturzykluswechselCommandHandler(),
+            new KonjunkturphaseCommandHandler(),
             new SpielzugCommandHandler(),
             new PileCommandHandler(),
         );

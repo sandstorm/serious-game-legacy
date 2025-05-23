@@ -6,15 +6,15 @@ namespace App\Livewire\Traits;
 
 trait HasKonjunkturphase
 {
-    public bool $konjunkturzyklusDetailsVisible = false;
+    public bool $konjunkturphaseDetailsVisible = false;
 
-    public function showKonjunkturzyklusDetails(): void
+    public function showKonjunkturphaseDetails(): void
     {
-        $this->konjunkturzyklusDetailsVisible = true;
+        $this->konjunkturphaseDetailsVisible = true;
     }
 
-    public function closeKonjunkturzyklusDetails(): void
+    public function closeKonjunkturphaseDetails(): void
     {
-        $this->konjunkturzyklusDetailsVisible = false;
+        $this->konjunkturphaseDetailsVisible = false;
     }
 }

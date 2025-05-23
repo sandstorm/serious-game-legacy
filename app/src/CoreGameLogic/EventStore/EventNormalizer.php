@@ -8,8 +8,8 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasSwitched;
 use Domain\CoreGameLogic\Feature\Pile\Event\CardsWereShuffled;
-use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\Event\KonjunkturzyklusWechselExecuted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasCompleted;
@@ -56,7 +56,7 @@ final readonly class EventNormalizer
             LebenszielWasSelected::class,
             PreGameStarted::class,
             NameForPlayerWasSet::class,
-            KonjunkturzyklusWechselExecuted::class,
+            KonjunkturphaseWasSwitched::class,
             CardsWereShuffled::class,
         ];
 

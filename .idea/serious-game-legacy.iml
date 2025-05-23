@@ -222,6 +222,11 @@
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/sandstorm/eventstore-laraveladapter" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor/_laravel_idea" />
       <excludeFolder url="file://$MODULE_DIR$/app/public" />
+      <excludeFolder url="file://$MODULE_DIR$/app/.yarn-cache" />
+      <excludeFolder url="file://$MODULE_DIR$/app/bootstrap" />
+      <excludeFolder url="file://$MODULE_DIR$/app/storage" />
+      <excludeFolder url="file://$MODULE_DIR$/app/vendor" />
+      <excludeFolder url="file://$MODULE_DIR$/tmp" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

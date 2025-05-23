@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Dto\ValueObject;
 
-use Domain\Definitions\Konjunkturzyklus\Enum\KonjunkturzyklusTypeEnum;
+use Domain\Definitions\Konjunkturphase\Enum\KonjunkturphaseTypeEnum;
 
-readonly class Konjunkturzyklus implements \JsonSerializable
+readonly class Konjunkturphase implements \JsonSerializable
 {
     /**
      * @param int $id
      * @param CurrentYear $year
-     * @param KonjunkturzyklusTypeEnum $type
+     * @param KonjunkturphaseTypeEnum $type
      * @param Leitzins $leitzins
      * @param Kompetenzbereich[] $kompetenzbereiche
      */
     public function __construct(
-        public int                      $id,
-        public CurrentYear              $year,
-        public KonjunkturzyklusTypeEnum $type,
-        public Leitzins                 $leitzins,
-        public array                    $kompetenzbereiche
+        public int                     $id,
+        public CurrentYear             $year,
+        public KonjunkturphaseTypeEnum $type,
+        public Leitzins                $leitzins,
+        public array                   $kompetenzbereiche
     )
     {
     }
@@ -33,7 +33,7 @@ readonly class Konjunkturzyklus implements \JsonSerializable
         return new self(
             id: $in['id'],
             year: new CurrentYear($in['year']),
-            type: KonjunkturzyklusTypeEnum::fromString($in['type']),
+            type: KonjunkturphaseTypeEnum::fromString($in['type']),
             leitzins: new Leitzins($in['leitzins']),
             kompetenzbereiche: array_map(
                 static fn(array $kompetenzbereich) => Kompetenzbereich::fromArray($kompetenzbereich),
@@ -44,7 +44,7 @@ readonly class Konjunkturzyklus implements \JsonSerializable
 
     public function __toString(): string
     {
-        return '[Konjunkturzyklus: ' . $this->type->value . ']';
+        return '[Konjunkturphase: ' . $this->type->value . ']';
     }
 
     /**

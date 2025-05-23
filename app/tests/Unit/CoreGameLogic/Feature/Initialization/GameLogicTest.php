@@ -10,9 +10,9 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
-use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\Command\KonjunkturzyklusWechseln;
-use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\KonjunkturzykluswechselCommandHandler;
-use Domain\Definitions\Konjunkturzyklus\KonjunkturzyklusFinder;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\KonjunkturphaseCommandHandler;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\SwitchKonjunkturphase;
+use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
@@ -42,83 +42,83 @@ beforeEach(function () {
 });
 
 test('Game logic - change year randomly', function () {
-    $handler = new KonjunkturzykluswechselCommandHandler();
+    $handler = new KonjunkturphaseCommandHandler();
     $this->coreGameLogic->handle($this->gameId, new StartGame([$this->p1, $this->p2]));
 
     // year 1
-    $this->coreGameLogic->handle($this->gameId, KonjunkturzyklusWechseln::create());
+    $this->coreGameLogic->handle($this->gameId, SwitchKonjunkturphase::create());
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
-    $year1 = GamePhaseState::currentKonjunkturzyklus($gameStream);
+    $year1 = GamePhaseState::currentKonjunkturphase($gameStream);
     expect($year1->year->value)->toEqual(1);
 
     // year 2
-    $this->coreGameLogic->handle($this->gameId, KonjunkturzyklusWechseln::create());
+    $this->coreGameLogic->handle($this->gameId, SwitchKonjunkturphase::create());
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
-    $year2 = GamePhaseState::currentKonjunkturzyklus($gameStream);
+    $year2 = GamePhaseState::currentKonjunkturphase($gameStream);
     expect($year2->year->value)->toEqual(2);
 
-    $idsOfPastKonjunkturzyklen = $handler->getIdsOfPastKonjunkturzyklen($gameStream);
-    expect(count($idsOfPastKonjunkturzyklen))->toEqual(2);
-    expect($idsOfPastKonjunkturzyklen[0])->toEqual($year1->id)
-        ->and($idsOfPastKonjunkturzyklen[1])->toEqual($year2->id);
+    $idsOfPastKonjunkturphasen = $handler->getIdsOfPastKonjunkturphasen($gameStream);
+    expect(count($idsOfPastKonjunkturphasen))->toEqual(2);
+    expect($idsOfPastKonjunkturphasen[0])->toEqual($year1->id)
+        ->and($idsOfPastKonjunkturphasen[1])->toEqual($year2->id);
 
     // year 3
-    $this->coreGameLogic->handle($this->gameId, KonjunkturzyklusWechseln::create());
+    $this->coreGameLogic->handle($this->gameId, SwitchKonjunkturphase::create());
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
-    $year3 = GamePhaseState::currentKonjunkturzyklus($gameStream);
+    $year3 = GamePhaseState::currentKonjunkturphase($gameStream);
     expect($year3->year->value)->toEqual(3);
 
-    // check that the years have different konjunkturzyklus
+    // check that the years have different konjunkturphase
     expect($year1->id)->not->toEqual($year2->id)
         ->and($year2->id)->not->toEqual($year3->id)
         ->and($year1->id)->not->toEqual($year3->id);
 
-    $idsOfPastKonjunkturzyklen = $handler->getIdsOfPastKonjunkturzyklen($gameStream);
-    expect(count($idsOfPastKonjunkturzyklen))->toEqual(0);
+    $idsOfPastKonjunkturphasen = $handler->getIdsOfPastKonjunkturphasen($gameStream);
+    expect(count($idsOfPastKonjunkturphasen))->toEqual(0);
 
     // year 4
-    $this->coreGameLogic->handle($this->gameId, KonjunkturzyklusWechseln::create());
+    $this->coreGameLogic->handle($this->gameId, SwitchKonjunkturphase::create());
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
-    $year4 = GamePhaseState::currentKonjunkturzyklus($gameStream);
+    $year4 = GamePhaseState::currentKonjunkturphase($gameStream);
     expect($year4->year->value)->toEqual(4);
 
-    $idsOfPastKonjunkturzyklen = $handler->getIdsOfPastKonjunkturzyklen($gameStream);
-    expect(count($idsOfPastKonjunkturzyklen))->toEqual(1);
+    $idsOfPastKonjunkturphasen = $handler->getIdsOfPastKonjunkturphasen($gameStream);
+    expect(count($idsOfPastKonjunkturphasen))->toEqual(1);
     expect($year4->id)->toEqual($year4->id);
 
-    $amountOfPastKonjunkturzyklen = count(GamePhaseState::idsOfPastKonjunkturzyklen($gameStream));
-    expect($amountOfPastKonjunkturzyklen)->toEqual(4);
+    $amountOfPastKonjunkturphasen = count(GamePhaseState::idsOfPastKonjunkturphasen($gameStream));
+    expect($amountOfPastKonjunkturphasen)->toEqual(4);
 });
 
 test('Game logic - change a large amount of years', function() {
     $amountOfYears = 20;
     $this->coreGameLogic->handle($this->gameId, new StartGame([$this->p1, $this->p2]));
     for ($i = 0; $i < $amountOfYears; $i++) {
-        $this->coreGameLogic->handle($this->gameId, KonjunkturzyklusWechseln::create());
+        $this->coreGameLogic->handle($this->gameId, SwitchKonjunkturphase::create());
         $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
-        $year = GamePhaseState::currentKonjunkturzyklus($gameStream);
+        $year = GamePhaseState::currentKonjunkturphase($gameStream);
         expect($year->year->value)->toEqual($i + 1);
     }
 
-    $amountOfPastKonjunkturzyklen = count(GamePhaseState::idsOfPastKonjunkturzyklen($gameStream));
-    expect($amountOfPastKonjunkturzyklen)->toEqual(20);
+    $amountOfPastKonjunkturphasen = count(GamePhaseState::idsOfPastKonjunkturphasen($gameStream));
+    expect($amountOfPastKonjunkturphasen)->toEqual(20);
 });
 
-test('Game logic - change year with fixed konjunkturzyklus', function () {
+test('Game logic - change year with fixed konjunkturphase', function () {
     $this->coreGameLogic->handle($this->gameId, new StartGame([$this->p1, $this->p2]));
 
-    $nextKonjunkturZyklus = KonjunkturzyklusFinder::getAllKonjunkturzyklen()[0];
-    $this->coreGameLogic->handle($this->gameId, KonjunkturzyklusWechseln::createWithFixedKonjunkturzyklusForTesting(
-        $nextKonjunkturZyklus
+    $nextKonjunkturphase = KonjunkturphaseFinder::getAllKonjunkturphasen()[0];
+    $this->coreGameLogic->handle($this->gameId, SwitchKonjunkturphase::createWithFixedKonjunkturphaseForTesting(
+        $nextKonjunkturphase
     ));
 
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
-    $year1 = GamePhaseState::currentKonjunkturzyklus($gameStream);
+    $year1 = GamePhaseState::currentKonjunkturphase($gameStream);
     expect($year1->year->value)->toEqual(1);
-    expect($year1->type)->toEqual($nextKonjunkturZyklus->type);
-    expect($year1->leitzins->value)->toEqual($nextKonjunkturZyklus->leitzins);
+    expect($year1->type)->toEqual($nextKonjunkturphase->type);
+    expect($year1->leitzins->value)->toEqual($nextKonjunkturphase->leitzins);
 
-    $konjunkturZyklus = KonjunkturzyklusFinder::findKonjunkturZyklusById($year1->id);
-    expect($konjunkturZyklus->kompetenzbereiche)->toEqual($nextKonjunkturZyklus->kompetenzbereiche);
-    expect($konjunkturZyklus->description)->toEqual($nextKonjunkturZyklus->description);
+    $konjunkturphase= KonjunkturphaseFinder::findKonjunkturphaseById($year1->id);
+    expect($konjunkturphase->kompetenzbereiche)->toEqual($nextKonjunkturphase->kompetenzbereiche);
+    expect($konjunkturphase->description)->toEqual($nextKonjunkturphase->description);
 });

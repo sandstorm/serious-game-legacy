@@ -19,11 +19,11 @@ trait HasGamePhase
             PileEnum::ERWERBSEINKOMMEN_PHASE_1->value,
         ];
 
-        $konjunkturzyklus = GamePhaseState::currentKonjunkturzyklus($this->gameStream);
+        $konjunkturphase = GamePhaseState::currentKonjunkturphase($this->gameStream);
 
         return view('livewire.screens.ingame', [
             'cardPiles' => $cardPiles,
-            'konjunkturzyklus' => $konjunkturzyklus,
+            'konjunkturphase' => $konjunkturphase,
         ]);
     }
 
