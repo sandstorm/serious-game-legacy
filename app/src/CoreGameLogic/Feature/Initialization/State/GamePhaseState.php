@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Initialization\State;
 
-use Domain\CoreGameLogic\Dto\ValueObject\Konjunkturzyklus;
+use Domain\CoreGameLogic\Dto\ValueObject\Konjunkturphase;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
-use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\Event\KonjunkturzyklusWechselExecuted;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasSwitched;
 
 class GamePhaseState
 {
@@ -16,32 +16,32 @@ class GamePhaseState
         return $gameStream->findFirstOrNull(GameWasStarted::class) !== null;
     }
 
-    public static function currentKonjunkturzyklus(GameEvents $gameStream): Konjunkturzyklus
+    public static function currentKonjunkturphase(GameEvents $gameStream): Konjunkturphase
     {
-        $konjunkturzyklus = self::currentKonjunkturzyklusOrNull($gameStream);
-        if ($konjunkturzyklus === null) {
-            throw new \RuntimeException('No Konjunkturzyklus found - should never happen.');
+        $konjunkturphase = self::currentKonjunkturphaseOrNull($gameStream);
+        if ($konjunkturphase === null) {
+            throw new \RuntimeException('No Konjunkturphase found - should never happen.');
         }
-        return $konjunkturzyklus;
+        return $konjunkturphase;
     }
 
-    public static function currentKonjunkturzyklusOrNull(GameEvents $gameStream): ?Konjunkturzyklus
+    public static function currentKonjunkturphaseOrNull(GameEvents $gameStream): ?Konjunkturphase
     {
-        return $gameStream->findLastOrNull(KonjunkturzyklusWechselExecuted::class)?->konjunkturzyklus;
+        return $gameStream->findLastOrNull(KonjunkturphaseWasSwitched::class)?->konjunkturphase;
     }
 
     /**
      * @param GameEvents $gameStream
      * @return int[]
      */
-    public static function idsOfPastKonjunkturzyklen(GameEvents $gameStream): array
+    public static function idsOfPastKonjunkturphasen(GameEvents $gameStream): array
     {
-        // get all ids of the KonjunkturzyklusWechselExecuted events
-        $events = $gameStream->findAllOfType(KonjunkturzyklusWechselExecuted::class);
+        // get all ids of the KonjunkturphaseWechselExecuted events
+        $events = $gameStream->findAllOfType(KonjunkturphaseWasSwitched::class);
         $ids = [];
-        /** @var KonjunkturzyklusWechselExecuted $event */
+        /** @var KonjunkturphaseWasSwitched $event */
         foreach ($events as $event) {
-            $ids[] = $event->konjunkturzyklus->id;
+            $ids[] = $event->konjunkturphase->id;
         }
         return $ids;
     }

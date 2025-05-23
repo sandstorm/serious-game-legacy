@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Domain\Definitions\Konjunkturzyklus;
+namespace Domain\Definitions\Konjunkturphase;
 
 use Domain\Definitions\Auswirkung\AuswirkungDefinition;
 use Domain\Definitions\Auswirkung\Enum\AuswirkungScopeEnum;
 use Domain\Definitions\Kompetenzbereich\Enum\KompetenzbereichEnum;
 use Domain\Definitions\Kompetenzbereich\KompetenzbereichDefinition;
-use Domain\Definitions\Konjunkturzyklus\Enum\KonjunkturzyklusTypeEnum;
+use Domain\Definitions\Konjunkturphase\Enum\KonjunkturphaseTypeEnum;
 
-class KonjunkturzyklusFinder
+class KonjunkturphaseFinder
 {
     /**
-     * @return KonjunkturzyklusDefinition[]
+     * @return KonjunkturphaseDefinition[]
      */
-    public static function getAllKonjunkturzyklen(): array
+    public static function getAllKonjunkturphasen(): array
     {
-        $year1 = new KonjunkturzyklusDefinition(
+        $year1 = new KonjunkturphaseDefinition(
             id: 1,
-            type: KonjunkturzyklusTypeEnum::AUFSCHWUNG,
+            type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
             description: 'Die Wirtschaft wächst langsam aber stetig. Dadurch sind die KonsumentInnen in Kauflaune und steigern die Nachfrage deutlich.
 Die Notenbank ändert den Leitszins. Aus diesem Grund kann jede Person zu folgendem Zinnsatz Geld leihen: 5 %
 Das geliehene Geld muss innerhalb 20 Raten zurückgezahlt werden, d.h. es werden pro Jahr 5 % des Anfangsbetrags gefordert.
@@ -67,9 +67,9 @@ Der steigende Leitzins erhöht die Deflation, die Kaufkraft der Barreserven erh�
             ]
         );
 
-        $year2 = new KonjunkturzyklusDefinition(
+        $year2 = new KonjunkturphaseDefinition(
             id: 2,
-            type: KonjunkturzyklusTypeEnum::REZESSION,
+            type: KonjunkturphaseTypeEnum::REZESSION,
             description: 'Der neue Präsident einer global bedeutsamen Volkswirtschaft provoziert einen Handelskrieg, was zu einer sinkenden Importnachfrage führt.
 Die Notenbank ändert den Leitszins. Aus diesem Grund kann jede Person zu folgendem Zinnsatz Geld leihen: 5 %
 Das geliehene Geld muss innerhalb 20 Raten zurückgezahlt werden, d.h. es werden pro Jahr 5 % des Anfangsbetrags gefordert.
@@ -109,9 +109,9 @@ Die Regierung fördert eine neue Bilungsoffensive. Jede erhält - wenn gewünsch
             ]
         );
 
-        $year3 = new KonjunkturzyklusDefinition(
+        $year3 = new KonjunkturphaseDefinition(
             id: 3,
-            type: KonjunkturzyklusTypeEnum::AUFSCHWUNG,
+            type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
             description: 'Viele Staaten leiden immer noch unter den Folgen der Finanzkrise. Die Notenbank ändert den Leitszins. Aus diesem Grund kann jede Person zu folgendem Zinnsatz Geld leihen: 0 %
 Das geliehene Geld muss innerhalb 20 Raten zurückgezahlt werden, d.h. es werden pro Jahr 5 % des Anfangsbetrags gefordert.
 Alle erhalten ihr jährliches Einkommen und begleichen ihre Verbindlichkeiten.',
@@ -162,31 +162,31 @@ dazu aufgerufen, bei den Räumungsarbeiten zu helfen (Kosten = 1 Zeitstein). All
     }
 
     /**
-     * returns a random Konjunkturzyklus that is not used in the given array of ids aka was not used in the past
+     * returns a random Konjunkturphase that is not used in the given array of ids aka was not used in the past
      *
-     * @param int[] $idsOfPastKonjunkturzyklen
-     * @return KonjunkturzyklusDefinition
+     * @param int[] $idsOfPastKonjunkturphasen
+     * @return KonjunkturphaseDefinition
      */
-    public static function getUnusedRandomKonjunkturzyklus(array $idsOfPastKonjunkturzyklen): KonjunkturzyklusDefinition
+    public static function getUnusedRandomKonjunkturphase(array $idsOfPastKonjunkturphasen): KonjunkturphaseDefinition
     {
-        $konjunkturzyklen = self::getAllKonjunkturzyklen();
-        $unusedKonjunkturzyklen = array_filter($konjunkturzyklen, static fn(KonjunkturzyklusDefinition $konjunkturzyklus) => !in_array($konjunkturzyklus->id, $idsOfPastKonjunkturzyklen, true));
-        return $unusedKonjunkturzyklen[array_rand($unusedKonjunkturzyklen)];
+        $konjunkturphasen = self::getAllKonjunkturphasen();
+        $unusedKonjunkturphasen = array_filter($konjunkturphasen, static fn(KonjunkturphaseDefinition $konjunkturphase) => !in_array($konjunkturphase->id, $idsOfPastKonjunkturphasen, true));
+        return $unusedKonjunkturphasen[array_rand($unusedKonjunkturphasen)];
     }
 
     /**
      * @param int $id
-     * @return KonjunkturzyklusDefinition
+     * @return KonjunkturphaseDefinition
      */
-    public static function findKonjunkturZyklusById(int $id): KonjunkturzyklusDefinition
+    public static function findKonjunkturphaseById(int $id): KonjunkturphaseDefinition
     {
-        $konjunkturzyklen = self::getAllKonjunkturzyklen();
-        foreach ($konjunkturzyklen as $konjunkturzyklus) {
-            if ($konjunkturzyklus->id === $id) {
-                return $konjunkturzyklus;
+        $konjunkturphasen = self::getAllKonjunkturphasen();
+        foreach ($konjunkturphasen as $konjunkturphase) {
+            if ($konjunkturphase->id === $id) {
+                return $konjunkturphase;
             }
         }
-        throw new \InvalidArgumentException('Konjunkturzyklus not found');
+        throw new \InvalidArgumentException('Konjunkturphase not found');
     }
 
 }

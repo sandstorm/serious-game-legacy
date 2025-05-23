@@ -10,7 +10,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
-use Domain\CoreGameLogic\Feature\KonjunkturzyklusWechseln\Command\KonjunkturzyklusWechseln;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\SwitchKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
 use Domain\Definitions\Lebensziel\LebenszielFinder;
 use Illuminate\View\View;
@@ -63,7 +63,7 @@ trait HasPreGamePhase
         ));
 
         $this->coreGameLogic->handle($this->gameId, ShuffleCards::create());
-        $this->coreGameLogic->handle($this->gameId, KonjunkturzyklusWechseln::create());
+        $this->coreGameLogic->handle($this->gameId, SwitchKonjunkturphase::create());
         $this->broadcastNotify();
     }
 }

@@ -1,19 +1,19 @@
-@extends ('components.modal.modal', ['closeModal' => "closeKonjunkturzyklusDetails()"])
+@extends ('components.modal.modal', ['closeModal' => "closeKonjunkturphaseDetails()"])
 @section('title')
-    {{ $konjunkturzyklus->type }}
+    {{ $konjunkturphase->type }}
 @endsection
 
 @section('content')
     <p>
-        {{ $konjunkturzyklus->description }}
+        {{ $konjunkturphase->description }}
     </p>
     <p>
-        {{ $konjunkturzyklus->additionalEvents }}
+        {{ $konjunkturphase->additionalEvents }}
     </p>
 
     <h4>Verfügbare Kompetenzbereiche</h4>
     <ul>
-        @foreach($konjunkturzyklus->kompetenzbereiche as $kompetenzbereich)
+        @foreach($konjunkturphase->kompetenzbereiche as $kompetenzbereich)
             <li>
                 <strong>{{ $kompetenzbereich->name }}: </strong> {{ $kompetenzbereich->kompetenzsteine }}
             </li>
@@ -22,7 +22,7 @@
 
     <h4>Auswirkungen</h4>
     <ul>
-        @foreach($konjunkturzyklus->auswirkungen as $auswirkung)
+        @foreach($konjunkturphase->auswirkungen as $auswirkung)
             <li>
                 <strong>{{ $auswirkung->scope }}: </strong> {{ $auswirkung->modifier }}
             </li>
@@ -31,5 +31,5 @@
 @endsection
 
 @section('footer')
-    <button type="button" class="button button--type-primary" wire:click="closeKonjunkturzyklusDetails()">Schließen</button>
+    <button type="button" class="button button--type-primary" wire:click="closeKonjunkturphaseDetails()">Schließen</button>
 @endsection
