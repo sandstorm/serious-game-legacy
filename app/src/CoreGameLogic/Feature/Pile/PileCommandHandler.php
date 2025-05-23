@@ -45,9 +45,19 @@ final readonly class PileCommandHandler implements CommandHandlerInterface
 
         $piles = [];
         foreach (PileEnum::cases() as $case) {
+            $pileId = new PileId($case);
+            // if the pileId is set, we only shuffle the pile with the given id
+            if ($command->pileId !== null) {
+                $cards = $pileId === $command->pileId ?
+                    $this->shuffleCards(PileFinder::getCardsIdsForPile($pileId)) :
+                    PileFinder::getCardsIdsForPile($pileId);
+            } else {
+                $cards = $this->shuffleCards(PileFinder::getCardsIdsForPile($pileId));
+            }
+
             $piles[] = new Pile(
-                pileId: new PileId($case),
-                cards: $this->shuffleCards(PileFinder::getCardsIdsForPile(new PileId($case)))
+                pileId: $pileId,
+                cards: $cards
             );
         }
 

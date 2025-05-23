@@ -35,7 +35,7 @@ trait HasCard
      */
     public function cardActionsVisible(string $cardId): bool
     {
-        return $this->showCardActionsForCard === $cardId;
+        return $this->showCardActionsForCard === $cardId && $this->currentPlayerIsMyself();
     }
 
     /**
@@ -49,13 +49,13 @@ trait HasCard
     }
 
     /**
-     * @param string $cardId
      * @return bool
      */
-    public function canSkipCard(string $cardId): bool
+    public function canSkipCard(): bool
     {
-        $card = CardFinder::getCardById(CardId::fromString($cardId));
-        return AktionsCalculator::forStream($this->gameStream)->canPlayerAffordToSkipCard($this->myself);
+        $canAffordToSkip = AktionsCalculator::forStream($this->gameStream)->canPlayerAffordToSkipCard($this->myself);
+        $usedSkipThisTurn = AktionsCalculator::forStream($this->gameStream)->hasPlayerSkippedACardThisRound($this->myself);
+        return $canAffordToSkip && !$usedSkipThisTurn;
     }
 
     /**
@@ -75,6 +75,7 @@ trait HasCard
             CardId::fromString($cardId),
             PileId::fromString($pileId)
         ));
+        $this->broadcastNotify();
     }
 
     /**
@@ -84,7 +85,7 @@ trait HasCard
      */
     public function skipCard(string $cardId, string $pileId): void
     {
-        if (!self::canSkipCard($cardId)) {
+        if (!self::canSkipCard()) {
             // TODO show error message why
             return;
         }
@@ -93,6 +94,7 @@ trait HasCard
             CardId::fromString($cardId),
             PileId::fromString($pileId)
         ));
+        $this->broadcastNotify();
     }
 
     // TODO for testing, is not in final game

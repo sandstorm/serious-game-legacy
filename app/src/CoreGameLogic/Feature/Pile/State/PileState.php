@@ -32,13 +32,18 @@ class PileState
      * @param GameEvents $stream
      * @param PileId $pileId
      * @return CardId
+     * @throws \RuntimeException
      */
     public static function topCardIdForPile(GameEvents $stream, PileId $pileId): CardId
     {
         $currentPiles = $stream->findLast(CardsWereShuffled::class)->piles;
         foreach ($currentPiles as $pile) {
             if ($pile->pileId->equals($pileId)) {
-                return $pile->cards[self::numberOfCardDrawsSinceLastShuffle($stream, $pileId)];
+                $cardIndex = self::numberOfCardDrawsSinceLastShuffle($stream, $pileId);
+                if ($cardIndex >= count($pile->cards)) {
+                    throw new \RuntimeException("Card index ($cardIndex) out of bounds for pile ($pileId)", 1748003108);
+                }
+                return $pile->cards[$cardIndex];
             }
         }
 
