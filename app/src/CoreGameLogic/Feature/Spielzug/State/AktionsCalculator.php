@@ -11,7 +11,6 @@ use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Player\State\PlayerState;
-use Domain\Definitions\Cards\CardFinder;
 use Domain\Definitions\Cards\Model\CardDefinition;
 
 final readonly class AktionsCalculator
@@ -53,7 +52,7 @@ final readonly class AktionsCalculator
         return false;
     }
 
-    public function canPlayerSkipCard(PlayerId $playerId, CardId $cardId): bool
+    public function canPlayerSkipCard(PlayerId $playerId, CardDefinition $card): bool
     {
         // TODO implement
         return true;

@@ -8,6 +8,8 @@ use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\PileId;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
+use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
+use Domain\Definitions\Cards\CardFinder;
 
 trait CardTrait
 {
@@ -37,12 +39,36 @@ trait CardTrait
 
     /**
      * @param string $cardId
+     * @return bool
+     */
+    public function canActivateCard(string $cardId): bool
+    {
+        $card = CardFinder::getCardById(CardId::fromString($cardId));
+        return AktionsCalculator::forStream($this->gameStream)->canPlayerActivateCard($this->myself, $card);
+    }
+
+    /**
+     * @param string $cardId
+     * @return bool
+     */
+    public function canSkipCard(string $cardId): bool
+    {
+        $card = CardFinder::getCardById(CardId::fromString($cardId));
+        return AktionsCalculator::forStream($this->gameStream)->canPlayerSkipCard($this->myself, $card);
+    }
+
+    /**
+     * @param string $cardId
      * @param string $pileId
      * @return void
      */
     public function activateCard(string $cardId, string $pileId): void
     {
-        // TODO check if requirements are met
+        if (!self::canActivateCard($cardId)) {
+            // TODO show error message why
+            return;
+        }
+
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
             $this->myself,
             CardId::fromString($cardId),
@@ -57,7 +83,10 @@ trait CardTrait
      */
     public function skipCard(string $cardId, string $pileId): void
     {
-        // TODO check if requirements are met
+        if (!self::canSkipCard($cardId)) {
+            // TODO show error message why
+            return;
+        }
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
             $this->myself,
             CardId::fromString($cardId),
