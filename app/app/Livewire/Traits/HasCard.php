@@ -45,7 +45,7 @@ trait HasCard
     public function canActivateCard(string $cardId): bool
     {
         $card = CardFinder::getCardById(CardId::fromString($cardId));
-        return AktionsCalculator::forStream($this->gameStream)->canPlayerActivateCard($this->myself, $card);
+        return AktionsCalculator::forStream($this->gameStream)->canPlayerAffordToActivateCard($this->myself, $card);
     }
 
     /**
@@ -55,7 +55,7 @@ trait HasCard
     public function canSkipCard(string $cardId): bool
     {
         $card = CardFinder::getCardById(CardId::fromString($cardId));
-        return AktionsCalculator::forStream($this->gameStream)->canPlayerSkipCard($this->myself, $card);
+        return AktionsCalculator::forStream($this->gameStream)->canPlayerAffordToSkipCard($this->myself);
     }
 
     /**

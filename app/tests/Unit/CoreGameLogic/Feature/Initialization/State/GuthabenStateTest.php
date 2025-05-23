@@ -54,7 +54,7 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
             zeitsteineChange: -1,
             freizeitKompetenzsteinChange: +1,
         ),
-        requirements: new CardRequirements(
+        additionalRequirements: new CardRequirements(
             guthaben: 500,
         ),
     );
@@ -78,7 +78,7 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
     );
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
     expect(GuthabenState::forPlayer($stream, $p1)->value)->toBe(50500)
-        ->and(ZeitsteineState::forPlayer($stream, $p1)->value)->toBe(2);
+        ->and(ZeitsteineState::forPlayer($stream, $p1)->value)->toBe(1);
     //</editor-fold>
 });
 

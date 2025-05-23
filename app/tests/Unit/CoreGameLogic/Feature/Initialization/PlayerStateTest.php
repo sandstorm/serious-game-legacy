@@ -88,9 +88,7 @@ test('kompetenzstein state', function () {
                         guthabenChange: -11000,
                         bildungKompetenzsteinChange: +1,
                     ),
-                    requirements: new CardRequirements(
-                        guthaben: 11000,
-                    ),
+                    additionalRequirements: new CardRequirements(),
                 )
             ));
     $gameStream = $this->coreGameLogic->getGameStream($this->gameId);

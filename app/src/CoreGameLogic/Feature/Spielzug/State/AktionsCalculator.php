@@ -9,8 +9,12 @@ use Domain\CoreGameLogic\Dto\Aktion\PhaseWechseln;
 use Domain\CoreGameLogic\Dto\Aktion\ZeitsteinSetzen;
 use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Player\State\PlayerState;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasCompleted;
 use Domain\Definitions\Cards\Model\CardDefinition;
 
 final readonly class AktionsCalculator
@@ -37,25 +41,24 @@ final readonly class AktionsCalculator
     }
 
     // TODO maybe return an object with failed requirements?
-    public function canPlayerActivateCard(PlayerId $playerId, CardDefinition $card): bool
+    public function canPlayerAffordAction(PlayerId $playerId, ResourceChanges $cost): bool
     {
-        $cardRequirements = $card->requirements;
         $playerResources = PlayerState::getResourcesForPlayer($this->stream, $playerId);
         if (
-            $cardRequirements->guthaben <= $playerResources->guthabenChange &&
-            $cardRequirements->zeitsteine <= $playerResources->zeitsteineChange &&
-            $cardRequirements->bildungKompetenzsteine <= $playerResources->bildungKompetenzsteinChange &&
-            $cardRequirements->freizeitKompetenzsteine <= $playerResources->freizeitKompetenzsteinChange
+            $cost->guthabenChange * -1 <= $playerResources->guthabenChange &&
+            $cost->zeitsteineChange * -1 <= $playerResources->zeitsteineChange &&
+            $cost->bildungKompetenzsteinChange * -1 <= $playerResources->bildungKompetenzsteinChange &&
+            $cost->freizeitKompetenzsteinChange * -1 <= $playerResources->freizeitKompetenzsteinChange
         ) {
             return true;
         }
         return false;
     }
 
-    public function canPlayerSkipCard(PlayerId $playerId, CardDefinition $card): bool
+    public function canPlayerAffordToSkipCard(PlayerId $playerId): bool
     {
-        // TODO implement
-        return true;
+        $costToSkip = new ResourceChanges(zeitsteineChange: -1);
+        return $this->canPlayerAffordAction($playerId, $costToSkip);
     }
 
     /**
@@ -67,5 +70,26 @@ final readonly class AktionsCalculator
             new PhaseWechseln(),
             new ZeitsteinSetzen(),
         ];
+    }
+
+    public function hasPlayerSkippedACardThisRound(PlayerId $playerId): bool
+    {
+        $eventsThisTurn = $this->stream->findAllAfterLastOfTypeOrNull(SpielzugWasCompleted::class);
+        if ($eventsThisTurn === null) {
+            $skipEventsThisTurn = count($this->stream->findAllAfterLastOfType(GameWasStarted::class)
+                ->filter(fn ($event) => $event instanceof CardWasSkipped));
+        } else {
+            $skipEventsThisTurn = count($eventsThisTurn->findAllOfType(CardWasSkipped::class));
+        }
+
+        return $skipEventsThisTurn > 0;
+    }
+
+    public function canPlayerAffordToActivateCard(PlayerId $player, CardDefinition $card):bool
+    {
+        $costToActivate = new ResourceChanges(
+            zeitsteineChange: $this->hasPlayerSkippedACardThisRound($player) ? 0 : -1
+        );
+        return $this->canPlayerAffordAction($player, $card->resourceChanges->accumulate($costToActivate));
     }
 }

@@ -66,7 +66,7 @@ readonly final class CardFinder
                     guthabenChange: -11000,
                     bildungKompetenzsteinChange: +1,
                 ),
-                requirements: new CardRequirements(
+                additionalRequirements: new CardRequirements(
                     guthaben: 11000,
                 ),
             ),
@@ -79,7 +79,7 @@ readonly final class CardFinder
                     guthabenChange: -300,
                     bildungKompetenzsteinChange: +1,
                 ),
-                requirements: new CardRequirements(
+                additionalRequirements: new CardRequirements(
                     guthaben: 300,
                 ),
             ),
@@ -92,7 +92,7 @@ readonly final class CardFinder
                     zeitsteineChange: -1,
                     bildungKompetenzsteinChange: +1,
                 ),
-                requirements: new CardRequirements(
+                additionalRequirements: new CardRequirements(
                     zeitsteine: 1,
                 ),
             ),
@@ -114,7 +114,7 @@ readonly final class CardFinder
                     guthabenChange: -1200,
                     freizeitKompetenzsteinChange: +1,
                 ),
-                requirements: new CardRequirements(
+                additionalRequirements: new CardRequirements(
                     guthaben: 1200,
                 ),
             ),
@@ -127,7 +127,7 @@ readonly final class CardFinder
                     guthabenChange: -200,
                     freizeitKompetenzsteinChange: +1,
                 ),
-                requirements: new CardRequirements(
+                additionalRequirements: new CardRequirements(
                     guthaben: 200,
                 ),
             ),
@@ -140,7 +140,7 @@ readonly final class CardFinder
                     zeitsteineChange: -1,
                     freizeitKompetenzsteinChange: +1,
                 ),
-                requirements: new CardRequirements(
+                additionalRequirements: new CardRequirements(
                     zeitsteine: 1,
                 ),
             ),
@@ -162,7 +162,7 @@ readonly final class CardFinder
                     zeitsteineChange: -1, // TODO p.a. -> not yet implemented
                     newErwerbseinkommen: 34000,
                 ),
-                requirements: new CardRequirements(
+                additionalRequirements: new CardRequirements(
                     zeitsteine: 1,
                     bildungKompetenzsteine: 2,
                 ),
@@ -176,7 +176,7 @@ readonly final class CardFinder
                     zeitsteineChange: -1, // TODO p.a. -> not yet implemented
                     newErwerbseinkommen: 25000,
                 ),
-                requirements: new CardRequirements(
+                additionalRequirements: new CardRequirements(
                     zeitsteine: 1,
                     bildungKompetenzsteine: 2,
                 ),
@@ -190,7 +190,7 @@ readonly final class CardFinder
                     zeitsteineChange: -1, // TODO p.a. -> not yet implemented
                     newErwerbseinkommen: 18000,
                 ),
-                requirements: new CardRequirements(
+                additionalRequirements: new CardRequirements(
                     zeitsteine: 1,
                     bildungKompetenzsteine: 1,
                 ),

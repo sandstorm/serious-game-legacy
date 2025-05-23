@@ -54,7 +54,7 @@ test('welche Spielzüge hat player zur Verfügung', function () {
     $this->coreGameLogic->handle(
         $this->gameId,
         ShuffleCards::create()->withFixedCardIdOrderForTesting(
-            new Pile( pileId: $pileIdBildung, cards: $cardsBildung),
+            new Pile(pileId: $pileIdBildung, cards: $cardsBildung),
         ));
 
     $stream = $this->coreGameLogic->getGameStream($this->gameId);
@@ -99,87 +99,38 @@ describe('canPlayerActivateCard', function () {
         ]);
     });
 
-    it('returns true when player can activate the card', function () {
+    it('returns true when player can afford the action', function () {
         $pileId = new PileId(PileEnum::BILDUNG_PHASE_1);
-        $cardToTest = new CardDefinition(
-            id: new CardId('testcard-1'),
-            pileId: $pileId,
-            kurzversion: 'for testing',
-            langversion: '...',
-            resourceChanges: new ResourceChanges(
-                guthabenChange: -200,
-                bildungKompetenzsteinChange: +1,
-            ),
-            requirements: new CardRequirements(
-                guthaben: 200,
-                zeitsteine: 1
-            ),
+        $costOfAction1 = new ResourceChanges(
+            guthabenChange: -200,
+            bildungKompetenzsteinChange: +1,
         );
-        $cardToTest2 = new CardDefinition(
-            id: new CardId('testcard-2'),
-            pileId: $pileId,
-            kurzversion: 'for testing',
-            langversion: '...',
-            resourceChanges: new ResourceChanges(
-                guthabenChange: -200,
-                bildungKompetenzsteinChange: +1,
-            ),
-            requirements: new CardRequirements(
-                guthaben: 50000,
-                zeitsteine: 3
-            ),
+        $costOfAction2 = new ResourceChanges(
+            guthabenChange: -200,
+            bildungKompetenzsteinChange: +1,
         );
-        $this->coreGameLogic->handle(
-            $this->gameId,
-            ShuffleCards::create()->withFixedCardIdOrderForTesting(
-                new Pile( pileId: $pileId, cards: [$cardToTest->id, $cardToTest2->id]),
-            ));
 
         $stream = $this->stream;
         $actionsCalculatorUnderTest = AktionsCalculator::forStream($stream);
-        expect($actionsCalculatorUnderTest->canPlayerActivateCard($this->playerId1, $cardToTest))->toBeTrue()
-            ->and($actionsCalculatorUnderTest->canPlayerActivateCard($this->playerId1, $cardToTest2))->toBeTrue();
+        expect($actionsCalculatorUnderTest->canPlayerAffordAction($this->playerId1, $costOfAction1))->toBeTrue()
+            ->and($actionsCalculatorUnderTest->canPlayerAffordAction($this->playerId1, $costOfAction2))->toBeTrue();
     });
 
-    it('returns false when player cannot activate the card', function () {
+    it('returns false when player cannot afford the action', function () {
         $pileId = new PileId(PileEnum::BILDUNG_PHASE_1);
-        $cardToTest1 = new CardDefinition(
-            id: new CardId('testcard-1'),
-            pileId: $pileId,
-            kurzversion: 'for testing',
-            langversion: '...',
-            resourceChanges: new ResourceChanges(
-                guthabenChange: -200,
-                bildungKompetenzsteinChange: +1,
-            ),
-            requirements: new CardRequirements(
-                guthaben: 50001,
-            ),
+        $costOfAction1 = new ResourceChanges(
+            guthabenChange: -50001,
         );
-        $cardToTest2 = new CardDefinition(
-            id: new CardId('testcard-2'),
-            pileId: $pileId,
-            kurzversion: 'for testing',
-            langversion: '...',
-            resourceChanges: new ResourceChanges(
-                guthabenChange: -200,
-                bildungKompetenzsteinChange: +1,
-            ),
-            requirements: new CardRequirements(
-                guthaben: 5000,
-                zeitsteine: 4,
-            ),
+
+        $costOfAction2 = new ResourceChanges(
+            guthabenChange: -200,
+            bildungKompetenzsteinChange: -1,
         );
-        $this->coreGameLogic->handle(
-            $this->gameId,
-            ShuffleCards::create()->withFixedCardIdOrderForTesting(
-                new Pile( pileId: $pileId, cards: [$cardToTest1->id, $cardToTest2->id]),
-            ));
 
         $stream = $this->stream;
         $actionsCalculatorUnderTest = AktionsCalculator::forStream($stream);
-        expect($actionsCalculatorUnderTest->canPlayerActivateCard($this->playerId1, $cardToTest1))->toBeFalse()
-            ->and($actionsCalculatorUnderTest->canPlayerActivateCard($this->playerId1, $cardToTest2))->toBeFalse();
+        expect($actionsCalculatorUnderTest->canPlayerAffordAction($this->playerId1, $costOfAction1))->toBeFalse()
+            ->and($actionsCalculatorUnderTest->canPlayerAffordAction($this->playerId1, $costOfAction2))->toBeFalse();
     });
 });
 
