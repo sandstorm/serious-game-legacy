@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\ValueObject;
 
-use Domain\CoreGameLogic\Dto\ValueObject\ResourceId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 
 readonly class Zeitsteine implements \JsonSerializable

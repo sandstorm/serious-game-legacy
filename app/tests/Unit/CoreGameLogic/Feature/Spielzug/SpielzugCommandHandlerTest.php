@@ -14,8 +14,10 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
@@ -289,4 +291,13 @@ describe('handleActivateCard', function () {
         )->withFixedCardDefinitionForTesting($cardToTest));
     })->throws(\RuntimeException::class, 'Player p1 does not have the required resources ([guthabenChange: 50000 zeitsteineChange: 3] to activate the card testcard ([guthabenChange: -50001 zeitsteineChange: -1])', 1747920761);
 
+});
+
+describe('handleRequestJobOffers', function () {
+    it('returns 3 jobs with fulfilled requirements', function (){
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->playerId1));
+
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect($stream->findLast(JobOffersWereRequested::class)->player)->toEqual($this->playerId1);
+    });
 });
