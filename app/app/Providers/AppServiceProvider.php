@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Authorization\AppAuthorizer;
-use App\Livewire\Synthesizer\ValueObjectSynth;
+use App\Livewire\Synthesizer\GameAndPlayerIdSynth;
 use App\Models\User;
 use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
@@ -31,7 +31,7 @@ final class AppServiceProvider extends ServiceProvider
         ));
 
         // Support Value Objects in Livewire
-        Livewire::propertySynthesizer(ValueObjectSynth::class);
+        Livewire::propertySynthesizer(GameAndPlayerIdSynth::class);
 
         // Wire Driven Ports
 

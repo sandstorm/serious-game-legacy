@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic;
 
-use Domain\CoreGameLogic\Dto\ValueObjectInterface;
-
-class PlayerId implements \JsonSerializable, ValueObjectInterface
+class PlayerId implements \JsonSerializable
 {
     /**
      * @var array<string,self>

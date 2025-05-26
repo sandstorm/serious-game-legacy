@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic;
 
-use Domain\CoreGameLogic\Dto\ValueObjectInterface;
 use Neos\EventStore\Model\Event\StreamName;
 
-final class GameId implements ValueObjectInterface
+final class GameId
 {
     /**
      * @var array<string,self>
