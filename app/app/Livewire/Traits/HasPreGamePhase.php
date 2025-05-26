@@ -58,9 +58,7 @@ trait HasPreGamePhase
 
     public function startGame(): void
     {
-        // TODO: 1 Zeile hier (StartGame) OHNE PARAMETER
         $this->coreGameLogic->handle($this->gameId, StartGame::create());
-
         $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create());
         $this->broadcastNotify();
     }

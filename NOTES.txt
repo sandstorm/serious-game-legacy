@@ -22,5 +22,3 @@
 
 - TODO: PHPSTAN TEST: withTesting nicht für Prod Code?
 
-
-Pile -> CardOrdering
