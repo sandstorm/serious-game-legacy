@@ -9,7 +9,6 @@ use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
-use Domain\CoreGameLogic\Feature\Player\State\PlayerState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
@@ -19,6 +18,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 

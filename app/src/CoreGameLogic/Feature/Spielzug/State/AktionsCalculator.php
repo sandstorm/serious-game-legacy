@@ -10,7 +10,6 @@ use Domain\CoreGameLogic\Dto\Aktion\ZeitsteinSetzen;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
-use Domain\CoreGameLogic\Feature\Player\State\PlayerState;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\Definitions\Card\Dto\CardDefinition;
