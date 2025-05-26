@@ -11,7 +11,6 @@
 - nochamls durch Usages von Definitions gehen
 
 - "Stream" / gameState? -> gameEvents
-
 - Projection State
 
 - supported Events in GameEventStore reingeben
