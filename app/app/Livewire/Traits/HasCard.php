@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Livewire\Traits;
 
-use Domain\CoreGameLogic\Dto\ValueObject\CardId;
-use Domain\CoreGameLogic\Dto\ValueObject\PileId;
-use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
-use Domain\Definitions\Cards\CardFinder;
+use Domain\Definitions\Card\CardFinder;
+use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\PileId;
 
 trait HasCard
 {
@@ -73,7 +73,7 @@ trait HasCard
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
             $this->myself,
             CardId::fromString($cardId),
-            PileId::fromString($pileId)
+            PileId::from($pileId)
         ));
         $this->broadcastNotify();
     }
@@ -92,7 +92,7 @@ trait HasCard
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
             $this->myself,
             CardId::fromString($cardId),
-            PileId::fromString($pileId)
+            PileId::from($pileId)
         ));
         $this->broadcastNotify();
     }

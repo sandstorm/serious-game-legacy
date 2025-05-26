@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
-use Domain\CoreGameLogic\Dto\ValueObject\GameId;
-use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
-use Illuminate\Session\Store as SessionStore;
+use Domain\CoreGameLogic\GameId;
+use Domain\CoreGameLogic\PlayerId;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Session\Store as SessionStore;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
@@ -41,7 +41,7 @@ class GamePlayController extends Controller
             $session->flash('success', 'Game started');
         }
 
-        $gameStream = $this->coreGameLogic->getGameStream($gameId);
+        $gameStream = $this->coreGameLogic->getGameEvents($gameId);
         return view('controllers.gameplay.player-links', [
             'gameId' => $gameId,
             'playerIds' => PreGameState::playerIds($gameStream)

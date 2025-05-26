@@ -20,11 +20,11 @@
 
                         <ul class="lebensziele-selector">
                             @foreach($lebensziele as $lebensziel)
-                                <li class="lebensziel-to-select @if($nameLebenszielForm->lebensziel == $lebensziel->id) lebensziel-to-select--is-selected @endif">
+                                <li class="lebensziel-to-select @if($nameLebenszielForm->lebensziel == $lebensziel->id->value) lebensziel-to-select--is-selected @endif">
                                     <x-lebensziel :lebensziel="$lebensziel" />
 
-                                    @if($nameLebenszielForm->lebensziel != $lebensziel->id)
-                                        <button type="button" class="button button--type-primary" wire:click="selectLebensZiel({{ $lebensziel->id }})">Dieses Lebensziel auswählen</button>
+                                    @if($nameLebenszielForm->lebensziel != $lebensziel->id->value)
+                                        <button type="button" class="button button--type-primary" wire:click="selectLebensZiel({{ $lebensziel->id->value }})">Dieses Lebensziel auswählen</button>
                                     @endif
                                 </li>
                             @endforeach

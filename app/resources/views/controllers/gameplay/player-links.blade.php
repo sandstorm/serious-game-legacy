@@ -1,4 +1,4 @@
-@use(Domain\CoreGameLogic\Dto\ValueObject\GameId)
+@use(Domain\CoreGameLogic\GameId)
 <x-layout>
     <h2>Spiel {{$gameId->value}}</h2>
 

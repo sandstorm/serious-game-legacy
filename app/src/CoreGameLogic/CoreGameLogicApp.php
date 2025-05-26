@@ -6,11 +6,10 @@ namespace Domain\CoreGameLogic;
 
 use Domain\CoreGameLogic\CommandHandler\CommandBus;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
-use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\InitializationCommandHandler;
-use Domain\CoreGameLogic\Feature\Pile\PileCommandHandler;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\KonjunkturphaseCommandHandler;
+use Domain\CoreGameLogic\Feature\Pile\PileCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Neos\EventStore\Helper\InMemoryEventStore;
 use Neos\EventStore\Model\EventStream\ExpectedVersion;
@@ -43,7 +42,6 @@ final class CoreGameLogicApp implements ForCoreGameLogic
             new InitializationCommandHandler(),
             new KonjunkturphaseCommandHandler(),
             new SpielzugCommandHandler(),
-            new PileCommandHandler(),
         );
     }
 
@@ -52,15 +50,15 @@ final class CoreGameLogicApp implements ForCoreGameLogic
         return $this->gameEventStore->hasGame($gameId);
     }
 
-    public function getGameStream(GameId $gameId): GameEvents
+    public function getGameEvents(GameId $gameId): GameEvents
     {
-        [$gameStream,] = $this->gameEventStore->getGameStreamAndLastVersion($gameId);
+        [$gameStream,] = $this->gameEventStore->getGameEventsAndLastVersion($gameId);
         return $gameStream;
     }
 
     public function handle(GameId $gameId, CommandHandler\CommandInterface $command): void
     {
-        [$gameStream, $version] = $this->gameEventStore->getGameStreamAndLastVersion($gameId);
+        [$gameStream, $version] = $this->gameEventStore->getGameEventsAndLastVersion($gameId);
         $eventsToPublish = $this->commandBus->handle($command, $gameStream);
         $this->gameEventStore->commit($gameId, $eventsToPublish, $version === null ? ExpectedVersion::NO_STREAM() : ExpectedVersion::fromVersion($version));
     }

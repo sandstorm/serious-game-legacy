@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\State;
 
-use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
+use Domain\CoreGameLogic\PlayerId;
 
 class CurrentPlayerAccessor
 {

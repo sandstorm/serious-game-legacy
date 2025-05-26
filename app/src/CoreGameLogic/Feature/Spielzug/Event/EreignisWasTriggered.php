@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
-use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
-use Domain\CoreGameLogic\Dto\ValueObject\Modifier;
-use Domain\CoreGameLogic\Dto\ValueObject\ModifierCollection;
-use Domain\CoreGameLogic\Dto\ValueObject\ModifierId;
-use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
-use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
+use Domain\CoreGameLogic\Feature\Spielzug\Modifier\Modifier;
+use Domain\CoreGameLogic\Feature\Spielzug\Modifier\ModifierCollection;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\EreignisId;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\ModifierId;
+use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\Dto\ResourceChanges;
 
 final readonly class EreignisWasTriggered implements ProvidesModifiers, ProvidesResourceChanges, GameEventInterface
 {

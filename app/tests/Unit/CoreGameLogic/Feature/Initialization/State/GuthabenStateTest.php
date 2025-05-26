@@ -5,22 +5,21 @@ declare(strict_types=1);
 namespace Tests\CoreGameLogic\Feature\Initialization\State;
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
-use Domain\CoreGameLogic\Dto\ValueObject\CardId;
-use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
-use Domain\CoreGameLogic\Dto\ValueObject\GameId;
-use Domain\CoreGameLogic\Dto\ValueObject\PileId;
-use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
-use Domain\CoreGameLogic\Dto\ValueObject\CardRequirements;
-use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
-use Domain\CoreGameLogic\Feature\Initialization\State\GuthabenState;
-use Domain\CoreGameLogic\Feature\Initialization\State\ZeitsteineState;
-use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
-use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
-use Domain\Definitions\Cards\Model\CardDefinition;
-use Domain\Definitions\Pile\Enum\PileEnum;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\CoreGameLogic\Feature\Spielzug\State\ZeitsteineState;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\EreignisId;
+use Domain\CoreGameLogic\GameId;
+use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\Dto\CardDefinition;
+use Domain\Definitions\Card\Dto\CardRequirements;
+use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\PileId;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
@@ -42,7 +41,7 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
         ]
     ));
 
-    $pileIdSozialesAndFreizeit = new PileId(PileEnum::FREIZEIT_PHASE_1);
+    $pileIdSozialesAndFreizeit = PileId::FREIZEIT_PHASE_1;
 
     $testCard = new CardDefinition(
         id: new CardId('testcard'),
@@ -61,11 +60,11 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
 
     $this->coreGameLogic->handle(
         $this->gameId,
-        ShuffleCards::create()->withFixedCardIdOrderForTesting(
-            new Pile( pileId: $pileIdSozialesAndFreizeit, cards: [$testCard->id]),
+        ChangeKonjunkturphase::create()->withFixedCardOrderForTesting(
+            new CardOrder( pileId: $pileIdSozialesAndFreizeit, cards: [$testCard->id]),
         ));
-    $stream = $this->coreGameLogic->getGameStream($this->gameId);
-    expect(GuthabenState::forPlayer($stream, $p1)->value)->toBe(50000)
+    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+    expect(PlayerState::getGuthabenForPlayer($stream, $p1))->toBe(50000)
         ->and(ZeitsteineState::forPlayer($stream, $p1)->value)->toBe(3);
     //</editor-fold>
 
@@ -76,8 +75,8 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
             ->withEreignis(new EreignisId("EVENT:Lotteriegewinn"))
             ->withFixedCardDefinitionForTesting($testCard)
     );
-    $stream = $this->coreGameLogic->getGameStream($this->gameId);
-    expect(GuthabenState::forPlayer($stream, $p1)->value)->toBe(50500)
+    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+    expect(PlayerState::getGuthabenForPlayer($stream, $p1))->toBe(50500)
         ->and(ZeitsteineState::forPlayer($stream, $p1)->value)->toBe(1);
     //</editor-fold>
 });

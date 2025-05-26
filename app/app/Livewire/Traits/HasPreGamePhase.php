@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace App\Livewire\Traits;
 
 use App\Livewire\Forms\PreGameNameLebensziel;
-use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
-use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
 use Domain\Definitions\Lebensziel\LebenszielFinder;
+use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
 use Illuminate\View\View;
 
 trait HasPreGamePhase
@@ -29,7 +28,7 @@ trait HasPreGamePhase
     public function mountHasPreGamePhase(): void
     {
         $this->nameLebenszielForm->name = PreGameState::nameForPlayerOrNull($this->gameStream, $this->myself) ?? '';
-        $this->nameLebenszielForm->lebensziel = PreGameState::lebenszielForPlayerOrNull($this->gameStream, $this->myself)->id ?? null;
+        $this->nameLebenszielForm->lebensziel = PreGameState::lebenszielForPlayerOrNull($this->gameStream, $this->myself)->id->value ?? null;
     }
 
     public function renderPreGamePhase(): View
@@ -46,7 +45,7 @@ trait HasPreGamePhase
         $this->nameLebenszielForm->validate();
         $this->coreGameLogic->handle($this->gameId, new SetNameForPlayer($this->myself, $this->nameLebenszielForm->name));
         if ($this->nameLebenszielForm->lebensziel !== null) {
-            $this->coreGameLogic->handle($this->gameId, new SelectLebensziel($this->myself, new LebenszielId($this->nameLebenszielForm->lebensziel)));
+            $this->coreGameLogic->handle($this->gameId, new SelectLebensziel($this->myself, LebenszielId::create($this->nameLebenszielForm->lebensziel)));
         }
         $this->broadcastNotify();
     }
@@ -58,11 +57,7 @@ trait HasPreGamePhase
 
     public function startGame(): void
     {
-        $this->coreGameLogic->handle($this->gameId, new StartGame(
-            playerOrdering: PreGameState::playerIds($this->gameStream),
-        ));
-
-        $this->coreGameLogic->handle($this->gameId, ShuffleCards::create());
+        $this->coreGameLogic->handle($this->gameId, StartGame::create());
         $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create());
         $this->broadcastNotify();
     }

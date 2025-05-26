@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Traits;
 
-use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\PlayerId;
 
 trait HasPlayerDetails
 {

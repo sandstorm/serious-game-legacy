@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\State;
 
-use Domain\CoreGameLogic\Dto\ValueObject\ModifierCollection;
-use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
+use Domain\CoreGameLogic\Feature\Spielzug\Modifier\ModifierCollection;
+use Domain\CoreGameLogic\PlayerId;
 
 class ModifierCalculator
 {

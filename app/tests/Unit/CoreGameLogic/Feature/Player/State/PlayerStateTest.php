@@ -3,16 +3,15 @@ declare(strict_types=1);
 
 namespace Tests\CoreGameLogic\Feature\Player\State;
 
-use Domain\CoreGameLogic\Dto\ValueObject\CardId;
-use Domain\CoreGameLogic\Dto\ValueObject\PileId;
-use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
-use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
-use Domain\CoreGameLogic\Feature\Player\State\PlayerState;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
-use Domain\Definitions\Pile\Enum\PileEnum;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\PileId;
 
 beforeEach(function () {
     $this->playerId1 = PlayerId::fromString('p1');
@@ -33,7 +32,7 @@ beforeEach(function () {
         ),
         new CardWasActivated(
             $this->playerId1,
-            new PileId(PileEnum::BILDUNG_PHASE_1),
+            PileId::BILDUNG_PHASE_1,
             new CardId('test1'),
             new ResourceChanges(
                 guthabenChange: -500,
@@ -41,7 +40,7 @@ beforeEach(function () {
             )),
         new CardWasActivated(
             $this->playerId2,
-            new PileId(PileEnum::BILDUNG_PHASE_1),
+            PileId::BILDUNG_PHASE_1,
             new CardId('test2'),
             new ResourceChanges(
                 guthabenChange: -100,

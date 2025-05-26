@@ -32,9 +32,9 @@ class KonjunkturphaseDetais extends Component
 
     public function getCurrentKonjunkturphaseDefinition(): ?KonjunkturphaseDefinition
     {
-        $konjunkturphase = GamePhaseState::currentKonjunkturphase($this->gameStream);
+        $konjunkturphasenId = GamePhaseState::currentKonjunkturphasenId($this->gameStream);
         return KonjunkturphaseFinder::findKonjunkturphaseById(
-            $konjunkturphase->id
+            $konjunkturphasenId
         );
     }
 }

@@ -6,16 +6,23 @@ namespace Domain\CoreGameLogic\Feature\Konjunkturphase;
 
 use Domain\CoreGameLogic\CommandHandler\CommandHandlerInterface;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
-use Domain\CoreGameLogic\Dto\ValueObject\CurrentYear;
 use Domain\CoreGameLogic\Dto\ValueObject\Kompetenzbereich;
-use Domain\CoreGameLogic\Dto\ValueObject\Konjunkturphase;
-use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ShuffleCards;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\Konjunkturphase;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Leitzins;
+use Domain\Definitions\Card\PileFinder;
+use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
+use Random\Randomizer;
 
 /**
  * @internal no public API, because commands are no extension points. ALWAYS USE {@see ForCoreGameLogic::handle()} to trigger commands.
@@ -24,18 +31,20 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
 {
     public function canHandle(CommandInterface $command): bool
     {
-        return $command instanceof ChangeKonjunkturphase;
+        return $command instanceof ChangeKonjunkturphase
+            || $command instanceof ShuffleCards;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameState): GameEventsToPersist
     {
         /** @phpstan-ignore-next-line */
         return match ($command::class) {
-            ChangeKonjunkturphase::class => $this->handleKonjunkturphasewechsel($command, $gameState),
+            ChangeKonjunkturphase::class => $this->handleChangeKonjunkturphase($command, $gameState),
+            ShuffleCards::class => $this->handleShuffleCards($command, $gameState),
         };
     }
 
-    public function handleKonjunkturphasewechsel(ChangeKonjunkturphase $command, GameEvents $gameState): GameEventsToPersist
+    public function handleChangeKonjunkturphase(ChangeKonjunkturphase $command, GameEvents $gameState): GameEventsToPersist
     {
         if (!GamePhaseState::isInGamePhase($gameState)) {
             throw new \RuntimeException('not in game phase', 1747148685);
@@ -43,8 +52,8 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
 
         $year = 1;
         // increment year
-        if (GamePhaseState::currentKonjunkturphaseOrNull($gameState)?->year->value > 0) {
-            $year = GamePhaseState::currentKonjunkturphase($gameState)->year->value + 1;
+        if (GamePhaseState::hasKonjunkturphase($gameState) && GamePhaseState::currentKonjunkturphasenYear($gameState)->value > 0) {
+            $year = GamePhaseState::currentKonjunkturphasenYear($gameState)->value + 1;
         }
 
         $idsOfPastKonjunkturphasen = $this->getIdsOfPastKonjunkturphasen($gameState);
@@ -55,21 +64,17 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
 
         return GameEventsToPersist::with(
             new KonjunkturphaseWasChanged(
-                konjunkturphase: new Konjunkturphase(
-                    id: $nextKonjunkturphase->id,
-                    year: new CurrentYear($year),
-                    type: $nextKonjunkturphase->type,
-                    leitzins: new Leitzins($nextKonjunkturphase->leitzins),
-                    kompetenzbereiche: array_map(
-                        fn($kompetenzbereich) => new Kompetenzbereich(
-                            name: $kompetenzbereich->name,
-                            kompetenzsteine: $kompetenzbereich->kompetenzsteine,
-                        ),
-                        $nextKonjunkturphase->kompetenzbereiche
-                    )
-                ),
-            )
+                id: $nextKonjunkturphase->id,
+                year: new CurrentYear($year),
+                type: $nextKonjunkturphase->type,
+                leitzins: new Leitzins($nextKonjunkturphase->leitzins),
+                kompetenzbereiche: $nextKonjunkturphase->kompetenzbereiche
+            ),
+
+            // We ALSO SHUFFLE cards during Konjunkturphasenwechsel
+            ...$this->handleShuffleCards($command)->events
         );
+        return $eventsToPersist;
     }
 
     /**
@@ -100,5 +105,39 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
             null,
             true
         );
+    }
+
+
+    private function handleShuffleCards(ShuffleCards|ChangeKonjunkturphase $command): GameEventsToPersist
+    {
+        if (isset($command->fixedCardOrderForTesting) && count($command->fixedCardOrderForTesting) > 0) {
+            return GameEventsToPersist::with(
+                new CardsWereShuffled($command->fixedCardOrderForTesting)
+            );
+        }
+
+        $piles = [];
+        foreach (PileId::cases() as $pileId) {
+            $cards = $this->shuffleCards(PileFinder::getCardsIdsForPile($pileId));
+
+            $piles[] = new CardOrder(
+                pileId: $pileId,
+                cards: $cards
+            );
+        }
+
+        return GameEventsToPersist::with(
+            new CardsWereShuffled($piles)
+        );
+    }
+
+    /**
+     * @param CardId[] $cards
+     * @return CardId[]
+     */
+    private function shuffleCards(array $cards): array
+    {
+        $randomizer = new Randomizer();
+        return $randomizer->shuffleArray($cards);
     }
 }

@@ -6,26 +6,25 @@ namespace Tests\CoreGameLogic\Feature\Spielzug;
 
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
-use Domain\CoreGameLogic\Dto\ValueObject\CardId;
-use Domain\CoreGameLogic\Dto\ValueObject\CardRequirements;
-use Domain\CoreGameLogic\Dto\ValueObject\GameId;
-use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
-use Domain\CoreGameLogic\Dto\ValueObject\PileId;
-use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
-use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
-use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
-use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
-use Domain\CoreGameLogic\Feature\Player\State\PlayerState;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
-use Domain\Definitions\Cards\Model\CardDefinition;
-use Domain\Definitions\Pile\Enum\PileEnum;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\CoreGameLogic\GameId;
+use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\Dto\CardDefinition;
+use Domain\Definitions\Card\Dto\CardRequirements;
+use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
@@ -33,7 +32,7 @@ beforeEach(function () {
     $this->playerId1 = PlayerId::fromString('p1');
     $this->playerId2 = PlayerId::fromString('p2');
 
-    $this->pileIdBildung = new PileId(PileEnum::BILDUNG_PHASE_1);
+    $this->pileIdBildung = PileId::BILDUNG_PHASE_1;
 
     $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
         numberOfPlayers: 2,
@@ -48,15 +47,15 @@ beforeEach(function () {
     ));
     $this->coreGameLogic->handle($this->gameId, new SelectLebensziel(
         playerId: $this->playerId1,
-        lebensziel: new LebenszielId(1),
+        lebensziel: LebenszielId::create(1),
     ));
     $this->coreGameLogic->handle($this->gameId, new SelectLebensziel(
         playerId: $this->playerId2,
-        lebensziel: new LebenszielId(2),
+        lebensziel: LebenszielId::create(2),
     ));
     $this->coreGameLogic->handle(
         $this->gameId,
-        new StartGame(playerOrdering: [$this->playerId1, $this->playerId2]));
+        StartGame::create());
 });
 
 
@@ -67,8 +66,8 @@ describe('handleSkipCard', function () {
 
         $this->coreGameLogic->handle(
             $this->gameId,
-            ShuffleCards::create()->withFixedCardIdOrderForTesting(
-                new Pile( pileId: $this->pileIdBildung, cards: [$skipThisCard]),
+            ChangeKonjunkturphase::create()->withFixedCardOrderForTesting(
+                new CardOrder( pileId: $this->pileIdBildung, cards: [$skipThisCard]),
             ));
 
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
@@ -77,7 +76,7 @@ describe('handleSkipCard', function () {
             pile: $this->pileIdBildung,
         ));
 
-        $stream = $this->coreGameLogic->getGameStream($this->gameId);
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->playerId1))->toBe(2);
     });
 });
@@ -101,8 +100,8 @@ describe('handleActivateCard', function () {
 
         $this->coreGameLogic->handle(
             $this->gameId,
-            ShuffleCards::create()->withFixedCardIdOrderForTesting(
-                new Pile( pileId: $this->pileIdBildung, cards: [$cardToTest->id]),
+            ChangeKonjunkturphase::create()->withFixedCardOrderForTesting(
+                new CardOrder( pileId: $this->pileIdBildung, cards: [$cardToTest->id]),
             ));
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
@@ -111,7 +110,7 @@ describe('handleActivateCard', function () {
             pile: $this->pileIdBildung,
         )->withFixedCardDefinitionForTesting($cardToTest));
 
-        $stream = $this->coreGameLogic->getGameStream($this->gameId);
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->playerId1))->toBe(2);
     });
 
@@ -133,8 +132,8 @@ describe('handleActivateCard', function () {
 
         $this->coreGameLogic->handle(
             $this->gameId,
-            ShuffleCards::create()->withFixedCardIdOrderForTesting(
-                new Pile( pileId: $this->pileIdBildung, cards: [$skipThisCard, $cardToTest->id]),
+            ChangeKonjunkturphase::create()->withFixedCardOrderForTesting(
+                new CardOrder( pileId: $this->pileIdBildung, cards: [$skipThisCard, $cardToTest->id]),
             ));
 
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
@@ -154,7 +153,7 @@ describe('handleActivateCard', function () {
             pile: $this->pileIdBildung,
         )->withFixedCardDefinitionForTesting($cardToTest));
 
-        $stream = $this->coreGameLogic->getGameStream($this->gameId);
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->playerId2))->toBe(2);
     });
 
@@ -176,8 +175,8 @@ describe('handleActivateCard', function () {
 
         $this->coreGameLogic->handle(
             $this->gameId,
-            ShuffleCards::create()->withFixedCardIdOrderForTesting(
-                new Pile( pileId: $this->pileIdBildung, cards: [$skipThisCard, $cardToTest->id]),
+            ChangeKonjunkturphase::create()->withFixedCardOrderForTesting(
+                new CardOrder( pileId: $this->pileIdBildung, cards: [$skipThisCard, $cardToTest->id]),
             ));
 
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
@@ -192,7 +191,7 @@ describe('handleActivateCard', function () {
             pile: $this->pileIdBildung,
         )->withFixedCardDefinitionForTesting($cardToTest));
 
-        $stream = $this->coreGameLogic->getGameStream($this->gameId);
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->playerId1))->toBe(2);
     });
 
@@ -215,8 +214,8 @@ describe('handleActivateCard', function () {
 
         $this->coreGameLogic->handle(
             $this->gameId,
-            ShuffleCards::create()->withFixedCardIdOrderForTesting(
-                new Pile( pileId: $this->pileIdBildung, cards: [$cardToTest->id]),
+            ChangeKonjunkturphase::create()->withFixedCardOrderForTesting(
+                new CardOrder( pileId: $this->pileIdBildung, cards: [$cardToTest->id]),
             ));
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
@@ -225,7 +224,7 @@ describe('handleActivateCard', function () {
             pile: $this->pileIdBildung,
         )->withFixedCardDefinitionForTesting($cardToTest));
 
-        $stream = $this->coreGameLogic->getGameStream($this->gameId);
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         /** @var CardWasActivated $actualEvent */
         $actualEvent = $stream->findLast(CardWasActivated::class);
         // expect to lose an additional Zeitstein for activating the card
@@ -253,8 +252,8 @@ describe('handleActivateCard', function () {
 
         $this->coreGameLogic->handle(
             $this->gameId,
-            ShuffleCards::create()->withFixedCardIdOrderForTesting(
-                new Pile( pileId: $this->pileIdBildung, cards: [$cardToTest->id]),
+            ChangeKonjunkturphase::create()->withFixedCardOrderForTesting(
+                new CardOrder( pileId: $this->pileIdBildung, cards: [$cardToTest->id]),
             ));
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
@@ -279,8 +278,8 @@ describe('handleActivateCard', function () {
 
         $this->coreGameLogic->handle(
             $this->gameId,
-            ShuffleCards::create()->withFixedCardIdOrderForTesting(
-                new Pile( pileId: $this->pileIdBildung, cards: [$cardToTest->id]),
+            ChangeKonjunkturphase::create()->withFixedCardOrderForTesting(
+                new CardOrder( pileId: $this->pileIdBildung, cards: [$cardToTest->id]),
             ));
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(

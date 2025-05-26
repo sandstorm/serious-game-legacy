@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\View\Components;
 
-use Domain\CoreGameLogic\Dto\ValueObject\PileId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\Feature\Pile\State\PileState;
-use Domain\Definitions\Cards\CardFinder;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
+use Domain\Definitions\Card\CardFinder;
+use Domain\Definitions\Card\ValueObject\PileId;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
@@ -27,7 +27,7 @@ class CardPile extends Component
     public function render(): View
     {
         // TODO get next card when played/skipped
-        $topCardIdForPile = PileState::topCardIdForPile($this->gameStream, PileId::fromString($this->title));
+        $topCardIdForPile = PileState::topCardIdForPile($this->gameStream, PileId::from($this->title));
         return view('components.gameboard.card-pile', [
             'title' => $this->title,
             'card' => CardFinder::getCardById($topCardIdForPile),

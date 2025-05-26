@@ -3,41 +3,40 @@
 declare(strict_types=1);
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
-use Domain\CoreGameLogic\Dto\ValueObject\CardId;
-use Domain\CoreGameLogic\Dto\ValueObject\GameId;
-use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
-use Domain\CoreGameLogic\Dto\ValueObject\PileId;
-use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
-use Domain\CoreGameLogic\Dto\ValueObject\CardRequirements;
-use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
-use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
-use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
-use Domain\Definitions\Cards\Model\CardDefinition;
-use Domain\Definitions\Pile\Enum\PileEnum;
-use Domain\Definitions\Pile\PileFinder;
+use Domain\CoreGameLogic\GameId;
+use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\Dto\CardDefinition;
+use Domain\Definitions\Card\Dto\CardRequirements;
+use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\PileFinder;
+use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
     $this->gameId = GameId::fromString('game1');
     $this->p1 = PlayerId::fromString('p1');
     $this->p2 = PlayerId::fromString('p2');
-    $this->pileIdBildung = new PileId(PileEnum::BILDUNG_PHASE_1);
+    $this->pileIdBildung = PileId::BILDUNG_PHASE_1;
     $this->cardsBildung = PileFinder::getCardsIdsForPile($this->pileIdBildung);
     $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
         numberOfPlayers: 2,
     )->withFixedPlayerIdsForTesting($this->p1, $this->p2));
     $this->coreGameLogic->handle($this->gameId, new SelectLebensziel(
         playerId: $this->p1,
-        lebensziel: new LebenszielId(1),
+        lebensziel: LebenszielId::create(1),
     ));
     $this->coreGameLogic->handle($this->gameId, new SelectLebensziel(
         playerId: $this->p2,
-        lebensziel: new LebenszielId(2),
+        lebensziel: LebenszielId::create(2),
     ));
 
     $this->coreGameLogic->handle($this->gameId, new DefinePlayerOrdering(
@@ -54,11 +53,11 @@ test('kompetenzstein state', function () {
 
     $this->coreGameLogic->handle(
         $this->gameId,
-        ShuffleCards::create()->withFixedCardIdOrderForTesting(
-            new Pile( pileId: $this->pileIdBildung, cards: [$cardId]),
+        ChangeKonjunkturphase::create()->withFixedCardOrderForTesting(
+            new CardOrder( pileId: $this->pileIdBildung, cards: [$cardId]),
         ));
 
-    $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
+    $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
     // player 1
     // bildung
     expect(PreGameState::lebenszielForPlayer($gameStream, $this->p1)->phases[0]->definition->bildungsKompetenzSlots)->toBe(2);
@@ -81,7 +80,7 @@ test('kompetenzstein state', function () {
             ->withFixedCardDefinitionForTesting(
                 new CardDefinition(
                     id: $cardId,
-                    pileId: new PileId(PileEnum::BILDUNG_PHASE_1),
+                    pileId: PileId::BILDUNG_PHASE_1,
                     kurzversion: 'Sprachkurs',
                     langversion: 'Mache einen Sprachkurs über drei Monate im Ausland.',
                     resourceChanges: new ResourceChanges(
@@ -91,7 +90,7 @@ test('kompetenzstein state', function () {
                     additionalRequirements: new CardRequirements(),
                 )
             ));
-    $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
+    $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
 
     // player 1
     // bildung

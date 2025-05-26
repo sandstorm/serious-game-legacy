@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic;
 
-use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\EventStore\EventNormalizer;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\EventStore\GameEvents;
@@ -41,7 +40,7 @@ final readonly class GameEventStore
      * @param GameId $gameId
      * @return array{0: GameEvents, 1: Version|null}
      */
-    public function getGameStreamAndLastVersion(GameId $gameId): array
+    public function getGameEventsAndLastVersion(GameId $gameId): array
     {
         $gameEvents = [];
         $version = null;
