@@ -16,11 +16,11 @@ final readonly class ChangeKonjunkturphase implements CommandInterface
     }
 
     /**
-     * @param CardOrder[] $fixedCardIdOrderingForTesting
+     * @param CardOrder[] $fixedCardOrderForTesting
      */
     private function __construct(
         public ?KonjunkturphaseDefinition $fixedKonjunkturphaseForTesting = null,
-        public array $fixedCardIdOrderingForTesting = []
+        public array $fixedCardOrderForTesting = []
     )
     {
     }
@@ -28,7 +28,7 @@ final readonly class ChangeKonjunkturphase implements CommandInterface
 
     public function withFixedKonjunkturphaseForTesting(?KonjunkturphaseDefinition $konjunkturphase = null): self
     {
-        return new self($konjunkturphase, $this->fixedCardIdOrderingForTesting);
+        return new self($konjunkturphase, $this->fixedCardOrderForTesting);
     }
 
     public function withFixedCardOrderForTesting(CardOrder ...$cardOrder): self

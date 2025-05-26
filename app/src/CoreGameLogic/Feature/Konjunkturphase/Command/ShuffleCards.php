@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Command;
 
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 
 
 /**
- * @internal use ChangeKonkunkturphase instead
- * @deprecated use ChangeKonkunkturphase instead
+ * @internal use ChangeKonkunkturphase instead - only for development
+ * @deprecated use ChangeKonkunkturphase instead- only for development
  */
 final readonly class ShuffleCards implements CommandInterface
 {
@@ -19,11 +18,7 @@ final readonly class ShuffleCards implements CommandInterface
         return new self();
     }
 
-    /**
-     * @param CardOrder[] $fixedCardIdOrderingForTesting
-     */
     private function __construct(
-        public array $fixedCardIdOrderingForTesting = [],
     ) {
     }
 }

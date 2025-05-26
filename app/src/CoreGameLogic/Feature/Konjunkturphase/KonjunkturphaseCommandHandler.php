@@ -118,9 +118,9 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
 
     private function handleShuffleCards(ShuffleCards|ChangeKonjunkturphase $command): GameEventsToPersist
     {
-        if (isset($command->fixedCardIdOrderingForTesting) && count($command->fixedCardIdOrderingForTesting) > 0) {
+        if (isset($command->fixedCardOrderForTesting) && count($command->fixedCardOrderForTesting) > 0) {
             return GameEventsToPersist::with(
-                new CardsWereShuffled($command->fixedCardIdOrderingForTesting)
+                new CardsWereShuffled($command->fixedCardOrderForTesting)
             );
         }
 
