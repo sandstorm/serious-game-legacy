@@ -6,11 +6,8 @@ namespace Tests\CoreGameLogic\Feature\Spielzug\State;
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\Dto\Aktion\ZeitsteinSetzen;
-use Domain\CoreGameLogic\Dto\ValueObject\CardId;
-use Domain\CoreGameLogic\Dto\ValueObject\CardRequirements;
 use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
-use Domain\CoreGameLogic\Dto\ValueObject\PileId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
@@ -21,14 +18,14 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\ModifierCalculator;
-use Domain\Definitions\Cards\Model\CardDefinition;
-use Domain\Definitions\Pile\Enum\PileEnum;
-use Domain\Definitions\Pile\PileFinder;
+use Domain\Definitions\Cards\PileFinder;
+use Domain\Definitions\Cards\ValueObject\PileEnum;
+use Domain\Definitions\Cards\ValueObject\PileId;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();

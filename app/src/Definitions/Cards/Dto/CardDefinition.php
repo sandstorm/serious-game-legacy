@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Domain\Definitions\Cards\Model;
+namespace Domain\Definitions\Cards\Dto;
 
-use Domain\CoreGameLogic\Dto\ValueObject\CardId;
-use Domain\CoreGameLogic\Dto\ValueObject\PileId;
 use Domain\CoreGameLogic\Dto\ValueObject\CardRequirements;
 use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
+use Domain\Definitions\Cards\ValueObject\CardId;
+use Domain\Definitions\Cards\ValueObject\PileId;
 
 class CardDefinition
 {

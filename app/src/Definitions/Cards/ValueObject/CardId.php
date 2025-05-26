@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Dto\ValueObject;
+namespace Domain\Definitions\Cards\ValueObject;
 
 final readonly class CardId implements \JsonSerializable
 {

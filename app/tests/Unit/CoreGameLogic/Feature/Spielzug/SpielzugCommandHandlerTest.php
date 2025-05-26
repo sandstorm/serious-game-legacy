@@ -6,11 +6,9 @@ namespace Tests\CoreGameLogic\Feature\Spielzug;
 
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
-use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\CardRequirements;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
-use Domain\CoreGameLogic\Dto\ValueObject\PileId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
@@ -21,11 +19,13 @@ use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
 use Domain\CoreGameLogic\Feature\Player\State\PlayerState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
-use Domain\Definitions\Cards\Model\CardDefinition;
-use Domain\Definitions\Pile\Enum\PileEnum;
+use Domain\Definitions\Cards\Dto\CardDefinition;
+use Domain\Definitions\Cards\ValueObject\CardId;
+use Domain\Definitions\Cards\ValueObject\PileEnum;
+use Domain\Definitions\Cards\ValueObject\PileId;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();

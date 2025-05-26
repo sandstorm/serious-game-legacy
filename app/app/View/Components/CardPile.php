@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\View\Components;
 
-use Domain\CoreGameLogic\Dto\ValueObject\PileId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Pile\State\PileState;
 use Domain\Definitions\Cards\CardFinder;
+use Domain\Definitions\Cards\ValueObject\PileId;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 

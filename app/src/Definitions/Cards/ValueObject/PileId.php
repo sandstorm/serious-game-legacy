@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Dto\ValueObject;
-
-use Domain\Definitions\Pile\Enum\PileEnum;
+namespace Domain\Definitions\Cards\ValueObject;
 
 final readonly class PileId implements \JsonSerializable
 {

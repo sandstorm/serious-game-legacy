@@ -6,15 +6,15 @@ namespace Domain\CoreGameLogic\Feature\Pile;
 
 use Domain\CoreGameLogic\CommandHandler\CommandHandlerInterface;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
-use Domain\CoreGameLogic\Dto\ValueObject\CardId;
-use Domain\CoreGameLogic\Dto\ValueObject\PileId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Pile\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
-use Domain\Definitions\Pile\Enum\PileEnum;
-use Domain\Definitions\Pile\PileFinder;
+use Domain\Definitions\Cards\PileFinder;
+use Domain\Definitions\Cards\ValueObject\CardId;
+use Domain\Definitions\Cards\ValueObject\PileEnum;
+use Domain\Definitions\Cards\ValueObject\PileId;
 use Random\Randomizer;
 
 /**

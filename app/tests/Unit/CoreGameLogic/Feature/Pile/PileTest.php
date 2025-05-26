@@ -4,7 +4,6 @@ declare(strict_types=1);
 use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
-use Domain\CoreGameLogic\Dto\ValueObject\PileId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
@@ -15,10 +14,11 @@ use Domain\CoreGameLogic\Feature\Pile\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
 use Domain\CoreGameLogic\Feature\Pile\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
-use Domain\Definitions\Pile\Enum\PileEnum;
-use Domain\Definitions\Pile\PileFinder;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
+use Domain\Definitions\Cards\PileFinder;
+use Domain\Definitions\Cards\ValueObject\PileEnum;
+use Domain\Definitions\Cards\ValueObject\PileId;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();

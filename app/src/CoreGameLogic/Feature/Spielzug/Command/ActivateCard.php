@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Command;
 
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
-use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
-use Domain\CoreGameLogic\Dto\ValueObject\PileId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
-use Domain\Definitions\Cards\Model\CardDefinition;
+use Domain\Definitions\Cards\Dto\CardDefinition;
+use Domain\Definitions\Cards\ValueObject\CardId;
+use Domain\Definitions\Cards\ValueObject\PileId;
 
 final readonly class ActivateCard implements CommandInterface
 {

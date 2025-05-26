@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Livewire\Traits;
 
-use Domain\CoreGameLogic\Dto\ValueObject\CardId;
-use Domain\CoreGameLogic\Dto\ValueObject\PileId;
 use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\Definitions\Cards\CardFinder;
+use Domain\Definitions\Cards\ValueObject\CardId;
+use Domain\Definitions\Cards\ValueObject\PileId;
 
 trait HasCard
 {

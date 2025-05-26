@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\Definitions\Pile\Enum;
+namespace Domain\Definitions\Cards\ValueObject;
 
 enum PileEnum: string
 {

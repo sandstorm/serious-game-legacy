@@ -2,8 +2,8 @@
 
 namespace Tests\Definitions\Cards;
 
-use Domain\CoreGameLogic\Dto\ValueObject\CardId;
 use Domain\Definitions\Cards\CardFinder;
+use Domain\Definitions\Cards\ValueObject\CardId;
 
 beforeEach(function () {
 

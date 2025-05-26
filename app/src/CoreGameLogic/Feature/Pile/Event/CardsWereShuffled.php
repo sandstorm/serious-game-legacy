@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Pile\Event;
 
-use Domain\CoreGameLogic\Dto\ValueObject\CardId;
-use Domain\CoreGameLogic\Dto\ValueObject\PileId;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
 
