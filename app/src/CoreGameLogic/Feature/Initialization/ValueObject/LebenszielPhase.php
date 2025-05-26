@@ -35,7 +35,7 @@ class LebenszielPhase implements \JsonSerializable
     }
 
     /**
-     * @param array{definition: mixed, placedKompetenzsteineBildung: int, placedKompetenzsteineFreizeit: int} $values
+     * @param array<mixed> $values
      * @return self
      */
     public function fromArray(array $values): self
@@ -48,7 +48,7 @@ class LebenszielPhase implements \JsonSerializable
     }
 
     /**
-     * @return array{definition: mixed, placedKompetenzsteineBildung: int, placedKompetenzsteineFreizeit: int}
+     * @return array<mixed>
      */
     public function jsonSerialize(): array
     {

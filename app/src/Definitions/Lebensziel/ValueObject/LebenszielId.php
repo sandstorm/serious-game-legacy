@@ -7,7 +7,7 @@ namespace Domain\Definitions\Lebensziel\ValueObject;
 class LebenszielId implements \JsonSerializable
 {
     /**
-     * @var array<string,self>
+     * @var array<int,self>
      */
     private static array $instances = [];
 

@@ -8,7 +8,7 @@ use Domain\Definitions\Card\ValueObject\PileId;
 /**
  * We use this class to keep track of which card is in which pile and in what order.
  */
-readonly final class CardOrder
+readonly final class CardOrder implements \JsonSerializable
 {
     /**
      * @param PileId $pileId
@@ -19,7 +19,7 @@ readonly final class CardOrder
     }
 
     /**
-     * @param array{pileId: string, cards: string[]} $values
+     * @param array<mixed> $values
      * @return self
      */
     public static function fromArray(array $values): self
@@ -28,5 +28,16 @@ readonly final class CardOrder
             pileId: PileId::from($values['pileId']),
             cards: array_map(fn ($card) => new CardId($card), $values['cards']),
         );
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public function jsonSerialize(): array
+    {
+        return [
+            'pileId' => $this->pileId->value,
+            'cards' => array_map(fn (CardId $card) => $card->jsonSerialize(), $this->cards),
+        ];
     }
 }

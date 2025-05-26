@@ -20,7 +20,7 @@ readonly class LebenszielDefinition implements \JsonSerializable
     }
 
     /**
-     * @param array{id: int, name: string, phases: array<string, mixed>} $values
+     * @param array<mixed> $values
      * @return self
      */
     public static function fromArray(array $values): self
@@ -42,7 +42,7 @@ readonly class LebenszielDefinition implements \JsonSerializable
     }
 
     /**
-     * @return array{id: int, name: string, phases: array<LebenszielPhaseDefinition>}
+     * @return array<mixed>
      */
     public function jsonSerialize(): array
     {

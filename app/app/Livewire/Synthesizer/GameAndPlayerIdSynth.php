@@ -25,12 +25,11 @@ class GameAndPlayerIdSynth extends Synth
     }
 
     /**
-     * @param mixed $target
+     * @param GameId|PlayerId $target
      * @return array<mixed>
      */
     public function dehydrate(GameId|PlayerId $target): array
     {
-        // @phpstan-ignore property.notFound
         return [$target->value, [
             'type' => get_class($target),
         ]];

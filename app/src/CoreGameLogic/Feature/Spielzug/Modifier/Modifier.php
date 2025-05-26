@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Modifier;
 
-use Domain\CoreGameLogic\Dto\Aktion\Aktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Aktion;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\ModifierId;
 
 /**

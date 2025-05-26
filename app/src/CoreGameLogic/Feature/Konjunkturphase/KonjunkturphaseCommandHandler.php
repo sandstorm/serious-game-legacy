@@ -40,7 +40,8 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
         /** @phpstan-ignore-next-line */
         return match ($command::class) {
             ChangeKonjunkturphase::class => $this->handleChangeKonjunkturphase($command, $gameState),
-            ShuffleCards::class => $this->handleShuffleCards($command, $gameState),
+            // @phpstan-ignore classConstant.deprecatedClass
+            ShuffleCards::class => $this->handleShuffleCards($command),
         };
     }
 
@@ -74,7 +75,6 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
             // We ALSO SHUFFLE cards during Konjunkturphasenwechsel
             ...$this->handleShuffleCards($command)->events
         );
-        return $eventsToPersist;
     }
 
     /**
@@ -107,10 +107,10 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
         );
     }
 
-
+    // @phpstan-ignore parameter.deprecatedClass
     private function handleShuffleCards(ShuffleCards|ChangeKonjunkturphase $command): GameEventsToPersist
     {
-        if (isset($command->fixedCardOrderForTesting) && count($command->fixedCardOrderForTesting) > 0) {
+        if ($command instanceof ChangeKonjunkturphase && isset($command->fixedCardOrderForTesting) && count($command->fixedCardOrderForTesting) > 0) {
             return GameEventsToPersist::with(
                 new CardsWereShuffled($command->fixedCardOrderForTesting)
             );

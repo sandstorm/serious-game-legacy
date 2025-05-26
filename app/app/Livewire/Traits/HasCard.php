@@ -100,6 +100,7 @@ trait HasCard
     // TODO for testing, is not in final game
     public function shuffleCards(): void
     {
+        // @phpstan-ignore staticMethod.deprecatedClass
         $this->coreGameLogic->handle($this->gameId, ShuffleCards::create());
         $this->broadcastNotify();
     }

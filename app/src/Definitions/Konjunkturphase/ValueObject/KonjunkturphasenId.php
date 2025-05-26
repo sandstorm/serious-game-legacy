@@ -7,7 +7,7 @@ namespace Domain\Definitions\Konjunkturphase\ValueObject;
 class KonjunkturphasenId implements \JsonSerializable
 {
     /**
-     * @var array<string,self>
+     * @var array<int,self>
      */
     private static array $instances = [];
 
