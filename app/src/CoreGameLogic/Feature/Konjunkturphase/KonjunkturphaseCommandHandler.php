@@ -69,13 +69,7 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
                     year: new CurrentYear($year),
                     type: $nextKonjunkturphase->type,
                     leitzins: new Leitzins($nextKonjunkturphase->leitzins),
-                    kompetenzbereiche: array_map(
-                        fn($kompetenzbereich) => new Kompetenzbereich(
-                            name: $kompetenzbereich->name,
-                            kompetenzsteine: $kompetenzbereich->kompetenzsteine,
-                        ),
-                        $nextKonjunkturphase->kompetenzbereiche
-                    )
+                    kompetenzbereiche: $nextKonjunkturphase->kompetenzbereiche
                 ),
             ),
 
