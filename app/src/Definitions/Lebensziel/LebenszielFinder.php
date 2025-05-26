@@ -6,6 +6,7 @@ namespace Domain\Definitions\Lebensziel;
 
 use Domain\Definitions\Lebensziel\Dto\LebenszielDefinition;
 use Domain\Definitions\Lebensziel\Dto\LebenszielPhaseDefinition;
+use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
 
 class LebenszielFinder
 {
@@ -15,7 +16,7 @@ class LebenszielFinder
     public static function getAllLebensziele(): array
     {
         $lebensziel1 = new LebenszielDefinition(
-            id: 1,
+            id: LebenszielId::create(1),
             name: 'Aufforstung der Sahara in Niger',
             phaseDefinitions: [
                 new LebenszielPhaseDefinition(
@@ -46,7 +47,7 @@ class LebenszielFinder
         );
 
         $lebensziel2 = new LebenszielDefinition(
-            id: 2,
+            id: LebenszielId::create(2),
             name: 'TODO',
             phaseDefinitions: [
                 new LebenszielPhaseDefinition(
@@ -82,11 +83,7 @@ class LebenszielFinder
         ];
     }
 
-    /**
-     * @param int $id
-     * @return LebenszielDefinition
-     */
-    public static function findLebenszielById(int $id): LebenszielDefinition
+    public static function findLebenszielById(LebenszielId $id): LebenszielDefinition
     {
         $lebensziele = self::getAllLebensziele();
         foreach ($lebensziele as $lebensziel) {

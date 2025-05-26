@@ -64,7 +64,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
             throw new \RuntimeException('Player has already selected a Lebensziel', 1746713490);
         }
 
-        $lebensziel = LebenszielFinder::findLebenszielById($command->lebensziel->value);
+        $lebensziel = LebenszielFinder::findLebenszielById($command->lebensziel);
 
         return GameEventsToPersist::with(
             new LebenszielWasSelected(

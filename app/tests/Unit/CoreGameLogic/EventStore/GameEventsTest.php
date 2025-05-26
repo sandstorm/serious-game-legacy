@@ -6,7 +6,6 @@ namespace Tests\CoreGameLogic\EventStore;
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
-use Domain\CoreGameLogic\Dto\ValueObject\LebenszielId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
@@ -17,6 +16,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\Definitions\Lebensziel\LebenszielFinder;
+use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
@@ -36,11 +36,11 @@ beforeEach(function () {
     ));
     $this->coreGameLogic->handle($this->gameId, new SelectLebensziel(
         playerId: $this->p2,
-        lebensziel: new LebenszielId(1),
+        lebensziel: LebenszielId::create(1),
     ));
     $this->coreGameLogic->handle($this->gameId, new SelectLebensziel(
         playerId: $this->p1,
-        lebensziel: new LebenszielId(2),
+        lebensziel: LebenszielId::create(2),
     ));
     $this->coreGameLogic->handle($this->gameId, StartGame::create());
 });
@@ -54,8 +54,8 @@ describe('find all after last of type', function () {
 
         $events = iterator_to_array($eventsAfterSelectedEvent->getIterator());
 
-        $expectedLebenszielForP1 = LebenszielFinder::findLebenszielById(1);
-        $expectedLebenszielForP2 = LebenszielFinder::findLebenszielById(2);
+        $expectedLebenszielForP1 = LebenszielFinder::findLebenszielById(LebenszielId::create(1));
+        $expectedLebenszielForP2 = LebenszielFinder::findLebenszielById(LebenszielId::create(2));
 
         expect($events[0]::class)->toBe(LebenszielWasSelected::class)
             ->and($events[0]->lebensziel->name)->toBe($expectedLebenszielForP1->name)
