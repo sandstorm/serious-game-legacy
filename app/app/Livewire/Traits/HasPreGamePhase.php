@@ -28,7 +28,7 @@ trait HasPreGamePhase
     public function mountHasPreGamePhase(): void
     {
         $this->nameLebenszielForm->name = PreGameState::nameForPlayerOrNull($this->gameStream, $this->myself) ?? '';
-        $this->nameLebenszielForm->lebensziel = PreGameState::lebenszielForPlayerOrNull($this->gameStream, $this->myself)->id ?? null;
+        $this->nameLebenszielForm->lebensziel = PreGameState::lebenszielForPlayerOrNull($this->gameStream, $this->myself)->id->value ?? null;
     }
 
     public function renderPreGamePhase(): View
