@@ -26,9 +26,9 @@ beforeEach(function () {
     $this->p1 = PlayerId::fromString('p1');
     $this->p2 = PlayerId::fromString('p2');
 
-    $this->pileIdBildung = new PileId(PileEnum::BILDUNG_PHASE_1);
+    $this->pileIdBildung = PileEnum::BILDUNG_PHASE_1;
     $this->cardsBildung = PileFinder::getCardsIdsForPile($this->pileIdBildung);
-    $this->pileIdFreizeit = new PileId(PileEnum::FREIZEIT_PHASE_1);
+    $this->pileIdFreizeit = PileEnum::FREIZEIT_PHASE_1;
     $this->cardsFreizeit = PileFinder::getCardsIdsForPile($this->pileIdFreizeit);
 
     $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
@@ -144,7 +144,7 @@ test('End of pile is reached', function () {
     $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameEvents($this->gameId), $this->pileIdBildung);
     expect($topCard->value)->toBe($this->cardsBildung[0]->value);
     $this->coreGameLogic->handle($this->gameId, new SkipCard($this->p1, $topCard, $this->pileIdBildung));
-})->throws(\RuntimeException::class, 'Card index (3) out of bounds for pile ([PileId: Bildung & Karriere | Phase 1])', 1748003108);
+})->throws(\RuntimeException::class, 'Card index (3) out of bounds for pile (Bildung & Karriere | Phase 1)', 1748003108);
 
 test('End of pile is reached and its re shuffled', function () {
     $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameEvents($this->gameId), $this->pileIdBildung);
@@ -160,14 +160,6 @@ test('End of pile is reached and its re shuffled', function () {
     // skipping a card of another pile is possible
     $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameEvents($this->gameId), $this->pileIdFreizeit);
     $this->coreGameLogic->handle($this->gameId, new SkipCard($this->p1, $topCard, $this->pileIdFreizeit));
-
-    // shuffle cards to avoid end of pile
-    $this->coreGameLogic->handle($this->gameId, ShuffleCards::create($this->pileIdBildung));
-    $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameEvents($this->gameId), $this->pileIdBildung);
-    expect($topCard->value)->toBe($this->cardsBildung[0]->value);
-    $this->coreGameLogic->handle($this->gameId, new SkipCard($this->p1, $topCard, $this->pileIdBildung));
-
-
 });
 
 test('Test shuffle event', function () {

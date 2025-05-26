@@ -17,12 +17,12 @@ use Domain\Definitions\Card\ValueObject\PileId;
 readonly final class CardFinder
 {
     /**
-     * @param PileId $pileId
+     * @param PileEnum $pileId
      * @return CardDefinition[]
      */
-    public static function getCardsForPile(PileId $pileId): array
+    public static function getCardsForPile(PileEnum $pileId): array
     {
-        return match ($pileId->value) {
+        return match ($pileId) {
             PileEnum::BILDUNG_PHASE_1 => self::getCardsForBildungAndKarriere1(),
             PileEnum::FREIZEIT_PHASE_1 => self::getCardsForSozialesAndFreizeit1(),
             PileEnum::ERWERBSEINKOMMEN_PHASE_1 => self::getCardsForErwerbseinkommen1(),
@@ -59,7 +59,7 @@ readonly final class CardFinder
         return [
             "buk0" => new CardDefinition(
                 id: new CardId('buk0'),
-                pileId: new PileId(PileEnum::BILDUNG_PHASE_1),
+                pileId: PileEnum::BILDUNG_PHASE_1,
                 kurzversion: 'Sprachkurs',
                 langversion: 'Mache einen Sprachkurs über drei Monate im Ausland.',
                 resourceChanges: new ResourceChanges(
@@ -72,7 +72,7 @@ readonly final class CardFinder
             ),
             "buk1" => new CardDefinition(
                 id: new CardId('buk1'),
-                pileId: new PileId(PileEnum::BILDUNG_PHASE_1),
+                pileId: PileEnum::BILDUNG_PHASE_1,
                 kurzversion: 'Erste-Hilfe-Kurs',
                 langversion: 'Du machst einen Erste-Hilfe-Kurs, um im Notfall richtig zu reagieren.',
                 resourceChanges: new ResourceChanges(
@@ -85,7 +85,7 @@ readonly final class CardFinder
             ),
             "buk2" => new CardDefinition(
                 id: new CardId('buk2'),
-                pileId: new PileId(PileEnum::BILDUNG_PHASE_1),
+                pileId: PileEnum::BILDUNG_PHASE_1,
                 kurzversion: 'Gedächtnistraining',
                 langversion: 'Mache jeden Tag 20 Minuten Gedächtnistraining, um dich geistig fit zu halten.',
                 resourceChanges: new ResourceChanges(
@@ -107,7 +107,7 @@ readonly final class CardFinder
         return [
             "suf0" => new CardDefinition(
                 id: new CardId('suf0'),
-                pileId: new PileId(PileEnum::FREIZEIT_PHASE_1),
+                pileId: PileEnum::FREIZEIT_PHASE_1,
                 kurzversion: 'Ehrenamtliches Engagement',
                 langversion: 'Du engagierst dich ehrenamtlich für eine Organisation, die es Menschen mit Behinderung ermöglicht einen genialen Urlaub mit Sonne, Strand und Meer zu erleben. Du musst die Kosten dafür allerdings selbst tragen.',
                 resourceChanges: new ResourceChanges(
@@ -120,7 +120,7 @@ readonly final class CardFinder
             ),
             "suf1" => new CardDefinition(
                 id: new CardId('suf1'),
-                pileId: new PileId(PileEnum::FREIZEIT_PHASE_1),
+                pileId: PileEnum::FREIZEIT_PHASE_1,
                 kurzversion: 'Spende',
                 langversion: 'Bei deinem Einkauf spendest du nun immer Tiernahrung für die umliegende Tierheime. Dein Spendebeitrag ist 200 €.',
                 resourceChanges: new ResourceChanges(
@@ -133,7 +133,7 @@ readonly final class CardFinder
             ),
             "suf2" => new CardDefinition(
                 id: new CardId('suf2'),
-                pileId: new PileId(PileEnum::FREIZEIT_PHASE_1),
+                pileId: PileEnum::FREIZEIT_PHASE_1,
                 kurzversion: 'kostenlose Nachhilfe',
                 langversion: 'Du gibst kostenlose Nachhilfe für sozial benachteiligte Kinder. Du verlierst einen Zeitstein.',
                 resourceChanges: new ResourceChanges(
@@ -155,7 +155,7 @@ readonly final class CardFinder
         return [
             "ee0" => new CardDefinition(
                 id: new CardId('ee0'),
-                pileId: new PileId(PileEnum::ERWERBSEINKOMMEN_PHASE_1),
+                pileId: PileEnum::ERWERBSEINKOMMEN_PHASE_1,
                 kurzversion: 'Fachinformatikerin',
                 langversion: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
                 resourceChanges: new ResourceChanges(
@@ -169,7 +169,7 @@ readonly final class CardFinder
             ),
             "ee1" => new CardDefinition(
                 id: new CardId('ee1'),
-                pileId: new PileId(PileEnum::ERWERBSEINKOMMEN_PHASE_1),
+                pileId: PileEnum::ERWERBSEINKOMMEN_PHASE_1,
                 kurzversion: 'Pflegefachkraft',
                 langversion: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
                 resourceChanges: new ResourceChanges(
@@ -183,7 +183,7 @@ readonly final class CardFinder
             ),
             "ee2" => new CardDefinition(
                 id: new CardId('ee2'),
-                pileId: new PileId(PileEnum::ERWERBSEINKOMMEN_PHASE_1),
+                pileId: PileEnum::ERWERBSEINKOMMEN_PHASE_1,
                 kurzversion: 'Taxifahrer:in',
                 langversion: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
                 resourceChanges: new ResourceChanges(

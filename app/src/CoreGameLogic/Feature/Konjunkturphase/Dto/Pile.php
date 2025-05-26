@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Dto;
 
 use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\PileEnum;
 use Domain\Definitions\Card\ValueObject\PileId;
 
 /**
@@ -11,10 +12,10 @@ use Domain\Definitions\Card\ValueObject\PileId;
 readonly final class Pile
 {
     /**
-     * @param PileId $pileId
+     * @param PileEnum $pileId
      * @param CardId[] $cards
      */
-    public function __construct(public PileId $pileId, public array $cards)
+    public function __construct(public PileEnum $pileId, public array $cards)
     {
     }
 
@@ -25,7 +26,7 @@ readonly final class Pile
     public static function fromArray(array $values): self
     {
         return new self(
-            pileId: PileId::fromString($values['pileId']),
+            pileId: PileEnum::from($values['pileId']),
             cards: array_map(fn ($card) => new CardId($card), $values['cards']),
         );
     }

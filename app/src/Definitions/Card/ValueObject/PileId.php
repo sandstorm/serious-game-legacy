@@ -15,10 +15,6 @@ final readonly class PileId implements \JsonSerializable
         return '[PileId: '.$this->value->value.']';
     }
 
-    public static function fromString(string $string): self
-    {
-        return new self(PileEnum::from($string));
-    }
 
     public function jsonSerialize(): string
     {

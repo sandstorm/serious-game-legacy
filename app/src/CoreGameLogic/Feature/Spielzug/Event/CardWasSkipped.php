@@ -6,10 +6,12 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\Pile;
 use Domain\CoreGameLogic\Feature\Pile\Event\Behavior\DrawsCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\PileEnum;
 use Domain\Definitions\Card\ValueObject\PileId;
 
 final readonly class CardWasSkipped implements DrawsCard, GameEventInterface, ProvidesResourceChanges
@@ -17,7 +19,7 @@ final readonly class CardWasSkipped implements DrawsCard, GameEventInterface, Pr
     public function __construct(
         public PlayerId $player,
         public CardId $card,
-        public PileId $pile,
+        public PileEnum $pile,
     ) {
     }
 
@@ -26,7 +28,7 @@ final readonly class CardWasSkipped implements DrawsCard, GameEventInterface, Pr
         return new self(
             player: PlayerId::fromString($values['player']),
             card: new CardId($values['card']),
-            pile: PileId::fromString($values['pile']),
+            pile: PileEnum::from($values['pile']),
         );
     }
 
@@ -39,7 +41,7 @@ final readonly class CardWasSkipped implements DrawsCard, GameEventInterface, Pr
         ];
     }
 
-    public function getPileId(): PileId
+    public function getPileId(): PileEnum
     {
         return $this->pile;
     }

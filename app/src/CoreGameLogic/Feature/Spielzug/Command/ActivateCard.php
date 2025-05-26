@@ -9,6 +9,7 @@ use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\Definitions\Card\Dto\CardDefinition;
 use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\PileEnum;
 use Domain\Definitions\Card\ValueObject\PileId;
 
 final readonly class ActivateCard implements CommandInterface
@@ -16,7 +17,7 @@ final readonly class ActivateCard implements CommandInterface
     public static function create(
         PlayerId $player,
         CardId $cardId,
-        PileId $pile,
+        PileEnum $pile,
     ): ActivateCard {
         return new self($player, $cardId, $pile);
     }
@@ -24,7 +25,7 @@ final readonly class ActivateCard implements CommandInterface
     private function __construct(
         public PlayerId $player,
         public CardId $cardId,
-        public PileId $pile,
+        public PileEnum $pile,
         public ?EreignisId $attachedEreignis = null,
         public ?CardDefinition $fixedCardDefinitionForTesting = null,
     ) {

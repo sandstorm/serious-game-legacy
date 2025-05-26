@@ -15,4 +15,5 @@ enum PileEnum: string
     case ERWERBSEINKOMMEN_PHASE_1 = 'Erwerbseinkommen | Phase 1';
     case ERWERBSEINKOMMEN_PHASE_2 = 'Erwerbseinkommen | Phase 2';
     case ERWERBSEINKOMMEN_PHASE_3 = 'Erwerbseinkommen | Phase 3';
+
 }

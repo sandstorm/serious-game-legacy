@@ -33,7 +33,7 @@ beforeEach(function () {
         ),
         new CardWasActivated(
             $this->playerId1,
-            new PileId(PileEnum::BILDUNG_PHASE_1),
+            PileEnum::BILDUNG_PHASE_1,
             new CardId('test1'),
             new ResourceChanges(
                 guthabenChange: -500,
@@ -41,7 +41,7 @@ beforeEach(function () {
             )),
         new CardWasActivated(
             $this->playerId2,
-            new PileId(PileEnum::BILDUNG_PHASE_1),
+            PileEnum::BILDUNG_PHASE_1,
             new CardId('test2'),
             new ResourceChanges(
                 guthabenChange: -100,

@@ -33,7 +33,7 @@ beforeEach(function () {
     $this->playerId1 = PlayerId::fromString('p1');
     $this->playerId2 = PlayerId::fromString('p2');
 
-    $this->pileIdBildung = new PileId(PileEnum::BILDUNG_PHASE_1);
+    $this->pileIdBildung = PileEnum::BILDUNG_PHASE_1;
 
     $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
         numberOfPlayers: 2,

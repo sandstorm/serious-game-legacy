@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Pile\Event\Behavior;
 
+use Domain\Definitions\Card\ValueObject\PileEnum;
 use Domain\Definitions\Card\ValueObject\PileId;
 
 /**
@@ -12,5 +13,5 @@ use Domain\Definitions\Card\ValueObject\PileId;
  */
 interface DrawsCard
 {
-    public function getPileId(): PileId;
+    public function getPileId(): PileEnum;
 }

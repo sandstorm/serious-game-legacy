@@ -42,7 +42,7 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
         ]
     ));
 
-    $pileIdSozialesAndFreizeit = new PileId(PileEnum::FREIZEIT_PHASE_1);
+    $pileIdSozialesAndFreizeit = PileEnum::FREIZEIT_PHASE_1;
 
     $testCard = new CardDefinition(
         id: new CardId('testcard'),

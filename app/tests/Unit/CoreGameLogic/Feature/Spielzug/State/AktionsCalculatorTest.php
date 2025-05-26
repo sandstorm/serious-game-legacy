@@ -46,7 +46,7 @@ test('welche Spielzüge hat player zur Verfügung', function () {
         ]
     ));
 
-    $pileIdBildung = new PileId(PileEnum::BILDUNG_PHASE_1);
+    $pileIdBildung = PileEnum::BILDUNG_PHASE_1;
     $cardsBildung = PileFinder::getCardsIdsForPile($pileIdBildung);
     $this->coreGameLogic->handle(
         $this->gameId,
@@ -97,7 +97,7 @@ describe('canPlayerActivateCard', function () {
     });
 
     it('returns true when player can afford the action', function () {
-        $pileId = new PileId(PileEnum::BILDUNG_PHASE_1);
+        $pileId = PileEnum::BILDUNG_PHASE_1;
         $costOfAction1 = new ResourceChanges(
             guthabenChange: -200,
             bildungKompetenzsteinChange: +1,
@@ -114,7 +114,7 @@ describe('canPlayerActivateCard', function () {
     });
 
     it('returns false when player cannot afford the action', function () {
-        $pileId = new PileId(PileEnum::BILDUNG_PHASE_1);
+        $pileId = PileEnum::BILDUNG_PHASE_1;
         $costOfAction1 = new ResourceChanges(
             guthabenChange: -50001,
         );

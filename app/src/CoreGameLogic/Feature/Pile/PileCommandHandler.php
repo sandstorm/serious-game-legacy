@@ -44,8 +44,7 @@ final readonly class PileCommandHandler implements CommandHandlerInterface
         }
 
         $piles = [];
-        foreach (PileEnum::cases() as $case) {
-            $pileId = new PileId($case);
+        foreach (PileEnum::cases() as $pileId) {
             $cards = $this->shuffleCards(PileFinder::getCardsIdsForPile($pileId));
 
             $piles[] = new Pile(
