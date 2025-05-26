@@ -27,6 +27,18 @@ parameters:
             allowIn:
                 - app/Http/Controllers/*
 
+        -   # Definitions should not depend on CoreGameLogic
+            namespace:
+                - 'Domain\CoreGameLogic\*'
+            message: 'it is FORBIDDEN TO USE CoreGameLogic inside Definitions.'
+
+            allowExceptIn:
+                - src/Definitions/*
+
+    disallowedMethodCalls:
+         -
+            method: '*ForTesting*()'
+            message: '..forTesting() only allowed in testcases.'
 
     disallowedFunctionCalls:
         -   # We do not want to use helpers which access global state. -> Dependency Injection

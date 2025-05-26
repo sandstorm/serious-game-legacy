@@ -1,7 +1,3 @@
-- DONE - Definitions keine Abhäbgigkeit auf CoreGameLogic
-    - TODO PHPSTAN TEST
-
-
 - AuswirkungDefinition / AuswirkungScope
     - -> ggf. Modifier??
 
@@ -18,6 +14,3 @@
 - UI: Abhängigkeiten??
 
 - TODO: COMMANDS immer mir ::create()
-
-- TODO: PHPSTAN TEST: withTesting nicht für Prod Code?
-
