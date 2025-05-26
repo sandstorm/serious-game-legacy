@@ -2,7 +2,11 @@
     <h3>{{ $title }}</h3>
     <ul class="card-pile__cards">
         @if ($card)
-            <li class="card-pile__card @if ($this->cardActionsVisible($card->id->value)) card-pile__card--show-actions @endif"
+            <li
+                @class([
+                    'card-pile__card',
+                    'card-pile__card--show-actions' => $this->cardActionsVisible($card->id->value)
+                ])
                 wire:click="showCardActions('{{$card->id->value}}')">
                 <div class="card-pile__card-details">
                     <h4>#{{ $card->id->value }} - {{ $card->kurzversion }}</h4>
@@ -52,12 +56,12 @@
                 @if ($this->cardActionsVisible($card->id->value))
                     <div class="card-pile__card-actions">
                         <button type="button" class="button button--type-outline-primary"
-                                wire:click="skipCard('{{$card->id->value}}', '{{$card->pileId->value}}')"@if (!$this->canSkipCard()) disabled @endif
+                                wire:click="skipCard('{{$card->id->value}}', '{{$card->pileId->value}}')" @disabled(!$this->canSkipCard())
                         >
                             Karte skippen
                         </button>
                         <button type="button" class="button button--type-primary"
-                                wire:click="activateCard('{{$card->id->value}}', '{{$card->pileId->value}}')"@if (!$this->canActivateCard($card->id->value)) disabled @endif
+                                wire:click="activateCard('{{$card->id->value}}', '{{$card->pileId->value}}')" @disabled(!$this->canActivateCard($card->id->value))
                         >
                             Karte spielen
                         </button>

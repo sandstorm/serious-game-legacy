@@ -4,7 +4,11 @@
 
 <ul class="player-list">
     @foreach(PreGameState::playersWithNameAndLebensziel($this->gameStream()) as $playerAndLebensziel)
-        <li wire:click="showPlayerDetails('{{ $playerAndLebensziel->playerId->value }}')" class="player-list__player @if($playerAndLebensziel->playerId->equals($this->getCurrentPlayer())) player-list__player--is-active @endif">
+        <li wire:click="showPlayerDetails('{{ $playerAndLebensziel->playerId->value }}')"
+            @class([
+                'player-list__player',
+                'player-list__player--is-active' => $playerAndLebensziel->playerId->equals($this->getCurrentPlayer())
+            ])>
             [{{$playerAndLebensziel->order }}]
             {{$playerAndLebensziel->name }}
             @if($playerAndLebensziel->playerId->equals($this->getCurrentPlayer())) (aktiver Spieler) @endif

@@ -20,7 +20,10 @@
 
                         <ul class="lebensziele-selector">
                             @foreach($lebensziele as $lebensziel)
-                                <li class="lebensziel-to-select @if($nameLebenszielForm->lebensziel == $lebensziel->id->value) lebensziel-to-select--is-selected @endif">
+                            <li @class([
+                                'lebensziel-to-select',
+                                'lebensziel-to-select--is-selected' => $nameLebenszielForm->lebensziel == $lebensziel->id->value
+                            ])>
                                     <x-lebensziel :lebensziel="$lebensziel" />
 
                                     @if($nameLebenszielForm->lebensziel != $lebensziel->id->value)
