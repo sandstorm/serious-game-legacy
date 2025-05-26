@@ -12,7 +12,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\Pile;
-use Domain\CoreGameLogic\Feature\Pile\State\PileState;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;

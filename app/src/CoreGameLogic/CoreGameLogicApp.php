@@ -43,7 +43,6 @@ final class CoreGameLogicApp implements ForCoreGameLogic
             new InitializationCommandHandler(),
             new KonjunkturphaseCommandHandler(),
             new SpielzugCommandHandler(),
-            new PileCommandHandler(),
         );
     }
 

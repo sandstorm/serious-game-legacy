@@ -7,7 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\Pile;
-use Domain\CoreGameLogic\Feature\Pile\Event\Behavior\DrawsCard;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\DrawsCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;

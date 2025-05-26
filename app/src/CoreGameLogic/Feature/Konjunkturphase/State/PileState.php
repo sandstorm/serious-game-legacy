@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Feature\Pile\State;
+namespace Domain\CoreGameLogic\Feature\Konjunkturphase\State;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
-use Domain\CoreGameLogic\Feature\Pile\Event\Behavior\DrawsCard;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\DrawsCard;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
 

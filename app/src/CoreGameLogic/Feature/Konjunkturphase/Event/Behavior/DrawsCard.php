@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Feature\Pile\Event\Behavior;
+namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior;
 
 use Domain\Definitions\Card\ValueObject\PileId;
 

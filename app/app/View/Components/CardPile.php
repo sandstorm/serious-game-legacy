@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\View\Components;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\Feature\Pile\State\PileState;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Illuminate\Contracts\View\View;
