@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
-use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
@@ -15,6 +14,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
+use Domain\CoreGameLogic\GameId;
 use Domain\Definitions\Card\PileFinder;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;

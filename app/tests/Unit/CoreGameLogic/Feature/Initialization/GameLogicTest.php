@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
-use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
@@ -11,6 +10,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\KonjunkturphaseCommandHandler;
+use Domain\CoreGameLogic\GameId;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
 

@@ -32,6 +32,7 @@ class PlayerState
      */
     public static function getGuthabenForPlayer(GameEvents $stream, PlayerId $playerId): int
     {
+        // TODO: wenig Typisierung hier -> gibt alles plain values etc zurück.
         $accumulatedResourceChangesForPlayer = $stream->findAllOfType(ProvidesResourceChanges::class)
             ->reduce(fn(ResourceChanges $accumulator, ProvidesResourceChanges $event) => $accumulator->accumulate($event->getResourceChanges($playerId)), new ResourceChanges());
 

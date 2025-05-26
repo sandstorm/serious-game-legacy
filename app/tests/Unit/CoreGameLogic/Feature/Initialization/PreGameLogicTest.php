@@ -2,14 +2,14 @@
 declare(strict_types=1);
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
-use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
-use Domain\CoreGameLogic\Feature\Initialization\State\GuthabenState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Initialization\State\ZeitsteineState;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\CoreGameLogic\GameId;
 use Domain\Definitions\Lebensziel\LebenszielFinder;
 use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
 
@@ -78,7 +78,7 @@ test('PreGameLogic normal flow', function () {
         ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p2->value]->lebensziel->name)->toEqual($expectedLebenszielForP2->name);
 
     expect(ZeitsteineState::forPlayer($gameStream, $this->p1)->value)->toBe(3);
-    expect(GuthabenState::forPlayer($gameStream, $this->p1)->value)->toBe(50000);
+    expect(PlayerState::getGuthabenForPlayer($gameStream, $this->p1))->toBe(50000);
 });
 
 test('PreGameLogic can only start once', function () {

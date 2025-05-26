@@ -6,7 +6,6 @@ namespace Tests\CoreGameLogic\Feature\Spielzug;
 
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
-use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
@@ -19,6 +18,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\CoreGameLogic\GameId;
 use Domain\Definitions\Card\Dto\CardDefinition;
 use Domain\Definitions\Card\Dto\CardRequirements;
 use Domain\Definitions\Card\Dto\ResourceChanges;

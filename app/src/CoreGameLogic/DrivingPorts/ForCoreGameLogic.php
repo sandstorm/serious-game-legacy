@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\DrivingPorts;
 
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
-use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\GameId;
 
 /**
  * Driving Port for core business operations

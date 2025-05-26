@@ -1,10 +1,6 @@
 <?php
 
-use App\Livewire\GameUi;
-use Domain\CoreGameLogic\CoreGameLogicApp;
-use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Livewire\Livewire;
 
 uses(RefreshDatabase::class);
 /*

@@ -6,7 +6,6 @@ namespace Domain\CoreGameLogic\Feature\Konjunkturphase;
 
 use Domain\CoreGameLogic\CommandHandler\CommandHandlerInterface;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
-use Domain\CoreGameLogic\Dto\ValueObject\CurrentYear;
 use Domain\CoreGameLogic\Dto\ValueObject\Kompetenzbereich;
 use Domain\CoreGameLogic\Dto\ValueObject\Konjunkturphase;
 use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
@@ -18,6 +17,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;
 use Domain\Definitions\Card\PileFinder;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;

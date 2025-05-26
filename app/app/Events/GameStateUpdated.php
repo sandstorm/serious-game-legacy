@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Events;
 
-use Domain\CoreGameLogic\Dto\ValueObject\GameId;
+use Domain\CoreGameLogic\GameId;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;

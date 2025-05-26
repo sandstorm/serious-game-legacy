@@ -5,17 +5,16 @@ declare(strict_types=1);
 namespace Tests\CoreGameLogic\Feature\Initialization\State;
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
-use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
-use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
-use Domain\CoreGameLogic\Feature\Initialization\State\GuthabenState;
 use Domain\CoreGameLogic\Feature\Initialization\State\ZeitsteineState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\EreignisId;
+use Domain\CoreGameLogic\GameId;
 use Domain\Definitions\Card\Dto\CardDefinition;
 use Domain\Definitions\Card\Dto\CardRequirements;
 use Domain\Definitions\Card\Dto\ResourceChanges;
@@ -65,7 +64,7 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
             new CardOrder( pileId: $pileIdSozialesAndFreizeit, cards: [$testCard->id]),
         ));
     $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-    expect(GuthabenState::forPlayer($stream, $p1)->value)->toBe(50000)
+    expect(PlayerState::getGuthabenForPlayer($stream, $p1))->toBe(50000)
         ->and(ZeitsteineState::forPlayer($stream, $p1)->value)->toBe(3);
     //</editor-fold>
 
@@ -77,7 +76,7 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
             ->withFixedCardDefinitionForTesting($testCard)
     );
     $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-    expect(GuthabenState::forPlayer($stream, $p1)->value)->toBe(50500)
+    expect(PlayerState::getGuthabenForPlayer($stream, $p1))->toBe(50500)
         ->and(ZeitsteineState::forPlayer($stream, $p1)->value)->toBe(1);
     //</editor-fold>
 });

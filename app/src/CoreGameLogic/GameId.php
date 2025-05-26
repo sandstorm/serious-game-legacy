@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Dto\ValueObject;
+namespace Domain\CoreGameLogic;
 
 use Domain\CoreGameLogic\Dto\ValueObjectInterface;
 use Neos\EventStore\Model\Event\StreamName;
 
-class GameId implements ValueObjectInterface
+final class GameId implements ValueObjectInterface
 {
     /**
      * @var array<string,self>

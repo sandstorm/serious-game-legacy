@@ -1,11 +1,11 @@
 <?php
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
-use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
+use Domain\CoreGameLogic\GameId;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();

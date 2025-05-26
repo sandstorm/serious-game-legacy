@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic;
 
-use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\EventStore\EventNormalizer;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\EventStore\GameEvents;

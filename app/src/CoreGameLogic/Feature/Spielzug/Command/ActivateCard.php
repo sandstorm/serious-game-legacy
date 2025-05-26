@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Command;
 
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
-use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\EreignisId;
 use Domain\Definitions\Card\Dto\CardDefinition;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
