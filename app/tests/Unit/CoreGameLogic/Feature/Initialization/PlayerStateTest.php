@@ -10,6 +10,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\Pile;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
@@ -53,7 +54,7 @@ test('kompetenzstein state', function () {
 
     $this->coreGameLogic->handle(
         $this->gameId,
-        ShuffleCards::create()->withFixedCardIdOrderForTesting(
+        ChangeKonjunkturphase::create()->withFixedCardIdOrderForTesting(
             new Pile( pileId: $this->pileIdBildung, cards: [$cardId]),
         ));
 

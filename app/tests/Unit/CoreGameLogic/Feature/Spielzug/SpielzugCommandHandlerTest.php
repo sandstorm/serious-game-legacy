@@ -13,6 +13,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\Pile;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
@@ -66,7 +67,7 @@ describe('handleSkipCard', function () {
 
         $this->coreGameLogic->handle(
             $this->gameId,
-            ShuffleCards::create()->withFixedCardIdOrderForTesting(
+            ChangeKonjunkturphase::create()->withFixedCardIdOrderForTesting(
                 new Pile( pileId: $this->pileIdBildung, cards: [$skipThisCard]),
             ));
 
@@ -100,7 +101,7 @@ describe('handleActivateCard', function () {
 
         $this->coreGameLogic->handle(
             $this->gameId,
-            ShuffleCards::create()->withFixedCardIdOrderForTesting(
+            ChangeKonjunkturphase::create()->withFixedCardIdOrderForTesting(
                 new Pile( pileId: $this->pileIdBildung, cards: [$cardToTest->id]),
             ));
 
@@ -132,7 +133,7 @@ describe('handleActivateCard', function () {
 
         $this->coreGameLogic->handle(
             $this->gameId,
-            ShuffleCards::create()->withFixedCardIdOrderForTesting(
+            ChangeKonjunkturphase::create()->withFixedCardIdOrderForTesting(
                 new Pile( pileId: $this->pileIdBildung, cards: [$skipThisCard, $cardToTest->id]),
             ));
 
@@ -175,7 +176,7 @@ describe('handleActivateCard', function () {
 
         $this->coreGameLogic->handle(
             $this->gameId,
-            ShuffleCards::create()->withFixedCardIdOrderForTesting(
+            ChangeKonjunkturphase::create()->withFixedCardIdOrderForTesting(
                 new Pile( pileId: $this->pileIdBildung, cards: [$skipThisCard, $cardToTest->id]),
             ));
 
@@ -214,7 +215,7 @@ describe('handleActivateCard', function () {
 
         $this->coreGameLogic->handle(
             $this->gameId,
-            ShuffleCards::create()->withFixedCardIdOrderForTesting(
+            ChangeKonjunkturphase::create()->withFixedCardIdOrderForTesting(
                 new Pile( pileId: $this->pileIdBildung, cards: [$cardToTest->id]),
             ));
 
@@ -252,7 +253,7 @@ describe('handleActivateCard', function () {
 
         $this->coreGameLogic->handle(
             $this->gameId,
-            ShuffleCards::create()->withFixedCardIdOrderForTesting(
+            ChangeKonjunkturphase::create()->withFixedCardIdOrderForTesting(
                 new Pile( pileId: $this->pileIdBildung, cards: [$cardToTest->id]),
             ));
 
@@ -278,7 +279,7 @@ describe('handleActivateCard', function () {
 
         $this->coreGameLogic->handle(
             $this->gameId,
-            ShuffleCards::create()->withFixedCardIdOrderForTesting(
+            ChangeKonjunkturphase::create()->withFixedCardIdOrderForTesting(
                 new Pile( pileId: $this->pileIdBildung, cards: [$cardToTest->id]),
             ));
 

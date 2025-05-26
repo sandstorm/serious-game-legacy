@@ -14,6 +14,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\Pile;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
@@ -49,7 +50,7 @@ test('welche Spielzüge hat player zur Verfügung', function () {
     $cardsBildung = PileFinder::getCardsIdsForPile($pileIdBildung);
     $this->coreGameLogic->handle(
         $this->gameId,
-        ShuffleCards::create()->withFixedCardIdOrderForTesting(
+        ChangeKonjunkturphase::create()->withFixedCardIdOrderForTesting(
             new Pile(pileId: $pileIdBildung, cards: $cardsBildung),
         ));
 

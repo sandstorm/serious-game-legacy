@@ -9,6 +9,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\Pile;
@@ -54,7 +55,7 @@ beforeEach(function () {
 
     $this->coreGameLogic->handle(
         $this->gameId,
-        ShuffleCards::create()->withFixedCardIdOrderForTesting(
+        ChangeKonjunkturphase::create()->withFixedCardIdOrderForTesting(
             new Pile( pileId: $this->pileIdBildung, cards: $this->cardsBildung),
             new Pile( pileId: $this->pileIdFreizeit, cards: $this->cardsFreizeit),
         ));
@@ -109,7 +110,7 @@ test('Shuffling resets draw counter', function () {
 
     $this->coreGameLogic->handle(
         $this->gameId,
-        ShuffleCards::create()->withFixedCardIdOrderForTesting(
+        ChangeKonjunkturphase::create()->withFixedCardIdOrderForTesting(
             new Pile( pileId: $this->pileIdBildung, cards: array_reverse($this->cardsBildung)),
             new Pile( pileId: $this->pileIdFreizeit, cards: $this->cardsFreizeit),
         ));
@@ -162,7 +163,7 @@ test('End of pile is reached and its re shuffled', function () {
 });
 
 test('Test shuffle event', function () {
-    $this->coreGameLogic->handle($this->gameId, ShuffleCards::create());
+    $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create());
     $stream = $this->coreGameLogic->getGameEvents($this->gameId);
     expect($stream->findLast(CardsWereShuffled::class)->piles)->toBeArray();
     expect($stream->findLast(CardsWereShuffled::class)->piles[0]->cards)->toBeArray();

@@ -37,6 +37,7 @@ final readonly class GameEventsToPersist implements \IteratorAggregate, \Countab
 
     public function withAppendedEvents(GameEventInterface|DecoratedEvent ...$events): self
     {
+
         return new self(...$this->events, ...$events);
     }
 

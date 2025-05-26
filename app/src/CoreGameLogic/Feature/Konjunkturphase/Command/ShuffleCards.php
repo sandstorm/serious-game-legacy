@@ -7,6 +7,11 @@ namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Command;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\Pile;
 
+
+/**
+ * @internal use ChangeKonkunkturphase instead
+ * @deprecated use ChangeKonkunkturphase instead
+ */
 final readonly class ShuffleCards implements CommandInterface
 {
     public static function create(): self

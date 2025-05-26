@@ -12,6 +12,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\GuthabenState;
 use Domain\CoreGameLogic\Feature\Initialization\State\ZeitsteineState;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\Pile;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
@@ -60,7 +61,7 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
 
     $this->coreGameLogic->handle(
         $this->gameId,
-        ShuffleCards::create()->withFixedCardIdOrderForTesting(
+        ChangeKonjunkturphase::create()->withFixedCardIdOrderForTesting(
             new Pile( pileId: $pileIdSozialesAndFreizeit, cards: [$testCard->id]),
         ));
     $stream = $this->coreGameLogic->getGameEvents($this->gameId);
