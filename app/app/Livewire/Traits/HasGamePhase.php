@@ -6,7 +6,7 @@ namespace App\Livewire\Traits;
 
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
-use Domain\Definitions\Card\ValueObject\PileEnum;
+use Domain\Definitions\Card\ValueObject\PileId;
 use Illuminate\View\View;
 
 trait HasGamePhase
@@ -14,9 +14,9 @@ trait HasGamePhase
     public function renderGamePhase(): View
     {
         $cardPiles = [
-            PileEnum::BILDUNG_PHASE_1->value,
-            PileEnum::FREIZEIT_PHASE_1->value,
-            PileEnum::ERWERBSEINKOMMEN_PHASE_1->value,
+            PileId::BILDUNG_PHASE_1->value,
+            PileId::FREIZEIT_PHASE_1->value,
+            PileId::ERWERBSEINKOMMEN_PHASE_1->value,
         ];
 
         $konjunkturphase = GamePhaseState::currentKonjunkturphase($this->gameStream);

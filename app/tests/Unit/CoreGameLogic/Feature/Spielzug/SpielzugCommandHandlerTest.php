@@ -24,7 +24,6 @@ use Domain\Definitions\Card\Dto\CardDefinition;
 use Domain\Definitions\Card\Dto\CardRequirements;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\PileEnum;
 use Domain\Definitions\Card\ValueObject\PileId;
 
 beforeEach(function () {
@@ -33,7 +32,7 @@ beforeEach(function () {
     $this->playerId1 = PlayerId::fromString('p1');
     $this->playerId2 = PlayerId::fromString('p2');
 
-    $this->pileIdBildung = PileEnum::BILDUNG_PHASE_1;
+    $this->pileIdBildung = PileId::BILDUNG_PHASE_1;
 
     $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
         numberOfPlayers: 2,

@@ -7,7 +7,6 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Pile\Event\Behavior\DrawsCard;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\PileEnum;
 use Domain\Definitions\Card\ValueObject\PileId;
 
 class PileState
@@ -15,10 +14,10 @@ class PileState
     /**
      * Counts and returns the DrawsCard events for a pile since the last shuffle.
      * @param GameEvents $stream
-     * @param PileEnum $pileId
+     * @param PileId $pileId
      * @return int
      */
-    private static function numberOfCardDrawsSinceLastShuffle(GameEvents $stream, PileEnum $pileId): int
+    private static function numberOfCardDrawsSinceLastShuffle(GameEvents $stream, PileId $pileId): int
     {
         $currentDrawEventsForPile = $stream->findAllAfterLastOfType(CardsWereShuffled::class)
             ->findAllOfType(DrawsCard::class)
@@ -31,11 +30,11 @@ class PileState
      * Returns the CardId of the Card that is currently on top of a given pile.
      *
      * @param GameEvents $stream
-     * @param PileEnum $pileId
+     * @param PileId $pileId
      * @return CardId
      * @throws \RuntimeException
      */
-    public static function topCardIdForPile(GameEvents $stream, PileEnum $pileId): CardId
+    public static function topCardIdForPile(GameEvents $stream, PileId $pileId): CardId
     {
         $currentPiles = $stream->findLast(CardsWereShuffled::class)->piles;
         foreach ($currentPiles as $pile) {

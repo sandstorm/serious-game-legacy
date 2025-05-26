@@ -10,7 +10,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\PileEnum;
 use Domain\Definitions\Card\ValueObject\PileId;
 
 trait HasCard
@@ -74,7 +73,7 @@ trait HasCard
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
             $this->myself,
             CardId::fromString($cardId),
-            PileEnum::from($pileId)
+            PileId::from($pileId)
         ));
         $this->broadcastNotify();
     }
@@ -93,7 +92,7 @@ trait HasCard
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
             $this->myself,
             CardId::fromString($cardId),
-            PileEnum::from($pileId)
+            PileId::from($pileId)
         ));
         $this->broadcastNotify();
     }

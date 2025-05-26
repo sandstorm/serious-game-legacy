@@ -11,7 +11,6 @@ use Domain\CoreGameLogic\Feature\Player\State\PlayerState;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\PileEnum;
 use Domain\Definitions\Card\ValueObject\PileId;
 
 beforeEach(function () {
@@ -33,7 +32,7 @@ beforeEach(function () {
         ),
         new CardWasActivated(
             $this->playerId1,
-            PileEnum::BILDUNG_PHASE_1,
+            PileId::BILDUNG_PHASE_1,
             new CardId('test1'),
             new ResourceChanges(
                 guthabenChange: -500,
@@ -41,7 +40,7 @@ beforeEach(function () {
             )),
         new CardWasActivated(
             $this->playerId2,
-            PileEnum::BILDUNG_PHASE_1,
+            PileId::BILDUNG_PHASE_1,
             new CardId('test2'),
             new ResourceChanges(
                 guthabenChange: -100,

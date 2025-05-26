@@ -12,15 +12,14 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\PileEnum;
 use Domain\Definitions\Card\ValueObject\PileId;
 
 final readonly class CardWasActivated implements ProvidesModifiers, ProvidesResourceChanges, DrawsCard, GameEventInterface
 {
     public function __construct(
-        public PlayerId $playerId,
-        public PileEnum $pileId,
-        public CardId $cardId,
+        public PlayerId        $playerId,
+        public PileId          $pileId,
+        public CardId          $cardId,
         public ResourceChanges $resourceChanges
     ) {
     }
@@ -42,7 +41,7 @@ final readonly class CardWasActivated implements ProvidesModifiers, ProvidesReso
     {
         return new self(
             playerId: PlayerId::fromString($values['playerId']),
-            pileId: PileEnum::from($values['pileId']),
+            pileId: PileId::from($values['pileId']),
             cardId: new CardId($values['cardId']),
             resourceChanges: ResourceChanges::fromArray($values['resourceChanges']),
         );
@@ -58,7 +57,7 @@ final readonly class CardWasActivated implements ProvidesModifiers, ProvidesReso
         ];
     }
 
-    public function getPileId(): PileEnum
+    public function getPileId(): PileId
     {
         return $this->pileId;
     }

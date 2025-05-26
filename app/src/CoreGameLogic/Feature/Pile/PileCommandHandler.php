@@ -13,7 +13,6 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\Pile;
 use Domain\Definitions\Card\PileFinder;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\PileEnum;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Random\Randomizer;
 
@@ -44,7 +43,7 @@ final readonly class PileCommandHandler implements CommandHandlerInterface
         }
 
         $piles = [];
-        foreach (PileEnum::cases() as $pileId) {
+        foreach (PileId::cases() as $pileId) {
             $cards = $this->shuffleCards(PileFinder::getCardsIdsForPile($pileId));
 
             $piles[] = new Pile(

@@ -24,7 +24,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\ModifierCalculator;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\PileFinder;
-use Domain\Definitions\Card\ValueObject\PileEnum;
 use Domain\Definitions\Card\ValueObject\PileId;
 
 beforeEach(function () {
@@ -46,7 +45,7 @@ test('welche Spielzüge hat player zur Verfügung', function () {
         ]
     ));
 
-    $pileIdBildung = PileEnum::BILDUNG_PHASE_1;
+    $pileIdBildung = PileId::BILDUNG_PHASE_1;
     $cardsBildung = PileFinder::getCardsIdsForPile($pileIdBildung);
     $this->coreGameLogic->handle(
         $this->gameId,
@@ -97,7 +96,7 @@ describe('canPlayerActivateCard', function () {
     });
 
     it('returns true when player can afford the action', function () {
-        $pileId = PileEnum::BILDUNG_PHASE_1;
+        $pileId = PileId::BILDUNG_PHASE_1;
         $costOfAction1 = new ResourceChanges(
             guthabenChange: -200,
             bildungKompetenzsteinChange: +1,
@@ -114,7 +113,7 @@ describe('canPlayerActivateCard', function () {
     });
 
     it('returns false when player cannot afford the action', function () {
-        $pileId = PileEnum::BILDUNG_PHASE_1;
+        $pileId = PileId::BILDUNG_PHASE_1;
         $costOfAction1 = new ResourceChanges(
             guthabenChange: -50001,
         );

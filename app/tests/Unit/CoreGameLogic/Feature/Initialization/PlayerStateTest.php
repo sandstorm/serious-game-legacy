@@ -18,7 +18,6 @@ use Domain\Definitions\Card\Dto\CardRequirements;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\PileFinder;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\PileEnum;
 use Domain\Definitions\Card\ValueObject\PileId;
 
 beforeEach(function () {
@@ -26,7 +25,7 @@ beforeEach(function () {
     $this->gameId = GameId::fromString('game1');
     $this->p1 = PlayerId::fromString('p1');
     $this->p2 = PlayerId::fromString('p2');
-    $this->pileIdBildung = PileEnum::BILDUNG_PHASE_1;
+    $this->pileIdBildung = PileId::BILDUNG_PHASE_1;
     $this->cardsBildung = PileFinder::getCardsIdsForPile($this->pileIdBildung);
     $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
         numberOfPlayers: 2,
@@ -81,7 +80,7 @@ test('kompetenzstein state', function () {
             ->withFixedCardDefinitionForTesting(
                 new CardDefinition(
                     id: $cardId,
-                    pileId: PileEnum::BILDUNG_PHASE_1,
+                    pileId: PileId::BILDUNG_PHASE_1,
                     kurzversion: 'Sprachkurs',
                     langversion: 'Mache einen Sprachkurs über drei Monate im Ausland.',
                     resourceChanges: new ResourceChanges(

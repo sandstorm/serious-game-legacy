@@ -19,7 +19,6 @@ use Domain\Definitions\Card\Dto\CardDefinition;
 use Domain\Definitions\Card\Dto\CardRequirements;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\PileEnum;
 use Domain\Definitions\Card\ValueObject\PileId;
 
 beforeEach(function () {
@@ -42,7 +41,7 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
         ]
     ));
 
-    $pileIdSozialesAndFreizeit = PileEnum::FREIZEIT_PHASE_1;
+    $pileIdSozialesAndFreizeit = PileId::FREIZEIT_PHASE_1;
 
     $testCard = new CardDefinition(
         id: new CardId('testcard'),

@@ -17,7 +17,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\Definitions\Card\PileFinder;
-use Domain\Definitions\Card\ValueObject\PileEnum;
 use Domain\Definitions\Card\ValueObject\PileId;
 
 beforeEach(function () {
@@ -26,9 +25,9 @@ beforeEach(function () {
     $this->p1 = PlayerId::fromString('p1');
     $this->p2 = PlayerId::fromString('p2');
 
-    $this->pileIdBildung = PileEnum::BILDUNG_PHASE_1;
+    $this->pileIdBildung = PileId::BILDUNG_PHASE_1;
     $this->cardsBildung = PileFinder::getCardsIdsForPile($this->pileIdBildung);
-    $this->pileIdFreizeit = PileEnum::FREIZEIT_PHASE_1;
+    $this->pileIdFreizeit = PileId::FREIZEIT_PHASE_1;
     $this->cardsFreizeit = PileFinder::getCardsIdsForPile($this->pileIdFreizeit);
 
     $this->coreGameLogic->handle($this->gameId, StartPreGame::create(

@@ -4,25 +4,16 @@ declare(strict_types=1);
 
 namespace Domain\Definitions\Card\ValueObject;
 
-final readonly class PileId implements \JsonSerializable
+enum PileId: string
 {
-    public function __construct(public PileEnum $value)
-    {
-    }
+    case BILDUNG_PHASE_1 = 'Bildung & Karriere | Phase 1';
+    case BILDUNG_PHASE_2 = 'Bildung & Karriere | Phase 2';
+    case BILDUNG_PHASE_3 = 'Bildung & Karriere | Phase 3';
+    case FREIZEIT_PHASE_1 = 'Freizeit & Sozial | Phase 1';
+    case FREIZEIT_PHASE_2 = 'Freizeit & Sozial | Phase 2';
+    case FREIZEIT_PHASE_3 = 'Freizeit & Sozial | Phase 3';
+    case ERWERBSEINKOMMEN_PHASE_1 = 'Erwerbseinkommen | Phase 1';
+    case ERWERBSEINKOMMEN_PHASE_2 = 'Erwerbseinkommen | Phase 2';
+    case ERWERBSEINKOMMEN_PHASE_3 = 'Erwerbseinkommen | Phase 3';
 
-    public function __toString(): string
-    {
-        return '[PileId: '.$this->value->value.']';
-    }
-
-
-    public function jsonSerialize(): string
-    {
-        return $this->value->value;
-    }
-
-    public function equals(PileId $other): bool
-    {
-        return $this->value === $other->value;
-    }
 }
