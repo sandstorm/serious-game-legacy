@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Dto\ValueObject;
+namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Dto;
 
+use Domain\CoreGameLogic\Dto\ValueObject\Leitzins;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;
 use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Initialization\State;
 
-use Domain\CoreGameLogic\Dto\ValueObject\Konjunkturphase;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\Konjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 
 class GamePhaseState

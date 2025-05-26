@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Event;
 
-use Domain\CoreGameLogic\Dto\ValueObject\Konjunkturphase;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\Konjunkturphase;
 
 final readonly class KonjunkturphaseWasChanged implements GameEventInterface
 {
