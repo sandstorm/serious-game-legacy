@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Dto\ValueObject;
+namespace Domain\CoreGameLogic\Feature\Spielzug\ValueObject;
 
+use Domain\CoreGameLogic\Dto\ValueObject\ResourceId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 
-readonly class Zeitsteine extends Resource implements \JsonSerializable
+readonly class Zeitsteine implements \JsonSerializable
 {
     public function __construct(public int $value)
     {
-        parent::__construct(new ResourceId("Zeitsteine"));
     }
 
     public function __toString(): string

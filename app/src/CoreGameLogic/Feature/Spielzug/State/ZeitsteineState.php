@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Feature\Initialization\State;
+namespace Domain\CoreGameLogic\Feature\Spielzug\State;
 
-use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
-use Domain\CoreGameLogic\Dto\ValueObject\Zeitsteine;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\Zeitsteine;
+use Domain\CoreGameLogic\PlayerId;
 
 class ZeitsteineState
 {

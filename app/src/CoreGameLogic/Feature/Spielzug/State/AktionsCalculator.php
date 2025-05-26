@@ -7,11 +7,11 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\State;
 use Domain\CoreGameLogic\Dto\Aktion\Aktion;
 use Domain\CoreGameLogic\Dto\Aktion\PhaseWechseln;
 use Domain\CoreGameLogic\Dto\Aktion\ZeitsteinSetzen;
-use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
+use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\CardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 

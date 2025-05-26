@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Initialization\State;
 
-use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielWasSelected;
@@ -14,6 +13,7 @@ use Domain\CoreGameLogic\Feature\Initialization\State\Dto\NameAndLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\ValueObject\Lebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\ValueObject\LebenszielPhase;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
+use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Lebensziel\Dto\LebenszielDefinition;
 

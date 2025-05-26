@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Initialization\State\Dto;
 
-use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Lebensziel\Dto\LebenszielDefinition;
 
 readonly final class NameAndLebensziel

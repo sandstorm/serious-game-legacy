@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Initialization\Command;
 
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
-use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
+use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
 
 final readonly class SelectLebensziel implements CommandInterface

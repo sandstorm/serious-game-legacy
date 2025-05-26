@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Dto\Aktion;
 
-use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
+use Domain\CoreGameLogic\PlayerId;
 
 class PhaseWechseln extends Aktion
 {

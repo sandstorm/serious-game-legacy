@@ -6,7 +6,6 @@ namespace Tests\CoreGameLogic\Feature\Spielzug\State;
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\Dto\Aktion\ZeitsteinSetzen;
-use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
@@ -22,6 +21,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\ModifierCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\EreignisId;
 use Domain\CoreGameLogic\GameId;
+use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\PileFinder;
 use Domain\Definitions\Card\ValueObject\PileId;

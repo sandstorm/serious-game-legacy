@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Dto\ValueObject;
+namespace Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject;
 
 readonly class Leitzins implements \JsonSerializable
 {
