@@ -14,7 +14,7 @@ use Domain\CoreGameLogic\Feature\Initialization\State\GuthabenState;
 use Domain\CoreGameLogic\Feature\Initialization\State\ZeitsteineState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ShuffleCards;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\Pile;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrdering;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\Definitions\Card\Dto\CardDefinition;
 use Domain\Definitions\Card\Dto\CardRequirements;
@@ -62,7 +62,7 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
     $this->coreGameLogic->handle(
         $this->gameId,
         ChangeKonjunkturphase::create()->withFixedCardIdOrderForTesting(
-            new Pile( pileId: $pileIdSozialesAndFreizeit, cards: [$testCard->id]),
+            new CardOrdering( pileId: $pileIdSozialesAndFreizeit, cards: [$testCard->id]),
         ));
     $stream = $this->coreGameLogic->getGameEvents($this->gameId);
     expect(GuthabenState::forPlayer($stream, $p1)->value)->toBe(50000)

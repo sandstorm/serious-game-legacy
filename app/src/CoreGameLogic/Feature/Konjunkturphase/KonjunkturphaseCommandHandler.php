@@ -15,7 +15,7 @@ use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ShuffleCards;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\Pile;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrdering;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\Definitions\Card\PileFinder;
@@ -128,7 +128,7 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
         foreach (PileId::cases() as $pileId) {
             $cards = $this->shuffleCards(PileFinder::getCardsIdsForPile($pileId));
 
-            $piles[] = new Pile(
+            $piles[] = new CardOrdering(
                 pileId: $pileId,
                 cards: $cards
             );

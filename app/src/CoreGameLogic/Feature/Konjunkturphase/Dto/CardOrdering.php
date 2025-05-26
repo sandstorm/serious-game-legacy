@@ -8,7 +8,7 @@ use Domain\Definitions\Card\ValueObject\PileId;
 /**
  * We use this class to keep track of which card is in which pile and in what order.
  */
-readonly final class Pile
+readonly final class CardOrdering
 {
     /**
      * @param PileId $pileId
