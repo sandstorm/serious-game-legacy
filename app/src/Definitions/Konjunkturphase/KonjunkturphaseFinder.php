@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Domain\Definitions\Konjunkturphase;
 
-use Domain\Definitions\Auswirkung\AuswirkungDefinition;
-use Domain\Definitions\Auswirkung\Enum\AuswirkungScopeEnum;
-use Domain\Definitions\Kompetenzbereich\Enum\KompetenzbereichEnum;
-use Domain\Definitions\Kompetenzbereich\KompetenzbereichDefinition;
-use Domain\Definitions\Konjunkturphase\Enum\KonjunkturphaseTypeEnum;
+use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
+use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
+use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
+use Domain\Definitions\Konjunkturphase\ValueObject\KompetenzbereichEnum;
+use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 
 class KonjunkturphaseFinder
 {

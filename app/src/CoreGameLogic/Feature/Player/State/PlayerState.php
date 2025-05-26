@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Player\State;
 
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
-use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
+use Domain\Definitions\Card\Dto\ResourceChanges;
 
 class PlayerState
 {

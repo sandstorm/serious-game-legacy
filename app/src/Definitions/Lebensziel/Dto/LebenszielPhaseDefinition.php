@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\Definitions\Lebensziel;
+namespace Domain\Definitions\Lebensziel\Dto;
 
 readonly class LebenszielPhaseDefinition
 {

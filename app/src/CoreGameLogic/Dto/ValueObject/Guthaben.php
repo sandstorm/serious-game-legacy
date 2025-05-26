@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Dto\ValueObject;
 
+use Domain\Definitions\Card\Dto\ResourceChanges;
+
 readonly class Guthaben extends Resource implements \JsonSerializable
 {
     public function __construct(public int $value)

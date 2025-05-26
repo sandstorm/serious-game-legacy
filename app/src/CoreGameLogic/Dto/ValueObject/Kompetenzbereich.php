@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Dto\ValueObject;
 
-use Domain\Definitions\Kompetenzbereich\Enum\KompetenzbereichEnum;
+use Domain\Definitions\Konjunkturphase\ValueObject\KompetenzbereichEnum;
 
 readonly class Kompetenzbereich implements \JsonSerializable
 {

@@ -6,8 +6,8 @@ namespace App\View\Components;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Pile\State\PileState;
-use Domain\Definitions\Cards\CardFinder;
-use Domain\Definitions\Cards\ValueObject\PileId;
+use Domain\Definitions\Card\CardFinder;
+use Domain\Definitions\Card\ValueObject\PileId;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 

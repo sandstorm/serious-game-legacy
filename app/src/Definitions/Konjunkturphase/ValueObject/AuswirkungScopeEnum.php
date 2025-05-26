@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\Definitions\Auswirkung\Enum;
+namespace Domain\Definitions\Konjunkturphase\ValueObject;
 
 enum AuswirkungScopeEnum: string
 {

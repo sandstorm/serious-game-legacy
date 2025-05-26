@@ -9,7 +9,6 @@ use Domain\CoreGameLogic\Dto\Aktion\ZeitsteinSetzen;
 use Domain\CoreGameLogic\Dto\ValueObject\EreignisId;
 use Domain\CoreGameLogic\Dto\ValueObject\GameId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
-use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
@@ -23,9 +22,10 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\ModifierCalculator;
-use Domain\Definitions\Cards\PileFinder;
-use Domain\Definitions\Cards\ValueObject\PileEnum;
-use Domain\Definitions\Cards\ValueObject\PileId;
+use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\PileFinder;
+use Domain\Definitions\Card\ValueObject\PileEnum;
+use Domain\Definitions\Card\ValueObject\PileId;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();

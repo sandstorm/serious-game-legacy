@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Dto\ValueObject;
 
-use Domain\Definitions\Lebensziel\LebenszielDefinition;
+use Domain\Definitions\Lebensziel\Dto\LebenszielDefinition;
 
 readonly class Lebensziel
 {

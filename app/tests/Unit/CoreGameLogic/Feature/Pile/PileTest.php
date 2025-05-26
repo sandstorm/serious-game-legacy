@@ -16,9 +16,9 @@ use Domain\CoreGameLogic\Feature\Pile\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
-use Domain\Definitions\Cards\PileFinder;
-use Domain\Definitions\Cards\ValueObject\PileEnum;
-use Domain\Definitions\Cards\ValueObject\PileId;
+use Domain\Definitions\Card\PileFinder;
+use Domain\Definitions\Card\ValueObject\PileEnum;
+use Domain\Definitions\Card\ValueObject\PileId;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Dto\ValueObject;
 
-use Domain\Definitions\Konjunkturphase\Enum\KonjunkturphaseTypeEnum;
+use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 
 readonly class Konjunkturphase implements \JsonSerializable
 {

@@ -8,9 +8,9 @@ use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
-use Domain\Definitions\Cards\CardFinder;
-use Domain\Definitions\Cards\ValueObject\CardId;
-use Domain\Definitions\Cards\ValueObject\PileId;
+use Domain\Definitions\Card\CardFinder;
+use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\PileId;
 
 trait HasCard
 {

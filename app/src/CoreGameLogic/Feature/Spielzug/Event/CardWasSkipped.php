@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
-use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Pile\Event\Behavior\DrawsCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
-use Domain\Definitions\Cards\ValueObject\CardId;
-use Domain\Definitions\Cards\ValueObject\PileId;
+use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\PileId;
 
 final readonly class CardWasSkipped implements DrawsCard, GameEventInterface, ProvidesResourceChanges
 {

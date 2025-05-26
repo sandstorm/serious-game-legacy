@@ -6,7 +6,7 @@ namespace App\Livewire\Traits;
 
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
-use Domain\Definitions\Cards\ValueObject\PileEnum;
+use Domain\Definitions\Card\ValueObject\PileEnum;
 use Illuminate\View\View;
 
 trait HasGamePhase

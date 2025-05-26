@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Domain\Definitions\Cards;
+namespace Domain\Definitions\Card;
 
-use Domain\CoreGameLogic\Dto\ValueObject\CardRequirements;
-use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
-use Domain\Definitions\Cards\Dto\CardDefinition;
-use Domain\Definitions\Cards\ValueObject\CardId;
-use Domain\Definitions\Cards\ValueObject\PileEnum;
-use Domain\Definitions\Cards\ValueObject\PileId;
+use Domain\Definitions\Card\Dto\CardDefinition;
+use Domain\Definitions\Card\Dto\CardRequirements;
+use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\PileEnum;
+use Domain\Definitions\Card\ValueObject\PileId;
 
 /**
  * TODO this is just a placeholder until we have a mechanism to organize our cards in piles (DB/files/?)

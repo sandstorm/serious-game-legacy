@@ -2,14 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Domain\Definitions\Cards\Dto;
+namespace Domain\Definitions\Card\Dto;
 
-use Domain\CoreGameLogic\Dto\ValueObject\CardRequirements;
-use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
-use Domain\Definitions\Cards\ValueObject\CardId;
-use Domain\Definitions\Cards\ValueObject\PileId;
+use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\PileId;
 
-class CardDefinition
+final readonly class CardDefinition
 {
     public function __construct(
         public CardId $id,

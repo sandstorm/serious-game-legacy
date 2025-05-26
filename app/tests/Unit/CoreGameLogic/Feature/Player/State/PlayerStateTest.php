@@ -4,15 +4,15 @@ declare(strict_types=1);
 namespace Tests\CoreGameLogic\Feature\Player\State;
 
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
-use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Player\State\PlayerState;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
-use Domain\Definitions\Cards\ValueObject\CardId;
-use Domain\Definitions\Cards\ValueObject\PileEnum;
-use Domain\Definitions\Cards\ValueObject\PileId;
+use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\PileEnum;
+use Domain\Definitions\Card\ValueObject\PileId;
 
 beforeEach(function () {
     $this->playerId1 = PlayerId::fromString('p1');

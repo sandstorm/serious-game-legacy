@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Domain\Definitions\Konjunkturphase;
 
-use Domain\Definitions\Auswirkung\AuswirkungDefinition;
-use Domain\Definitions\Kompetenzbereich\KompetenzbereichDefinition;
-use Domain\Definitions\Konjunkturphase\Enum\KonjunkturphaseTypeEnum;
+use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
+use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
+use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 
 /**
  * represents the model of the konjunkturphase used by the repository to fill the game with data

@@ -9,10 +9,10 @@ use Domain\CoreGameLogic\Dto\ValueObject\Modifier;
 use Domain\CoreGameLogic\Dto\ValueObject\ModifierCollection;
 use Domain\CoreGameLogic\Dto\ValueObject\ModifierId;
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
-use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
+use Domain\Definitions\Card\Dto\ResourceChanges;
 
 final readonly class EreignisWasTriggered implements ProvidesModifiers, ProvidesResourceChanges, GameEventInterface
 {

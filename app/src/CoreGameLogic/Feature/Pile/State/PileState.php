@@ -6,8 +6,8 @@ namespace Domain\CoreGameLogic\Feature\Pile\State;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Pile\Event\Behavior\DrawsCard;
 use Domain\CoreGameLogic\Feature\Pile\Event\CardsWereShuffled;
-use Domain\Definitions\Cards\ValueObject\CardId;
-use Domain\Definitions\Cards\ValueObject\PileId;
+use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\PileId;
 
 class PileState
 {

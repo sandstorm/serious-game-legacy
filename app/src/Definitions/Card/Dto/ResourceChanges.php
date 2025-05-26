@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Dto\ValueObject;
+namespace Domain\Definitions\Card\Dto;
 
-readonly class ResourceChanges implements \JsonSerializable
+final readonly class ResourceChanges implements \JsonSerializable
 {
     public function __construct(
         public int $guthabenChange = 0,

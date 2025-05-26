@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Dto\ValueObject;
+namespace Domain\Definitions\Card\Dto;
 
-readonly class CardRequirements
+final readonly class CardRequirements
 {
     public function __construct(
         public int $guthaben = 0,

@@ -2,8 +2,8 @@
 declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Pile\State\dto;
 
-use Domain\Definitions\Cards\ValueObject\CardId;
-use Domain\Definitions\Cards\ValueObject\PileId;
+use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\PileId;
 
 /**
  * We use this class to keep track of which card is in which pile and in what order.

@@ -11,10 +11,10 @@ use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Pile\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
-use Domain\Definitions\Cards\PileFinder;
-use Domain\Definitions\Cards\ValueObject\CardId;
-use Domain\Definitions\Cards\ValueObject\PileEnum;
-use Domain\Definitions\Cards\ValueObject\PileId;
+use Domain\Definitions\Card\PileFinder;
+use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\PileEnum;
+use Domain\Definitions\Card\ValueObject\PileId;
 use Random\Randomizer;
 
 /**

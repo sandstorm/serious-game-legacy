@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Domain\Definitions\Cards;
+namespace Domain\Definitions\Card;
 
-use Domain\Definitions\Cards\ValueObject\CardId;
-use Domain\Definitions\Cards\ValueObject\PileId;
+use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\PileId;
 
 /**
  * TODO this is just a placeholder until we have a mechanism to organize our cards in piles (DB/files/?)

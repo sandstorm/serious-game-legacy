@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Dto;
 
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
-use Domain\Definitions\Lebensziel\LebenszielDefinition;
+use Domain\Definitions\Lebensziel\Dto\LebenszielDefinition;
 
 class PlayerDetailsDto
 {

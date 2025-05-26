@@ -6,7 +6,7 @@ namespace Domain\CoreGameLogic\Feature\Initialization\Event;
 
 use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
-use Domain\Definitions\Lebensziel\LebenszielDefinition;
+use Domain\Definitions\Lebensziel\Dto\LebenszielDefinition;
 
 final readonly class LebenszielWasSelected implements GameEventInterface
 {
