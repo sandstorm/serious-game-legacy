@@ -6,11 +6,9 @@ namespace Domain\CoreGameLogic\Feature\Spielzug;
 
 use Domain\CoreGameLogic\CommandHandler\CommandHandlerInterface;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
-use Domain\CoreGameLogic\Dto\ValueObject\PlayerId;
 use Domain\CoreGameLogic\Dto\ValueObject\ResourceChanges;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
-use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Pile\State\PileState;
 use Domain\CoreGameLogic\Feature\Player\State\PlayerState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
@@ -54,6 +52,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
         }
 
         $topCardOnPile = PileState::topCardIdForPile($gameState, $command->pile);
+
         if (!$topCardOnPile->equals($command->cardId)) {
             throw new \RuntimeException('Only the top card of the pile can be activated', 1747326086);
         }
