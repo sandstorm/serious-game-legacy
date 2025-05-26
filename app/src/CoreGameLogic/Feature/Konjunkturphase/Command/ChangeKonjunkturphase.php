@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Command;
 
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrdering;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 
 final readonly class ChangeKonjunkturphase implements CommandInterface
@@ -16,7 +16,7 @@ final readonly class ChangeKonjunkturphase implements CommandInterface
     }
 
     /**
-     * @param CardOrdering[] $fixedCardIdOrderingForTesting
+     * @param CardOrder[] $fixedCardIdOrderingForTesting
      */
     private function __construct(
         public ?KonjunkturphaseDefinition $fixedKonjunkturphaseForTesting = null,
@@ -31,10 +31,9 @@ final readonly class ChangeKonjunkturphase implements CommandInterface
         return new self($konjunkturphase, $this->fixedCardIdOrderingForTesting);
     }
 
-    // TODO: withFixedCardOrderingForTesting
-    public function withFixedCardIdOrderForTesting(CardOrdering ...$piles): self
+    public function withFixedCardOrderForTesting(CardOrder ...$cardOrder): self
     {
-        return new self($this->fixedKonjunkturphaseForTesting, $piles);
+        return new self($this->fixedKonjunkturphaseForTesting, $cardOrder);
     }
 
 }

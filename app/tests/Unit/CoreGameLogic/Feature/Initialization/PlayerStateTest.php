@@ -12,7 +12,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ShuffleCards;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrdering;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\Definitions\Card\Dto\CardDefinition;
 use Domain\Definitions\Card\Dto\CardRequirements;
@@ -54,8 +54,8 @@ test('kompetenzstein state', function () {
 
     $this->coreGameLogic->handle(
         $this->gameId,
-        ChangeKonjunkturphase::create()->withFixedCardIdOrderForTesting(
-            new CardOrdering( pileId: $this->pileIdBildung, cards: [$cardId]),
+        ChangeKonjunkturphase::create()->withFixedCardOrderForTesting(
+            new CardOrder( pileId: $this->pileIdBildung, cards: [$cardId]),
         ));
 
     $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);

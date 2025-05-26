@@ -12,7 +12,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrdering;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
@@ -55,9 +55,9 @@ beforeEach(function () {
 
     $this->coreGameLogic->handle(
         $this->gameId,
-        ChangeKonjunkturphase::create()->withFixedCardIdOrderForTesting(
-            new CardOrdering( pileId: $this->pileIdBildung, cards: $this->cardsBildung),
-            new CardOrdering( pileId: $this->pileIdFreizeit, cards: $this->cardsFreizeit),
+        ChangeKonjunkturphase::create()->withFixedCardOrderForTesting(
+            new CardOrder( pileId: $this->pileIdBildung, cards: $this->cardsBildung),
+            new CardOrder( pileId: $this->pileIdFreizeit, cards: $this->cardsFreizeit),
         ));
 });
 
@@ -110,9 +110,9 @@ test('Shuffling resets draw counter', function () {
 
     $this->coreGameLogic->handle(
         $this->gameId,
-        ChangeKonjunkturphase::create()->withFixedCardIdOrderForTesting(
-            new CardOrdering( pileId: $this->pileIdBildung, cards: array_reverse($this->cardsBildung)),
-            new CardOrdering( pileId: $this->pileIdFreizeit, cards: $this->cardsFreizeit),
+        ChangeKonjunkturphase::create()->withFixedCardOrderForTesting(
+            new CardOrder( pileId: $this->pileIdBildung, cards: array_reverse($this->cardsBildung)),
+            new CardOrder( pileId: $this->pileIdFreizeit, cards: $this->cardsFreizeit),
         ));
 
     $stream = $this->coreGameLogic->getGameEvents($this->gameId);

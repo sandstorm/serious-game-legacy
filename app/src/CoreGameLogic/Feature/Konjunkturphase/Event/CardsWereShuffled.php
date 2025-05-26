@@ -5,25 +5,25 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrdering;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 
 final readonly class CardsWereShuffled implements GameEventInterface
 {
     /**
-     * @param CardOrdering[] $piles
+     * @param CardOrder[] $piles
      */
     public function __construct(
         public array $piles,
     ) {
         foreach ($this->piles as $pile) {
-            assert($pile instanceof CardOrdering);
+            assert($pile instanceof CardOrder);
         }
     }
 
     public static function fromArray(array $values): GameEventInterface
     {
         return new self(
-            piles: array_map(fn ($pile) => CardOrdering::fromArray($pile), $values['piles']),
+            piles: array_map(fn ($pile) => CardOrder::fromArray($pile), $values['piles']),
         );
     }
 

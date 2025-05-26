@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Command;
 
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrdering;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 
 
 /**
@@ -20,7 +20,7 @@ final readonly class ShuffleCards implements CommandInterface
     }
 
     /**
-     * @param CardOrdering[] $fixedCardIdOrderingForTesting
+     * @param CardOrder[] $fixedCardIdOrderingForTesting
      */
     private function __construct(
         public array $fixedCardIdOrderingForTesting = [],
