@@ -51,9 +51,7 @@ beforeEach(function () {
         lebensziel: new LebenszielId(2),
     ));
 
-    $this->coreGameLogic->handle($this->gameId, new StartGame(
-        playerOrdering: [$this->p1, $this->p2]
-    ));
+    $this->coreGameLogic->handle($this->gameId, StartGame::create());
 
     $this->coreGameLogic->handle(
         $this->gameId,

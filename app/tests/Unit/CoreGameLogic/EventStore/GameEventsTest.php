@@ -42,9 +42,7 @@ beforeEach(function () {
         playerId: $this->p1,
         lebensziel: new LebenszielId(2),
     ));
-    $this->coreGameLogic->handle($this->gameId, new StartGame(
-        playerOrdering: [$this->p1, $this->p2]
-    ));
+    $this->coreGameLogic->handle($this->gameId, StartGame::create());
 });
 
 describe('find all after last of type', function () {

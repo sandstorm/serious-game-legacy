@@ -10,10 +10,14 @@
 
 - nochamls durch Usages von Definitions gehen
 
-- "Stream"? -> Events
+- "Stream" / gameState? -> gameEvents
 
 - Projection State
 
 - supported Events in GameEventStore reingeben
 
 - UI: Abhängigkeiten??
+
+- TODO: COMMANDS immer mir ::create()
+
+- TODO: PHPSTAN TEST: withTesting nicht für Prod Code?

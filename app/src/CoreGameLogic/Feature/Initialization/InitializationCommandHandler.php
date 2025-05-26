@@ -87,7 +87,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
 
         return GameEventsToPersist::with(
             new GameWasStarted(
-                playerOrdering: $command->playerOrdering
+                playerOrdering: PreGameState::playerIds($gameState),
             ),
         );
     }

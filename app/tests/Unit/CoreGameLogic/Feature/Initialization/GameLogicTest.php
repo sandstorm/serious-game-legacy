@@ -43,7 +43,7 @@ beforeEach(function () {
 
 test('Game logic - change year randomly', function () {
     $handler = new KonjunkturphaseCommandHandler();
-    $this->coreGameLogic->handle($this->gameId, new StartGame([$this->p1, $this->p2]));
+    $this->coreGameLogic->handle($this->gameId, StartGame::create());
 
     // year 1
     $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create());
@@ -92,7 +92,7 @@ test('Game logic - change year randomly', function () {
 
 test('Game logic - change a large amount of years', function() {
     $amountOfYears = 20;
-    $this->coreGameLogic->handle($this->gameId, new StartGame([$this->p1, $this->p2]));
+    $this->coreGameLogic->handle($this->gameId, StartGame::create());
     for ($i = 0; $i < $amountOfYears; $i++) {
         $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create());
         $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -105,7 +105,7 @@ test('Game logic - change a large amount of years', function() {
 });
 
 test('Game logic - change year with fixed konjunkturphase', function () {
-    $this->coreGameLogic->handle($this->gameId, new StartGame([$this->p1, $this->p2]));
+    $this->coreGameLogic->handle($this->gameId, StartGame::create());
 
     $nextKonjunkturphase = KonjunkturphaseFinder::getAllKonjunkturphasen()[0];
     $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create()->withFixedKonjunkturphaseForTesting(

@@ -56,7 +56,7 @@ beforeEach(function () {
     ));
     $this->coreGameLogic->handle(
         $this->gameId,
-        new StartGame(playerOrdering: [$this->playerId1, $this->playerId2]));
+        StartGame::create());
 });
 
 
