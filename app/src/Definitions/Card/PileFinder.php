@@ -20,7 +20,7 @@ readonly final class PileFinder
     public static function getCardsIdsForPile(PileId $pileId): array
     {
         // WHY array_values: we want to reindex the array
-        return array_values(array_map(fn ($card) => $card->id, CardFinder::getCardsForPile($pileId)));
+        return array_values(array_map(fn ($card) => $card->getId(), CardFinder::getInstance()->getCardsForPile($pileId)));
     }
 
 }

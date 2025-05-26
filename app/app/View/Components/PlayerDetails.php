@@ -8,7 +8,6 @@ use App\Livewire\Dto\PlayerDetailsDto;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
-use Domain\CoreGameLogic\Feature\Spielzug\State\ZeitsteineState;
 use Domain\CoreGameLogic\PlayerId;
 use Illuminate\View\Component;
 use Illuminate\View\View;
@@ -48,7 +47,7 @@ class PlayerDetails extends Component
             playerId: $playerId,
             lebensziel: $lebensziel->definition,
             guthaben: PlayerState::getGuthabenForPlayer($this->gameStream, $playerId),
-            zeitsteine: ZeitsteineState::forPlayer($this->gameStream, $playerId)->value,
+            zeitsteine: PlayerState::getZeitsteineForPlayer($this->gameStream, $playerId),
             kompetenzsteineBildung: $lebensziel->phases[0]->placedKompetenzsteineBildung,
             kompetenzsteineFreizeit: $lebensziel->phases[0]->placedKompetenzsteineFreizeit,
         );

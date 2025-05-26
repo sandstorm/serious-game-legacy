@@ -43,7 +43,8 @@ class PileState
                 if ($cardIndex >= count($pile->cards)) {
                     throw new \RuntimeException("Card index ($cardIndex) out of bounds for pile ($pileId->value)", 1748003108);
                 }
-                return $pile->cards[$cardIndex];
+
+                return array_values($pile->cards)[$cardIndex];
             }
         }
 
