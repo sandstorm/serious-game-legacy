@@ -9,9 +9,9 @@
                 ])
                 wire:click="showCardActions('{{$card->id->value}}')">
                 <div class="card-pile__card-details">
-                    <h4>#{{ $card->id->value }} - {{ $card->kurzversion }}</h4>
+                    <h4>#{{ $card->id->value }} - {{ $card->title }}</h4>
                     <p>
-                        {{ $card->langversion }}
+                        {{ $card->description }}
                     </p>
 
                     <h5>Voraussetzungen:</h5>

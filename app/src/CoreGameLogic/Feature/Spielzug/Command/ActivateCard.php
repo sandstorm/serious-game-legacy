@@ -7,7 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Command;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\EreignisId;
 use Domain\CoreGameLogic\PlayerId;
-use Domain\Definitions\Card\Dto\CardDefinition;
+use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
 
@@ -26,7 +26,7 @@ final readonly class ActivateCard implements CommandInterface
         public CardId          $cardId,
         public PileId          $pile,
         public ?EreignisId     $attachedEreignis = null,
-        public ?CardDefinition $fixedCardDefinitionForTesting = null,
+        public ?KategorieCardDefinition $fixedCardDefinitionForTesting = null,
     ) {
     }
 
@@ -41,7 +41,7 @@ final readonly class ActivateCard implements CommandInterface
         );
     }
 
-    public function withFixedCardDefinitionForTesting (CardDefinition $cardDefinition): self
+    public function withFixedCardDefinitionForTesting (KategorieCardDefinition $cardDefinition): self
     {
         return new self(
             $this->player,

@@ -44,7 +44,7 @@ trait HasCard
      */
     public function canActivateCard(string $cardId): bool
     {
-        $card = CardFinder::getCardById(CardId::fromString($cardId));
+        $card = CardFinder::getInstance()->getCardById(CardId::fromString($cardId));
         return AktionsCalculator::forStream($this->gameStream)->canPlayerAffordToActivateCard($this->myself, $card);
     }
 

@@ -7,15 +7,14 @@ namespace Domain\Definitions\Card\Dto;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
 
-final readonly class CardDefinition
+/**
+ * Use this interface for Events that draw a card. It will be used to track which/how many cards have
+ * been drawn from a pile and to determine the card that is currently on top of the pile.
+ */
+interface CardDefinition
 {
-    public function __construct(
-        public CardId           $id,
-        public PileId           $pileId,
-        public string           $kurzversion,
-        public string           $langversion,
-        public ResourceChanges  $resourceChanges,
-        public CardRequirements $additionalRequirements,
-    ) {
-    }
+    public function getId(): CardId;
+    public function getPileId(): PileId;
+    public function getTitle(): string;
+    public function description(): string;
 }

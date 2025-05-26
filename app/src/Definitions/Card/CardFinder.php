@@ -5,44 +5,188 @@ declare(strict_types=1);
 namespace Domain\Definitions\Card;
 
 use Domain\Definitions\Card\Dto\CardDefinition;
-use Domain\Definitions\Card\Dto\CardRequirements;
+use Domain\Definitions\Card\Dto\JobCardDefinition;
+use Domain\Definitions\Card\Dto\JobRequirements;
+use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\Gehalt;
 use Domain\Definitions\Card\ValueObject\PileId;
+use Random\Randomizer;
 
 /**
  * TODO this is just a placeholder until we have a mechanism to organize our cards in piles (DB/files/?)
  */
-readonly final class CardFinder
+final class CardFinder
 {
+    /**
+     * @var array<PileID::value, CardDefinition[]> $cards
+     */
+    private array $cards;
+
+    private static ?self $instance = null;
+
+    public static function getInstance(): self
+    {
+        if (self::$instance === null) {
+            return self::initialize();
+        }
+        return self::$instance;
+    }
+
+    public static function initializeForTesting(): void
+    {
+        self::initialize();
+    }
+
+    private static function initialize(): self
+    {
+        self::$instance = new self([
+            PileId::BILDUNG_PHASE_1->value => [
+                "buk0" => new KategorieCardDefinition(
+                    id: new CardId('buk0'),
+                    pileId: PileId::BILDUNG_PHASE_1,
+                    title: 'Sprachkurs',
+                    description: 'Mache einen Sprachkurs über drei Monate im Ausland.',
+                    resourceChanges: new ResourceChanges(
+                        guthabenChange: -11000,
+                        bildungKompetenzsteinChange: +1,
+                    ),
+                ),
+                "buk1" => new KategorieCardDefinition(
+                    id: new CardId('buk1'),
+                    pileId: PileId::BILDUNG_PHASE_1,
+                    title: 'Erste-Hilfe-Kurs',
+                    description: 'Du machst einen Erste-Hilfe-Kurs, um im Notfall richtig zu reagieren.',
+                    resourceChanges: new ResourceChanges(
+                        guthabenChange: -300,
+                        bildungKompetenzsteinChange: +1,
+                    ),
+                ),
+                "buk2" => new KategorieCardDefinition(
+                    id: new CardId('buk2'),
+                    pileId: PileId::BILDUNG_PHASE_1,
+                    title: 'Gedächtnistraining',
+                    description: 'Mache jeden Tag 20 Minuten Gedächtnistraining, um dich geistig fit zu halten.',
+                    resourceChanges: new ResourceChanges(
+                        zeitsteineChange: -1,
+                        bildungKompetenzsteinChange: +1,
+                    ),
+                ),
+            ],
+            PileId::FREIZEIT_PHASE_1->value => [
+                "suf0" => new KategorieCardDefinition(
+                    id: new CardId('suf0'),
+                    pileId: PileId::FREIZEIT_PHASE_1,
+                    title: 'Ehrenamtliches Engagement',
+                    description: 'Du engagierst dich ehrenamtlich für eine Organisation, die es Menschen mit Behinderung ermöglicht einen genialen Urlaub mit Sonne, Strand und Meer zu erleben. Du musst die Kosten dafür allerdings selbst tragen.',
+                    resourceChanges: new ResourceChanges(
+                        guthabenChange: -1200,
+                        freizeitKompetenzsteinChange: +1,
+                    ),
+                ),
+                "suf1" => new KategorieCardDefinition(
+                    id: new CardId('suf1'),
+                    pileId: PileId::FREIZEIT_PHASE_1,
+                    title: 'Spende',
+                    description: 'Bei deinem Einkauf spendest du nun immer Tiernahrung für die umliegende Tierheime. Dein Spendebeitrag ist 200 €.',
+                    resourceChanges: new ResourceChanges(
+                        guthabenChange: -200,
+                        freizeitKompetenzsteinChange: +1,
+                    ),
+                ),
+                "suf2" => new KategorieCardDefinition(
+                    id: new CardId('suf2'),
+                    pileId: PileId::FREIZEIT_PHASE_1,
+                    title: 'kostenlose Nachhilfe',
+                    description: 'Du gibst kostenlose Nachhilfe für sozial benachteiligte Kinder. Du verlierst einen Zeitstein.',
+                    resourceChanges: new ResourceChanges(
+                        zeitsteineChange: -1,
+                        freizeitKompetenzsteinChange: +1,
+                    ),
+                )
+            ],
+            PileId::JOBS_PHASE_1->value => [
+                "ee0" => new JobCardDefinition(
+                    id: new CardId('ee0'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'Fachinformatikerin',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new Gehalt(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                        bildungKompetenzsteine: 2,
+                    ),
+                ),
+                "ee1" => new JobCardDefinition(
+                    id: new CardId('ee1'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'Pflegefachkraft',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new Gehalt(25000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                        bildungKompetenzsteine: 2,
+                    ),
+                ),
+                "ee2" => new JobCardDefinition(
+                    id: new CardId('ee2'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'Taxifahrer:in',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new Gehalt(18000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                        bildungKompetenzsteine: 1,
+                    ),
+                ),
+            ]
+        ]);
+        return self::$instance;
+    }
+
+    /**
+     * @param array<PileID::value, CardDefinition[]> $cards
+     * @return void
+     */
+    public function overrideCardsForTesting(array $cards): void
+    {
+        self::getInstance()->cards = $cards;
+    }
+
+    /**
+     * @param array<PileID::value, CardDefinition[]> $cards
+     */
+    private function __construct(array $cards)
+    {
+        $this->cards = $cards;
+    }
+
     /**
      * @param PileId $pileId
      * @return CardDefinition[]
      */
-    public static function getCardsForPile(PileId $pileId): array
+    public function getCardsForPile(PileId $pileId): array
     {
         return match ($pileId) {
-            PileId::BILDUNG_PHASE_1 => self::getCardsForBildungAndKarriere1(),
-            PileId::FREIZEIT_PHASE_1 => self::getCardsForSozialesAndFreizeit1(),
-            PileId::ERWERBSEINKOMMEN_PHASE_1 => self::getCardsForErwerbseinkommen1(),
+            PileId::BILDUNG_PHASE_1 => $this->getCardsForBildungAndKarriere1(),
+            PileId::FREIZEIT_PHASE_1 => $this->getCardsForSozialesAndFreizeit1(),
+            PileId::JOBS_PHASE_1 => $this->getCardsForJobs1(),
             // TODO
             PileId::BILDUNG_PHASE_2 => [],
             PileId::FREIZEIT_PHASE_2 => [],
-            PileId::ERWERBSEINKOMMEN_PHASE_2 => [],
+            PileId::JOBS_PHASE_2 => [],
             PileId::BILDUNG_PHASE_3 => [],
             PileId::FREIZEIT_PHASE_3 => [],
-            PileId::ERWERBSEINKOMMEN_PHASE_3 => [],
+            PileId::JOBS_PHASE_3 => [],
         };
     }
 
-    public static function getCardById(CardId $cardId): CardDefinition
+    public function getCardById(CardId $cardId): CardDefinition
     {
-        $allCards = [
-            ...self::getCardsForBildungAndKarriere1(),
-            ...self::getCardsForSozialesAndFreizeit1(),
-            ...self::getCardsForErwerbseinkommen1(),
-            ];
-
+        $allCards = array_reduce($this->cards, function ($cards, $currentPile) {
+            return [...$cards, ...$currentPile];
+        }, []);
         if (array_key_exists($cardId->value, $allCards)) {
             return $allCards[$cardId->value];
         }
@@ -51,150 +195,59 @@ readonly final class CardFinder
     }
 
     /**
-     * @return CardDefinition[]
+     * @return JobCardDefinition[]
      */
-    private static function getCardsForBildungAndKarriere1(): array
+    public function getJobsBasedOnPlayerResources(ResourceChanges $playerResources): array
     {
-        return [
-            "buk0" => new CardDefinition(
-                id: new CardId('buk0'),
-                pileId: PileId::BILDUNG_PHASE_1,
-                kurzversion: 'Sprachkurs',
-                langversion: 'Mache einen Sprachkurs über drei Monate im Ausland.',
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: -11000,
-                    bildungKompetenzsteinChange: +1,
-                ),
-                additionalRequirements: new CardRequirements(
-                    guthaben: 11000,
-                ),
-            ),
-            "buk1" => new CardDefinition(
-                id: new CardId('buk1'),
-                pileId: PileId::BILDUNG_PHASE_1,
-                kurzversion: 'Erste-Hilfe-Kurs',
-                langversion: 'Du machst einen Erste-Hilfe-Kurs, um im Notfall richtig zu reagieren.',
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: -300,
-                    bildungKompetenzsteinChange: +1,
-                ),
-                additionalRequirements: new CardRequirements(
-                    guthaben: 300,
-                ),
-            ),
-            "buk2" => new CardDefinition(
-                id: new CardId('buk2'),
-                pileId: PileId::BILDUNG_PHASE_1,
-                kurzversion: 'Gedächtnistraining',
-                langversion: 'Mache jeden Tag 20 Minuten Gedächtnistraining, um dich geistig fit zu halten.',
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                    bildungKompetenzsteinChange: +1,
-                ),
-                additionalRequirements: new CardRequirements(
-                    zeitsteine: 1,
-                ),
-            ),
-        ];
+        $randomizer = new Randomizer();
+        // TODO consider the player's phase
+        return array_values(array_slice(
+            $randomizer->shuffleArray(
+                array_filter($this->getCardsForJobs1(), function ($job) use ($playerResources) {
+                    return $job instanceof JobCardDefinition &&
+                        $job->requirements->freizeitKompetenzsteine <= $playerResources->freizeitKompetenzsteinChange &&
+                        $job->requirements->bildungKompetenzsteine <= $playerResources->bildungKompetenzsteinChange &&
+                        $job->requirements->zeitsteine <= $playerResources->zeitsteineChange;
+                })),
+            0,
+            3
+        ));
     }
 
     /**
      * @return CardDefinition[]
      */
-    private static function getCardsForSozialesAndFreizeit1(): array
+    private function getCardsForBildungAndKarriere1(): array
     {
-        return [
-            "suf0" => new CardDefinition(
-                id: new CardId('suf0'),
-                pileId: PileId::FREIZEIT_PHASE_1,
-                kurzversion: 'Ehrenamtliches Engagement',
-                langversion: 'Du engagierst dich ehrenamtlich für eine Organisation, die es Menschen mit Behinderung ermöglicht einen genialen Urlaub mit Sonne, Strand und Meer zu erleben. Du musst die Kosten dafür allerdings selbst tragen.',
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: -1200,
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                additionalRequirements: new CardRequirements(
-                    guthaben: 1200,
-                ),
-            ),
-            "suf1" => new CardDefinition(
-                id: new CardId('suf1'),
-                pileId: PileId::FREIZEIT_PHASE_1,
-                kurzversion: 'Spende',
-                langversion: 'Bei deinem Einkauf spendest du nun immer Tiernahrung für die umliegende Tierheime. Dein Spendebeitrag ist 200 €.',
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: -200,
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                additionalRequirements: new CardRequirements(
-                    guthaben: 200,
-                ),
-            ),
-            "suf2" => new CardDefinition(
-                id: new CardId('suf2'),
-                pileId: PileId::FREIZEIT_PHASE_1,
-                kurzversion: 'kostenlose Nachhilfe',
-                langversion: 'Du gibst kostenlose Nachhilfe für sozial benachteiligte Kinder. Du verlierst einen Zeitstein.',
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                additionalRequirements: new CardRequirements(
-                    zeitsteine: 1,
-                ),
-            ),
-        ];
+        $result = $this->cards[PileId::BILDUNG_PHASE_1->value];
+        foreach ($result as $item) {
+            assert($item instanceof KategorieCardDefinition);
+        }
+        return $result;
     }
 
     /**
      * @return CardDefinition[]
      */
-    private static function getCardsForErwerbseinkommen1(): array
+    private function getCardsForSozialesAndFreizeit1(): array
     {
-        return [
-            "ee0" => new CardDefinition(
-                id: new CardId('ee0'),
-                pileId: PileId::ERWERBSEINKOMMEN_PHASE_1,
-                kurzversion: 'Fachinformatikerin',
-                langversion: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1, // TODO p.a. -> not yet implemented
-                    newErwerbseinkommen: 34000,
-                ),
-                additionalRequirements: new CardRequirements(
-                    zeitsteine: 1,
-                    bildungKompetenzsteine: 2,
-                ),
-            ),
-            "ee1" => new CardDefinition(
-                id: new CardId('ee1'),
-                pileId: PileId::ERWERBSEINKOMMEN_PHASE_1,
-                kurzversion: 'Pflegefachkraft',
-                langversion: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1, // TODO p.a. -> not yet implemented
-                    newErwerbseinkommen: 25000,
-                ),
-                additionalRequirements: new CardRequirements(
-                    zeitsteine: 1,
-                    bildungKompetenzsteine: 2,
-                ),
-            ),
-            "ee2" => new CardDefinition(
-                id: new CardId('ee2'),
-                pileId: PileId::ERWERBSEINKOMMEN_PHASE_1,
-                kurzversion: 'Taxifahrer:in',
-                langversion: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1, // TODO p.a. -> not yet implemented
-                    newErwerbseinkommen: 18000,
-                ),
-                additionalRequirements: new CardRequirements(
-                    zeitsteine: 1,
-                    bildungKompetenzsteine: 1,
-                ),
-            ),
-        ];
+        $result = $this->cards[PileId::FREIZEIT_PHASE_1->value];
+        foreach ($result as $item) {
+            assert($item instanceof KategorieCardDefinition);
+        }
+        return $result;
+    }
+
+    /**
+     * @return CardDefinition[]
+     */
+    private function getCardsForJobs1(): array
+    {
+        $result = $this->cards[PileId::JOBS_PHASE_1->value];
+        foreach ($result as $item) {
+            assert($item instanceof JobCardDefinition);
+        }
+        return $result;
     }
 
 }
