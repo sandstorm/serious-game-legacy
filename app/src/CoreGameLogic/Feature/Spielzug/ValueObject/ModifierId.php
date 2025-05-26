@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Dto\ValueObject;
+namespace Domain\CoreGameLogic\Feature\Spielzug\ValueObject;
 
 final readonly class ModifierId implements \JsonSerializable
 {

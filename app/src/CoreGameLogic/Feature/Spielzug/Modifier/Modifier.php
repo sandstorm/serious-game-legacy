@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Dto\ValueObject;
+namespace Domain\CoreGameLogic\Feature\Spielzug\Modifier;
 
 use Domain\CoreGameLogic\Dto\Aktion\Aktion;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\ModifierId;
 
 /**
  * TODO: make abstract

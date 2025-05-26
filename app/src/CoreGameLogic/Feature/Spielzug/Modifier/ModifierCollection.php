@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Dto\ValueObject;
+namespace Domain\CoreGameLogic\Feature\Spielzug\Modifier;
 
 use Domain\CoreGameLogic\Dto\Aktion\Aktion;
 use Traversable;
 
 /**
  * @immutable
- * @implements \IteratorAggregate<\Domain\CoreGameLogic\Dto\ValueObject\Modifier>
+ * @implements \IteratorAggregate<\Domain\CoreGameLogic\Feature\Spielzug\Modifier\Modifier>
  */
 readonly class ModifierCollection implements \IteratorAggregate
 {

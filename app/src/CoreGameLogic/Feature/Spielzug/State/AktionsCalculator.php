@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\State;
 
-use Domain\CoreGameLogic\Dto\Aktion\Aktion;
-use Domain\CoreGameLogic\Dto\Aktion\PhaseWechseln;
-use Domain\CoreGameLogic\Dto\Aktion\ZeitsteinSetzen;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Aktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\PhaseWechseln;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ZeitsteinSetzen;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\PlayerId;

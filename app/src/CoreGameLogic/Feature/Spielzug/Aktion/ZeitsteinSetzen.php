@@ -2,31 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Dto\Aktion;
+namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\PlayerId;
 
-class PhaseWechseln extends Aktion
+class ZeitsteinSetzen extends Aktion
 {
     public function __construct()
     {
-        parent::__construct('phase-wechseln', 'Phase wechseln');
+        parent::__construct('zeitstein-setzen', 'Zeitstein setzen');
     }
 
     public function canExecute(PlayerId $player, GameEvents $eventStream): bool
     {
-        // TODO:
-        //$kontostand = KontostandAccessor::forPlayer($player, $eventStream);
-        //$aktuellePhaseDesSpielers = AktuellePhaseAccessor::forPlayer($player, $eventStream);
-        // TODO: für aktuelle Phase rausfinden was die Abschlussbedingungen sind - TODO: CONFIG / HARDCODED / LEBENSZIEL
-
-        // TODO: entscheidung
-
-
-
-        return false;
+        return true;
     }
 
     public function execute(PlayerId $player, GameEvents $eventStream): GameEventsToPersist
