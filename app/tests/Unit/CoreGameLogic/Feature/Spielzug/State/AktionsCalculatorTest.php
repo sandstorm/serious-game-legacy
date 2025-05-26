@@ -54,7 +54,7 @@ test('welche Spielzüge hat player zur Verfügung', function () {
             new Pile(pileId: $pileIdBildung, cards: $cardsBildung),
         ));
 
-    $stream = $this->coreGameLogic->getGameStream($this->gameId);
+    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
 
     expect(CurrentPlayerAccessor::forStream($stream)->value)->toBe('p1')
         ->and(AktionsCalculator::forStream($stream)->availableActionsForPlayer($p1)[0])->toBeInstanceOf(ZeitsteinSetzen::class);
@@ -66,7 +66,7 @@ test('welche Spielzüge hat player zur Verfügung', function () {
         ActivateCard::create($p1, array_shift($cardsBildung), $pileIdBildung)
             ->withEreignis(new EreignisId("EVENT:OmaKrank")));
     $this->coreGameLogic->handle($this->gameId, new EndSpielzug($p1));
-    $stream = $this->coreGameLogic->getGameStream($this->gameId);
+    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
 
     expect(iterator_to_array(ModifierCalculator::forStream($stream)->forPlayer($p1))[0]->id->value)->toBe("MODIFIER:ausetzen")
         ->and(AktionsCalculator::forStream($stream)->availableActionsForPlayer($p1))->toBeEmpty()

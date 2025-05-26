@@ -77,7 +77,7 @@ describe('handleSkipCard', function () {
             pile: $this->pileIdBildung,
         ));
 
-        $stream = $this->coreGameLogic->getGameStream($this->gameId);
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->playerId1))->toBe(2);
     });
 });
@@ -111,7 +111,7 @@ describe('handleActivateCard', function () {
             pile: $this->pileIdBildung,
         )->withFixedCardDefinitionForTesting($cardToTest));
 
-        $stream = $this->coreGameLogic->getGameStream($this->gameId);
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->playerId1))->toBe(2);
     });
 
@@ -154,7 +154,7 @@ describe('handleActivateCard', function () {
             pile: $this->pileIdBildung,
         )->withFixedCardDefinitionForTesting($cardToTest));
 
-        $stream = $this->coreGameLogic->getGameStream($this->gameId);
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->playerId2))->toBe(2);
     });
 
@@ -192,7 +192,7 @@ describe('handleActivateCard', function () {
             pile: $this->pileIdBildung,
         )->withFixedCardDefinitionForTesting($cardToTest));
 
-        $stream = $this->coreGameLogic->getGameStream($this->gameId);
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->playerId1))->toBe(2);
     });
 
@@ -225,7 +225,7 @@ describe('handleActivateCard', function () {
             pile: $this->pileIdBildung,
         )->withFixedCardDefinitionForTesting($cardToTest));
 
-        $stream = $this->coreGameLogic->getGameStream($this->gameId);
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         /** @var CardWasActivated $actualEvent */
         $actualEvent = $stream->findLast(CardWasActivated::class);
         // expect to lose an additional Zeitstein for activating the card

@@ -20,21 +20,21 @@ test('Current Player Handling', function () {
         ]
     ));
 
-    $stream = $this->coreGameLogic->getGameStream($this->gameId);
+    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
     expect(CurrentPlayerAccessor::forStream($stream)->value)->toBe('p1');
 
     // Spielerwechsel
     $this->coreGameLogic->handle($this->gameId, new EndSpielzug(
         player: PlayerId::fromString('p1'),
     ));
-    $stream = $this->coreGameLogic->getGameStream($this->gameId);
+    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
     expect(CurrentPlayerAccessor::forStream($stream)->value)->toBe('p2');
 
     // Spielerwechsel mit wieder vorn beginnen
     $this->coreGameLogic->handle($this->gameId, new EndSpielzug(
         player: PlayerId::fromString('p2'),
     ));
-    $stream = $this->coreGameLogic->getGameStream($this->gameId);
+    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
     expect(CurrentPlayerAccessor::forStream($stream)->value)->toBe('p1');
 
     /* TODO: some problem here??
@@ -48,7 +48,7 @@ test('Current Player Handling', function () {
     $this->coreGameLogic->handle($this->gameId, new EndSpielzug(
         player: PlayerId::fromString('p1'),
     ));
-    $stream = $this->coreGameLogic->getGameStream($this->gameId);
+    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
     expect(CurrentPlayerAccessor::forStream($stream)->value)->toBe('p3');
     */
 });

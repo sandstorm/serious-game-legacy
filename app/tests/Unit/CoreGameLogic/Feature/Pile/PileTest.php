@@ -64,7 +64,7 @@ beforeEach(function () {
 });
 
 test('Piles can be shuffled', function () {
-    $stream = $this->coreGameLogic->getGameStream($this->gameId);
+    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
     expect(PileState::topCardIdForPile($stream, $this->pileIdBildung)->value)->toBe($this->cardsBildung[0]->value)
         ->and(PileState::topCardIdForPile($stream, $this->pileIdFreizeit)->value)->toBe($this->cardsFreizeit[0]->value);
 });
@@ -75,7 +75,7 @@ test('Cards can be drawn from piles', function () {
         new SkipCard($this->p1, $this->cardsBildung[0], $this->pileIdBildung)
     );
 
-    $stream = $this->coreGameLogic->getGameStream($this->gameId);
+    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
     expect(PileState::topCardIdForPile($stream, $this->pileIdBildung)->value)->toBe($this->cardsBildung[1]->value)
         ->and(PileState::topCardIdForPile($stream, $this->pileIdFreizeit)->value)->toBe($this->cardsFreizeit[0]->value);
 
@@ -89,7 +89,7 @@ test('Cards can be drawn from piles', function () {
         new EndSpielzug($this->p1)
     );
 
-    $stream = $this->coreGameLogic->getGameStream($this->gameId);
+    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
     expect(PileState::topCardIdForPile($stream, $this->pileIdBildung)->value)->toBe($this->cardsBildung[2]->value)
         ->and(PileState::topCardIdForPile($stream, $this->pileIdFreizeit)->value)->toBe($this->cardsFreizeit[0]->value);
 
@@ -98,7 +98,7 @@ test('Cards can be drawn from piles', function () {
         ActivateCard::create($this->p2, $this->cardsFreizeit[0], $this->pileIdFreizeit)
     );
 
-    $stream = $this->coreGameLogic->getGameStream($this->gameId);
+    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
     expect(PileState::topCardIdForPile($stream, $this->pileIdBildung)->value)->toBe($this->cardsBildung[2]->value)
         ->and(PileState::topCardIdForPile($stream, $this->pileIdFreizeit)->value)->toBe($this->cardsFreizeit[1]->value);
 });
@@ -107,7 +107,7 @@ test('Shuffling resets draw counter', function () {
     $this->coreGameLogic->handle($this->gameId, new SkipCard($this->p1, $this->cardsBildung[0], $this->pileIdBildung));
     $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->p1, $this->cardsBildung[1], $this->pileIdBildung));
 
-    $stream = $this->coreGameLogic->getGameStream($this->gameId);
+    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
     expect(PileState::topCardIdForPile($stream, $this->pileIdBildung)->value)->toBe($this->cardsBildung[2]->value);
 
     $this->coreGameLogic->handle(
@@ -117,7 +117,7 @@ test('Shuffling resets draw counter', function () {
             new Pile( pileId: $this->pileIdFreizeit, cards: $this->cardsFreizeit),
         ));
 
-    $stream = $this->coreGameLogic->getGameStream($this->gameId);
+    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
     expect(PileState::topCardIdForPile($stream, $this->pileIdBildung)->value)
         ->toBe($this->cardsBildung[count($this->cardsBildung)-1]->value);
 });
@@ -136,36 +136,36 @@ test('Cannot activate a card twice', function () {
 })->throws(\RuntimeException::class, 'Only the top card of the pile can be activated', 1747326086);
 
 test('End of pile is reached', function () {
-    $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameStream($this->gameId), $this->pileIdBildung);
+    $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameEvents($this->gameId), $this->pileIdBildung);
     expect($topCard->value)->toBe($this->cardsBildung[0]->value);
     $this->coreGameLogic->handle($this->gameId, new SkipCard($this->p1, $topCard, $this->pileIdBildung));
-    $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameStream($this->gameId), $this->pileIdBildung);
+    $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameEvents($this->gameId), $this->pileIdBildung);
     $this->coreGameLogic->handle($this->gameId, new SkipCard($this->p1, $topCard, $this->pileIdBildung));
-    $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameStream($this->gameId), $this->pileIdBildung);
+    $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameEvents($this->gameId), $this->pileIdBildung);
     $this->coreGameLogic->handle($this->gameId, new SkipCard($this->p1, $topCard, $this->pileIdBildung));
-    $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameStream($this->gameId), $this->pileIdBildung);
+    $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameEvents($this->gameId), $this->pileIdBildung);
     expect($topCard->value)->toBe($this->cardsBildung[0]->value);
     $this->coreGameLogic->handle($this->gameId, new SkipCard($this->p1, $topCard, $this->pileIdBildung));
 })->throws(\RuntimeException::class, 'Card index (3) out of bounds for pile ([PileId: Bildung & Karriere | Phase 1])', 1748003108);
 
 test('End of pile is reached and its re shuffled', function () {
-    $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameStream($this->gameId), $this->pileIdBildung);
+    $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameEvents($this->gameId), $this->pileIdBildung);
     expect($topCard->value)->toBe($this->cardsBildung[0]->value);
     $this->coreGameLogic->handle($this->gameId, new SkipCard($this->p1, $topCard, $this->pileIdBildung));
-    $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameStream($this->gameId), $this->pileIdBildung);
+    $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameEvents($this->gameId), $this->pileIdBildung);
     expect($topCard->value)->toBe($this->cardsBildung[1]->value);
     $this->coreGameLogic->handle($this->gameId, new SkipCard($this->p1, $topCard, $this->pileIdBildung));
-    $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameStream($this->gameId), $this->pileIdBildung);
+    $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameEvents($this->gameId), $this->pileIdBildung);
     expect($topCard->value)->toBe($this->cardsBildung[2]->value);
     $this->coreGameLogic->handle($this->gameId, new SkipCard($this->p1, $topCard, $this->pileIdBildung));
 
     // skipping a card of another pile is possible
-    $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameStream($this->gameId), $this->pileIdFreizeit);
+    $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameEvents($this->gameId), $this->pileIdFreizeit);
     $this->coreGameLogic->handle($this->gameId, new SkipCard($this->p1, $topCard, $this->pileIdFreizeit));
 
     // shuffle cards to avoid end of pile
     $this->coreGameLogic->handle($this->gameId, ShuffleCards::create($this->pileIdBildung));
-    $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameStream($this->gameId), $this->pileIdBildung);
+    $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameEvents($this->gameId), $this->pileIdBildung);
     expect($topCard->value)->toBe($this->cardsBildung[0]->value);
     $this->coreGameLogic->handle($this->gameId, new SkipCard($this->p1, $topCard, $this->pileIdBildung));
 
@@ -174,7 +174,7 @@ test('End of pile is reached and its re shuffled', function () {
 
 test('Test shuffle event', function () {
     $this->coreGameLogic->handle($this->gameId, ShuffleCards::create());
-    $stream = $this->coreGameLogic->getGameStream($this->gameId);
+    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
     expect($stream->findLast(CardsWereShuffled::class)->piles)->toBeArray();
     expect($stream->findLast(CardsWereShuffled::class)->piles[0]->cards)->toBeArray();
     expect(count($stream->findLast(CardsWereShuffled::class)->piles))->toBe(9);

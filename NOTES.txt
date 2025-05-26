@@ -1,0 +1,19 @@
+- DONE - Definitions keine Abhäbgigkeit auf CoreGameLogic
+    - TODO PHPSTAN TEST
+
+
+- AuswirkungDefinition / AuswirkungScope
+    - -> ggf. Modifier??
+
+
+- ENUM ohne Enum Suffixy?
+
+- nochamls durch Usages von Definitions gehen
+
+- "Stream"? -> Events
+
+- Projection State
+
+- supported Events in GameEventStore reingeben
+
+- UI: Abhängigkeiten??

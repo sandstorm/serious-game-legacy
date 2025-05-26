@@ -47,13 +47,13 @@ test('Game logic - change year randomly', function () {
 
     // year 1
     $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create());
-    $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
+    $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
     $year1 = GamePhaseState::currentKonjunkturphase($gameStream);
     expect($year1->year->value)->toEqual(1);
 
     // year 2
     $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create());
-    $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
+    $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
     $year2 = GamePhaseState::currentKonjunkturphase($gameStream);
     expect($year2->year->value)->toEqual(2);
 
@@ -64,7 +64,7 @@ test('Game logic - change year randomly', function () {
 
     // year 3
     $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create());
-    $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
+    $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
     $year3 = GamePhaseState::currentKonjunkturphase($gameStream);
     expect($year3->year->value)->toEqual(3);
 
@@ -78,7 +78,7 @@ test('Game logic - change year randomly', function () {
 
     // year 4
     $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create());
-    $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
+    $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
     $year4 = GamePhaseState::currentKonjunkturphase($gameStream);
     expect($year4->year->value)->toEqual(4);
 
@@ -95,7 +95,7 @@ test('Game logic - change a large amount of years', function() {
     $this->coreGameLogic->handle($this->gameId, new StartGame([$this->p1, $this->p2]));
     for ($i = 0; $i < $amountOfYears; $i++) {
         $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create());
-        $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
+        $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
         $year = GamePhaseState::currentKonjunkturphase($gameStream);
         expect($year->year->value)->toEqual($i + 1);
     }
@@ -108,11 +108,11 @@ test('Game logic - change year with fixed konjunkturphase', function () {
     $this->coreGameLogic->handle($this->gameId, new StartGame([$this->p1, $this->p2]));
 
     $nextKonjunkturphase = KonjunkturphaseFinder::getAllKonjunkturphasen()[0];
-    $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::createWithFixedKonjunkturphaseForTesting(
+    $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create()->withFixedKonjunkturphaseForTesting(
         $nextKonjunkturphase
     ));
 
-    $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
+    $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
     $year1 = GamePhaseState::currentKonjunkturphase($gameStream);
     expect($year1->year->value)->toEqual(1);
     expect($year1->type)->toEqual($nextKonjunkturphase->type);

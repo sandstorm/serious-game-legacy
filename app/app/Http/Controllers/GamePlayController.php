@@ -41,7 +41,7 @@ class GamePlayController extends Controller
             $session->flash('success', 'Game started');
         }
 
-        $gameStream = $this->coreGameLogic->getGameStream($gameId);
+        $gameStream = $this->coreGameLogic->getGameEvents($gameId);
         return view('controllers.gameplay.player-links', [
             'gameId' => $gameId,
             'playerIds' => PreGameState::playerIds($gameStream)

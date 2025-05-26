@@ -45,7 +45,7 @@ class GameUi extends Component
     {
         $this->eventDispatcher = $eventDispatcher;
         $this->coreGameLogic = $coreGameLogic;
-        $this->gameStream = $this->coreGameLogic->getGameStream($this->gameId);
+        $this->gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
     }
 
     /**

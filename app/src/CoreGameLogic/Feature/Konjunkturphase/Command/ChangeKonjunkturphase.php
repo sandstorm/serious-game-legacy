@@ -14,7 +14,7 @@ final readonly class ChangeKonjunkturphase implements CommandInterface
         return new self();
     }
 
-    public static function createWithFixedKonjunkturphaseForTesting(?KonjunkturphaseDefinition $konjunkturphase = null): self
+    public function withFixedKonjunkturphaseForTesting(?KonjunkturphaseDefinition $konjunkturphase = null): self
     {
         return new self($konjunkturphase);
     }

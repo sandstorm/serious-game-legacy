@@ -49,7 +49,7 @@ beforeEach(function () {
 
 describe('find all after last of type', function () {
     it('finds all elements after last event of type', function () {
-        $stream = $this->coreGameLogic->getGameStream($this->gameId);
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         $eventsAfterSelectedEvent = $stream->findAllAfterLastOfType(NameForPlayerWasSet::class);
 
         expect($eventsAfterSelectedEvent->count())->toBe(3);
@@ -69,12 +69,12 @@ describe('find all after last of type', function () {
 
 
     it('returns empty stream if no events are found', function () {
-        $stream = $this->coreGameLogic->getGameStream($this->gameId);
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect($stream->findAllAfterLastOfType(GameWasStarted::class)->count())->toBe(0);
     });
 
     it('throws if no event of type is found', function () {
-        $stream = $this->coreGameLogic->getGameStream($this->gameId);
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         $stream->findAllAfterLastOfType(EreignisWasTriggered::class);
     })->throws(\RuntimeException::class, 'No element of type ' . EreignisWasTriggered::class . ' found');
 });

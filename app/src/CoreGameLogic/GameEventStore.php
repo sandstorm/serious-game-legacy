@@ -41,7 +41,7 @@ final readonly class GameEventStore
      * @param GameId $gameId
      * @return array{0: GameEvents, 1: Version|null}
      */
-    public function getGameStreamAndLastVersion(GameId $gameId): array
+    public function getGameEventsAndLastVersion(GameId $gameId): array
     {
         $gameEvents = [];
         $version = null;

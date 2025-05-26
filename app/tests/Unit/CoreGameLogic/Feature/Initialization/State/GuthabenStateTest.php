@@ -64,7 +64,7 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
         ShuffleCards::create()->withFixedCardIdOrderForTesting(
             new Pile( pileId: $pileIdSozialesAndFreizeit, cards: [$testCard->id]),
         ));
-    $stream = $this->coreGameLogic->getGameStream($this->gameId);
+    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
     expect(GuthabenState::forPlayer($stream, $p1)->value)->toBe(50000)
         ->and(ZeitsteineState::forPlayer($stream, $p1)->value)->toBe(3);
     //</editor-fold>
@@ -76,7 +76,7 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
             ->withEreignis(new EreignisId("EVENT:Lotteriegewinn"))
             ->withFixedCardDefinitionForTesting($testCard)
     );
-    $stream = $this->coreGameLogic->getGameStream($this->gameId);
+    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
     expect(GuthabenState::forPlayer($stream, $p1)->value)->toBe(50500)
         ->and(ZeitsteineState::forPlayer($stream, $p1)->value)->toBe(1);
     //</editor-fold>

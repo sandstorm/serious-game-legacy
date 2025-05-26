@@ -24,7 +24,7 @@ test('PreGameLogic normal flow', function () {
     $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
         numberOfPlayers: 2,
     )->withFixedPlayerIdsForTesting($this->p1, $this->p2));
-    $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
+    $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
 
     expect(PreGameState::isReadyForGame($gameStream))->toBeFalse()
         ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->name)->toEqual(null)
@@ -34,7 +34,7 @@ test('PreGameLogic normal flow', function () {
         playerId: $this->p1,
         name: 'Player 1',
     ));
-    $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
+    $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
 
     expect(PreGameState::isReadyForGame($gameStream))->toBeFalse()
         ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->name)->toEqual('Player 1')
@@ -44,7 +44,7 @@ test('PreGameLogic normal flow', function () {
         playerId: $this->p1,
         name: 'Player 1a',
     ));
-    $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
+    $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
 
     expect(PreGameState::isReadyForGame($gameStream))->toBeFalse()
         ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->name)->toEqual('Player 1a')
@@ -54,7 +54,7 @@ test('PreGameLogic normal flow', function () {
         playerId: $this->p2,
         name: 'Player 2',
     ));
-    $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
+    $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
 
     expect(PreGameState::isReadyForGame($gameStream))->toBeFalse()
         ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->name)->toEqual('Player 1a')
@@ -69,7 +69,7 @@ test('PreGameLogic normal flow', function () {
         lebensziel: new LebenszielId(2),
     ));
 
-    $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
+    $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
     $expectedLebenszielForP1 = LebenszielFinder::findLebenszielById(1);
     $expectedLebenszielForP2 = LebenszielFinder::findLebenszielById(2);
 

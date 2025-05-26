@@ -58,7 +58,7 @@ test('kompetenzstein state', function () {
             new Pile( pileId: $this->pileIdBildung, cards: [$cardId]),
         ));
 
-    $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
+    $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
     // player 1
     // bildung
     expect(PreGameState::lebenszielForPlayer($gameStream, $this->p1)->phases[0]->definition->bildungsKompetenzSlots)->toBe(2);
@@ -91,7 +91,7 @@ test('kompetenzstein state', function () {
                     additionalRequirements: new CardRequirements(),
                 )
             ));
-    $gameStream = $this->coreGameLogic->getGameStream($this->gameId);
+    $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
 
     // player 1
     // bildung

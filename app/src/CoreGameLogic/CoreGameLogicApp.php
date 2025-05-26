@@ -52,15 +52,15 @@ final class CoreGameLogicApp implements ForCoreGameLogic
         return $this->gameEventStore->hasGame($gameId);
     }
 
-    public function getGameStream(GameId $gameId): GameEvents
+    public function getGameEvents(GameId $gameId): GameEvents
     {
-        [$gameStream,] = $this->gameEventStore->getGameStreamAndLastVersion($gameId);
+        [$gameStream,] = $this->gameEventStore->getGameEventsAndLastVersion($gameId);
         return $gameStream;
     }
 
     public function handle(GameId $gameId, CommandHandler\CommandInterface $command): void
     {
-        [$gameStream, $version] = $this->gameEventStore->getGameStreamAndLastVersion($gameId);
+        [$gameStream, $version] = $this->gameEventStore->getGameEventsAndLastVersion($gameId);
         $eventsToPublish = $this->commandBus->handle($command, $gameStream);
         $this->gameEventStore->commit($gameId, $eventsToPublish, $version === null ? ExpectedVersion::NO_STREAM() : ExpectedVersion::fromVersion($version));
     }
