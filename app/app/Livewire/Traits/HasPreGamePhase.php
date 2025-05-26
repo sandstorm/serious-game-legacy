@@ -61,7 +61,6 @@ trait HasPreGamePhase
         // TODO: 1 Zeile hier (StartGame) OHNE PARAMETER
         $this->coreGameLogic->handle($this->gameId, StartGame::create());
 
-        $this->coreGameLogic->handle($this->gameId, ShuffleCards::create());
         $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create());
         $this->broadcastNotify();
     }

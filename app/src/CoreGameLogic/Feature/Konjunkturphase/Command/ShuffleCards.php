@@ -25,13 +25,5 @@ final readonly class ShuffleCards implements CommandInterface
     private function __construct(
         public array $fixedCardIdOrderingForTesting = [],
     ) {
-        foreach ($this->fixedCardIdOrderingForTesting as $pile) {
-            assert($pile instanceof Pile);
-        }
-    }
-
-    public function withFixedCardIdOrderForTesting(Pile ...$piles): self
-    {
-        return new self($piles);
     }
 }
