@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Feature\Pile\Event;
+namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
-use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\Pile;
 
 final readonly class CardsWereShuffled implements GameEventInterface
 {

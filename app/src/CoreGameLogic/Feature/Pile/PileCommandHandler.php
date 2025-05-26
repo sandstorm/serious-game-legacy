@@ -8,9 +8,9 @@ use Domain\CoreGameLogic\CommandHandler\CommandHandlerInterface;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
-use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
-use Domain\CoreGameLogic\Feature\Pile\Event\CardsWereShuffled;
-use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ShuffleCards;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\Pile;
 use Domain\Definitions\Card\PileFinder;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileEnum;
@@ -46,14 +46,7 @@ final readonly class PileCommandHandler implements CommandHandlerInterface
         $piles = [];
         foreach (PileEnum::cases() as $case) {
             $pileId = new PileId($case);
-            // if the pileId is set, we only shuffle the pile with the given id
-            if ($command->pileId !== null) {
-                $cards = $pileId === $command->pileId ?
-                    $this->shuffleCards(PileFinder::getCardsIdsForPile($pileId)) :
-                    PileFinder::getCardsIdsForPile($pileId);
-            } else {
-                $cards = $this->shuffleCards(PileFinder::getCardsIdsForPile($pileId));
-            }
+            $cards = $this->shuffleCards(PileFinder::getCardsIdsForPile($pileId));
 
             $piles[] = new Pile(
                 pileId: $pileId,

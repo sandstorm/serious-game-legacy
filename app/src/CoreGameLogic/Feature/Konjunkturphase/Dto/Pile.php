@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-namespace Domain\CoreGameLogic\Feature\Pile\State\dto;
+namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Dto;
 
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;

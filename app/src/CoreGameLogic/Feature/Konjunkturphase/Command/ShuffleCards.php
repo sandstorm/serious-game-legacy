@@ -2,28 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Feature\Pile\Command;
+namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Command;
 
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
-use Domain\CoreGameLogic\Feature\Pile\State\dto\Pile;
-use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\Pile;
 
 final readonly class ShuffleCards implements CommandInterface
 {
-    /**
-     * @param PileId|null $pileId the pile id to shuffle. If null, all piles will be shuffled.
-     * @return self
-     */
-    public static function create(?PileId $pileId = null): self
+    public static function create(): self
     {
-        return new self($pileId);
+        return new self();
     }
 
     /**
      * @param Pile[] $fixedCardIdOrderingForTesting
      */
     private function __construct(
-        public ?PileId $pileId = null,
         public array $fixedCardIdOrderingForTesting = [],
     ) {
         foreach ($this->fixedCardIdOrderingForTesting as $pile) {
@@ -33,6 +27,6 @@ final readonly class ShuffleCards implements CommandInterface
 
     public function withFixedCardIdOrderForTesting(Pile ...$piles): self
     {
-        return new self(null, $piles);
+        return new self($piles);
     }
 }

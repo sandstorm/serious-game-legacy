@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Traits;
 
-use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;

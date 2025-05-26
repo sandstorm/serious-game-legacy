@@ -11,7 +11,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
-use Domain\CoreGameLogic\Feature\Pile\Command\ShuffleCards;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ShuffleCards;
 use Domain\Definitions\Lebensziel\LebenszielFinder;
 use Illuminate\View\View;
 
