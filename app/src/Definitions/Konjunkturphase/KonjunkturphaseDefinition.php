@@ -6,14 +6,16 @@ namespace Domain\Definitions\Konjunkturphase;
 
 use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
 use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
+use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 
 /**
  * represents the model of the konjunkturphase used by the repository to fill the game with data
  */
-class KonjunkturphaseDefinition {
+class KonjunkturphaseDefinition
+{
     /**
-     * @param int $id
+     * @param KonjunkturphasenId $id
      * @param KonjunkturphaseTypeEnum $type
      * @param string $description
      * @param string $additionalEvents
@@ -22,7 +24,7 @@ class KonjunkturphaseDefinition {
      * @param AuswirkungDefinition[] $auswirkungen
      */
     public function __construct(
-        public int                     $id,
+        public KonjunkturphasenId      $id,
         public KonjunkturphaseTypeEnum $type,
         public string                  $description,
         public string                  $additionalEvents,

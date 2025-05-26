@@ -1,4 +1,4 @@
-@use(Domain\CoreGameLogic\Dto\ValueObject\GameId)
+@use(Domain\CoreGameLogic\GameId)
 <x-layout>
     <h2>Neues Spiel</h2>
     <form method="get" action={{ route('game-play.player-links', ['gameId' => GameId::random()->value]) }}>

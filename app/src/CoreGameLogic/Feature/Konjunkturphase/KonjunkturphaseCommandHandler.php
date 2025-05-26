@@ -52,8 +52,8 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
 
         $year = 1;
         // increment year
-        if (GamePhaseState::currentKonjunkturphaseOrNull($gameState)?->year->value > 0) {
-            $year = GamePhaseState::currentKonjunkturphase($gameState)->year->value + 1;
+        if (GamePhaseState::hasKonjunkturphase($gameState) && GamePhaseState::currentKonjunkturphasenYear($gameState)->value > 0) {
+            $year = GamePhaseState::currentKonjunkturphasenYear($gameState)->value + 1;
         }
 
         $idsOfPastKonjunkturphasen = $this->getIdsOfPastKonjunkturphasen($gameState);
@@ -64,13 +64,11 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
 
         return GameEventsToPersist::with(
             new KonjunkturphaseWasChanged(
-                konjunkturphase: new Konjunkturphase(
-                    id: $nextKonjunkturphase->id,
-                    year: new CurrentYear($year),
-                    type: $nextKonjunkturphase->type,
-                    leitzins: new Leitzins($nextKonjunkturphase->leitzins),
-                    kompetenzbereiche: $nextKonjunkturphase->kompetenzbereiche
-                ),
+                id: $nextKonjunkturphase->id,
+                year: new CurrentYear($year),
+                type: $nextKonjunkturphase->type,
+                leitzins: new Leitzins($nextKonjunkturphase->leitzins),
+                kompetenzbereiche: $nextKonjunkturphase->kompetenzbereiche
             ),
 
             // We ALSO SHUFFLE cards during Konjunkturphasenwechsel

@@ -8,6 +8,7 @@ use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
 use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
 use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\KompetenzbereichEnum;
+use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 
 class KonjunkturphaseFinder
@@ -18,7 +19,7 @@ class KonjunkturphaseFinder
     public static function getAllKonjunkturphasen(): array
     {
         $year1 = new KonjunkturphaseDefinition(
-            id: 1,
+            id: KonjunkturphasenId::create(1),
             type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
             description: 'Die Wirtschaft wächst langsam aber stetig. Dadurch sind die KonsumentInnen in Kauflaune und steigern die Nachfrage deutlich.
 Die Notenbank ändert den Leitszins. Aus diesem Grund kann jede Person zu folgendem Zinnsatz Geld leihen: 5 %
@@ -68,7 +69,7 @@ Der steigende Leitzins erhöht die Deflation, die Kaufkraft der Barreserven erh�
         );
 
         $year2 = new KonjunkturphaseDefinition(
-            id: 2,
+            id: KonjunkturphasenId::create(2),
             type: KonjunkturphaseTypeEnum::REZESSION,
             description: 'Der neue Präsident einer global bedeutsamen Volkswirtschaft provoziert einen Handelskrieg, was zu einer sinkenden Importnachfrage führt.
 Die Notenbank ändert den Leitszins. Aus diesem Grund kann jede Person zu folgendem Zinnsatz Geld leihen: 5 %
@@ -110,7 +111,7 @@ Die Regierung fördert eine neue Bilungsoffensive. Jede erhält - wenn gewünsch
         );
 
         $year3 = new KonjunkturphaseDefinition(
-            id: 3,
+            id: KonjunkturphasenId::create(3),
             type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
             description: 'Viele Staaten leiden immer noch unter den Folgen der Finanzkrise. Die Notenbank ändert den Leitszins. Aus diesem Grund kann jede Person zu folgendem Zinnsatz Geld leihen: 0 %
 Das geliehene Geld muss innerhalb 20 Raten zurückgezahlt werden, d.h. es werden pro Jahr 5 % des Anfangsbetrags gefordert.
@@ -170,15 +171,15 @@ dazu aufgerufen, bei den Räumungsarbeiten zu helfen (Kosten = 1 Zeitstein). All
     public static function getUnusedRandomKonjunkturphase(array $idsOfPastKonjunkturphasen): KonjunkturphaseDefinition
     {
         $konjunkturphasen = self::getAllKonjunkturphasen();
-        $unusedKonjunkturphasen = array_filter($konjunkturphasen, static fn(KonjunkturphaseDefinition $konjunkturphase) => !in_array($konjunkturphase->id, $idsOfPastKonjunkturphasen, true));
+        $unusedKonjunkturphasen = array_filter($konjunkturphasen, static fn(KonjunkturphaseDefinition $konjunkturphase) => !in_array($konjunkturphase->id->value, $idsOfPastKonjunkturphasen, true));
         return $unusedKonjunkturphasen[array_rand($unusedKonjunkturphasen)];
     }
 
     /**
-     * @param int $id
+     * @param KonjunkturphasenId $id
      * @return KonjunkturphaseDefinition
      */
-    public static function findKonjunkturphaseById(int $id): KonjunkturphaseDefinition
+    public static function findKonjunkturphaseById(KonjunkturphasenId $id): KonjunkturphaseDefinition
     {
         $konjunkturphasen = self::getAllKonjunkturphasen();
         foreach ($konjunkturphasen as $konjunkturphase) {

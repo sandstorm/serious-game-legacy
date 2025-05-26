@@ -8,6 +8,8 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\Konjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;
+use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 
 class GamePhaseState
 {
@@ -16,18 +18,19 @@ class GamePhaseState
         return $gameStream->findFirstOrNull(GameWasStarted::class) !== null;
     }
 
-    public static function currentKonjunkturphase(GameEvents $gameStream): Konjunkturphase
+    public static function currentKonjunkturphasenId(GameEvents $gameStream): KonjunkturphasenId
     {
-        $konjunkturphase = self::currentKonjunkturphaseOrNull($gameStream);
-        if ($konjunkturphase === null) {
-            throw new \RuntimeException('No Konjunkturphase found - should never happen.');
-        }
-        return $konjunkturphase;
+        return $gameStream->findLast(KonjunkturphaseWasChanged::class)->id;
     }
 
-    public static function currentKonjunkturphaseOrNull(GameEvents $gameStream): ?Konjunkturphase
+    public static function currentKonjunkturphasenYear(GameEvents $gameStream): CurrentYear
     {
-        return $gameStream->findLastOrNull(KonjunkturphaseWasChanged::class)?->konjunkturphase;
+        return $gameStream->findLast(KonjunkturphaseWasChanged::class)->year;
+    }
+
+    public static function hasKonjunkturphase(GameEvents $gameStream): bool
+    {
+        return $gameStream->findFirstOrNull(KonjunkturphaseWasChanged::class) !== null;
     }
 
     /**
@@ -41,7 +44,7 @@ class GamePhaseState
         $ids = [];
         /** @var KonjunkturphaseWasChanged $event */
         foreach ($events as $event) {
-            $ids[] = $event->konjunkturphase->id;
+            $ids[] = $event->id->value;
         }
         return $ids;
     }
