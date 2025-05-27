@@ -22,8 +22,8 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\CardFinder;
+use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
-use Domain\Definitions\Job\JobFinder;
 
 /**
  * @internal no public API, because commands are no extension points. ALWAYS USE {@see ForCoreGameLogic::handle()} to trigger commands.
@@ -67,13 +67,14 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
         $costToActivate = new ResourceChanges(
             zeitsteineChange: AktionsCalculator::forStream($gameState)->hasPlayerSkippedACardThisRound($command->player) ? 0 : -1
         );
-        $totalCosts = $costToActivate->accumulate($card->resourceChanges);
+
+        $totalCosts = $card instanceof KategorieCardDefinition ? $costToActivate->accumulate($card->resourceChanges) : $costToActivate;
         if (!AktionsCalculator::forStream($gameState)->canPlayerAffordAction($command->player, $totalCosts)) {
-            throw new \RuntimeException('Player ' . $command->player->value . ' does not have the required resources ('. PlayerState::getResourcesForPlayer($gameState, $command->player).' to activate the card ' . $card->id->value . ' (' . $totalCosts .')', 1747920761);
+            throw new \RuntimeException('Player ' . $command->player->value . ' does not have the required resources ('. PlayerState::getResourcesForPlayer($gameState, $command->player).' to activate the card ' . $card->getId()->value . ' (' . $totalCosts .')', 1747920761);
         }
 
         $events = GameEventsToPersist::with(
-            new CardWasActivated($command->player, $command->pile, $card->id, $totalCosts)
+            new CardWasActivated($command->player, $command->pile, $card->getId(), $totalCosts)
         );
 
         if ($command->attachedEreignis !== null) {
@@ -125,7 +126,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             throw new \RuntimeException('Only the current player can request job offers', 1748265940);
         }
 
-        $jobs = JobFinder::getSelectionBasedOnResources(PlayerState::getResourcesForPlayer($gameState, $command->player));
+        $jobs = CardFinder::getJobsBasedOnPlayerResources(PlayerState::getResourcesForPlayer($gameState, $command->player));
 
         return GameEventsToPersist::with(
             new JobOffersWereRequested($command->player, $jobs)

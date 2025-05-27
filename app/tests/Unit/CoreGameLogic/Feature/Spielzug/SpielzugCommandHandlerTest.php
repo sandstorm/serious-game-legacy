@@ -5,11 +5,6 @@ declare(strict_types=1);
 namespace Tests\CoreGameLogic\Feature\Spielzug;
 
 
-use Domain\CoreGameLogic\CoreGameLogicApp;
-use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
-use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
-use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
-use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
@@ -19,45 +14,12 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
-use Domain\CoreGameLogic\GameId;
-use Domain\CoreGameLogic\PlayerId;
-use Domain\Definitions\Card\Dto\CardDefinition;
-use Domain\Definitions\Card\Dto\CardRequirements;
+use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\PileId;
-use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
 
 beforeEach(function () {
-    $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
-    $this->gameId = GameId::fromString('game1');
-    $this->playerId1 = PlayerId::fromString('p1');
-    $this->playerId2 = PlayerId::fromString('p2');
-
-    $this->pileIdBildung = PileId::BILDUNG_PHASE_1;
-
-    $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
-        numberOfPlayers: 2,
-    )->withFixedPlayerIdsForTesting($this->playerId1, $this->playerId2));
-    $this->coreGameLogic->handle($this->gameId, new SetNameForPlayer(
-        playerId: $this->playerId1,
-        name: 'Player 1',
-    ));
-    $this->coreGameLogic->handle($this->gameId, new SetNameForPlayer(
-        playerId: $this->playerId2,
-        name: 'Player 2',
-    ));
-    $this->coreGameLogic->handle($this->gameId, new SelectLebensziel(
-        playerId: $this->playerId1,
-        lebensziel: LebenszielId::create(1),
-    ));
-    $this->coreGameLogic->handle($this->gameId, new SelectLebensziel(
-        playerId: $this->playerId2,
-        lebensziel: LebenszielId::create(2),
-    ));
-    $this->coreGameLogic->handle(
-        $this->gameId,
-        StartGame::create());
+        $this->setupBasicGame();
 });
 
 
@@ -73,30 +35,27 @@ describe('handleSkipCard', function () {
             ));
 
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
-            player: $this->playerId1,
+            player: $this->player1,
             card: $skipThisCard,
             pile: $this->pileIdBildung,
         ));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->playerId1))->toBe(2);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->player1))->toBe(2);
     });
 });
 
 describe('handleActivateCard', function () {
 
     it('will consume a Zeitstein (first turn)', function (){
-        $cardToTest = new CardDefinition(
+        $cardToTest = new KategorieCardDefinition(
             id: new CardId('testcard'),
             pileId: $this->pileIdBildung,
-            kurzversion: 'for testing',
-            langversion: '...',
+            title: 'for testing',
+            description: '...',
             resourceChanges: new ResourceChanges(
                 guthabenChange: -200,
                 bildungKompetenzsteinChange: +1,
-            ),
-            additionalRequirements: new CardRequirements(
-                guthaben: 200,
             ),
         );
 
@@ -107,28 +66,25 @@ describe('handleActivateCard', function () {
             ));
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
-            player: $this->playerId1,
+            player: $this->player1,
             cardId: $cardToTest->id,
             pile: $this->pileIdBildung,
         )->withFixedCardDefinitionForTesting($cardToTest));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->playerId1))->toBe(2);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->player1))->toBe(2);
     });
 
     it('will consume a Zeitstein (later turns)', function (){
         $skipThisCard = new CardId('skipped');
-        $cardToTest = new CardDefinition(
+        $cardToTest = new KategorieCardDefinition(
             id: new CardId('testcard'),
             pileId: $this->pileIdBildung,
-            kurzversion: 'for testing',
-            langversion: '...',
+            title: 'for testing',
+            description: '...',
             resourceChanges: new ResourceChanges(
                 guthabenChange: -200,
                 bildungKompetenzsteinChange: +1,
-            ),
-            additionalRequirements: new CardRequirements(
-                guthaben: 200,
             ),
         );
 
@@ -139,39 +95,36 @@ describe('handleActivateCard', function () {
             ));
 
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
-            player: $this->playerId1,
+            player: $this->player1,
             card: $skipThisCard,
             pile: $this->pileIdBildung,
         ));
 
         $this->coreGameLogic->handle(
             $this->gameId,
-            new EndSpielzug($this->playerId1)
+            new EndSpielzug($this->player1)
         );
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
-            player: $this->playerId2,
+            player: $this->player2,
             cardId: $cardToTest->id,
             pile: $this->pileIdBildung,
         )->withFixedCardDefinitionForTesting($cardToTest));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->playerId2))->toBe(2);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->player2))->toBe(2);
     });
 
     it('will not consume a Zeitstein after skipping a Card', function (){
         $skipThisCard = new CardId('skipped');
-        $cardToTest = new CardDefinition(
+        $cardToTest = new KategorieCardDefinition(
             id: new CardId('testcard'),
             pileId: $this->pileIdBildung,
-            kurzversion: 'for testing',
-            langversion: '...',
+            title: 'for testing',
+            description: '...',
             resourceChanges: new ResourceChanges(
                 guthabenChange: -200,
                 bildungKompetenzsteinChange: +1,
-            ),
-            additionalRequirements: new CardRequirements(
-                guthaben: 200,
             ),
         );
 
@@ -182,35 +135,32 @@ describe('handleActivateCard', function () {
             ));
 
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
-            player: $this->playerId1,
+            player: $this->player1,
             card: $skipThisCard,
             pile: $this->pileIdBildung,
         ));
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
-            player: $this->playerId1,
+            player: $this->player1,
             cardId: $cardToTest->id,
             pile: $this->pileIdBildung,
         )->withFixedCardDefinitionForTesting($cardToTest));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->playerId1))->toBe(2);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->player1))->toBe(2);
     });
 
 
 
     it('Will activate a card if requirements are met', function (){
-        $cardToTest = new CardDefinition(
+        $cardToTest = new KategorieCardDefinition(
             id: new CardId('testcard'),
             pileId: $this->pileIdBildung,
-            kurzversion: 'for testing',
-            langversion: '...',
+            title: 'for testing',
+            description: '...',
             resourceChanges: new ResourceChanges(
                 guthabenChange: -200,
                 bildungKompetenzsteinChange: +1,
-            ),
-            additionalRequirements: new CardRequirements(
-                guthaben: 200,
             ),
         );
 
@@ -221,7 +171,7 @@ describe('handleActivateCard', function () {
             ));
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
-            player: $this->playerId1,
+            player: $this->player1,
             cardId: $cardToTest->id,
             pile: $this->pileIdBildung,
         )->withFixedCardDefinitionForTesting($cardToTest));
@@ -232,23 +182,19 @@ describe('handleActivateCard', function () {
         // expect to lose an additional Zeitstein for activating the card
         $expectedResourceChanges = $cardToTest->resourceChanges->accumulate(new ResourceChanges(zeitsteineChange: -1));
         expect($actualEvent->cardId)->toEqual($cardToTest->id)
-            ->and($actualEvent->playerId)->toEqual($this->playerId1)
+            ->and($actualEvent->playerId)->toEqual($this->player1)
             ->and($actualEvent->resourceChanges)->toEqual($expectedResourceChanges);
     });
 
     it("will not activate the card if it's not the players turn", function () {
-        $cardToTest = new CardDefinition(
+        $cardToTest = new KategorieCardDefinition(
             id: new CardId('testcard'),
             pileId: $this->pileIdBildung,
-            kurzversion: 'for testing',
-            langversion: '...',
+            title: 'for testing',
+            description: '...',
             resourceChanges: new ResourceChanges(
                 guthabenChange: -200,
                 bildungKompetenzsteinChange: +1,
-            ),
-            additionalRequirements: new CardRequirements(
-                guthaben: 200,
-                zeitsteine: 1
             ),
         );
 
@@ -259,23 +205,22 @@ describe('handleActivateCard', function () {
             ));
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
-            player: $this->playerId2,
+            player: $this->player2,
             cardId: $cardToTest->id,
             pile: $this->pileIdBildung,
         )->withFixedCardDefinitionForTesting($cardToTest));
     })->throws(\RuntimeException::class, 'Only the current player can activate a card', 1747917492);
 
     it("will not activate the card if the requirements are not met", function () {
-        $cardToTest = new CardDefinition(
+        $cardToTest = new KategorieCardDefinition(
             id: new CardId('testcard'),
             pileId: $this->pileIdBildung,
-            kurzversion: 'for testing',
-            langversion: '...',
+            title: 'for testing',
+            description: '...',
             resourceChanges: new ResourceChanges(
                 guthabenChange: -50001,
                 bildungKompetenzsteinChange: +1,
             ),
-            additionalRequirements: new CardRequirements(),
         );
 
         $this->coreGameLogic->handle(
@@ -285,7 +230,7 @@ describe('handleActivateCard', function () {
             ));
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
-            player: $this->playerId1,
+            player: $this->player1,
             cardId: $cardToTest->id,
             pile: $this->pileIdBildung,
         )->withFixedCardDefinitionForTesting($cardToTest));
@@ -294,10 +239,25 @@ describe('handleActivateCard', function () {
 });
 
 describe('handleRequestJobOffers', function () {
-    it('returns 3 jobs with fulfilled requirements', function (){
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->playerId1));
+    it('returns no jobs when the player does not match any requirements', function (){
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->player1));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect($stream->findLast(JobOffersWereRequested::class)->player)->toEqual($this->playerId1);
+
+        /** @var JobOffersWereRequested $actualEvent */
+        $actualEvent = $stream->findLast(JobOffersWereRequested::class);
+        expect($actualEvent->player)->toEqual($this->player1)
+            ->and($actualEvent->jobs)->toEqual([]);
+    });
+
+    it('returns 3 jobs with fulfilled requirements', function (){
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->player1));
+
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        /** @var JobOffersWereRequested $actualEvent */
+        $actualEvent = $stream->findLast(JobOffersWereRequested::class);
+        expect($actualEvent->player)->toEqual($this->player1);
+//            ->and($actualEvent->jobs[0]->id)->toEqual($this->player1);
     });
 });

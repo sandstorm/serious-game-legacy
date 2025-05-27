@@ -12,8 +12,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
-use Domain\Definitions\Card\Dto\CardDefinition;
-use Domain\Definitions\Card\Dto\CardRequirements;
+use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\PileFinder;
 use Domain\Definitions\Card\ValueObject\CardId;
@@ -78,16 +77,15 @@ test('kompetenzstein state', function () {
         $this->gameId,
         ActivateCard::create($this->p1, array_shift($this->cardsBildung), $this->pileIdBildung)
             ->withFixedCardDefinitionForTesting(
-                new CardDefinition(
+                new KategorieCardDefinition(
                     id: $cardId,
                     pileId: PileId::BILDUNG_PHASE_1,
-                    kurzversion: 'Sprachkurs',
-                    langversion: 'Mache einen Sprachkurs über drei Monate im Ausland.',
+                    title: 'Sprachkurs',
+                    description: 'Mache einen Sprachkurs über drei Monate im Ausland.',
                     resourceChanges: new ResourceChanges(
                         guthabenChange: -11000,
                         bildungKompetenzsteinChange: +1,
                     ),
-                    additionalRequirements: new CardRequirements(),
                 )
             ));
     $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);

@@ -2,15 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Domain\Definitions\Job\Dto;
+namespace Domain\Definitions\Card\Dto;
 
-use Domain\Definitions\Job\ValueObject\Gehalt;
-use Domain\Definitions\Job\ValueObject\JobId;
+use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\Gehalt;
+use Domain\Definitions\Card\ValueObject\PileId;
 
-final readonly class JobDefinition
+final readonly class JobCardDefinition implements Card
 {
     public function __construct(
-        public JobId            $id,
+        public CardId           $id,
+        public PileId           $pileId,
         public string           $title,
         public string           $description,
         public Gehalt           $gehalt,
@@ -35,11 +37,32 @@ final readonly class JobDefinition
     public static function fromString(array $job): self
     {
         return new self(
-            id: new JobId($job['id']),
+            id: new CardId($job['id']),
+            pileId: PileId::from($job['id']),
             title: $job['title'],
             description: $job['description'],
             gehalt: new Gehalt($job['gehalt']),
             requirements: JobRequirements::fromString($job['requirements']),
         );
+    }
+
+    public function getId(): CardId
+    {
+        return $this->id;
+    }
+
+    public function getPileId(): PileId
+    {
+        return $this->pileId;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function description(): string
+    {
+        return $this->description;
     }
 }

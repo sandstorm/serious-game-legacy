@@ -7,13 +7,13 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
-use Domain\Definitions\Job\Dto\JobDefinition;
 
 final readonly class JobOffersWereRequested implements GameEventInterface, ProvidesResourceChanges
 {
     /**
-     * @param JobDefinition[] $jobs
+     * @param JobCardDefinition[] $jobs
      */
     public function __construct(
         public PlayerId $player,
@@ -25,7 +25,7 @@ final readonly class JobOffersWereRequested implements GameEventInterface, Provi
     {
         return new self(
             player: PlayerId::fromString($values['player']),
-            jobs: array_map(fn ($job) => JobDefinition::fromString($values['jobs']), $values['jobs']),
+            jobs: array_map(fn ($job) => JobCardDefinition::fromString($values['jobs']), $values['jobs']),
         );
     }
 

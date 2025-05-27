@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\Definitions\Job\Dto;
+namespace Domain\Definitions\Card\Dto;
 
 final readonly class JobRequirements
 {
