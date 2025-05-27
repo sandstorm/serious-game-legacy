@@ -14,6 +14,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Neos\EventStore\Model\Event;
 use Neos\EventStore\Model\Event\EventData;
@@ -60,6 +61,7 @@ final readonly class EventNormalizer
             KonjunkturphaseWasChanged::class,
             CardsWereShuffled::class,
             JobOffersWereRequested::class,
+            JobOfferWasAccepted::class,
         ];
 
         $fullClassNameToShortEventType = [];

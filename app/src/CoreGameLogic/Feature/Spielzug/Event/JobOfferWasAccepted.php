@@ -24,7 +24,7 @@ final readonly class JobOfferWasAccepted implements GameEventInterface, Provides
     {
         return new self(
             player: PlayerId::fromString($values['player']),
-            job: CardId::fromString($values['jobs']),
+            job: CardId::fromString($values['job']),
             gehalt: new Gehalt($values['gehalt'])
         );
     }

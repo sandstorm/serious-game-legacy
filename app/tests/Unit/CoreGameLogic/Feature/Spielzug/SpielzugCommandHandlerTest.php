@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\CoreGameLogic\Feature\Spielzug;
 
 
+use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
@@ -14,6 +15,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
@@ -482,7 +484,28 @@ describe('handleAcceptJobOffer', function () {
     it('returns 1 Zeitstein to the player after quitting the job (in the next Konjunkturphase)', function () {
         // TODO clarify if this is how it should work
     });
-    it('saves the correct Gehalt', function () {
+    it('saves the correct Job and Gehalt', function () {
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::JOBS_PHASE_1->value => [
+                "j0" => new JobCardDefinition(
+                    id: new CardId('j0'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'offered 1',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new Gehalt(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                    ),
+                ),
+            ]
+        ]);
 
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->player1));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->player1, new CardId('j0')));
+
+        /** @var GameEvents $stream */
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect($stream->FindLast(JobOfferWasAccepted::class)->gehalt->value)->toBe(34000)
+            ->and($stream->FindLast(JobOfferWasAccepted::class)->job->value)->toBe('j0');
     });
 });

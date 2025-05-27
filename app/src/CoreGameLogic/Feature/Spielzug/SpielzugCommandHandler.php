@@ -152,7 +152,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             throw new \RuntimeException('Only the current player can accept job offers', 1748349790);
         }
         $currentJobOffers = $this->getCurrentJobOffers($gameEvents);
-        if ($currentJobOffers === null || !in_array($command->jobId, $currentJobOffers->jobs, true)) {
+        if ($currentJobOffers === null || !in_array($command->jobId->value, array_map(fn ($jobId) => $jobId->value, $currentJobOffers->jobs), true)) {
             throw new \RuntimeException('You can only accept jobs that have been offered to you', 1748350449);
         }
 

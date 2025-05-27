@@ -183,11 +183,9 @@ final class CardFinder
 
     public function getCardById(CardId $cardId): Card
     {
-        $allCards = [
-            ...$this->cards[PileId::BILDUNG_PHASE_1->value],
-            ...$this->cards[PileId::FREIZEIT_PHASE_1->value],
-            ...$this->cards[PileId::JOBS_PHASE_1->value],
-        ];
+        $allCards = array_reduce($this->cards, function ($cards, $currentPile) {
+            return [...$cards, ...$currentPile];
+        }, []);
         if (array_key_exists($cardId->value, $allCards)) {
             return $allCards[$cardId->value];
         }
