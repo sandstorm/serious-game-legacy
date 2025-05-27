@@ -62,7 +62,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             throw new \RuntimeException('Only the top card of the pile can be activated', 1747326086);
         }
 
-        $card = $command->fixedCardDefinitionForTesting !== null ? $command->fixedCardDefinitionForTesting : CardFinder::getCardById($command->cardId);
+        $card = $command->fixedCardDefinitionForTesting !== null ? $command->fixedCardDefinitionForTesting : CardFinder::getInstance()->getCardById($command->cardId);
 
         $costToActivate = new ResourceChanges(
             zeitsteineChange: AktionsCalculator::forStream($gameState)->hasPlayerSkippedACardThisRound($command->player) ? 0 : -1
@@ -126,10 +126,10 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             throw new \RuntimeException('Only the current player can request job offers', 1748265940);
         }
 
-        $jobs = CardFinder::getJobsBasedOnPlayerResources(PlayerState::getResourcesForPlayer($gameState, $command->player));
+        $jobs = CardFinder::getInstance()->getJobsBasedOnPlayerResources(PlayerState::getResourcesForPlayer($gameState, $command->player));
 
         return GameEventsToPersist::with(
-            new JobOffersWereRequested($command->player, $jobs)
+            new JobOffersWereRequested($command->player, array_map(fn ($job) => $job->getId(), $jobs))
         );
     }
 }

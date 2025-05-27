@@ -12,12 +12,12 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\Card;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
-use Domain\Definitions\Card\PileFinder;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\Gehalt;
 use Domain\Definitions\Card\ValueObject\PileId;
@@ -29,8 +29,8 @@ abstract class TestCase extends BaseTestCase
     //
     protected ForCoreGameLogic $coreGameLogic;
     protected GameId $gameId;
-    protected $player1;
-    protected $player2;
+    protected PlayerId $player1;
+    protected PlayerId $player2;
     protected PileId $pileIdBildung;
     /**
      * @var CardId[]
@@ -46,13 +46,19 @@ abstract class TestCase extends BaseTestCase
      * @var CardId[]
      */
     protected array $cardsJobs;
+    private CardFinder $cardFinder;
 
-    public function setupBasicGame()
+    public function setupBasicGame(): void
     {
         $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
         $this->gameId = GameId::fromString('game1');
         $this->player1 = PlayerId::fromString('p1');
         $this->player2 = PlayerId::fromString('p2');
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::BILDUNG_PHASE_1->value => $this->getCardsForBildungAndKarriere(),
+            PileId::FREIZEIT_PHASE_1->value => $this->getCardsForSozialesAndFreizeit(),
+            PileId::JOBS_PHASE_1->value => $this->getCardsForJobs(),
+        ]);
 
         $this->pileIdBildung = PileId::BILDUNG_PHASE_1;
         $this->cardsBildung = $this->getCardsForBildungAndKarriere();
@@ -210,6 +216,15 @@ abstract class TestCase extends BaseTestCase
                 ),
             ),
         ];
+    }
+
+    /**
+     * @param array<PileID::value, Card[]> $cards
+     * @return void
+     */
+    protected function setCards(array $cards): void
+    {
+
     }
 
 

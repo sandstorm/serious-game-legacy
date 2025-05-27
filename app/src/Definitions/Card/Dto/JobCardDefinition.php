@@ -23,6 +23,7 @@ final readonly class JobCardDefinition implements Card
     /**
      * @param array{
      *     id: string,
+     *     pileId: string,
      *     title: string,
      *     description: string,
      *     gehalt: int,
@@ -38,7 +39,7 @@ final readonly class JobCardDefinition implements Card
     {
         return new self(
             id: new CardId($job['id']),
-            pileId: PileId::from($job['id']),
+            pileId: PileId::from($job['pileId']),
             title: $job['title'],
             description: $job['description'],
             gehalt: new Gehalt($job['gehalt']),
