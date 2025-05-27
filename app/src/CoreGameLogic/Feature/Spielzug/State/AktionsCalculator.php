@@ -72,17 +72,16 @@ final readonly class AktionsCalculator
         ];
     }
 
+    public function getEventsThisTurn(): GameEvents
+    {
+        return $this->stream->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class)
+            ?? $this->stream->findAllAfterLastOfType(GameWasStarted::class);
+    }
+
     public function hasPlayerSkippedACardThisRound(PlayerId $playerId): bool
     {
-        $eventsThisTurn = $this->stream->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class);
-        if ($eventsThisTurn === null) {
-            $skipEventsThisTurn = count($this->stream->findAllAfterLastOfType(GameWasStarted::class)
-                ->filter(fn ($event) => $event instanceof CardWasSkipped));
-        } else {
-            $skipEventsThisTurn = count($eventsThisTurn->findAllOfType(CardWasSkipped::class));
-        }
-
-        return $skipEventsThisTurn > 0;
+        $eventsThisTurn = $this->getEventsThisTurn();
+        return count($eventsThisTurn->findAllOfType(CardWasSkipped::class)) > 0;
     }
 
     public function canPlayerAffordToActivateCard(PlayerId $player, Card $card):bool

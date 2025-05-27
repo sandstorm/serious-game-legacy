@@ -9,6 +9,7 @@ use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
@@ -17,11 +18,13 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\CardFinder;
+use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 
@@ -35,6 +38,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
         return $command instanceof ActivateCard
             || $command instanceof SkipCard
             || $command instanceof RequestJobOffers
+            || $command instanceof AcceptJobOffer
             || $command instanceof EndSpielzug;
     }
 
@@ -45,6 +49,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             ActivateCard::class => $this->handleActivateCard($command, $gameState),
             SkipCard::class => $this->handleSkipCard($command, $gameState),
             RequestJobOffers::class => $this->handleRequestJobOffers($command, $gameState),
+            AcceptJobOffer::class => $this->handleAcceptJobOffer($command, $gameState),
             EndSpielzug::class => $this->handleSpielzugAbschliessen($command, $gameState),
         };
     }
@@ -131,5 +136,33 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
         return GameEventsToPersist::with(
             new JobOffersWereRequested($command->player, array_map(fn ($job) => $job->getId(), $jobs))
         );
+    }
+
+
+    private function getCurrentJobOffers(GameEvents $gameEvents): ?JobOffersWereRequested
+    {
+        $eventsThisTurn = AktionsCalculator::forStream($gameEvents)->getEventsThisTurn();
+        return $eventsThisTurn->findLastOrNull(JobOffersWereRequested::class);
+    }
+
+    private function handleAcceptJobOffer(AcceptJobOffer $command, GameEvents $gameEvents): GameEventsToPersist
+    {
+        $currentPlayer = CurrentPlayerAccessor::forStream($gameEvents);
+        if (!$currentPlayer->equals($command->player)) {
+            throw new \RuntimeException('Only the current player can accept job offers', 1748349790);
+        }
+        $currentJobOffers = $this->getCurrentJobOffers($gameEvents);
+        if ($currentJobOffers === null || !in_array($command->jobId, $currentJobOffers->jobs, true)) {
+            throw new \RuntimeException('You can only accept jobs that have been offered to you', 1748350449);
+        }
+
+
+        /** @var JobCardDefinition $job */
+        $job = CardFinder::getInstance()->getCardById($command->jobId);
+
+        return GameEventsToPersist::with(
+            new JobOfferWasAccepted($command->player, $command->jobId, $job->gehalt)
+        );
+
     }
 }
