@@ -6,14 +6,12 @@ namespace Domain\CoreGameLogic\Feature\Konjunkturphase;
 
 use Domain\CoreGameLogic\CommandHandler\CommandHandlerInterface;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
-use Domain\CoreGameLogic\Dto\ValueObject\Kompetenzbereich;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\Konjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;

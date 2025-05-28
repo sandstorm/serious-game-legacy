@@ -104,7 +104,6 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
                     playerIds: $command->fixedPlayerIdsForTesting,
                     resourceChanges: new ResourceChanges(
                         guthabenChange: 50000,
-                        zeitsteineChange: 3
                     ),
                 ),
             );
@@ -121,7 +120,6 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
                 playerIds: $playerIds,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: 50000,
-                    zeitsteineChange: 3
                 ),
             ),
         );

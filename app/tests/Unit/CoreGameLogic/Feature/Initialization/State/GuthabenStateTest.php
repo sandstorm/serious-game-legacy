@@ -11,7 +11,6 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
-use Domain\CoreGameLogic\Feature\Spielzug\State\ZeitsteineState;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\EreignisId;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
@@ -61,7 +60,7 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
         ));
     $stream = $this->coreGameLogic->getGameEvents($this->gameId);
     expect(PlayerState::getGuthabenForPlayer($stream, $p1))->toBe(50000)
-        ->and(ZeitsteineState::forPlayer($stream, $p1)->value)->toBe(3);
+        ->and(PlayerState::getZeitsteineForPlayer($stream, $p1))->toBe(3);
     //</editor-fold>
 
     //<editor-fold desc="modify guthaben">
@@ -73,7 +72,7 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
     );
     $stream = $this->coreGameLogic->getGameEvents($this->gameId);
     expect(PlayerState::getGuthabenForPlayer($stream, $p1))->toBe(50500)
-        ->and(ZeitsteineState::forPlayer($stream, $p1)->value)->toBe(1);
+        ->and(PlayerState::getZeitsteineForPlayer($stream, $p1))->toBe(1);
     //</editor-fold>
 });
 

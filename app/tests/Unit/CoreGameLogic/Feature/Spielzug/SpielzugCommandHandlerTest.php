@@ -25,6 +25,9 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\Gehalt;
 use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
+use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
+use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 
 beforeEach(function () {
     $this->setupBasicGame();
@@ -478,12 +481,59 @@ describe('handleAcceptJobOffer', function () {
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->player1, new CardId('j3')));
     })->throws(\RuntimeException::class, 'You can only accept jobs that have been offered to you', 1748350449);
 
-    it('permanently removes 1 Zeitstein while the player has a job', function () {
-
+    it('Showing JobOffers costs 1 Zeitstein', function () {
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->player1))->toBe(3);
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->player1));
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->player1))->toBe(2);
     });
+
+    it('permanently removes 1 Zeitstein while the player has a job', function () {
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::BILDUNG_PHASE_1->value => [],
+            PileId::FREIZEIT_PHASE_1->value => [],
+            PileId::JOBS_PHASE_1->value => [
+                "j0" => new JobCardDefinition(
+                    id: new CardId('j0'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'offered 1',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new Gehalt(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                    ),
+                ),
+            ]
+        ]);
+
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->player1));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->player1, new CardId('j0')));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ChangeKonjunkturphase::create()->withFixedKonjunkturphaseForTesting(new KonjunkturphaseDefinition(
+                id: KonjunkturphasenId::create(161),
+                type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
+                description: 'no changes',
+                additionalEvents: '',
+                leitzins: 5,
+                kompetenzbereiche: [],
+                auswirkungen: []
+            )));
+
+        /** @var GameEvents $stream */
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->player1))->toBe(2);
+    });
+
+    it('removes cards from top of the pile after showing them', function () {
+        // TODO clarify if the pointer should move by the amount of cards shown
+    });
+
     it('returns 1 Zeitstein to the player after quitting the job (in the next Konjunkturphase)', function () {
         // TODO clarify if this is how it should work
     });
+
     it('saves the correct Job and Gehalt', function () {
         CardFinder::getInstance()->overrideCardsForTesting([
             PileId::JOBS_PHASE_1->value => [

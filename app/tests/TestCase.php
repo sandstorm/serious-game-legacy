@@ -33,17 +33,17 @@ abstract class TestCase extends BaseTestCase
     protected PlayerId $player2;
     protected PileId $pileIdBildung;
     /**
-     * @var CardId[]
+     * @var Card[]
      */
     protected array $cardsBildung;
     protected PileId $pileIdFreizeit;
     /**
-     * @var CardId[]
+     * @var Card[]
      */
     protected array $cardsFreizeit;
     protected PileId $pileIdJobs;
     /**
-     * @var CardId[]
+     * @var Card[]
      */
     protected array $cardsJobs;
     private CardFinder $cardFinder;
