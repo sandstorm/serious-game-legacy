@@ -26,7 +26,7 @@
         </div>
     </div>
     <aside class="game__aside">
-        <button>Money Sheet<br/> xx.xxx€</button>
+        <x-gameboard.moneysheet/>
         <div>
             <h2>Eventlog</h2>
             <ul>
