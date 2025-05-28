@@ -1,0 +1,36 @@
+.moneysheet {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: mistyrose;
+
+    display: grid;
+    grid-template-areas:
+        "income     expenses     .  "
+        "income-sum expenses-sum sum"
+    ;
+    grid-template-columns: 1fr 1fr 0.5fr;
+    grid-template-rows: auto 50px;
+}
+
+.moneysheet__income {
+    grid-area: income;
+}
+
+.moneysheet__expenses {
+    grid-area: expenses;
+}
+
+.moneysheet__expenses-sum {
+    grid-area: expenses-sum;
+}
+
+.moneysheet__income-sum {
+    grid-area: income-sum;
+}
+
+.moneysheet__sum {
+    grid-area: sum;
+}
