@@ -6,6 +6,12 @@
         </div>
         <div class="moneysheet__expenses">
             <h2>Ausgaben</h2>
+            <ul>
+                <li>
+                    <span>Lebenshaltungskosten</span>
+                    <span>{{$lebenskosten}}€</span>
+                </li>
+            </ul>
         </div>
         <div class="moneysheet__income-sum">
             xx.xxx€

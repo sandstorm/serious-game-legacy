@@ -26,7 +26,7 @@
         </div>
     </div>
     <aside class="game__aside">
-        <x-gameboard.moneysheet/>
+        <x-moneysheet :player-id="$myself" :game-stream="$this->gameStream"/>
         <div>
             <h2>Eventlog</h2>
             <ul>
