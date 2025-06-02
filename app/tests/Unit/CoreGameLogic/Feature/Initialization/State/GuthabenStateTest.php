@@ -60,7 +60,7 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
         ));
     $stream = $this->coreGameLogic->getGameEvents($this->gameId);
     expect(PlayerState::getGuthabenForPlayer($stream, $p1))->toBe(50000)
-        ->and(PlayerState::getZeitsteineForPlayer($stream, $p1))->toBe(3);
+        ->and(PlayerState::getZeitsteineForPlayer($stream, $p1))->toBe(6);
     //</editor-fold>
 
     //<editor-fold desc="modify guthaben">
@@ -72,7 +72,7 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
     );
     $stream = $this->coreGameLogic->getGameEvents($this->gameId);
     expect(PlayerState::getGuthabenForPlayer($stream, $p1))->toBe(50500)
-        ->and(PlayerState::getZeitsteineForPlayer($stream, $p1))->toBe(1);
+        ->and(PlayerState::getZeitsteineForPlayer($stream, $p1))->toBe(4);
     //</editor-fold>
 });
 

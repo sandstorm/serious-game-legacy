@@ -18,7 +18,7 @@ readonly class Modifier
 
     public function __toString(): string
     {
-        return '[ModifierId: '.$this->id.']';
+        return '[ModifierId: '.$this->id->value.']';
     }
 
     /**
@@ -27,9 +27,17 @@ readonly class Modifier
      */
     public function applyToAvailableAktionen(mixed $applicableAktionen): array
     {
-        if ($this->id->value === "MODIFIER:ausetzen") {
+        if ($this->id === ModifierId::AUSSETZEN) {
             return [];
         }
         return $applicableAktionen;
+    }
+
+    public function applyToAvailableZeitsteine(int $currentlyAvailableZeitsteine): int
+    {
+        if ($this->id === ModifierId::BIND_ZEITSTEIN) {
+            return max([$currentlyAvailableZeitsteine - 1, 0]);
+        }
+        return $currentlyAvailableZeitsteine;
     }
 }

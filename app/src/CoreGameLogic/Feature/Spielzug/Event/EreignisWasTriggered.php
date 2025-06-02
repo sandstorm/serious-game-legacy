@@ -25,7 +25,7 @@ final readonly class EreignisWasTriggered implements ProvidesModifiers, Provides
     public function getModifiers(PlayerId $playerId): ModifierCollection
     {
         if ($this->ereignis->value === "EVENT:OmaKrank" && $this->player->equals($playerId)) {
-            return new ModifierCollection([new Modifier(new ModifierId("MODIFIER:ausetzen"))]);
+            return new ModifierCollection([new Modifier(ModifierId::AUSSETZEN)]);
         }
         return new ModifierCollection([]);
     }

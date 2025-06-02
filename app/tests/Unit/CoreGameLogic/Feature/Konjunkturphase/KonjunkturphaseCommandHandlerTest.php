@@ -17,10 +17,19 @@ beforeEach(function () {
 
 describe('handleChangeKonjunkturphase', function () {
     it('redistributes Zeitsteine', function () {
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->player1));
+        // Make sure the initial number of Zeitsteine is what we expect
+        $expectedNumberOfZeitsteine = 6;
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->player1))->toBe(2);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe($expectedNumberOfZeitsteine);
+
+        // use a Zeitstein
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        /** @var GameEvents $stream */
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe($expectedNumberOfZeitsteine-1);
+
+        // Change Konjunkturphase
         $this->coreGameLogic->handle(
             $this->gameId,
             ChangeKonjunkturphase::create()->withFixedKonjunkturphaseForTesting(new KonjunkturphaseDefinition(
@@ -33,12 +42,13 @@ describe('handleChangeKonjunkturphase', function () {
                 auswirkungen: []
             )));
 
+        // Expect the number of Zeitsteine to be the initial value again
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->player1))->toBe(3);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe($expectedNumberOfZeitsteine);
     });
 
     it('happens automatically when no player has any Zeitsteine remaining', function () {
         // TODO implement
-    });
+    })->skip('not yet implemented');
 });

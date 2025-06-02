@@ -6,6 +6,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\State;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\ZeitsteineForPlayer;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\PlayerId;
@@ -36,9 +37,18 @@ class PlayerState
         $accumulatedResourceChangesForPlayer = $stream->findAllAfterLastOfType(KonjunkturphaseWasChanged::class)->findAllOfType(ProvidesResourceChanges::class)
             ->reduce(fn(ResourceChanges $accumulator, ProvidesResourceChanges $event) => $accumulator->accumulate($event->getResourceChanges($playerId)), new ResourceChanges());
 
-        // TODO calculate zeitsteine for this Konjunkturphase from number of players and current Konjunkturphase-Auswirkungen
-        return $accumulatedResourceChangesForPlayer->accumulate(new ResourceChanges(zeitsteineChange: +3))->zeitsteineChange;
+
+        $zeitsteineForPlayer = $accumulatedResourceChangesForPlayer->accumulate(new ResourceChanges(zeitsteineChange: +self::getInitialZeitsteineForKonjunkturphase($stream, $playerId)))->zeitsteineChange;
+        return ModifierCalculator::forStream($stream)->forPlayer($playerId)->applyToAvailableZeitsteine($zeitsteineForPlayer);
     }
+
+    private static function getInitialZeitsteineForKonjunkturphase(GameEvents $gameEvents, PlayerId $playerId): int
+    {
+        $zeitsteineForPlayers = $gameEvents->findLast(KonjunkturphaseWasChanged::class)->zeitsteineForPlayers;
+        // TODO make this safer (...[0] may not work)
+        return array_values(array_filter($zeitsteineForPlayers, fn ($forPlayer) => $forPlayer->playerId->equals($playerId)))[0]->zeitsteine;
+    }
+
 
     /**
      * Returns the current Guthaben of the player.
