@@ -47,6 +47,16 @@ readonly class ModifierCollection implements \IteratorAggregate
         return $applicableAktionen;
     }
 
+    public function applyToAvailableZeitsteine(int $currentlyAvailableZeitsteine): int
+    {
+        $availableZeitsteine = $currentlyAvailableZeitsteine;
+        foreach ($this->modifiers as $modifier) {
+            assert($modifier instanceof Modifier);
+            $availableZeitsteine = $modifier->applyToAvailableZeitsteine($availableZeitsteine);
+        }
+        return $availableZeitsteine;
+    }
+
     /**
      * @param \Closure(Modifier $modifier): bool $callback
      * @return self

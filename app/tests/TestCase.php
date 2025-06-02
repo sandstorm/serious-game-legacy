@@ -26,12 +26,13 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    //
     protected ForCoreGameLogic $coreGameLogic;
     protected GameId $gameId;
-    protected PlayerId $player1;
-    protected PlayerId $player2;
     protected PileId $pileIdBildung;
+    /**
+     * @var PlayerId[]
+     */
+    protected array $players;
     /**
      * @var CardDefinition[]
      */
@@ -46,14 +47,21 @@ abstract class TestCase extends BaseTestCase
      * @var CardDefinition[]
      */
     protected array $cardsJobs;
-    private CardFinder $cardFinder;
 
-    public function setupBasicGame(): void
+    private function generatePlayerIds(int $numberOfPlayers) {
+        assert (2 <= $numberOfPlayers && $numberOfPlayers <=4, "Only 2-4 players are supported");
+        $playerIds = [];
+        for ($i = 0; $i < $numberOfPlayers; $i++) {
+            $playerIds[$i] = PlayerId::fromString('p'. $i+1);
+        }
+        return $playerIds;
+    }
+
+    public function setupBasicGame(int $numberOfPlayers = 2): void
     {
         $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
         $this->gameId = GameId::fromString('game1');
-        $this->player1 = PlayerId::fromString('p1');
-        $this->player2 = PlayerId::fromString('p2');
+        $this->players = $this->generatePlayerIds($numberOfPlayers);
         CardFinder::getInstance()->overrideCardsForTesting([
             PileId::BILDUNG_PHASE_1->value => $this->getCardsForBildungAndKarriere(),
             PileId::FREIZEIT_PHASE_1->value => $this->getCardsForSozialesAndFreizeit(),
@@ -68,24 +76,18 @@ abstract class TestCase extends BaseTestCase
         $this->cardsJobs = $this->getCardsForJobs();
 
         $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
-            numberOfPlayers: 2,
-        )->withFixedPlayerIdsForTesting($this->player1, $this->player2));
-        $this->coreGameLogic->handle($this->gameId, new SetNameForPlayer(
-            playerId: $this->player1,
-            name: 'Player 1',
-        ));
-        $this->coreGameLogic->handle($this->gameId, new SetNameForPlayer(
-            playerId: $this->player2,
-            name: 'Player 2',
-        ));
-        $this->coreGameLogic->handle($this->gameId, new SelectLebensziel(
-            playerId: $this->player2,
-            lebensziel: LebenszielId::create(1),
-        ));
-        $this->coreGameLogic->handle($this->gameId, new SelectLebensziel(
-            playerId: $this->player1,
-            lebensziel: LebenszielId::create(2),
-        ));
+            numberOfPlayers: $numberOfPlayers,
+        )->withFixedPlayerIdsForTesting(...$this->players));
+        foreach ($this->players as $index => $player) {
+            $this->coreGameLogic->handle($this->gameId, new SetNameForPlayer(
+                playerId: $player,
+                name: 'Player ' . $index,
+            ));
+            $this->coreGameLogic->handle($this->gameId, new SelectLebensziel(
+                playerId: $player,
+                lebensziel: LebenszielId::create($index % 2 + 1),
+            ));
+        }
 
         $this->coreGameLogic->handle($this->gameId, StartGame::create());
 

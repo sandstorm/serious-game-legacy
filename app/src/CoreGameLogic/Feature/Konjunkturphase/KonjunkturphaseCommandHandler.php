@@ -12,8 +12,10 @@ use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\ZeitsteineForPlayer;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Leitzins;
 use Domain\Definitions\Card\PileFinder;
@@ -67,7 +69,8 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
                 year: new CurrentYear($year),
                 type: $nextKonjunkturphase->type,
                 leitzins: new Leitzins($nextKonjunkturphase->leitzins),
-                kompetenzbereiche: $nextKonjunkturphase->kompetenzbereiche
+                kompetenzbereiche: $nextKonjunkturphase->kompetenzbereiche,
+                zeitsteineForPlayers: KonjunkturphaseState::calculateInitialZeitsteineForPlayers($gameState),
             ),
 
             // We ALSO SHUFFLE cards during Konjunkturphasenwechsel
@@ -77,7 +80,7 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
 
     /**
      * Public for testing purposes only.
-     * Returns the ids of the last konjunkturphasen limited to the maxium amount of defined konjunkturphasen.
+     * Returns the ids of the last konjunkturphasen limited to the maximum amount of defined konjunkturphasen.
      *
      * @param GameEvents $gameState
      * @return array<int>

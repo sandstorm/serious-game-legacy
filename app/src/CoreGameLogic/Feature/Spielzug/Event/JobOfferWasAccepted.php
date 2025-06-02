@@ -6,7 +6,9 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
+use Domain\CoreGameLogic\Feature\Spielzug\Modifier\Modifier;
 use Domain\CoreGameLogic\Feature\Spielzug\Modifier\ModifierCollection;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\ModifierId;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\Gehalt;
@@ -40,7 +42,6 @@ final readonly class JobOfferWasAccepted implements GameEventInterface, Provides
 
     public function getModifiers(PlayerId $playerId): ModifierCollection
     {
-        // TODO: Implement getModifiers() method. -> -1 Zeitstein
-        return new ModifierCollection([]);
+        return new ModifierCollection([new Modifier(ModifierId::BIND_ZEITSTEIN)]);
     }
 }
