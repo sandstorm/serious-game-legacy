@@ -1,10 +1,16 @@
-.gameboard {
-
-
+.game {
+    display: grid;
+    grid-template-areas:
+        "header header"
+        "board  aside"
+        "footer footer"
+    ;
+    grid-template-columns: 3fr 1fr;
 }
 
-.gameboard__header {
+.game__header {
     display: flex;
+    grid-area: header;
     flex-direction: row;
     align-items:  center;
     gap: var(--spacing-100);
@@ -14,4 +20,16 @@
     > h2 {
         margin: 0;
     }
+}
+
+.game__board {
+    grid-area: board;
+}
+
+.game__aside {
+    grid-area: aside
+}
+
+.game__footer {
+    grid-area: footer;
 }
