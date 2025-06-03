@@ -1,6 +1,10 @@
-<div x-data="{open: false}">
-    <button x-on:click="open = !open">Money Sheet<br/> xx.xxx€</button>
-    <div x-show="open" class="moneysheet">
+@extends ('components.modal.modal', ['closeModal' => "closeMoneySheet()"])
+@section('title')
+    Money Sheet
+@endsection
+
+@section('content')
+    <div class="moneysheet">
         <div class="moneysheet__income">
             <h2>Einnahmen</h2>
         </div>
@@ -17,10 +21,14 @@
             xx.xxx€
         </div>
         <div class="moneysheet__expenses-sum">
-             - xx.xxx€
+            - xx.xxx€
         </div>
         <div class="moneysheet__sum">
             = xx.xxx€
         </div>
     </div>
-</div>
+@endsection
+
+@section('footer')
+    <button type="button" class="button button--type-primary" wire:click="closeMoneySheet()">Schließen</button>
+@endsection

@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace App\View\Components;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\Feature\Spielzug\State\MoneysheetState;
+use Domain\CoreGameLogic\Feature\Spielzug\State\MoneySheetState;
 use Domain\CoreGameLogic\PlayerId;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
-class Moneysheet extends Component
+class MoneySheet extends Component
 {
     /**
      * Create the component instance.
      */
     public function __construct(
-        public ?string $playerId,
+        public string $playerId,
         public GameEvents $gameStream,
     ) {}
 
@@ -25,7 +25,7 @@ class Moneysheet extends Component
      */
     public function render(): View
     {
-        return view('components.gameboard.moneysheet.moneysheet', [
+        return view('components.gameboard.moneySheet.money-sheet', [
             'lebenskosten' => $this->getMoneysheetForPlayerId($this->playerId)?->lebenskosten,
         ]);
     }
@@ -37,7 +37,7 @@ class Moneysheet extends Component
         }
 
         $playerId = PlayerId::fromString($playerId);
-        $lebenskosten = MoneysheetState::lebenskostenForPlayer($this->gameStream, $playerId);
+        $lebenskosten = MoneySheetState::lebenskostenForPlayer($this->gameStream, $playerId);
 
         return new \App\Livewire\Dto\MoneySheet(
             lebenskosten: $lebenskosten,
