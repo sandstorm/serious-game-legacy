@@ -6,16 +6,17 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\PlayerId;
 
-class PhaseWechseln extends Aktion
+class PhaseWechselnAktion extends Aktion
 {
     public function __construct()
     {
         parent::__construct('phase-wechseln', 'Phase wechseln');
     }
 
-    public function canExecute(PlayerId $player, GameEvents $eventStream): bool
+    public function validate(PlayerId $player, GameEvents $gameEvents): AktionValidationResult
     {
         // TODO:
         //$kontostand = KontostandAccessor::forPlayer($player, $eventStream);
@@ -24,12 +25,10 @@ class PhaseWechseln extends Aktion
 
         // TODO: entscheidung
 
-
-
-        return false;
+        return new AktionValidationResult(true);
     }
 
-    public function execute(PlayerId $player, GameEvents $eventStream): GameEventsToPersist
+    public function execute(PlayerId $player, GameEvents $gameEvents): GameEventsToPersist
     {
         // TODO: Implement execute() method.
         return GameEventsToPersist::empty();

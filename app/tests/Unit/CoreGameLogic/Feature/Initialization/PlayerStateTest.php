@@ -12,6 +12,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\PileFinder;
@@ -49,6 +50,23 @@ beforeEach(function () {
 
 test('kompetenzstein state', function () {
     $cardId = new CardId('test1');
+    $cardToTest = new KategorieCardDefinition(
+        id: $cardId,
+        pileId: PileId::BILDUNG_PHASE_1,
+        title: 'Sprachkurs',
+        description: 'Mache einen Sprachkurs über drei Monate im Ausland.',
+        resourceChanges: new ResourceChanges(
+            guthabenChange: -11000,
+            bildungKompetenzsteinChange: +1,
+        ),
+    );
+    CardFinder::getInstance()->overrideCardsForTesting([
+        PileId::BILDUNG_PHASE_1->value => [
+            "test1" => $cardToTest,
+        ],
+        PileId::FREIZEIT_PHASE_1->value => [],
+        PileId::JOBS_PHASE_1->value => [],
+    ]);
 
     $this->coreGameLogic->handle(
         $this->gameId,
@@ -75,19 +93,7 @@ test('kompetenzstein state', function () {
 
     $this->coreGameLogic->handle(
         $this->gameId,
-        ActivateCard::create($this->p1, array_shift($this->cardsBildung), $this->pileIdBildung)
-            ->withFixedCardDefinitionForTesting(
-                new KategorieCardDefinition(
-                    id: $cardId,
-                    pileId: PileId::BILDUNG_PHASE_1,
-                    title: 'Sprachkurs',
-                    description: 'Mache einen Sprachkurs über drei Monate im Ausland.',
-                    resourceChanges: new ResourceChanges(
-                        guthabenChange: -11000,
-                        bildungKompetenzsteinChange: +1,
-                    ),
-                )
-            ));
+        ActivateCard::create($this->p1, $cardToTest->id, $this->pileIdBildung));
     $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
 
     // player 1

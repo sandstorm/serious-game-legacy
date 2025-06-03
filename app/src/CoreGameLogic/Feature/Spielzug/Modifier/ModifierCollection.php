@@ -37,9 +37,11 @@ readonly class ModifierCollection implements \IteratorAggregate
     /**
      * @param Aktion[] $applicableAktionen
      * @return Aktion[]
+     * @deprecated this will be refactored
      */
     public function applyToAvailableAktionen(array $applicableAktionen): array
     {
+        // TODO refactor
         foreach ($this->modifiers as $modifier) {
             assert($modifier instanceof Modifier);
             $applicableAktionen = $modifier->applyToAvailableAktionen($applicableAktionen);

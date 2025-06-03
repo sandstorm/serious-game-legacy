@@ -75,19 +75,10 @@ test('Shuffling resets draw counter', function () {
     expect(PileState::topCardIdForPile($stream, $this->pileIdBildung)->value)
         ->toBe($this->cardIdsBildung[count($this->cardIdsBildung)-1]->value);
 });
-
-test('Can only skip top card of pile', function () {
-    $this->coreGameLogic->handle($this->gameId, new SkipCard($this->players[0], $this->cardsBildung["buk1"]->id, $this->pileIdBildung));
-})->throws(\RuntimeException::class, 'Only the top card of the pile can be skipped', 1747325793);
-
-test('Can only activate top card of pile', function () {
-    $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], $this->cardsBildung["buk1"]->id, $this->pileIdBildung));
-})->throws(\RuntimeException::class, 'Only the top card of the pile can be activated', 1747326086);
-
 test('Cannot activate a card twice', function () {
     $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], $this->cardsBildung["buk0"]->id, $this->pileIdBildung));
     $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], $this->cardsBildung["buk0"]->id, $this->pileIdBildung));
-})->throws(\RuntimeException::class, 'Only the top card of the pile can be activated', 1747326086);
+})->throws(\RuntimeException::class, 'Cannot activate Card: Nur die oberste Karte auf einem Stapel kann gespielt werden', 1748951140);
 
 test('End of pile is reached', function () {
     $topCard = PileState::topCardIdForPile($this->coreGameLogic->getGameEvents($this->gameId), $this->pileIdBildung);

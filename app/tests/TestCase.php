@@ -226,12 +226,26 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * @param array<PileID::value, CardDefinition[]> $cards
+     * @param CardDefinition[] $cards
+     * @param PileId $pileId
      * @return void
      */
-    protected function setCards(array $cards): void
+    protected function addCardsOnTopOfPile(array $cards, PileId $pileId): void
     {
-
+        $testCards = [
+            PileId::BILDUNG_PHASE_1->value => $this->getCardsForBildungAndKarriere(),
+            PileId::FREIZEIT_PHASE_1->value => $this->getCardsForSozialesAndFreizeit(),
+            PileId::JOBS_PHASE_1->value => $this->getCardsForJobs(),
+        ];
+        $testCards[$pileId->value] = [...$cards, ...$testCards[$pileId->value]];
+        CardFinder::getInstance()->overrideCardsForTesting($testCards);
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ChangeKonjunkturphase::create()->withFixedCardOrderForTesting(
+                new CardOrder( pileId: $this->pileIdBildung, cards: array_map(fn ($card) => $card->id, $testCards[PileId::BILDUNG_PHASE_1->value])),
+                new CardOrder( pileId: $this->pileIdFreizeit, cards: array_map(fn ($card) => $card->id, $testCards[PileId::FREIZEIT_PHASE_1->value])),
+                new CardOrder( pileId: $this->pileIdJobs, cards: array_map(fn ($card) => $card->id, $testCards[PileId::JOBS_PHASE_1->value])),
+            ));
     }
 
 
