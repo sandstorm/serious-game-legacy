@@ -17,7 +17,6 @@ trait HasGamePhase
         $cardPiles = [
             PileId::BILDUNG_PHASE_1->value,
             PileId::FREIZEIT_PHASE_1->value,
-            PileId::JOBS_PHASE_1->value,
         ];
 
         $konjunkturphasenId = GamePhaseState::currentKonjunkturphasenId($this->gameStream);
