@@ -6,6 +6,7 @@ namespace App\Livewire\Traits;
 
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Illuminate\View\View;
@@ -27,7 +28,8 @@ trait HasGamePhase
         return view('livewire.screens.ingame', [
             'cardPiles' => $cardPiles,
             'currentYear' => GamePhaseState::currentKonjunkturphasenYear($this->gameStream),
-            'konjunkturphasenDefinition' => $konjunkturphasenDefinition
+            'konjunkturphasenDefinition' => $konjunkturphasenDefinition,
+            'guthaben' => PlayerState::getGuthabenForPlayer($this->gameStream, $this->myself)
         ]);
     }
 

@@ -8,7 +8,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 
-class MoneysheetState
+class MoneySheetState
 {
     public static function lebenskostenForPlayer(GameEvents $stream, PlayerId $playerId): int
     {

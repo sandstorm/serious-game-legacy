@@ -10,6 +10,7 @@ use App\Livewire\Traits\HasGamePhase;
 use App\Livewire\Traits\HasKonjunkturphase;
 use App\Livewire\Traits\HasPlayerDetails;
 use App\Livewire\Traits\HasPreGamePhase;
+use App\Livewire\Traits\HasMoneySheet;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
@@ -27,6 +28,7 @@ class GameUi extends Component
     use HasKonjunkturphase;
     use HasPreGamePhase;
     use HasGamePhase;
+    use HasMoneySheet;
 
     // injected from outside -> game-play.blade.php
     // Not the current player, but the player connected to THIS SESSION

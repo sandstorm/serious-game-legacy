@@ -8,6 +8,7 @@
             <x-player-details :player-id="$showDetailsForPlayer" :game-stream="$this->gameStream" />
         @endif
     </header>
+
     <div class="game__board">
         <div class="konjunktur-zyklus">
             Jahr: {{ $currentYear->value }} - {{ $konjunkturphasenDefinition->type }} <br />
@@ -25,16 +26,13 @@
             @endforeach
         </div>
     </div>
+
     <aside class="game__aside">
+        <h4>Money Sheet</h4>
+        <button class="button button--type-primary" wire:click="showMoneySheet()">{{$guthaben}}€</button>
+        @if ($moneySheetIsVisible)
         <x-moneysheet :player-id="$myself" :game-stream="$this->gameStream"/>
-        <div>
-            <h2>Eventlog</h2>
-            <ul>
-                <li>Lorem</li>
-                <li>Ipsum</li>
-                <li>Dolor</li>
-            </ul>
-        </div>
+        @endif
     </aside>
 
     <footer class="game__footer">

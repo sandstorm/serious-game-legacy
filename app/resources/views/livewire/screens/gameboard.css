@@ -24,10 +24,12 @@
 
 .game__board {
     grid-area: board;
+    padding: var(--spacing-100);
 }
 
 .game__aside {
-    grid-area: aside
+    grid-area: aside;
+    padding: var(--spacing-100);
 }
 
 .game__footer {
