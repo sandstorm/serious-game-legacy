@@ -53,8 +53,10 @@ RUN apt-get update -y && \
     rm -rf /var/lib/apt/lists/* && \
     docker-php-ext-install intl bcmath opcache pdo pdo_mysql xsl zip pcntl && \
     pecl install excimer && \
+    pecl install xdebug && \
     pecl install redis && docker-php-ext-enable redis excimer && \
-    pecl install channel://pecl.php.net/uv-0.3.0 && docker-php-ext-enable uv
+    pecl install channel://pecl.php.net/uv-0.3.0 && docker-php-ext-enable uv &&\
+    docker-php-ext-enable xdebug
 
 # for PHP 8.1, disable deprecations to temporarily make Neos/Flow work
 RUN echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT" >> /usr/local/etc/php/conf.d/error_reporting.ini
@@ -90,6 +92,7 @@ ADD /deployment/config-files/crontab /crontab
 ADD /deployment/config-files/s6-rc.d/ /etc/s6-overlay/s6-rc.d/
 ADD /deployment/config-files/memory-limit-php.ini /usr/local/etc/php/conf.d/memory-limit-php.ini
 ADD /deployment/config-files/upload-limit-php.ini /usr/local/etc/php/conf.d/upload-limit-php.ini
+ADD /deployment/config-files/docker-php-ext-xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 RUN rm -Rf /usr/local/etc/php-fpm.* && rm -Rf /etc/nginx/conf.d/*
 ADD deployment/config-files/php-fpm.conf /usr/local/etc/php-fpm.conf

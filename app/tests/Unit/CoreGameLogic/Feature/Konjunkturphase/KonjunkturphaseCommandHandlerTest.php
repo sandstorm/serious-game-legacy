@@ -5,7 +5,7 @@ namespace Tests\CoreGameLogic\Feature\Konjunkturphase;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
@@ -24,7 +24,8 @@ describe('handleChangeKonjunkturphase', function () {
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe($expectedNumberOfZeitsteine);
 
         // use a Zeitstein
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $cardToActivate = array_shift($this->cardsBildung);
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], $cardToActivate->id, $cardToActivate->pileId));
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe($expectedNumberOfZeitsteine-1);

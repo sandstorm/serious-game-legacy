@@ -8,6 +8,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
@@ -34,29 +35,40 @@ describe('getZeitsteineForPlayer', function () {
 
 describe('getGuthabenForPlayer', function () {
     it('returns the correct number', function () {
+        $card1 = new KategorieCardDefinition(
+            id: CardId::fromString('buk0'),
+            pileId: PileId::BILDUNG_PHASE_1,
+            title: 'test1',
+            description: 'test',
+            resourceChanges: new ResourceChanges(
+                guthabenChange: -500
+            )
+        );
+        $card2 = new KategorieCardDefinition(
+            id: CardId::fromString('buk1'),
+            pileId: PileId::BILDUNG_PHASE_1,
+            title: 'test1',
+            description: 'test',
+            resourceChanges: new ResourceChanges(
+                guthabenChange: -100
+            )
+        );
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::BILDUNG_PHASE_1->value => [
+                "buk0" => $card1,
+                "buk1" => $card2,
+            ],
+            PileId::FREIZEIT_PHASE_1->value => [],
+            PileId::JOBS_PHASE_1->value => [],
+        ]);
+
         $this->coreGameLogic->handle(
             $this->gameId,
-            ActivateCard::create($this->players[0], array_shift($this->cardsBildung)->getId(), $this->pileIdBildung)
-                ->withFixedCardDefinitionForTesting(new KategorieCardDefinition(
-                    id: CardId::fromString('buk0'),
-                    pileId: PileId::BILDUNG_PHASE_1,
-                    title: 'test1',
-                    description: 'test',
-                    resourceChanges: new ResourceChanges(
-                        guthabenChange: -500
-                    ))));
+            ActivateCard::create($this->players[0], array_shift($this->cardsBildung)->getId(), $this->pileIdBildung));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
-            ActivateCard::create($this->players[1], array_shift($this->cardsBildung)->getId(), $this->pileIdBildung)
-                ->withFixedCardDefinitionForTesting(new KategorieCardDefinition(
-                    id: CardId::fromString('buk1'),
-                    pileId: PileId::BILDUNG_PHASE_1,
-                    title: 'test1',
-                    description: 'test',
-                    resourceChanges: new ResourceChanges(
-                        guthabenChange: -100
-                    ))));
+            ActivateCard::create($this->players[1], array_shift($this->cardsBildung)->getId(), $this->pileIdBildung));
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getGuthabenForPlayer($stream, $this->players[0]))->toBe(49500)
             ->and(PlayerState::getGuthabenForPlayer($stream, $this->players[1]))->toBe(49900);

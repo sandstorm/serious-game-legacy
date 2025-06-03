@@ -6,6 +6,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\PlayerId;
 
 abstract class Aktion
@@ -16,11 +17,8 @@ abstract class Aktion
 
     /**
      * Preconditions - kann Aktion aktuell ausgeführt werden?
-     * // TODO: vmtl. kein Bool Result, sondern "Result" objekt mit Zustand und Begründung
-     *
-     * @return bool
      */
-    abstract public function canExecute(PlayerId $player, GameEvents $eventStream): bool;
+    abstract public function validate(PlayerId $player, GameEvents $gameEvents): AktionValidationResult;
 
-    abstract public function execute(PlayerId $player, GameEvents $eventStream): GameEventsToPersist;
+    abstract public function execute(PlayerId $player, GameEvents $gameEvents): GameEventsToPersist;
 }

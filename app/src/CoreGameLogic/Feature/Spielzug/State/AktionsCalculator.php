@@ -6,9 +6,6 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\State;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Aktion;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\PhaseWechseln;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ZeitsteinSetzen;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\PlayerId;
@@ -27,17 +24,6 @@ final readonly class AktionsCalculator
     public static function forStream(GameEvents $stream): self
     {
         return new self($stream);
-    }
-
-    /**
-     * @return Aktion[]
-     */
-    public function availableActionsForPlayer(PlayerId $player): array
-    {
-        $aktionen = self::standardAktionen();
-        $modifiersForPlayer = ModifierCalculator::forStream($this->stream)->forPlayer($player);
-        $applicableAktionen = array_values(array_filter($aktionen, fn (Aktion $aktion) => $aktion->canExecute($player, $this->stream)));
-        return $modifiersForPlayer->applyToAvailableAktionen($applicableAktionen);
     }
 
     // TODO maybe return an object with failed requirements?
@@ -59,17 +45,6 @@ final readonly class AktionsCalculator
     {
         $costToSkip = new ResourceChanges(zeitsteineChange: -1);
         return $this->canPlayerAffordAction($playerId, $costToSkip);
-    }
-
-    /**
-     * @return Aktion[]
-     */
-    private static function standardAktionen(): array
-    {
-        return [
-            new PhaseWechseln(),
-            new ZeitsteinSetzen(),
-        ];
     }
 
     public function getEventsThisTurn(): GameEvents

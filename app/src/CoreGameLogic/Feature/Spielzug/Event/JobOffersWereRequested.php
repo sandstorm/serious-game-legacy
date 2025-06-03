@@ -6,11 +6,12 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 
-final readonly class JobOffersWereRequested implements GameEventInterface, ProvidesResourceChanges
+final readonly class JobOffersWereRequested implements ZeitsteinAktion, GameEventInterface, ProvidesResourceChanges
 {
     /**
      * @param CardId[] $jobs

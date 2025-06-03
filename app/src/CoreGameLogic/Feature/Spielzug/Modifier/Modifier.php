@@ -24,6 +24,7 @@ readonly class Modifier
     /**
      * @param mixed $applicableAktionen
      * @return Aktion[]
+     * @deprecated this needs to be refactored
      */
     public function applyToAvailableAktionen(mixed $applicableAktionen): array
     {
