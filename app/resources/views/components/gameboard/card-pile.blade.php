@@ -14,22 +14,6 @@
                         {{ $card->description }}
                     </p>
 
-                    <h5>Voraussetzungen:</h5>
-                    <ul>
-                        @if ($card->additionalRequirements->guthaben)
-                            <li>Guthaben: {{ $card->additionalRequirements->guthaben}}€</li>
-                        @endif
-                        @if ($card->additionalRequirements->zeitsteine)
-                            <li>Zeitsteine: {{ $card->additionalRequirements->zeitsteine}}</li>
-                        @endif
-                        @if ($card->additionalRequirements->bildungKompetenzsteine)
-                            <li>Bildung: {{ $card->additionalRequirements->bildungKompetenzsteine}}</li>
-                        @endif
-                        @if ($card->additionalRequirements->freizeitKompetenzsteine)
-                            <li>Freizeit: {{ $card->additionalRequirements->freizeitKompetenzsteine}}</li>
-                        @endif
-                    </ul>
-
                     <h5>Bringt dir:</h5>
                     <ul>
                         @if ($card->resourceChanges->guthabenChange)
