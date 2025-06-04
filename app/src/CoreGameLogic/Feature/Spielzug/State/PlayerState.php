@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\State;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
+use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerColorWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\ZeitsteineForPlayer;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\PlayerId;
@@ -14,6 +13,19 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 
 class PlayerState
 {
+    public static function getPlayerColor(GameEvents $stream, PlayerId $playerId): string|null
+    {
+        $playerColor = $stream->findAllOfType(PlayerColorWasSelected::class);
+        /** @var PlayerColorWasSelected $event **/
+        foreach ($playerColor as $event) {
+            if ($event->playerId->equals($playerId)) {
+                return $event->playerColor->value;
+            }
+        }
+
+        return null;
+    }
+
     public static function getResourcesForPlayer(GameEvents $stream, PlayerId $playerId): ResourceChanges
     {
         $accumulatedResources = $stream->findAllOfType(ProvidesResourceChanges::class)
@@ -42,13 +54,17 @@ class PlayerState
         return ModifierCalculator::forStream($stream)->forPlayer($playerId)->applyToAvailableZeitsteine($zeitsteineForPlayer);
     }
 
+    /**
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return int
+     */
     private static function getInitialZeitsteineForKonjunkturphase(GameEvents $gameEvents, PlayerId $playerId): int
     {
         $zeitsteineForPlayers = $gameEvents->findLast(KonjunkturphaseWasChanged::class)->zeitsteineForPlayers;
         // TODO make this safer (...[0] may not work)
         return array_values(array_filter($zeitsteineForPlayers, fn ($forPlayer) => $forPlayer->playerId->equals($playerId)))[0]->zeitsteine;
     }
-
 
     /**
      * Returns the current Guthaben of the player.

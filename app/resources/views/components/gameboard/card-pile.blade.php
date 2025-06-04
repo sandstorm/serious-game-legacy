@@ -1,5 +1,4 @@
 <div class="card-pile">
-    <h3>{{ $title }}</h3>
     <ul class="card-pile__cards">
         @if ($card)
             <li

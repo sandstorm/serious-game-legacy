@@ -34,3 +34,9 @@
         color: var(--color-primary-fg);
     }
 }
+
+.button--size-small {
+    padding: var(--spacing-25) var(--spacing-50);
+    height: 30px;
+    font-size: 0.875rem;
+}

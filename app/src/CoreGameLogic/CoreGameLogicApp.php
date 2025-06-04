@@ -9,7 +9,6 @@ use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\InitializationCommandHandler;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\KonjunkturphaseCommandHandler;
-use Domain\CoreGameLogic\Feature\Pile\PileCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Neos\EventStore\Helper\InMemoryEventStore;
 use Neos\EventStore\Model\EventStream\ExpectedVersion;

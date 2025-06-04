@@ -1,37 +1,29 @@
-.game {
-    display: grid;
-    grid-template-areas:
-        "header header"
-        "board  aside"
-        "footer footer"
-    ;
-    grid-template-columns: 3fr 1fr;
+
+.game-board {
 }
 
-.game__header {
+
+.game-board__konjukturphase {
     display: flex;
-    grid-area: header;
-    flex-direction: row;
-    align-items:  center;
-    gap: var(--spacing-100);
-    padding-top: var(--spacing-100);
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-50);
     padding-bottom: var(--spacing-100);
-
-    > h2 {
-        margin: 0;
-    }
 }
 
-.game__board {
-    grid-area: board;
+.game-board__categories {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: var(--spacing-100);
     padding: var(--spacing-100);
 }
 
-.game__aside {
-    grid-area: aside;
+.game-board__categories__category {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-50);
     padding: var(--spacing-100);
 }
 
-.game__footer {
-    grid-area: footer;
-}

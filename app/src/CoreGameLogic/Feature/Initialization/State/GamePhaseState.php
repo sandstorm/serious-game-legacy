@@ -6,7 +6,6 @@ namespace Domain\CoreGameLogic\Feature\Initialization\State;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\Konjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;

@@ -29,7 +29,6 @@ trait HasGamePhase
             'cardPiles' => $cardPiles,
             'currentYear' => GamePhaseState::currentKonjunkturphasenYear($this->gameStream),
             'konjunkturphasenDefinition' => $konjunkturphasenDefinition,
-            'guthaben' => PlayerState::getGuthabenForPlayer($this->gameStream, $this->myself)
         ]);
     }
 

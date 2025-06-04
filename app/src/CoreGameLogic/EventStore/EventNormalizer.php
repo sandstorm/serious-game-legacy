@@ -7,6 +7,7 @@ namespace Domain\CoreGameLogic\EventStore;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
+use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerColorWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
@@ -62,6 +63,7 @@ final readonly class EventNormalizer
             CardsWereShuffled::class,
             JobOffersWereRequested::class,
             JobOfferWasAccepted::class,
+            PlayerColorWasSelected::class,
         ];
 
         $fullClassNameToShortEventType = [];

@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
+use Domain\CoreGameLogic\Feature\Initialization\Command\SelectPlayerColor;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
+use Domain\CoreGameLogic\Feature\Initialization\ValueObject\PlayerColor;
+use Domain\CoreGameLogic\Feature\Initialization\ValueObject\PlayerColors;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
@@ -72,11 +75,43 @@ test('PreGameLogic normal flow', function () {
     $expectedLebenszielForP1 = LebenszielFinder::findLebenszielById(LebenszielId::create(1));
     $expectedLebenszielForP2 = LebenszielFinder::findLebenszielById(LebenszielId::create(2));
 
-    expect(PreGameState::isReadyForGame($gameStream))->toBeTrue()
+    expect(PreGameState::isReadyForGame($gameStream))->toBeFalse()
         ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->lebensziel->name)->toEqual($expectedLebenszielForP1->name)
         ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p2->value]->lebensziel->name)->toEqual($expectedLebenszielForP2->name);
 
     expect(PlayerState::getGuthabenForPlayer($gameStream, $this->p1))->toBe(50000);
+
+    $this->coreGameLogic->handle($this->gameId, new SelectPlayerColor(
+        playerId: $this->p1,
+        playerColor: null, // color is chosen by the system
+    ));
+
+    $this->coreGameLogic->handle($this->gameId, new SelectPlayerColor(
+        playerId: $this->p2,
+        playerColor: null, // color is chosen by the system
+    ));
+    $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
+
+    expect(PreGameState::isReadyForGame($gameStream))->toBeTrue();
+    expect(PlayerState::getPlayerColor($gameStream, $this->p1))->toBeIn(PlayerColors::asArray());
+
+    // Check that the second player has a different color
+    expect(PlayerState::getPlayerColor($gameStream, $this->p2))->toBeIn(PlayerColors::asArray())
+        ->and(PlayerState::getPlayerColor($gameStream, $this->p1))->not->toEqual(PlayerState::getPlayerColor($gameStream, $this->p2));
+});
+
+test('set specific player color', function() {
+    $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
+        numberOfPlayers: 2,
+    )->withFixedPlayerIdsForTesting($this->p1, $this->p2));
+    $this->coreGameLogic->handle($this->gameId, new SelectPlayerColor(
+        playerId: $this->p2,
+        playerColor: new PlayerColor('#000000'),
+    ));
+    $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
+
+    expect(PreGameState::isReadyForGame($gameStream))->toBeFalse()
+        ->and(PlayerState::getPlayerColor($gameStream, $this->p2))->toEqual('#000000');
 });
 
 test('PreGameLogic can only start once', function () {
