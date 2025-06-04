@@ -1,0 +1,31 @@
+.game {
+    display: grid;
+    grid-template-areas:
+        "header header"
+        "content aside";
+    grid-template-columns: 3fr 1fr;
+}
+
+.game__header {
+    grid-area: header;
+    padding-left: var(--spacing-100);
+    padding-right: var(--spacing-100);
+
+    background-color:  var(--color-primary-light);
+
+    > h2 {
+        margin: 0;
+    }
+}
+
+.game__content {
+    grid-area: content;
+    padding: var(--spacing-100);
+}
+
+.game__aside {
+    grid-area: aside;
+    padding: var(--spacing-100);
+
+    border-left: 1px solid var(--color-grey);
+}

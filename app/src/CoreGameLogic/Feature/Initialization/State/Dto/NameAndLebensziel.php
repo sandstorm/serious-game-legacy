@@ -8,7 +8,6 @@ use Domain\Definitions\Lebensziel\Dto\LebenszielDefinition;
 readonly final class NameAndLebensziel
 {
     public function __construct(
-        public ?int $order,
         public PlayerId $playerId,
         public ?string $name,
         public ?LebenszielDefinition $lebensziel

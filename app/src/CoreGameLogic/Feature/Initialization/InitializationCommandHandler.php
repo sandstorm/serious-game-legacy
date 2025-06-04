@@ -9,6 +9,7 @@ use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
+use Domain\CoreGameLogic\Feature\Initialization\Command\SelectPlayerColor;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
@@ -16,9 +17,12 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
+use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerColorWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
+use Domain\CoreGameLogic\Feature\Initialization\ValueObject\PlayerColor;
+use Domain\CoreGameLogic\Feature\Initialization\ValueObject\PlayerColors;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Lebensziel\LebenszielFinder;
@@ -34,7 +38,8 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
             || $command instanceof SelectLebensziel
             || $command instanceof StartGame
             || $command instanceof StartPreGame
-            || $command instanceof SetNameForPlayer;
+            || $command instanceof SetNameForPlayer
+            || $command instanceof SelectPlayerColor;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameState): GameEventsToPersist
@@ -42,8 +47,9 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
         /** @phpstan-ignore-next-line */
         return match ($command::class) {
             DefinePlayerOrdering::class => $this->handleDefinePlayerOrdering($command, $gameState),
-            SelectLebensziel::class => $this->handleLebenszielAuswaehlen($command, $gameState),
+            SelectLebensziel::class => $this->handleSelectLebensziel($command, $gameState),
             StartGame::class => $this->handleStartGame($command, $gameState),
+            SelectPlayerColor::class => $this->handleSelectColor($command, $gameState),
 
             StartPreGame::class => $this->handleStartPreGame($command, $gameState),
             SetNameForPlayer::class => $this->handleSetNameForPlayer($command, $gameState),
@@ -57,7 +63,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
         );
     }
 
-    private function handleLebenszielAuswaehlen(SelectLebensziel $command, GameEvents $gameState): GameEventsToPersist
+    private function handleSelectLebensziel(SelectLebensziel $command, GameEvents $gameState): GameEventsToPersist
     {
         $lebensziel = PreGameState::lebenszielForPlayerOrNull($gameState, $command->playerId);
         if ($lebensziel !== null) {
@@ -71,6 +77,31 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
                 playerId: $command->playerId,
                 lebensziel: $lebensziel,
             )
+        );
+    }
+
+    private function handleSelectColor(SelectPlayerColor $command, GameEvents $gameState): GameEventsToPersist
+    {
+        if (GamePhaseState::isInGamePhase($gameState)) {
+            throw new \RuntimeException('game already started', 1746713495);
+        }
+
+        $usedColors = $gameState->findAllOfType(PlayerColorWasSelected::class);
+        $newColor = array_values(array_filter(PlayerColors::asArray(), function ($color) use ($usedColors) {
+            /** @var PlayerColorWasSelected $event **/
+            foreach ($usedColors as $event) {
+                if ($event->playerColor->value === $color) {
+                    return false; // color is already used
+                }
+            }
+            return true; // color is available
+        }));
+
+        return GameEventsToPersist::with(
+            new PlayerColorWasSelected(
+                playerId: $command->playerId,
+                playerColor: $command->playerColor !== null ? $command->playerColor : new PlayerColor($newColor[0]),
+            ),
         );
     }
 

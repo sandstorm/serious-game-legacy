@@ -13,6 +13,7 @@ use Domain\CoreGameLogic\Feature\Initialization\State\Dto\NameAndLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\ValueObject\Lebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\ValueObject\LebenszielPhase;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Lebensziel\Dto\LebenszielDefinition;
@@ -29,7 +30,10 @@ class PreGameState
     {
         $playersWithNameAndLebensziel = self::playersWithNameAndLebensziel($gameStream);
         foreach ($playersWithNameAndLebensziel as $nameAndLebensziel) {
-            if ($nameAndLebensziel->lebensziel === null || $nameAndLebensziel->name === null) {
+            if ($nameAndLebensziel->lebensziel === null ||
+                $nameAndLebensziel->name === null ||
+                PlayerState::getPlayerColor($gameStream, $nameAndLebensziel->playerId) === null
+            ) {
                 return false;
             }
         }
@@ -54,17 +58,13 @@ class PreGameState
     {
         /* @var $playerIdsToNameMap array<string,NameAndLebensziel> */
         $playerIdsToNameMap = [];
-        $playerOrder = 1;
         foreach (self::playerIds($gameStream) as $playerId) {
             // TODO create new object with better naming and maybe different ones for different use cases
             $playerIdsToNameMap[$playerId->value] = new NameAndLebensziel(
-                order: $playerOrder,
                 playerId: $playerId,
                 name: self::nameForPlayerOrNull($gameStream, $playerId),
                 lebensziel: self::lebenszielForPlayerOrNull($gameStream, $playerId),
             );
-
-            $playerOrder++;
         }
         return $playerIdsToNameMap;
     }

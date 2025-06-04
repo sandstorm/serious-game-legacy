@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Traits;
 
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ShuffleCards;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
@@ -94,14 +93,6 @@ trait HasCard
             CardId::fromString($cardId),
             PileId::from($pileId)
         ));
-        $this->broadcastNotify();
-    }
-
-    // TODO for testing, is not in final game
-    public function shuffleCards(): void
-    {
-        // @phpstan-ignore staticMethod.deprecatedClass
-        $this->coreGameLogic->handle($this->gameId, ShuffleCards::create());
         $this->broadcastNotify();
     }
 }
