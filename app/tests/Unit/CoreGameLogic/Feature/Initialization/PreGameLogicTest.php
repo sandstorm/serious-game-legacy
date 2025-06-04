@@ -100,6 +100,28 @@ test('PreGameLogic normal flow', function () {
         ->and(PlayerState::getPlayerColor($gameStream, $this->p1))->not->toEqual(PlayerState::getPlayerColor($gameStream, $this->p2));
 });
 
+test('test lebensziel kompetenzen', function() {
+    $this->setupBasicGame();
+
+    $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
+    // player 1
+    // bildung
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->players[0])->phases[0]->definition->bildungsKompetenzSlots)->toBe(2);
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->players[0])->phases[0]->placedKompetenzsteineBildung)->toBe(0);
+    // freizeit
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->players[0])->phases[0]->definition->freizeitKompetenzSlots)->toBe(1);
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->players[0])->phases[0]->placedKompetenzsteineFreizeit)->toBe(0);
+
+    // player 2
+    // bildung
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->players[1])->phases[0]->definition->bildungsKompetenzSlots)->toBe(1);
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->players[1])->phases[0]->placedKompetenzsteineBildung)->toBe(0);
+    // freizeit
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->players[1])->phases[0]->definition->freizeitKompetenzSlots)->toBe(3);
+    expect(PreGameState::lebenszielForPlayer($gameStream, $this->players[1])->phases[0]->placedKompetenzsteineFreizeit)->toBe(0);
+
+});
+
 test('set specific player color', function() {
     $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
         numberOfPlayers: 2,

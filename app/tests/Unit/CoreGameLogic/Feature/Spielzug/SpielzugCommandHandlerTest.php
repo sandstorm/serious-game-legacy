@@ -28,6 +28,7 @@ use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\Gehalt;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 
@@ -55,6 +56,7 @@ describe('handleSkipCard', function () {
             player: $this->players[0],
             card: $skipThisCard,
             pile: $this->pileIdBildung,
+            category: CategoryEnum::BILDUNG
         ));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -75,6 +77,7 @@ describe('handleSkipCard', function () {
             player: $this->players[0],
             card: $skipThisCard,
             pile: $this->pileIdBildung,
+            category: CategoryEnum::BILDUNG
         ));
     })->throws(
         \RuntimeException::class,
@@ -94,6 +97,7 @@ describe('handleSkipCard', function () {
             player: $this->players[1],
             card: $skipThisCard,
             pile: $this->pileIdBildung,
+            category: CategoryEnum::BILDUNG,
         ));
     })->throws(
         \RuntimeException::class,
@@ -131,6 +135,7 @@ describe('handleSkipCard', function () {
             player: $this->players[0],
             cardId: $cardsForTesting["cardToRemoveZeitsteine"]->id,
             pile: $this->pileIdBildung,
+            category: CategoryEnum::BILDUNG
         ));
 
         $this->coreGameLogic->handle(
@@ -142,6 +147,7 @@ describe('handleSkipCard', function () {
             player: $this->players[1],
             cardId: $someCard,
             pile: PileId::FREIZEIT_PHASE_1,
+            category: CategoryEnum::FREIZEIT
         ));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -156,6 +162,7 @@ describe('handleSkipCard', function () {
             player: $this->players[0],
             card: $cardsForTesting["skipThisCard"]->id,
             pile: $this->pileIdBildung,
+            category: CategoryEnum::BILDUNG
         ));
 
     })->throws(\RuntimeException::class,
@@ -194,6 +201,7 @@ describe('handleActivateCard', function () {
             player: $this->players[0],
             cardId: new CardId("testcard"),
             pile: $this->pileIdBildung,
+            category: CategoryEnum::BILDUNG
         ));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -234,6 +242,7 @@ describe('handleActivateCard', function () {
             player: $this->players[0],
             card: $skipThisCard,
             pile: $this->pileIdBildung,
+            category: CategoryEnum::BILDUNG
         ));
 
         $this->coreGameLogic->handle(
@@ -245,6 +254,7 @@ describe('handleActivateCard', function () {
             player: $this->players[1],
             cardId: $cardToTest->id,
             pile: $this->pileIdBildung,
+            category: CategoryEnum::BILDUNG
         ));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -285,6 +295,7 @@ describe('handleActivateCard', function () {
             player: $this->players[0],
             card: $skipThisCard,
             pile: $this->pileIdBildung,
+            category: CategoryEnum::BILDUNG
         ));
 
         // Skipping will consume a Zeitstein
@@ -295,6 +306,7 @@ describe('handleActivateCard', function () {
             player: $this->players[0],
             cardId: $cardToTest->id,
             pile: $this->pileIdBildung,
+            category: CategoryEnum::BILDUNG
         )->withFixedCardDefinitionForTesting($cardToTest));
 
         // Expect no additional Zeitstein being used
@@ -332,6 +344,7 @@ describe('handleActivateCard', function () {
             player: $this->players[0],
             cardId: $cardToTest->id,
             pile: $this->pileIdBildung,
+            category: CategoryEnum::BILDUNG
         ));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -373,6 +386,7 @@ describe('handleActivateCard', function () {
             player: $this->players[1],
             cardId: $cardToTest->id,
             pile: $this->pileIdBildung,
+            category: CategoryEnum::BILDUNG
         )->withFixedCardDefinitionForTesting($cardToTest));
     })->throws(\RuntimeException::class, 'Cannot activate Card: Du kannst Karten nur spielen, wenn du dran bist',
         1748951140);
@@ -406,6 +420,7 @@ describe('handleActivateCard', function () {
             player: $this->players[0],
             cardId: $cardToTest->id,
             pile: $this->pileIdBildung,
+            category: CategoryEnum::BILDUNG
         ));
     })->throws(\RuntimeException::class,
         'Cannot activate Card: Du hast nicht genug Ressourcen um die Karte zu spielen',
@@ -857,7 +872,7 @@ describe('handleEndSpielzug', function () {
             // Play a turn that removes all Zeitsteine
             $this->coreGameLogic->handle(
                 $this->gameId,
-                ActivateCard::create($this->players[0], $cardToTest->id, $cardToTest->pileId)
+                ActivateCard::create($this->players[0], $cardToTest->id, $cardToTest->pileId, category: CategoryEnum::BILDUNG)
             );
             $this->coreGameLogic->handle(
                 $this->gameId,
@@ -866,7 +881,7 @@ describe('handleEndSpielzug', function () {
             // Player 2 does _something_ and finishes their turn
             $this->coreGameLogic->handle(
                 $this->gameId,
-                new SkipCard($this->players[1], array_shift($this->cardsFreizeit)->id, $this->pileIdFreizeit)
+                new SkipCard($this->players[1], array_shift($this->cardsFreizeit)->id, $this->pileIdFreizeit, category: CategoryEnum::FREIZEIT)
             );
             $this->coreGameLogic->handle(
                 $this->gameId,

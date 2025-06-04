@@ -12,12 +12,9 @@
                 'player-list__player--is-active' => $playerAndLebensziel->playerId->equals($this->getCurrentPlayer())
             ])>
 
-            <ul @class([
-                'player-list__zeitsteine',
-                'player-list__zeitsteine-color' . PlayerState::getPlayerColor($this->gameStream(), $playerAndLebensziel->playerId),
-            ])>
+            <ul class="zeitsteine">
                 @for($i = 0; $i < PlayerState::getZeitsteineForPlayer($this->gameStream(), $playerAndLebensziel->playerId); $i++)
-                    <li @style(['background-color:' . PlayerState::getPlayerColor($this->gameStream(), $playerAndLebensziel->playerId)])></li>
+                    <li class="zeitstein" @style(['background-color:' . PlayerState::getPlayerColor($this->gameStream(), $playerAndLebensziel->playerId)])></li>
                 @endfor
             </ul>
             {{$playerAndLebensziel->name }}

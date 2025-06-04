@@ -8,8 +8,10 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerColorWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryEnum;
 
 class PlayerState
 {
@@ -78,19 +80,56 @@ class PlayerState
         return $accumulatedResourceChangesForPlayer->guthabenChange;
     }
 
+    /**
+     * Returns the accumulated amount of Bildungskompetenzsteine of the player.
+     *
+     * @param GameEvents $stream
+     * @param PlayerId $playerId
+     * @return int
+     */
     public static function getBildungsKompetenzsteine(GameEvents $stream, PlayerId $playerId): int
     {
+        // TODO for current lebensziel phase only?
         $accumulatedResourceChangesForPlayer = $stream->findAllOfType(ProvidesResourceChanges::class)
             ->reduce(fn(ResourceChanges $accumulator, ProvidesResourceChanges $event) => $accumulator->accumulate($event->getResourceChanges($playerId)), new ResourceChanges());
 
         return $accumulatedResourceChangesForPlayer->bildungKompetenzsteinChange;
     }
 
+    /**
+     * Returns the accumulated amount of Freizeitkompetenzsteine of the player.
+     *
+     * @param GameEvents $stream
+     * @param PlayerId $playerId
+     * @return int
+     */
     public static function getFreizeitKompetenzsteine(GameEvents $stream, PlayerId $playerId): int
     {
+        // TODO for current lebensziel phase only?
         $accumulatedResourceChangesForPlayer = $stream->findAllOfType(ProvidesResourceChanges::class)
             ->reduce(fn(ResourceChanges $accumulator, ProvidesResourceChanges $event) => $accumulator->accumulate($event->getResourceChanges($playerId)), new ResourceChanges());
 
         return $accumulatedResourceChangesForPlayer->freizeitKompetenzsteinChange;
+    }
+
+    /**
+     * Returns the total number of zeitsteine placed by the player in the specified category during the current Konjunkturphase.
+     *
+     * @param GameEvents $stream The collection of game events to be analyzed.
+     * @param PlayerId $playerId The ID of the player for whom the calculation is performed.
+     * @param CategoryEnum $category The category in which the zeitsteine placement is being calculated.
+     * @return int The total number of zeitsteine placed by the player in the specified category during the current Konjunkturphase.
+     */
+    public static function getZeitsteinePlacedForCurrentKonjunkturphaseInCategory(GameEvents $stream, PlayerId $playerId, CategoryEnum $category): int
+    {
+        $zeitsteinAktionenForPlayerAndBildung = $stream->findAllAfterLastOfType(KonjunkturphaseWasChanged::class)->findAllOfType(ZeitsteinAktion::class)
+            ->filter(fn(ZeitsteinAktion $event) => $event->getCategory() === $category && $event->getPlayerId()->equals($playerId));
+
+        $sum = 0;
+        foreach ($zeitsteinAktionenForPlayerAndBildung as $event) {
+            $sum += $event->getResourceChanges($playerId)->zeitsteineChange * -1;
+        }
+
+        return $sum;
     }
 }

@@ -73,6 +73,16 @@ final class CardFinder
                         bildungKompetenzsteinChange: +1,
                     ),
                 ),
+                "buk3" => new KategorieCardDefinition(
+                    id: new CardId('buk3'),
+                    pileId: PileId::BILDUNG_PHASE_1,
+                    title: 'Irgendwas',
+                    description: 'Mache jeden Tag 20 Minuten Gedächtnistraining, um dich geistig fit zu halten.',
+                    resourceChanges: new ResourceChanges(
+                        zeitsteineChange: -1,
+                        bildungKompetenzsteinChange: +1,
+                    ),
+                ),
             ],
             PileId::FREIZEIT_PHASE_1->value => [
                 "suf0" => new KategorieCardDefinition(

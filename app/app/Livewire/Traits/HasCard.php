@@ -10,6 +10,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryEnum;
 
 trait HasCard
 {
@@ -60,9 +61,10 @@ trait HasCard
     /**
      * @param string $cardId
      * @param string $pileId
+     * @param string $category
      * @return void
      */
-    public function activateCard(string $cardId, string $pileId): void
+    public function activateCard(string $cardId, string $pileId, string $category): void
     {
         if (!self::canActivateCard($cardId)) {
             // TODO show error message why
@@ -72,7 +74,8 @@ trait HasCard
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
             $this->myself,
             CardId::fromString($cardId),
-            PileId::from($pileId)
+            PileId::from($pileId),
+            CategoryEnum::fromString($category)
         ));
         $this->broadcastNotify();
     }
@@ -80,9 +83,10 @@ trait HasCard
     /**
      * @param string $cardId
      * @param string $pileId
+     * @param string $category
      * @return void
      */
-    public function skipCard(string $cardId, string $pileId): void
+    public function skipCard(string $cardId, string $pileId, string $category): void
     {
         if (!self::canSkipCard()) {
             // TODO show error message why
@@ -91,7 +95,8 @@ trait HasCard
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
             $this->myself,
             CardId::fromString($cardId),
-            PileId::from($pileId)
+            PileId::from($pileId),
+            CategoryEnum::fromString($category)
         ));
         $this->broadcastNotify();
     }

@@ -9,6 +9,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\MoneySheetState;
 use Domain\CoreGameLogic\PlayerId;
 use Illuminate\View\Component;
 use Illuminate\View\View;
+use App\Livewire\Dto\MoneySheet as MoneySheetDto;
 
 class MoneySheet extends Component
 {
@@ -30,7 +31,7 @@ class MoneySheet extends Component
         ]);
     }
 
-    private function getMoneysheetForPlayerId(?string $playerId): ?\App\Livewire\Dto\MoneySheet
+    private function getMoneysheetForPlayerId(?string $playerId): ?MoneySheetDto
     {
         if ($playerId === null) {
             return null;
@@ -39,7 +40,7 @@ class MoneySheet extends Component
         $playerId = PlayerId::fromString($playerId);
         $lebenskosten = MoneySheetState::lebenskostenForPlayer($this->gameStream, $playerId);
 
-        return new \App\Livewire\Dto\MoneySheet(
+        return new MoneySheetDto(
             lebenskosten: $lebenskosten,
         );
     }
