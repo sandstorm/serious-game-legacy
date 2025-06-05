@@ -22,29 +22,29 @@
             <div class="game-board__categories">
                 @foreach($categories as $category)
                     <div class="game-board__category">
-                        <h3>{{ $category['title'] }}</h3>
+                        <h3>{{ $category->title }}</h3>
                         <ul class="zeitsteine">
-                            @foreach($category['placedZeitsteine'] as $placedZeitstein)
-                                @for($i = 0; $i < $placedZeitstein['zeitsteine']; $i++)
-                                    <li class="zeitstein" @style(['background-color:' . PlayerState::getPlayerColor($this->gameStream(), $placedZeitstein['playerId'])])></li>
+                            @foreach($category->placedZeitsteine as $placedZeitstein)
+                                @for($i = 0; $i < $placedZeitstein->zeitsteine; $i++)
+                                    <li class="zeitstein" @style(['background-color:' . PlayerState::getPlayerColor($this->gameStream(), $placedZeitstein->playerId)])></li>
                                 @endfor
                             @endforeach
-                            @for($i = 0; $i < $category['availableZeitsteine']; $i++)
+                            @for($i = 0; $i < $category->availableZeitsteine; $i++)
                                 <li class="zeitstein zeitstein--empty"></li>
                             @endfor
                         </ul>
 
                         <ul class="kompetenzen">
-                            @for($i = 0; $i < $category['kompetenzen']; $i++)
+                            @for($i = 0; $i < $category->kompetenzen; $i++)
                                 <li class="kompetenz"></li>
                             @endfor
 
-                            @for($i = 0; $i < $category['kompetenzenRequiredByPhase']; $i++)
+                            @for($i = 0; $i < $category->kompetenzenRequiredByPhase; $i++)
                                 <li class="kompetenz kompetenz--empty"></li>
                             @endfor
                         </ul>
-                        @if ($category['cardPile'] !== null)
-                            <x-card-pile :category="$category['title']" :card-pile="$category['cardPile']" :game-stream="$this->gameStream" />
+                        @if ($category->cardPile !== null)
+                            <x-card-pile :category="$category->title->value" :card-pile="$category->cardPile->value" :game-stream="$this->gameStream" />
                         @endif
                     </div>
                 @endforeach

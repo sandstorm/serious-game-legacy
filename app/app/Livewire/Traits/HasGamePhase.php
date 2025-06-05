@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Livewire\Traits;
 
+use App\Livewire\Dto\GameboardInformationForCategory;
+use App\Livewire\Dto\ZeitsteineForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
@@ -23,61 +25,45 @@ trait HasGamePhase
             $konjunkturphasenId
         );
 
-        $players = PreGameState::playersWithNameAndLebensziel($this->gameStream());
-        $usedZeitsteineBildung = [];
-        $sumOfUsedZeitsteineBildung = 0;
-        foreach ($players as $player) {
-            $zeitsteine = $this->getPlacedZeitsteineForPlayerInCategory($player->playerId, CategoryEnum::BILDUNG);
-            $usedZeitsteineBildung[] = $zeitsteine;
-            $sumOfUsedZeitsteineBildung += $zeitsteine['zeitsteine'];
-        }
-
-        $usedZeitsteineFreizeit = [];
-        $sumOfUsedZeitsteineFreizeit = 0;
-        foreach ($players as $player) {
-            $zeitsteine = $this->getPlacedZeitsteineForPlayerInCategory($player->playerId, CategoryEnum::FREIZEIT);
-            $usedZeitsteineFreizeit[] = $zeitsteine;
-            $sumOfUsedZeitsteineFreizeit += $zeitsteine['zeitsteine'];
-        }
+        $placedZeitsteineBildung = $this->getAllPlacedZeitsteineByPlayersInCategory(CategoryEnum::BILDUNG);
+        $placedZeitsteineFreizeit = $this->getAllPlacedZeitsteineByPlayersInCategory(CategoryEnum::FREIZEIT);
 
         $lebenszielForPlayer = PreGameState::lebenszielForPlayer($this->gameStream, $this->myself);
 
         // TODO DTO
         $categories = [
-            [
-                'title' => CategoryEnum::BILDUNG->value,
-                'kompetenzen'=> PlayerState::getBildungsKompetenzsteine($this->gameStream(), $this->myself),
-                // TODO get current phase of the player
-                'kompetenzenRequiredByPhase' => $lebenszielForPlayer->definition->phaseDefinitions[0]->bildungsKompetenzSlots - PlayerState::getBildungsKompetenzsteine($this->gameStream(), $this->myself),
-                'availableZeitsteine' => $this->getSlotsForKompetenzbereich(CategoryEnum::BILDUNG) - $sumOfUsedZeitsteineBildung,
-                'placedZeitsteine' => $usedZeitsteineBildung,
-                'cardPile' => PileId::BILDUNG_PHASE_1->value,
-            ],
-            [
-                'title' => CategoryEnum::FREIZEIT->value,
-                'kompetenzen'=> PlayerState::getFreizeitKompetenzsteine($this->gameStream(), $this->myself),
-                'kompetenzenRequiredByPhase' => $lebenszielForPlayer->definition->phaseDefinitions[0]->freizeitKompetenzSlots - PlayerState::getFreizeitKompetenzsteine($this->gameStream(), $this->myself),
-                'availableZeitsteine' => $this->getSlotsForKompetenzbereich(CategoryEnum::FREIZEIT) - $sumOfUsedZeitsteineFreizeit,
-                'placedZeitsteine' => $usedZeitsteineFreizeit,
-                'cardPile' => PileId::FREIZEIT_PHASE_1->value,
-            ],
-            [
-                'title' => CategoryEnum::INVESTITIONEN->value,
-                'kompetenzen'=> null,
-                'kompetenzenRequiredByPhase'=> null,
-                'availableZeitsteine' => $this->getSlotsForKompetenzbereich(CategoryEnum::INVESTITIONEN),
-                'placedZeitsteine' => [],
-                'cardPile' => null,
-            ],
-            [
-                'title' => CategoryEnum::ERWEBSEINKOMMEN->value,
-                'kompetenzen'=> null,
-                'kompetenzenRequiredByPhase'=> null,
-                'availableZeitsteine' => $this->getSlotsForKompetenzbereich(CategoryEnum::ERWEBSEINKOMMEN),
-                'placedZeitsteine' => [],
-                'cardPile' => null,
-            ],
-
+            new GameboardInformationForCategory(
+                title: CategoryEnum::BILDUNG,
+                kompetenzen: PlayerState::getBildungsKompetenzsteine($this->gameStream(), $this->myself),
+                kompetenzenRequiredByPhase: $lebenszielForPlayer->definition->phaseDefinitions[0]->bildungsKompetenzSlots - PlayerState::getBildungsKompetenzsteine($this->gameStream(), $this->myself),
+                availableZeitsteine: $this->getSlotsForKompetenzbereich(CategoryEnum::BILDUNG) - $this->getSumOfPlacedZeitsteineInCategory($placedZeitsteineBildung),
+                placedZeitsteine: $placedZeitsteineBildung,
+                cardPile: PileId::BILDUNG_PHASE_1,
+            ),
+            new GameboardInformationForCategory(
+                title: CategoryEnum::FREIZEIT,
+                kompetenzen: PlayerState::getFreizeitKompetenzsteine($this->gameStream(), $this->myself),
+                kompetenzenRequiredByPhase: $lebenszielForPlayer->definition->phaseDefinitions[0]->freizeitKompetenzSlots - PlayerState::getFreizeitKompetenzsteine($this->gameStream(), $this->myself),
+                availableZeitsteine: $this->getSlotsForKompetenzbereich(CategoryEnum::FREIZEIT) - $this->getSumOfPlacedZeitsteineInCategory($placedZeitsteineFreizeit),
+                placedZeitsteine: $placedZeitsteineFreizeit,
+                cardPile: PileId::FREIZEIT_PHASE_1,
+            ),
+            new GameboardInformationForCategory(
+                title: CategoryEnum::INVESTITIONEN,
+                kompetenzen: null,
+                kompetenzenRequiredByPhase: null,
+                availableZeitsteine: $this->getSlotsForKompetenzbereich(CategoryEnum::INVESTITIONEN),
+                placedZeitsteine: $this->getAllPlacedZeitsteineByPlayersInCategory(CategoryEnum::INVESTITIONEN),
+                cardPile: null
+            ),
+            new GameboardInformationForCategory(
+                title: CategoryEnum::ERWEBSEINKOMMEN,
+                kompetenzen: null,
+                kompetenzenRequiredByPhase: null,
+                availableZeitsteine: $this->getSlotsForKompetenzbereich(CategoryEnum::ERWEBSEINKOMMEN),
+                placedZeitsteine: $this->getAllPlacedZeitsteineByPlayersInCategory(CategoryEnum::ERWEBSEINKOMMEN),
+                cardPile: null
+            ),
         ];
 
         return view('livewire.screens.ingame', [
@@ -88,19 +74,50 @@ trait HasGamePhase
     }
 
     /**
-     * @param PlayerId $playerId
-     * @param CategoryEnum $category
-     * @return array<string, mixed>
+     * @param ZeitsteineForPlayer[] $placedZeitsteine
+     * @return int
      */
-    private function getPlacedZeitsteineForPlayerInCategory(PlayerId $playerId, CategoryEnum $category): array
+    private function getSumOfPlacedZeitsteineInCategory(array $placedZeitsteine): int
     {
-        // TODO DTO
-        return [
-            'zeitsteine' => PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($this->gameStream, $playerId, $category),
-            'playerId' => $playerId,
-        ];
+        return array_reduce(
+            $placedZeitsteine,
+            fn (int $carry, ZeitsteineForPlayer $zeitsteineForPlayer) => $carry + $zeitsteineForPlayer->zeitsteine,
+            0
+        );
     }
 
+    /**
+     * returns all placed Zeitsteine for all players in a specific category.
+     *
+     * @param CategoryEnum $category
+     * @return ZeitsteineForPlayer[]
+     */
+    private function getAllPlacedZeitsteineByPlayersInCategory(CategoryEnum $category): array
+    {
+        $players = PreGameState::playersWithNameAndLebensziel($this->gameStream());
+
+        $placedZeitsteine = [];
+        foreach ($players as $player) {
+            $placedZeitsteine[] = $this->getPlacedZeitsteineForPlayerInCategory($player->playerId, $category);
+        }
+
+        return $placedZeitsteine;
+    }
+
+    /**
+     * returns the placed Zeitsteine for a player in a specific category.
+     *
+     * @param PlayerId $playerId
+     * @param CategoryEnum $category
+     * @return ZeitsteineForPlayer
+     */
+    private function getPlacedZeitsteineForPlayerInCategory(PlayerId $playerId, CategoryEnum $category): ZeitsteineForPlayer
+    {
+        return new ZeitsteineForPlayer(
+            PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($this->gameStream, $playerId, $category),
+            $playerId,
+        );
+    }
 
     /**
      * @return void
