@@ -23,7 +23,7 @@ class GameboardInformationForCategory
         public ?int $kompetenzenRequiredByPhase,
         public int $availableZeitsteine,
         public array $placedZeitsteine,
-        public ?PileId $cardPile
+        public ?PileId $cardPile = null,
     ) {}
 
 }

@@ -1,3 +1,5 @@
+@use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
+
 @extends ('components.modal.modal', ['closeModal' => "closeMoneySheet()"])
 @section('title')
     Money Sheet
@@ -7,24 +9,54 @@
     <div class="moneysheet">
         <div class="moneysheet__income">
             <h2>Einnahmen</h2>
+            <table>
+                <tbody>
+                <tr>
+                    <td>Finanzanlagen und Vermögenswerte</td>
+                    <td class="text-align--right">0€</td>
+                </tr>
+                <tr>
+                    <td>Gehalt</td>
+                    <td class="text-align--right">{{$moneySheet->gehalt}}€</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
         <div class="moneysheet__expenses">
             <h2>Ausgaben</h2>
-            <ul>
-                <li>
-                    <span>Lebenshaltungskosten</span>
-                    <span>{{$lebenskosten}}€</span>
-                </li>
-            </ul>
+            <table>
+                <tbody>
+                <tr>
+                    <td>Verbindlichkeiten</td>
+                    <td class="text-align--right">0€</td>
+                </tr>
+                <tr>
+                    <td>Kinder</td>
+                    <td class="text-align--right">0€</td>
+                </tr>
+                <tr>
+                    <td>Versicherungen</td>
+                    <td class="text-align--right">0€</td>
+                </tr>
+                <tr>
+                    <td>Steuern und Abgaben</td>
+                    <td class="text-align--right">0€</td>
+                </tr>
+                <tr>
+                    <td>Lebenshaltungskosten</td>
+                    <td class="text-align--right">{{$moneySheet->lebenskosten}}€</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
         <div class="moneysheet__income-sum">
-            xx.xxx€
+            {{$moneySheet->gehalt}}€
         </div>
         <div class="moneysheet__expenses-sum">
-            - xx.xxx€
+            - {{$moneySheet->lebenskosten}}€
         </div>
         <div class="moneysheet__sum">
-            = xx.xxx€
+            = {{ PlayerState::getGuthabenForPlayer($this->gameStream(), $playerId) }}€
         </div>
     </div>
 @endsection

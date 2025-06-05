@@ -26,11 +26,11 @@
                         <ul class="zeitsteine">
                             @foreach($category->placedZeitsteine as $placedZeitstein)
                                 @for($i = 0; $i < $placedZeitstein->zeitsteine; $i++)
-                                    <li class="zeitstein" @style(['background-color:' . PlayerState::getPlayerColor($this->gameStream(), $placedZeitstein->playerId)])></li>
+                                    <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($this->gameStream(), $placedZeitstein->playerId)])></li>
                                 @endfor
                             @endforeach
                             @for($i = 0; $i < $category->availableZeitsteine; $i++)
-                                <li class="zeitstein zeitstein--empty"></li>
+                                <li class="zeitsteine__item zeitsteine__item--empty"></li>
                             @endfor
                         </ul>
 
@@ -46,6 +46,27 @@
                         @if ($category->cardPile !== null)
                             <x-card-pile :category="$category->title->value" :card-pile="$category->cardPile->value" :game-stream="$this->gameStream" />
                         @endif
+
+                        @if ($category->title->value === 'Erwerbseinkommen')
+                            <button type="button" class="button button--type-primary" wire:click="showJobOffer()">Jobangebote anschauen (-1 Zeitstein)</button>
+
+                            @if ($myJob !== null)
+                                <hr />
+                                <div class="button button--type-outline-primary">
+                                    <div class="zeitsteine">
+                                        <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($this->gameStream, $myself)])></li>
+                                    </div>
+                                    <span>Mein Job. {{ $myJob->gehalt->value}}€</span>
+                                </div>
+                            @endif
+
+                            @if ($requestJobOffersErrorMessage)
+                                <p class="form__error">{{ $requestJobOffersErrorMessage }}</p>
+                            @endif
+                            @if ($jobOfferIsVisible)
+                                <x-job-offers-modal :player-id="$myself" :game-stream="$this->gameStream" />
+                            @endif
+                        @endif
                     </div>
                 @endforeach
             </div>
@@ -60,6 +81,7 @@
         @endif
 
         @if ($this->currentPlayerIsMyself())
+            <hr />
             <button type="button" class="button button--type-primary" wire:click="spielzugAbschliessen()">Spielzug abschließen</button>
         @endif
     </aside>

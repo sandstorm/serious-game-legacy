@@ -9,6 +9,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
@@ -131,5 +132,18 @@ class PlayerState
         }
 
         return $sum;
+    }
+
+    /**
+     * Returns the last JobOfferWasAccepted event for the specified player.
+     *
+     * @param GameEvents $stream The collection of game events to be analyzed.
+     * @param PlayerId $playerId The ID of the player for whom the job offer is being retrieved.
+     * @return JobOfferWasAccepted|null The last job offer accepted by the player, or null if no such event exists.
+     */
+    public static function getJobForPlayer(GameEvents $stream, PlayerId $playerId): ?JobOfferWasAccepted
+    {
+        // @phpstan-ignore return.type
+        return $stream->findLastOrNullWhere(fn($e) => $e instanceof JobOfferWasAccepted && $e->player->equals($playerId));
     }
 }

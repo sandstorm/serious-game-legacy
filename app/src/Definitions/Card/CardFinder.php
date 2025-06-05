@@ -150,6 +150,28 @@ final class CardFinder
                         bildungKompetenzsteine: 1,
                     ),
                 ),
+                "ee3" => new JobCardDefinition(
+                    id: new CardId('ee3'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'Geschichtslehrer:in',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new Gehalt(12000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                        bildungKompetenzsteine: 0,
+                    ),
+                ),
+                "ee4" => new JobCardDefinition(
+                    id: new CardId('ee4'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'Bruchpilot:in',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new Gehalt(4000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                        bildungKompetenzsteine: 0,
+                    ),
+                ),
             ]
         ]);
         return self::$instance;
