@@ -27,10 +27,11 @@ trait HasGamePhase
 
         $placedZeitsteineBildung = $this->getAllPlacedZeitsteineByPlayersInCategory(CategoryEnum::BILDUNG);
         $placedZeitsteineFreizeit = $this->getAllPlacedZeitsteineByPlayersInCategory(CategoryEnum::FREIZEIT);
+        $placedZeitsteineErwerbseinkommen = $this->getAllPlacedZeitsteineByPlayersInCategory(CategoryEnum::ERWEBSEINKOMMEN);
+        $placedZeitsteineInvestitionen = $this->getAllPlacedZeitsteineByPlayersInCategory(CategoryEnum::INVESTITIONEN);
 
         $lebenszielForPlayer = PreGameState::lebenszielForPlayer($this->gameStream, $this->myself);
 
-        // TODO DTO
         $categories = [
             new GameboardInformationForCategory(
                 title: CategoryEnum::BILDUNG,
@@ -49,27 +50,28 @@ trait HasGamePhase
                 cardPile: PileId::FREIZEIT_PHASE_1,
             ),
             new GameboardInformationForCategory(
-                title: CategoryEnum::INVESTITIONEN,
-                kompetenzen: null,
-                kompetenzenRequiredByPhase: null,
-                availableZeitsteine: $this->getSlotsForKompetenzbereich(CategoryEnum::INVESTITIONEN),
-                placedZeitsteine: $this->getAllPlacedZeitsteineByPlayersInCategory(CategoryEnum::INVESTITIONEN),
-                cardPile: null
-            ),
-            new GameboardInformationForCategory(
                 title: CategoryEnum::ERWEBSEINKOMMEN,
                 kompetenzen: null,
                 kompetenzenRequiredByPhase: null,
-                availableZeitsteine: $this->getSlotsForKompetenzbereich(CategoryEnum::ERWEBSEINKOMMEN),
-                placedZeitsteine: $this->getAllPlacedZeitsteineByPlayersInCategory(CategoryEnum::ERWEBSEINKOMMEN),
-                cardPile: null
+                availableZeitsteine: $this->getSlotsForKompetenzbereich(CategoryEnum::ERWEBSEINKOMMEN) - $this->getSumOfPlacedZeitsteineInCategory($placedZeitsteineErwerbseinkommen),
+                placedZeitsteine: $placedZeitsteineErwerbseinkommen,
+            ),
+            new GameboardInformationForCategory(
+                title: CategoryEnum::INVESTITIONEN,
+                kompetenzen: null,
+                kompetenzenRequiredByPhase: null,
+                availableZeitsteine: $this->getSlotsForKompetenzbereich(CategoryEnum::INVESTITIONEN) - $this->getSumOfPlacedZeitsteineInCategory($placedZeitsteineInvestitionen),
+                placedZeitsteine: $placedZeitsteineInvestitionen,
             ),
         ];
+
+        $myJob = PlayerState::getJobForPlayer($this->gameStream, $this->myself);
 
         return view('livewire.screens.ingame', [
             'currentYear' => GamePhaseState::currentKonjunkturphasenYear($this->gameStream),
             'konjunkturphasenDefinition' => $konjunkturphasenDefinition,
             'categories' => $categories,
+            'myJob' => $myJob,
         ]);
     }
 
@@ -129,23 +131,18 @@ trait HasGamePhase
     }
 
     /**
-     * @param CategoryEnum $kompetenzbereich
+     * @param CategoryEnum $category
      * @return int
      */
-    public function getSlotsForKompetenzbereich(CategoryEnum $kompetenzbereich): int
+    public function getSlotsForKompetenzbereich(CategoryEnum $category): int
     {
         $konjunkturphasenId = GamePhaseState::currentKonjunkturphasenId($this->gameStream);
         $konjunkturphasenDefinition = KonjunkturphaseFinder::findKonjunkturphaseById(
             $konjunkturphasenId
         );
 
-        foreach ($konjunkturphasenDefinition->kompetenzbereiche as $kompetenzbereichDefinition) {
-            if ($kompetenzbereichDefinition->name === $kompetenzbereich) {
-                return $kompetenzbereichDefinition->kompetenzsteine;
-            }
-        }
-
-        return 0;
+        return collect($konjunkturphasenDefinition->kompetenzbereiche)
+            ->firstWhere('name', $category)->kompetenzsteine ?? 0;
     }
 
 }

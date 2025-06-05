@@ -8,6 +8,9 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 
 class GamePhaseState
@@ -30,6 +33,34 @@ class GamePhaseState
     public static function hasKonjunkturphase(GameEvents $gameStream): bool
     {
         return $gameStream->findFirstOrNull(KonjunkturphaseWasChanged::class) !== null;
+    }
+
+    /**
+     *
+     * @param GameEvents $gameStream
+     * @param CategoryEnum $category
+     * @return bool
+     */
+    public static function hasFreeTimeSlotsForCategory(
+        GameEvents $gameStream,
+        CategoryEnum $category
+    ): bool {
+        $konjunkturphasenId = self::currentKonjunkturphasenId($gameStream);
+        $konjunkturphasenDefinition = KonjunkturphaseFinder::findKonjunkturphaseById(
+            $konjunkturphasenId
+        );
+
+        $freeSlots = collect($konjunkturphasenDefinition->kompetenzbereiche)
+            ->firstWhere('name', $category)->kompetenzsteine ?? 0;
+
+        // now get all players and their placed Zeitsteine in this category
+        $players = PreGameState::playersWithNameAndLebensziel($gameStream);
+        $usedSlots = 0;
+        foreach ($players as $player) {
+            $usedSlots += PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($gameStream, $player->playerId, $category);
+        }
+
+        return $freeSlots > $usedSlots;
     }
 
     /**

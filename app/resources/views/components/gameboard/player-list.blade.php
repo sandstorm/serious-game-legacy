@@ -14,7 +14,7 @@
 
             <ul class="zeitsteine">
                 @for($i = 0; $i < PlayerState::getZeitsteineForPlayer($this->gameStream(), $playerAndLebensziel->playerId); $i++)
-                    <li class="zeitstein" @style(['background-color:' . PlayerState::getPlayerColor($this->gameStream(), $playerAndLebensziel->playerId)])></li>
+                    <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($this->gameStream(), $playerAndLebensziel->playerId)])></li>
                 @endfor
             </ul>
             {{$playerAndLebensziel->name }}
