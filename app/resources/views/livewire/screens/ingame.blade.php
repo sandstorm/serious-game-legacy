@@ -41,7 +41,7 @@
         <h4>Money Sheet</h4>
         <button class="button button--type-primary" wire:click="showMoneySheet()">{{ PlayerState::getGuthabenForPlayer($this->gameStream(), $myself) }}€</button>
         @if ($moneySheetIsVisible)
-            <x-moneysheet :player-id="$myself" :game-stream="$this->gameStream"/>
+            <x-money-sheet :player-id="$myself" :game-stream="$this->gameStream"/>
         @endif
 
         @if ($this->currentPlayerIsMyself())
