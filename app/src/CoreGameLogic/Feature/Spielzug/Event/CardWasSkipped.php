@@ -12,13 +12,15 @@ use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryEnum;
 
 final readonly class CardWasSkipped implements ZeitsteinAktion, DrawsCard, GameEventInterface, ProvidesResourceChanges
 {
     public function __construct(
-        public PlayerId $player,
-        public CardId   $card,
-        public PileId   $pile,
+        public PlayerId     $player,
+        public CardId       $card,
+        public PileId       $pile,
+        public CategoryEnum $category,
     ) {
     }
 
@@ -28,6 +30,7 @@ final readonly class CardWasSkipped implements ZeitsteinAktion, DrawsCard, GameE
             player: PlayerId::fromString($values['player']),
             card: new CardId($values['card']),
             pile: PileId::from($values['pile']),
+            category: CategoryEnum::from($values['category']),
         );
     }
 
@@ -37,6 +40,7 @@ final readonly class CardWasSkipped implements ZeitsteinAktion, DrawsCard, GameE
             'player' => $this->player,
             'card' => $this->card,
             'pile' => $this->pile,
+            'category' => $this->category->value,
         ];
     }
 
@@ -52,5 +56,15 @@ final readonly class CardWasSkipped implements ZeitsteinAktion, DrawsCard, GameE
             return new ResourceChanges(zeitsteineChange: -1);
         }
         return new ResourceChanges();
+    }
+
+    public function getCategory(): CategoryEnum
+    {
+        return $this->category;
+    }
+
+    public function getPlayerId(): PlayerId
+    {
+        return $this->player;
     }
 }

@@ -25,4 +25,9 @@
 .lebensziel-to-select--is-selected {
     background-color: var(--color-primary);
     color: var(--color-primary-fg);
+
+    .kompetenz {
+        border-color: var(--color-primary-fg);
+        background-color: var(--color-primary-fg);
+    }
 }

@@ -19,6 +19,7 @@ use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryEnum;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
@@ -75,7 +76,7 @@ test('wie viel Guthaben hat Player zur Verfügung', function () {
     //<editor-fold desc="modify guthaben">
     $this->coreGameLogic->handle(
         $this->gameId,
-        ActivateCard::create($p1, $testCard->id, $this->pileIdFreizeit)
+        ActivateCard::create($p1, $testCard->id, $this->pileIdFreizeit, CategoryEnum::FREIZEIT)
             ->withEreignis(new EreignisId("EVENT:Lotteriegewinn"))
     );
     $stream = $this->coreGameLogic->getGameEvents($this->gameId);

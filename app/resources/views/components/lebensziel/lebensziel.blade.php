@@ -14,18 +14,18 @@
                 <div class="lebensziel__phase-kompetenzen">
                     <div>
                         <strong>Bildung & Karriere</strong>
-                        <div class="lebensziel__kompetenzen">
+                        <div class="kompetenzen">
                             @for($i = 0; $i < $phase->bildungsKompetenzSlots; $i++)
-                                <div class="lebensziel__kompetenz"></div>
+                                <div class="kompetenz"></div>
                             @endfor
                         </div>
                     </div>
 
                     <div>
                         <strong>Soziales & Freizeit</strong>
-                        <div class="lebensziel__kompetenzen">
+                        <div class="kompetenzen">
                             @for($i = 0; $i < $phase->freizeitKompetenzSlots; $i++)
-                                <div class="lebensziel__kompetenz"></div>
+                                <div class="kompetenz"></div>
                             @endfor
                         </div>
                     </div>

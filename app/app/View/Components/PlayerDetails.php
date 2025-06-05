@@ -48,8 +48,8 @@ class PlayerDetails extends Component
             lebensziel: $lebensziel->definition,
             guthaben: PlayerState::getGuthabenForPlayer($this->gameStream, $playerId),
             zeitsteine: PlayerState::getZeitsteineForPlayer($this->gameStream, $playerId),
-            kompetenzsteineBildung: $lebensziel->phases[0]->placedKompetenzsteineBildung,
-            kompetenzsteineFreizeit: $lebensziel->phases[0]->placedKompetenzsteineFreizeit,
+            kompetenzsteineBildung: PlayerState::getBildungsKompetenzsteine($this->gameStream, $playerId),
+            kompetenzsteineFreizeit: PlayerState::getFreizeitKompetenzsteine($this->gameStream, $playerId),
         );
     }
 

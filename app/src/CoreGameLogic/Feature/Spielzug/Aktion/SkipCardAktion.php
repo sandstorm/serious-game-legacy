@@ -18,11 +18,15 @@ use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryEnum;
 
 class SkipCardAktion extends Aktion
 {
-    public function __construct(public PileId $pileId, public CardId $cardId)
-    {
+    public function __construct(
+        public PileId       $pileId,
+        public CardId       $cardId,
+        public CategoryEnum $category,
+    ) {
         parent::__construct('skip-card', 'Karte überspringen');
     }
 
@@ -62,7 +66,7 @@ class SkipCardAktion extends Aktion
             throw new \RuntimeException('Cannot skip Card: ' . $result->reason, 1747325793);
         }
         return GameEventsToPersist::with(
-            new CardWasSkipped($player, $this->cardId, $this->pileId),
+            new CardWasSkipped($player, $this->cardId, $this->pileId, $this->category),
         );
     }
 }

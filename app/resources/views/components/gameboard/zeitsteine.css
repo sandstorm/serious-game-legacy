@@ -1,0 +1,22 @@
+.zeitsteine {
+    display: flex;
+    gap: var(--spacing-25);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-top: var(--spacing-100);
+}
+
+.zeitstein {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+
+    border-radius: 50%;
+    background-color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+}
+
+.zeitstein.zeitstein--empty {
+    background-color: var(--color-primary-fg);
+}

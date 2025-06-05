@@ -10,22 +10,25 @@ use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryEnum;
 
 final readonly class ActivateCard implements CommandInterface
 {
     public static function create(
-        PlayerId $player,
-        CardId   $cardId,
-        PileId   $pile,
+        PlayerId     $player,
+        CardId       $cardId,
+        PileId       $pile,
+        CategoryEnum $category,
     ): ActivateCard {
-        return new self($player, $cardId, $pile);
+        return new self($player, $cardId, $pile, $category);
     }
 
     private function __construct(
-        public PlayerId        $player,
-        public CardId          $cardId,
-        public PileId          $pile,
-        public ?EreignisId     $attachedEreignis = null,
+        public PlayerId                 $player,
+        public CardId                   $cardId,
+        public PileId                   $pile,
+        public CategoryEnum             $category,
+        public ?EreignisId              $attachedEreignis = null,
         public ?KategorieCardDefinition $fixedCardDefinitionForTesting = null,
     ) {
     }
@@ -36,6 +39,7 @@ final readonly class ActivateCard implements CommandInterface
             $this->player,
             $this->cardId,
             $this->pile,
+            $this->category,
             $ereignisId,
             $this->fixedCardDefinitionForTesting
         );
@@ -47,6 +51,7 @@ final readonly class ActivateCard implements CommandInterface
             $this->player,
             $cardDefinition->id,
             $this->pile,
+            $this->category,
             $this->attachedEreignis,
             $cardDefinition
         );

@@ -20,19 +20,34 @@
             </div>
 
             <div class="game-board__categories">
-                @foreach($cardPiles as $pile)
+                @foreach($categories as $category)
                     <div class="game-board__category">
-                        <h3>{{ $pile }}</h3>
-                        <x-card-pile :title="$pile" :game-stream="$this->gameStream" />
+                        <h3>{{ $category['title'] }}</h3>
+                        <ul class="zeitsteine">
+                            @foreach($category['placedZeitsteine'] as $placedZeitstein)
+                                @for($i = 0; $i < $placedZeitstein['zeitsteine']; $i++)
+                                    <li class="zeitstein" @style(['background-color:' . PlayerState::getPlayerColor($this->gameStream(), $placedZeitstein['playerId'])])></li>
+                                @endfor
+                            @endforeach
+                            @for($i = 0; $i < $category['availableZeitsteine']; $i++)
+                                <li class="zeitstein zeitstein--empty"></li>
+                            @endfor
+                        </ul>
+
+                        <ul class="kompetenzen">
+                            @for($i = 0; $i < $category['kompetenzen']; $i++)
+                                <li class="kompetenz"></li>
+                            @endfor
+
+                            @for($i = 0; $i < $category['kompetenzenRequiredByPhase']; $i++)
+                                <li class="kompetenz kompetenz--empty"></li>
+                            @endfor
+                        </ul>
+                        @if ($category['cardPile'] !== null)
+                            <x-card-pile :category="$category['title']" :card-pile="$category['cardPile']" :game-stream="$this->gameStream" />
+                        @endif
                     </div>
                 @endforeach
-                <div class="game-board__category">
-                    <h3>Jobs</h3>
-                </div>
-
-                <div class="game-board__category">
-                    <h3>Investitionen</h3>
-                </div>
             </div>
         </div>
     </div>
