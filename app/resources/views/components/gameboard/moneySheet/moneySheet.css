@@ -6,6 +6,7 @@
     ;
     grid-template-columns: 1fr 1fr 0.5fr;
     grid-template-rows: auto 50px;
+    gap: 10px;
 }
 
 .moneysheet__income {
@@ -18,10 +19,12 @@
 
 .moneysheet__expenses-sum {
     grid-area: expenses-sum;
+    text-align: right;
 }
 
 .moneysheet__income-sum {
     grid-area: income-sum;
+    text-align: right;
 }
 
 .moneysheet__sum {
