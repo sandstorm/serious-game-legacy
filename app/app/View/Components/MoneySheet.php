@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\View\Components;
 
+use App\Livewire\Dto\MoneySheet as MoneySheetDto;
 use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\Feature\Spielzug\State\MoneySheetState;
+use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Illuminate\View\Component;
 use Illuminate\View\View;
-use App\Livewire\Dto\MoneySheet as MoneySheetDto;
 
 class MoneySheet extends Component
 {
@@ -35,8 +35,9 @@ class MoneySheet extends Component
     private function getMoneysheetForPlayerId(PlayerId $playerId): MoneySheetDto
     {
         return new MoneySheetDto(
-            lebenskosten: MoneySheetState::lebenskostenForPlayer($this->gameStream, $playerId),
-            gehalt: PlayerState::getJobForPlayer($this->gameStream, $playerId)?->gehalt->value ?? 0
+            lebenskosten: MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameStream, $playerId),
+            steuernUndAbgaben: MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameStream, $playerId),
+            gehalt: PlayerState::getJobForPlayer($this->gameStream, $playerId)?->gehalt->value ?? 0,
         );
     }
 

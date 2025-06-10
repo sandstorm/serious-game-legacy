@@ -8,6 +8,7 @@ class MoneySheet
 {
     public function __construct(
         public int $lebenskosten,
+        public int $steuernUndAbgaben,
         public int $gehalt,
     ) {}
 }
