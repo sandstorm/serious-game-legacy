@@ -49,12 +49,11 @@ class RequestJobOffersAktion extends Aktion
             );
         }
 
-        // TODO add to other cards actions as well
         $hasFreeTimeSlots = GamePhaseState::hasFreeTimeSlotsForCategory($gameEvents, CategoryId::JOBS);
         if (!$hasFreeTimeSlots) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Es gibt keine freien Zeitsteine für die Kategorie Erwerbseinkommen',
+                reason: 'Es gibt keine freien Zeitsteine mehr.',
             );
         }
 

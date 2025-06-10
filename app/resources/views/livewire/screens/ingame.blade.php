@@ -59,10 +59,6 @@
                                     <span>Mein Job. {{ $myJob->gehalt->value}}€</span>
                                 </div>
                             @endif
-
-                            @if ($requestJobOffersErrorMessage)
-                                <p class="form__error">{{ $requestJobOffersErrorMessage }}</p>
-                            @endif
                             @if ($jobOfferIsVisible)
                                 <x-job-offers-modal :player-id="$myself" :game-stream="$this->gameStream" />
                             @endif
@@ -85,4 +81,5 @@
             <button type="button" class="button button--type-primary" wire:click="spielzugAbschliessen()">Spielzug abschließen</button>
         @endif
     </aside>
+    <x-notification.notification />
 </div>

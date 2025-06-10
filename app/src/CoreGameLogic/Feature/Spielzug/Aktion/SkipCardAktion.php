@@ -7,6 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
+use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
@@ -42,7 +43,6 @@ class SkipCardAktion extends Aktion
 
         $eventsThisTurn = $gameEvents->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class) ?? $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
         $zeitsteinEventsThisTurn = $eventsThisTurn->findAllOfType(ZeitsteinAktion::class);
-
         if (count($zeitsteinEventsThisTurn) > 0) {
             return new AktionValidationResult(
                 canExecute: false,
@@ -50,11 +50,18 @@ class SkipCardAktion extends Aktion
             );
         }
 
-
         if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($player, new ResourceChanges(zeitsteineChange: -1))) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: 'Du hast nicht genug Ressourcen um die Karte zu überspringen',
+            );
+        }
+
+        $hasFreeTimeSlots = GamePhaseState::hasFreeTimeSlotsForCategory($gameEvents, $this->category);
+        if (!$hasFreeTimeSlots) {
+            return new AktionValidationResult(
+                canExecute: false,
+                reason: 'Es gibt keine freien Zeitsteine mehr.',
             );
         }
 
@@ -66,7 +73,7 @@ class SkipCardAktion extends Aktion
         $result = $this->validate($player, $gameEvents);
         $topCardOnPile = PileState::topCardIdForPile($gameEvents, $this->pileId);
         if (!$result->canExecute) {
-            throw new \RuntimeException('Cannot skip Card: ' . $result->reason, 1747325793);
+            throw new \RuntimeException('' . $result->reason, 1747325793);
         }
         return GameEventsToPersist::with(
             new CardWasSkipped($player, $topCardOnPile, $this->pileId, $this->category),

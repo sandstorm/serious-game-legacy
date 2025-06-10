@@ -15,7 +15,7 @@ class CurrentPlayerAccessor
     {
         $currentPlayerOrdering = $stream->findLast(GameWasStarted::class)->playerOrdering;
 
-        $previousPlayer = $stream->findLastOrNull(SpielzugWasEnded::class)?->player;
+        $previousPlayer = $stream->findLastOrNull(SpielzugWasEnded::class)?->playerId;
 
         if ($previousPlayer === null) {
             // Initial move -> first according to player ordering

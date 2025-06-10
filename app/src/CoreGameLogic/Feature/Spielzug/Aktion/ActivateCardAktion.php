@@ -6,13 +6,12 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
-use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
+use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\PlayerId;
@@ -33,7 +32,7 @@ class ActivateCardAktion extends Aktion
         parent::__construct('activate-card', 'Karte Spielen');
 
         // TODO reorganize piles -> Category and phase separate -> `PileState::topCardIdForPile($gameEvents, PileId::BILDUNG, phase: 1)`
-        $this->pileId = PileState::getPileIdForCategoryAndPhase($this->category);
+        $this->pileId = PileState::getPileIdForCategoryAndPhase($category);
     }
 
     /**
@@ -50,14 +49,14 @@ class ActivateCardAktion extends Aktion
             return new AktionValidationResult(true);
         }
 
-        if (count($zeitsteinEventsThisTurn) > 2 || $zeitsteinEventsThisTurn->findFirstOrNull(CardWasSkipped::class) === null) {
+        if (count($zeitsteinEventsThisTurn) > 1 || $zeitsteinEventsThisTurn->findFirstOrNull(CardWasSkipped::class) === null) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: 'Du hast bereits eine andere Aktion ausgeführt'
             );
         }
 
-        if ($zeitsteinEventsThisTurn->findFirst(CardWasSkipped::class)->category->value !== $this->category->value) {
+        if ($zeitsteinEventsThisTurn->findFirst(CardWasSkipped::class)->categoryId->value !== $this->category->value) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: 'Du hast bereits eine Karte in einer anderen Kategorie übersprungen'
@@ -93,6 +92,14 @@ class ActivateCardAktion extends Aktion
             );
         }
 
+        $hasFreeTimeSlots = GamePhaseState::hasFreeTimeSlotsForCategory($gameEvents, $this->category);
+        if (!$hasFreeTimeSlots) {
+            return new AktionValidationResult(
+                canExecute: false,
+                reason: 'Es gibt keine freien Zeitsteine mehr.',
+            );
+        }
+
         return new AktionValidationResult(canExecute: true);
     }
 
@@ -108,14 +115,14 @@ class ActivateCardAktion extends Aktion
     {
         $result = $this->validate($player, $gameEvents);
         if (!$result->canExecute) {
-            throw new \RuntimeException('Cannot activate Card: ' . $result->reason, 1748951140);
+            throw new \RuntimeException('' . $result->reason, 1748951140);
         }
         return GameEventsToPersist::with(
             new CardWasActivated(
                 $player,
                 $this->card->getPileId(),
                 $this->card->getId(),
-                CategoryId::BILDUNG_UND_KARRIERE,
+                $this->category,
                 $this->getTotalCosts($gameEvents, $player)
             )
         );

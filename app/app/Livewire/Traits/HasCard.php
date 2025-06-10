@@ -57,7 +57,10 @@ trait HasCard
     {
         $validationResult = self::canActivateCard($category);
         if (!$validationResult->canExecute) {
-            // TODO show error message why -> use $validationResult->reason
+            $this->showNotification(
+                $validationResult->reason,
+                NotificationType::ERROR
+            );
             return;
         }
 
@@ -76,7 +79,10 @@ trait HasCard
     {
         $validationResult = self::canSkipCard($category);
         if (!$validationResult->canExecute) {
-            // TODO show error message why -> use $validationResult->reason
+            $this->showNotification(
+                $validationResult->reason,
+                NotificationType::ERROR
+            );
             return;
         }
         $this->coreGameLogic->handle($this->gameId, new SkipCard(

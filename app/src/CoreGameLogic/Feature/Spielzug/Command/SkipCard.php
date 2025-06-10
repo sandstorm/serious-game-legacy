@@ -13,8 +13,8 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 final readonly class SkipCard implements CommandInterface
 {
     public function __construct(
-        public PlayerId     $player,
-        public CategoryId $category,
+        public PlayerId   $playerId,
+        public CategoryId $categoryId,
     ) {
     }
 }

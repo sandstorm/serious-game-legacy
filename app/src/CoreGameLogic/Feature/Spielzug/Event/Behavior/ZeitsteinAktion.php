@@ -16,6 +16,6 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
  */
 interface ZeitsteinAktion
 {
-    public function getCategory(): CategoryId; // e.g. 'BILDUNG' or 'FREIZEIT'
+    public function getCategoryId(): CategoryId; // e.g. 'BILDUNG' or 'FREIZEIT'
     public function getPlayerId(): PlayerId;
 }

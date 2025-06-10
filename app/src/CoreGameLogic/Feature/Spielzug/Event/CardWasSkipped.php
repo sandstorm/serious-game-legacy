@@ -17,54 +17,54 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 final readonly class CardWasSkipped implements ZeitsteinAktion, DrawsCard, GameEventInterface, ProvidesResourceChanges
 {
     public function __construct(
-        public PlayerId     $player,
-        public CardId       $card,
-        public PileId       $pile,
-        public CategoryId $category,
+        public PlayerId   $playerId,
+        public CardId     $cardId,
+        public PileId     $pileId,
+        public CategoryId $categoryId,
     ) {
     }
 
     public static function fromArray(array $values): GameEventInterface
     {
         return new self(
-            player: PlayerId::fromString($values['player']),
-            card: new CardId($values['card']),
-            pile: PileId::from($values['pile']),
-            category: CategoryId::from($values['category']),
+            playerId: PlayerId::fromString($values['playerId']),
+            cardId: new CardId($values['cardId']),
+            pileId: PileId::from($values['pileId']),
+            categoryId: CategoryId::from($values['categoryId']),
         );
     }
 
     public function jsonSerialize(): array
     {
         return [
-            'player' => $this->player,
-            'card' => $this->card,
-            'pile' => $this->pile,
-            'category' => $this->category->value,
+            'playerId' => $this->playerId,
+            'cardId' => $this->cardId,
+            'pileId' => $this->pileId,
+            'categoryId' => $this->categoryId->value,
         ];
     }
 
     public function getPileId(): PileId
     {
-        return $this->pile;
+        return $this->pileId;
     }
 
     public function getResourceChanges(PlayerId $playerId): ResourceChanges
     {
-        if ($playerId->equals($this->player)) {
+        if ($playerId->equals($this->playerId)) {
             // Skipping will always consume 1 Zeitstein
             return new ResourceChanges(zeitsteineChange: -1);
         }
         return new ResourceChanges();
     }
 
-    public function getCategory(): CategoryId
+    public function getCategoryId(): CategoryId
     {
-        return $this->category;
+        return $this->categoryId;
     }
 
     public function getPlayerId(): PlayerId
     {
-        return $this->player;
+        return $this->playerId;
     }
 }

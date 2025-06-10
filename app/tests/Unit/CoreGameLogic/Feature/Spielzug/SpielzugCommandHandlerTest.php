@@ -8,12 +8,14 @@ namespace Tests\CoreGameLogic\Feature\Spielzug;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
@@ -30,6 +32,7 @@ use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
+use Illuminate\Queue\Middleware\Skip;
 
 beforeEach(function () {
     $this->setupBasicGame();
@@ -43,25 +46,25 @@ describe('handleSkipCard', function () {
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(6);
 
-        $this->coreGameLogic->handle($this->gameId, new SkipCard(player: $this->players[0], category: CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId, new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(5);
     });
 
     it('Cannot skip twice', function () {
-        $this->coreGameLogic->handle($this->gameId, new SkipCard(player: $this->players[0], category: CategoryId::BILDUNG_UND_KARRIERE));
-        $this->coreGameLogic->handle($this->gameId, new SkipCard(player: $this->players[0], category: CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId, new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId, new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
     })->throws(
         \RuntimeException::class,
-        'Cannot skip Card: Du kannst nur eine Zeitsteinaktion pro Runde ausführen',
+        'Du kannst nur eine Zeitsteinaktion pro Runde ausführen',
         1747325793);
 
     it('can only skip when it\'s the player\'s turn', function () {
-        $this->coreGameLogic->handle($this->gameId, new SkipCard(player: $this->players[1], category: CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId, new SkipCard(playerId: $this->players[1], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
     })->throws(
         \RuntimeException::class,
-        'Cannot skip Card: Du kannst Karten nur überspringen, wenn du dran bist',
+        'Du kannst Karten nur überspringen, wenn du dran bist',
         1747325793);
 
     it('cannot skip without a Zeitstein', function () {
@@ -83,28 +86,70 @@ describe('handleSkipCard', function () {
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(6);
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
-            player: $this->players[0],
-            category: CategoryId::BILDUNG_UND_KARRIERE,
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
 
         $this->coreGameLogic->handle(
             $this->gameId,
             new EndSpielzug($this->players[0])
         );
-        $this->coreGameLogic->handle($this->gameId, new SkipCard(player: $this->players[1], category: CategoryId::SOZIALES_UND_FREIZEIT));
+        $this->coreGameLogic->handle($this->gameId, new SkipCard(playerId: $this->players[1], categoryId: CategoryId::SOZIALES_UND_FREIZEIT));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
 
         // confirm that the player has 0 Zeitsteine
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(0);
 
-        $this->coreGameLogic->handle($this->gameId, new SkipCard(player: $this->players[0], category: CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId, new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
     })->throws(\RuntimeException::class,
-        'Cannot skip Card: Du hast nicht genug Ressourcen um die Karte zu überspringen', 1747325793);
+        'Du hast nicht genug Ressourcen um die Karte zu überspringen', 1747325793);
+
+    it("card cannot be skipped when no free slots are available for this konjunkturphase", function () {
+        $cardToTest = new KategorieCardDefinition(
+            id: new CardId('testcard'),
+            pileId: $this->pileIdBildung,
+            title: 'for testing',
+            description: '...',
+            resourceChanges: new ResourceChanges(
+                guthabenChange: 0,
+                bildungKompetenzsteinChange: +1,
+            ),
+        );
+        $this->addCardsOnTopOfPile([$cardToTest], $this->pileIdBildung);
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        $events = $stream->findAllOfType(KonjunkturphaseWasChanged::class);
+        expect(count($events))->toBe(2);
+
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+        ));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
+            playerId: $this->players[1],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+        ));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
+
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+        ));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+
+        // this fails, no free slots available
+        $this->coreGameLogic->handle($this->gameId, new SkipCard(
+            playerId: $this->players[1],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+        ));
+    })->throws(\RuntimeException::class,
+        'Es gibt keine freien Zeitsteine mehr.',
+        1747325793);
 });
 
 describe('handleActivateCard', function () {
-
     it('will consume a Zeitstein (first turn)', function () {
         CardFinder::getInstance()->overrideCardsForTesting([
             PileId::BILDUNG_PHASE_1->value => [
@@ -131,7 +176,7 @@ describe('handleActivateCard', function () {
             ChangeKonjunkturphase::create()
         );
 
-        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(player: $this->players[0], category: CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(5);
@@ -168,8 +213,8 @@ describe('handleActivateCard', function () {
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(6);
 
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
-            player: $this->players[0],
-            category: CategoryId::BILDUNG_UND_KARRIERE,
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
 
         $this->coreGameLogic->handle(
@@ -178,8 +223,8 @@ describe('handleActivateCard', function () {
         );
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
-            player: $this->players[1],
-            category: CategoryId::BILDUNG_UND_KARRIERE,
+            playerId: $this->players[1],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -214,8 +259,8 @@ describe('handleActivateCard', function () {
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(6);
 
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
-            player: $this->players[0],
-            category: CategoryId::BILDUNG_UND_KARRIERE,
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
 
         // Skipping will consume a Zeitstein
@@ -223,8 +268,8 @@ describe('handleActivateCard', function () {
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(5);
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
-            player: $this->players[0],
-            category: CategoryId::BILDUNG_UND_KARRIERE,
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
 
         // Expect no additional Zeitstein being used
@@ -246,16 +291,51 @@ describe('handleActivateCard', function () {
         $this->addCardsOnTopOfPile([$cardToTest], $this->pileIdBildung);
 
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
-            player: $this->players[0],
-            category: CategoryId::SOZIALES_UND_FREIZEIT,
+            playerId: $this->players[0],
+            categoryId: CategoryId::SOZIALES_UND_FREIZEIT,
         ));
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
-            player: $this->players[0],
-            category: CategoryId::BILDUNG_UND_KARRIERE,
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
     })->throws(
         \RuntimeException::class,
-        'Cannot activate Card: Du hast bereits eine Karte in einer anderen Kategorie übersprungen',
+        'Du hast bereits eine Karte in einer anderen Kategorie übersprungen',
+        1748951140);
+
+    it('Will not activate a card after another was used', function () {
+        // skip one card
+        $this->coreGameLogic->handle($this->gameId, new SkipCard(
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+        ));
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        /** @var CardWasSkipped $actualEvent */
+        $actualEvent = $stream->findLast(CardWasSkipped::class);
+        expect($actualEvent->cardId->value)->toEqual('buk0');
+
+        // play the next card
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+        ));
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        /** @var CardWasActivated $actualEvent */
+        $actualEvent = $stream->findLast(CardWasActivated::class);
+        expect($actualEvent->cardId->value)->toEqual('buk1');
+
+        // play another card -> should fail
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+        ));
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        /** @var CardWasActivated $actualEvent */
+        $actualEvent = $stream->findLast(CardWasActivated::class);
+        expect($actualEvent->cardId->value)->toEqual('buk2');
+    })->throws(
+        \RuntimeException::class,
+        'Du hast bereits eine andere Aktion ausgeführt',
         1748951140);
 
     it('Will activate a card if requirements are met', function () {
@@ -272,8 +352,8 @@ describe('handleActivateCard', function () {
         $this->addCardsOnTopOfPile([$cardToTest], $this->pileIdFreizeit);
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
-            player: $this->players[0],
-            category: CategoryId::SOZIALES_UND_FREIZEIT,
+            playerId: $this->players[0],
+            categoryId: CategoryId::SOZIALES_UND_FREIZEIT,
         ));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -300,10 +380,10 @@ describe('handleActivateCard', function () {
         $this->addCardsOnTopOfPile([$cardToTest], $this->pileIdBildung);
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
-            player: $this->players[1],
-            category: CategoryId::BILDUNG_UND_KARRIERE,
+            playerId: $this->players[1],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
-    })->throws(\RuntimeException::class, 'Cannot activate Card: Du kannst Karten nur spielen, wenn du dran bist',
+    })->throws(\RuntimeException::class, 'Du kannst Karten nur spielen, wenn du dran bist',
         1748951140);
 
     it("will not activate the card if the requirements are not met", function () {
@@ -321,11 +401,54 @@ describe('handleActivateCard', function () {
         $this->addCardsOnTopOfPile([$cardToTest], $this->pileIdBildung);
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
-            player: $this->players[0],
-            category: CategoryId::BILDUNG_UND_KARRIERE,
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
     })->throws(\RuntimeException::class,
-        'Cannot activate Card: Du hast nicht genug Ressourcen um die Karte zu spielen',
+        'Du hast nicht genug Ressourcen um die Karte zu spielen',
+        1748951140);
+
+    it("card cannot be activated when no free slots are available for this konjunkturphase", function () {
+        $cardToTest = new KategorieCardDefinition(
+            id: new CardId('testcard'),
+            pileId: $this->pileIdBildung,
+            title: 'for testing',
+            description: '...',
+            resourceChanges: new ResourceChanges(
+                guthabenChange: 0,
+                bildungKompetenzsteinChange: +1,
+            ),
+        );
+        $this->addCardsOnTopOfPile([$cardToTest], $this->pileIdBildung);
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        $events = $stream->findAllOfType(KonjunkturphaseWasChanged::class);
+        expect(count($events))->toBe(2);
+
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+        ));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
+            playerId: $this->players[1],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+        ));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
+
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+        ));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+
+        // this fails, no free slots available
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
+            playerId: $this->players[1],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+        ));
+    })->throws(\RuntimeException::class,
+        'Es gibt keine freien Zeitsteine mehr.',
         1748951140);
 
 });
@@ -371,7 +494,7 @@ describe('handleRequestJobOffers', function () {
         $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
     })->throws(\RuntimeException::class,
-        'Es gibt keine freien Zeitsteine für die Kategorie Erwerbseinkommen', 1749043606);
+        'Es gibt keine freien Zeitsteine mehr.', 1749043606);
 
     it('throws an exception when the player does not fulfill the requirements for any job', function () {
         CardFinder::getInstance()->overrideCardsForTesting([
@@ -684,7 +807,7 @@ describe('handleAcceptJobOffer', function () {
         $this->coreGameLogic->handle($this->gameId,
             AcceptJobOffer::create($this->players[0], new CardId($jobThatWasNotOffered)));
     })->throws(\RuntimeException::class,
-        'Cannot Accept Job Offer: Du kannst nur einen Job annehmen, der dir vorgeschlagen wurde', 1749043636);
+        'Du kannst nur einen Job annehmen, der dir vorgeschlagen wurde', 1749043636);
 
     it('permanently removes 1 Zeitstein while the player has a job', function () {
         // Reaffirm the "normal" number of Zeitsteine (in case we change something and forget to adjust this test)

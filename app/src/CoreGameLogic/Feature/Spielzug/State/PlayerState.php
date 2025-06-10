@@ -124,7 +124,7 @@ class PlayerState
     public static function getZeitsteinePlacedForCurrentKonjunkturphaseInCategory(GameEvents $stream, PlayerId $playerId, CategoryId $category): int
     {
         $zeitsteinAktionenForPlayerAndBildung = $stream->findAllAfterLastOfType(KonjunkturphaseWasChanged::class)->findAllOfType(ZeitsteinAktion::class)
-            ->filter(fn(ZeitsteinAktion $event) => $event->getCategory() === $category && $event->getPlayerId()->equals($playerId));
+            ->filter(fn(ZeitsteinAktion $event) => $event->getCategoryId() === $category && $event->getPlayerId()->equals($playerId));
 
         $sum = 0;
         foreach ($zeitsteinAktionenForPlayerAndBildung as $event) {
