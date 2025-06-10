@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Livewire\Dto;
 
 use Domain\Definitions\Card\ValueObject\PileId;
-use Domain\Definitions\Konjunkturphase\ValueObject\CategoryEnum;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 class GameboardInformationForCategory
 {
     /**
-     * @param CategoryEnum $title
+     * @param CategoryId $title
      * @param int|null $kompetenzen
      * @param int|null $kompetenzenRequiredByPhase
      * @param int $availableZeitsteine
@@ -18,7 +18,7 @@ class GameboardInformationForCategory
      * @param PileId|null $cardPile
      */
     public function __construct(
-        public CategoryEnum $title,
+        public CategoryId $title,
         public ?int $kompetenzen,
         public ?int $kompetenzenRequiredByPhase,
         public int $availableZeitsteine,

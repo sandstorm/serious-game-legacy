@@ -8,7 +8,7 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\ValueObject\PileId;
-use Domain\Definitions\Konjunkturphase\ValueObject\CategoryEnum;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
@@ -31,7 +31,7 @@ class CardPile extends Component
         // TODO get next card when played/skipped
         $topCardIdForPile = PileState::topCardIdForPile($this->gameStream, PileId::from($this->cardPile));
         return view('components.gameboard.card-pile', [
-            'category' => CategoryEnum::fromString($this->category),
+            'category' => CategoryId::from($this->category),
             'card' => CardFinder::getInstance()->getCardById($topCardIdForPile),
         ]);
     }

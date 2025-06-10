@@ -10,7 +10,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Konjunkturphase\ValueObject\CategoryEnum;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 final readonly class JobOffersWereRequested implements ZeitsteinAktion, GameEventInterface, ProvidesResourceChanges
 {
@@ -47,9 +47,9 @@ final readonly class JobOffersWereRequested implements ZeitsteinAktion, GameEven
         return new ResourceChanges();
     }
 
-    public function getCategory(): CategoryEnum
+    public function getCategory(): CategoryId
     {
-        return CategoryEnum::ERWEBSEINKOMMEN;
+        return CategoryId::JOBS;
     }
 
     public function getPlayerId(): PlayerId

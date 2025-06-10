@@ -14,7 +14,7 @@ use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
-use Domain\Definitions\Konjunkturphase\ValueObject\CategoryEnum;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 final readonly class CardWasActivated implements ZeitsteinAktion, ProvidesModifiers, ProvidesResourceChanges, DrawsCard, GameEventInterface
 {
@@ -22,7 +22,7 @@ final readonly class CardWasActivated implements ZeitsteinAktion, ProvidesModifi
         public PlayerId        $playerId,
         public PileId          $pileId,
         public CardId          $cardId,
-        public CategoryEnum    $category,
+        public CategoryId    $category,
         public ResourceChanges $resourceChanges
     ) {
     }
@@ -46,7 +46,7 @@ final readonly class CardWasActivated implements ZeitsteinAktion, ProvidesModifi
             playerId: PlayerId::fromString($values['playerId']),
             pileId: PileId::from($values['pileId']),
             cardId: new CardId($values['cardId']),
-            category: CategoryEnum::from($values['category']),
+            category: CategoryId::from($values['category']),
             resourceChanges: ResourceChanges::fromArray($values['resourceChanges']),
         );
     }
@@ -67,7 +67,7 @@ final readonly class CardWasActivated implements ZeitsteinAktion, ProvidesModifi
         return $this->pileId;
     }
 
-    public function getCategory(): CategoryEnum
+    public function getCategory(): CategoryId
     {
         return $this->category;
     }
