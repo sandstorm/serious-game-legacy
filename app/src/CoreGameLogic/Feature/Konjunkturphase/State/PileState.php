@@ -8,6 +8,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\DrawsCard;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 class PileState
 {
@@ -49,5 +50,23 @@ class PileState
         }
 
         throw new \RuntimeException("Pile ($pileId->value) not found");
+    }
+
+
+    /**
+     * @param CategoryId $category
+     * @param int $phase
+     * @return PileId
+     *
+     * TODO make Phase Value Object
+     */
+    public static function getPileIdForCategoryAndPhase(CategoryId $category, int $phase = 1): PileId
+    {
+        return match ($category) {
+            CategoryId::BILDUNG_UND_KARRIERE => PileId::BILDUNG_PHASE_1,
+            CategoryId::SOZIALES_UND_FREIZEIT => PileId::FREIZEIT_PHASE_1,
+            CategoryId::JOBS => PileId::JOBS_PHASE_1,
+            default => PileId::BILDUNG_PHASE_1, // TODO add all Categories and consider the phase
+        };
     }
 }

@@ -11,7 +11,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
-use Domain\Definitions\Konjunkturphase\ValueObject\CategoryEnum;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 class PlayerState
 {
@@ -117,10 +117,10 @@ class PlayerState
      *
      * @param GameEvents $stream The collection of game events to be analyzed.
      * @param PlayerId $playerId The ID of the player for whom the calculation is performed.
-     * @param CategoryEnum $category The category in which the zeitsteine placement is being calculated.
+     * @param CategoryId $category The category in which the zeitsteine placement is being calculated.
      * @return int The total number of zeitsteine placed by the player in the specified category during the current Konjunkturphase.
      */
-    public static function getZeitsteinePlacedForCurrentKonjunkturphaseInCategory(GameEvents $stream, PlayerId $playerId, CategoryEnum $category): int
+    public static function getZeitsteinePlacedForCurrentKonjunkturphaseInCategory(GameEvents $stream, PlayerId $playerId, CategoryId $category): int
     {
         $zeitsteinAktionenForPlayerAndBildung = $stream->findAllAfterLastOfType(KonjunkturphaseWasChanged::class)->findAllOfType(ZeitsteinAktion::class)
             ->filter(fn(ZeitsteinAktion $event) => $event->getCategory() === $category && $event->getPlayerId()->equals($playerId));

@@ -6,7 +6,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior;
 
 
 use Domain\CoreGameLogic\PlayerId;
-use Domain\Definitions\Konjunkturphase\ValueObject\CategoryEnum;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 /**
  * This interface is applied on GameEvents which use a Zeitstein. Usually a player can only perform one of those
@@ -16,6 +16,6 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryEnum;
  */
 interface ZeitsteinAktion
 {
-    public function getCategory(): CategoryEnum; // e.g. 'BILDUNG' or 'FREIZEIT'
+    public function getCategory(): CategoryId; // e.g. 'BILDUNG' or 'FREIZEIT'
     public function getPlayerId(): PlayerId;
 }

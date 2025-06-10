@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Definitions\Konjunkturphase\Dto;
 
-use Domain\Definitions\Konjunkturphase\ValueObject\CategoryEnum;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 /**
  * represents the model of the Kompetenzbereich used by the repository to fill the game with data
@@ -12,7 +12,7 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryEnum;
 class KompetenzbereichDefinition implements \JsonSerializable
 {
     public function __construct(
-        public CategoryEnum $name,
+        public CategoryId $name,
         public int          $kompetenzsteine = 0,
     )
     {
@@ -24,7 +24,7 @@ class KompetenzbereichDefinition implements \JsonSerializable
     public static function fromArray(array $in): self
     {
         return new self(
-            name: CategoryEnum::fromString($in['name']),
+            name: CategoryId::from($in['name']),
             kompetenzsteine: $in['kompetenzsteine'],
         );
     }

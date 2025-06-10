@@ -7,7 +7,7 @@ namespace Domain\Definitions\Konjunkturphase;
 use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
 use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
 use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
-use Domain\Definitions\Konjunkturphase\ValueObject\CategoryEnum;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 
@@ -32,19 +32,19 @@ Der steigende Leitzins erhöht die Deflation, die Kaufkraft der Barreserven erh�
             leitzins: 5,
             kompetenzbereiche: [
                 new KompetenzbereichDefinition(
-                    name: CategoryEnum::BILDUNG,
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
                     kompetenzsteine: 5,
                 ),
                 new KompetenzbereichDefinition(
-                    name: CategoryEnum::FREIZEIT,
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
                     kompetenzsteine: 4,
                 ),
                 new KompetenzbereichDefinition(
-                    name: CategoryEnum::INVESTITIONEN,
+                    name: CategoryId::INVESTITIONEN,
                     kompetenzsteine: 4,
                 ),
                 new KompetenzbereichDefinition(
-                    name: CategoryEnum::ERWEBSEINKOMMEN,
+                    name: CategoryId::JOBS,
                     kompetenzsteine: 4,
                 ),
             ],
@@ -82,19 +82,19 @@ Die Regierung fördert eine neue Bilungsoffensive. Jede erhält - wenn gewünsch
             leitzins: 5,
             kompetenzbereiche: [
                 new KompetenzbereichDefinition(
-                    name: CategoryEnum::BILDUNG,
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
                     kompetenzsteine: 4,
                 ),
                 new KompetenzbereichDefinition(
-                    name: CategoryEnum::FREIZEIT,
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
                     kompetenzsteine: 5,
                 ),
                 new KompetenzbereichDefinition(
-                    name: CategoryEnum::INVESTITIONEN,
+                    name: CategoryId::INVESTITIONEN,
                     kompetenzsteine: 3,
                 ),
                 new KompetenzbereichDefinition(
-                    name: CategoryEnum::ERWEBSEINKOMMEN,
+                    name: CategoryId::JOBS,
                     kompetenzsteine: 3,
                 ),
             ],
@@ -127,19 +127,19 @@ dazu aufgerufen, bei den Räumungsarbeiten zu helfen (Kosten = 1 Zeitstein). All
             leitzins: 0,
             kompetenzbereiche: [
                 new KompetenzbereichDefinition(
-                    name: CategoryEnum::BILDUNG,
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
                     kompetenzsteine: 3,
                 ),
                 new KompetenzbereichDefinition(
-                    name: CategoryEnum::FREIZEIT,
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
                     kompetenzsteine: 6,
                 ),
                 new KompetenzbereichDefinition(
-                    name: CategoryEnum::INVESTITIONEN,
+                    name: CategoryId::INVESTITIONEN,
                     kompetenzsteine: 3,
                 ),
                 new KompetenzbereichDefinition(
-                    name: CategoryEnum::ERWEBSEINKOMMEN,
+                    name: CategoryId::JOBS,
                     kompetenzsteine: 3,
                 ),
             ],
