@@ -22,6 +22,13 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\Gehalt;
 use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
+use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
+use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
+use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
+use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
+use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
@@ -96,13 +103,66 @@ abstract class TestCase extends BaseTestCase
 
         $this->coreGameLogic->handle($this->gameId, StartGame::create());
 
+        $konjunkturphase = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(1),
+            type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
+            description: 'Die Wirtschaft wächst langsam aber stetig. Dadurch sind die KonsumentInnen in Kauflaune und steigern die Nachfrage deutlich.
+Die Notenbank ändert den Leitszins. Aus diesem Grund kann jede Person zu folgendem Zinnsatz Geld leihen: 5 %
+Das geliehene Geld muss innerhalb 20 Raten zurückgezahlt werden, d.h. es werden pro Jahr 5 % des Anfangsbetrags gefordert.
+Alle erhalten ihr jährliches Einkommen und begleichen ihre Verbindlichkeiten.',
+            additionalEvents: 'Immobilienmarkt - die jähliche Grundsteuer für Immobilien
+wird fällig. 1000 €/Immobilie müssen bezahlt werden.
+
+Der steigende Leitzins erhöht die Deflation, die Kaufkraft der Barreserven erhöht sich: Die auf den Karten angegebenen Kosten müssen in diesem Jahr nur zu 90 % beglichen werden.',
+            leitzins: 5,
+            kompetenzbereiche: [
+                new KompetenzbereichDefinition(
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
+                    kompetenzsteine: 5,
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
+                    kompetenzsteine: 4,
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::INVESTITIONEN,
+                    kompetenzsteine: 4,
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::JOBS,
+                    kompetenzsteine: 4,
+                ),
+            ],
+            auswirkungen: [
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::BILDUNG,
+                    modifier: '90 % der Kosten',
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::FREIZEIT,
+                    modifier: '90 % der Kosten',
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::INVESTITIONEN,
+                    modifier: '-1000 €/Immobilie',
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::INVESTITIONEN,
+                    modifier: '90 % der Kosten',
+                ),
+            ]
+        );
+
         $this->coreGameLogic->handle(
             $this->gameId,
-            ChangeKonjunkturphase::create()->withFixedCardOrderForTesting(
-                new CardOrder( pileId: $this->pileIdBildung, cards: array_map(fn ($card) => $card->id, $this->cardsBildung)),
-                new CardOrder( pileId: $this->pileIdFreizeit, cards: array_map(fn ($card) => $card->id, $this->cardsFreizeit)),
-                new CardOrder( pileId: $this->pileIdJobs, cards: array_map(fn ($card) => $card->id, $this->cardsJobs)),
-            ));
+            ChangeKonjunkturphase::create()
+                ->withFixedKonjunkturphaseForTesting($konjunkturphase)
+                ->withFixedCardOrderForTesting(
+                    new CardOrder( pileId: $this->pileIdBildung, cards: array_map(fn ($card) => $card->id, $this->cardsBildung)),
+                    new CardOrder( pileId: $this->pileIdFreizeit, cards: array_map(fn ($card) => $card->id, $this->cardsFreizeit)),
+                    new CardOrder( pileId: $this->pileIdJobs, cards: array_map(fn ($card) => $card->id, $this->cardsJobs)),
+                )
+        );
     }
 
     /**

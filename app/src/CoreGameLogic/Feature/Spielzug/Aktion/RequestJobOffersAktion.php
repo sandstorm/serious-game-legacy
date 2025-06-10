@@ -6,6 +6,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
+use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
@@ -14,6 +15,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 class RequestJobOffersAktion extends Aktion
 {
@@ -24,7 +26,6 @@ class RequestJobOffersAktion extends Aktion
 
     public function validate(PlayerId $player, GameEvents $gameEvents): AktionValidationResult
     {
-
         $currentPlayer = CurrentPlayerAccessor::forStream($gameEvents);
         if (!$currentPlayer->equals($player)) {
             return new AktionValidationResult(
@@ -48,6 +49,15 @@ class RequestJobOffersAktion extends Aktion
             );
         }
 
+        // TODO add to other cards actions as well
+        $hasFreeTimeSlots = GamePhaseState::hasFreeTimeSlotsForCategory($gameEvents, CategoryId::JOBS);
+        if (!$hasFreeTimeSlots) {
+            return new AktionValidationResult(
+                canExecute: false,
+                reason: 'Es gibt keine freien Zeitsteine für die Kategorie Erwerbseinkommen',
+            );
+        }
+
         return new AktionValidationResult(canExecute: true);
     }
 
@@ -55,7 +65,7 @@ class RequestJobOffersAktion extends Aktion
     {
         $result = $this->validate($player, $gameEvents);
         if (!$result->canExecute) {
-            throw new \RuntimeException('Cannot Request Job Offers: ' . $result->reason, 1749043606);
+            throw new \RuntimeException("" . $result->reason, 1749043606);
         }
         $jobs = CardFinder::getInstance()->getJobsBasedOnPlayerResources(PlayerState::getResourcesForPlayer($gameEvents, $player));
         return GameEventsToPersist::with(

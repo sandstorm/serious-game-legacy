@@ -331,6 +331,48 @@ describe('handleActivateCard', function () {
 });
 
 describe('handleRequestJobOffers', function () {
+    it('throws an exception when no free slots are available for this konjunkturphase', function () {
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::JOBS_PHASE_1->value => [
+                "j0" => new JobCardDefinition(
+                    id: new CardId('j0'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'Fachinformatikerin',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new Gehalt(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                        bildungKompetenzsteine: 0,
+                    ),
+                ),
+            ]
+        ]);
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        /** @var JobOffersWereRequested $actualEvent */
+        $actualEvent = $stream->findLast(JobOffersWereRequested::class);
+        expect($actualEvent->player)->toEqual($this->players[0])
+            ->and($actualEvent->jobs)->toEqual([new CardId('j0')]);
+
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+
+        // repeat asking for a job until there are no free slots left
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[1]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
+
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[1]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
+
+        // this request fails, no free slots available
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+    })->throws(\RuntimeException::class,
+        'Es gibt keine freien Zeitsteine für die Kategorie Erwerbseinkommen', 1749043606);
+
     it('throws an exception when the player does not fulfill the requirements for any job', function () {
         CardFinder::getInstance()->overrideCardsForTesting([
             PileId::JOBS_PHASE_1->value => [
@@ -378,7 +420,7 @@ describe('handleRequestJobOffers', function () {
         expect($actualEvent->player)->toEqual($this->players[0])
             ->and($actualEvent->jobs)->toEqual([]);
     })->throws(\RuntimeException::class,
-        'Cannot Request Job Offers: Du erfüllst momentan für keinen Job die Voraussetzungen', 1749043606);
+        'Du erfüllst momentan für keinen Job die Voraussetzungen', 1749043606);
 
     it('returns 3 jobs with fulfilled requirements', function () {
         CardFinder::getInstance()->overrideCardsForTesting([

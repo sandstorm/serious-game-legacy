@@ -1,11 +1,15 @@
 .button {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-50);
     padding: var(--spacing-50) var(--spacing-100);
-    height: 40px;
+    min-height: 40px;
     border-radius: 0.25rem;
+
     font-size: 1rem;
     text-align: center;
     text-decoration: none;
+
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -37,6 +41,6 @@
 
 .button--size-small {
     padding: var(--spacing-25) var(--spacing-50);
-    height: 30px;
+    min-height: 30px;
     font-size: 0.875rem;
 }
