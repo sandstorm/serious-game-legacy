@@ -9,14 +9,22 @@ use Domain\CoreGameLogic\PlayerId;
 
 class MoneySheetState
 {
-    public static function lebenshaltungskostenForPlayer(GameEvents $gameEvents, PlayerId $playerId): int
+    public static function calculateLebenshaltungskostenForPlayer(GameEvents $gameEvents, PlayerId $playerId): int
     {
         $minKosten = 5000;
-        $kosten = 0;
         $job = PlayerState::getJobForPlayer($gameEvents, $playerId);
         if ($job !== null) {
-            $kosten = intval(round($job->gehalt->value * 0.35));
+            return max([intval(round($job->gehalt->value * 0.35)), $minKosten]);
         }
-        return max([$kosten, $minKosten]);
+        return $minKosten;
+    }
+
+    public static function calculateSteuernUndAbgabenForPlayer(GameEvents $gameEvents, PlayerId $playerId): int
+    {
+        $job = PlayerState::getJobForPlayer($gameEvents, $playerId);
+        if ($job !== null) {
+            return intval(round($job->gehalt->value * 0.25));
+        }
+        return 0;
     }
 }
