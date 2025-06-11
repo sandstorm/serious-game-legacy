@@ -47,7 +47,7 @@ final readonly class JobOffersWereRequested implements ZeitsteinAktion, GameEven
         return new ResourceChanges();
     }
 
-    public function getCategory(): CategoryId
+    public function getCategoryId(): CategoryId
     {
         return CategoryId::JOBS;
     }

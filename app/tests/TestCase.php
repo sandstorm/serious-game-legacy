@@ -57,6 +57,8 @@ abstract class TestCase extends BaseTestCase
      */
     protected array $cardsJobs;
 
+    protected $konjunkturphaseDefinition;
+
     private function generatePlayerIds(int $numberOfPlayers) {
         assert (2 <= $numberOfPlayers && $numberOfPlayers <=4, "Only 2-4 players are supported");
         $playerIds = [];
@@ -104,7 +106,7 @@ abstract class TestCase extends BaseTestCase
 
         $this->coreGameLogic->handle($this->gameId, StartGame::create());
 
-        $konjunkturphase = new KonjunkturphaseDefinition(
+        $this->konjunkturphaseDefinition = new KonjunkturphaseDefinition(
             id: KonjunkturphasenId::create(1),
             type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
             description: 'Die Wirtschaft wÃ¤chst langsam aber stetig. Dadurch sind die KonsumentInnen in Kauflaune und steigern die Nachfrage deutlich.
@@ -119,15 +121,15 @@ Der steigende Leitzins erhÃ¶ht die Deflation, die Kaufkraft der Barreserven erhÃ
             kompetenzbereiche: [
                 new KompetenzbereichDefinition(
                     name: CategoryId::BILDUNG_UND_KARRIERE,
-                    kompetenzsteine: 5,
+                    kompetenzsteine: 3,
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::SOZIALES_UND_FREIZEIT,
-                    kompetenzsteine: 4,
+                    kompetenzsteine: 3,
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::INVESTITIONEN,
-                    kompetenzsteine: 4,
+                    kompetenzsteine: 2,
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::JOBS,
@@ -157,7 +159,7 @@ Der steigende Leitzins erhÃ¶ht die Deflation, die Kaufkraft der Barreserven erhÃ
         $this->coreGameLogic->handle(
             $this->gameId,
             ChangeKonjunkturphase::create()
-                ->withFixedKonjunkturphaseForTesting($konjunkturphase)
+                ->withFixedKonjunkturphaseForTesting($this->konjunkturphaseDefinition)
                 ->withFixedCardOrderForTesting(
                     new CardOrder( pileId: $this->pileIdBildung, cards: array_map(fn ($card) => $card->id, $this->cardsBildung)),
                     new CardOrder( pileId: $this->pileIdFreizeit, cards: array_map(fn ($card) => $card->id, $this->cardsFreizeit)),
@@ -306,7 +308,9 @@ Der steigende Leitzins erhÃ¶ht die Deflation, die Kaufkraft der Barreserven erhÃ
         CardFinder::getInstance()->overrideCardsForTesting($testCards);
         $this->coreGameLogic->handle(
             $this->gameId,
-            ChangeKonjunkturphase::create()->withFixedCardOrderForTesting(
+            ChangeKonjunkturphase::create()
+            ->withFixedKonjunkturphaseForTesting($this->konjunkturphaseDefinition)
+            ->withFixedCardOrderForTesting(
                 new CardOrder( pileId: $this->pileIdBildung, cards: array_map(fn ($card) => $card->getId(), $testCards[PileId::BILDUNG_PHASE_1->value])),
                 new CardOrder( pileId: $this->pileIdFreizeit, cards: array_map(fn ($card) => $card->getId(), $testCards[PileId::FREIZEIT_PHASE_1->value])),
                 new CardOrder( pileId: $this->pileIdJobs, cards: array_map(fn ($card) => $card->getId(), $testCards[PileId::JOBS_PHASE_1->value])),

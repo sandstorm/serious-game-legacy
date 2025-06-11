@@ -9,6 +9,7 @@ use App\Livewire\Traits\HasCard;
 use App\Livewire\Traits\HasGamePhase;
 use App\Livewire\Traits\HasJobOffer;
 use App\Livewire\Traits\HasKonjunkturphase;
+use App\Livewire\Traits\HasNotification;
 use App\Livewire\Traits\HasPlayerDetails;
 use App\Livewire\Traits\HasPreGamePhase;
 use App\Livewire\Traits\HasMoneySheet;
@@ -31,6 +32,7 @@ class GameUi extends Component
     use HasGamePhase;
     use HasMoneySheet;
     use HasJobOffer;
+    use HasNotification;
 
     // injected from outside -> game-play.blade.php
     // Not the current player, but the player connected to THIS SESSION

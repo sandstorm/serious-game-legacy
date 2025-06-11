@@ -66,11 +66,11 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
         ActivateCard $command,
         GameEvents $gameEvents
     ): GameEventsToPersist {
-        $aktion = new ActivateCardAktion($command->category);
-        $events = $aktion->execute($command->player, $gameEvents);
+        $aktion = new ActivateCardAktion($command->categoryId);
+        $events = $aktion->execute($command->playerId, $gameEvents);
         if ($command->attachedEreignis !== null) {
             $events = $events->withAppendedEvents(
-                new EreignisWasTriggered($command->player, $command->attachedEreignis)
+                new EreignisWasTriggered($command->playerId, $command->attachedEreignis)
             );
         }
         return $events;
@@ -78,8 +78,8 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
 
     private function handleSkipCard(SkipCard $command, GameEvents $gameState): GameEventsToPersist
     {
-        $aktion = new SkipCardAktion($command->category);
-        return $aktion->execute($command->player, $gameState);
+        $aktion = new SkipCardAktion($command->categoryId);
+        return $aktion->execute($command->playerId, $gameState);
     }
 
 }

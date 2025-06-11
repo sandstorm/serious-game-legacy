@@ -22,7 +22,7 @@ final readonly class CardWasActivated implements ZeitsteinAktion, ProvidesModifi
         public PlayerId        $playerId,
         public PileId          $pileId,
         public CardId          $cardId,
-        public CategoryId    $category,
+        public CategoryId      $categoryId,
         public ResourceChanges $resourceChanges
     ) {
     }
@@ -46,7 +46,7 @@ final readonly class CardWasActivated implements ZeitsteinAktion, ProvidesModifi
             playerId: PlayerId::fromString($values['playerId']),
             pileId: PileId::from($values['pileId']),
             cardId: new CardId($values['cardId']),
-            category: CategoryId::from($values['category']),
+            categoryId: CategoryId::from($values['categoryId']),
             resourceChanges: ResourceChanges::fromArray($values['resourceChanges']),
         );
     }
@@ -57,7 +57,7 @@ final readonly class CardWasActivated implements ZeitsteinAktion, ProvidesModifi
             'playerId' => $this->playerId,
             'pileId' => $this->pileId,
             'cardId' => $this->cardId->jsonSerialize(),
-            'category' => $this->category->value,
+            'categoryId' => $this->categoryId->value,
             'resourceChanges' => $this->resourceChanges,
         ];
     }
@@ -67,9 +67,9 @@ final readonly class CardWasActivated implements ZeitsteinAktion, ProvidesModifi
         return $this->pileId;
     }
 
-    public function getCategory(): CategoryId
+    public function getCategoryId(): CategoryId
     {
-        return $this->category;
+        return $this->categoryId;
     }
 
     public function getPlayerId(): PlayerId

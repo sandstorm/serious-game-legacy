@@ -12,24 +12,24 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 final readonly class ActivateCard implements CommandInterface
 {
     public static function create(
-        PlayerId     $player,
-        CategoryId $category,
+        PlayerId   $playerId,
+        CategoryId $categoryId,
     ): ActivateCard {
-        return new self($player, $category);
+        return new self($playerId, $categoryId);
     }
 
     private function __construct(
-        public PlayerId                 $player,
-        public CategoryId             $category,
-        public ?EreignisId              $attachedEreignis = null,
+        public PlayerId    $playerId,
+        public CategoryId  $categoryId,
+        public ?EreignisId $attachedEreignis = null,
     ) {
     }
 
     public function withEreignis(EreignisId $ereignisId): self
     {
         return new self(
-            $this->player,
-            $this->category,
+            $this->playerId,
+            $this->categoryId,
             $ereignisId,
         );
     }

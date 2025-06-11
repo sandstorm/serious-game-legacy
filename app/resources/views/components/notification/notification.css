@@ -1,6 +1,6 @@
-.modal {
+.notification {
     position: fixed;
-    z-index: var(--z-index-modal);
+    z-index: var(--z-index-notification);
     left: 0;
     top: 0;
     width: 100%;
@@ -10,7 +10,24 @@
     justify-content: center;
 }
 
-.modal__backdrop {
+
+.notification--type-info {
+
+}
+
+.notification--type-warning {
+    .notification__body {
+        color: var(--color-warning);
+    }
+}
+
+.notification--type-error {
+    .notification__body {
+        color: var(--color-error);
+    }
+}
+
+.notification__backdrop {
     position: fixed;
     z-index: 1;
     left: 0;
@@ -21,36 +38,22 @@
     background-color: rgba(0, 0, 0, 0.4);
 }
 
-.modal__content {
+.notification__content {
     position: relative;
     display: flex;
     flex-direction: column;
     margin: auto;
     width: 80%;
-    max-width: 800px;
+    max-width: 500px;
     max-height: 80%;
 
     background-color: var(--color-primary-fg);
     border: 1px solid var(--color-grey);
 
     z-index: 10;
-
-    > header {
-        flex-shrink: 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-inline: var(--spacing-100);
-        padding-top: var(--spacing-50);
-        padding-bottom: var(--spacing-50);
-
-        border-bottom: 1px solid var(--color-grey);
-
-        font-size: 1.5rem;
-    }
 }
 
-.modal__actions {
+.notification__actions {
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -58,11 +61,9 @@
     padding-inline: var(--spacing-100);
     padding-top: var(--spacing-50);
     padding-bottom: var(--spacing-50);
-
-    border-top: 1px solid var(--color-grey);
 }
 
-.modal__body {
+.notification__body {
     padding: var(--spacing-100);
     overflow-y: auto;
     max-height: 70%;

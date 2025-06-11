@@ -10,21 +10,21 @@ use Domain\CoreGameLogic\PlayerId;
 final readonly class SpielzugWasEnded implements GameEventInterface
 {
     public function __construct(
-        public PlayerId $player,
+        public PlayerId $playerId,
     ) {
     }
 
     public static function fromArray(array $values): GameEventInterface
     {
         return new self(
-            player: PlayerId::fromString($values['player']),
+            playerId: PlayerId::fromString($values['playerId']),
         );
     }
 
     public function jsonSerialize(): array
     {
         return [
-            'player' => $this->player,
+            'playerId' => $this->playerId,
         ];
     }
 }

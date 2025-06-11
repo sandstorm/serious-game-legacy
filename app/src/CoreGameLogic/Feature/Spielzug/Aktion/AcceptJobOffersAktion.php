@@ -11,7 +11,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
-use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
