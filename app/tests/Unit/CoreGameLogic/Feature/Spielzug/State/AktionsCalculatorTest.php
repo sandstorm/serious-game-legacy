@@ -7,6 +7,8 @@ namespace Tests\CoreGameLogic\Feature\Spielzug\State;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 
+@covers(AktionsCalculator::class);
+
 beforeEach(function () {
     $this->setupBasicGame();
 });
@@ -15,7 +17,7 @@ describe('welche Spielzüge hat player zur Verfügung', function () {
 
     it('shows available Actions', function () {
         // TODO this needs to be refactored!!
-    })->skip('this needs to be refactored');
+    })->todo('this needs to be refactored');
 });
 
 describe('canPlayerActivateCard', function () {

@@ -198,6 +198,42 @@ final readonly class GameEvents implements \IteratorAggregate, \Countable
         return self::fromArray(array_slice($this->events, $indexOfLast + 1));
     }
 
+    /**
+     * Returns all events that happened after the last event of the given type.
+     * Returns null if the given event is not found.
+     * @param callable(GameEventInterface):bool $filter
+     * @return GameEvents|null
+     */
+    public function findAllAfterLastOrNullWhere(callable $filter): ?self
+    {
+        $indexOfLast = $this->findIndexOfLastOrNullWhere($filter);
+
+        if ($indexOfLast === null) {
+            return null;
+        }
+
+        if ($this->count() === $indexOfLast + 1) {
+            return self::fromArray([]);
+        }
+
+        return self::fromArray(array_slice($this->events, $indexOfLast + 1));
+    }
+
+    /**
+     * @param callable(GameEventInterface):bool $filter
+     * @return int|null
+     */
+    private function findIndexOfLastOrNullWhere(callable $filter): ?int
+    {
+        for ($i = count($this->events) - 1; $i >= 0; $i--) {
+            if ($filter($this->events[$i])) {
+                return $i;
+            }
+        }
+
+        return null;
+    }
+
     private function findIndexOfLastOrNull(string $className): ?int
     {
         for ($i = count($this->events) - 1; $i >= 0; $i--) {
