@@ -5,10 +5,16 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
+use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
+use Domain\CoreGameLogic\Feature\Initialization\Command\SelectPlayerColor;
+use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
+use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Session\Store as SessionStore;
@@ -26,6 +32,42 @@ class GamePlayController extends Controller
     public function newGame(Request $request): View
     {
         return view('controllers.gameplay.new');
+    }
+
+    public function quickStart(Request $request): RedirectResponse
+    {
+        $gameId = GameId::random();
+        $this->coreGameLogic->handle($gameId, StartPreGame::create(
+            numberOfPlayers: 2
+        ));
+
+        $gameStream = $this->coreGameLogic->getGameEvents($gameId);
+        $playerIds = PreGameState::playerIds($gameStream);
+
+        for ($index = 0; $index < 2; $index++) {
+            $this->coreGameLogic->handle($gameId, new SetNameForPlayer(
+                playerId: $playerIds[$index],
+                name: 'Player ' . $index,
+            ));
+            $this->coreGameLogic->handle($gameId, new SelectLebensziel(
+                playerId: $playerIds[$index],
+                lebensziel: LebenszielId::create($index % 2 + 1),
+            ));
+            $this->coreGameLogic->handle($gameId, new SelectPlayerColor(
+                playerId: $playerIds[$index],
+                playerColor: null,
+            ));
+
+        }
+
+        $this->coreGameLogic->handle($gameId, StartGame::create());
+        $this->coreGameLogic->handle($gameId, ChangeKonjunkturphase::create());
+
+        // redirect to the game page
+        return redirect()->route('game-play.game', [
+            'gameId' => $gameId->value,
+            'myselfId' => $playerIds[0]->value,
+        ]);
     }
 
     public function playerLinks(Request $request, SessionStore $session, string $gameId): View
@@ -54,7 +96,6 @@ class GamePlayController extends Controller
         $myselfId = PlayerId::fromString($myselfId);
 
         if (!$this->coreGameLogic->hasGame($gameId)) {
-            // TODO: Flash
             return redirect()->route('game-play.new');
         }
 
