@@ -9,6 +9,7 @@ use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\InitializationCommandHandler;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\KonjunkturphaseCommandHandler;
+use Domain\CoreGameLogic\Feature\Moneysheet\MoneysheetCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Neos\EventStore\Helper\InMemoryEventStore;
 use Neos\EventStore\Model\EventStream\ExpectedVersion;
@@ -40,6 +41,7 @@ final class CoreGameLogicApp implements ForCoreGameLogic
         $this->commandBus = new CommandBus(
             new InitializationCommandHandler(),
             new KonjunkturphaseCommandHandler(),
+            new MoneysheetCommandHandler(),
             new SpielzugCommandHandler(),
         );
     }

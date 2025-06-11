@@ -11,6 +11,8 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerColorWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Moneysheet\Event\SteuernUndAbgabenForPlayerWereCorrected;
+use Domain\CoreGameLogic\Feature\Moneysheet\Event\SteuernUndAbgabenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
@@ -51,19 +53,21 @@ final readonly class EventNormalizer
     {
         /** @var array<class-string<GameEventInterface>> $supportedEventClassNames */
         $supportedEventClassNames = [
-            GameWasStarted::class,
+            CardsWereShuffled::class,
             CardWasActivated::class,
             CardWasSkipped::class,
-            SpielzugWasEnded::class,
             EreignisWasTriggered::class,
-            LebenszielWasSelected::class,
-            PreGameStarted::class,
-            NameForPlayerWasSet::class,
-            KonjunkturphaseWasChanged::class,
-            CardsWereShuffled::class,
+            GameWasStarted::class,
             JobOffersWereRequested::class,
             JobOfferWasAccepted::class,
+            KonjunkturphaseWasChanged::class,
+            LebenszielWasSelected::class,
+            NameForPlayerWasSet::class,
             PlayerColorWasSelected::class,
+            PreGameStarted::class,
+            SpielzugWasEnded::class,
+            SteuernUndAbgabenForPlayerWereCorrected::class,
+            SteuernUndAbgabenForPlayerWereEntered::class,
         ];
 
         $fullClassNameToShortEventType = [];

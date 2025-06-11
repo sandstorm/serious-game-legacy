@@ -18,6 +18,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
+use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\CardFinder;
@@ -32,9 +33,12 @@ use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
-use Illuminate\Queue\Middleware\Skip;
+use Tests\TestCase;
+
+@covers(SpielzugCommandHandler::class);
 
 beforeEach(function () {
+    /** @var TestCase $this */
     $this->setupBasicGame();
 });
 
@@ -42,6 +46,7 @@ beforeEach(function () {
 describe('handleSkipCard', function () {
 
     it('will consume a Zeitstein', function () {
+        /** @var TestCase $this */
         // Check the initial assumption of how many Zeitsteine the player has at the start of the test
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(6);
@@ -53,6 +58,7 @@ describe('handleSkipCard', function () {
     });
 
     it('Cannot skip twice', function () {
+        /** @var TestCase $this */
         $this->coreGameLogic->handle($this->gameId, new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
         $this->coreGameLogic->handle($this->gameId, new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
     })->throws(
@@ -61,6 +67,7 @@ describe('handleSkipCard', function () {
         1747325793);
 
     it('can only skip when it\'s the player\'s turn', function () {
+        /** @var TestCase $this */
         $this->coreGameLogic->handle($this->gameId, new SkipCard(playerId: $this->players[1], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
     })->throws(
         \RuntimeException::class,
@@ -68,6 +75,7 @@ describe('handleSkipCard', function () {
         1747325793);
 
     it('cannot skip without a Zeitstein', function () {
+        /** @var TestCase $this */
         $cardsForTesting = [
             "cardToRemoveZeitsteine" => new KategorieCardDefinition(
                 id: new CardId('cardToRemoveZeitsteine'),
@@ -106,6 +114,7 @@ describe('handleSkipCard', function () {
         'Du hast nicht genug Ressourcen um die Karte zu überspringen', 1747325793);
 
     it("card cannot be skipped when no free slots are available for this konjunkturphase", function () {
+        /** @var TestCase $this */
         $cardToTest = new KategorieCardDefinition(
             id: new CardId('testcard'),
             pileId: $this->pileIdBildung,
@@ -151,6 +160,7 @@ describe('handleSkipCard', function () {
 
 describe('handleActivateCard', function () {
     it('will consume a Zeitstein (first turn)', function () {
+        /** @var TestCase $this */
         CardFinder::getInstance()->overrideCardsForTesting([
             PileId::BILDUNG_PHASE_1->value => [
                 "testcard" => new KategorieCardDefinition(
@@ -183,6 +193,7 @@ describe('handleActivateCard', function () {
     });
 
     it('will consume a Zeitstein (later turns)', function () {
+        /** @var TestCase $this */
         $skipThisCard = new CardId('skipped');
         $cardToTest = new KategorieCardDefinition(
             id: new CardId('testcard'),
@@ -232,6 +243,7 @@ describe('handleActivateCard', function () {
     });
 
     it('will not consume a Zeitstein after skipping a Card', function () {
+        /** @var TestCase $this */
         $skipThisCard = new KategorieCardDefinition(
             id: new CardId('skipThisCard'),
             pileId: $this->pileIdBildung,
@@ -278,6 +290,7 @@ describe('handleActivateCard', function () {
     });
 
     it('Will not activate a card after skipping in a different category', function () {
+        /** @var TestCase $this */
         $cardToTest = new KategorieCardDefinition(
             id: new CardId('cardToTest'),
             pileId: $this->pileIdBildung,
@@ -304,6 +317,7 @@ describe('handleActivateCard', function () {
         1748951140);
 
     it('Will not activate a card after another was used', function () {
+        /** @var TestCase $this */
         // skip one card
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
             playerId: $this->players[0],
@@ -339,6 +353,7 @@ describe('handleActivateCard', function () {
         1748951140);
 
     it('Will activate a card if requirements are met', function () {
+        /** @var TestCase $this */
         $cardToTest = new KategorieCardDefinition(
             id: new CardId('testcard'),
             pileId: $this->pileIdFreizeit,
@@ -367,6 +382,7 @@ describe('handleActivateCard', function () {
     });
 
     it("will not activate the card if it's not the players turn", function () {
+        /** @var TestCase $this */
         $cardToTest = new KategorieCardDefinition(
             id: new CardId('testcard'),
             pileId: $this->pileIdBildung,
@@ -387,6 +403,7 @@ describe('handleActivateCard', function () {
         1748951140);
 
     it("will not activate the card if the requirements are not met", function () {
+        /** @var TestCase $this */
         $cardToTest = new KategorieCardDefinition(
             id: new CardId('testcard'),
             pileId: $this->pileIdBildung,
@@ -409,6 +426,7 @@ describe('handleActivateCard', function () {
         1748951140);
 
     it("card cannot be activated when no free slots are available for this konjunkturphase", function () {
+        /** @var TestCase $this */
         $cardToTest = new KategorieCardDefinition(
             id: new CardId('testcard'),
             pileId: $this->pileIdBildung,
@@ -455,6 +473,7 @@ describe('handleActivateCard', function () {
 
 describe('handleRequestJobOffers', function () {
     it('throws an exception when no free slots are available for this konjunkturphase', function () {
+        /** @var TestCase $this */
         CardFinder::getInstance()->overrideCardsForTesting([
             PileId::JOBS_PHASE_1->value => [
                 "j0" => new JobCardDefinition(
@@ -497,6 +516,7 @@ describe('handleRequestJobOffers', function () {
         'Es gibt keine freien Zeitsteine mehr.', 1749043606);
 
     it('throws an exception when the player does not fulfill the requirements for any job', function () {
+        /** @var TestCase $this */
         CardFinder::getInstance()->overrideCardsForTesting([
             PileId::JOBS_PHASE_1->value => [
                 "j0" => new JobCardDefinition(
@@ -546,6 +566,7 @@ describe('handleRequestJobOffers', function () {
         'Du erfüllst momentan für keinen Job die Voraussetzungen', 1749043606);
 
     it('returns 3 jobs with fulfilled requirements', function () {
+        /** @var TestCase $this */
         CardFinder::getInstance()->overrideCardsForTesting([
             PileId::JOBS_PHASE_1->value => [
                 "j0" => new JobCardDefinition(
@@ -604,6 +625,7 @@ describe('handleRequestJobOffers', function () {
 
 
     it('returns 2 jobs with fulfilled requirements if that is all that is available', function () {
+        /** @var TestCase $this */
         CardFinder::getInstance()->overrideCardsForTesting([
             PileId::JOBS_PHASE_1->value => [
                 "j0" => new JobCardDefinition(
@@ -662,6 +684,7 @@ describe('handleRequestJobOffers', function () {
     });
 
     it('does not return more than 3 jobs', function () {
+        /** @var TestCase $this */
         CardFinder::getInstance()->overrideCardsForTesting([
             PileId::JOBS_PHASE_1->value => [
                 "j0" => new JobCardDefinition(
@@ -715,6 +738,7 @@ describe('handleRequestJobOffers', function () {
     });
 
     it('costs 1 Zeitstein', function () {
+        /** @var TestCase $this */
         $jobs = [
             "testjob" => new JobCardDefinition(
                 id: new CardId('testjob'),
@@ -736,6 +760,7 @@ describe('handleRequestJobOffers', function () {
 
 describe('handleAcceptJobOffer', function () {
     it('throws an exception if player did not request job offers this turn', function () {
+        /** @var TestCase $this */
         CardFinder::getInstance()->overrideCardsForTesting([
             PileId::JOBS_PHASE_1->value => [
                 "j3" => new JobCardDefinition(
@@ -753,6 +778,7 @@ describe('handleAcceptJobOffer', function () {
     })->throws(\RuntimeException::class, 'Du kannst nur einen Job annehmen, der dir vorgeschlagen wurde', 1749043636);
 
     it('throws an exception if job was not previously offered to player', function () {
+        /** @var TestCase $this */
         CardFinder::getInstance()->overrideCardsForTesting([
             PileId::JOBS_PHASE_1->value => [
                 "j0" => new JobCardDefinition(
@@ -810,6 +836,7 @@ describe('handleAcceptJobOffer', function () {
         'Du kannst nur einen Job annehmen, der dir vorgeschlagen wurde', 1749043636);
 
     it('permanently removes 1 Zeitstein while the player has a job', function () {
+        /** @var TestCase $this */
         // Reaffirm the "normal" number of Zeitsteine (in case we change something and forget to adjust this test)
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -861,14 +888,17 @@ describe('handleAcceptJobOffer', function () {
     });
 
     it('returns 1 Zeitstein to the player after quitting the job (in the next Konjunkturphase)', function () {
+        /** @var TestCase $this */
         // TODO clarify if this is how it should work
-    })->skip('not yet implemented');
+    })->todo('not yet implemented');
 
     it('throws an exception if job requirements are not met', function () {
+        /** @var TestCase $this */
         // TODO discus -> this should not happen, since only eligible jobs are offered and nothing _should_ change until accepting the offer
-    })->skip('not yet implemented');
+    })->todo('not yet implemented');
 
     it('saves the correct Job and Gehalt', function () {
+        /** @var TestCase $this */
         CardFinder::getInstance()->overrideCardsForTesting([
             PileId::JOBS_PHASE_1->value => [
                 "j0" => new JobCardDefinition(
@@ -896,6 +926,7 @@ describe('handleAcceptJobOffer', function () {
 
 describe('handleEndSpielzug', function () {
     it('throws an exception when it\'s not the players turn', function () {
+        /** @var TestCase $this */
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(CurrentPlayerAccessor::forStream($stream))->toEqual($this->players[0]);
@@ -911,6 +942,7 @@ describe('handleEndSpielzug', function () {
     );
 
     it('throws an exception when the player has not performed a Zeitsteinaktion this turn', function () {
+        /** @var TestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
             new EndSpielzug($this->players[0])
@@ -923,6 +955,7 @@ describe('handleEndSpielzug', function () {
 
     it('does not throw an exception when the player has not performed a Zeitsteinaktion this turn and has 0 Zeitsteine',
         function () {
+            /** @var TestCase $this */
             // Setup
             $cardToTest = new KategorieCardDefinition(
                 id: new CardId('testcard'),
@@ -970,6 +1003,7 @@ describe('handleEndSpielzug', function () {
         });
 
     it('switches the current player', function () {
+        /** @var TestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
             new SkipCard($this->players[0], CategoryId::SOZIALES_UND_FREIZEIT)
@@ -984,6 +1018,7 @@ describe('handleEndSpielzug', function () {
 
     it('starts again with the first player when the last player ends their turn',
         function () {
+            /** @var TestCase $this */
             $this->coreGameLogic->handle(
                 $this->gameId,
                 new SkipCard($this->players[0], CategoryId::SOZIALES_UND_FREIZEIT)

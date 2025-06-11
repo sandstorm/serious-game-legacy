@@ -52,5 +52,5 @@ describe('handleChangeKonjunkturphase', function () {
 
     it('happens automatically when no player has any Zeitsteine remaining', function () {
         // TODO implement
-    })->skip('not yet implemented');
+    })->todo('not yet implemented');
 });
