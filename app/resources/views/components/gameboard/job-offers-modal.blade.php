@@ -1,4 +1,4 @@
-@extends ('components.modal.modal', ['closeModal' => "closeJobOffer()"])
+@extends ('components.modal.modal', ['closeModal' => "closeJobOffer()", 'size' => 'medium'])
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
 
 @section('title')

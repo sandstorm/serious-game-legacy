@@ -1,6 +1,12 @@
-@props(['$closeModal' => ''])
+@props([
+    '$closeModal' => '',
+    '$size' => 'medium',
+])
 
-<div class="modal">
+<div @class([
+    "modal",
+    "modal--size-$size",
+])>
     <div class="modal__backdrop" wire:click={{$closeModal}}></div>
     <div class="modal__content">
         <header>
