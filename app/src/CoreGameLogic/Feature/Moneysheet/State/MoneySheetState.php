@@ -12,19 +12,13 @@ class MoneySheetState
     public static function calculateLebenshaltungskostenForPlayer(GameEvents $gameEvents, PlayerId $playerId): int
     {
         $minKosten = 5000;
-        $job = PlayerState::getJobForPlayer($gameEvents, $playerId);
-        if ($job !== null) {
-            return max([intval(round($job->gehalt->value * 0.35)), $minKosten]);
-        }
-        return $minKosten;
+        $gehalt = PlayerState::getGehaltForPlayer($gameEvents, $playerId);
+        return max([intval(round($gehalt * 0.35)), $minKosten]);
     }
 
     public static function calculateSteuernUndAbgabenForPlayer(GameEvents $gameEvents, PlayerId $playerId): int
     {
-        $job = PlayerState::getJobForPlayer($gameEvents, $playerId);
-        if ($job !== null) {
-            return intval(round($job->gehalt->value * 0.25));
-        }
-        return 0;
+        $gehalt = PlayerState::getGehaltForPlayer($gameEvents, $playerId);
+        return intval(round($gehalt * 0.25));
     }
 }

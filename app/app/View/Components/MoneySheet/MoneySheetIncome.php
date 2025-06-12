@@ -7,8 +7,6 @@ namespace App\View\Components\MoneySheet;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
-use Domain\Definitions\Card\CardFinder;
-use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
@@ -27,12 +25,8 @@ class MoneySheetIncome extends Component
      */
     public function render(): View
     {
-        $currentJob = PlayerState::getJobForPlayer($this->gameStream, $this->playerId);
-        /** @var JobCardDefinition $jobCard */
-        $jobCard = $currentJob !== null ? CardFinder::getInstance()->getCardById($currentJob->job) : null;
-
         return view('components.gameboard.moneySheet.money-sheet-income', [
-            'jobDefinition' => $jobCard,
+            'jobDefinition' => PlayerState::getJobForPlayer($this->gameStream, $this->playerId),
         ]);
     }
 
