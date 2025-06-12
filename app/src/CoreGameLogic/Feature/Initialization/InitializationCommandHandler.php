@@ -42,17 +42,17 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
             || $command instanceof SelectPlayerColor;
     }
 
-    public function handle(CommandInterface $command, GameEvents $gameState): GameEventsToPersist
+    public function handle(CommandInterface $command, GameEvents $gameEvents): GameEventsToPersist
     {
         /** @phpstan-ignore-next-line */
         return match ($command::class) {
-            DefinePlayerOrdering::class => $this->handleDefinePlayerOrdering($command, $gameState),
-            SelectLebensziel::class => $this->handleSelectLebensziel($command, $gameState),
-            StartGame::class => $this->handleStartGame($command, $gameState),
-            SelectPlayerColor::class => $this->handleSelectColor($command, $gameState),
+            DefinePlayerOrdering::class => $this->handleDefinePlayerOrdering($command, $gameEvents),
+            SelectLebensziel::class => $this->handleSelectLebensziel($command, $gameEvents),
+            StartGame::class => $this->handleStartGame($command, $gameEvents),
+            SelectPlayerColor::class => $this->handleSelectColor($command, $gameEvents),
 
-            StartPreGame::class => $this->handleStartPreGame($command, $gameState),
-            SetNameForPlayer::class => $this->handleSetNameForPlayer($command, $gameState),
+            StartPreGame::class => $this->handleStartPreGame($command, $gameEvents),
+            SetNameForPlayer::class => $this->handleSetNameForPlayer($command, $gameEvents),
         };
     }
 

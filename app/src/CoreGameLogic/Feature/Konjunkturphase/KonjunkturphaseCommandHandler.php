@@ -32,11 +32,11 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
         return $command instanceof ChangeKonjunkturphase;
     }
 
-    public function handle(CommandInterface $command, GameEvents $gameState): GameEventsToPersist
+    public function handle(CommandInterface $command, GameEvents $gameEvents): GameEventsToPersist
     {
         /** @phpstan-ignore-next-line */
         return match ($command::class) {
-            ChangeKonjunkturphase::class => $this->handleChangeKonjunkturphase($command, $gameState),
+            ChangeKonjunkturphase::class => $this->handleChangeKonjunkturphase($command, $gameEvents),
         };
     }
 

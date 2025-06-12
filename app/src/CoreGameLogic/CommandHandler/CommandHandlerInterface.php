@@ -17,5 +17,5 @@ interface CommandHandlerInterface
 {
     public function canHandle(CommandInterface $command): bool;
 
-    public function handle(CommandInterface $command, GameEvents $gameState): GameEventsToPersist;
+    public function handle(CommandInterface $command, GameEvents $gameEvents): GameEventsToPersist;
 }
