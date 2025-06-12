@@ -137,11 +137,11 @@ class PlayerState
     }
 
     /**
-     * Returns the last JobOfferWasAccepted event for the specified player.
+     * Returns the JobCardDefinition of the currently active job for the specified player.
      *
      * @param GameEvents $stream The collection of game events to be analyzed.
-     * @param PlayerId $playerId The ID of the player for whom the job offer is being retrieved.
-     * @return JobCardDefinition|null The last job offer accepted by the player, or null if no such event exists.
+     * @param PlayerId $playerId The ID of the player
+     * @return JobCardDefinition|null The last job accepted by the player, or null if none exists.
      */
     public static function getJobForPlayer(GameEvents $stream, PlayerId $playerId): ?JobCardDefinition
     {

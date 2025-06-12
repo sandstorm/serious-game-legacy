@@ -32,15 +32,15 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             || $command instanceof EndSpielzug;
     }
 
-    public function handle(CommandInterface $command, GameEvents $gameState): GameEventsToPersist
+    public function handle(CommandInterface $command, GameEvents $gameEvents): GameEventsToPersist
     {
         /** @phpstan-ignore-next-line */
         return match ($command::class) {
-            SkipCard::class => $this->handleSkipCard($command, $gameState),
-            ActivateCard::class => $this->handleActivateCard($command, $gameState),
-            RequestJobOffers::class => $this->handleRequestJobOffers($command, $gameState),
-            AcceptJobOffer::class => $this->handleAcceptJobOffer($command, $gameState),
-            EndSpielzug::class => $this->handleEndSpielzug($command, $gameState),
+            SkipCard::class => $this->handleSkipCard($command, $gameEvents),
+            ActivateCard::class => $this->handleActivateCard($command, $gameEvents),
+            RequestJobOffers::class => $this->handleRequestJobOffers($command, $gameEvents),
+            AcceptJobOffer::class => $this->handleAcceptJobOffer($command, $gameEvents),
+            EndSpielzug::class => $this->handleEndSpielzug($command, $gameEvents),
         };
     }
 
