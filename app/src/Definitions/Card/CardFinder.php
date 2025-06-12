@@ -229,18 +229,12 @@ final class CardFinder
     /**
      * @return JobCardDefinition[]
      */
-    public function getJobsBasedOnPlayerResources(ResourceChanges $playerResources): array
+    public function getThreeRandomJobs(ResourceChanges $playerResources): array
     {
         $randomizer = new Randomizer();
         // TODO consider the player's phase
         return array_values(array_slice(
-            $randomizer->shuffleArray(
-                array_filter($this->getCardsForJobs1(), function ($job) use ($playerResources) {
-                    return $job instanceof JobCardDefinition &&
-                        $job->requirements->freizeitKompetenzsteine <= $playerResources->freizeitKompetenzsteinChange &&
-                        $job->requirements->bildungKompetenzsteine <= $playerResources->bildungKompetenzsteinChange &&
-                        $job->requirements->zeitsteine <= $playerResources->zeitsteineChange;
-                })),
+            $randomizer->shuffleArray($this->getCardsForJobs1()),
             0,
             3
         ));

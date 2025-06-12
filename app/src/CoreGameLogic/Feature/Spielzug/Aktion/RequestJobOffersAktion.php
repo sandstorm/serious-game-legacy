@@ -40,14 +40,6 @@ class RequestJobOffersAktion extends Aktion
                 reason: 'Du hast nicht genug Zeitsteine, um dir Jobs anzeigen zu lassen',
             );
         }
-        $jobs = CardFinder::getInstance()->getJobsBasedOnPlayerResources(PlayerState::getResourcesForPlayer($gameEvents, $player));
-
-        if (count($jobs) === 0) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: 'Du erfüllst momentan für keinen Job die Voraussetzungen',
-            );
-        }
 
         $hasFreeTimeSlots = GamePhaseState::hasFreeTimeSlotsForCategory($gameEvents, CategoryId::JOBS);
         if (!$hasFreeTimeSlots) {
@@ -66,7 +58,7 @@ class RequestJobOffersAktion extends Aktion
         if (!$result->canExecute) {
             throw new \RuntimeException("" . $result->reason, 1749043606);
         }
-        $jobs = CardFinder::getInstance()->getJobsBasedOnPlayerResources(PlayerState::getResourcesForPlayer($gameEvents, $player));
+        $jobs = CardFinder::getInstance()->getThreeRandomJobs(PlayerState::getResourcesForPlayer($gameEvents, $player));
         return GameEventsToPersist::with(
             new JobOffersWereRequested($player, array_map(fn ($job) => $job->getId(), $jobs))
         );

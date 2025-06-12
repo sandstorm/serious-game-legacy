@@ -515,57 +515,8 @@ describe('handleRequestJobOffers', function () {
     })->throws(\RuntimeException::class,
         'Es gibt keine freien Zeitsteine mehr.', 1749043606);
 
-    it('throws an exception when the player does not fulfill the requirements for any job', function () {
-        /** @var TestCase $this */
-        CardFinder::getInstance()->overrideCardsForTesting([
-            PileId::JOBS_PHASE_1->value => [
-                "j0" => new JobCardDefinition(
-                    id: new CardId('j0'),
-                    pileId: PileId::JOBS_PHASE_1,
-                    title: 'Fachinformatikerin',
-                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(34000),
-                    requirements: new JobRequirements(
-                        zeitsteine: 1,
-                        bildungKompetenzsteine: 2,
-                    ),
-                ),
-                "j1" => new JobCardDefinition(
-                    id: new CardId('j1'),
-                    pileId: PileId::JOBS_PHASE_1,
-                    title: 'Pflegefachkraft (not eligible)',
-                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(25000),
-                    requirements: new JobRequirements(
-                        zeitsteine: 1,
-                        bildungKompetenzsteine: 2,
-                    ),
-                ),
-                "j2" => new JobCardDefinition(
-                    id: new CardId('j2'),
-                    pileId: PileId::JOBS_PHASE_1,
-                    title: 'Taxifahrer:in',
-                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(18000),
-                    requirements: new JobRequirements(
-                        zeitsteine: 1,
-                        bildungKompetenzsteine: 2,
-                    ),
-                ),
-            ]
-        ]);
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
 
-        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-
-        /** @var JobOffersWereRequested $actualEvent */
-        $actualEvent = $stream->findLast(JobOffersWereRequested::class);
-        expect($actualEvent->player)->toEqual($this->players[0])
-            ->and($actualEvent->jobs)->toEqual([]);
-    })->throws(\RuntimeException::class,
-        'Du erfüllst momentan für keinen Job die Voraussetzungen', 1749043606);
-
-    it('returns 3 jobs with fulfilled requirements', function () {
+    it('returns 3 jobs', function () {
         /** @var TestCase $this */
         CardFinder::getInstance()->overrideCardsForTesting([
             PileId::JOBS_PHASE_1->value => [
@@ -599,14 +550,6 @@ describe('handleRequestJobOffers', function () {
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
-                ),
-                "j3" => new JobCardDefinition(
-                    id: new CardId('j3'),
-                    pileId: PileId::JOBS_PHASE_1,
-                    title: 'Testjob444',
-                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(18000),
-                    requirements: new JobRequirements(),
                 ),
             ]
         ]);
@@ -619,8 +562,8 @@ describe('handleRequestJobOffers', function () {
         expect($actualEvent->player)->toEqual($this->players[0])
             ->and(count($actualEvent->jobs))->toBe(3)
             ->and($actualEvent->jobs)->toContainEqual(new CardId('j0'))
-            ->and($actualEvent->jobs)->toContainEqual(new CardId('j2'))
-            ->and($actualEvent->jobs)->toContainEqual(new CardId('j3'));
+            ->and($actualEvent->jobs)->toContainEqual(new CardId('j1'))
+            ->and($actualEvent->jobs)->toContainEqual(new CardId('j2'));
     });
 
 
@@ -634,27 +577,6 @@ describe('handleRequestJobOffers', function () {
                     title: 'Fachinformatikerin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
                     gehalt: new Gehalt(34000),
-                    requirements: new JobRequirements(
-                        zeitsteine: 1,
-                    ),
-                ),
-                "j1" => new JobCardDefinition(
-                    id: new CardId('j1'),
-                    pileId: PileId::JOBS_PHASE_1,
-                    title: 'Pflegefachkraft (not eligible)',
-                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(25000),
-                    requirements: new JobRequirements(
-                        zeitsteine: 1,
-                        bildungKompetenzsteine: 2,
-                    ),
-                ),
-                "j2" => new JobCardDefinition(
-                    id: new CardId('j2'),
-                    pileId: PileId::JOBS_PHASE_1,
-                    title: 'Taxifahrer:in',
-                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(18000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -680,7 +602,7 @@ describe('handleRequestJobOffers', function () {
         expect($actualEvent->player)->toEqual($this->players[0])
             ->and(count($actualEvent->jobs))->toBe(2)
             ->and($actualEvent->jobs)->toContainEqual(new CardId('j0'))
-            ->and($actualEvent->jobs)->toContainEqual(new CardId('j2'));
+            ->and($actualEvent->jobs)->toContainEqual(new CardId('j3'));
     });
 
     it('does not return more than 3 jobs', function () {
