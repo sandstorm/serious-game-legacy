@@ -11,7 +11,7 @@ namespace Domain\CoreGameLogic\Feature\Moneysheet\Event\Behaviour;
  */
 interface ProvidesPlayerInput
 {
-    public function getPlayerInput(): int;
-    public function getExpectedInput(): int;
+    public function getPlayerInput(): float;
+    public function getExpectedInput(): float;
     public function wasInputCorrect(): bool;
 }

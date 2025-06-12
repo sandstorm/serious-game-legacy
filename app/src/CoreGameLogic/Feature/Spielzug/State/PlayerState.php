@@ -74,7 +74,7 @@ class PlayerState
     /**
      * Returns the current Guthaben of the player.
      */
-    public static function getGuthabenForPlayer(GameEvents $stream, PlayerId $playerId): int
+    public static function getGuthabenForPlayer(GameEvents $stream, PlayerId $playerId): float
     {
         // TODO: wenig Typisierung hier -> gibt alles plain values etc zurück.
         $accumulatedResourceChangesForPlayer = $stream->findAllOfType(ProvidesResourceChanges::class)
@@ -146,13 +146,13 @@ class PlayerState
     public static function getJobForPlayer(GameEvents $stream, PlayerId $playerId): ?JobCardDefinition
     {
         /** @var JobOfferWasAccepted|null $jobOfferWasAcceptedEvent */
-        $jobOfferWasAcceptedEvent = $stream->findLastOrNullWhere(fn($e) => $e instanceof JobOfferWasAccepted && $e->player->equals($playerId));
+        $jobOfferWasAcceptedEvent = $stream->findLastOrNullWhere(fn($e) => $e instanceof JobOfferWasAccepted && $e->playerId->equals($playerId));
         if ($jobOfferWasAcceptedEvent === null) {
             return null;
         }
 
         /** @var JobCardDefinition $jobDefinition */
-        $jobDefinition = CardFinder::getInstance()->getCardById($jobOfferWasAcceptedEvent->job);
+        $jobDefinition = CardFinder::getInstance()->getCardById($jobOfferWasAcceptedEvent->cardId);
         return $jobDefinition;
     }
 

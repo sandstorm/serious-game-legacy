@@ -32,7 +32,6 @@ class GameStateUpdated implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         return [
-            //new PrivateChannel('game.' . $this->playId),
             new Channel('game.' . $this->gameId->value),
         ];
     }

@@ -32,8 +32,8 @@ describe('handleEnterSteuernUndAbgabenForPlayer', function () {
 
         /** @var SteuernUndAbgabenForPlayerWereEntered $actualEvent */
         $actualEvent = $gameEvents->findLast(SteuernUndAbgabenForPlayerWereEntered::class);
-        expect($actualEvent->getPlayerInput())->toBe(0)
-            ->and($actualEvent->getExpectedInput())->toBe(0)
+        expect($actualEvent->getPlayerInput())->toEqual(0)
+            ->and($actualEvent->getExpectedInput())->toEqual(0)
             ->and($actualEvent->wasInputCorrect())->toBeTrue();
     });
 
@@ -63,8 +63,8 @@ describe('handleEnterSteuernUndAbgabenForPlayer', function () {
 
         /** @var SteuernUndAbgabenForPlayerWereEntered $actualEvent */
         $actualEvent = $gameEvents->findLast(SteuernUndAbgabenForPlayerWereEntered::class);
-        expect($actualEvent->getPlayerInput())->toBe($playerInput, 'Player input should be ' . $playerInput)
-            ->and($actualEvent->getExpectedInput())->toBe($playerInput)
+        expect($actualEvent->getPlayerInput())->toEqual($playerInput, 'Player input should be ' . $playerInput)
+            ->and($actualEvent->getExpectedInput())->toEqual($playerInput)
             ->and($actualEvent->wasInputCorrect())->toBeTrue();
     });
 
@@ -76,8 +76,8 @@ describe('handleEnterSteuernUndAbgabenForPlayer', function () {
 
         /** @var SteuernUndAbgabenForPlayerWereEntered $actualEvent */
         $actualEvent = $gameEvents->findLast(SteuernUndAbgabenForPlayerWereEntered::class);
-        expect($actualEvent->getPlayerInput())->toBe(200)
-            ->and($actualEvent->getExpectedInput())->toBe(0)
+        expect($actualEvent->getPlayerInput())->toEqual(200)
+            ->and($actualEvent->getExpectedInput())->toEqual(0)
             ->and($actualEvent->wasInputCorrect())->toBeFalse();
     });
 
@@ -108,8 +108,8 @@ describe('handleEnterSteuernUndAbgabenForPlayer', function () {
 
         /** @var SteuernUndAbgabenForPlayerWereEntered $actualEvent */
         $actualEvent = $gameEvents->findLast(SteuernUndAbgabenForPlayerWereEntered::class);
-        expect($actualEvent->getPlayerInput())->toBe($playerInput, 'Player input should be ' . $playerInput)
-            ->and($actualEvent->getExpectedInput())->toBe($expectedValue)
+        expect($actualEvent->getPlayerInput())->toEqual($playerInput, 'Player input should be ' . $playerInput)
+            ->and($actualEvent->getExpectedInput())->toEqual($expectedValue)
             ->and($actualEvent->wasInputCorrect())->toBeFalse();
     });
 
@@ -117,25 +117,25 @@ describe('handleEnterSteuernUndAbgabenForPlayer', function () {
         /** @var TestCase $this */
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toBe(50000);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(50000);
 
         $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], 200));
         $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], 300));
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
-        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toBe(49750);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(49750);
     });
 
     it('charges no fee after one incorrect entries', function () {
         /** @var TestCase $this */
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toBe(50000);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(50000);
 
         $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], 200));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toBe(50000);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(50000);
     });
 });
 
@@ -148,8 +148,8 @@ describe('handleEnterLebenshaltungskostenForPlayer', function () {
 
         /** @var LebenshaltungskostenForPlayerWereEntered $actualEvent */
         $actualEvent = $gameEvents->findLast(LebenshaltungskostenForPlayerWereEntered::class);
-        expect($actualEvent->getPlayerInput())->toBe(5000)
-            ->and($actualEvent->getExpectedInput())->toBe(5000)
+        expect($actualEvent->getPlayerInput())->toEqual(5000)
+            ->and($actualEvent->getExpectedInput())->toEqual(5000)
             ->and($actualEvent->wasInputCorrect())->toBeTrue();
     });
 
@@ -179,8 +179,8 @@ describe('handleEnterLebenshaltungskostenForPlayer', function () {
 
         /** @var LebenshaltungskostenForPlayerWereEntered $actualEvent */
         $actualEvent = $gameEvents->findLast(LebenshaltungskostenForPlayerWereEntered::class);
-        expect($actualEvent->getPlayerInput())->toBe($playerInput, 'Player input should be ' . $playerInput)
-            ->and($actualEvent->getExpectedInput())->toBe($playerInput)
+        expect($actualEvent->getPlayerInput())->toEqual($playerInput, 'Player input should be ' . $playerInput)
+            ->and($actualEvent->getExpectedInput())->toEqual($playerInput)
             ->and($actualEvent->wasInputCorrect())->toBeTrue();
     });
 
@@ -192,8 +192,8 @@ describe('handleEnterLebenshaltungskostenForPlayer', function () {
 
         /** @var LebenshaltungskostenForPlayerWereEntered $actualEvent */
         $actualEvent = $gameEvents->findLast(LebenshaltungskostenForPlayerWereEntered::class);
-        expect($actualEvent->getPlayerInput())->toBe(200)
-            ->and($actualEvent->getExpectedInput())->toBe(5000)
+        expect($actualEvent->getPlayerInput())->toEqual(200)
+            ->and($actualEvent->getExpectedInput())->toEqual(5000)
             ->and($actualEvent->wasInputCorrect())->toBeFalse();
     });
 
@@ -224,8 +224,8 @@ describe('handleEnterLebenshaltungskostenForPlayer', function () {
 
         /** @var LebenshaltungskostenForPlayerWereEntered $actualEvent */
         $actualEvent = $gameEvents->findLast(LebenshaltungskostenForPlayerWereEntered::class);
-        expect($actualEvent->getPlayerInput())->toBe($playerInput, 'Player input should be ' . $playerInput)
-            ->and($actualEvent->getExpectedInput())->toBe($expectedValue)
+        expect($actualEvent->getPlayerInput())->toEqual($playerInput, 'Player input should be ' . $playerInput)
+            ->and($actualEvent->getExpectedInput())->toEqual($expectedValue)
             ->and($actualEvent->wasInputCorrect())->toBeFalse();
     });
 
@@ -233,24 +233,24 @@ describe('handleEnterLebenshaltungskostenForPlayer', function () {
         /** @var TestCase $this */
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toBe(50000);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(50000);
 
         $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->players[0], 200));
         $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->players[0], 300));
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
-        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toBe(49750);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(49750);
     });
 
     it('charges no fee after one incorrect entries', function () {
         /** @var TestCase $this */
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toBe(50000);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(50000);
 
         $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->players[0], 200));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toBe(50000);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(50000);
     });
 });

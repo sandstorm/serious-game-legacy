@@ -79,7 +79,7 @@ test('PreGameLogic normal flow', function () {
         ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p1->value]->lebensziel->name)->toEqual($expectedLebenszielForP1->name)
         ->and(PreGameState::playersWithNameAndLebensziel($gameStream)[$this->p2->value]->lebensziel->name)->toEqual($expectedLebenszielForP2->name);
 
-    expect(PlayerState::getGuthabenForPlayer($gameStream, $this->p1))->toBe(50000);
+    expect(PlayerState::getGuthabenForPlayer($gameStream, $this->p1))->toEqual(50000);
 
     $this->coreGameLogic->handle($this->gameId, new SelectPlayerColor(
         playerId: $this->p1,

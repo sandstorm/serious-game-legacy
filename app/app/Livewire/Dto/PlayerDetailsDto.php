@@ -13,7 +13,7 @@ class PlayerDetailsDto
         public string $name,
         public PlayerId $playerId,
         public LebenszielDefinition $lebensziel,
-        public int $guthaben,
+        public float $guthaben,
         public int $zeitsteine,
         public int $kompetenzsteineBildung,
         public int $kompetenzsteineFreizeit,

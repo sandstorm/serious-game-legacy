@@ -5,7 +5,7 @@ namespace App\Livewire\Forms;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
-class PreGameNameLebensziel extends Form
+class PreGameNameLebenszielForm extends Form
 {
     #[Validate('required|min:2')]
     public string $name = '';
