@@ -2,15 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\View\Components\MoneySheet;
+namespace App\View\Components\MoneySheet\Expenses;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
-class MoneySheetIncome extends Component
+class MoneySheetCredits extends Component
 {
     /**
      * Create the component instance.
@@ -25,8 +24,7 @@ class MoneySheetIncome extends Component
      */
     public function render(): View
     {
-        return view('components.gameboard.moneySheet.money-sheet-income', [
-            'jobDefinition' => PlayerState::getJobForPlayer($this->gameStream, $this->playerId),
+        return view('components.gameboard.moneySheet.expenses.money-sheet-credits', [
         ]);
     }
 

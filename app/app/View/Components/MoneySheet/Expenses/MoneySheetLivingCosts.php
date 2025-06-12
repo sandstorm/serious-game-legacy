@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\View\Components\MoneySheet;
+namespace App\View\Components\MoneySheet\Expenses;
 
 use App\Livewire\Dto\MoneySheet as MoneySheetDto;
 use Domain\CoreGameLogic\EventStore\GameEvents;
@@ -12,7 +12,7 @@ use Domain\CoreGameLogic\PlayerId;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
-class MoneySheetExpenses extends Component
+class MoneySheetLivingCosts extends Component
 {
     /**
      * Create the component instance.
@@ -27,7 +27,7 @@ class MoneySheetExpenses extends Component
      */
     public function render(): View
     {
-        return view('components.gameboard.moneySheet.money-sheet-expenses', [
+        return view('components.gameboard.moneySheet.expenses.money-sheet-living-costs', [
             'moneySheet' => new MoneySheetDto(
                 lebenskosten: MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameStream, $this->playerId),
                 steuernUndAbgaben: MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameStream, $this->playerId),

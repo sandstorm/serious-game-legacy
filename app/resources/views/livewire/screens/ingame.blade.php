@@ -75,9 +75,9 @@
         <button class="button button--type-primary" wire:click="showMoneySheet()">{{ PlayerState::getGuthabenForPlayer($this->gameStream(), $myself) }}€</button>
         @if ($moneySheetIsVisible)
             @if ($editIncomeIsVisible)
-                <x-money-sheet.money-sheet-income :player-id="$myself" :game-stream="$this->gameStream"/>
+                <x-gameboard.moneySheet.money-sheet-income-modal :player-id="$myself" :game-stream="$this->gameStream"/>
             @elseif ($editExpensesIsVisible)
-                <x-money-sheet.money-sheet-expenses :player-id="$myself" :game-stream="$this->gameStream"/>
+                <x-gameboard.moneySheet.money-sheet-expenses-modal :player-id="$myself" :game-stream="$this->gameStream"/>
             @else
                 <x-money-sheet.money-sheet :player-id="$myself" :game-stream="$this->gameStream"/>
             @endif
