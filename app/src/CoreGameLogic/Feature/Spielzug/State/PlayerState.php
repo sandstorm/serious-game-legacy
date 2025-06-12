@@ -11,6 +11,8 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\CardFinder;
+use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
@@ -139,11 +141,30 @@ class PlayerState
      *
      * @param GameEvents $stream The collection of game events to be analyzed.
      * @param PlayerId $playerId The ID of the player for whom the job offer is being retrieved.
-     * @return JobOfferWasAccepted|null The last job offer accepted by the player, or null if no such event exists.
+     * @return JobCardDefinition|null The last job offer accepted by the player, or null if no such event exists.
      */
-    public static function getJobForPlayer(GameEvents $stream, PlayerId $playerId): ?JobOfferWasAccepted
+    public static function getJobForPlayer(GameEvents $stream, PlayerId $playerId): ?JobCardDefinition
     {
-        // @phpstan-ignore return.type
-        return $stream->findLastOrNullWhere(fn($e) => $e instanceof JobOfferWasAccepted && $e->player->equals($playerId));
+        /** @var JobOfferWasAccepted|null $jobOfferWasAcceptedEvent */
+        $jobOfferWasAcceptedEvent = $stream->findLastOrNullWhere(fn($e) => $e instanceof JobOfferWasAccepted && $e->player->equals($playerId));
+        if ($jobOfferWasAcceptedEvent === null) {
+            return null;
+        }
+
+        /** @var JobCardDefinition $jobDefinition */
+        $jobDefinition = CardFinder::getInstance()->getCardById($jobOfferWasAcceptedEvent->job);
+        return $jobDefinition;
+    }
+
+    /**
+     * @param GameEvents $stream
+     * @param PlayerId $playerId
+     * @return int
+     */
+    public static function getGehaltForPlayer(GameEvents $stream, PlayerId $playerId): int
+    {
+        // TODO modifier berücksichtigen
+        $job = self::getJobForPlayer($stream, $playerId);
+        return $job?->gehalt->value ?? 0;
     }
 }

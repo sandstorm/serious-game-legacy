@@ -9,8 +9,6 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
-use Domain\Definitions\Card\CardFinder;
-use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
@@ -33,7 +31,7 @@ class MoneySheetExpenses extends Component
             'moneySheet' => new MoneySheetDto(
                 lebenskosten: MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameStream, $this->playerId),
                 steuernUndAbgaben: MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameStream, $this->playerId),
-                gehalt: PlayerState::getJobForPlayer($this->gameStream, $this->playerId)?->gehalt->value ?? 0,
+                gehalt: PlayerState::getGehaltForPlayer($this->gameStream, $this->playerId),
             ),
         ]);
     }
