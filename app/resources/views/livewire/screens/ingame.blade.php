@@ -50,14 +50,15 @@
                         @if ($category->title->value === 'Erwerbseinkommen')
                             <button type="button" class="button button--type-primary" wire:click="showJobOffer()">Jobangebote anschauen (-1 Zeitstein)</button>
 
-                            @if ($myJob !== null)
+                            @if ($jobDefinition !== null)
                                 <hr />
-                                <div class="button button--type-outline-primary">
-                                    <div class="zeitsteine">
+                                <button class="button button--type-outline-primary" wire:click="showSalaryTab()">
+                                    <ul class="zeitsteine">
+                                        <li>-{{ $jobDefinition->requirements->zeitsteine }}</li>
                                         <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($this->gameStream, $myself)])></li>
-                                    </div>
-                                    <span>Mein Job. {{ $myJob->gehalt->value}}€</span>
-                                </div>
+                                    </ul>
+                                    <span>Mein Job. {{ $jobDefinition->gehalt->value}}€</span>
+                                </button>
                             @endif
                             @if ($jobOfferIsVisible)
                                 <x-job-offers-modal :player-id="$myself" :game-stream="$this->gameStream" />
@@ -73,7 +74,13 @@
         <h4>Money Sheet</h4>
         <button class="button button--type-primary" wire:click="showMoneySheet()">{{ PlayerState::getGuthabenForPlayer($this->gameStream(), $myself) }}€</button>
         @if ($moneySheetIsVisible)
-            <x-money-sheet :player-id="$myself" :game-stream="$this->gameStream"/>
+            @if ($editIncomeIsVisible)
+                <x-money-sheet.money-sheet-income :player-id="$myself" :game-stream="$this->gameStream"/>
+            @elseif ($editExpensesIsVisible)
+                <x-money-sheet.money-sheet-expenses :player-id="$myself" :game-stream="$this->gameStream"/>
+            @else
+                <x-money-sheet.money-sheet :player-id="$myself" :game-stream="$this->gameStream"/>
+            @endif
         @endif
 
         @if ($this->currentPlayerIsMyself())

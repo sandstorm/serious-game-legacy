@@ -1,4 +1,4 @@
-@extends ('components.modal.modal', ['closeModal' => "closePlayerDetails()"])
+@extends ('components.modal.modal', ['closeModal' => "closePlayerDetails()",  'size' => 'medium'])
 @section('title')
     Spieler Details
 @endsection

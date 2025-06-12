@@ -1,4 +1,4 @@
-@extends ('components.modal.modal', ['closeModal' => "closeKonjunkturphaseDetails()"])
+@extends ('components.modal.modal', ['closeModal' => "closeKonjunkturphaseDetails()",  'size' => 'medium'])
 @section('title')
     {{ $konjunkturphase->type }}
 @endsection

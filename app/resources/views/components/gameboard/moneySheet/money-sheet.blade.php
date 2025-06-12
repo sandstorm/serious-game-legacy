@@ -1,6 +1,6 @@
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
 
-@extends ('components.modal.modal', ['closeModal' => "closeMoneySheet()"])
+@extends ('components.modal.modal', ['closeModal' => "closeMoneySheet()", 'size' => 'medium'])
 @section('title')
     Money Sheet
 @endsection
@@ -9,6 +9,7 @@
     <div class="moneysheet">
         <div class="moneysheet__income">
             <h2>Einnahmen</h2>
+            <button type="button" class="button button--type-primary button--size-small" wire:click="toggleEditIncome()">Bearbeiten</button>
             <table>
                 <tbody>
                 <tr>
@@ -24,6 +25,7 @@
         </div>
         <div class="moneysheet__expenses">
             <h2>Ausgaben</h2>
+            <button type="button" class="button button--type-primary button--size-small" wire:click="toggleEditExpenses()">Bearbeiten</button>
             <table>
                 <tbody>
                 <tr>

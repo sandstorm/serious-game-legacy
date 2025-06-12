@@ -11,6 +11,8 @@ use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\CardFinder;
+use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
@@ -65,11 +67,15 @@ trait HasGamePhase
             ),
         ];
 
+        $currentJob = PlayerState::getJobForPlayer($this->gameStream, $this->myself);
+        /** @var JobCardDefinition $jobCard */
+        $jobCard = $currentJob !== null ? CardFinder::getInstance()->getCardById($currentJob->job) : null;
+
         return view('livewire.screens.ingame', [
             'currentYear' => GamePhaseState::currentKonjunkturphasenYear($this->gameStream),
             'konjunkturphasenDefinition' => $konjunkturphasenDefinition,
             'categories' => $categories,
-            'myJob' => PlayerState::getJobForPlayer($this->gameStream, $this->myself),
+            'jobDefinition' => $jobCard,
         ]);
     }
 
