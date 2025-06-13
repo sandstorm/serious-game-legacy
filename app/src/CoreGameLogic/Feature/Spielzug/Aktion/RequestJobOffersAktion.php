@@ -8,6 +8,7 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
@@ -34,7 +35,18 @@ class RequestJobOffersAktion extends Aktion
             );
         }
 
-        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($player, new ResourceChanges(zeitsteineChange: -2))) {
+        $zeitsteinEventsThisTurn = AktionsCalculator::forStream($gameEvents)
+            ->getEventsThisTurn()
+            ->findAllOfType(ZeitsteinAktion::class);
+        if (count($zeitsteinEventsThisTurn) > 0) {
+            return new AktionValidationResult(
+                canExecute: false,
+                reason: 'Du hast bereits eine andere Aktion ausgeführt'
+            );
+        }
+
+        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($player,
+            new ResourceChanges(zeitsteineChange: -2))) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: 'Du hast nicht genug Zeitsteine, um dir Jobs anzeigen zu lassen',
@@ -60,7 +72,7 @@ class RequestJobOffersAktion extends Aktion
         }
         $jobs = CardFinder::getInstance()->getThreeRandomJobs(PlayerState::getResourcesForPlayer($gameEvents, $player));
         return GameEventsToPersist::with(
-            new JobOffersWereRequested($player, array_map(fn ($job) => $job->getId(), $jobs))
+            new JobOffersWereRequested($player, array_map(fn($job) => $job->getId(), $jobs))
         );
     }
 }

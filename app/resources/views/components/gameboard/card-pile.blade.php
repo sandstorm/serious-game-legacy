@@ -27,24 +27,30 @@
                         @if ($card->resourceChanges->freizeitKompetenzsteinChange)
                             <li>Freizeit: {{ $card->resourceChanges->freizeitKompetenzsteinChange}}</li>
                         @endif
-                        @if ($card->resourceChanges->newErwerbseinkommen)
-                            <li>Erwerbseinkommen: {{ $card->resourceChanges->newErwerbseinkommen}}€</li>
-                        @endif
-                        @if ($card->resourceChanges->erwerbseinkommenChangeInPercent)
-                            <li>Erwebseinkommen %: {{ $card->resourceChanges->erwerbseinkommenChangeInPercent}}%</li>
-                        @endif
                     </ul>
                 </div>
 
                 @if ($this->cardActionsVisible($card->id->value))
                     <div class="card-pile__card-actions">
-                        <button type="button" class="button button--type-outline-primary"
-                                wire:click="skipCard('{{$category}}')"
+                        <button
+                            type="button"
+                            @class([
+                                "button",
+                                "button--type-outline-primary",
+                                "button--disabled" => !$this->canSkipCard($category)->canExecute,
+                            ])
+                            wire:click="skipCard('{{$category}}')"
                         >
                             Karte skippen
                         </button>
-                        <button type="button" class="button button--type-primary"
-                                wire:click="activateCard('{{$category}}')"
+                        <button
+                            type="button"
+                            @class([
+                               "button",
+                               "button--type-primary",
+                               "button--disabled" => !$this->canActivateCard($category)->canExecute,
+                           ])
+                            wire:click="activateCard('{{$category}}')"
                         >
                             Karte spielen
                         </button>
