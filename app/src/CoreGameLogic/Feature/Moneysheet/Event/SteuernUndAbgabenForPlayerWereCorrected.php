@@ -13,7 +13,7 @@ final readonly class SteuernUndAbgabenForPlayerWereCorrected implements GameEven
 {
     public function __construct(
         public PlayerId $playerId,
-        private int     $correctValue,
+        private float     $correctValue,
     ) {
     }
 

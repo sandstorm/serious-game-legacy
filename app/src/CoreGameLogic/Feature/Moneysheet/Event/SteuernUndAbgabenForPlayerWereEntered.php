@@ -12,8 +12,8 @@ final readonly class SteuernUndAbgabenForPlayerWereEntered implements GameEventI
 {
     public function __construct(
         public PlayerId $playerId,
-        private int     $playerInput,
-        private int     $expectedInput,
+        private float     $playerInput,
+        private float     $expectedInput,
         private bool    $wasInputCorrect
     ) {
     }
@@ -38,12 +38,12 @@ final readonly class SteuernUndAbgabenForPlayerWereEntered implements GameEventI
         ];
     }
 
-    public function getPlayerInput(): int
+    public function getPlayerInput(): float
     {
         return $this->playerInput;
     }
 
-    public function getExpectedInput(): int
+    public function getExpectedInput(): float
     {
         return $this->expectedInput;
     }

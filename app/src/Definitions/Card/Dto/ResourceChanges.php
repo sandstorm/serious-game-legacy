@@ -7,11 +7,11 @@ namespace Domain\Definitions\Card\Dto;
 final readonly class ResourceChanges implements \JsonSerializable
 {
     public function __construct(
-        public int $guthabenChange = 0,
+        public float $guthabenChange = 0,
         public int $zeitsteineChange = 0,
         public int $bildungKompetenzsteinChange = 0,
         public int $freizeitKompetenzsteinChange = 0,
-        public int $newErwerbseinkommen = 0, // TODO not yet sure if this should be somewhere else
+        public float $newErwerbseinkommen = 0, // TODO not yet sure if this should be somewhere else
         public int $erwerbseinkommenChangeInPercent = 0,
     )
     {

@@ -9,14 +9,14 @@ use Domain\CoreGameLogic\PlayerId;
 
 final readonly class EnterSteuernUndAbgabenForPlayer implements CommandInterface
 {
-    public static function create(PlayerId $playerId, int $input): EnterSteuernUndAbgabenForPlayer
+    public static function create(PlayerId $playerId, float $input): EnterSteuernUndAbgabenForPlayer
     {
         return new self($playerId, $input);
     }
 
     private function __construct(
         public PlayerId $playerId,
-        public int      $input,
+        public float      $input,
     ) {
     }
 }

@@ -25,7 +25,7 @@ describe('calculateLebenshaltungskostenForPlayer', function () {
         /** @var TestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actualKosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $this->players[0]);
-        expect($actualKosten)->toBe(5000);
+        expect($actualKosten)->toEqual(5000);
     });
 
     it('returns 5000 when 35% of the Gehalt is less than 5000', function (){
@@ -51,7 +51,7 @@ describe('calculateLebenshaltungskostenForPlayer', function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actualKosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $this->players[0]);
-        expect($actualKosten)->toBe(5000);
+        expect($actualKosten)->toEqual(5000);
     });
 
     it('returns 35% of the Gehalt it that is more than 5000', function (){
@@ -77,7 +77,7 @@ describe('calculateLebenshaltungskostenForPlayer', function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actualKosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $this->players[0]);
-        expect($actualKosten)->toBe(11900);
+        expect($actualKosten)->toEqual(11900);
     });
 });
 
@@ -86,7 +86,7 @@ describe('calculateSteuernUndAbgabenForPlayer', function () {
         /** @var TestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actualKosten = MoneySheetState::calculateSteuernUndAbgabenForPlayer($gameEvents, $this->players[0]);
-        expect($actualKosten)->toBe(0);
+        expect($actualKosten)->toEqual(0);
     });
 
     it('returns 35% of the Gehalt if the player has a job', function (){
@@ -112,7 +112,7 @@ describe('calculateSteuernUndAbgabenForPlayer', function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actualKosten = MoneySheetState::calculateSteuernUndAbgabenForPlayer($gameEvents, $this->players[0]);
-        expect($actualKosten)->toBe(8500);
+        expect($actualKosten)->toEqual(8500);
     });
 });
 

@@ -9,14 +9,15 @@ use Domain\CoreGameLogic\PlayerId;
 
 final readonly class EnterLebenshaltungskostenForPlayer implements CommandInterface
 {
-    public static function create(PlayerId $playerId, int $input): EnterLebenshaltungskostenForPlayer
+    public static function create(PlayerId $playerId, float $input): EnterLebenshaltungskostenForPlayer
     {
         return new self($playerId, $input);
     }
 
     private function __construct(
         public PlayerId $playerId,
-        public int      $input,
-    ) {
+        public float    $input,
+    )
+    {
     }
 }

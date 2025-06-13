@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Traits;
 
-use App\Livewire\Forms\PreGameNameLebensziel;
+use App\Livewire\Forms\PreGameNameLebenszielForm;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectPlayerColor;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
@@ -19,7 +19,7 @@ use Illuminate\View\View;
 
 trait HasPreGamePhase
 {
-    public PreGameNameLebensziel $nameLebenszielForm;
+    public PreGameNameLebenszielForm $nameLebenszielForm;
 
     /**
      * Prefixed with "mount" to avoid conflicts with Livewire's mount method.

@@ -35,7 +35,7 @@ class MoneySheet extends Component
     private function getMoneysheetForPlayerId(PlayerId $playerId): MoneySheetDto
     {
         return new MoneySheetDto(
-            lebenskosten: MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameStream, $playerId),
+            lebenshaltungskosten: MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameStream, $playerId),
             steuernUndAbgaben: MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameStream, $playerId),
             gehalt: PlayerState::getGehaltForPlayer($this->gameStream, $playerId),
         );

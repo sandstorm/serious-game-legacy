@@ -16,17 +16,17 @@ use Domain\Definitions\Card\ValueObject\Gehalt;
 final readonly class JobOfferWasAccepted implements GameEventInterface, ProvidesModifiers
 {
     public function __construct(
-        public PlayerId $player,
-        public CardId $job,
-        public Gehalt $gehalt,
+        public PlayerId $playerId,
+        public CardId   $cardId,
+        public Gehalt   $gehalt,
     ) {
     }
 
     public static function fromArray(array $values): GameEventInterface
     {
         return new self(
-            player: PlayerId::fromString($values['player']),
-            job: CardId::fromString($values['job']),
+            playerId: PlayerId::fromString($values['playerId']),
+            cardId: CardId::fromString($values['cardId']),
             gehalt: new Gehalt($values['gehalt'])
         );
     }
@@ -34,8 +34,8 @@ final readonly class JobOfferWasAccepted implements GameEventInterface, Provides
     public function jsonSerialize(): array
     {
         return [
-            'player' => $this->player,
-            'job' => $this->job,
+            'playerId' => $this->playerId,
+            'cardId' => $this->cardId,
             'gehalt' => $this->gehalt,
         ];
     }
@@ -47,6 +47,6 @@ final readonly class JobOfferWasAccepted implements GameEventInterface, Provides
 
     public function getPlayerId(): PlayerId
     {
-        return $this->player;
+        return $this->playerId;
     }
 }

@@ -13,7 +13,7 @@ final readonly class LebenshaltungskostenForPlayerWereCorrected implements GameE
 {
     public function __construct(
         public PlayerId $playerId,
-        private int     $correctValue,
+        private float     $correctValue,
     ) {
     }
 
@@ -36,9 +36,13 @@ final readonly class LebenshaltungskostenForPlayerWereCorrected implements GameE
     public function getResourceChanges(PlayerId $playerId): ResourceChanges
     {
         if ($playerId === $this->playerId) {
-            return new ResourceChanges(guthabenChange: -250);
+            return new ResourceChanges(guthabenChange: self::getFineForPlayer() * -1);
         }
         return new ResourceChanges();
     }
 
+    public static function getFineForPlayer(): float
+    {
+        return 250.0; // The fine for the player who made a mistake in entering their living costs
+    }
 }

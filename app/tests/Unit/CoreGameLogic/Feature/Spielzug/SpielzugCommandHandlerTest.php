@@ -842,7 +842,7 @@ describe('handleAcceptJobOffer', function () {
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect($stream->FindLast(JobOfferWasAccepted::class)->gehalt->value)->toBe(34000)
-            ->and($stream->FindLast(JobOfferWasAccepted::class)->job->value)->toBe('j0');
+            ->and($stream->FindLast(JobOfferWasAccepted::class)->cardId->value)->toBe('j0');
     });
 });
 

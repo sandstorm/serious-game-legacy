@@ -11,10 +11,10 @@ use Domain\Definitions\Card\ValueObject\CardId;
 final readonly class AcceptJobOffer implements CommandInterface
 {
     public static function create(
-        PlayerId $player,
-        CardId $jobId,
+        PlayerId $playerId,
+        CardId   $cardId,
     ): AcceptJobOffer {
-        return new self($player, $jobId);
+        return new self($playerId, $cardId);
     }
 
     private function __construct(

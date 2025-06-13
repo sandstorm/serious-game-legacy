@@ -7,8 +7,8 @@ namespace App\Livewire\Dto;
 class MoneySheet
 {
     public function __construct(
-        public int $lebenskosten,
-        public int $steuernUndAbgaben,
-        public int $gehalt,
+        public float $lebenshaltungskosten,
+        public float $steuernUndAbgaben,
+        public float $gehalt,
     ) {}
 }

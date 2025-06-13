@@ -13,24 +13,34 @@ use Domain\CoreGameLogic\PlayerId;
 
 class MoneySheetState
 {
-    public static function calculateLebenshaltungskostenForPlayer(GameEvents $gameEvents, PlayerId $playerId): int
+    public static function calculateLebenshaltungskostenForPlayer(GameEvents $gameEvents, PlayerId $playerId): float
     {
         $minKosten = 5000;
         $gehalt = PlayerState::getGehaltForPlayer($gameEvents, $playerId);
-        return max([intval(round($gehalt * 0.35)), $minKosten]);
+        return max([round($gehalt * 0.35, 2), $minKosten]);
     }
 
-    public static function calculateSteuernUndAbgabenForPlayer(GameEvents $gameEvents, PlayerId $playerId): int
+    public static function calculateSteuernUndAbgabenForPlayer(GameEvents $gameEvents, PlayerId $playerId): float
     {
         $gehalt = PlayerState::getGehaltForPlayer($gameEvents, $playerId);
-        return intval(round($gehalt * 0.25));
+        return round($gehalt * 0.25, 2);
+    }
+
+    public static function getLastEnteredLebenshaltungskostenForPlayer(GameEvents $gameEvents, PlayerId $playerId): ?float
+    {
+        /** @var LebenshaltungskostenForPlayerWereEntered|null $lastEvent */
+        $lastEvent = $gameEvents->findLastOrNullWhere(
+            fn($event) => $event instanceof LebenshaltungskostenForPlayerWereEntered && $event->playerId->equals($playerId)
+        );
+
+        return $lastEvent?->getPlayerInput();
     }
 
     private static function getEventsSinceLastGehaltChangeForPlayer(GameEvents $gameEvents, PlayerId $playerId): GameEvents
     {
         // TODO We may need to change this later (e.g. quit job, modifiers)
         $eventsAfterLastGehaltChange = $gameEvents->findAllAfterLastOrNullWhere(
-            fn($event) => $event instanceof JobOfferWasAccepted && $event->player->equals($playerId));
+            fn($event) => $event instanceof JobOfferWasAccepted && $event->playerId->equals($playerId));
         if ($eventsAfterLastGehaltChange === null) {
             $eventsAfterLastGehaltChange = $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
         }

@@ -29,7 +29,7 @@ class MoneySheetLivingCosts extends Component
     {
         return view('components.gameboard.moneySheet.expenses.money-sheet-living-costs', [
             'moneySheet' => new MoneySheetDto(
-                lebenskosten: MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameStream, $this->playerId),
+                lebenshaltungskosten: MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameStream, $this->playerId),
                 steuernUndAbgaben: MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameStream, $this->playerId),
                 gehalt: PlayerState::getGehaltForPlayer($this->gameStream, $this->playerId),
             ),
