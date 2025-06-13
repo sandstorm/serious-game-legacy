@@ -46,7 +46,7 @@
                 </tr>
                 <tr>
                     <td>Lebenshaltungskosten</td>
-                    <td class="text-align--right">{{$moneySheet->lebenskosten}}€</td>
+                    <td class="text-align--right">{{$moneySheet->lebenshaltungskosten}}€</td>
                 </tr>
                 </tbody>
             </table>
@@ -55,7 +55,7 @@
             {{$moneySheet->gehalt}}€
         </div>
         <div class="moneysheet__expenses-sum">
-            - {{$moneySheet->lebenskosten + $moneySheet->steuernUndAbgaben}}€
+            - {{$moneySheet->lebenshaltungskosten + $moneySheet->steuernUndAbgaben}}€
         </div>
         <div class="moneysheet__sum">
             = {{ PlayerState::getGuthabenForPlayer($this->gameStream(), $playerId) }}€

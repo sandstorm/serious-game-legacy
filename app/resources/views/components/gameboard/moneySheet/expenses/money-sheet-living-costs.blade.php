@@ -6,7 +6,7 @@
 <p>
     Dazu zählen Nahrung, Wohnen, Krankenversicherung, ...
 </p>
-<form wire:submit="setLebenskosten">
+<form wire:submit="setLebenshaltungskosten">
     <table>
         <tbody>
         <tr>
@@ -15,8 +15,8 @@
                 <small>35% deines Gehalts</small> <br />
 
                 <div class="form__group">
-                    <x-form.textfield wire:model="moneySheetLebenskostenForm.lebenskosten" id="lebenskosten" name="lebenskosten" type="number" step="0.01" min="5000" :disabled="$this->moneySheetLebenskostenForm->lebenskostenIsDisabled" />
-                    @error('moneySheetLebenskostenForm.lebenskosten') <span class="form__error">{{ $message }}</span> @enderror
+                    <x-form.textfield wire:model="moneySheetLebenshaltungskostenForm.lebenshaltungskosten" id="lebenshaltungskosten" name="lebenshaltungskosten" type="number" step="0.01" min="5000" :disabled="$this->moneySheetLebenshaltungskostenForm->lebenshaltungskostenIsDisabled" />
+                    @error('moneySheetLebenshaltungskostenForm.lebenshaltungskosten') <span class="form__error">{{ $message }}</span> @enderror
                 </div>
 
                 <small>Pro Jahr gibst Du 35% Deines Gehaltes für Lebenshaltungskosten aus. Jedoch mindestens 5.000 €</small>
@@ -25,9 +25,9 @@
         </tbody>
     </table>
 
-    <x-form.submit :disabled="$this->moneySheetLebenskostenForm->lebenskostenIsDisabled">Änderungen Speichern</x-form.submit>
+    <x-form.submit :disabled="$this->moneySheetLebenshaltungskostenForm->lebenshaltungskostenIsDisabled">Änderungen Speichern</x-form.submit>
 
-    @if ($this->moneySheetLebenskostenForm->lebenskostenIsDisabled)
+    @if ($this->moneySheetLebenshaltungskostenForm->lebenshaltungskostenIsDisabled)
         <p>Du hast deine Lebenshaltungskosten erfolgreich eingetragen. Das Formular ist so lange deaktiviert bis sich an deinem Gehalt etwas ändert.</p>
     @endif
 

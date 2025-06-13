@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Traits;
 
-use App\Livewire\Forms\MoneySheetLebenskostenForm;
+use App\Livewire\Forms\MoneySheetLebenshaltungskostenForm;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\LebenshaltungskostenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
@@ -12,7 +12,7 @@ use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 trait HasMoneySheet
 {
     // forms
-    public MoneySheetLebenskostenForm $moneySheetLebenskostenForm;
+    public MoneySheetLebenshaltungskostenForm $moneySheetLebenshaltungskostenForm;
 
     public bool $moneySheetIsVisible = false;
     public bool $editIncomeIsVisible = false;
@@ -32,16 +32,16 @@ trait HasMoneySheet
      */
     public function mountHasMoneySheet(): void
     {
-        $calculatedLebenskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameStream, $this->myself);
-        $actualEnteredLebenskosten = MoneySheetState::getLastEnteredLebenshaltungskostenForPlayer($this->gameStream, $this->myself);
+        $calculatedLebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameStream, $this->myself);
+        $actualEnteredLebenshaltungskosten = MoneySheetState::getLastEnteredLebenshaltungskostenForPlayer($this->gameStream, $this->myself);
 
-        if ($actualEnteredLebenskosten !== null && $calculatedLebenskosten !== $actualEnteredLebenskosten) {
-            $this->moneySheetLebenskostenForm->addError('lebenskosten',
+        if ($actualEnteredLebenshaltungskosten !== null && $calculatedLebenshaltungskosten !== $actualEnteredLebenshaltungskosten) {
+            $this->moneySheetLebenshaltungskostenForm->addError('lebenshaltungskosten',
                 'Deine Lebenshaltungskosten sind aktuell nicht korrekt eingegeben.');
         }
 
-        $this->moneySheetLebenskostenForm->lebenskostenIsDisabled = $actualEnteredLebenskosten === $calculatedLebenskosten;
-        $this->moneySheetLebenskostenForm->lebenskosten = $actualEnteredLebenskosten !== null ? $actualEnteredLebenskosten : 0;
+        $this->moneySheetLebenshaltungskostenForm->lebenshaltungskostenIsDisabled = $actualEnteredLebenshaltungskosten === $calculatedLebenshaltungskosten;
+        $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten = $actualEnteredLebenshaltungskosten !== null ? $actualEnteredLebenshaltungskosten : 0;
     }
 
     /**
@@ -52,18 +52,18 @@ trait HasMoneySheet
      */
     public function renderingHasMoneySheet(): void
     {
-        $calculatedLebenskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameStream, $this->myself);
-        $actualEnteredLebenskosten = MoneySheetState::getLastEnteredLebenshaltungskostenForPlayer($this->gameStream, $this->myself);
+        $calculatedLebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameStream, $this->myself);
+        $actualEnteredLebenshaltungskosten = MoneySheetState::getLastEnteredLebenshaltungskostenForPlayer($this->gameStream, $this->myself);
 
         // show error message when user made a mistake in the input
         // is done in the rerendering phase, because the event fired on the input change handles the 250 EUR deduction
-        if ($calculatedLebenskosten !== $this->moneySheetLebenskostenForm->lebenskosten) {
+        if ($calculatedLebenshaltungskosten !== $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten) {
             $fine = LebenshaltungskostenForPlayerWereCorrected::getFineForPlayer();
-            $this->moneySheetLebenskostenForm->addError('lebenskosten',
+            $this->moneySheetLebenshaltungskostenForm->addError('lebenshaltungskosten',
                 "Du hast einen falschen Wert für die Lebenshaltungskosten eingegeben. Es wurden dir $fine € abgezogen.");
         }
 
-        $this->moneySheetLebenskostenForm->lebenskostenIsDisabled = $actualEnteredLebenskosten === $calculatedLebenskosten;
+        $this->moneySheetLebenshaltungskostenForm->lebenshaltungskostenIsDisabled = $actualEnteredLebenshaltungskosten === $calculatedLebenshaltungskosten;
     }
 
 
@@ -103,15 +103,15 @@ trait HasMoneySheet
         $this->activeTabForIncome = 'salary';
     }
 
-    public function setLebenskosten(): void
+    public function setLebenshaltungskosten(): void
     {
-        $actualEnteredLebenskosten = MoneySheetState::getLastEnteredLebenshaltungskostenForPlayer($this->gameStream, $this->myself);
-        if ($actualEnteredLebenskosten !== null && $this->moneySheetLebenskostenForm->lebenskosten === $actualEnteredLebenskosten) {
+        $actualEnteredLebenshaltungskosten = MoneySheetState::getLastEnteredLebenshaltungskostenForPlayer($this->gameStream, $this->myself);
+        if ($actualEnteredLebenshaltungskosten !== null && $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten === $actualEnteredLebenshaltungskosten) {
             return; // no change, nothing to do
         }
 
-        $this->moneySheetLebenskostenForm->validate();
-        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->myself, $this->moneySheetLebenskostenForm->lebenskosten));
+        $this->moneySheetLebenshaltungskostenForm->validate();
+        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->myself, $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten));
         $this->broadcastNotify();
     }
 
