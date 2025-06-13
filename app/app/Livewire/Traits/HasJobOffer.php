@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Traits;
 
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\AcceptJobOffersAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\RequestJobOffersAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
@@ -41,15 +42,30 @@ trait HasJobOffer
         $this->jobOfferIsVisible = false;
     }
 
+    public function canAcceptJobOffer(CardId $cardId): AktionValidationResult
+    {
+        $aktion = new AcceptJobOffersAktion($cardId);
+        return $aktion->validate($this->myself, $this->gameStream);
+    }
+
     /**
-     * @param string $cardId
+     * @param string $cardIdString
      * @return void
      */
-    public function applyForJob(string $cardId): void
+    public function applyForJob(string $cardIdString): void
     {
+        $cardId = new CardId($cardIdString);
+        $validationResult = self::canAcceptJobOffer($cardId);
+        if (!$validationResult->canExecute) {
+            $this->showNotification(
+                $validationResult->reason,
+                NotificationType::ERROR
+            );
+            return;
+        }
         $this->coreGameLogic->handle(
             $this->gameId,
-            AcceptJobOffer::create($this->myself, new CardId($cardId))
+            AcceptJobOffer::create($this->myself, $cardId)
         );
 
         $this->jobOfferIsVisible = false;

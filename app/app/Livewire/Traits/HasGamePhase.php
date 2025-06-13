@@ -8,7 +8,9 @@ use App\Livewire\Dto\GameboardInformationForCategory;
 use App\Livewire\Dto\ZeitsteineForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EndSpielzugAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\PileId;
@@ -119,11 +121,25 @@ trait HasGamePhase
         );
     }
 
+    public function canEndSpielzug(): AktionValidationResult
+    {
+        $aktion = new EndSpielzugAktion();
+        return $aktion->validate($this->myself, $this->gameStream);
+    }
+
     /**
      * @return void
      */
     public function spielzugAbschliessen(): void
     {
+        $validationResult = self::canEndSpielzug();
+        if (!$validationResult->canExecute) {
+            $this->showNotification(
+                $validationResult->reason,
+                NotificationType::ERROR
+            );
+            return;
+        }
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->myself));
         $this->broadcastNotify();
     }

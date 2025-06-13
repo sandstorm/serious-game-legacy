@@ -1,5 +1,6 @@
 @extends ('components.modal.modal', ['closeModal' => "closeJobOffer()", 'size' => 'medium'])
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
+@use('Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator')
 
 @section('title')
     Jobangebote
@@ -11,27 +12,42 @@
     <div class="job-offers">
         @foreach($jobOffers as $jobOffer)
             <div class="job-offers__item">
-                <h5>{{ $jobOffer->title }}</h5>
+                <h3>{{ $jobOffer->title }}</h3>
                 {{ $jobOffer->description }}
-                <hr />
-                + {{ $jobOffer->gehalt->value }}€ p.a. <br />
+                <hr/>
+                + {{ $jobOffer->gehalt->value }}€ p.a. <br/>
 
-                <div class="job-offers__item-cost">
-                    <span>-</span>
-                    <ul class="zeitsteine">
-                        @for($i = 0; $i < $jobOffer->requirements->zeitsteine; $i++)
-                            <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($gameStream, $playerId)])></li>
-                        @endfor
+                <hr/>
+                <div class="job-offers__item-requirements">
+                    <h4>Voraussetzungen:</h4>
+                    <ul class="requirements">
+                        @if($jobOffer->requirements->bildungKompetenzsteine > 0)
+                            <li class="requirements__item">Bildung und
+                                Karriere: {{$jobOffer->requirements->bildungKompetenzsteine}}</li>
+                        @endif
+                        @if($jobOffer->requirements->freizeitKompetenzsteine > 0)
+                            <li class="requirements__item">Soziales und
+                                Freizeit: {{$jobOffer->requirements->freizeitKompetenzsteine}}</li>
+                        @endif
                     </ul>
                 </div>
 
-                <hr />
-                <button type="button" class="button button--type-primary" wire:click="applyForJob('{{ $jobOffer->id->value }}')">Das mache ich!</button>
+                <hr/>
+                <button type="button"
+                        @class([
+                                "button",
+                                "button--type-primary",
+                                "button--disabled" => !AktionsCalculator::forStream($gameStream)->canPlayerAffordJobCard($playerId, $jobOffer),
+                                ])
+                        wire:click="applyForJob('{{ $jobOffer->id->value }}')">
+                    Das mache ich!
+                </button>
             </div>
         @endforeach
     </div>
 @endsection
 
 @section('footer')
+    {{-- TODO Warn player that the Zeitstein will be used anyway? (vs. opening the modal again this turn shows same jobs at no cost) --}}
     <button type="button" class="button button--type-primary" wire:click="closeJobOffer()">Schließen</button>
 @endsection
