@@ -5,14 +5,18 @@ declare(strict_types=1);
 namespace App\Livewire\Traits;
 
 use App\Livewire\Forms\MoneySheetLebenshaltungskostenForm;
+use App\Livewire\Forms\MoneySheetSteuernUndAbgabenForm;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterLebenshaltungskostenForPlayer;
+use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\LebenshaltungskostenForPlayerWereCorrected;
+use Domain\CoreGameLogic\Feature\Moneysheet\Event\SteuernUndAbgabenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 
 trait HasMoneySheet
 {
     // forms
     public MoneySheetLebenshaltungskostenForm $moneySheetLebenshaltungskostenForm;
+    public MoneySheetSteuernUndAbgabenForm $moneySheetSteuernUndAbgabenForm;
 
     public bool $moneySheetIsVisible = false;
     public bool $editIncomeIsVisible = false;
@@ -32,6 +36,17 @@ trait HasMoneySheet
      */
     public function mountHasMoneySheet(): void
     {
+        $calculatedSteuernUndAbgaben = MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameStream, $this->myself);
+        $actualEnteredSteuernUndAbgaben = MoneySheetState::getLastEnteredSteuernUndAbgabenForPlayer($this->gameStream, $this->myself);
+
+        if ($actualEnteredSteuernUndAbgaben !== null && $calculatedSteuernUndAbgaben !== $actualEnteredSteuernUndAbgaben) {
+            $this->moneySheetSteuernUndAbgabenForm->addError('steuern und abgaben',
+                'Deine Steuern und Abgaben sind aktuell nicht korrekt eingegeben.');
+        }
+
+        $this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled = $actualEnteredSteuernUndAbgaben === $calculatedSteuernUndAbgaben;
+        $this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben = $actualEnteredSteuernUndAbgaben !== null ? $actualEnteredSteuernUndAbgaben : 0;
+
         $calculatedLebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameStream, $this->myself);
         $actualEnteredLebenshaltungskosten = MoneySheetState::getLastEnteredLebenshaltungskostenForPlayer($this->gameStream, $this->myself);
 
@@ -52,6 +67,18 @@ trait HasMoneySheet
      */
     public function renderingHasMoneySheet(): void
     {
+        $calculatedSteuernUndAbgaben = MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameStream, $this->myself);
+        $actualEnteredSteuernUndAbgaben = MoneySheetState::getLastEnteredSteuernUndAbgabenForPlayer($this->gameStream, $this->myself);
+
+        if ($calculatedSteuernUndAbgaben !== $this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben) {
+            $event = new SteuernUndAbgabenForPlayerWereCorrected($this->myself, $calculatedSteuernUndAbgaben);
+            $fine = $event->getResourceChanges($this->myself);
+            $this->moneySheetSteuernUndAbgabenForm->addError('steuern und abgaben',
+                "Du hast einen falschen Wert für die Lebenshaltungskosten eingegeben. Es wurden dir $fine € abgezogen.");
+        }
+
+        $this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled = $actualEnteredSteuernUndAbgaben === $calculatedSteuernUndAbgaben;
+
         $calculatedLebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameStream, $this->myself);
         $actualEnteredLebenshaltungskosten = MoneySheetState::getLastEnteredLebenshaltungskostenForPlayer($this->gameStream, $this->myself);
 
@@ -112,6 +139,18 @@ trait HasMoneySheet
 
         $this->moneySheetLebenshaltungskostenForm->validate();
         $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->myself, $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten));
+        $this->broadcastNotify();
+    }
+
+    public function setSteuernUndAbgaben(): void
+    {
+        $actualEnteredSteuernUndAbgaben = MoneySheetState::getLastEnteredSteuernUndAbgabenForPlayer($this->gameStream, $this->myself);
+        if ($actualEnteredSteuernUndAbgaben !== null && $this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben === $actualEnteredSteuernUndAbgaben) {
+            return; // no change, nothing to do
+        }
+
+        $this->moneySheetSteuernUndAbgabenForm->validate();
+        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->myself, $this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben));
         $this->broadcastNotify();
     }
 

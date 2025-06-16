@@ -36,6 +36,16 @@ class MoneySheetState
         return $lastEvent?->getPlayerInput();
     }
 
+    public static function getLastEnteredSteuernUndAbgabenForPlayer(GameEvents $gameEvents, PlayerId $playerId): ?float
+    {
+        /** @var SteuernUndAbgabenForPlayerWereEntered|null $lastEvent */
+        $lastEvent = $gameEvents->findLastOrNullWhere(
+            fn($event) => $event instanceof SteuernUndAbgabenForPlayerWereEntered && $event->playerId->equals($playerId)
+        );
+
+        return $lastEvent?->getPlayerInput();
+    }
+
     private static function getEventsSinceLastGehaltChangeForPlayer(GameEvents $gameEvents, PlayerId $playerId): GameEvents
     {
         // TODO We may need to change this later (e.g. quit job, modifiers)
