@@ -6,9 +6,10 @@ namespace Domain\CoreGameLogic\Feature\Moneysheet\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\Behaviour\ProvidesPlayerInput;
+use Domain\CoreGameLogic\Feature\Moneysheet\Event\Behaviour\UpdatesInputForSteuernUndAbgaben;
 use Domain\CoreGameLogic\PlayerId;
 
-final readonly class SteuernUndAbgabenForPlayerWereEntered implements GameEventInterface, ProvidesPlayerInput
+final readonly class SteuernUndAbgabenForPlayerWereEntered implements GameEventInterface, ProvidesPlayerInput, UpdatesInputForSteuernUndAbgaben
 {
     public function __construct(
         public PlayerId $playerId,
@@ -51,5 +52,15 @@ final readonly class SteuernUndAbgabenForPlayerWereEntered implements GameEventI
     public function wasInputCorrect(): bool
     {
         return $this->wasInputCorrect;
+    }
+
+    public function getPlayerId(): PlayerId
+    {
+        return $this->playerId;
+    }
+
+    public function getUpdatedValue(): float
+    {
+        return $this->playerInput;
     }
 }

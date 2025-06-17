@@ -6,9 +6,10 @@ namespace Domain\CoreGameLogic\Feature\Moneysheet\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\Behaviour\ProvidesPlayerInput;
+use Domain\CoreGameLogic\Feature\Moneysheet\Event\Behaviour\UpdatesInputForLebenshaltungskosten;
 use Domain\CoreGameLogic\PlayerId;
 
-final readonly class LebenshaltungskostenForPlayerWereEntered implements GameEventInterface, ProvidesPlayerInput
+final readonly class LebenshaltungskostenForPlayerWereEntered implements GameEventInterface, ProvidesPlayerInput, UpdatesInputForLebenshaltungskosten
 {
     public function __construct(
         public PlayerId $playerId,
@@ -51,5 +52,15 @@ final readonly class LebenshaltungskostenForPlayerWereEntered implements GameEve
     public function wasInputCorrect(): bool
     {
         return $this->wasInputCorrect;
+    }
+
+    public function getPlayerId(): PlayerId
+    {
+        return $this->playerId;
+    }
+
+    public function getUpdatedValue(): float
+    {
+        return $this->playerInput;
     }
 }
