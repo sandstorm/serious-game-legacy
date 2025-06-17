@@ -8,8 +8,6 @@ use App\Livewire\Forms\MoneySheetLebenshaltungskostenForm;
 use App\Livewire\Forms\MoneySheetSteuernUndAbgabenForm;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterSteuernUndAbgabenForPlayer;
-use Domain\CoreGameLogic\Feature\Moneysheet\Event\LebenshaltungskostenForPlayerWereCorrected;
-use Domain\CoreGameLogic\Feature\Moneysheet\Event\SteuernUndAbgabenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 
 trait HasMoneySheet
@@ -27,70 +25,26 @@ trait HasMoneySheet
     // set in the view money-sheet-expenses.blade.php
     public string $activeTabForExpenses = 'credits'; // 'credits', 'kids', 'insurances', 'taxes', 'livingCosts'
 
-    /**
-     * Prefixed with "mount" to avoid conflicts with Livewire's mount method.
-     * Is automatically called by Livewire.
-     * See https://livewire.laravel.com/docs/lifecycle-hooks#using-hooks-inside-a-trait
-     *
-     * @return void
-     */
-    public function mountHasMoneySheet(): void
-    {
-        $calculatedSteuernUndAbgaben = MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameStream, $this->myself);
-        $actualEnteredSteuernUndAbgaben = MoneySheetState::getLastEnteredSteuernUndAbgabenForPlayer($this->gameStream, $this->myself);
-
-        if ($actualEnteredSteuernUndAbgaben !== null && $calculatedSteuernUndAbgaben !== $actualEnteredSteuernUndAbgaben) {
-            $this->moneySheetSteuernUndAbgabenForm->addError('steuern und abgaben',
-                'Deine Steuern und Abgaben sind aktuell nicht korrekt eingegeben.');
-        }
-
-        $this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled = $actualEnteredSteuernUndAbgaben === $calculatedSteuernUndAbgaben;
-        $this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben = $actualEnteredSteuernUndAbgaben !== null ? $actualEnteredSteuernUndAbgaben : 0;
-
-        $calculatedLebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameStream, $this->myself);
-        $actualEnteredLebenshaltungskosten = MoneySheetState::getLastEnteredLebenshaltungskostenForPlayer($this->gameStream, $this->myself);
-
-        if ($actualEnteredLebenshaltungskosten !== null && $calculatedLebenshaltungskosten !== $actualEnteredLebenshaltungskosten) {
-            $this->moneySheetLebenshaltungskostenForm->addError('lebenshaltungskosten',
-                'Deine Lebenshaltungskosten sind aktuell nicht korrekt eingegeben.');
-        }
-
-        $this->moneySheetLebenshaltungskostenForm->lebenshaltungskostenIsDisabled = $actualEnteredLebenshaltungskosten === $calculatedLebenshaltungskosten;
-        $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten = $actualEnteredLebenshaltungskosten !== null ? $actualEnteredLebenshaltungskosten : 0;
-    }
 
     /**
      * Update the form state on a rendering. Can happen for example when user changes their job.
-     * Rerendering is triggered by the Livewire when we use the broadcastNotify() method.
+     * Rerendering is triggered by Livewire when we use the broadcastNotify() method.
      *
      * @return void
      */
     public function renderingHasMoneySheet(): void
     {
-        $calculatedSteuernUndAbgaben = MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameStream, $this->myself);
-        $actualEnteredSteuernUndAbgaben = MoneySheetState::getLastEnteredSteuernUndAbgabenForPlayer($this->gameStream, $this->myself);
+        $latestInputForSteuernUndAbgaben = MoneySheetState::getLastInputForSteuernUndAbgaben($this->gameStream, $this->myself);
+        $calculatedSteuernUndAbgaben = MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameStream,
+            $this->myself);
+        $this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben = $latestInputForSteuernUndAbgaben;
+        $this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled = $latestInputForSteuernUndAbgaben === $calculatedSteuernUndAbgaben;
 
-        if ($calculatedSteuernUndAbgaben !== $this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben) {
-            $event = new SteuernUndAbgabenForPlayerWereCorrected($this->myself, $calculatedSteuernUndAbgaben);
-            $fine = $event->getResourceChanges($this->myself);
-            $this->moneySheetSteuernUndAbgabenForm->addError('steuern und abgaben',
-                "Du hast einen falschen Wert für die Lebenshaltungskosten eingegeben. Es wurden dir $fine € abgezogen.");
-        }
-
-        $this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled = $actualEnteredSteuernUndAbgaben === $calculatedSteuernUndAbgaben;
-
-        $calculatedLebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameStream, $this->myself);
-        $actualEnteredLebenshaltungskosten = MoneySheetState::getLastEnteredLebenshaltungskostenForPlayer($this->gameStream, $this->myself);
-
-        // show error message when user made a mistake in the input
-        // is done in the rerendering phase, because the event fired on the input change handles the 250 EUR deduction
-        if ($calculatedLebenshaltungskosten !== $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten) {
-            $fine = LebenshaltungskostenForPlayerWereCorrected::getFineForPlayer();
-            $this->moneySheetLebenshaltungskostenForm->addError('lebenshaltungskosten',
-                "Du hast einen falschen Wert für die Lebenshaltungskosten eingegeben. Es wurden dir $fine € abgezogen.");
-        }
-
-        $this->moneySheetLebenshaltungskostenForm->lebenshaltungskostenIsDisabled = $actualEnteredLebenshaltungskosten === $calculatedLebenshaltungskosten;
+        $latestInputForLebenshaltungskosten = MoneySheetState::getLastInputForLebenshaltungskosten($this->gameStream, $this->myself);
+        $calculatedLebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameStream,
+            $this->myself);
+        $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten = $latestInputForLebenshaltungskosten;
+        $this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled = $latestInputForLebenshaltungskosten === $calculatedLebenshaltungskosten;
     }
 
 
@@ -132,25 +86,43 @@ trait HasMoneySheet
 
     public function setLebenshaltungskosten(): void
     {
-        $actualEnteredLebenshaltungskosten = MoneySheetState::getLastEnteredLebenshaltungskostenForPlayer($this->gameStream, $this->myself);
-        if ($actualEnteredLebenshaltungskosten !== null && $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten === $actualEnteredLebenshaltungskosten) {
-            return; // no change, nothing to do
+        $this->moneySheetLebenshaltungskostenForm->validate();
+        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->myself,
+            $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten));
+
+        $updatedEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        $resultOfLastInput = MoneySheetState::getResultOfLastLebenshaltungskostenInput($updatedEvents, $this->myself);
+
+        if (!$resultOfLastInput->wasSuccessful && $resultOfLastInput->fine > 0) {
+            $this->moneySheetLebenshaltungskostenForm->addError('lebenshaltungskosten',
+                "Du hast einen falschen Wert für die Lebenshaltungskosten eingegeben. Dir wurden $resultOfLastInput->fine € abgezogen. Wir haben den Wert für dich korrigiert.");
+            $this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled = true;
+        } elseif (!$resultOfLastInput->wasSuccessful) {
+            $this->moneySheetLebenshaltungskostenForm->addError('lebenshaltungskosten',
+                "Du hast einen falschen Wert für die Lebenshaltungskosten eingegeben.");
         }
 
-        $this->moneySheetLebenshaltungskostenForm->validate();
-        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->myself, $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten));
         $this->broadcastNotify();
     }
 
     public function setSteuernUndAbgaben(): void
     {
-        $actualEnteredSteuernUndAbgaben = MoneySheetState::getLastEnteredSteuernUndAbgabenForPlayer($this->gameStream, $this->myself);
-        if ($actualEnteredSteuernUndAbgaben !== null && $this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben === $actualEnteredSteuernUndAbgaben) {
-            return; // no change, nothing to do
+        $this->moneySheetSteuernUndAbgabenForm->validate();
+        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->myself,
+            $this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben));
+
+        $updatedEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        $resultOfLastInput = MoneySheetState::getResultOfLastSteuernUndAbgabenInput($updatedEvents, $this->myself);
+
+        if (!$resultOfLastInput->wasSuccessful && $resultOfLastInput->fine > 0) {
+            $this->moneySheetSteuernUndAbgabenForm->addError('steuernUndAbgaben',
+                "Du hast einen falschen Wert für die Steuern und Abgaben eingegeben. Dir wurden $resultOfLastInput->fine € abgezogen. Wir haben den Wert für dich korrigiert.");
+            $this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled = true;
+        } elseif (!$resultOfLastInput->wasSuccessful) {
+            $this->moneySheetSteuernUndAbgabenForm->addError('steuernUndAbgaben',
+                "Du hast einen falschen Wert für die Steuern und Abgaben eingegeben.");
         }
 
-        $this->moneySheetSteuernUndAbgabenForm->validate();
-        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->myself, $this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben));
         $this->broadcastNotify();
     }
 

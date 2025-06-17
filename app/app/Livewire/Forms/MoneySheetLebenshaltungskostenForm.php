@@ -7,9 +7,9 @@ use Livewire\Form;
 
 class MoneySheetLebenshaltungskostenForm extends Form
 {
-    #[Validate('required|numeric|min:5000')]
+    #[Validate('required|numeric')]
     public float $lebenshaltungskosten = 0;
 
     // just a flag to disable the input field in the view
-    public bool $lebenshaltungskostenIsDisabled = false;
+    public bool $isLebenshaltungskostenInputDisabled = false;
 }
