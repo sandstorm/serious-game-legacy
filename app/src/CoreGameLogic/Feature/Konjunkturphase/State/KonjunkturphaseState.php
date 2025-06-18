@@ -6,6 +6,7 @@ namespace Domain\CoreGameLogic\Feature\Konjunkturphase\State;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\ZeitsteineForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 
 class KonjunkturphaseState
 {
@@ -30,5 +31,23 @@ class KonjunkturphaseState
             );
         }
         return $zeitsteineForPlayers;
+    }
+
+    /**
+     * Returns true if the condition for the end of the current Konjunkturphase is met.
+     * Currently this means no player has any Zeitsteine left.
+     * @param GameEvents $gameEvents
+     * @return bool
+     */
+    public static function isEndOfKonjunkturphase(GameEvents $gameEvents): bool
+    {
+        $playerIds = $gameEvents->findFirst(GameWasStarted::class)->playerOrdering;
+        $totalNumberOfZeitsteine = 0;
+        foreach ($playerIds as $playerId) {
+            $totalNumberOfZeitsteine = $totalNumberOfZeitsteine + PlayerState::getZeitsteineForPlayer($gameEvents, $playerId);
+        }
+        // TODO we may need to safeguard against negative values at some point (probably not here though)
+        assert($totalNumberOfZeitsteine >= 0);
+        return $totalNumberOfZeitsteine === 0;
     }
 }

@@ -54,7 +54,6 @@ class PlayerState
         $accumulatedResourceChangesForPlayer = $stream->findAllAfterLastOfType(KonjunkturphaseWasChanged::class)->findAllOfType(ProvidesResourceChanges::class)
             ->reduce(fn(ResourceChanges $accumulator, ProvidesResourceChanges $event) => $accumulator->accumulate($event->getResourceChanges($playerId)), new ResourceChanges());
 
-
         $zeitsteineForPlayer = $accumulatedResourceChangesForPlayer->accumulate(new ResourceChanges(zeitsteineChange: +self::getInitialZeitsteineForKonjunkturphase($stream, $playerId)))->zeitsteineChange;
         return ModifierCalculator::forStream($stream)->forPlayer($playerId)->applyToAvailableZeitsteine($zeitsteineForPlayer);
     }
@@ -129,8 +128,9 @@ class PlayerState
             ->filter(fn(ZeitsteinAktion $event) => $event->getCategoryId() === $category && $event->getPlayerId()->equals($playerId));
 
         $sum = 0;
+        /** @var ZeitsteinAktion $event */
         foreach ($zeitsteinAktionenForPlayerAndBildung as $event) {
-            $sum += $event->getResourceChanges($playerId)->zeitsteineChange * -1;
+            $sum += $event->getNumberOfZeitsteinslotsUsed();
         }
 
         return $sum;

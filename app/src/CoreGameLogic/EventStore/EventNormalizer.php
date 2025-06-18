@@ -10,6 +10,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerColorWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\LebenshaltungskostenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\LebenshaltungskostenForPlayerWereEntered;
@@ -62,7 +63,10 @@ final readonly class EventNormalizer
             GameWasStarted::class,
             JobOffersWereRequested::class,
             JobOfferWasAccepted::class,
+            KonjunkturphaseHasEnded::class,
             KonjunkturphaseWasChanged::class,
+            LebenshaltungskostenForPlayerWereCorrected::class,
+            LebenshaltungskostenForPlayerWereEntered::class,
             LebenszielWasSelected::class,
             NameForPlayerWasSet::class,
             PlayerColorWasSelected::class,
@@ -70,8 +74,6 @@ final readonly class EventNormalizer
             SpielzugWasEnded::class,
             SteuernUndAbgabenForPlayerWereCorrected::class,
             SteuernUndAbgabenForPlayerWereEntered::class,
-            LebenshaltungskostenForPlayerWereEntered::class,
-            LebenshaltungskostenForPlayerWereCorrected::class,
         ];
 
         $fullClassNameToShortEventType = [];
