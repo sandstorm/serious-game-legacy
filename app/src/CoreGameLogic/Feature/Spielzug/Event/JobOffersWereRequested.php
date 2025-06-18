@@ -56,4 +56,9 @@ final readonly class JobOffersWereRequested implements ZeitsteinAktion, GameEven
     {
         return $this->player;
     }
+
+    public function getNumberOfZeitsteinslotsUsed(): int
+    {
+        return 1;
+    }
 }
