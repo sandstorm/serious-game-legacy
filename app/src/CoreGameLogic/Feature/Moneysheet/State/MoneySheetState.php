@@ -16,20 +16,20 @@ use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Configuration\Configuration;
 
 class MoneySheetState
 {
     public static function calculateLebenshaltungskostenForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
-        $minKosten = 5000;
         $gehalt = PlayerState::getGehaltForPlayer($gameEvents, $playerId);
-        return new MoneyAmount(max([round($gehalt->value * 0.35, 2), $minKosten]));
+        return new MoneyAmount(max([$gehalt->value * Configuration::LEBENSHALTUNGSKOSTEN_MULTIPLIER, Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE]));
     }
 
     public static function calculateSteuernUndAbgabenForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
         $gehalt = PlayerState::getGehaltForPlayer($gameEvents, $playerId);
-        return new MoneyAmount($gehalt->value * 0.25);
+        return new MoneyAmount($gehalt->value * Configuration::STEUERN_UND_ABGABEN_MULTIPLIER);
     }
 
     private static function getEventsSinceLastGehaltChangeForPlayer(
@@ -132,14 +132,25 @@ class MoneySheetState
         return $lastInputEvent === null ? new MoneyAmount(0) : $lastInputEvent->getUpdatedValue();
     }
 
-    public static function isInputForSteuernUndAbgabenSolved(GameEvents $gameEvents, PlayerId $playerId): bool
+    public static function doesSteuernUndAbgabenRequirePlayerAction(GameEvents $gameEvents, PlayerId $playerId): bool
     {
         /** @var UpdatesInputForSteuernUndAbgaben|null $lastInputEvent @phpstan-ignore varTag.type */
         $lastInputEvent = $gameEvents->findLastOrNullWhere(
             fn($event) => $event instanceof UpdatesInputForSteuernUndAbgaben && $event->getPlayerId()->equals($playerId));
         if ($lastInputEvent === null) {
-            return self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId)->equals(new MoneyAmount(0));
+            return self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId)->equals(0);
         }
         return self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId)->equals($lastInputEvent->getUpdatedValue());
+    }
+
+    public static function doesLebenshaltungskostenRequirePlayerAction(GameEvents $gameEvents, PlayerId $playerId): bool
+    {
+        /** @var UpdatesInputForLebenshaltungskosten|null $lastInputEvent @phpstan-ignore varTag.type */
+        $lastInputEvent = $gameEvents->findLastOrNullWhere(
+            fn($event) => $event instanceof UpdatesInputForLebenshaltungskosten && $event->getPlayerId()->equals($playerId));
+        if ($lastInputEvent === null) {
+            return self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId)->equals(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE);
+        }
+        return self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId)->equals($lastInputEvent->getUpdatedValue());
     }
 }

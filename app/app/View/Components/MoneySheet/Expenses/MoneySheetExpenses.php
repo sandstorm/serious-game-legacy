@@ -31,6 +31,7 @@ class MoneySheetExpenses extends Component
             'moneySheet' => new MoneySheetDto(
                 lebenshaltungskosten: MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameEvents, $this->playerId)->value,
                 steuernUndAbgaben: MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameEvents, $this->playerId)->value,
+                doesSteuernUndAbgabenRequirePlayerAction: MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($this->gameEvents, $this->playerId) !== true,
                 gehalt: PlayerState::getGehaltForPlayer($this->gameEvents, $this->playerId)->value,
             ),
         ]);

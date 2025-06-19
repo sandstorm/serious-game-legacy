@@ -374,3 +374,130 @@ describe('getLastInputLebenshaltungskosten', function () {
         expect($actual)->toEqual(new MoneyAmount(5000)); // expect corrected value
     });
 });
+
+describe('doesSteuernUndAbgabenRequirePlayerAction', function () {
+    it('returns true if no input happened', function () {
+        /** @var TestCase $this */
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeTrue();
+    });
+
+    it('returns true if the last input was correct', function () {
+        /** @var TestCase $this */
+
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::JOBS_PHASE_1->value => [
+                "j0" => new JobCardDefinition(
+                    id: new CardId('j0'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'offered 1',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                    ),
+                ),
+            ]
+        ]);
+
+        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(0)));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeTrue();
+
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId("j0")));
+        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(8500)));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeTrue();
+    });
+
+    it('returns false if the last input was incorrect', function () {
+        /** @var TestCase $this */
+
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::JOBS_PHASE_1->value => [
+                "j0" => new JobCardDefinition(
+                    id: new CardId('j0'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'offered 1',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                    ),
+                ),
+            ]
+        ]);
+
+        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(10)));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeFalse();
+
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId("j0")));
+        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(400)));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeFalse();
+    });
+
+
+    it('returns true if the last two inputs were incorrect and the value was corrected for the player', function () {
+        /** @var TestCase $this */
+
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::JOBS_PHASE_1->value => [
+                "j0" => new JobCardDefinition(
+                    id: new CardId('j0'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'offered 1',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                    ),
+                ),
+            ]
+        ]);
+
+        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(10)));
+        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(400)));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeTrue();
+    });
+
+    it('returns false if the last input was correct but the Gehalt changed since then', function () {
+        /** @var TestCase $this */
+
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::JOBS_PHASE_1->value => [
+                "j0" => new JobCardDefinition(
+                    id: new CardId('j0'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'offered 1',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                    ),
+                ),
+            ]
+        ]);
+
+        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(0)));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeTrue();
+
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId("j0")));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeFalse();
+    });
+});

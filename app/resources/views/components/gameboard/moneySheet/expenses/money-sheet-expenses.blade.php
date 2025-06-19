@@ -6,7 +6,8 @@
 <div class="tabs">
     <ul role="tablist" class="tabs__list">
         <li @class(['tabs__list-item', 'tabs__list-item--active' => $this->activeTabForExpenses === 'credits'])>
-            <button id="investments" type="button" class="button" role="tab" wire:click="$set('activeTabForExpenses', 'credits')">
+            <button id="investments" type="button" class="button" role="tab"
+                    wire:click="$set('activeTabForExpenses', 'credits')">
                 Kredite
             </button>
         </li>
@@ -16,17 +17,22 @@
             </button>
         </li>
         <li @class(['tabs__list-item', 'tabs__list-item--active' => $this->activeTabForExpenses === 'insurances'])>
-            <button id="insurances" type="button" class="button" role="tab" wire:click="$set('activeTabForExpenses', 'insurances')">
+            <button id="insurances" type="button" class="button" role="tab"
+                    wire:click="$set('activeTabForExpenses', 'insurances')">
                 Versicherungen
             </button>
         </li>
         <li @class(['tabs__list-item', 'tabs__list-item--active' => $this->activeTabForExpenses === 'taxes'])>
-            <button id="taxes" type="button" class="button" role="tab" wire:click="$set('activeTabForExpenses', 'taxes')">
-                Steuern und Abgaben
+            <button id="taxes" type="button" class="button" role="tab"
+                    wire:click="$set('activeTabForExpenses', 'taxes')">
+                Steuern und Abgaben @if($moneySheet->doesSteuernUndAbgabenRequirePlayerAction)
+                    (!!)
+                @endif
             </button>
         </li>
         <li @class(['tabs__list-item', 'tabs__list-item--active' => $this->activeTabForExpenses === 'livingCosts'])>
-            <button id="livingCosts" type="button" class="button" role="tab" wire:click="$set('activeTabForExpenses', 'livingCosts')">
+            <button id="livingCosts" type="button" class="button" role="tab"
+                    wire:click="$set('activeTabForExpenses', 'livingCosts')">
                 Lebenshaltungskosten
             </button>
         </li>
@@ -34,23 +40,23 @@
 
     @if ($this->activeTabForExpenses === 'credits')
         <div aria-labelledby="investments" role="tabpanel" class="tabs__tab">
-            <x-money-sheet.expenses.money-sheet-credits :gameEvents="$gameEvents" :playerId="$playerId" />
+            <x-money-sheet.expenses.money-sheet-credits :gameEvents="$gameEvents" :playerId="$playerId"/>
         </div>
     @elseif ($this->activeTabForExpenses === 'kids')
         <div aria-labelledby="kids" role="tabpanel" class="tabs__tab">
-            <x-money-sheet.expenses.money-sheet-kids :game-events="$gameEvents" :player-id="$playerId" />
+            <x-money-sheet.expenses.money-sheet-kids :game-events="$gameEvents" :player-id="$playerId"/>
         </div>
     @elseif ($this->activeTabForExpenses === 'insurances')
         <div aria-labelledby="insurances" role="tabpanel" class="tabs__tab">
-            <x-money-sheet.expenses.money-sheet-insurances :gameEvents="$gameEvents" :playerId="$playerId" />
+            <x-money-sheet.expenses.money-sheet-insurances :gameEvents="$gameEvents" :playerId="$playerId"/>
         </div>
     @elseif ($this->activeTabForExpenses === 'taxes')
         <div aria-labelledby="taxes" role="tabpanel" class="tabs__tab">
-            <x-money-sheet.expenses.money-sheet-taxes :gameEvents="$gameEvents" :playerId="$playerId" />
+            <x-money-sheet.expenses.money-sheet-taxes :gameEvents="$gameEvents" :playerId="$playerId"/>
         </div>
     @elseif ($this->activeTabForExpenses === 'livingCosts')
         <div aria-labelledby="livingCosts" role="tabpanel" class="tabs__tab">
-            <x-money-sheet.expenses.money-sheet-living-costs :gameEvents="$gameEvents" :playerId="$playerId" />
+            <x-money-sheet.expenses.money-sheet-living-costs :gameEvents="$gameEvents" :playerId="$playerId"/>
         </div>
     @endif
 </div>
