@@ -9,7 +9,9 @@
     <div class="moneysheet">
         <div class="moneysheet__income">
             <h2>Einnahmen</h2>
-            <button type="button" class="button button--type-primary button--size-small" wire:click="toggleEditIncome()">Bearbeiten</button>
+            <button type="button" class="button button--type-primary button--size-small"
+                    wire:click="toggleEditIncome()">Bearbeiten
+            </button>
             <table>
                 <tbody>
                 <tr>
@@ -25,7 +27,9 @@
         </div>
         <div class="moneysheet__expenses">
             <h2>Ausgaben</h2>
-            <button type="button" class="button button--type-primary button--size-small" wire:click="toggleEditExpenses()">Bearbeiten</button>
+            <button type="button" class="button button--type-primary button--size-small"
+                    wire:click="toggleEditExpenses()">Bearbeiten
+            </button>
             <table>
                 <tbody>
                 <tr>
@@ -41,7 +45,9 @@
                     <td class="text-align--right">0€</td>
                 </tr>
                 <tr>
-                    <td>Steuern und Abgaben</td>
+                    <td>Steuern und Abgaben @if($moneySheet->doesSteuernUndAbgabenRequirePlayerAction)
+                            <span><strong>(!!)</strong></span>
+                        @endif </td>
                     <td class="text-align--right">{{$moneySheet->steuernUndAbgaben}}€</td>
                 </tr>
                 <tr>
