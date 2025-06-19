@@ -51,11 +51,11 @@ final readonly class MoneysheetCommandHandler implements CommandHandlerInterface
                 playerId: $command->playerId,
                 playerInput: $command->input,
                 expectedInput: $expectedInput,
-                wasInputCorrect: $expectedInput === $command->input,
+                wasInputCorrect: $expectedInput->equals($command->input),
             )
         );
 
-        if ($previousTries >= 1 && $expectedInput !== $command->input) {
+        if ($previousTries >= 1 && !$expectedInput->equals($command->input)) {
             return $returnEvents->withAppendedEvents(
                 new SteuernUndAbgabenForPlayerWereCorrected($command->playerId, $expectedInput)
             );
@@ -76,11 +76,11 @@ final readonly class MoneysheetCommandHandler implements CommandHandlerInterface
                 playerId: $command->playerId,
                 playerInput: $command->input,
                 expectedInput: $expectedInput,
-                wasInputCorrect: $expectedInput === $command->input,
+                wasInputCorrect: $expectedInput->equals($command->input),
             )
         );
 
-        if ($previousTries >= 1 && $expectedInput !== $command->input) {
+        if ($previousTries >= 1 && !$expectedInput->equals($command->input)) {
             return $returnEvents->withAppendedEvents(
                 new LebenshaltungskostenForPlayerWereCorrected($command->playerId, $expectedInput)
             );

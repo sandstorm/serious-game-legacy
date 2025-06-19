@@ -7,6 +7,7 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerColorWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
@@ -73,7 +74,7 @@ class PlayerState
     /**
      * Returns the current Guthaben of the player.
      */
-    public static function getGuthabenForPlayer(GameEvents $stream, PlayerId $playerId): float
+    public static function getGuthabenForPlayer(GameEvents $stream, PlayerId $playerId): MoneyAmount
     {
         // TODO: wenig Typisierung hier -> gibt alles plain values etc zurück.
         $accumulatedResourceChangesForPlayer = $stream->findAllOfType(ProvidesResourceChanges::class)
@@ -159,12 +160,12 @@ class PlayerState
     /**
      * @param GameEvents $stream
      * @param PlayerId $playerId
-     * @return int
+     * @return MoneyAmount
      */
-    public static function getGehaltForPlayer(GameEvents $stream, PlayerId $playerId): int
+    public static function getGehaltForPlayer(GameEvents $stream, PlayerId $playerId): MoneyAmount
     {
         // TODO modifier berücksichtigen
         $job = self::getJobForPlayer($stream, $playerId);
-        return $job?->gehalt->value ?? 0;
+        return $job->gehalt ?? new MoneyAmount(0);
     }
 }

@@ -13,6 +13,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\EreignisId;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\ModifierId;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
 final readonly class EreignisWasTriggered implements ProvidesModifiers, ProvidesResourceChanges, GameEventInterface
 {
@@ -34,7 +35,7 @@ final readonly class EreignisWasTriggered implements ProvidesModifiers, Provides
     public function getResourceChanges(PlayerId $playerId): ResourceChanges
     {
         if ($this->ereignis->value === "EVENT:Lotteriegewinn" && $this->player->equals($playerId)) {
-            return new ResourceChanges(guthabenChange: 1000, zeitsteineChange: 0);
+            return new ResourceChanges(guthabenChange: new MoneyAmount(1000), zeitsteineChange: 0);
         }
         return new ResourceChanges();
     }

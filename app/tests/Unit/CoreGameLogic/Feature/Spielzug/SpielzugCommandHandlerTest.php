@@ -28,7 +28,7 @@ use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\Gehalt;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
@@ -128,7 +128,7 @@ describe('handleSkipCard', function () {
             title: 'for testing',
             description: '...',
             resourceChanges: new ResourceChanges(
-                guthabenChange: 0,
+                guthabenChange: new MoneyAmount(0),
                 bildungKompetenzsteinChange: +1,
             ),
         );
@@ -176,7 +176,7 @@ describe('handleActivateCard', function () {
                     title: 'for testing',
                     description: '...',
                     resourceChanges: new ResourceChanges(
-                        guthabenChange: -200,
+                        guthabenChange: new MoneyAmount(-200),
                         bildungKompetenzsteinChange: +1,
                     ),
                 ),
@@ -209,7 +209,7 @@ describe('handleActivateCard', function () {
             title: 'for testing',
             description: '...',
             resourceChanges: new ResourceChanges(
-                guthabenChange: -200,
+                guthabenChange: new MoneyAmount(-200),
                 bildungKompetenzsteinChange: +1,
             ),
         );
@@ -258,7 +258,7 @@ describe('handleActivateCard', function () {
             title: 'skipped',
             description: '...',
             resourceChanges: new ResourceChanges(
-                guthabenChange: -400,
+                guthabenChange: new MoneyAmount(-400),
                 bildungKompetenzsteinChange: +2,
             ),
         );
@@ -268,7 +268,7 @@ describe('handleActivateCard', function () {
             title: 'for testing',
             description: '...',
             resourceChanges: new ResourceChanges(
-                guthabenChange: -200,
+                guthabenChange: new MoneyAmount(-200),
                 bildungKompetenzsteinChange: +1,
             ),
         );
@@ -305,7 +305,7 @@ describe('handleActivateCard', function () {
             title: 'for testing',
             description: '...',
             resourceChanges: new ResourceChanges(
-                guthabenChange: -200,
+                guthabenChange: new MoneyAmount(-200),
                 bildungKompetenzsteinChange: +1,
             ),
         );
@@ -368,7 +368,7 @@ describe('handleActivateCard', function () {
             title: 'for testing',
             description: '...',
             resourceChanges: new ResourceChanges(
-                guthabenChange: -200,
+                guthabenChange: new MoneyAmount(-200),
                 freizeitKompetenzsteinChange: +1,
             ),
         );
@@ -397,7 +397,7 @@ describe('handleActivateCard', function () {
             title: 'for testing',
             description: '...',
             resourceChanges: new ResourceChanges(
-                guthabenChange: -200,
+                guthabenChange: new MoneyAmount(-200),
                 bildungKompetenzsteinChange: +1,
             ),
         );
@@ -418,7 +418,7 @@ describe('handleActivateCard', function () {
             title: 'for testing',
             description: '...',
             resourceChanges: new ResourceChanges(
-                guthabenChange: -50001,
+                guthabenChange: new MoneyAmount(-50001),
                 bildungKompetenzsteinChange: +1,
             ),
         );
@@ -441,7 +441,7 @@ describe('handleActivateCard', function () {
             title: 'for testing',
             description: '...',
             resourceChanges: new ResourceChanges(
-                guthabenChange: 0,
+                guthabenChange: new MoneyAmount(0),
                 bildungKompetenzsteinChange: +1,
             ),
         );
@@ -489,7 +489,7 @@ describe('handleRequestJobOffers', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Fachinformatikerin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(34000),
+                    gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                         bildungKompetenzsteine: 0,
@@ -533,7 +533,7 @@ describe('handleRequestJobOffers', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Fachinformatikerin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(34000),
+                    gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -543,7 +543,7 @@ describe('handleRequestJobOffers', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Pflegefachkraft (not eligible)',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(25000),
+                    gehalt: new MoneyAmount(25000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                         bildungKompetenzsteine: 2,
@@ -554,7 +554,7 @@ describe('handleRequestJobOffers', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Taxifahrer:in',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(18000),
+                    gehalt: new MoneyAmount(18000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -584,7 +584,7 @@ describe('handleRequestJobOffers', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Fachinformatikerin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(34000),
+                    gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -594,7 +594,7 @@ describe('handleRequestJobOffers', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Testjob444',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(18000),
+                    gehalt: new MoneyAmount(18000),
                     requirements: new JobRequirements(
                         bildungKompetenzsteine: 3
                     ),
@@ -622,7 +622,7 @@ describe('handleRequestJobOffers', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Fachinformatikerin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(34000),
+                    gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -632,7 +632,7 @@ describe('handleRequestJobOffers', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Pflegefachkraft',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(25000),
+                    gehalt: new MoneyAmount(25000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -642,7 +642,7 @@ describe('handleRequestJobOffers', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Taxifahrer:in',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(18000),
+                    gehalt: new MoneyAmount(18000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -652,7 +652,7 @@ describe('handleRequestJobOffers', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Testjob444',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(18000),
+                    gehalt: new MoneyAmount(18000),
                     requirements: new JobRequirements(),
                 ),
             ]
@@ -675,7 +675,7 @@ describe('handleRequestJobOffers', function () {
                 pileId: PileId::JOBS_PHASE_1,
                 title: 'Fachinformatikerin',
                 description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                gehalt: new Gehalt(34000),
+                gehalt: new MoneyAmount(34000),
                 requirements: new JobRequirements(),
             ),
         ];
@@ -698,7 +698,7 @@ describe('handleAcceptJobOffer', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'not offered',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(18000),
+                    gehalt: new MoneyAmount(18000),
                     requirements: new JobRequirements(),
                 ),
             ]
@@ -716,7 +716,7 @@ describe('handleAcceptJobOffer', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'offered 1',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(34000),
+                    gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -726,7 +726,7 @@ describe('handleAcceptJobOffer', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'offered 2',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(25000),
+                    gehalt: new MoneyAmount(25000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -736,7 +736,7 @@ describe('handleAcceptJobOffer', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'offered 3',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(18000),
+                    gehalt: new MoneyAmount(18000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -746,7 +746,7 @@ describe('handleAcceptJobOffer', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'not offered',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(18000),
+                    gehalt: new MoneyAmount(18000),
                     requirements: new JobRequirements(),
                 ),
             ]
@@ -782,7 +782,7 @@ describe('handleAcceptJobOffer', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'offered 1',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(34000),
+                    gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -836,7 +836,7 @@ describe('handleAcceptJobOffer', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'offered 1',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(34000),
+                    gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -849,7 +849,7 @@ describe('handleAcceptJobOffer', function () {
 
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect($stream->FindLast(JobOfferWasAccepted::class)->gehalt->value)->toBe(34000)
+        expect($stream->FindLast(JobOfferWasAccepted::class)->gehalt)->toEqual(new MoneyAmount(34000))
             ->and($stream->FindLast(JobOfferWasAccepted::class)->cardId->value)->toBe('j0');
     });
 });
@@ -893,7 +893,7 @@ describe('handleEndSpielzug', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    guthabenChange: -200,
+                    guthabenChange: new MoneyAmount(-200),
                     zeitsteineChange: -5, // Remove all Zeitsteine
                     bildungKompetenzsteinChange: +1,
                 ),

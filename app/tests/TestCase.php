@@ -21,7 +21,7 @@ use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\Gehalt;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
 use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
@@ -179,7 +179,7 @@ Der steigende Leitzins erh√∂ht die Deflation, die Kaufkraft der Barreserven erh√
                 pileId: PileId::JOBS_PHASE_1,
                 title: 'Fachinformatikerin',
                 description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                gehalt: new Gehalt(34000),
+                gehalt: new MoneyAmount(34000),
                 requirements: new JobRequirements(
                     zeitsteine: 1,
                     bildungKompetenzsteine: 2,
@@ -190,7 +190,7 @@ Der steigende Leitzins erh√∂ht die Deflation, die Kaufkraft der Barreserven erh√
                 pileId: PileId::JOBS_PHASE_1,
                 title: 'Pflegefachkraft',
                 description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                gehalt: new Gehalt(25000),
+                gehalt: new MoneyAmount(25000),
                 requirements: new JobRequirements(
                     zeitsteine: 1,
                     bildungKompetenzsteine: 2,
@@ -201,7 +201,7 @@ Der steigende Leitzins erh√∂ht die Deflation, die Kaufkraft der Barreserven erh√
                 pileId: PileId::JOBS_PHASE_1,
                 title: 'Taxifahrer:in',
                 description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                gehalt: new Gehalt(18000),
+                gehalt: new MoneyAmount(18000),
                 requirements: new JobRequirements(
                     zeitsteine: 1,
                     bildungKompetenzsteine: 1,
@@ -222,7 +222,7 @@ Der steigende Leitzins erh√∂ht die Deflation, die Kaufkraft der Barreserven erh√
                 title: 'Ehrenamtliches Engagement',
                 description: 'Du engagierst dich ehrenamtlich f√ºr eine Organisation, die es Menschen mit Behinderung erm√∂glicht einen genialen Urlaub mit Sonne, Strand und Meer zu erleben. Du musst die Kosten daf√ºr allerdings selbst tragen.',
                 resourceChanges: new ResourceChanges(
-                    guthabenChange: -1200,
+                    guthabenChange: new MoneyAmount(-1200),
                     freizeitKompetenzsteinChange: +1,
                 ),
             ),
@@ -232,7 +232,7 @@ Der steigende Leitzins erh√∂ht die Deflation, die Kaufkraft der Barreserven erh√
                 title: 'Spende',
                 description: 'Bei deinem Einkauf spendest du nun immer Tiernahrung f√ºr die umliegende Tierheime. Dein Spendebeitrag ist 200 ‚Ç¨.',
                 resourceChanges: new ResourceChanges(
-                    guthabenChange: -200,
+                    guthabenChange: new MoneyAmount(-200),
                     freizeitKompetenzsteinChange: +1,
                 ),
             ),
@@ -261,7 +261,7 @@ Der steigende Leitzins erh√∂ht die Deflation, die Kaufkraft der Barreserven erh√
                 title: 'Sprachkurs',
                 description: 'Mache einen Sprachkurs √ºber drei Monate im Ausland.',
                 resourceChanges: new ResourceChanges(
-                    guthabenChange: -11000,
+                    guthabenChange: new MoneyAmount(-11000),
                     bildungKompetenzsteinChange: +1,
                 ),
             ),
@@ -271,7 +271,7 @@ Der steigende Leitzins erh√∂ht die Deflation, die Kaufkraft der Barreserven erh√
                 title: 'Erste-Hilfe-Kurs',
                 description: 'Du machst einen Erste-Hilfe-Kurs, um im Notfall richtig zu reagieren.',
                 resourceChanges: new ResourceChanges(
-                    guthabenChange: -300,
+                    guthabenChange: new MoneyAmount(-300),
                     bildungKompetenzsteinChange: +1,
                 ),
             ),

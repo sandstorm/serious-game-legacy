@@ -9,6 +9,7 @@ use App\Livewire\Forms\MoneySheetSteuernUndAbgabenForm;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
 trait HasMoneySheet
 {
@@ -34,17 +35,19 @@ trait HasMoneySheet
      */
     public function renderingHasMoneySheet(): void
     {
-        $latestInputForSteuernUndAbgaben = MoneySheetState::getLastInputForSteuernUndAbgaben($this->gameEvents, $this->myself);
+        $latestInputForSteuernUndAbgaben = MoneySheetState::getLastInputForSteuernUndAbgaben($this->gameEvents,
+            $this->myself);
         $calculatedSteuernUndAbgaben = MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameEvents,
             $this->myself);
-        $this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben = $latestInputForSteuernUndAbgaben;
-        $this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled = $latestInputForSteuernUndAbgaben === $calculatedSteuernUndAbgaben;
+        $this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben = $latestInputForSteuernUndAbgaben->value;
+        $this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled = $latestInputForSteuernUndAbgaben->equals($calculatedSteuernUndAbgaben);
 
-        $latestInputForLebenshaltungskosten = MoneySheetState::getLastInputForLebenshaltungskosten($this->gameEvents, $this->myself);
+        $latestInputForLebenshaltungskosten = MoneySheetState::getLastInputForLebenshaltungskosten($this->gameEvents,
+            $this->myself);
         $calculatedLebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameEvents,
             $this->myself);
-        $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten = $latestInputForLebenshaltungskosten;
-        $this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled = $latestInputForLebenshaltungskosten === $calculatedLebenshaltungskosten;
+        $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten = $latestInputForLebenshaltungskosten->value;
+        $this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled = $latestInputForLebenshaltungskosten->equals($calculatedLebenshaltungskosten);
     }
 
 
@@ -87,13 +90,15 @@ trait HasMoneySheet
     public function setLebenshaltungskosten(): void
     {
         $this->moneySheetLebenshaltungskostenForm->validate();
-        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->myself,
-            $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten));
+        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create(
+            $this->myself,
+            new MoneyAmount($this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten)
+        ));
 
         $updatedEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $resultOfLastInput = MoneySheetState::getResultOfLastLebenshaltungskostenInput($updatedEvents, $this->myself);
 
-        if (!$resultOfLastInput->wasSuccessful && $resultOfLastInput->fine > 0) {
+        if (!$resultOfLastInput->wasSuccessful && $resultOfLastInput->fine->value > 0) {
             $this->moneySheetLebenshaltungskostenForm->addError('lebenshaltungskosten',
                 "Du hast einen falschen Wert für die Lebenshaltungskosten eingegeben. Dir wurden $resultOfLastInput->fine € abgezogen. Wir haben den Wert für dich korrigiert.");
             $this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled = true;
@@ -108,13 +113,15 @@ trait HasMoneySheet
     public function setSteuernUndAbgaben(): void
     {
         $this->moneySheetSteuernUndAbgabenForm->validate();
-        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->myself,
-            $this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben));
+        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create(
+            $this->myself,
+            new MoneyAmount($this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben)
+        ));
 
         $updatedEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $resultOfLastInput = MoneySheetState::getResultOfLastSteuernUndAbgabenInput($updatedEvents, $this->myself);
 
-        if (!$resultOfLastInput->wasSuccessful && $resultOfLastInput->fine > 0) {
+        if (!$resultOfLastInput->wasSuccessful && $resultOfLastInput->fine->value > 0) {
             $this->moneySheetSteuernUndAbgabenForm->addError('steuernUndAbgaben',
                 "Du hast einen falschen Wert für die Steuern und Abgaben eingegeben. Dir wurden $resultOfLastInput->fine € abgezogen. Wir haben den Wert für dich korrigiert.");
             $this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled = true;

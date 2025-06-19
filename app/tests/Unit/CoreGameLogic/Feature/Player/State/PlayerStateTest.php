@@ -14,6 +14,7 @@ use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
@@ -43,7 +44,7 @@ describe('getGuthabenForPlayer', function () {
             title: 'test1',
             description: 'test',
             resourceChanges: new ResourceChanges(
-                guthabenChange: -500
+                guthabenChange: new MoneyAmount(-500)
             )
         );
         $card2 = new KategorieCardDefinition(
@@ -52,7 +53,7 @@ describe('getGuthabenForPlayer', function () {
             title: 'test1',
             description: 'test',
             resourceChanges: new ResourceChanges(
-                guthabenChange: -100
+                guthabenChange: new MoneyAmount(-100)
             )
         );
         CardFinder::getInstance()->overrideCardsForTesting([
@@ -72,8 +73,8 @@ describe('getGuthabenForPlayer', function () {
             $this->gameId,
             ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE));
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGuthabenForPlayer($stream, $this->players[0]))->toEqual(49500)
-            ->and(PlayerState::getGuthabenForPlayer($stream, $this->players[1]))->toEqual(49900);
+        expect(PlayerState::getGuthabenForPlayer($stream, $this->players[0]))->toEqual(new MoneyAmount(49500))
+            ->and(PlayerState::getGuthabenForPlayer($stream, $this->players[1]))->toEqual(new MoneyAmount(49900));
     });
 
     it('Throws an exception if the player does not exist', function () {

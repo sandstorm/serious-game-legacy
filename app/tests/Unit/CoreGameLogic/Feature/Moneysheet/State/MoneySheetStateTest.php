@@ -12,7 +12,7 @@ use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\Gehalt;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Tests\TestCase;
 
@@ -26,7 +26,7 @@ describe('calculateLebenshaltungskostenForPlayer', function () {
         /** @var TestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actualKosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $this->players[0]);
-        expect($actualKosten)->toEqual(5000);
+        expect($actualKosten)->toEqual(new MoneyAmount(5000));
     });
 
     it('returns 5000 when 35% of the Gehalt is less than 5000', function () {
@@ -39,7 +39,7 @@ describe('calculateLebenshaltungskostenForPlayer', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'offered 1',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(14000),
+                    gehalt: new MoneyAmount(14000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -52,7 +52,7 @@ describe('calculateLebenshaltungskostenForPlayer', function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actualKosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $this->players[0]);
-        expect($actualKosten)->toEqual(5000);
+        expect($actualKosten)->toEqual(new MoneyAmount(5000));
     });
 
     it('returns 35% of the Gehalt it that is more than 5000', function () {
@@ -65,7 +65,7 @@ describe('calculateLebenshaltungskostenForPlayer', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'offered 1',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(34000),
+                    gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -78,7 +78,7 @@ describe('calculateLebenshaltungskostenForPlayer', function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actualKosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $this->players[0]);
-        expect($actualKosten)->toEqual(11900);
+        expect($actualKosten)->toEqual(new MoneyAmount(11900));
     });
 });
 
@@ -87,7 +87,7 @@ describe('calculateSteuernUndAbgabenForPlayer', function () {
         /** @var TestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actualKosten = MoneySheetState::calculateSteuernUndAbgabenForPlayer($gameEvents, $this->players[0]);
-        expect($actualKosten)->toEqual(0);
+        expect($actualKosten)->toEqual(new MoneyAmount(0));
     });
 
     it('returns 35% of the Gehalt if the player has a job', function () {
@@ -100,7 +100,7 @@ describe('calculateSteuernUndAbgabenForPlayer', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'offered 1',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(34000),
+                    gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -113,7 +113,7 @@ describe('calculateSteuernUndAbgabenForPlayer', function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actualKosten = MoneySheetState::calculateSteuernUndAbgabenForPlayer($gameEvents, $this->players[0]);
-        expect($actualKosten)->toEqual(8500);
+        expect($actualKosten)->toEqual(new MoneyAmount(8500));
     });
 });
 
@@ -128,7 +128,7 @@ describe('getNumberOfTriesForSteuernUndAbgabenInput', function () {
     it('returns the correct amount after trying', function () {
         /** @var TestCase $this */
 
-        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], 200));
+        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(200)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(MoneySheetState::getNumberOfTriesForSteuernUndAbgabenInput($gameEvents, $this->players[0]))->toBe(1);
@@ -143,7 +143,7 @@ describe('getNumberOfTriesForSteuernUndAbgabenInput', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'offered 1',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(34000),
+                    gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -151,7 +151,7 @@ describe('getNumberOfTriesForSteuernUndAbgabenInput', function () {
             ]
         ]);
 
-        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], 200));
+        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(200)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(MoneySheetState::getNumberOfTriesForSteuernUndAbgabenInput($gameEvents, $this->players[0]))->toBe(1);
@@ -171,41 +171,41 @@ describe('getResultOfLastSteuernUndAbgabenInput', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getResultOfLastSteuernUndAbgabenInput($gameEvents, $this->players[0]);
         expect($actual->wasSuccessful)->toBeTrue()
-            ->and($actual->fine)->toEqual(0);
+            ->and($actual->fine)->toEqual(new MoneyAmount(0));
     });
 
     it('works if input was successful', function () {
         /** @var TestCase $this */
 
-        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], 0));
+        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(0)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getResultOfLastSteuernUndAbgabenInput($gameEvents, $this->players[0]);
         expect($actual->wasSuccessful)->toBeTrue()
-            ->and($actual->fine)->toEqual(0);
+            ->and($actual->fine)->toEqual(new MoneyAmount(0));
     });
 
     it('works if input was wrong once', function () {
         /** @var TestCase $this */
 
-        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], 3000));
+        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(3000)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getResultOfLastSteuernUndAbgabenInput($gameEvents, $this->players[0]);
         expect($actual->wasSuccessful)->toBeFalse()
-            ->and($actual->fine)->toEqual(0);
+            ->and($actual->fine)->toEqual(new MoneyAmount(0));
     });
 
     it('works if input was wrong twice', function () {
         /** @var TestCase $this */
 
-        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], 3000));
-        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], 3080));
+        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(3000)));
+        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(3080)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getResultOfLastSteuernUndAbgabenInput($gameEvents, $this->players[0]);
         expect($actual->wasSuccessful)->toBeFalse()
-            ->and($actual->fine)->toEqual(250);
+            ->and($actual->fine)->toEqual(new MoneyAmount(250));
     });
 });
 
@@ -215,41 +215,41 @@ describe('getResultOfLastLebenshaltungskostenInput', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getResultOfLastLebenshaltungskostenInput($gameEvents, $this->players[0]);
         expect($actual->wasSuccessful)->toBeTrue()
-            ->and($actual->fine)->toEqual(0);
+            ->and($actual->fine)->toEqual(new MoneyAmount(0));
     });
 
     it('works if input was successful', function () {
         /** @var TestCase $this */
 
-        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->players[0], 5000));
+        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(5000)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getResultOfLastLebenshaltungskostenInput($gameEvents, $this->players[0]);
         expect($actual->wasSuccessful)->toBeTrue()
-            ->and($actual->fine)->toEqual(0);
+            ->and($actual->fine)->toEqual(new MoneyAmount(0));
     });
 
     it('works if input was wrong once', function () {
         /** @var TestCase $this */
 
-        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->players[0], 3000));
+        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(3000)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getResultOfLastLebenshaltungskostenInput($gameEvents, $this->players[0]);
         expect($actual->wasSuccessful)->toBeFalse()
-            ->and($actual->fine)->toEqual(0);
+            ->and($actual->fine)->toEqual(new MoneyAmount(0));
     });
 
     it('works if input was wrong twice', function () {
         /** @var TestCase $this */
 
-        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->players[0], 3000));
-        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->players[0], 3080));
+        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(3000)));
+        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(3080)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getResultOfLastLebenshaltungskostenInput($gameEvents, $this->players[0]);
         expect($actual->wasSuccessful)->toBeFalse()
-            ->and($actual->fine)->toEqual(250);
+            ->and($actual->fine)->toEqual(new MoneyAmount(250));
     });
 });
 
@@ -259,7 +259,7 @@ describe('getLastInputForSteuernUndAbgaben', function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getLastInputForSteuernUndAbgaben($gameEvents, $this->players[0]);
-        expect($actual)->toEqual(0);
+        expect($actual)->toEqual(new MoneyAmount(0));
     });
 
     it('returns correct input after correct player input', function () {
@@ -271,7 +271,7 @@ describe('getLastInputForSteuernUndAbgaben', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'offered 1',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(34000),
+                    gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -279,38 +279,38 @@ describe('getLastInputForSteuernUndAbgaben', function () {
             ]
         ]);
 
-        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], 0));
+        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(0)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getLastInputForSteuernUndAbgaben($gameEvents, $this->players[0]);
-        expect($actual)->toEqual(0);
+        expect($actual)->toEqual(new MoneyAmount(0));
 
         $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j0')));
-        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], 8500));
+        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(8500)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getLastInputForSteuernUndAbgaben($gameEvents, $this->players[0]);
-        expect($actual)->toEqual(8500);
+        expect($actual)->toEqual(new MoneyAmount(8500));
     });
 
     it('returns correct input after one incorrect player input', function () {
         /** @var TestCase $this */
-        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], 2000));
+        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(2000)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getLastInputForSteuernUndAbgaben($gameEvents, $this->players[0]);
-        expect($actual)->toEqual(2000);
+        expect($actual)->toEqual(new MoneyAmount(2000));
     });
 
     it('returns correct input after two incorrect player inputs', function () {
         /** @var TestCase $this */
-        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], 2000));
-        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], 3000));
+        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(2000)));
+        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(3000)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getLastInputForSteuernUndAbgaben($gameEvents, $this->players[0]);
-        expect($actual)->toEqual(0); // expect corrected value
+        expect($actual)->toEqual(new MoneyAmount(0)); // expect corrected value
     });
 });
 
@@ -320,7 +320,7 @@ describe('getLastInputLebenshaltungskosten', function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getLastInputForLebenshaltungskosten($gameEvents, $this->players[0]);
-        expect($actual)->toEqual(0);
+        expect($actual)->toEqual(new MoneyAmount(0));
     });
 
     it('returns correct input after correct player input', function () {
@@ -332,7 +332,7 @@ describe('getLastInputLebenshaltungskosten', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'offered 1',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(34000),
+                    gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -340,37 +340,37 @@ describe('getLastInputLebenshaltungskosten', function () {
             ]
         ]);
 
-        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->players[0], 5000));
+        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(5000)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getLastInputForLebenshaltungskosten($gameEvents, $this->players[0]);
-        expect($actual)->toEqual(5000);
+        expect($actual)->toEqual(new MoneyAmount(5000));
 
         $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j0')));
-        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->players[0], 11900));
+        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(11900)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getLastInputForLebenshaltungskosten($gameEvents, $this->players[0]);
-        expect($actual)->toEqual(11900);
+        expect($actual)->toEqual(new MoneyAmount(11900));
     });
 
     it('returns correct input after one incorrect player input', function () {
         /** @var TestCase $this */
-        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->players[0], 2000));
+        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(2000)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getLastInputForLebenshaltungskosten($gameEvents, $this->players[0]);
-        expect($actual)->toEqual(2000);
+        expect($actual)->toEqual(new MoneyAmount(2000));
     });
 
     it('returns correct input after two incorrect player inputs', function () {
         /** @var TestCase $this */
-        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->players[0], 2000));
-        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->players[0], 3000));
+        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(2000)));
+        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(3000)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getLastInputForLebenshaltungskosten($gameEvents, $this->players[0]);
-        expect($actual)->toEqual(5000); // expect corrected value
+        expect($actual)->toEqual(new MoneyAmount(5000)); // expect corrected value
     });
 });
