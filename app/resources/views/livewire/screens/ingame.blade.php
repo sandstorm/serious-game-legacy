@@ -5,7 +5,7 @@
     <header class="game__header">
         <x-gameboard.player-list :myself="$myself"/>
         @if ($showDetailsForPlayer)
-            <x-player-details :player-id="$showDetailsForPlayer" :game-stream="$this->gameStream"/>
+            <x-player-details :player-id="$showDetailsForPlayer" :game-events="$this->gameEvents"/>
         @endif
     </header>
 
@@ -17,7 +17,7 @@
                         wire:click="showKonjunkturphaseDetails()">Zeige Details
                 </button>
                 @if ($konjunkturphaseDetailsVisible)
-                    <x-konjunkturphase-detais :game-stream="$this->gameStream"/>
+                    <x-konjunkturphase-detais :game-events="$this->gameEvents"/>
                 @endif
             </div>
 
@@ -28,7 +28,7 @@
                         <ul class="zeitsteine">
                             @foreach($category->placedZeitsteine as $placedZeitstein)
                                 @for($i = 0; $i < $placedZeitstein->zeitsteine; $i++)
-                                    <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($this->gameStream(), $placedZeitstein->playerId)])></li>
+                                    <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($this->gameEvents(), $placedZeitstein->playerId)])></li>
                                 @endfor
                             @endforeach
                             @for($i = 0; $i < $category->availableZeitsteine; $i++)
@@ -47,7 +47,7 @@
                         </ul>
                         @if ($category->cardPile !== null)
                             <x-card-pile :category="$category->title->value" :card-pile="$category->cardPile->value"
-                                         :game-stream="$this->gameStream"/>
+                                         :game-events="$this->gameEvents"/>
                         @endif
 
                         @if ($category->title->value === 'Erwerbseinkommen')
@@ -67,13 +67,13 @@
                                 <button class="button button--type-outline-primary" wire:click="showSalaryTab()">
                                     <ul class="zeitsteine">
                                         <li>-{{ $jobDefinition->requirements->zeitsteine }}</li>
-                                        <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($this->gameStream, $myself)])></li>
+                                        <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($this->gameEvents, $myself)])></li>
                                     </ul>
                                     <span>Mein Job. {{ $jobDefinition->gehalt->value}}€</span>
                                 </button>
                             @endif
                             @if ($jobOfferIsVisible)
-                                <x-job-offers-modal :player-id="$myself" :game-stream="$this->gameStream"/>
+                                <x-job-offers-modal :player-id="$myself" :game-events="$this->gameEvents"/>
                             @endif
                         @endif
                     </div>
@@ -85,16 +85,16 @@
     <aside class="game__aside">
         <h4>Money Sheet</h4>
         <button class="button button--type-primary"
-                wire:click="showMoneySheet()">{{ PlayerState::getGuthabenForPlayer($this->gameStream(), $myself) }}€
+                wire:click="showMoneySheet()">{{ PlayerState::getGuthabenForPlayer($this->gameEvents(), $myself) }}€
         </button>
         @if ($moneySheetIsVisible)
             @if ($editIncomeIsVisible)
-                <x-gameboard.moneySheet.money-sheet-income-modal :player-id="$myself" :game-stream="$this->gameStream"/>
+                <x-gameboard.moneySheet.money-sheet-income-modal :player-id="$myself" :game-events="$this->gameEvents"/>
             @elseif ($editExpensesIsVisible)
                 <x-gameboard.moneySheet.money-sheet-expenses-modal :player-id="$myself"
-                                                                   :game-stream="$this->gameStream"/>
+                                                                   :game-events="$this->gameEvents"/>
             @else
-                <x-money-sheet.money-sheet :player-id="$myself" :game-stream="$this->gameStream"/>
+                <x-money-sheet.money-sheet :player-id="$myself" :game-events="$this->gameEvents"/>
             @endif
         @endif
 

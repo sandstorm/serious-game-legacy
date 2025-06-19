@@ -17,7 +17,7 @@ class KonjunkturphaseDetais extends Component
      * Create the component instance.
      */
     public function __construct(
-        public GameEvents $gameStream,
+        public GameEvents $gameEvents,
     ) {}
 
     /**
@@ -32,7 +32,7 @@ class KonjunkturphaseDetais extends Component
 
     public function getCurrentKonjunkturphaseDefinition(): ?KonjunkturphaseDefinition
     {
-        $konjunkturphasenId = GamePhaseState::currentKonjunkturphasenId($this->gameStream);
+        $konjunkturphasenId = GamePhaseState::currentKonjunkturphasenId($this->gameEvents);
         return KonjunkturphaseFinder::findKonjunkturphaseById(
             $konjunkturphasenId
         );

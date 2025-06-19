@@ -34,23 +34,23 @@
 
     @if ($this->activeTabForExpenses === 'credits')
         <div aria-labelledby="investments" role="tabpanel" class="tabs__tab">
-            <x-money-sheet.expenses.money-sheet-credits :gameStream="$gameStream" :playerId="$playerId" />
+            <x-money-sheet.expenses.money-sheet-credits :gameEvents="$gameEvents" :playerId="$playerId" />
         </div>
     @elseif ($this->activeTabForExpenses === 'kids')
         <div aria-labelledby="kids" role="tabpanel" class="tabs__tab">
-            <x-money-sheet.expenses.money-sheet-kids :game-stream="$gameStream" :player-id="$playerId" />
+            <x-money-sheet.expenses.money-sheet-kids :game-events="$gameEvents" :player-id="$playerId" />
         </div>
     @elseif ($this->activeTabForExpenses === 'insurances')
         <div aria-labelledby="insurances" role="tabpanel" class="tabs__tab">
-            <x-money-sheet.expenses.money-sheet-insurances :gameStream="$gameStream" :playerId="$playerId" />
+            <x-money-sheet.expenses.money-sheet-insurances :gameEvents="$gameEvents" :playerId="$playerId" />
         </div>
     @elseif ($this->activeTabForExpenses === 'taxes')
         <div aria-labelledby="taxes" role="tabpanel" class="tabs__tab">
-            <x-money-sheet.expenses.money-sheet-taxes :gameStream="$gameStream" :playerId="$playerId" />
+            <x-money-sheet.expenses.money-sheet-taxes :gameEvents="$gameEvents" :playerId="$playerId" />
         </div>
     @elseif ($this->activeTabForExpenses === 'livingCosts')
         <div aria-labelledby="livingCosts" role="tabpanel" class="tabs__tab">
-            <x-money-sheet.expenses.money-sheet-living-costs :gameStream="$gameStream" :playerId="$playerId" />
+            <x-money-sheet.expenses.money-sheet-living-costs :gameEvents="$gameEvents" :playerId="$playerId" />
         </div>
     @endif
 </div>

@@ -4,7 +4,7 @@
 @props(['myself' => null])
 
 <ul class="player-list">
-    @foreach(PreGameState::playersWithNameAndLebensziel($this->gameStream()) as $playerAndLebensziel)
+    @foreach(PreGameState::playersWithNameAndLebensziel($this->gameEvents()) as $playerAndLebensziel)
         <li wire:click="showPlayerDetails('{{ $playerAndLebensziel->playerId->value }}')"
             @class([
                 'player-list__player',
@@ -13,8 +13,8 @@
             ])>
 
             <ul class="zeitsteine">
-                @for($i = 0; $i < PlayerState::getZeitsteineForPlayer($this->gameStream(), $playerAndLebensziel->playerId); $i++)
-                    <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($this->gameStream(), $playerAndLebensziel->playerId)])></li>
+                @for($i = 0; $i < PlayerState::getZeitsteineForPlayer($this->gameEvents(), $playerAndLebensziel->playerId); $i++)
+                    <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($this->gameEvents(), $playerAndLebensziel->playerId)])></li>
                 @endfor
             </ul>
             {{$playerAndLebensziel->name }}

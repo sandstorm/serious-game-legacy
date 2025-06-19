@@ -19,7 +19,7 @@ class MoneySheetTaxes extends Component
      */
     public function __construct(
         public PlayerId $playerId,
-        public GameEvents $gameStream,
+        public GameEvents $gameEvents,
     ) {}
 
     /**
@@ -29,9 +29,9 @@ class MoneySheetTaxes extends Component
     {
         return view('components.gameboard.moneySheet.expenses.money-sheet-taxes', [
             'moneySheet' => new MoneySheetDto(
-                lebenshaltungskosten: MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameStream, $this->playerId),
-                steuernUndAbgaben: MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameStream, $this->playerId),
-                gehalt: PlayerState::getGehaltForPlayer($this->gameStream, $this->playerId),
+                lebenshaltungskosten: MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameEvents, $this->playerId),
+                steuernUndAbgaben: MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameEvents, $this->playerId),
+                gehalt: PlayerState::getGehaltForPlayer($this->gameEvents, $this->playerId),
             ),
         ]);
     }

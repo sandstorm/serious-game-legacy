@@ -41,8 +41,8 @@ class GamePlayController extends Controller
             numberOfPlayers: 2
         ));
 
-        $gameStream = $this->coreGameLogic->getGameEvents($gameId);
-        $playerIds = PreGameState::playerIds($gameStream);
+        $gameEvents = $this->coreGameLogic->getGameEvents($gameId);
+        $playerIds = PreGameState::playerIds($gameEvents);
 
         for ($index = 0; $index < 2; $index++) {
             $this->coreGameLogic->handle($gameId, new SetNameForPlayer(
@@ -83,10 +83,10 @@ class GamePlayController extends Controller
             $session->flash('success', 'Game started');
         }
 
-        $gameStream = $this->coreGameLogic->getGameEvents($gameId);
+        $gameEvents = $this->coreGameLogic->getGameEvents($gameId);
         return view('controllers.gameplay.player-links', [
             'gameId' => $gameId,
-            'playerIds' => PreGameState::playerIds($gameStream)
+            'playerIds' => PreGameState::playerIds($gameEvents)
         ]);
     }
 

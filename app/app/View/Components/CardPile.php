@@ -20,7 +20,7 @@ class CardPile extends Component
     public function __construct(
         public string $category,
         public string $cardPile,
-        public GameEvents $gameStream,
+        public GameEvents $gameEvents,
     ) {}
 
     /**
@@ -29,7 +29,7 @@ class CardPile extends Component
     public function render(): View
     {
         // TODO get next card when played/skipped
-        $topCardIdForPile = PileState::topCardIdForPile($this->gameStream, PileId::from($this->cardPile));
+        $topCardIdForPile = PileState::topCardIdForPile($this->gameEvents, PileId::from($this->cardPile));
         return view('components.gameboard.card-pile', [
             'category' => CategoryId::from($this->category),
             'card' => CardFinder::getInstance()->getCardById($topCardIdForPile),
