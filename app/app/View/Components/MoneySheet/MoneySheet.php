@@ -19,7 +19,7 @@ class MoneySheet extends Component
      */
     public function __construct(
         public PlayerId $playerId,
-        public GameEvents $gameStream,
+        public GameEvents $gameEvents,
     ) {}
 
     /**
@@ -35,9 +35,9 @@ class MoneySheet extends Component
     private function getMoneysheetForPlayerId(PlayerId $playerId): MoneySheetDto
     {
         return new MoneySheetDto(
-            lebenshaltungskosten: MoneySheetState::getLastInputForLebenshaltungskosten($this->gameStream, $playerId),
-            steuernUndAbgaben: MoneySheetState::getLastInputForSteuernUndAbgaben($this->gameStream, $playerId),
-            gehalt: PlayerState::getGehaltForPlayer($this->gameStream, $playerId),
+            lebenshaltungskosten: MoneySheetState::getLastInputForLebenshaltungskosten($this->gameEvents, $playerId),
+            steuernUndAbgaben: MoneySheetState::getLastInputForSteuernUndAbgaben($this->gameEvents, $playerId),
+            gehalt: PlayerState::getGehaltForPlayer($this->gameEvents, $playerId),
         );
     }
 

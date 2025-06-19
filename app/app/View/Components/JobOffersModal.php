@@ -20,7 +20,7 @@ class JobOffersModal extends Component
      */
     public function __construct(
         public PlayerId $playerId,
-        public GameEvents $gameStream,
+        public GameEvents $gameEvents,
     ) {}
 
     /**
@@ -29,7 +29,7 @@ class JobOffersModal extends Component
     public function render(): View|Closure|string
     {
         /** @var JobOffersWereRequested $jobOfferWasRequested */
-        $jobOfferWasRequested = $this->gameStream->findLastOrNull(JobOffersWereRequested::class);
+        $jobOfferWasRequested = $this->gameEvents->findLastOrNull(JobOffersWereRequested::class);
 
         /** @var JobCardDefinition[] $jobs */
         $jobs = [];

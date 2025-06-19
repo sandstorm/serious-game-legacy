@@ -17,7 +17,7 @@ class MoneySheetSalary extends Component
      */
     public function __construct(
         public PlayerId $playerId,
-        public GameEvents $gameStream,
+        public GameEvents $gameEvents,
     ) {}
 
     /**
@@ -26,8 +26,8 @@ class MoneySheetSalary extends Component
     public function render(): View
     {
         return view('components.gameboard.moneySheet.income.money-sheet-salary', [
-            'jobDefinition' => PlayerState::getJobForPlayer($this->gameStream, $this->playerId),
-            'gameStream' =>  $this->gameStream,
+            'jobDefinition' => PlayerState::getJobForPlayer($this->gameEvents, $this->playerId),
+            'gameEvents' =>  $this->gameEvents,
             'playerId' =>  $this->playerId,
         ]);
     }

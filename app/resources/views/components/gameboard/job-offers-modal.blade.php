@@ -37,7 +37,7 @@
                         @class([
                                 "button",
                                 "button--type-primary",
-                                "button--disabled" => !AktionsCalculator::forStream($gameStream)->canPlayerAffordJobCard($playerId, $jobOffer),
+                                "button--disabled" => !AktionsCalculator::forStream($gameEvents)->canPlayerAffordJobCard($playerId, $jobOffer),
                                 ])
                         wire:click="applyForJob('{{ $jobOffer->id->value }}')">
                     Das mache ich!

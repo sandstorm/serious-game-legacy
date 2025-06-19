@@ -40,13 +40,13 @@ trait HasCard
     public function canActivateCard(string $category): AktionValidationResult
     {
         $aktion = new ActivateCardAktion(CategoryId::from($category));
-        return $aktion->validate($this->myself, $this->gameStream);
+        return $aktion->validate($this->myself, $this->gameEvents);
     }
 
     public function canSkipCard(string $category): AktionValidationResult
     {
         $aktion = new SkipCardAktion(CategoryId::from($category));
-        return $aktion->validate($this->myself, $this->gameStream);
+        return $aktion->validate($this->myself, $this->gameEvents);
     }
 
     /**

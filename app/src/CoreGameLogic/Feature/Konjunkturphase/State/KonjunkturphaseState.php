@@ -6,6 +6,8 @@ namespace Domain\CoreGameLogic\Feature\Konjunkturphase\State;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\ZeitsteineForPlayer;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 
 class KonjunkturphaseState
@@ -49,5 +51,12 @@ class KonjunkturphaseState
         // TODO we may need to safeguard against negative values at some point (probably not here though)
         assert($totalNumberOfZeitsteine >= 0);
         return $totalNumberOfZeitsteine === 0;
+    }
+
+    public static function isKonjunkturphaseEnding(GameEvents $gameEvents): bool
+    {
+        $konjunkturphaseHasEndedEvents = $gameEvents->findAllOfType(KonjunkturphaseHasEnded::class);
+        $konjunkturphaseWasChangedEvents = $gameEvents->findAllOfType(KonjunkturphaseWasChanged::class);
+        return count($konjunkturphaseWasChangedEvents) === count($konjunkturphaseHasEndedEvents);
     }
 }

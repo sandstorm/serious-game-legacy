@@ -19,7 +19,7 @@ class PlayerDetails extends Component
      */
     public function __construct(
         public ?string $playerId,
-        public GameEvents $gameStream,
+        public GameEvents $gameEvents,
     ) {}
 
     /**
@@ -40,16 +40,16 @@ class PlayerDetails extends Component
         }
 
         $playerId = PlayerId::fromString($playerId);
-        $lebensziel = PreGameState::lebenszielForPlayer($this->gameStream, $playerId);
+        $lebensziel = PreGameState::lebenszielForPlayer($this->gameEvents, $playerId);
 
         return new PlayerDetailsDto(
-            name: PreGameState::nameForPlayer($this->gameStream, $playerId),
+            name: PreGameState::nameForPlayer($this->gameEvents, $playerId),
             playerId: $playerId,
             lebensziel: $lebensziel->definition,
-            guthaben: PlayerState::getGuthabenForPlayer($this->gameStream, $playerId),
-            zeitsteine: PlayerState::getZeitsteineForPlayer($this->gameStream, $playerId),
-            kompetenzsteineBildung: PlayerState::getBildungsKompetenzsteine($this->gameStream, $playerId),
-            kompetenzsteineFreizeit: PlayerState::getFreizeitKompetenzsteine($this->gameStream, $playerId),
+            guthaben: PlayerState::getGuthabenForPlayer($this->gameEvents, $playerId),
+            zeitsteine: PlayerState::getZeitsteineForPlayer($this->gameEvents, $playerId),
+            kompetenzsteineBildung: PlayerState::getBildungsKompetenzsteine($this->gameEvents, $playerId),
+            kompetenzsteineFreizeit: PlayerState::getFreizeitKompetenzsteine($this->gameEvents, $playerId),
         );
     }
 

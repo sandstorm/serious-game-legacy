@@ -1,6 +1,6 @@
 @props([
     '$jobDefinition' => null,
-    '$gameStream' => null,
+    '$gameEvents' => null,
     '$playerId' => null,
 ])
 
@@ -20,11 +20,11 @@
 
     @if ($this->activeTabForIncome === 'investments')
         <div aria-labelledby="investments" role="tabpanel" class="tabs__tab">
-            <x-money-sheet.income.money-sheet-investments :gameStream="$gameStream" :playerId="$playerId" />
+            <x-money-sheet.income.money-sheet-investments :gameEvents="$gameEvents" :playerId="$playerId" />
         </div>
     @elseif ($this->activeTabForIncome === 'salary')
         <div aria-labelledby="salary" role="tabpanel" class="tabs__tab">
-            <x-money-sheet.income.money-sheet-salary :gameStream="$gameStream" :playerId="$playerId" />
+            <x-money-sheet.income.money-sheet-salary :gameEvents="$gameEvents" :playerId="$playerId" />
         </div>
     @endif
 </div>

@@ -16,6 +16,7 @@ use App\Livewire\Traits\HasMoneySheet;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
@@ -41,7 +42,7 @@ class GameUi extends Component
 
     private Dispatcher $eventDispatcher;
     private ForCoreGameLogic $coreGameLogic;
-    private GameEvents $gameStream;
+    private GameEvents $gameEvents;
 
     public function mount(): void
     {
@@ -51,7 +52,7 @@ class GameUi extends Component
     {
         $this->eventDispatcher = $eventDispatcher;
         $this->coreGameLogic = $coreGameLogic;
-        $this->gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
+        $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
     }
 
     /**
@@ -66,19 +67,21 @@ class GameUi extends Component
 
     public function render(): View
     {
-        if (PreGameState::isInPreGamePhase($this->gameStream)) {
+        if (PreGameState::isInPreGamePhase($this->gameEvents)) {
             return $this->renderPreGamePhase();
-        } else {
-            return $this->renderGamePhase();
         }
+        if (KonjunkturphaseState::isKonjunkturphaseEnding($this->gameEvents)) {
+            return $this->renderKonjunkturphaseEndPhase();
+        }
+        return $this->renderGamePhase();
     }
 
     /**
      * @return GameEvents
      */
-    public function gameStream(): GameEvents
+    public function gameEvents(): GameEvents
     {
-        return $this->gameStream;
+        return $this->gameEvents;
     }
 
     /**
@@ -86,7 +89,7 @@ class GameUi extends Component
      */
     public function getCurrentPlayer(): PlayerId
     {
-        return CurrentPlayerAccessor::forStream($this->gameStream);
+        return CurrentPlayerAccessor::forStream($this->gameEvents);
     }
 
     public function currentPlayerIsMyself(): bool
@@ -106,4 +109,5 @@ class GameUi extends Component
     {
         $this->eventDispatcher->dispatch(new GameStateUpdated($this->gameId));
     }
+
 }
