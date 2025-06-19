@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
 use Domain\CoreGameLogic\Feature\Spielzug\Modifier\Modifier;
 use Domain\CoreGameLogic\Feature\Spielzug\Modifier\ModifierCollection;
@@ -16,9 +17,9 @@ use Domain\Definitions\Card\ValueObject\Gehalt;
 final readonly class JobOfferWasAccepted implements GameEventInterface, ProvidesModifiers
 {
     public function __construct(
-        public PlayerId $playerId,
-        public CardId   $cardId,
-        public Gehalt   $gehalt,
+        public PlayerId    $playerId,
+        public CardId      $cardId,
+        public MoneyAmount $gehalt,
     ) {
     }
 
@@ -27,7 +28,7 @@ final readonly class JobOfferWasAccepted implements GameEventInterface, Provides
         return new self(
             playerId: PlayerId::fromString($values['playerId']),
             cardId: CardId::fromString($values['cardId']),
-            gehalt: new Gehalt($values['gehalt'])
+            gehalt: new MoneyAmount($values['gehalt'])
         );
     }
 

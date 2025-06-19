@@ -7,15 +7,16 @@ namespace Domain\CoreGameLogic\Feature\Moneysheet\Event;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\Behaviour\ProvidesPlayerInput;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\Behaviour\UpdatesInputForLebenshaltungskosten;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\CoreGameLogic\PlayerId;
 
 final readonly class LebenshaltungskostenForPlayerWereEntered implements GameEventInterface, ProvidesPlayerInput, UpdatesInputForLebenshaltungskosten
 {
     public function __construct(
-        public PlayerId $playerId,
-        private float     $playerInput,
-        private float     $expectedInput,
-        private bool    $wasInputCorrect
+        public PlayerId     $playerId,
+        private MoneyAmount $playerInput,
+        private MoneyAmount $expectedInput,
+        private bool        $wasInputCorrect
     ) {
     }
 
@@ -23,8 +24,8 @@ final readonly class LebenshaltungskostenForPlayerWereEntered implements GameEve
     {
         return new self(
             playerId: PlayerId::fromString($values['player']),
-            playerInput: $values['playerInput'],
-            expectedInput: $values['expectedInput'],
+            playerInput: new MoneyAmount($values['playerInput']),
+            expectedInput: new MoneyAmount($values['expectedInput']),
             wasInputCorrect: $values['wasInputCorrect'],
         );
     }
@@ -39,12 +40,12 @@ final readonly class LebenshaltungskostenForPlayerWereEntered implements GameEve
         ];
     }
 
-    public function getPlayerInput(): float
+    public function getPlayerInput(): MoneyAmount
     {
         return $this->playerInput;
     }
 
-    public function getExpectedInput(): float
+    public function getExpectedInput(): MoneyAmount
     {
         return $this->expectedInput;
     }
@@ -59,7 +60,7 @@ final readonly class LebenshaltungskostenForPlayerWereEntered implements GameEve
         return $this->playerId;
     }
 
-    public function getUpdatedValue(): float
+    public function getUpdatedValue(): MoneyAmount
     {
         return $this->playerInput;
     }

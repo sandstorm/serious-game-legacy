@@ -9,6 +9,8 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\ZeitsteineForPlayer;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
+use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 
 class KonjunkturphaseState
 {
@@ -58,5 +60,10 @@ class KonjunkturphaseState
         $konjunkturphaseHasEndedEvents = $gameEvents->findAllOfType(KonjunkturphaseHasEnded::class);
         $konjunkturphaseWasChangedEvents = $gameEvents->findAllOfType(KonjunkturphaseWasChanged::class);
         return count($konjunkturphaseWasChangedEvents) === count($konjunkturphaseHasEndedEvents);
+    }
+
+    public static function getCurrentKonjunkturphase(GameEvents $gameEvents): KonjunkturphaseDefinition
+    {
+        return KonjunkturphaseFinder::findKonjunkturphaseById($gameEvents->findLast(KonjunkturphaseWasChanged::class)->id);
     }
 }

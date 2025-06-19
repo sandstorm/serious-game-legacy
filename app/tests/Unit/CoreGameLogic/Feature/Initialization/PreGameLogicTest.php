@@ -12,8 +12,10 @@ use Domain\CoreGameLogic\Feature\Initialization\ValueObject\PlayerColors;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Lebensziel\LebenszielFinder;
 use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
+use Tests\TestCase;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
@@ -23,6 +25,7 @@ beforeEach(function () {
 });
 
 test('PreGameLogic normal flow', function () {
+    /** @var TestCase $this */
     $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
         numberOfPlayers: 2,
     )->withFixedPlayerIdsForTesting($this->p1, $this->p2));
@@ -79,7 +82,7 @@ test('PreGameLogic normal flow', function () {
         ->and(PreGameState::playersWithNameAndLebensziel($gameEvents)[$this->p1->value]->lebensziel->name)->toEqual($expectedLebenszielForP1->name)
         ->and(PreGameState::playersWithNameAndLebensziel($gameEvents)[$this->p2->value]->lebensziel->name)->toEqual($expectedLebenszielForP2->name);
 
-    expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->p1))->toEqual(50000);
+    expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->p1))->toEqual(new MoneyAmount(50000));
 
     $this->coreGameLogic->handle($this->gameId, new SelectPlayerColor(
         playerId: $this->p1,

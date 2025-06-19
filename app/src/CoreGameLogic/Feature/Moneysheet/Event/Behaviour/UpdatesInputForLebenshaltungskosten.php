@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Moneysheet\Event\Behaviour;
 
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\CoreGameLogic\PlayerId;
 
 /**
@@ -12,5 +13,5 @@ use Domain\CoreGameLogic\PlayerId;
 interface UpdatesInputForLebenshaltungskosten
 {
     public function getPlayerId(): PlayerId;
-    public function getUpdatedValue(): float;
+    public function getUpdatedValue(): MoneyAmount;
 }

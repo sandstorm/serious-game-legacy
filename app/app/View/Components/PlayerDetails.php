@@ -46,7 +46,7 @@ class PlayerDetails extends Component
             name: PreGameState::nameForPlayer($this->gameEvents, $playerId),
             playerId: $playerId,
             lebensziel: $lebensziel->definition,
-            guthaben: PlayerState::getGuthabenForPlayer($this->gameEvents, $playerId),
+            guthaben: PlayerState::getGuthabenForPlayer($this->gameEvents, $playerId)->value,
             zeitsteine: PlayerState::getZeitsteineForPlayer($this->gameEvents, $playerId),
             kompetenzsteineBildung: PlayerState::getBildungsKompetenzsteine($this->gameEvents, $playerId),
             kompetenzsteineFreizeit: PlayerState::getFreizeitKompetenzsteine($this->gameEvents, $playerId),
