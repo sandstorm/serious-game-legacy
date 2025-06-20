@@ -17,7 +17,7 @@
                         wire:click="showKonjunkturphaseDetails()">Zeige Details
                 </button>
                 @if ($konjunkturphaseDetailsVisible)
-                    <x-konjunkturphase-detais :game-events="$this->gameEvents"/>
+                    <x-konjunkturphase-details :game-events="$this->gameEvents"/>
                 @endif
             </div>
 
@@ -113,4 +113,11 @@
         @endif
     </aside>
     <x-notification.notification/>
+
+    <div class="dev">
+        <button type="button" class="button button--type-primary" wire:click="showLog()">Log</button>
+        @if ($isLogVisible)
+            <x-gameboard.log />
+        @endif
+    </div>
 </div>

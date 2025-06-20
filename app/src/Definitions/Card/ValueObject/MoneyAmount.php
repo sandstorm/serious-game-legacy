@@ -41,9 +41,10 @@ readonly class MoneyAmount implements \JsonSerializable
     public function equals(MoneyAmount|float $other): bool
     {
         $tolerance = 0.001;
-        $otherValue = $other;
         if ($other instanceof MoneyAmount) {
             $otherValue = $other->value;
+        } else {
+            $otherValue = $other;
         }
         return $otherValue - $tolerance < $this->value && $this->value < $otherValue + $tolerance;
     }
