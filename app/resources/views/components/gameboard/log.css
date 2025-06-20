@@ -1,0 +1,21 @@
+.log {
+    background-color: #333;
+    overflow: scroll;
+
+    & > ul {
+        padding: 0 5px;
+        margin: 0;
+    }
+}
+
+.log__event {
+    list-style: none;
+    padding: 5px 20px;
+    background-color: #888888;
+    margin-top: 5px;
+}
+
+.log__event-item {
+    list-style: none;
+    background-color: #888888;
+}

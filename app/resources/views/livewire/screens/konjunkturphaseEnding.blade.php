@@ -19,4 +19,12 @@
             <x-money-sheet.money-sheet :player-id="$myself" :game-events="$this->gameEvents"/>
         @endif
     @endif
+
+
+    <div class="dev">
+        <button type="button" class="button button--type-primary" wire:click="showLog()">Log</button>
+        @if ($isLogVisible)
+            <x-gameboard.log />
+        @endif
+    </div>
 </div>

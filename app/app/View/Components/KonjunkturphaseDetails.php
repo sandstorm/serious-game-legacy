@@ -11,7 +11,7 @@ use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Illuminate\View\View;
 use Illuminate\View\Component;
 
-class KonjunkturphaseDetais extends Component
+class KonjunkturphaseDetails extends Component
 {
     /**
      * Create the component instance.
