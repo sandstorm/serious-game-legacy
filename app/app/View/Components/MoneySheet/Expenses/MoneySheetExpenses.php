@@ -30,8 +30,9 @@ class MoneySheetExpenses extends Component
         return view('components.gameboard.moneySheet.expenses.money-sheet-expenses', [
             'moneySheet' => new MoneySheetDto(
                 lebenshaltungskosten: MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameEvents, $this->playerId)->value,
+                doesLebenshaltungskostenRequirePlayerAction: MoneySheetState::doesLebenshaltungskostenRequirePlayerAction($this->gameEvents, $this->playerId),
                 steuernUndAbgaben: MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameEvents, $this->playerId)->value,
-                doesSteuernUndAbgabenRequirePlayerAction: MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($this->gameEvents, $this->playerId) !== true,
+                doesSteuernUndAbgabenRequirePlayerAction: MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($this->gameEvents, $this->playerId),
                 gehalt: PlayerState::getGehaltForPlayer($this->gameEvents, $this->playerId)->value,
             ),
         ]);

@@ -138,9 +138,9 @@ class MoneySheetState
         $lastInputEvent = $gameEvents->findLastOrNullWhere(
             fn($event) => $event instanceof UpdatesInputForSteuernUndAbgaben && $event->getPlayerId()->equals($playerId));
         if ($lastInputEvent === null) {
-            return self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId)->equals(0);
+            return !self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId)->equals(Configuration::STEUERN_UND_ABGABEN_DEFAULT_VALUE);
         }
-        return self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId)->equals($lastInputEvent->getUpdatedValue());
+        return !self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId)->equals($lastInputEvent->getUpdatedValue());
     }
 
     public static function doesLebenshaltungskostenRequirePlayerAction(GameEvents $gameEvents, PlayerId $playerId): bool
@@ -149,8 +149,8 @@ class MoneySheetState
         $lastInputEvent = $gameEvents->findLastOrNullWhere(
             fn($event) => $event instanceof UpdatesInputForLebenshaltungskosten && $event->getPlayerId()->equals($playerId));
         if ($lastInputEvent === null) {
-            return self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId)->equals(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE);
+            return !self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId)->equals(Configuration::LEBENSHALTUNGSKOSTEN_DEFAULT_VALUE);
         }
-        return self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId)->equals($lastInputEvent->getUpdatedValue());
+        return !self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId)->equals($lastInputEvent->getUpdatedValue());
     }
 }

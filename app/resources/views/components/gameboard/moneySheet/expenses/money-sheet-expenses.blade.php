@@ -33,7 +33,9 @@
         <li @class(['tabs__list-item', 'tabs__list-item--active' => $this->activeTabForExpenses === 'livingCosts'])>
             <button id="livingCosts" type="button" class="button" role="tab"
                     wire:click="$set('activeTabForExpenses', 'livingCosts')">
-                Lebenshaltungskosten
+                Lebenshaltungskosten  @if($moneySheet->doesLebenshaltungskostenRequirePlayerAction)
+                    (!!)
+                @endif
             </button>
         </li>
     </ul>

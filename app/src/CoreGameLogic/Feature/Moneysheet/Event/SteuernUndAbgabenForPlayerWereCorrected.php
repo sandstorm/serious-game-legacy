@@ -10,11 +10,12 @@ use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Configuration\Configuration;
 
 final readonly class SteuernUndAbgabenForPlayerWereCorrected implements GameEventInterface, ProvidesResourceChanges, UpdatesInputForSteuernUndAbgaben
 {
     public function __construct(
-        public PlayerId     $playerId,
+        public PlayerId $playerId,
         private MoneyAmount $correctValue,
     ) {
     }
@@ -38,7 +39,7 @@ final readonly class SteuernUndAbgabenForPlayerWereCorrected implements GameEven
     public function getResourceChanges(PlayerId $playerId): ResourceChanges
     {
         if ($playerId === $this->playerId) {
-            return new ResourceChanges(guthabenChange: new MoneyAmount(-250));
+            return new ResourceChanges(guthabenChange: new MoneyAmount(Configuration::FINE_VALUE * -1));
         }
         return new ResourceChanges();
     }
