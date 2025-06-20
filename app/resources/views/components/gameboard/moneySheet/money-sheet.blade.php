@@ -51,7 +51,9 @@
                     <td class="text-align--right">{{$moneySheet->steuernUndAbgaben}}€</td>
                 </tr>
                 <tr>
-                    <td>Lebenshaltungskosten</td>
+                    <td>Lebenshaltungskosten @if($moneySheet->doesLebenshaltungskostenRequirePlayerAction)
+                            <span><strong>(!!)</strong></span>
+                        @else <span>mist</span> @endif </td>
                     <td class="text-align--right">{{$moneySheet->lebenshaltungskosten}}€</td>
                 </tr>
                 </tbody>

@@ -376,14 +376,14 @@ describe('getLastInputLebenshaltungskosten', function () {
 });
 
 describe('doesSteuernUndAbgabenRequirePlayerAction', function () {
-    it('returns true if no input happened', function () {
+    it('returns false if no input happened', function () {
         /** @var TestCase $this */
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeTrue();
+        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeFalse();
     });
 
-    it('returns true if the last input was correct', function () {
+    it('returns false if the last input was correct', function () {
         /** @var TestCase $this */
 
         CardFinder::getInstance()->overrideCardsForTesting([
@@ -404,17 +404,17 @@ describe('doesSteuernUndAbgabenRequirePlayerAction', function () {
         $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(0)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeTrue();
+        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeFalse();
 
         $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId("j0")));
         $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(8500)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeTrue();
+        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeFalse();
     });
 
-    it('returns false if the last input was incorrect', function () {
+    it('returns true if the last input was incorrect', function () {
         /** @var TestCase $this */
 
         CardFinder::getInstance()->overrideCardsForTesting([
@@ -435,18 +435,18 @@ describe('doesSteuernUndAbgabenRequirePlayerAction', function () {
         $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(10)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeFalse();
+        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeTrue();
 
         $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId("j0")));
         $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(400)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeFalse();
+        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeTrue();
     });
 
 
-    it('returns true if the last two inputs were incorrect and the value was corrected for the player', function () {
+    it('returns false if the last two inputs were incorrect and the value was corrected for the player', function () {
         /** @var TestCase $this */
 
         CardFinder::getInstance()->overrideCardsForTesting([
@@ -468,10 +468,10 @@ describe('doesSteuernUndAbgabenRequirePlayerAction', function () {
         $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(400)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeTrue();
+        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeFalse();
     });
 
-    it('returns false if the last input was correct but the Gehalt changed since then', function () {
+    it('returns true if the last input was correct but the Gehalt changed since then', function () {
         /** @var TestCase $this */
 
         CardFinder::getInstance()->overrideCardsForTesting([
@@ -492,12 +492,12 @@ describe('doesSteuernUndAbgabenRequirePlayerAction', function () {
         $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(0)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeTrue();
+        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeFalse();
 
         $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId("j0")));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeFalse();
+        expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeTrue();
     });
 });
