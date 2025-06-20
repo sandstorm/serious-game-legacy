@@ -8,6 +8,8 @@ use Domain\CoreGameLogic\CommandHandler\CommandHandlerInterface;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\AcceptJobOffersAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ActivateCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SkipCardAktion as SkipCardAktion;
@@ -47,7 +49,13 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
     private function handleEndSpielzug(EndSpielzug $command, GameEvents $gameEvents): GameEventsToPersist
     {
         $endSpielzugAktion = new Aktion\EndSpielzugAktion();
-        return $endSpielzugAktion->execute($command->player, $gameEvents);
+        $eventsToPersist = $endSpielzugAktion->execute($command->player, $gameEvents);
+        if (KonjunkturphaseState::isEndOfKonjunkturphase($gameEvents)) {
+            return $eventsToPersist->withAppendedEvents(
+                new KonjunkturphaseHasEnded(),
+            );
+        }
+        return $eventsToPersist;
     }
 
     private function handleRequestJobOffers(RequestJobOffers $command, GameEvents $gameEvents): GameEventsToPersist

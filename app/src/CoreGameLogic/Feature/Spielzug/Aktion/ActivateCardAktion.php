@@ -96,7 +96,7 @@ class ActivateCardAktion extends Aktion
         if (!$hasFreeTimeSlots) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Es gibt keine freien Zeitsteine mehr.',
+                reason: 'Es gibt keine freien Slots für Zeitsteine mehr.',
             );
         }
 
@@ -123,7 +123,8 @@ class ActivateCardAktion extends Aktion
                 $this->card->getPileId(),
                 $this->card->getId(),
                 $this->category,
-                $this->getTotalCosts($gameEvents, $player)
+                $this->getTotalCosts($gameEvents, $player),
+                AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound($player) ? 0 : 1,
             )
         );
     }

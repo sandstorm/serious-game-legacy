@@ -25,6 +25,7 @@ use Domain\CoreGameLogic\Feature\Initialization\ValueObject\PlayerColor;
 use Domain\CoreGameLogic\Feature\Initialization\ValueObject\PlayerColors;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Lebensziel\LebenszielFinder;
 
 /**
@@ -134,7 +135,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
                 new PreGameStarted(
                     playerIds: $command->fixedPlayerIdsForTesting,
                     resourceChanges: new ResourceChanges(
-                        guthabenChange: 50000,
+                        guthabenChange: new MoneyAmount(50000),
                     ),
                 ),
             );
@@ -150,7 +151,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
             new PreGameStarted(
                 playerIds: $playerIds,
                 resourceChanges: new ResourceChanges(
-                    guthabenChange: 50000,
+                    guthabenChange: new MoneyAmount(50000),
                 ),
             ),
         );

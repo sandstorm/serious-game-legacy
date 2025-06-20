@@ -16,7 +16,7 @@ class MoneySheetInsurances extends Component
      */
     public function __construct(
         public PlayerId $playerId,
-        public GameEvents $gameStream,
+        public GameEvents $gameEvents,
     ) {}
 
     /**

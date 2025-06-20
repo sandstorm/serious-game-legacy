@@ -6,15 +6,17 @@ namespace Domain\CoreGameLogic\Feature\Moneysheet\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\Behaviour\UpdatesInputForSteuernUndAbgaben;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Configuration\Configuration;
 
 final readonly class SteuernUndAbgabenForPlayerWereCorrected implements GameEventInterface, ProvidesResourceChanges, UpdatesInputForSteuernUndAbgaben
 {
     public function __construct(
         public PlayerId $playerId,
-        private float     $correctValue,
+        private MoneyAmount $correctValue,
     ) {
     }
 
@@ -22,7 +24,7 @@ final readonly class SteuernUndAbgabenForPlayerWereCorrected implements GameEven
     {
         return new self(
             playerId: PlayerId::fromString($values['player']),
-            correctValue: $values['correctValue'],
+            correctValue: new MoneyAmount($values['correctValue']),
         );
     }
 
@@ -37,7 +39,7 @@ final readonly class SteuernUndAbgabenForPlayerWereCorrected implements GameEven
     public function getResourceChanges(PlayerId $playerId): ResourceChanges
     {
         if ($playerId === $this->playerId) {
-            return new ResourceChanges(guthabenChange: -250);
+            return new ResourceChanges(guthabenChange: new MoneyAmount(Configuration::FINE_VALUE * -1));
         }
         return new ResourceChanges();
     }
@@ -47,7 +49,7 @@ final readonly class SteuernUndAbgabenForPlayerWereCorrected implements GameEven
         return $this->playerId;
     }
 
-    public function getUpdatedValue(): float
+    public function getUpdatedValue(): MoneyAmount
     {
         return $this->correctValue;
     }

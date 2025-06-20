@@ -15,6 +15,7 @@ use Domain\CoreGameLogic\Feature\Moneysheet\Event\LebenshaltungskostenForPlayerW
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\SteuernUndAbgabenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\SteuernUndAbgabenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
+use Domain\Definitions\Configuration\Configuration;
 
 /**
  * @internal no public API, because commands are no extension points. ALWAYS USE {@see ForCoreGameLogic::handle()} to trigger commands.
@@ -51,11 +52,11 @@ final readonly class MoneysheetCommandHandler implements CommandHandlerInterface
                 playerId: $command->playerId,
                 playerInput: $command->input,
                 expectedInput: $expectedInput,
-                wasInputCorrect: $expectedInput === $command->input,
+                wasInputCorrect: $expectedInput->equals($command->input),
             )
         );
 
-        if ($previousTries >= 1 && $expectedInput !== $command->input) {
+        if ($previousTries >= Configuration::MAX_NUMBER_OF_TRIES_PER_INPUT - 1 && !$expectedInput->equals($command->input)) {
             return $returnEvents->withAppendedEvents(
                 new SteuernUndAbgabenForPlayerWereCorrected($command->playerId, $expectedInput)
             );
@@ -76,11 +77,11 @@ final readonly class MoneysheetCommandHandler implements CommandHandlerInterface
                 playerId: $command->playerId,
                 playerInput: $command->input,
                 expectedInput: $expectedInput,
-                wasInputCorrect: $expectedInput === $command->input,
+                wasInputCorrect: $expectedInput->equals($command->input),
             )
         );
 
-        if ($previousTries >= 1 && $expectedInput !== $command->input) {
+        if ($previousTries >= Configuration::MAX_NUMBER_OF_TRIES_PER_INPUT - 1 && !$expectedInput->equals($command->input)) {
             return $returnEvents->withAppendedEvents(
                 new LebenshaltungskostenForPlayerWereCorrected($command->playerId, $expectedInput)
             );

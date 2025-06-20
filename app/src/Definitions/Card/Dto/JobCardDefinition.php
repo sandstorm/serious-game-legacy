@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\Definitions\Card\Dto;
 
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\Gehalt;
 use Domain\Definitions\Card\ValueObject\PileId;
 
 final readonly class JobCardDefinition implements CardDefinition
@@ -15,7 +15,7 @@ final readonly class JobCardDefinition implements CardDefinition
         public PileId           $pileId,
         public string           $title,
         public string           $description,
-        public Gehalt           $gehalt,
+        public MoneyAmount      $gehalt,
         public JobRequirements  $requirements,
     ) {
     }
@@ -26,7 +26,7 @@ final readonly class JobCardDefinition implements CardDefinition
      *     pileId: string,
      *     title: string,
      *     description: string,
-     *     gehalt: int,
+     *     gehalt: float,
      *     requirements: array{
      *          zeitsteine: int,
      *          bildungKompetenzsteine: int,
@@ -42,7 +42,7 @@ final readonly class JobCardDefinition implements CardDefinition
             pileId: PileId::from($job['pileId']),
             title: $job['title'],
             description: $job['description'],
-            gehalt: new Gehalt($job['gehalt']),
+            gehalt: new MoneyAmount($job['gehalt']),
             requirements: JobRequirements::fromString($job['requirements']),
         );
     }

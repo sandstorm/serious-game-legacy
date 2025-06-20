@@ -7,6 +7,7 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerColorWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
@@ -54,7 +55,6 @@ class PlayerState
         $accumulatedResourceChangesForPlayer = $stream->findAllAfterLastOfType(KonjunkturphaseWasChanged::class)->findAllOfType(ProvidesResourceChanges::class)
             ->reduce(fn(ResourceChanges $accumulator, ProvidesResourceChanges $event) => $accumulator->accumulate($event->getResourceChanges($playerId)), new ResourceChanges());
 
-
         $zeitsteineForPlayer = $accumulatedResourceChangesForPlayer->accumulate(new ResourceChanges(zeitsteineChange: +self::getInitialZeitsteineForKonjunkturphase($stream, $playerId)))->zeitsteineChange;
         return ModifierCalculator::forStream($stream)->forPlayer($playerId)->applyToAvailableZeitsteine($zeitsteineForPlayer);
     }
@@ -74,7 +74,7 @@ class PlayerState
     /**
      * Returns the current Guthaben of the player.
      */
-    public static function getGuthabenForPlayer(GameEvents $stream, PlayerId $playerId): float
+    public static function getGuthabenForPlayer(GameEvents $stream, PlayerId $playerId): MoneyAmount
     {
         // TODO: wenig Typisierung hier -> gibt alles plain values etc zurück.
         $accumulatedResourceChangesForPlayer = $stream->findAllOfType(ProvidesResourceChanges::class)
@@ -129,8 +129,9 @@ class PlayerState
             ->filter(fn(ZeitsteinAktion $event) => $event->getCategoryId() === $category && $event->getPlayerId()->equals($playerId));
 
         $sum = 0;
+        /** @var ZeitsteinAktion $event */
         foreach ($zeitsteinAktionenForPlayerAndBildung as $event) {
-            $sum += $event->getResourceChanges($playerId)->zeitsteineChange * -1;
+            $sum += $event->getNumberOfZeitsteinslotsUsed();
         }
 
         return $sum;
@@ -159,12 +160,12 @@ class PlayerState
     /**
      * @param GameEvents $stream
      * @param PlayerId $playerId
-     * @return int
+     * @return MoneyAmount
      */
-    public static function getGehaltForPlayer(GameEvents $stream, PlayerId $playerId): int
+    public static function getGehaltForPlayer(GameEvents $stream, PlayerId $playerId): MoneyAmount
     {
         // TODO modifier berücksichtigen
         $job = self::getJobForPlayer($stream, $playerId);
-        return $job?->gehalt->value ?? 0;
+        return $job->gehalt ?? new MoneyAmount(0);
     }
 }

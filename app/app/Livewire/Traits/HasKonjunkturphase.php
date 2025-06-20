@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Livewire\Traits;
 
+use Illuminate\View\View;
+
 trait HasKonjunkturphase
 {
     public bool $konjunkturphaseDetailsVisible = false;
@@ -16,5 +18,12 @@ trait HasKonjunkturphase
     public function closeKonjunkturphaseDetails(): void
     {
         $this->konjunkturphaseDetailsVisible = false;
+    }
+
+
+    public function renderKonjunkturphaseEndPhase(): View
+    {
+        return view('livewire.screens.konjunkturphaseEnding', [
+        ]);
     }
 }

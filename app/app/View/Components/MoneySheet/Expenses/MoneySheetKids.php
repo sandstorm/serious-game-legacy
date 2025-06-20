@@ -17,7 +17,7 @@ class MoneySheetKids extends Component
      */
     public function __construct(
         public PlayerId $playerId,
-        public GameEvents $gameStream,
+        public GameEvents $gameEvents,
     ) {}
 
     /**
@@ -26,7 +26,7 @@ class MoneySheetKids extends Component
     public function render(): View
     {
         return view('components.gameboard.moneySheet.expenses.money-sheet-kids', [
-            'gehalt' => PlayerState::getGehaltForPlayer($this->gameStream, $this->playerId),
+            'gehalt' => PlayerState::getGehaltForPlayer($this->gameEvents, $this->playerId),
         ]);
     }
 

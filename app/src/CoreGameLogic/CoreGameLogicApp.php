@@ -53,14 +53,14 @@ final class CoreGameLogicApp implements ForCoreGameLogic
 
     public function getGameEvents(GameId $gameId): GameEvents
     {
-        [$gameStream,] = $this->gameEventStore->getGameEventsAndLastVersion($gameId);
-        return $gameStream;
+        [$gameEvents,] = $this->gameEventStore->getGameEventsAndLastVersion($gameId);
+        return $gameEvents;
     }
 
     public function handle(GameId $gameId, CommandHandler\CommandInterface $command): void
     {
-        [$gameStream, $version] = $this->gameEventStore->getGameEventsAndLastVersion($gameId);
-        $eventsToPublish = $this->commandBus->handle($command, $gameStream);
+        [$gameEvents, $version] = $this->gameEventStore->getGameEventsAndLastVersion($gameId);
+        $eventsToPublish = $this->commandBus->handle($command, $gameEvents);
         $this->gameEventStore->commit($gameId, $eventsToPublish, $version === null ? ExpectedVersion::NO_STREAM() : ExpectedVersion::fromVersion($version));
     }
 }

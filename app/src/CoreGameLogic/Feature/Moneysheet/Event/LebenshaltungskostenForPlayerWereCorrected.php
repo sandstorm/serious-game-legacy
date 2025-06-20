@@ -6,15 +6,17 @@ namespace Domain\CoreGameLogic\Feature\Moneysheet\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\Behaviour\UpdatesInputForLebenshaltungskosten;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Configuration\Configuration;
 
 final readonly class LebenshaltungskostenForPlayerWereCorrected implements GameEventInterface, ProvidesResourceChanges, UpdatesInputForLebenshaltungskosten
 {
     public function __construct(
-        public PlayerId $playerId,
-        private float     $correctValue,
+        public PlayerId     $playerId,
+        private MoneyAmount $correctValue,
     ) {
     }
 
@@ -22,7 +24,7 @@ final readonly class LebenshaltungskostenForPlayerWereCorrected implements GameE
     {
         return new self(
             playerId: PlayerId::fromString($values['player']),
-            correctValue: $values['correctValue'],
+            correctValue: new MoneyAmount($values['correctValue']),
         );
     }
 
@@ -37,14 +39,9 @@ final readonly class LebenshaltungskostenForPlayerWereCorrected implements GameE
     public function getResourceChanges(PlayerId $playerId): ResourceChanges
     {
         if ($playerId === $this->playerId) {
-            return new ResourceChanges(guthabenChange: self::getFineForPlayer() * -1);
+            return new ResourceChanges(guthabenChange: new MoneyAmount(Configuration::FINE_VALUE * -1));
         }
         return new ResourceChanges();
-    }
-
-    public static function getFineForPlayer(): float
-    {
-        return 250.0; // The fine for the player who made a mistake in entering their living costs
     }
 
     public function getPlayerId(): PlayerId
@@ -52,7 +49,7 @@ final readonly class LebenshaltungskostenForPlayerWereCorrected implements GameE
         return $this->playerId;
     }
 
-    public function getUpdatedValue(): float
+    public function getUpdatedValue(): MoneyAmount
     {
         return $this->correctValue;
     }

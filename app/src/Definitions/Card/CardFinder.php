@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Domain\Definitions\Card;
 
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\Dto\CardDefinition;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\Gehalt;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Random\Randomizer;
 
@@ -49,7 +49,7 @@ final class CardFinder
                     title: 'Sprachkurs',
                     description: 'Mache einen Sprachkurs über drei Monate im Ausland.',
                     resourceChanges: new ResourceChanges(
-                        guthabenChange: -11000,
+                        guthabenChange: new MoneyAmount(-11000),
                         bildungKompetenzsteinChange: +1,
                     ),
                 ),
@@ -59,7 +59,7 @@ final class CardFinder
                     title: 'Erste-Hilfe-Kurs',
                     description: 'Du machst einen Erste-Hilfe-Kurs, um im Notfall richtig zu reagieren.',
                     resourceChanges: new ResourceChanges(
-                        guthabenChange: -300,
+                        guthabenChange: new MoneyAmount(-300),
                         bildungKompetenzsteinChange: +1,
                     ),
                 ),
@@ -91,7 +91,7 @@ final class CardFinder
                     title: 'Ehrenamtliches Engagement',
                     description: 'Du engagierst dich ehrenamtlich für eine Organisation, die es Menschen mit Behinderung ermöglicht einen genialen Urlaub mit Sonne, Strand und Meer zu erleben. Du musst die Kosten dafür allerdings selbst tragen.',
                     resourceChanges: new ResourceChanges(
-                        guthabenChange: -1200,
+                        guthabenChange: new MoneyAmount(-1200),
                         freizeitKompetenzsteinChange: +1,
                     ),
                 ),
@@ -101,7 +101,7 @@ final class CardFinder
                     title: 'Spende',
                     description: 'Bei deinem Einkauf spendest du nun immer Tiernahrung für die umliegende Tierheime. Dein Spendebeitrag ist 200 €.',
                     resourceChanges: new ResourceChanges(
-                        guthabenChange: -200,
+                        guthabenChange: new MoneyAmount(-200),
                         freizeitKompetenzsteinChange: +1,
                     ),
                 ),
@@ -122,7 +122,7 @@ final class CardFinder
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Fachinformatikerin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(34000),
+                    gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                         bildungKompetenzsteine: 2,
@@ -133,7 +133,7 @@ final class CardFinder
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Pflegefachkraft',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(25000),
+                    gehalt: new MoneyAmount(25000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                         bildungKompetenzsteine: 2,
@@ -144,7 +144,7 @@ final class CardFinder
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Taxifahrer:in',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(18000),
+                    gehalt: new MoneyAmount(18000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                         bildungKompetenzsteine: 1,
@@ -155,7 +155,7 @@ final class CardFinder
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Geschichtslehrer:in',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(40000),
+                    gehalt: new MoneyAmount(40000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                         bildungKompetenzsteine: 0,
@@ -166,7 +166,7 @@ final class CardFinder
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Bruchpilot:in',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(4000),
+                    gehalt: new MoneyAmount(4000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                         bildungKompetenzsteine: 0,

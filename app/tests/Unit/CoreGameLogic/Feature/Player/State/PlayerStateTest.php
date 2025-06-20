@@ -14,6 +14,7 @@ use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
@@ -43,7 +44,7 @@ describe('getGuthabenForPlayer', function () {
             title: 'test1',
             description: 'test',
             resourceChanges: new ResourceChanges(
-                guthabenChange: -500
+                guthabenChange: new MoneyAmount(-500)
             )
         );
         $card2 = new KategorieCardDefinition(
@@ -52,7 +53,7 @@ describe('getGuthabenForPlayer', function () {
             title: 'test1',
             description: 'test',
             resourceChanges: new ResourceChanges(
-                guthabenChange: -100
+                guthabenChange: new MoneyAmount(-100)
             )
         );
         CardFinder::getInstance()->overrideCardsForTesting([
@@ -72,8 +73,8 @@ describe('getGuthabenForPlayer', function () {
             $this->gameId,
             ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE));
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGuthabenForPlayer($stream, $this->players[0]))->toEqual(49500)
-            ->and(PlayerState::getGuthabenForPlayer($stream, $this->players[1]))->toEqual(49900);
+        expect(PlayerState::getGuthabenForPlayer($stream, $this->players[0]))->toEqual(new MoneyAmount(49500))
+            ->and(PlayerState::getGuthabenForPlayer($stream, $this->players[1]))->toEqual(new MoneyAmount(49900));
     });
 
     it('Throws an exception if the player does not exist', function () {
@@ -94,36 +95,36 @@ test('getKompetenzenForPlayer', function () {
     );
     $this->addCardsOnTopOfPile([$cardToTest], PileId::BILDUNG_PHASE_1);
 
-    $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
-    expect(PlayerState::getBildungsKompetenzsteine($gameStream, $this->players[0]))->toBe(0);
-    expect(PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($gameStream, $this->players[0], CategoryId::BILDUNG_UND_KARRIERE))->toBe(0);
+    $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+    expect(PlayerState::getBildungsKompetenzsteine($gameEvents, $this->players[0]))->toBe(0);
+    expect(PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($gameEvents, $this->players[0], CategoryId::BILDUNG_UND_KARRIERE))->toBe(0);
 
     // player 1 activates a card that gives them a bildungs kompetenzstein
     $this->coreGameLogic->handle(
         $this->gameId,
         ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
 
-    $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
+    $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
     // player 1
-    expect(PreGameState::lebenszielForPlayer($gameStream, $this->players[0])->phases[0]->placedKompetenzsteineBildung)->toBe(1);
-    expect(PlayerState::getBildungsKompetenzsteine($gameStream, $this->players[0]))->toBe(1);
-    expect(PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($gameStream, $this->players[0], CategoryId::BILDUNG_UND_KARRIERE))->toBe(1);
+    expect(PreGameState::lebenszielForPlayer($gameEvents, $this->players[0])->phases[0]->placedKompetenzsteineBildung)->toBe(1);
+    expect(PlayerState::getBildungsKompetenzsteine($gameEvents, $this->players[0]))->toBe(1);
+    expect(PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($gameEvents, $this->players[0], CategoryId::BILDUNG_UND_KARRIERE))->toBe(1);
 
     //player 2 unchanged
-    expect(PreGameState::lebenszielForPlayer($gameStream, $this->players[1])->phases[0]->placedKompetenzsteineBildung)->toBe(0);
-    expect(PlayerState::getBildungsKompetenzsteine($gameStream, $this->players[1]))->toBe(0);
-    expect(PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($gameStream, $this->players[1], CategoryId::BILDUNG_UND_KARRIERE))->toBe(0);
+    expect(PreGameState::lebenszielForPlayer($gameEvents, $this->players[1])->phases[0]->placedKompetenzsteineBildung)->toBe(0);
+    expect(PlayerState::getBildungsKompetenzsteine($gameEvents, $this->players[1]))->toBe(0);
+    expect(PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($gameEvents, $this->players[1], CategoryId::BILDUNG_UND_KARRIERE))->toBe(0);
 
     // change konjunkturphase
     $this->coreGameLogic->handle(
         $this->gameId,
         ChangeKonjunkturphase::create());
 
-    $gameStream = $this->coreGameLogic->getGameEvents($this->gameId);
+    $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
     // kompetenzen are saved for the lebensziel
-    expect(PreGameState::lebenszielForPlayer($gameStream, $this->players[0])->phases[0]->placedKompetenzsteineBildung)->toBe(1);
-    expect(PlayerState::getBildungsKompetenzsteine($gameStream, $this->players[0]))->toBe(1);
+    expect(PreGameState::lebenszielForPlayer($gameEvents, $this->players[0])->phases[0]->placedKompetenzsteineBildung)->toBe(1);
+    expect(PlayerState::getBildungsKompetenzsteine($gameEvents, $this->players[0]))->toBe(1);
     // is 0 again because we are in the next konjunkturphase
-    expect(PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($gameStream, $this->players[0], CategoryId::BILDUNG_UND_KARRIERE))->toBe(0);
+    expect(PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($gameEvents, $this->players[0], CategoryId::BILDUNG_UND_KARRIERE))->toBe(0);
 });

@@ -6,6 +6,7 @@ namespace Tests\CoreGameLogic\Feature\Spielzug\State;
 
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
 @covers(AktionsCalculator::class);
 
@@ -24,11 +25,11 @@ describe('canPlayerActivateCard', function () {
 
     it('returns true when player can afford the action', function () {
         $costOfAction1 = new ResourceChanges(
-            guthabenChange: -200,
+            guthabenChange: new MoneyAmount(-200),
             bildungKompetenzsteinChange: +1,
         );
         $costOfAction2 = new ResourceChanges(
-            guthabenChange: -200,
+            guthabenChange: new MoneyAmount(-200),
             bildungKompetenzsteinChange: +1,
         );
 
@@ -40,11 +41,11 @@ describe('canPlayerActivateCard', function () {
 
     it('returns false when player cannot afford the action', function () {
         $costOfAction1 = new ResourceChanges(
-            guthabenChange: -50001,
+            guthabenChange: new MoneyAmount(-50001),
         );
 
         $costOfAction2 = new ResourceChanges(
-            guthabenChange: -200,
+            guthabenChange: new MoneyAmount(-200),
             bildungKompetenzsteinChange: -1,
         );
 

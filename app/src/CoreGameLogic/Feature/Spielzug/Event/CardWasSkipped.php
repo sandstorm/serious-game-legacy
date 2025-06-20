@@ -67,4 +67,9 @@ final readonly class CardWasSkipped implements ZeitsteinAktion, DrawsCard, GameE
     {
         return $this->playerId;
     }
+
+    public function getNumberOfZeitsteinslotsUsed(): int
+    {
+        return 1;
+    }
 }

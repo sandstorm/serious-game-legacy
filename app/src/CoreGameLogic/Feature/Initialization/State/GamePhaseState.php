@@ -14,58 +14,58 @@ use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 
 class GamePhaseState
 {
-    public static function isInGamePhase(GameEvents $gameStream): bool
+    public static function isInGamePhase(GameEvents $gameEvents): bool
     {
-        return $gameStream->findFirstOrNull(GameWasStarted::class) !== null;
+        return $gameEvents->findFirstOrNull(GameWasStarted::class) !== null;
     }
 
-    public static function currentKonjunkturphasenId(GameEvents $gameStream): KonjunkturphasenId
+    public static function currentKonjunkturphasenId(GameEvents $gameEvents): KonjunkturphasenId
     {
-        return $gameStream->findLast(KonjunkturphaseWasChanged::class)->id;
+        return $gameEvents->findLast(KonjunkturphaseWasChanged::class)->id;
     }
 
-    public static function currentKonjunkturphasenYear(GameEvents $gameStream): CurrentYear
+    public static function currentKonjunkturphasenYear(GameEvents $gameEvents): CurrentYear
     {
-        return $gameStream->findLast(KonjunkturphaseWasChanged::class)->year;
+        return $gameEvents->findLast(KonjunkturphaseWasChanged::class)->year;
     }
 
-    public static function hasKonjunkturphase(GameEvents $gameStream): bool
+    public static function hasKonjunkturphase(GameEvents $gameEvents): bool
     {
-        return $gameStream->findFirstOrNull(KonjunkturphaseWasChanged::class) !== null;
+        return $gameEvents->findFirstOrNull(KonjunkturphaseWasChanged::class) !== null;
     }
 
     /**
      *
-     * @param GameEvents $gameStream
+     * @param GameEvents $gameEvents
      * @param CategoryId $category
      * @return bool
      */
     public static function hasFreeTimeSlotsForCategory(
-        GameEvents $gameStream,
+        GameEvents $gameEvents,
         CategoryId $category
     ): bool {
-        $konjunkturPhaseWasChanged = $gameStream->findLast(KonjunkturphaseWasChanged::class);
+        $konjunkturPhaseWasChanged = $gameEvents->findLast(KonjunkturphaseWasChanged::class);
         $freeSlots = collect($konjunkturPhaseWasChanged->kompetenzbereiche)
             ->firstWhere('name', $category)->kompetenzsteine ?? 0;
 
         // now get all players and their placed Zeitsteine in this category
-        $players = PreGameState::playersWithNameAndLebensziel($gameStream);
+        $players = PreGameState::playersWithNameAndLebensziel($gameEvents);
         $usedSlots = 0;
         foreach ($players as $player) {
-            $usedSlots += PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($gameStream, $player->playerId, $category);
+            $usedSlots += PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($gameEvents, $player->playerId, $category);
         }
 
         return $freeSlots > $usedSlots;
     }
 
     /**
-     * @param GameEvents $gameStream
+     * @param GameEvents $gameEvents
      * @return int[]
      */
-    public static function idsOfPastKonjunkturphasen(GameEvents $gameStream): array
+    public static function idsOfPastKonjunkturphasen(GameEvents $gameEvents): array
     {
         // get all ids of the KonjunkturphaseWechselExecuted events
-        $events = $gameStream->findAllOfType(KonjunkturphaseWasChanged::class);
+        $events = $gameEvents->findAllOfType(KonjunkturphaseWasChanged::class);
         $ids = [];
         /** @var KonjunkturphaseWasChanged $event */
         foreach ($events as $event) {

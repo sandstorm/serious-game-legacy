@@ -11,13 +11,13 @@ use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Illuminate\View\View;
 use Illuminate\View\Component;
 
-class KonjunkturphaseDetais extends Component
+class KonjunkturphaseDetails extends Component
 {
     /**
      * Create the component instance.
      */
     public function __construct(
-        public GameEvents $gameStream,
+        public GameEvents $gameEvents,
     ) {}
 
     /**
@@ -32,7 +32,7 @@ class KonjunkturphaseDetais extends Component
 
     public function getCurrentKonjunkturphaseDefinition(): ?KonjunkturphaseDefinition
     {
-        $konjunkturphasenId = GamePhaseState::currentKonjunkturphasenId($this->gameStream);
+        $konjunkturphasenId = GamePhaseState::currentKonjunkturphasenId($this->gameEvents);
         return KonjunkturphaseFinder::findKonjunkturphaseById(
             $konjunkturphasenId
         );

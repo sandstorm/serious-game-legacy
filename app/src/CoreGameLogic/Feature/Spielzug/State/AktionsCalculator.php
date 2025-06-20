@@ -31,7 +31,7 @@ final readonly class AktionsCalculator
     {
         $playerResources = PlayerState::getResourcesForPlayer($this->stream, $playerId);
         if (
-            $cost->guthabenChange * -1 <= $playerResources->guthabenChange &&
+            $cost->guthabenChange->value * -1 <= $playerResources->guthabenChange->value &&
             $cost->zeitsteineChange * -1 <= $playerResources->zeitsteineChange &&
             $cost->bildungKompetenzsteinChange * -1 <= $playerResources->bildungKompetenzsteinChange &&
             $cost->freizeitKompetenzsteinChange * -1 <= $playerResources->freizeitKompetenzsteinChange

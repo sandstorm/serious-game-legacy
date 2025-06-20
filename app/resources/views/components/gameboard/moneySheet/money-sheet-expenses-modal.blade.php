@@ -1,5 +1,5 @@
 @props([
-    '$gameStream' => null,
+    '$gameEvents' => null,
     '$playerId' => null,
 ])
 
@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-    <x-money-sheet.expenses.money-sheet-expenses :game-stream="$gameStream" :player-id="$playerId" />
+    <x-money-sheet.expenses.money-sheet-expenses :game-events="$gameEvents" :player-id="$playerId" />
 @endsection
 
 @section('footer')

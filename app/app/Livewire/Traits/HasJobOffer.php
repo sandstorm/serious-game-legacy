@@ -18,7 +18,7 @@ trait HasJobOffer
     public function canRequestJobOffers(): AktionValidationResult
     {
         $aktion = new RequestJobOffersAktion();
-        return $aktion->validate($this->myself, $this->gameStream);
+        return $aktion->validate($this->myself, $this->gameEvents);
     }
 
     public function showJobOffer(): void
@@ -45,7 +45,7 @@ trait HasJobOffer
     public function canAcceptJobOffer(CardId $cardId): AktionValidationResult
     {
         $aktion = new AcceptJobOffersAktion($cardId);
-        return $aktion->validate($this->myself, $this->gameStream);
+        return $aktion->validate($this->myself, $this->gameEvents);
     }
 
     /**

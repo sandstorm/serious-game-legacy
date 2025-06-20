@@ -18,4 +18,5 @@ interface ZeitsteinAktion
 {
     public function getCategoryId(): CategoryId; // e.g. 'BILDUNG' or 'FREIZEIT'
     public function getPlayerId(): PlayerId;
+    public function getNumberOfZeitsteinslotsUsed(): int;
 }

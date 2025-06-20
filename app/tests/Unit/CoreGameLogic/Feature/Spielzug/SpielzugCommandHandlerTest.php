@@ -8,6 +8,7 @@ namespace Tests\CoreGameLogic\Feature\Spielzug;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
@@ -27,7 +28,7 @@ use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\Gehalt;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
@@ -51,7 +52,8 @@ describe('handleSkipCard', function () {
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(6);
 
-        $this->coreGameLogic->handle($this->gameId, new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId,
+            new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(5);
@@ -59,8 +61,10 @@ describe('handleSkipCard', function () {
 
     it('Cannot skip twice', function () {
         /** @var TestCase $this */
-        $this->coreGameLogic->handle($this->gameId, new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
-        $this->coreGameLogic->handle($this->gameId, new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId,
+            new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId,
+            new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
     })->throws(
         \RuntimeException::class,
         'Du kannst nur eine Zeitsteinaktion pro Runde ausführen',
@@ -68,7 +72,8 @@ describe('handleSkipCard', function () {
 
     it('can only skip when it\'s the player\'s turn', function () {
         /** @var TestCase $this */
-        $this->coreGameLogic->handle($this->gameId, new SkipCard(playerId: $this->players[1], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId,
+            new SkipCard(playerId: $this->players[1], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
     })->throws(
         \RuntimeException::class,
         'Du kannst Karten nur überspringen, wenn du dran bist',
@@ -102,14 +107,16 @@ describe('handleSkipCard', function () {
             $this->gameId,
             new EndSpielzug($this->players[0])
         );
-        $this->coreGameLogic->handle($this->gameId, new SkipCard(playerId: $this->players[1], categoryId: CategoryId::SOZIALES_UND_FREIZEIT));
+        $this->coreGameLogic->handle($this->gameId,
+            new SkipCard(playerId: $this->players[1], categoryId: CategoryId::SOZIALES_UND_FREIZEIT));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
 
         // confirm that the player has 0 Zeitsteine
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(0);
 
-        $this->coreGameLogic->handle($this->gameId, new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId,
+            new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
     })->throws(\RuntimeException::class,
         'Du hast nicht genug Ressourcen um die Karte zu überspringen', 1747325793);
 
@@ -121,7 +128,7 @@ describe('handleSkipCard', function () {
             title: 'for testing',
             description: '...',
             resourceChanges: new ResourceChanges(
-                guthabenChange: 0,
+                guthabenChange: new MoneyAmount(0),
                 bildungKompetenzsteinChange: +1,
             ),
         );
@@ -169,7 +176,7 @@ describe('handleActivateCard', function () {
                     title: 'for testing',
                     description: '...',
                     resourceChanges: new ResourceChanges(
-                        guthabenChange: -200,
+                        guthabenChange: new MoneyAmount(-200),
                         bildungKompetenzsteinChange: +1,
                     ),
                 ),
@@ -186,7 +193,8 @@ describe('handleActivateCard', function () {
             ChangeKonjunkturphase::create()
         );
 
-        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId,
+            ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(5);
@@ -201,7 +209,7 @@ describe('handleActivateCard', function () {
             title: 'for testing',
             description: '...',
             resourceChanges: new ResourceChanges(
-                guthabenChange: -200,
+                guthabenChange: new MoneyAmount(-200),
                 bildungKompetenzsteinChange: +1,
             ),
         );
@@ -250,7 +258,7 @@ describe('handleActivateCard', function () {
             title: 'skipped',
             description: '...',
             resourceChanges: new ResourceChanges(
-                guthabenChange: -400,
+                guthabenChange: new MoneyAmount(-400),
                 bildungKompetenzsteinChange: +2,
             ),
         );
@@ -260,7 +268,7 @@ describe('handleActivateCard', function () {
             title: 'for testing',
             description: '...',
             resourceChanges: new ResourceChanges(
-                guthabenChange: -200,
+                guthabenChange: new MoneyAmount(-200),
                 bildungKompetenzsteinChange: +1,
             ),
         );
@@ -297,7 +305,7 @@ describe('handleActivateCard', function () {
             title: 'for testing',
             description: '...',
             resourceChanges: new ResourceChanges(
-                guthabenChange: -200,
+                guthabenChange: new MoneyAmount(-200),
                 bildungKompetenzsteinChange: +1,
             ),
         );
@@ -360,7 +368,7 @@ describe('handleActivateCard', function () {
             title: 'for testing',
             description: '...',
             resourceChanges: new ResourceChanges(
-                guthabenChange: -200,
+                guthabenChange: new MoneyAmount(-200),
                 freizeitKompetenzsteinChange: +1,
             ),
         );
@@ -389,7 +397,7 @@ describe('handleActivateCard', function () {
             title: 'for testing',
             description: '...',
             resourceChanges: new ResourceChanges(
-                guthabenChange: -200,
+                guthabenChange: new MoneyAmount(-200),
                 bildungKompetenzsteinChange: +1,
             ),
         );
@@ -410,7 +418,7 @@ describe('handleActivateCard', function () {
             title: 'for testing',
             description: '...',
             resourceChanges: new ResourceChanges(
-                guthabenChange: -50001,
+                guthabenChange: new MoneyAmount(-50001),
                 bildungKompetenzsteinChange: +1,
             ),
         );
@@ -425,7 +433,7 @@ describe('handleActivateCard', function () {
         'Du hast nicht genug Ressourcen um die Karte zu spielen',
         1748951140);
 
-    it("card cannot be activated when no free slots are available for this konjunkturphase", function () {
+    it("cannot activate card when no free slots are available for this konjunkturphase", function () {
         /** @var TestCase $this */
         $cardToTest = new KategorieCardDefinition(
             id: new CardId('testcard'),
@@ -433,7 +441,7 @@ describe('handleActivateCard', function () {
             title: 'for testing',
             description: '...',
             resourceChanges: new ResourceChanges(
-                guthabenChange: 0,
+                guthabenChange: new MoneyAmount(0),
                 bildungKompetenzsteinChange: +1,
             ),
         );
@@ -466,7 +474,7 @@ describe('handleActivateCard', function () {
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
     })->throws(\RuntimeException::class,
-        'Es gibt keine freien Zeitsteine mehr.',
+        'Es gibt keine freien Slots für Zeitsteine mehr.',
         1748951140);
 
 });
@@ -481,7 +489,7 @@ describe('handleRequestJobOffers', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Fachinformatikerin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(34000),
+                    gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                         bildungKompetenzsteine: 0,
@@ -525,7 +533,7 @@ describe('handleRequestJobOffers', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Fachinformatikerin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(34000),
+                    gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -535,7 +543,7 @@ describe('handleRequestJobOffers', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Pflegefachkraft (not eligible)',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(25000),
+                    gehalt: new MoneyAmount(25000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                         bildungKompetenzsteine: 2,
@@ -546,7 +554,7 @@ describe('handleRequestJobOffers', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Taxifahrer:in',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(18000),
+                    gehalt: new MoneyAmount(18000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -576,7 +584,7 @@ describe('handleRequestJobOffers', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Fachinformatikerin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(34000),
+                    gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -586,7 +594,7 @@ describe('handleRequestJobOffers', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Testjob444',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(18000),
+                    gehalt: new MoneyAmount(18000),
                     requirements: new JobRequirements(
                         bildungKompetenzsteine: 3
                     ),
@@ -614,7 +622,7 @@ describe('handleRequestJobOffers', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Fachinformatikerin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(34000),
+                    gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -624,7 +632,7 @@ describe('handleRequestJobOffers', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Pflegefachkraft',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(25000),
+                    gehalt: new MoneyAmount(25000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -634,7 +642,7 @@ describe('handleRequestJobOffers', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Taxifahrer:in',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(18000),
+                    gehalt: new MoneyAmount(18000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -644,7 +652,7 @@ describe('handleRequestJobOffers', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Testjob444',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(18000),
+                    gehalt: new MoneyAmount(18000),
                     requirements: new JobRequirements(),
                 ),
             ]
@@ -667,7 +675,7 @@ describe('handleRequestJobOffers', function () {
                 pileId: PileId::JOBS_PHASE_1,
                 title: 'Fachinformatikerin',
                 description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                gehalt: new Gehalt(34000),
+                gehalt: new MoneyAmount(34000),
                 requirements: new JobRequirements(),
             ),
         ];
@@ -690,7 +698,7 @@ describe('handleAcceptJobOffer', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'not offered',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(18000),
+                    gehalt: new MoneyAmount(18000),
                     requirements: new JobRequirements(),
                 ),
             ]
@@ -708,7 +716,7 @@ describe('handleAcceptJobOffer', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'offered 1',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(34000),
+                    gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -718,7 +726,7 @@ describe('handleAcceptJobOffer', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'offered 2',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(25000),
+                    gehalt: new MoneyAmount(25000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -728,7 +736,7 @@ describe('handleAcceptJobOffer', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'offered 3',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(18000),
+                    gehalt: new MoneyAmount(18000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -738,7 +746,7 @@ describe('handleAcceptJobOffer', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'not offered',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(18000),
+                    gehalt: new MoneyAmount(18000),
                     requirements: new JobRequirements(),
                 ),
             ]
@@ -774,7 +782,7 @@ describe('handleAcceptJobOffer', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'offered 1',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(34000),
+                    gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -828,7 +836,7 @@ describe('handleAcceptJobOffer', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'offered 1',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new Gehalt(34000),
+                    gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -841,7 +849,7 @@ describe('handleAcceptJobOffer', function () {
 
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect($stream->FindLast(JobOfferWasAccepted::class)->gehalt->value)->toBe(34000)
+        expect($stream->FindLast(JobOfferWasAccepted::class)->gehalt)->toEqual(new MoneyAmount(34000))
             ->and($stream->FindLast(JobOfferWasAccepted::class)->cardId->value)->toBe('j0');
     });
 });
@@ -885,7 +893,7 @@ describe('handleEndSpielzug', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    guthabenChange: -200,
+                    guthabenChange: new MoneyAmount(-200),
                     zeitsteineChange: -5, // Remove all Zeitsteine
                     bildungKompetenzsteinChange: +1,
                 ),
@@ -938,26 +946,59 @@ describe('handleEndSpielzug', function () {
         expect(CurrentPlayerAccessor::forStream($stream))->toEqual($this->players[1]);
     });
 
-    it('starts again with the first player when the last player ends their turn',
-        function () {
-            /** @var TestCase $this */
-            $this->coreGameLogic->handle(
-                $this->gameId,
-                new SkipCard($this->players[0], CategoryId::SOZIALES_UND_FREIZEIT)
-            );
-            $this->coreGameLogic->handle(
-                $this->gameId,
-                new EndSpielzug($this->players[0])
-            );
-            $this->coreGameLogic->handle(
-                $this->gameId,
-                new SkipCard($this->players[1], CategoryId::SOZIALES_UND_FREIZEIT)
-            );
-            $this->coreGameLogic->handle(
-                $this->gameId,
-                new EndSpielzug($this->players[1])
-            );
-            $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-            expect(CurrentPlayerAccessor::forStream($stream))->toEqual($this->players[0]);
-        });
+    it('starts again with the first player when the last player ends their turn', function () {
+        /** @var TestCase $this */
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new SkipCard($this->players[0], CategoryId::SOZIALES_UND_FREIZEIT)
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[0])
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new SkipCard($this->players[1], CategoryId::SOZIALES_UND_FREIZEIT)
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[1])
+        );
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(CurrentPlayerAccessor::forStream($stream))->toEqual($this->players[0]);
+    });
+
+    it('ends current Konjunkturphase if no player has any Zeitsteine left', function () {
+        /** @var TestCase $this */
+        $cardsForTesting = [
+            "cardToRemoveZeitsteine" => new KategorieCardDefinition(
+                id: new CardId('cardToRemoveZeitsteine'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -5,
+                ),
+            ),
+            "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
+                id: new CardId('cardToRemoveZeitsteine2'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -5,
+                ),
+            ),
+        ];
+        $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
+
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect($gameEvents->findLast(KonjunkturphaseHasEnded::class) instanceof KonjunkturphaseHasEnded)->toBeTrue();
+    });
 });

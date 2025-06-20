@@ -2,7 +2,7 @@
 
 @props([
     '$jobDefinition' => null,
-    '$gameStream' => null,
+    '$gameEvents' => null,
     '$playerId' => null,
 ])
 
@@ -24,7 +24,7 @@
             <td>
                 <ul class="zeitsteine">
                     <li>-{{ $jobDefinition->requirements->zeitsteine }}</li>
-                    <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($gameStream, $playerId)])></li>
+                    <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($gameEvents, $playerId)])></li>
                 </ul>
             </td>
         </tr>
