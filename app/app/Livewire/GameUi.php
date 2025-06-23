@@ -14,6 +14,7 @@ use App\Livewire\Traits\HasNotification;
 use App\Livewire\Traits\HasPlayerDetails;
 use App\Livewire\Traits\HasPreGamePhase;
 use App\Livewire\Traits\HasMoneySheet;
+use App\Livewire\Traits\HasMinijob;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
@@ -36,6 +37,7 @@ class GameUi extends Component
     use HasJobOffer;
     use HasNotification;
     use HasLog;
+    use HasMinijob;
 
     // injected from outside -> game-play.blade.php
     // Not the current player, but the player connected to THIS SESSION
@@ -43,8 +45,8 @@ class GameUi extends Component
     public GameId $gameId;
 
     private Dispatcher $eventDispatcher;
-    private ForCoreGameLogic $coreGameLogic;
     private GameEvents $gameEvents;
+    private ForCoreGameLogic $coreGameLogic;
 
     public function mount(): void
     {

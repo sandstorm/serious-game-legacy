@@ -27,6 +27,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasTakenOutForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasStartedKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerWasMarkedAsReadyForKonjunkturphaseChange;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Neos\EventStore\Model\Event;
 use Neos\EventStore\Model\Event\EventData;
@@ -74,6 +75,7 @@ final readonly class EventNormalizer
             LebenshaltungskostenForPlayerWereCorrected::class,
             LebenshaltungskostenForPlayerWereEntered::class,
             LebenszielWasSelected::class,
+            MinijobWasDone::class,
             NameForPlayerWasSet::class,
             PlayerColorWasSelected::class,
             PlayerHasCompletedMoneysheetForCurrentKonjunkturphase::class,

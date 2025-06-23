@@ -10,13 +10,13 @@ use Domain\CoreGameLogic\PlayerId;
 final readonly class RequestJobOffers implements CommandInterface
 {
     public static function create(
-        PlayerId $player,
+        PlayerId $playerId,
     ): RequestJobOffers {
-        return new self($player);
+        return new self($playerId);
     }
 
     private function __construct(
-        public PlayerId $player,
+        public PlayerId $playerId,
     ) {
     }
 

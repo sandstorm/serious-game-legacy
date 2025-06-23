@@ -13,6 +13,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
+use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Lebensziel\LebenszielFinder;
 use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
 use Tests\TestCase;
@@ -82,7 +83,7 @@ test('PreGameLogic normal flow', function () {
         ->and(PreGameState::playersWithNameAndLebensziel($gameEvents)[$this->p1->value]->lebensziel->name)->toEqual($expectedLebenszielForP1->name)
         ->and(PreGameState::playersWithNameAndLebensziel($gameEvents)[$this->p2->value]->lebensziel->name)->toEqual($expectedLebenszielForP2->name);
 
-    expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->p1))->toEqual(new MoneyAmount(50000));
+    expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->p1))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE));
 
     $this->coreGameLogic->handle($this->gameId, new SelectPlayerColor(
         playerId: $this->p1,

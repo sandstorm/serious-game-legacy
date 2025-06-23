@@ -16,6 +16,7 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 beforeEach(function () {
@@ -26,8 +27,8 @@ describe('getZeitsteineForPlayer', function () {
     it('returns the correct number', function () {
         $this->coreGameLogic->handle($this->gameId, new SkipCard($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(5)
-            ->and(PlayerState::getZeitsteineForPlayer($stream, $this->players[1]))->toBe(6);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS - 1)
+            ->and(PlayerState::getZeitsteineForPlayer($stream, $this->players[1]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS);
     });
 
     it('Throws an exception if the player does not exist', function () {
@@ -63,6 +64,7 @@ describe('getGuthabenForPlayer', function () {
             ],
             PileId::FREIZEIT_PHASE_1->value => [],
             PileId::JOBS_PHASE_1->value => [],
+            PileId::MINIJOBS_PHASE_1->value => [],
         ]);
 
         $this->coreGameLogic->handle(

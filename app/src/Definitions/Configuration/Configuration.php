@@ -7,6 +7,19 @@ namespace Domain\Definitions\Configuration;
 final readonly class Configuration
 {
     /**
+     * The initial capital for each player
+     * @var int
+     */
+    public final const STARTKAPITAL_VALUE = 50000;
+
+    /**
+     * start value for Zeitsteine for 2,3,4 players
+     * @var int
+     */
+    public final const INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS = 5;
+    public final const INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_THREE_OR_FOUR_PLAYERS = 4;
+
+    /**
      * minimum value for the Lebenshaltungskosten
      * @var int
      */
