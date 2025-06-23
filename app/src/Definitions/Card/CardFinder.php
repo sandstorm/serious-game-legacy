@@ -73,6 +73,8 @@ final class CardFinder
                         bildungKompetenzsteinChange: +1,
                     ),
                 ),
+
+                //TODO: Card is duplicate!
                 "buk3" => new KategorieCardDefinition(
                     id: new CardId('buk3'),
                     pileId: PileId::BILDUNG_PHASE_1,
@@ -81,6 +83,124 @@ final class CardFinder
                     resourceChanges: new ResourceChanges(
                         zeitsteineChange: -1,
                         bildungKompetenzsteinChange: +1,
+                    ),
+                ),
+
+                "buk4" => new KategorieCardDefinition(
+                    id: new CardId('buk4'),
+                    pileId: PileId::BILDUNG_PHASE_1,
+                    title: 'Teilnahme Coaching-Seminaren',
+                    description: 'Glückwunsch! Die Teilnahme an Coaching-Seminaren zahlen sich gut aus. Du gewinnst bei
+                    einem Wettbewerb für junge, ambitionierte Führungskräfte den ersten Platz und bekommst einen Sprecherpart bei einem großen Businessevent in Frankfurt + 5.000 € Finanzspritze für dein erstes Start-Up.',
+                    resourceChanges: new ResourceChanges(
+                        guthabenChange: +5000,
+                        //TODO: Folgen: 5000 Euro Finanzspritze
+                    ),
+                ),
+
+                "buk5" => new KategorieCardDefinition(
+                    id: new CardId('buk5'),
+                    pileId: PileId::BILDUNG_PHASE_1,
+                    title: 'Ausbildung zur SkilehrerIn',
+                    description: 'Erfülle dir deinen Traum und mache eine Ausbildung zur SkilehrerIn. Neben technischen Wissen eignest du dir geografische und pädagogische Kenntnisse an.',
+                    resourceChanges: new ResourceChanges(
+                        guthabenChange: +7000,
+                    ),
+                ),
+
+                "buk6" => new KategorieCardDefinition(
+                    id: new CardId('buk6'),
+                    pileId: PileId::BILDUNG_PHASE_1,
+                    title: 'Nachhilfe',
+                    description: 'Nehme dir Nachhilfe, um deine Noten zu verbessern.',
+                    resourceChanges: new ResourceChanges(
+                        guthabenChange: +600,
+                    ),
+                ),
+
+                "buk7" => new KategorieCardDefinition(
+                    id: new CardId('buk7'),
+                    pileId: PileId::BILDUNG_PHASE_1,
+                    title: 'Neue Liebe',
+                    description: 'Du bist ganz verliebt und vernachlässigst deine (Lern-)Verpflichtungen. Alles wieder aufzuholen kostet viel Zeit. Du verlierst einen Zeitstein.',
+                    resourceChanges: new ResourceChanges(
+                        zeitsteineChange: -1,
+                    ),
+                ),
+
+                "buk8" => new KategorieCardDefinition(
+                    id: new CardId('buk8'),
+                    pileId: PileId::BILDUNG_PHASE_1,
+                    title: 'Neue Wohnung',
+                    description: 'Du ziehst um und aufgrund des Umzugstress vernachlässigst du deine anderen Verpflichtungen. Dies führt zum Verlust eines Zeitsteines.',
+                    resourceChanges: new ResourceChanges(
+                        zeitsteineChange: -1,
+                    ),
+                ),
+
+                "buk9" => new KategorieCardDefinition(
+                    id: new CardId('buk9'),
+                    pileId: PileId::BILDUNG_PHASE_1,
+                    title: 'Stress',
+                    description: 'Du kannst mit dem Druck nicht umgehen und schläfst nicht genug. Du nimmst dir einen Auszeit, was einen Zeitstein kostet. ',
+                    resourceChanges: new ResourceChanges(
+                        zeitsteineChange: -1,
+                    ),
+                ),
+
+                "buk10" => new KategorieCardDefinition(
+                    id: new CardId('buk10'),
+                    pileId: PileId::BILDUNG_PHASE_1,
+                    title: 'Beförderung',
+                    description: 'Du wirst befördert und dein Gehalt steigert sich um 20 % für dieses Jahr. Solltest du die Beförderung annehmen, erhöht sich allerdings auch deinen Arbeitszeit diese und nächste Runde (-1 Zeitstein). Du erhälst zudem einen Karrierepunkt. ',
+                    resourceChanges: new ResourceChanges(
+                        zeitsteineChange: -1,
+                        //TODO: guthabenChange: + 20%, (Prozentangabe)
+                        //TODO: Vorraussetzung Eintritt Karte, wenn Erwerbseinkommen vorhanden
+                    ),
+                ),
+
+                "buk11" => new KategorieCardDefinition(
+                    id: new CardId('buk11'),
+                    pileId: PileId::BILDUNG_PHASE_1,
+                    title: 'Kündigung',
+                    description: 'Du hast dich mit deinem gesamten Kollegium zerstritten. Aus Frust kündigst du unüberlegt',
+                    resourceChanges: new ResourceChanges(
+                    //TODO: Vorraussetzung Eintritt Karte, wenn Erwerbseinkommen vorhanden
+                    //TODO: Folgen Jobverlust
+                    ),
+                ),
+
+                "buk12" => new KategorieCardDefinition(
+                    id: new CardId('buk12'),
+                    pileId: PileId::BILDUNG_PHASE_1,
+                    title: 'Weiterbildung zur Meisterin',
+                    description: 'Du entscheidest dich eine berufbegleitende Weiterbildung zur Meisterin zu machen. Die Weiterbildung erstreckt sich über 8 Monate. In dieser Zeit reduzierst du deine Arbeit auf 70 %. Solltest du bereits einen Job haben, so erhälst du 30 % weniger Gehalt. Wenn du noch keinen Job hast, so kostet es dich 8.000 €.',
+                    resourceChanges: new ResourceChanges(
+                        guthabenChange: +8000,
+                        //TODO: Folgen -30% Gehalt einmalig (Option)
+                    ),
+                ),
+
+                "buk13" => new KategorieCardDefinition(
+                    id: new CardId('buk13'),
+                    pileId: PileId::BILDUNG_PHASE_1,
+                    title: 'Jobverlust',
+                    description: 'Die wirtschaftliche Lage ist angespannt und und es kommt zu Kurzarbeit. Du erhälst nur noch 50 % deines Einkommens. Wenn du keinen Job hast, bist du nicht betroffen.',
+                    resourceChanges: new ResourceChanges(
+                    //TODO: Vorraussetzung Eintritt Karte, wenn Erwerbseinkommen vorhanden
+                    //TODO: guthabenChange: -50% deines Gehalts,
+                    ),
+                ),
+
+                "buk14" => new KategorieCardDefinition(
+                    id: new CardId('buk14'),
+                    pileId: PileId::BILDUNG_PHASE_1,
+                    title: 'Berufsunfähigkeitsversicherung',
+                    description: 'Du bekommst einen chronische Sehnenscheidenentzündung (Tendinitis) und kannst deinen Beruf nicht mehr ausüben. Im Falle einer abgeschlossenen Berufsunfähigkeitsversicherung verlierst du zwar deinen aktuellen Job, darfst aber eine neue Jobkarte aufnehmen unabhängig davon, ob du die Voraussetzungen erfüllst. Der finanzielle Ausfall (Kosten) entstehen für dich somit nicht. ',
+                    resourceChanges: new ResourceChanges(
+                        guthabenChange: -20.000,
+                        //TODO: Folgen: Jobverlust in allen Fällen wenn du keine Berufsunfähigkeitsversicherung abgeschlossen hast musst du zusätzlich zum Jobverlust den finanziellen Ausfall bezahlen.
                     ),
                 ),
             ],
@@ -114,7 +234,86 @@ final class CardFinder
                         zeitsteineChange: -1,
                         freizeitKompetenzsteinChange: +1,
                     ),
-                )
+                ),
+                "suf3" => new KategorieCardDefinition(
+                    id: new CardId('suf3'),
+                    pileId: PileId::FREIZEIT_PHASE_1,
+                    title: 'Ehrenamtliches Engagement',
+                    description: 'Du engagierst dich wöchentlich in einem örtlichen Jugendzentrum. Dies kostet dich ein Zeitstein.',
+                    resourceChanges: new ResourceChanges(
+                        zeitsteineChange: -1,
+                        freizeitKompetenzsteinChange: +1,
+                    ),
+                ),
+
+                "suf4" => new KategorieCardDefinition(
+                    id: new CardId('suf4'),
+                    pileId: PileId::FREIZEIT_PHASE_1,
+                    title: 'Sprachtandem',
+                    description: 'Bilde ein Sprachtandem mit einem Erasmus-Studierenden und lerne viel über Sprache und fremde Kulturen.',
+                    resourceChanges: new ResourceChanges(
+                        zeitsteineChange: -1,
+                        //TODO: Vorraussetzung Eintritt von Ereigniskarte: mit Ereigniskarte Sprachtandem verknüpfen
+                    ),
+                ),
+
+                "suf5" => new KategorieCardDefinition(
+                    id: new CardId('suf5'),
+                    pileId: PileId::FREIZEIT_PHASE_1,
+                    title: 'Job kündigen und Weltreise',
+                    description: 'Du entscheidest dich deinen Job zu kündigen und auf Reisen zu gehen, um dich neu zu orientieren. Du verlierst damit aber auch dein Einkommen. Du erhälst einen weiteren Zeitstein und einen Punkt (Sozial/Freizeit).',
+                    resourceChanges: new ResourceChanges(
+                        zeitsteineChange: -1,
+                        freizeitKompetenzsteinChange: +1,
+                        //TODO: Vorraussetzung Eintritt von Ereigniskarte: wenn Erwerbseinkommen vorhanden
+                        //TODO: Folgen Jobverlust
+                    ),
+                ),
+
+                "suf3" => new KategorieCardDefinition(
+                    id: new CardId('suf3'),
+                    pileId: PileId::FREIZEIT_PHASE_1,
+                    title: '',
+                    description: '',
+                    resourceChanges: new ResourceChanges(
+                        zeitsteineChange: -1,
+                        freizeitKompetenzsteinChange: +1,
+                    ),
+                ),
+
+                "suf3" => new KategorieCardDefinition(
+                    id: new CardId('suf3'),
+                    pileId: PileId::FREIZEIT_PHASE_1,
+                    title: '',
+                    description: '',
+                    resourceChanges: new ResourceChanges(
+                        zeitsteineChange: -1,
+                        freizeitKompetenzsteinChange: +1,
+                    ),
+                ),
+
+                "suf3" => new KategorieCardDefinition(
+                    id: new CardId('suf3'),
+                    pileId: PileId::FREIZEIT_PHASE_1,
+                    title: '',
+                    description: '',
+                    resourceChanges: new ResourceChanges(
+                        zeitsteineChange: -1,
+                        freizeitKompetenzsteinChange: +1,
+                    ),
+                ),
+
+                "suf3" => new KategorieCardDefinition(
+                    id: new CardId('suf3'),
+                    pileId: PileId::FREIZEIT_PHASE_1,
+                    title: '',
+                    description: '',
+                    resourceChanges: new ResourceChanges(
+                        zeitsteineChange: -1,
+                        freizeitKompetenzsteinChange: +1,
+                    ),
+                ),
+
             ],
             PileId::JOBS_PHASE_1->value => [
                 "ee0" => new JobCardDefinition(
@@ -150,6 +349,7 @@ final class CardFinder
                         bildungKompetenzsteine: 1,
                     ),
                 ),
+                //TODO: Not in the list!
                 "ee3" => new JobCardDefinition(
                     id: new CardId('ee3'),
                     pileId: PileId::JOBS_PHASE_1,
@@ -161,6 +361,7 @@ final class CardFinder
                         bildungKompetenzsteine: 0,
                     ),
                 ),
+                //TODO: Not in the list!
                 "ee4" => new JobCardDefinition(
                     id: new CardId('ee4'),
                     pileId: PileId::JOBS_PHASE_1,
