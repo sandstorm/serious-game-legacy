@@ -93,7 +93,7 @@ final class CardFinder
                     description: 'Glückwunsch! Die Teilnahme an Coaching-Seminaren zahlen sich gut aus. Du gewinnst bei
                     einem Wettbewerb für junge, ambitionierte Führungskräfte den ersten Platz und bekommst einen Sprecherpart bei einem großen Businessevent in Frankfurt + 5.000 € Finanzspritze für dein erstes Start-Up.',
                     resourceChanges: new ResourceChanges(
-                        guthabenChange: +5000,
+                        guthabenChange: new MoneyAmount(+5000),
                         //TODO: Folgen: 5000 Euro Finanzspritze
                     ),
                 ),
@@ -104,7 +104,8 @@ final class CardFinder
                     title: 'Ausbildung zur SkilehrerIn',
                     description: 'Erfülle dir deinen Traum und mache eine Ausbildung zur SkilehrerIn. Neben technischen Wissen eignest du dir geografische und pädagogische Kenntnisse an.',
                     resourceChanges: new ResourceChanges(
-                        guthabenChange: +7000,
+                        guthabenChange: new MoneyAmount(-7000),
+                        bildungKompetenzsteinChange: +1,
                     ),
                 ),
 
@@ -114,7 +115,8 @@ final class CardFinder
                     title: 'Nachhilfe',
                     description: 'Nehme dir Nachhilfe, um deine Noten zu verbessern.',
                     resourceChanges: new ResourceChanges(
-                        guthabenChange: +600,
+                        guthabenChange: new MoneyAmount(-600),
+                        bildungKompetenzsteinChange: +1,
                     ),
                 ),
 
@@ -155,6 +157,7 @@ final class CardFinder
                     description: 'Du wirst befördert und dein Gehalt steigert sich um 20 % für dieses Jahr. Solltest du die Beförderung annehmen, erhöht sich allerdings auch deinen Arbeitszeit diese und nächste Runde (-1 Zeitstein). Du erhälst zudem einen Karrierepunkt. ',
                     resourceChanges: new ResourceChanges(
                         zeitsteineChange: -1,
+                        bildungKompetenzsteinChange: +1,
                         //TODO: guthabenChange: + 20%, (Prozentangabe)
                         //TODO: Vorraussetzung Eintritt Karte, wenn Erwerbseinkommen vorhanden
                     ),
@@ -177,7 +180,8 @@ final class CardFinder
                     title: 'Weiterbildung zur Meisterin',
                     description: 'Du entscheidest dich eine berufbegleitende Weiterbildung zur Meisterin zu machen. Die Weiterbildung erstreckt sich über 8 Monate. In dieser Zeit reduzierst du deine Arbeit auf 70 %. Solltest du bereits einen Job haben, so erhälst du 30 % weniger Gehalt. Wenn du noch keinen Job hast, so kostet es dich 8.000 €.',
                     resourceChanges: new ResourceChanges(
-                        guthabenChange: +8000,
+                        guthabenChange: new MoneyAmount(-8000),
+                        bildungKompetenzsteinChange: +2,
                         //TODO: Folgen -30% Gehalt einmalig (Option)
                     ),
                 ),
@@ -199,7 +203,7 @@ final class CardFinder
                     title: 'Berufsunfähigkeitsversicherung',
                     description: 'Du bekommst einen chronische Sehnenscheidenentzündung (Tendinitis) und kannst deinen Beruf nicht mehr ausüben. Im Falle einer abgeschlossenen Berufsunfähigkeitsversicherung verlierst du zwar deinen aktuellen Job, darfst aber eine neue Jobkarte aufnehmen unabhängig davon, ob du die Voraussetzungen erfüllst. Der finanzielle Ausfall (Kosten) entstehen für dich somit nicht. ',
                     resourceChanges: new ResourceChanges(
-                        guthabenChange: -20.000,
+                        guthabenChange: new MoneyAmount(-20.000),
                         //TODO: Folgen: Jobverlust in allen Fällen wenn du keine Berufsunfähigkeitsversicherung abgeschlossen hast musst du zusätzlich zum Jobverlust den finanziellen Ausfall bezahlen.
                     ),
                 ),
@@ -253,6 +257,7 @@ final class CardFinder
                     description: 'Bilde ein Sprachtandem mit einem Erasmus-Studierenden und lerne viel über Sprache und fremde Kulturen.',
                     resourceChanges: new ResourceChanges(
                         zeitsteineChange: -1,
+                        freizeitKompetenzsteinChange: +1,
                         //TODO: Vorraussetzung Eintritt von Ereigniskarte: mit Ereigniskarte Sprachtandem verknüpfen
                     ),
                 ),
@@ -266,50 +271,108 @@ final class CardFinder
                         zeitsteineChange: -1,
                         freizeitKompetenzsteinChange: +1,
                         //TODO: Vorraussetzung Eintritt von Ereigniskarte: wenn Erwerbseinkommen vorhanden
-                        //TODO: Folgen Jobverlust
+                        //TODO: Folgen: Jobverlust
                     ),
                 ),
 
-                "suf3" => new KategorieCardDefinition(
-                    id: new CardId('suf3'),
+                "suf6" => new KategorieCardDefinition(
+                    id: new CardId('suf6'),
                     pileId: PileId::FREIZEIT_PHASE_1,
-                    title: '',
-                    description: '',
+                    title: 'Spende',
+                    description: 'Spende einmalig 10 % deines jährlichen Einkommes für einen wohltätigen Zweck. Bei keine Einkommen spende mindestens 300 €.',
                     resourceChanges: new ResourceChanges(
-                        zeitsteineChange: -1,
                         freizeitKompetenzsteinChange: +1,
+                        //TODO: (-)20% deines Gehalts oder 300€
                     ),
                 ),
 
-                "suf3" => new KategorieCardDefinition(
-                    id: new CardId('suf3'),
+                "suf7" => new KategorieCardDefinition(
+                    id: new CardId('suf7'),
                     pileId: PileId::FREIZEIT_PHASE_1,
-                    title: '',
-                    description: '',
+                    title: 'Reduzierung Arbeitszeit',
+                    description: 'Reduziere in deinem Job auf 50 %. Zahle dafür mit 50 % deines Gehalts oder einem Karrierepunkt. ',
                     resourceChanges: new ResourceChanges(
-                        zeitsteineChange: -1,
                         freizeitKompetenzsteinChange: +1,
+                        //TODO: (-) 50 % deines Gehalt Oder (-1) Karrierepunkt
+                        //TODO: (-1) Karrierepunkt (Option)
+                        //TODO: Folgen: In der nächsten Runde darfst du zwei Zeitsteine auf einmal setzten.
+                        //TODO: wenn Erwerbseinkommen vorhanden
                     ),
                 ),
 
-                "suf3" => new KategorieCardDefinition(
-                    id: new CardId('suf3'),
+                "suf8" => new KategorieCardDefinition(
+                    id: new CardId('suf8'),
                     pileId: PileId::FREIZEIT_PHASE_1,
-                    title: '',
-                    description: '',
+                    title: 'Krankheit',
+                    description: 'Du erkrankst an einer hefitgen Influenza und liegst komplett flach. Nutze einen Punkt (Soziales/Freizeit), um dich zu erholen oder gib einen Zeitstein ab.',
+                    resourceChanges: new ResourceChanges(
+                        //TODO: (- 1) Zeitstein ODER(-1) Punkt (Sozial/Freizeit)
+                    ),
+                ),
+
+                "suf9" => new KategorieCardDefinition(
+                    id: new CardId('suf9'),
+                    pileId: PileId::FREIZEIT_PHASE_1,
+                    title: 'Burn-Out',
+                    description: 'Bei der Verfolgung deines Traums hast du die Pausen ganz vergessen. Gebe einen Zeitstein ab oder nutze einen deiner Freizeitpunkte für einen Aufenthalt in einer Rehaklinik, um dich wieder zu erholen. ',
+                    resourceChanges: new ResourceChanges(
+                        //TODO: (- 1) Zeitstein ODER(-1) Punkt (Sozial/Freizeit)
+                    ),
+                ),
+
+                "suf10" => new KategorieCardDefinition(
+                    id: new CardId('suf10'),
+                    pileId: PileId::FREIZEIT_PHASE_1,
+                    title: 'Sozialhilfe',
+                    description: 'Engagiere eine Sozialhilfe zur Pflege deiner Großeltern.',
+                    resourceChanges: new ResourceChanges(
+                        guthabenChange: new MoneyAmount(-30.000),
+                        freizeitKompetenzsteinChange: +2,
+                        //TODO: Folgen: In der nächsten Runde darfst du zwei Zeitsteine auf einmal setzten
+                    ),
+                ),
+
+                "suf11" => new KategorieCardDefinition(
+                    id: new CardId('suf11'),
+                    pileId: PileId::FREIZEIT_PHASE_1,
+                    title: 'Vorstandsarbeit in einem Verein',
+                    description: 'Leider lässt sich keine andere Person finden, die deinen Vorstandsposten im Tennisverein übernimmt. Daher entscheidest du dich für eine weitere Periode den Posten zu übernehmen. Dies kostet dich einen Zeitstein.',
                     resourceChanges: new ResourceChanges(
                         zeitsteineChange: -1,
+                        //TODO: Vorraussetzung Eintritt von Ereignisskarte: wenn Ehrenamt Vorstandsposten gegeben
+                    ),
+                ),
+
+                "suf12" => new KategorieCardDefinition(
+                    id: new CardId('suf12'),
+                    pileId: PileId::FREIZEIT_PHASE_1,
+                    title: 'Einsatz für Demokratie',
+                    description: 'Deine Informationsflyer für die demokratischen Werte kommen so gut an, dass du erneut Flyer in den Druck gibst. Die kosten dich nochmals 500 €.',
+                    resourceChanges: new ResourceChanges(
+                        guthabenChange: new MoneyAmount(-500),
                         freizeitKompetenzsteinChange: +1,
+                        //TODO: Vorraussetzung Eintritt von Ereignisskarte: wenn Einsatz für Demokratie bereits erfolgt ist
                     ),
                 ),
 
-                "suf3" => new KategorieCardDefinition(
-                    id: new CardId('suf3'),
+                "suf13" => new KategorieCardDefinition(
+                    id: new CardId('suf13'),
                     pileId: PileId::FREIZEIT_PHASE_1,
-                    title: '',
-                    description: '',
+                    title: 'Geburt',
+                    description: 'Dein Sohn Tristan wird geboren.Glückwunsch! Du zahlst von nun an regelmäßig 5 % deines Einkommens (mind. 1.000 €) für alle anfallenden Kosten und einmalig 2.000 € für die Erstaustattung. Wegen des neu gewonnenen Netzwerks (Babyschwimmen usw.) erhälst du aber auch zwei Punkte (Sozial/Freizeit). ',
                     resourceChanges: new ResourceChanges(
-                        zeitsteineChange: -1,
+                        guthabenChange: new MoneyAmount(-1000), //Erstaustattung
+                        freizeitKompetenzsteinChange: +2,
+                    ),
+                ),
+
+                "suf14" => new KategorieCardDefinition(
+                    id: new CardId('suf14'),
+                    pileId: PileId::FREIZEIT_PHASE_1,
+                    title: 'SteuerberaterIn',
+                    description: 'Dir wachsen deine Unterlagen vom letzten Jahr langsam über den Kopf. Engagiere eine:n Steuerberater:in.',
+                    resourceChanges: new ResourceChanges(
+                        //TODO: (-) 10% deines Gehalts oder min. 2000 €
                         freizeitKompetenzsteinChange: +1,
                     ),
                 ),
@@ -373,7 +436,111 @@ final class CardFinder
                         bildungKompetenzsteine: 0,
                     ),
                 ),
-            ]
+                "ee5" => new JobCardDefinition(
+                    id: new CardId('ee5'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'Busfahrerin',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen. ',
+                    gehalt: new MoneyAmount(28000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                        bildungKompetenzsteine: 1,
+                    ),
+                ),
+                "ee6" => new JobCardDefinition(
+                    id: new CardId('ee6'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'Friseurin',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                        bildungKompetenzsteine: 1,
+                    ),
+                ),
+                "ee7" => new JobCardDefinition(
+                    id: new CardId('ee7'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'Logistikerin',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                        bildungKompetenzsteine: 1,
+                        freizeitKompetenzsteine: 1,
+                    ),
+                ),
+                "ee8" => new JobCardDefinition(
+                    id: new CardId('ee8'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'Försterin',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                        bildungKompetenzsteine: 1,
+                        freizeitKompetenzsteine: 1,
+                    ),
+                ),
+                "ee9" => new JobCardDefinition(
+                    id: new CardId('ee9'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'Teamleitung NGO',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                        bildungKompetenzsteine: 2,
+                        //TODO: 2 Sozialpunkte (einmalig)
+                    ),
+                ),
+                "ee10" => new JobCardDefinition(
+                    id: new CardId('ee10'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'Gärtnerin',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                        bildungKompetenzsteine: 1,
+                        freizeitKompetenzsteine: 1,
+                    ),
+                ),
+                "ee11" => new JobCardDefinition(
+                    id: new CardId('ee11'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'Umwelttechnologin',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                        bildungKompetenzsteine: 2,
+                    ),
+                ),
+                "ee12" => new JobCardDefinition(
+                    id: new CardId('ee12'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'freiwilliges Praktikum',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                        bildungKompetenzsteine: 1,
+                    ),
+                ),
+            ],
+            PileId::BILDUNG_PHASE_1->value => [
+                "buk0" => new KategorieCardDefinition(
+                    id: new CardId('buk0'),
+                    pileId: PileId::BILDUNG_PHASE_1,
+                    title: 'Sprachkurs',
+                    description: 'Mache einen Sprachkurs über drei Monate im Ausland.',
+                    resourceChanges: new ResourceChanges(
+                        guthabenChange: new MoneyAmount(-11000),
+                        bildungKompetenzsteinChange: +1,
+                    ),
+                ),
+            ],
         ]);
         return self::$instance;
     }
@@ -476,5 +643,4 @@ final class CardFinder
         }
         return $result;
     }
-
 }
