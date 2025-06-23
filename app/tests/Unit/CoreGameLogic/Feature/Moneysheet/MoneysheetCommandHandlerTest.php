@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Tests\CoreGameLogic\Feature\Moneysheet;
 
-
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
@@ -13,7 +12,6 @@ beforeEach(function () {
     /** @var TestCase $this */
     $this->setupBasicGame();
 });
-
 
 describe('handleCancelInsuranceForPlayer', function () {
     it('throws an exception when trying to cancel an insurance the player does not have', function () {

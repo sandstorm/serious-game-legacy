@@ -1,4 +1,5 @@
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
+@use('Domain\Definitions\Konjunkturphase\ValueObject\CategoryId')
 
 {{-- !!! Livewire components MUST have a single root element !!! --}}
 <div class="game">
@@ -50,7 +51,7 @@
                                          :game-events="$this->gameEvents"/>
                         @endif
 
-                        @if ($category->title->value === 'Erwerbseinkommen')
+                        @if ($category->title->value === CategoryId::JOBS->value)
                             <button
                                 type="button"
                                 @class([
@@ -75,6 +76,21 @@
                             @endif
                             @if ($jobOfferIsVisible)
                                 <x-job-offers-modal :player-id="$myself" :game-events="$this->gameEvents"/>
+                            @endif
+                            <button
+                                type="button"
+                                @class([
+                                "minijob__button",
+                                "button",
+                                "button--type-primary",
+                                "button--disabled" => !$this->canDoMinijob(),
+                                ])
+                                wire:click="showMinijob()">
+                                Minijob ausführen (-1 Zeitstein)
+                            </button>
+
+                            @if ($isMinijobVisible)
+                                <x-minijob-modal :player-id="$myself" :game-events="$this->gameEvents"/>
                             @endif
                         @endif
                     </div>

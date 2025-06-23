@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
@@ -12,44 +11,46 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
-final readonly class JobOffersWereRequested implements ZeitsteinAktion, GameEventInterface, ProvidesResourceChanges
+final readonly class MinijobWasDone implements GameEventInterface, ProvidesResourceChanges, ZeitsteinAktion
 {
-    /**
-     * @param CardId[] $jobs
-     */
     public function __construct(
-        public PlayerId $playerId,
-        public array    $jobs,
-    ) {
+        public PlayerId        $playerId,
+        public CardId          $minijobCardId,
+        public ResourceChanges $resourceChanges,
+    )
+    {
     }
 
     public static function fromArray(array $values): GameEventInterface
     {
         return new self(
-            playerId: PlayerId::fromString($values['player']),
-            jobs: array_map(fn ($job) => CardId::fromString($job), $values['jobs']),
+            playerId: PlayerId::fromString($values['playerId']),
+            minijobCardId: CardId::fromString($values['minijobCardId']),
+            resourceChanges: ResourceChanges::fromArray($values['resourceChanges']),
         );
     }
 
     public function jsonSerialize(): array
     {
         return [
-            'player' => $this->playerId,
-            'jobs' => $this->jobs,
+            'playerId' => $this->playerId,
+            'minijobCardId' => $this->minijobCardId,
+            'resourceChanges' => $this->resourceChanges,
         ];
     }
 
     public function getResourceChanges(PlayerId $playerId): ResourceChanges
     {
         if ($playerId->equals($this->playerId)) {
-            return new ResourceChanges(zeitsteineChange: -1);
+            return $this->resourceChanges->accumulate(new ResourceChanges(zeitsteineChange: -1));
         }
         return new ResourceChanges();
     }
 
+    // For now we decided to put this in the "Jobs" category
     public function getCategoryId(): CategoryId
     {
-        return CategoryId::JOBS;
+        return CategoryId::JOBS ;
     }
 
     public function getPlayerId(): PlayerId
@@ -57,8 +58,9 @@ final readonly class JobOffersWereRequested implements ZeitsteinAktion, GameEven
         return $this->playerId;
     }
 
+    // This is a ZeitsteinAktion that does not use a Zeitsteinslot -> return 0
     public function getNumberOfZeitsteinslotsUsed(): int
     {
-        return 1;
+        return 0;
     }
 }

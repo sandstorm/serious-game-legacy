@@ -15,6 +15,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Tests\TestCase;
@@ -25,10 +26,9 @@ describe('calculateInitialZeitsteineForPlayers', function () {
         $this->setupBasicGame($numberOfPlayers);
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actualNumbers = KonjunkturphaseState::calculateInitialZeitsteineForPlayers($gameEvents);
-        $expectedNumber = match ($numberOfPlayers) {
-            2 => 6,
-            3 => 5,
-            4 => 4,
+        $expectedNumber = match($numberOfPlayers) {
+            2 => Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS ,
+            3, 4 => Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_THREE_OR_FOUR_PLAYERS
         };
         expect(array_shift($actualNumbers)->zeitsteine)->toBe($expectedNumber)
             ->and(array_shift($actualNumbers)->zeitsteine)->toBe($expectedNumber);
@@ -56,7 +56,7 @@ describe('isConditionForEndOfKonjunkturphaseMet', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -5,
+                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS +1,
                 ),
             ),
         ];
@@ -80,7 +80,7 @@ describe('isConditionForEndOfKonjunkturphaseMet', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -5,
+                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS +1,
                 ),
             ),
             "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
@@ -89,7 +89,7 @@ describe('isConditionForEndOfKonjunkturphaseMet', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -5,
+                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS +1,
                 ),
             ),
         ];
@@ -133,7 +133,7 @@ describe('hasCurrentKonjunkturphaseEnded', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -5,
+                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
                 ),
             ),
             "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
@@ -142,7 +142,7 @@ describe('hasCurrentKonjunkturphaseEnded', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -5,
+                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
                 ),
             ),
         ];
@@ -189,7 +189,7 @@ describe('hasCurrentKonjunkturphaseEnded', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -5,
+                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
                 ),
             ),
             "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
@@ -198,7 +198,7 @@ describe('hasCurrentKonjunkturphaseEnded', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -5,
+                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
                 ),
             ),
         ];
@@ -280,7 +280,7 @@ describe('hasPlayerStartetCurrentKonjunkturphase', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -5,
+                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
                 ),
             ),
             "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
@@ -289,7 +289,7 @@ describe('hasPlayerStartetCurrentKonjunkturphase', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -5,
+                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
                 ),
             ),
         ];
@@ -358,7 +358,7 @@ describe('isPlayerReadyForKonjunkturphaseChange', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -5,
+                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
                 ),
             ),
             "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
@@ -367,7 +367,7 @@ describe('isPlayerReadyForKonjunkturphaseChange', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -5,
+                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
                 ),
             ),
         ];
@@ -413,7 +413,7 @@ describe('isPlayerReadyForKonjunkturphaseChange', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -5,
+                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
                 ),
             ),
             "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
@@ -422,7 +422,7 @@ describe('isPlayerReadyForKonjunkturphaseChange', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -5,
+                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
                 ),
             ),
         ];
@@ -445,7 +445,7 @@ describe('isPlayerReadyForKonjunkturphaseChange', function () {
         );
 
         $this->coreGameLogic->handle($this->gameId,
-            EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(5000)));
+            EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)));
 
         $this->coreGameLogic->handle(
             $this->gameId,

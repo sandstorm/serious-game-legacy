@@ -7,6 +7,8 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerColorWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
+use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
@@ -16,6 +18,7 @@ use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
+use RuntimeException;
 
 class PlayerState
 {
@@ -50,7 +53,7 @@ class PlayerState
     public static function getZeitsteineForPlayer(GameEvents $stream, PlayerId $playerId): int
     {
         if (!in_array(needle: $playerId, haystack: $stream->findLast(PreGameStarted::class)->playerIds, strict: true)) {
-            throw new \RuntimeException('Player ' . $playerId . ' does not exist', 1748432811);
+            throw new RuntimeException('Player ' . $playerId . ' does not exist', 1748432811);
         }
         $accumulatedResourceChangesForPlayer = $stream->findAllAfterLastOfType(KonjunkturphaseWasChanged::class)->findAllOfType(ProvidesResourceChanges::class)
             ->reduce(fn(ResourceChanges $accumulator, ProvidesResourceChanges $event) => $accumulator->accumulate($event->getResourceChanges($playerId)), new ResourceChanges());
@@ -155,6 +158,22 @@ class PlayerState
         /** @var JobCardDefinition $jobDefinition */
         $jobDefinition = CardFinder::getInstance()->getCardById($jobOfferWasAcceptedEvent->cardId);
         return $jobDefinition;
+    }
+
+    public static function getLastMinijobForPlayer(GameEvents $stream, PlayerId $playerId): ?MinijobCardDefinition
+    {
+        /**@var MinijobWasDone|null $minijobWasDoneEvent */
+        $minijobWasDoneEvent = $stream->findLastOrNullWhere(fn($e) => $e instanceof MinijobWasDone && $e->playerId->equals($playerId));
+        if ($minijobWasDoneEvent === null) {
+            return null;
+        }
+
+        // @phpstan-ignore property.notFound (At this point we know this is an instance of MinijobWasDone and not null)
+        $cardId = $minijobWasDoneEvent->minijobCardId;
+
+        /** @var MinijobCardDefinition $minijobDefinition */
+        $minijobDefinition = CardFinder::getInstance()->getCardById($cardId);
+        return $minijobDefinition;
     }
 
     /**
