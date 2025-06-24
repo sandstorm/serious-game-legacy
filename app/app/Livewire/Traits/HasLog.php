@@ -22,6 +22,8 @@ trait HasLog
     }
 
     /**
+     * TODO we will probably move this to the events and let them implement an interface (e.g. `logable`) that provides
+     * a uniform structure (e.g. playerId (if any), eventName, changes/effects/consequences, ... )
      * @return array<array<mixed>>
      */
     private function getPrettyEvents(): array

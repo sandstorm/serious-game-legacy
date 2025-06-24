@@ -2,6 +2,7 @@
 
 namespace Tests\CoreGameLogic\Feature\Konjunkturphase\State;
 
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
@@ -27,7 +28,7 @@ describe('calculateInitialZeitsteineForPlayers', function () {
     })->with([2,3,4]);
 });
 
-describe('isEndOfKonjunkturphase', function () {
+describe('isConditionForEndOfKonjunkturphaseMet', function () {
     beforeEach(function () {
         /** @var TestCase $this */
         $this->setupBasicGame();
@@ -36,7 +37,7 @@ describe('isEndOfKonjunkturphase', function () {
     it('returns false if all players have Zeitsteine', function () {
         /** @var TestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(KonjunkturphaseState::isEndOfKonjunkturphase($gameEvents))->toBeFalse();
+        expect(KonjunkturphaseState::isConditionForEndOfKonjunkturphaseMet($gameEvents))->toBeFalse();
     });
 
     it('returns false if at least one player has Zeitsteine', function () {
@@ -60,7 +61,7 @@ describe('isEndOfKonjunkturphase', function () {
         );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(KonjunkturphaseState::isEndOfKonjunkturphase($gameEvents))->toBeFalse();
+        expect(KonjunkturphaseState::isConditionForEndOfKonjunkturphaseMet($gameEvents))->toBeFalse();
     });
 
     it('returns true if at no player has Zeitsteine', function () {
@@ -101,6 +102,119 @@ describe('isEndOfKonjunkturphase', function () {
         );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(KonjunkturphaseState::isEndOfKonjunkturphase($gameEvents))->toBeTrue();
+        expect(KonjunkturphaseState::isConditionForEndOfKonjunkturphaseMet($gameEvents))->toBeTrue();
+    });
+});
+
+describe('hasCurrentKonjunkturphaseEnded', function () {
+    beforeEach(function () {
+        /** @var TestCase $this */
+        $this->setupBasicGame();
+    });
+
+    it('returns false if the current Konjunkturphase has not ended', function () {
+        /** @var TestCase $this */
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(KonjunkturphaseState::hasCurrentKonjunkturphaseEnded($gameEvents))
+            ->toBeFalse('Konjunkturphase should not have ended at the start of the game');
+
+        $cardsForTesting = [
+            "cardToRemoveZeitsteine" => new KategorieCardDefinition(
+                id: new CardId('cardToRemoveZeitsteine'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -5,
+                ),
+            ),
+            "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
+                id: new CardId('cardToRemoveZeitsteine2'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -5,
+                ),
+            ),
+        ];
+        $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[0])
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE)
+        );
+
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(KonjunkturphaseState::hasCurrentKonjunkturphaseEnded($gameEvents))
+            ->toBeFalse('Konjunkturphase should not have ended before the current player ended their turn');
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[1])
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ChangeKonjunkturphase::create(),
+        );
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(KonjunkturphaseState::hasCurrentKonjunkturphaseEnded($gameEvents))
+            ->toBeFalse('Konjunkturphase should not have ended at the start of a new Konjunkturphase');
+    });
+
+    it('returns true if the current Konjunkturphase has ended', function () {
+        /** @var TestCase $this */
+
+        $cardsForTesting = [
+            "cardToRemoveZeitsteine" => new KategorieCardDefinition(
+                id: new CardId('cardToRemoveZeitsteine'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -5,
+                ),
+            ),
+            "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
+                id: new CardId('cardToRemoveZeitsteine2'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -5,
+                ),
+            ),
+        ];
+        $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[0])
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE)
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[1])
+        );
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(KonjunkturphaseState::hasCurrentKonjunkturphaseEnded($gameEvents))
+            ->toBeTrue('Konjunkturphase should have ended after the last player ended their turn');
     });
 });

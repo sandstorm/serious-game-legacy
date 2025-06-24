@@ -132,25 +132,47 @@ class MoneySheetState
         return $lastInputEvent === null ? new MoneyAmount(0) : $lastInputEvent->getUpdatedValue();
     }
 
+    /**
+     * Returns true, if the player needs to change the input for Steuern und Abgaben.
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return bool
+     */
     public static function doesSteuernUndAbgabenRequirePlayerAction(GameEvents $gameEvents, PlayerId $playerId): bool
     {
         /** @var UpdatesInputForSteuernUndAbgaben|null $lastInputEvent @phpstan-ignore varTag.type */
         $lastInputEvent = $gameEvents->findLastOrNullWhere(
             fn($event) => $event instanceof UpdatesInputForSteuernUndAbgaben && $event->getPlayerId()->equals($playerId));
         if ($lastInputEvent === null) {
+            // There has not been any player input for this field
+            // -> the current value is the default value
+            // -> check if the default value is also the correct value
+            // Return true, if the default value does NOT match the expected value
             return !self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId)->equals(Configuration::STEUERN_UND_ABGABEN_DEFAULT_VALUE);
         }
+        // Return true, if the last input does NOT match the expected value
         return !self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId)->equals($lastInputEvent->getUpdatedValue());
     }
 
+    /**
+     * Returns true, if the player needs to change the input for Lebenshaltungskosten.
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return bool
+     */
     public static function doesLebenshaltungskostenRequirePlayerAction(GameEvents $gameEvents, PlayerId $playerId): bool
     {
         /** @var UpdatesInputForLebenshaltungskosten|null $lastInputEvent @phpstan-ignore varTag.type */
         $lastInputEvent = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof UpdatesInputForLebenshaltungskosten && $event->getPlayerId()->equals($playerId));
+           fn($event) => $event instanceof UpdatesInputForLebenshaltungskosten && $event->getPlayerId()->equals($playerId));
         if ($lastInputEvent === null) {
+            // There has not been any player input for this field
+            // -> the current value is the default value
+            // -> check if the default value is also the correct value
+            // Return true, if the default value does NOT match the expected value
             return !self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId)->equals(Configuration::LEBENSHALTUNGSKOSTEN_DEFAULT_VALUE);
         }
+        // Return true, if the last input does NOT match the expected value
         return !self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId)->equals($lastInputEvent->getUpdatedValue());
     }
 }

@@ -2,7 +2,7 @@
 <div class="konjunkturphase-end">
     <div class="konjunkturphase-end__info">
         Die Konjunkturphase "{{KonjunkturphaseState::getCurrentKonjunkturphase($this->gameEvents())->type->value}}" ist
-        zu ende.
+        zu Ende.
     </div>
     <button wire:click="showMoneySheet()"
             type="button"
@@ -21,7 +21,7 @@
     @endif
 
 
-    <div class="dev">
+    <div class="dev-bar">
         <button type="button" class="button button--type-primary" wire:click="showLog()">Log</button>
         @if ($isLogVisible)
             <x-gameboard.log />

@@ -114,7 +114,7 @@
     </aside>
     <x-notification.notification/>
 
-    <div class="dev">
+    <div class="dev-bar">
         <button type="button" class="button button--type-primary" wire:click="showLog()">Log</button>
         @if ($isLogVisible)
             <x-gameboard.log />
