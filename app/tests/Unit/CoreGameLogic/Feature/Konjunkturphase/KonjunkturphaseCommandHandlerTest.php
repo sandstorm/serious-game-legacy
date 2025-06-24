@@ -11,13 +11,16 @@ use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
+use Tests\TestCase;
 
 beforeEach(function () {
+    /** @var TestCase $this */
     $this->setupBasicGame();
 });
 
 describe('handleChangeKonjunkturphase', function () {
     it('redistributes Zeitsteine', function () {
+        /** @var TestCase $this */
         // Make sure the initial number of Zeitsteine is what we expect
         $expectedNumberOfZeitsteine = 6;
         /** @var GameEvents $stream */
@@ -51,6 +54,7 @@ describe('handleChangeKonjunkturphase', function () {
     });
 
     it('happens automatically when no player has any Zeitsteine remaining', function () {
+        /** @var TestCase $this */
         // TODO implement
     })->todo('not yet implemented');
 });
