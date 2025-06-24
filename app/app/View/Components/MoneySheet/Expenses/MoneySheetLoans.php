@@ -9,7 +9,7 @@ use Domain\CoreGameLogic\PlayerId;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
-class MoneySheetCredits extends Component
+class MoneySheetLoans extends Component
 {
     /**
      * Create the component instance.
@@ -24,7 +24,7 @@ class MoneySheetCredits extends Component
      */
     public function render(): View
     {
-        return view('components.gameboard.moneySheet.expenses.money-sheet-credits', [
+        return view('components.gameboard.moneySheet.expenses.money-sheet-loans', [
         ]);
     }
 

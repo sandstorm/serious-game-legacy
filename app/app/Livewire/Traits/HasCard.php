@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Traits;
 
+use App\Livewire\ValueObject\NotificationTypeEnum;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ActivateCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SkipCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
@@ -59,7 +60,7 @@ trait HasCard
         if (!$validationResult->canExecute) {
             $this->showNotification(
                 $validationResult->reason,
-                NotificationType::ERROR
+                NotificationTypeEnum::ERROR
             );
             return;
         }
@@ -81,7 +82,7 @@ trait HasCard
         if (!$validationResult->canExecute) {
             $this->showNotification(
                 $validationResult->reason,
-                NotificationType::ERROR
+                NotificationTypeEnum::ERROR
             );
             return;
         }
