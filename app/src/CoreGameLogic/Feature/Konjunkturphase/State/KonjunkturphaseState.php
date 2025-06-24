@@ -8,8 +8,10 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\ZeitsteineForPlayer;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\PlayerHasStartedKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 
@@ -22,7 +24,7 @@ class KonjunkturphaseState
     {
         $playerIds = $gameEvents->findFirst(GameWasStarted::class)->playerOrdering;
         $numberOfPlayers = count($playerIds);
-        $numberOfZeitsteine = match($numberOfPlayers) {
+        $numberOfZeitsteine = match ($numberOfPlayers) {
             2 => 6,
             3 => 5,
             4 => 4,
@@ -50,7 +52,8 @@ class KonjunkturphaseState
         $playerIds = $gameEvents->findFirst(GameWasStarted::class)->playerOrdering;
         $totalNumberOfZeitsteine = 0;
         foreach ($playerIds as $playerId) {
-            $totalNumberOfZeitsteine = $totalNumberOfZeitsteine + PlayerState::getZeitsteineForPlayer($gameEvents, $playerId);
+            $totalNumberOfZeitsteine = $totalNumberOfZeitsteine + PlayerState::getZeitsteineForPlayer($gameEvents,
+                    $playerId);
         }
         // TODO we may need to safeguard against negative values at some point (probably not here though)
         assert($totalNumberOfZeitsteine >= 0);
@@ -85,5 +88,18 @@ class KonjunkturphaseState
     {
         $lastKonjunkturphaseWasChangedEvent = $gameEvents->findLast(KonjunkturphaseWasChanged::class);
         return $lastKonjunkturphaseWasChangedEvent->year;
+    }
+
+    public static function hasPlayerStartedCurrentKonjunkturphase(GameEvents $gameEvents, PlayerId $playerId): bool
+    {
+        /** @var PlayerHasStartedKonjunkturphase $latestPlayerHasStartedKonjunkturphaseEvent */
+        $latestPlayerHasStartedKonjunkturphaseEvent = $gameEvents->findLastOrNullWhere(
+            fn($event) => $event instanceof PlayerHasStartedKonjunkturphase && $event->playerId->equals($playerId));
+
+        if ($latestPlayerHasStartedKonjunkturphaseEvent === null) {
+            return false;
+        }
+        $latestKonjunkturphaseWasChangedEvent = $gameEvents->findLast(KonjunkturphaseWasChanged::class);
+        return $latestPlayerHasStartedKonjunkturphaseEvent->year->equals($latestKonjunkturphaseWasChangedEvent->year);
     }
 }

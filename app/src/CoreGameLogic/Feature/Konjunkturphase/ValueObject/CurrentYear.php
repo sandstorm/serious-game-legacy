@@ -19,4 +19,9 @@ readonly class CurrentYear implements \JsonSerializable
     {
         return $this->value;
     }
+
+    public function equals(CurrentYear $other): bool
+    {
+        return $this->value === $other->value;
+    }
 }

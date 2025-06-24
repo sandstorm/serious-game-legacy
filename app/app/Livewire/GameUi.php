@@ -75,6 +75,9 @@ class GameUi extends Component
         if (KonjunkturphaseState::hasCurrentKonjunkturphaseEnded($this->gameEvents)) {
             return $this->renderKonjunkturphaseEndScreen();
         }
+        if (!KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($this->gameEvents, $this->myself)) {
+            return $this->renderKonjunkturphaseStartScreen();
+        }
         return $this->renderGamePhase();
     }
 
