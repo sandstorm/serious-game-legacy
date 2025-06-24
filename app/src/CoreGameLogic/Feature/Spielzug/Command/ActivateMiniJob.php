@@ -8,18 +8,18 @@ use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\CardId;
 
-final readonly class AcceptJobOffer implements CommandInterface
+final readonly class ActivateMiniJob implements CommandInterface
 {
     public static function create(
         PlayerId $playerId,
-        CardId   $cardId,
-    ): AcceptJobOffer {
+        CardId $cardId,
+    ): ActivateMiniJob {
         return new self($playerId, $cardId);
     }
 
     private function __construct(
-        public PlayerId $playerId,
-        public CardId   $jobId
+        public PlayerId $player,
+        public CardId $jobId
     ) {
     }
 
