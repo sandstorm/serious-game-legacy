@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Traits;
 
+use App\Livewire\ValueObject\NotificationTypeEnum;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\AcceptJobOffersAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\RequestJobOffersAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
@@ -27,7 +28,7 @@ trait HasJobOffer
         if (!$validationResult->canExecute) {
             $this->showNotification(
                 $validationResult->reason,
-                NotificationType::ERROR
+                NotificationTypeEnum::ERROR
             );
             return;
         }
@@ -59,7 +60,7 @@ trait HasJobOffer
         if (!$validationResult->canExecute) {
             $this->showNotification(
                 $validationResult->reason,
-                NotificationType::ERROR
+                NotificationTypeEnum::ERROR
             );
             return;
         }

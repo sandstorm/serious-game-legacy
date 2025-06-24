@@ -4,20 +4,15 @@ declare(strict_types=1);
 
 namespace App\Livewire\Traits;
 
-enum NotificationType: string
-{
-    case INFO = 'info';
-    case WARNING = 'warning';
-    case ERROR = 'error';
-}
+use App\Livewire\ValueObject\NotificationTypeEnum;
 
 trait HasNotification
 {
     public bool $notificationIsVisible = false;
     public string $notificationMessage = '';
-    public NotificationType $notificationType = NotificationType::INFO;
+    public NotificationTypeEnum $notificationType = NotificationTypeEnum::INFO;
 
-    public function showNotification(?string $message, NotificationType $notificationType): void
+    public function showNotification(?string $message, NotificationTypeEnum $notificationType): void
     {
         if ($message === null || $message === '') {
             return;

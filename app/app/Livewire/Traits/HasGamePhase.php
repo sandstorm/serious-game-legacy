@@ -6,6 +6,7 @@ namespace App\Livewire\Traits;
 
 use App\Livewire\Dto\GameboardInformationForCategory;
 use App\Livewire\Dto\ZeitsteineForPlayer;
+use App\Livewire\ValueObject\NotificationTypeEnum;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EndSpielzugAktion;
@@ -136,7 +137,7 @@ trait HasGamePhase
         if (!$validationResult->canExecute) {
             $this->showNotification(
                 $validationResult->reason,
-                NotificationType::ERROR
+                NotificationTypeEnum::ERROR
             );
             return;
         }

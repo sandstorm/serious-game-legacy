@@ -64,7 +64,7 @@
 
                             @if ($jobDefinition !== null)
                                 <hr/>
-                                <button class="button button--type-outline-primary" wire:click="showSalaryTab()">
+                                <button class="button button--type-outline-primary" wire:click="showIncomeTab('salary')">
                                     <ul class="zeitsteine">
                                         <li>-{{ $jobDefinition->requirements->zeitsteine }}</li>
                                         <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($this->gameEvents, $myself)])></li>
