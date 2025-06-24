@@ -13,7 +13,7 @@ class KompetenzbereichDefinition implements \JsonSerializable
 {
     public function __construct(
         public CategoryId $name,
-        public int          $kompetenzsteine = 0,
+        public int        $zeitsteinslots = 0,
     )
     {
     }
@@ -25,13 +25,13 @@ class KompetenzbereichDefinition implements \JsonSerializable
     {
         return new self(
             name: CategoryId::from($in['name']),
-            kompetenzsteine: $in['kompetenzsteine'],
+            zeitsteinslots: $in['zeitsteinslots'],
         );
     }
 
     public function __toString(): string
     {
-        return '[Kompetenzbereich: '.$this->name->value.']';
+        return '[Kompetenzbereich: ' . $this->name->value . ']';
     }
 
     /**
@@ -41,7 +41,7 @@ class KompetenzbereichDefinition implements \JsonSerializable
     {
         return [
             'name' => $this->name->value,
-            'kompetenzsteine' => $this->kompetenzsteine,
+            'zeitsteinslots' => $this->zeitsteinslots,
         ];
     }
 }

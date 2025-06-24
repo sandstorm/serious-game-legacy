@@ -15,7 +15,7 @@
     <ul>
         @foreach($konjunkturphase->kompetenzbereiche as $kompetenzbereich)
             <li>
-                <strong>{{ $kompetenzbereich->name }}: </strong> {{ $kompetenzbereich->kompetenzsteine }}
+                <strong>{{ $kompetenzbereich->name }}: </strong> {{ $kompetenzbereich->zeitsteinslots }}
             </li>
         @endforeach
     </ul>
@@ -31,5 +31,6 @@
 @endsection
 
 @section('footer')
-    <button type="button" class="button button--type-primary" wire:click="closeKonjunkturphaseDetails()">Schließen</button>
+    <button type="button" class="button button--type-primary" wire:click="closeKonjunkturphaseDetails()">Schließen
+    </button>
 @endsection

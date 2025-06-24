@@ -46,7 +46,7 @@ class GamePhaseState
     ): bool {
         $konjunkturPhaseWasChanged = $gameEvents->findLast(KonjunkturphaseWasChanged::class);
         $freeSlots = collect($konjunkturPhaseWasChanged->kompetenzbereiche)
-            ->firstWhere('name', $category)->kompetenzsteine ?? 0;
+            ->firstWhere('name', $category)->zeitsteinslots ?? 0;
 
         // now get all players and their placed Zeitsteine in this category
         $players = PreGameState::playersWithNameAndLebensziel($gameEvents);

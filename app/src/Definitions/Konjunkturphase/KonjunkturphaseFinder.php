@@ -33,19 +33,19 @@ Der steigende Leitzins erhöht die Deflation, die Kaufkraft der Barreserven erh�
             kompetenzbereiche: [
                 new KompetenzbereichDefinition(
                     name: CategoryId::BILDUNG_UND_KARRIERE,
-                    kompetenzsteine: 5,
+                    zeitsteinslots: 5,
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::SOZIALES_UND_FREIZEIT,
-                    kompetenzsteine: 4,
+                    zeitsteinslots: 4,
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::INVESTITIONEN,
-                    kompetenzsteine: 4,
+                    zeitsteinslots: 4,
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::JOBS,
-                    kompetenzsteine: 4,
+                    zeitsteinslots: 4,
                 ),
             ],
             auswirkungen: [
@@ -83,19 +83,19 @@ Die Regierung fördert eine neue Bilungsoffensive. Jede erhält - wenn gewünsch
             kompetenzbereiche: [
                 new KompetenzbereichDefinition(
                     name: CategoryId::BILDUNG_UND_KARRIERE,
-                    kompetenzsteine: 4,
+                    zeitsteinslots: 4,
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::SOZIALES_UND_FREIZEIT,
-                    kompetenzsteine: 5,
+                    zeitsteinslots: 5,
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::INVESTITIONEN,
-                    kompetenzsteine: 3,
+                    zeitsteinslots: 3,
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::JOBS,
-                    kompetenzsteine: 3,
+                    zeitsteinslots: 3,
                 ),
             ],
             auswirkungen: [
@@ -112,7 +112,7 @@ Die Regierung fördert eine neue Bilungsoffensive. Jede erhält - wenn gewünsch
 
         $year3 = new KonjunkturphaseDefinition(
             id: KonjunkturphasenId::create(3),
-            type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
+            type: KonjunkturphaseTypeEnum::BOOM,
             description: 'Viele Staaten leiden immer noch unter den Folgen der Finanzkrise. Die Notenbank ändert den Leitszins. Aus diesem Grund kann jede Person zu folgendem Zinnsatz Geld leihen: 0 %
 Das geliehene Geld muss innerhalb 20 Raten zurückgezahlt werden, d.h. es werden pro Jahr 5 % des Anfangsbetrags gefordert.
 Alle erhalten ihr jährliches Einkommen und begleichen ihre Verbindlichkeiten.',
@@ -128,19 +128,64 @@ dazu aufgerufen, bei den Räumungsarbeiten zu helfen (Kosten = 1 Zeitstein). All
             kompetenzbereiche: [
                 new KompetenzbereichDefinition(
                     name: CategoryId::BILDUNG_UND_KARRIERE,
-                    kompetenzsteine: 3,
+                    zeitsteinslots: 3,
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::SOZIALES_UND_FREIZEIT,
-                    kompetenzsteine: 6,
+                    zeitsteinslots: 6,
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::INVESTITIONEN,
-                    kompetenzsteine: 3,
+                    zeitsteinslots: 3,
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::JOBS,
-                    kompetenzsteine: 3,
+                    zeitsteinslots: 3,
+                ),
+            ],
+            auswirkungen: [
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::ZEITSTEINE,
+                    modifier: '-1 Zeitstein',
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LEBENSERHALTUNGSKOSTEN,
+                    modifier: '-2.000 € zusätzlich',
+                )
+            ]
+        );
+
+        $year4 = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(3),
+            type: KonjunkturphaseTypeEnum::DEPRESSION,
+            description: 'Viele Staaten leiden immer noch unter den Folgen der Finanzkrise. Die Notenbank ändert den Leitszins. Aus diesem Grund kann jede Person zu folgendem Zinnsatz Geld leihen: 0 %
+Das geliehene Geld muss innerhalb 20 Raten zurückgezahlt werden, d.h. es werden pro Jahr 5 % des Anfangsbetrags gefordert.
+Alle erhalten ihr jährliches Einkommen und begleichen ihre Verbindlichkeiten.',
+            additionalEvents: 'Durch den niedrigen Leitzins erhöht sich die Geldmenge
+und damit auch die Lebenshaltungskosten, was zu einer
+Steigerung der Inflation führt.
+Jede zahlt 2.000 € zusätzlich.
+
+Eine Naturkatastrophe bricht über das Land hinein: Sturm
+Olga verwüstet ganze Städte. Die Bewohnerinnen werden
+dazu aufgerufen, bei den Räumungsarbeiten zu helfen (Kosten = 1 Zeitstein). Alle haben in dieser Runde nur 2 Zeitsteine zur Verfügung. ',
+            leitzins: 0,
+            kompetenzbereiche: [
+                new KompetenzbereichDefinition(
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
+                    zeitsteinslots: 3,
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
+                    zeitsteinslots: 6,
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::INVESTITIONEN,
+                    zeitsteinslots: 3,
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::JOBS,
+                    zeitsteinslots: 3,
                 ),
             ],
             auswirkungen: [
@@ -158,21 +203,35 @@ dazu aufgerufen, bei den Räumungsarbeiten zu helfen (Kosten = 1 Zeitstein). All
         return [
             $year1,
             $year2,
-            $year3
+            $year3,
+            $year4,
         ];
     }
 
     /**
      * returns a random Konjunkturphase that is not used in the given array of ids aka was not used in the past
      *
+     * @param KonjunkturphaseTypeEnum|null $lastType
      * @param int[] $idsOfPastKonjunkturphasen
      * @return KonjunkturphaseDefinition
      */
-    public static function getUnusedRandomKonjunkturphase(array $idsOfPastKonjunkturphasen): KonjunkturphaseDefinition
+    public static function getUnusedRandomKonjunkturphase(?KonjunkturphaseTypeEnum $lastType, array $idsOfPastKonjunkturphasen): KonjunkturphaseDefinition
     {
-        $konjunkturphasen = self::getAllKonjunkturphasen();
+        $possibleNextPhaseTypes = self::getListOfPossibleNextPhaseTypes($lastType);
+
+        $konjunkturphasen = self::getAllKonjunkturphasenByTypes($possibleNextPhaseTypes);
         $unusedKonjunkturphasen = array_filter($konjunkturphasen, static fn(KonjunkturphaseDefinition $konjunkturphase) => !in_array($konjunkturphase->id->value, $idsOfPastKonjunkturphasen, true));
         return $unusedKonjunkturphasen[array_rand($unusedKonjunkturphasen)];
+    }
+
+    /**
+     * @param KonjunkturphaseTypeEnum[] $types
+     * @return KonjunkturphaseDefinition[]
+     */
+    public static function getAllKonjunkturphasenByTypes(array $types): array
+    {
+        $allKonjunkturphasen = self::getAllKonjunkturphasen();
+        return array_filter($allKonjunkturphasen, static fn(KonjunkturphaseDefinition $konjunkturphase) => in_array($konjunkturphase->type, $types, true));
     }
 
     /**
@@ -188,6 +247,42 @@ dazu aufgerufen, bei den Räumungsarbeiten zu helfen (Kosten = 1 Zeitstein). All
             }
         }
         throw new \InvalidArgumentException('Konjunkturphase not found');
+    }
+
+    /**
+     * Public for testing purposes only.
+     * Returns a list of possible next Konjunkturphasen types based on the current type.
+     *
+     * @param KonjunkturphaseTypeEnum|null $konjunkturphaseType
+     * @return KonjunkturphaseTypeEnum[]
+     * @internal
+     */
+    public static function getListOfPossibleNextPhaseTypes(?KonjunkturphaseTypeEnum $konjunkturphaseType = null): array
+    {
+        return match ($konjunkturphaseType) {
+            KonjunkturphaseTypeEnum::AUFSCHWUNG => [
+                KonjunkturphaseTypeEnum::AUFSCHWUNG,
+                KonjunkturphaseTypeEnum::BOOM,
+                KonjunkturphaseTypeEnum::REZESSION,
+            ],
+            KonjunkturphaseTypeEnum::BOOM => [
+                KonjunkturphaseTypeEnum::BOOM,
+                KonjunkturphaseTypeEnum::DEPRESSION,
+                KonjunkturphaseTypeEnum::REZESSION,
+            ],
+            KonjunkturphaseTypeEnum::REZESSION => [
+                KonjunkturphaseTypeEnum::REZESSION,
+                KonjunkturphaseTypeEnum::AUFSCHWUNG,
+                KonjunkturphaseTypeEnum::DEPRESSION,
+            ],
+            KonjunkturphaseTypeEnum::DEPRESSION => [
+                KonjunkturphaseTypeEnum::DEPRESSION,
+                KonjunkturphaseTypeEnum::AUFSCHWUNG,
+            ],
+            default => [
+                KonjunkturphaseTypeEnum::AUFSCHWUNG,
+            ]
+        };
     }
 
 }

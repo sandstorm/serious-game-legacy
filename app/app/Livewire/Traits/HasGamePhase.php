@@ -157,7 +157,7 @@ trait HasGamePhase
         );
 
         return collect($konjunkturphasenDefinition->kompetenzbereiche)
-            ->firstWhere('name', $category)->kompetenzsteine ?? 0;
+            ->firstWhere('name', $category)->zeitsteinslots ?? 0;
     }
 
 }
