@@ -502,7 +502,7 @@ describe('handleRequestJobOffers', function () {
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         /** @var JobOffersWereRequested $actualEvent */
         $actualEvent = $stream->findLast(JobOffersWereRequested::class);
-        expect($actualEvent->player)->toEqual($this->players[0])
+        expect($actualEvent->playerId)->toEqual($this->players[0])
             ->and($actualEvent->jobs)->toEqual([new CardId('j0')]);
 
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
@@ -567,7 +567,7 @@ describe('handleRequestJobOffers', function () {
 
         /** @var JobOffersWereRequested $actualEvent */
         $actualEvent = $stream->findLast(JobOffersWereRequested::class);
-        expect($actualEvent->player)->toEqual($this->players[0])
+        expect($actualEvent->playerId)->toEqual($this->players[0])
             ->and(count($actualEvent->jobs))->toBe(3)
             ->and($actualEvent->jobs)->toContainEqual(new CardId('j0'))
             ->and($actualEvent->jobs)->toContainEqual(new CardId('j1'))
@@ -607,7 +607,7 @@ describe('handleRequestJobOffers', function () {
 
         /** @var JobOffersWereRequested $actualEvent */
         $actualEvent = $stream->findLast(JobOffersWereRequested::class);
-        expect($actualEvent->player)->toEqual($this->players[0])
+        expect($actualEvent->playerId)->toEqual($this->players[0])
             ->and(count($actualEvent->jobs))->toBe(2)
             ->and($actualEvent->jobs)->toContainEqual(new CardId('j0'))
             ->and($actualEvent->jobs)->toContainEqual(new CardId('j3'));
@@ -663,7 +663,7 @@ describe('handleRequestJobOffers', function () {
 
         /** @var JobOffersWereRequested $actualEvent */
         $actualEvent = $stream->findLast(JobOffersWereRequested::class);
-        expect($actualEvent->player)->toEqual($this->players[0])
+        expect($actualEvent->playerId)->toEqual($this->players[0])
             ->and(count($actualEvent->jobs))->toBe(3);
     });
 

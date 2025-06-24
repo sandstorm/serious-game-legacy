@@ -12,7 +12,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Modifier\ModifierCollection;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\ModifierId;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\Gehalt;
 
 final readonly class JobOfferWasAccepted implements GameEventInterface, ProvidesModifiers
 {
