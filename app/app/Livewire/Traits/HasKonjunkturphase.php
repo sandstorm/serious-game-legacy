@@ -21,7 +21,7 @@ trait HasKonjunkturphase
     }
 
 
-    public function renderKonjunkturphaseEndPhase(): View
+    public function renderKonjunkturphaseEndScreen(): View
     {
         return view('livewire.screens.konjunkturphaseEnding', [
         ]);

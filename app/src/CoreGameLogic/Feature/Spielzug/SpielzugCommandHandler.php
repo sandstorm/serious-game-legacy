@@ -50,9 +50,9 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
     {
         $endSpielzugAktion = new Aktion\EndSpielzugAktion();
         $eventsToPersist = $endSpielzugAktion->execute($command->player, $gameEvents);
-        if (KonjunkturphaseState::isEndOfKonjunkturphase($gameEvents)) {
+        if (KonjunkturphaseState::isConditionForEndOfKonjunkturphaseMet($gameEvents)) {
             return $eventsToPersist->withAppendedEvents(
-                new KonjunkturphaseHasEnded(),
+                new KonjunkturphaseHasEnded(KonjunkturphaseState::getCurrentYear($gameEvents)),
             );
         }
         return $eventsToPersist;

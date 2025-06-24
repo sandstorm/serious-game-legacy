@@ -8,6 +8,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\ZeitsteineForPlayer;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
@@ -39,11 +40,12 @@ class KonjunkturphaseState
 
     /**
      * Returns true if the condition for the end of the current Konjunkturphase is met.
-     * Currently this means no player has any Zeitsteine left.
+     * Currently this means no player has any Zeitsteine left. This is used to decide if
+     * we end the current Konjunkturphase.
      * @param GameEvents $gameEvents
      * @return bool
      */
-    public static function isEndOfKonjunkturphase(GameEvents $gameEvents): bool
+    public static function isConditionForEndOfKonjunkturphaseMet(GameEvents $gameEvents): bool
     {
         $playerIds = $gameEvents->findFirst(GameWasStarted::class)->playerOrdering;
         $totalNumberOfZeitsteine = 0;
@@ -55,15 +57,33 @@ class KonjunkturphaseState
         return $totalNumberOfZeitsteine === 0;
     }
 
-    public static function isKonjunkturphaseEnding(GameEvents $gameEvents): bool
+    /**
+     * Returns true, if a KonjunkturphaseHasEnded Event exists for the current Konjunkturphase.
+     * @param GameEvents $gameEvents
+     * @return bool
+     */
+    public static function hasCurrentKonjunkturphaseEnded(GameEvents $gameEvents): bool
     {
-        $konjunkturphaseHasEndedEvents = $gameEvents->findAllOfType(KonjunkturphaseHasEnded::class);
-        $konjunkturphaseWasChangedEvents = $gameEvents->findAllOfType(KonjunkturphaseWasChanged::class);
-        return count($konjunkturphaseWasChangedEvents) === count($konjunkturphaseHasEndedEvents);
+        /** @var KonjunkturphaseHasEnded $lastKonjunkturphaseHasEndedEvent */
+        $lastKonjunkturphaseHasEndedEvent = $gameEvents->findLastOrNull(KonjunkturphaseHasEnded::class);
+        if ($lastKonjunkturphaseHasEndedEvent === null) {
+            return false;
+        }
+
+        /** @var KonjunkturphaseWasChanged $lastKonjunkturphaseWasChangedEvent */
+        $lastKonjunkturphaseWasChangedEvent = $gameEvents->findLast(KonjunkturphaseWasChanged::class);
+
+        return $lastKonjunkturphaseWasChangedEvent->year->value === $lastKonjunkturphaseHasEndedEvent->year->value;
     }
 
     public static function getCurrentKonjunkturphase(GameEvents $gameEvents): KonjunkturphaseDefinition
     {
         return KonjunkturphaseFinder::findKonjunkturphaseById($gameEvents->findLast(KonjunkturphaseWasChanged::class)->id);
+    }
+
+    public static function getCurrentYear(GameEvents $gameEvents): CurrentYear
+    {
+        $lastKonjunkturphaseWasChangedEvent = $gameEvents->findLast(KonjunkturphaseWasChanged::class);
+        return $lastKonjunkturphaseWasChangedEvent->year;
     }
 }
