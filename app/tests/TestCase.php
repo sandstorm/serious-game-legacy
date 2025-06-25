@@ -68,7 +68,7 @@ abstract class TestCase extends BaseTestCase
         return $playerIds;
     }
 
-    public function setupBasicGame(int $numberOfPlayers = 2): void
+    public function setupBasicGameWithoutKonjunkturphase(int $numberOfPlayers = 2): void
     {
         $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
         $this->gameId = GameId::fromString('game1');
@@ -105,6 +105,11 @@ abstract class TestCase extends BaseTestCase
         }
 
         $this->coreGameLogic->handle($this->gameId, StartGame::create());
+    }
+
+    public function setupBasicGame(int $numberOfPlayers = 2): void
+    {
+        $this->setupBasicGameWithoutKonjunkturphase($numberOfPlayers);
 
         $this->konjunkturphaseDefinition = new KonjunkturphaseDefinition(
             id: KonjunkturphasenId::create(1),
@@ -121,19 +126,19 @@ Der steigende Leitzins erh√∂ht die Deflation, die Kaufkraft der Barreserven erh√
             kompetenzbereiche: [
                 new KompetenzbereichDefinition(
                     name: CategoryId::BILDUNG_UND_KARRIERE,
-                    kompetenzsteine: 3,
+                    zeitsteinslots: 3,
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::SOZIALES_UND_FREIZEIT,
-                    kompetenzsteine: 3,
+                    zeitsteinslots: 3,
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::INVESTITIONEN,
-                    kompetenzsteine: 2,
+                    zeitsteinslots: 2,
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::JOBS,
-                    kompetenzsteine: 4,
+                    zeitsteinslots: 4,
                 ),
             ],
             auswirkungen: [

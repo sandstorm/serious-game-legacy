@@ -22,6 +22,7 @@ use Domain\Definitions\Card\PileFinder;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
+use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use Random\Randomizer;
 
 /**
@@ -58,11 +59,12 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
             $year = GamePhaseState::currentKonjunkturphasenYear($gameState)->value + 1;
         }
 
+        $lastKonjunkturphaseType = $gameState->findLastOrNull(KonjunkturphaseWasChanged::class)->type ?? null;
         $idsOfPastKonjunkturphasen = $this->getIdsOfPastKonjunkturphasen($gameState);
 
         // We pick a random next konjunkturphase from the definitions that was not used yet.
         // If the max amount of defined konjunkturphasen is reached, we restart the konjunkturphasen.
-        $nextKonjunkturphase = $command->fixedKonjunkturphaseForTesting ?? KonjunkturphaseFinder::getUnusedRandomKonjunkturphase($idsOfPastKonjunkturphasen);
+        $nextKonjunkturphase = $command->fixedKonjunkturphaseForTesting ?? KonjunkturphaseFinder::getUnusedRandomKonjunkturphase($lastKonjunkturphaseType, $idsOfPastKonjunkturphasen);
 
         return GameEventsToPersist::with(
             new KonjunkturphaseWasChanged(
