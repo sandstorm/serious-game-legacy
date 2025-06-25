@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Definitions\Card;
 
-use Domain\Definitions\Card\Dto\MiniJobCardDefinition;
+use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\Dto\CardDefinition;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
@@ -380,8 +380,8 @@ final class CardFinder
 
             ],
             PileId::JOBS_PHASE_1->value => [
-                "ee0" => new JobCardDefinition(
-                    id: new CardId('ee0'),
+                "j0" => new JobCardDefinition(
+                    id: new CardId('j0'),
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Fachinformatikerin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
@@ -391,8 +391,8 @@ final class CardFinder
                         bildungKompetenzsteine: 2,
                     ),
                 ),
-                "ee1" => new JobCardDefinition(
-                    id: new CardId('ee1'),
+                "j1" => new JobCardDefinition(
+                    id: new CardId('j1'),
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Pflegefachkraft',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
@@ -402,8 +402,8 @@ final class CardFinder
                         bildungKompetenzsteine: 2,
                     ),
                 ),
-                "ee2" => new JobCardDefinition(
-                    id: new CardId('ee2'),
+                "j2" => new JobCardDefinition(
+                    id: new CardId('j2'),
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Taxifahrer:in',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
@@ -414,8 +414,8 @@ final class CardFinder
                     ),
                 ),
                 //TODO: Not in the list!
-                "ee3" => new JobCardDefinition(
-                    id: new CardId('ee3'),
+                "j3" => new JobCardDefinition(
+                    id: new CardId('j3'),
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Geschichtslehrer:in',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
@@ -426,8 +426,8 @@ final class CardFinder
                     ),
                 ),
                 //TODO: Not in the list!
-                "ee4" => new JobCardDefinition(
-                    id: new CardId('ee4'),
+                "j4" => new JobCardDefinition(
+                    id: new CardId('j4'),
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Bruchpilot:in',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
@@ -437,8 +437,8 @@ final class CardFinder
                         bildungKompetenzsteine: 0,
                     ),
                 ),
-                "ee5" => new JobCardDefinition(
-                    id: new CardId('ee5'),
+                "j5" => new JobCardDefinition(
+                    id: new CardId('j5'),
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Busfahrerin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen. ',
@@ -448,8 +448,8 @@ final class CardFinder
                         bildungKompetenzsteine: 1,
                     ),
                 ),
-                "ee6" => new JobCardDefinition(
-                    id: new CardId('ee6'),
+                "j6" => new JobCardDefinition(
+                    id: new CardId('j6'),
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Friseurin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
@@ -459,8 +459,8 @@ final class CardFinder
                         bildungKompetenzsteine: 1,
                     ),
                 ),
-                "ee7" => new JobCardDefinition(
-                    id: new CardId('ee7'),
+                "j7" => new JobCardDefinition(
+                    id: new CardId('j7'),
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Logistikerin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
@@ -471,8 +471,8 @@ final class CardFinder
                         freizeitKompetenzsteine: 1,
                     ),
                 ),
-                "ee8" => new JobCardDefinition(
-                    id: new CardId('ee8'),
+                "j8" => new JobCardDefinition(
+                    id: new CardId('j8'),
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Försterin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
@@ -483,8 +483,8 @@ final class CardFinder
                         freizeitKompetenzsteine: 1,
                     ),
                 ),
-                "ee9" => new JobCardDefinition(
-                    id: new CardId('ee9'),
+                "j9" => new JobCardDefinition(
+                    id: new CardId('j9'),
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Teamleitung NGO',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
@@ -495,8 +495,8 @@ final class CardFinder
                         //TODO: 2 Sozialpunkte (einmalig)
                     ),
                 ),
-                "ee10" => new JobCardDefinition(
-                    id: new CardId('ee10'),
+                "j10" => new JobCardDefinition(
+                    id: new CardId('j10'),
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Gärtnerin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
@@ -507,8 +507,8 @@ final class CardFinder
                         freizeitKompetenzsteine: 1,
                     ),
                 ),
-                "ee11" => new JobCardDefinition(
-                    id: new CardId('ee11'),
+                "j11" => new JobCardDefinition(
+                    id: new CardId('j11'),
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Umwelttechnologin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
@@ -518,8 +518,8 @@ final class CardFinder
                         bildungKompetenzsteine: 2,
                     ),
                 ),
-                "ee12" => new JobCardDefinition(
-                    id: new CardId('ee12'),
+                "j12" => new JobCardDefinition(
+                    id: new CardId('j12'),
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'freiwilliges Praktikum',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
@@ -530,20 +530,8 @@ final class CardFinder
                     ),
                 ),
             ],
-            PileId::BILDUNG_PHASE_1->value => [
-                "buk0" => new KategorieCardDefinition(
-                    id: new CardId('buk0'),
-                    pileId: PileId::BILDUNG_PHASE_1,
-                    title: 'Sprachkurs',
-                    description: 'Mache einen Sprachkurs über drei Monate im Ausland.',
-                    resourceChanges: new ResourceChanges(
-                        guthabenChange: new MoneyAmount(-11000),
-                        bildungKompetenzsteinChange: +1,
-                    ),
-                ),
-            ],
             PileId::MINIJOBS_PHASE_1->value => [
-                "mj0" => new MiniJobCardDefinition(
+                "mj0" => new MinijobCardDefinition(
                     id: new CardId('mj0'),
                     pileId: PileId::MINIJOBS_PHASE_1,
                     title: 'Minijob',
@@ -553,7 +541,6 @@ final class CardFinder
                     ),
                 ),
             ],
-
         ]);
         return self::$instance;
     }
@@ -590,11 +577,9 @@ final class CardFinder
             PileId::BILDUNG_PHASE_2 => [],
             PileId::FREIZEIT_PHASE_2 => [],
             PileId::JOBS_PHASE_2 => [],
-            PileId::MINIJOBS_PHASE_2 => [],
             PileId::BILDUNG_PHASE_3 => [],
             PileId::FREIZEIT_PHASE_3 => [],
             PileId::JOBS_PHASE_3 => [],
-            PileId::MINIJOBS_PHASE_3 => [],
         };
     }
 
@@ -667,7 +652,7 @@ final class CardFinder
     {
         $result = $this->cards[PileId::MINIJOBS_PHASE_1->value];
         foreach ($result as $item) {
-            assert($item instanceof MiniJobCardDefinition);
+            assert($item instanceof MinijobCardDefinition);
         }
         return $result;
     }

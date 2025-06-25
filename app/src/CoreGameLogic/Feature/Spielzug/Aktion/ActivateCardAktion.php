@@ -21,6 +21,7 @@ use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
+use RuntimeException;
 
 class ActivateCardAktion extends Aktion
 {
@@ -115,7 +116,7 @@ class ActivateCardAktion extends Aktion
     {
         $result = $this->validate($playerId, $gameEvents);
         if (!$result->canExecute) {
-            throw new \RuntimeException('' . $result->reason, 1748951140);
+            throw new RuntimeException('' . $result->reason, 1748951140);
         }
         return GameEventsToPersist::with(
             new CardWasActivated(

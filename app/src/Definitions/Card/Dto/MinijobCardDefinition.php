@@ -6,7 +6,7 @@ namespace Domain\Definitions\Card\Dto;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
 
-final readonly class MiniJobCardDefinition implements CardDefinition
+final readonly class MinijobCardDefinition implements CardDefinition
 {
 
     public function __construct(

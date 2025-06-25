@@ -6,23 +6,24 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\MiniJobWasStarted;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
-use Domain\Definitions\Card\Dto\MiniJobCardDefinition;
+use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
-use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\PileId;
 use RuntimeException;
 
-class DoMiniJobAktion extends Aktion
+class DoMinijobAktion extends Aktion
 {
 
-    public function __construct(public CardId $miniJobCardId)
+    public function __construct()
     {
         parent::__construct('do-minijiob','Minijob machen');
     }
@@ -61,12 +62,14 @@ class DoMiniJobAktion extends Aktion
     {
         $result = $this->validate($playerId, $gameEvents);
         if (!$result->canExecute) {
-            throw new RuntimeException('Cannot Do Mini Job: ' . $result->reason, 1749043636);
+            throw new RuntimeException('Cannot Do Mini Job: ' . $result->reason, 1750854280);
         }
-        /** @var MiniJobCardDefinition $miniJobCardDefinition */
-        $miniJobCardDefinition = CardFinder::getInstance()->getCardById($this->miniJobCardId);
+        $topCardOnPile = PileState::topCardIdForPile($gameEvents, PileId::MINIJOBS_PHASE_1);
+
+        /** @var MinijobCardDefinition $minijobCardDefinition */
+        $minijobCardDefinition = CardFinder::getInstance()->getCardById($topCardOnPile);
         return GameEventsToPersist::with(
-            new MiniJobWasStarted($playerId, $miniJobCardDefinition->id),
+            new MinijobWasDone($playerId, $minijobCardDefinition->id),
         );
     }
 }

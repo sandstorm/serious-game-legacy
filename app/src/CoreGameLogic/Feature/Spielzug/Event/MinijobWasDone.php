@@ -7,11 +7,11 @@ use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\CardId;
 
-final readonly class MiniJobWasStarted implements GameEventInterface
+final readonly class MinijobWasDone implements GameEventInterface
 {
     public function __construct(
         public PlayerId $playerId,
-        public CardID    $miniJobCardId,
+        public CardId   $minijobCardId,
     ) {
     }
 
@@ -19,7 +19,7 @@ final readonly class MiniJobWasStarted implements GameEventInterface
     {
         return new self(
             playerId: PlayerId::fromString($values['playerId']),
-            minijobcardId: CardId::fromString($values['miniJobCardID'])
+            minijobcardId: CardId::fromString($values['minijobCardId'])
         );
     }
 
@@ -27,7 +27,7 @@ final readonly class MiniJobWasStarted implements GameEventInterface
     {
         return [
             'playerId' => $this->playerId,
-            'miniJobCardID' => $this->miniJobCardId,
+            'minijobCardId' => $this->minijobCardId,
         ];
     }
 }
