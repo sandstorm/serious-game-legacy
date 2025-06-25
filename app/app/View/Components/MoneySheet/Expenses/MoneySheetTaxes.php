@@ -34,6 +34,7 @@ class MoneySheetTaxes extends Component
                 steuernUndAbgaben: MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameEvents, $this->playerId)->value,
                 doesSteuernUndAbgabenRequirePlayerAction: MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($this->gameEvents, $this->playerId),
                 gehalt: PlayerState::getGehaltForPlayer($this->gameEvents, $this->playerId)->value,
+                totalInsuranceCost: 0
             ),
         ]);
     }

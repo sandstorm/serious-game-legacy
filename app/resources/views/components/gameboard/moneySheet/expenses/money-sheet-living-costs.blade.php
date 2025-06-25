@@ -30,10 +30,4 @@
     @if ($this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled)
         <p>Du hast deine Lebenshaltungskosten erfolgreich eingetragen. Das Formular ist so lange deaktiviert bis sich an deinem Gehalt etwas ändert.</p>
     @endif
-
-    @if (session()->has('message'))
-        <div class="alert alert-success">
-            {{ session('message') }}
-        </div>
-    @endif
 </form>
