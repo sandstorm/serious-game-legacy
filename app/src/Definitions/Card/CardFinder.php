@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Definitions\Card;
 
+use Domain\Definitions\Card\Dto\MiniJobCardDefinition;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\Dto\CardDefinition;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
@@ -541,6 +542,18 @@ final class CardFinder
                     ),
                 ),
             ],
+            PileId::MINIJOBS_PHASE_1->value => [
+                "mj0" => new MiniJobCardDefinition(
+                    id: new CardId('mj0'),
+                    pileId: PileId::MINIJOBS_PHASE_1,
+                    title: 'Minijob',
+                    description: 'Jobbezeichnung: Kellnerin Voraussetzung: keine Einmalige Einnahmen: 5.000 €',
+                    resourceChanges: new ResourceChanges(
+                        guthabenChange: new MoneyAmount(+5000),
+                    ),
+                ),
+            ],
+
         ]);
         return self::$instance;
     }
@@ -572,13 +585,16 @@ final class CardFinder
             PileId::BILDUNG_PHASE_1 => $this->getCardsForBildungAndKarriere1(),
             PileId::FREIZEIT_PHASE_1 => $this->getCardsForSozialesAndFreizeit1(),
             PileId::JOBS_PHASE_1 => $this->getCardsForJobs1(),
+            PileId::MINIJOBS_PHASE_1 => $this->getCardsForMiniJobs1(),
             // TODO
             PileId::BILDUNG_PHASE_2 => [],
             PileId::FREIZEIT_PHASE_2 => [],
             PileId::JOBS_PHASE_2 => [],
+            PileId::MINIJOBS_PHASE_2 => [],
             PileId::BILDUNG_PHASE_3 => [],
             PileId::FREIZEIT_PHASE_3 => [],
             PileId::JOBS_PHASE_3 => [],
+            PileId::MINIJOBS_PHASE_3 => [],
         };
     }
 
@@ -640,6 +656,18 @@ final class CardFinder
         $result = $this->cards[PileId::JOBS_PHASE_1->value];
         foreach ($result as $item) {
             assert($item instanceof JobCardDefinition);
+        }
+        return $result;
+    }
+
+    /**
+     * @return CardDefinition[]
+     */
+    private function getCardsForMiniJobs1(): array
+    {
+        $result = $this->cards[PileId::MINIJOBS_PHASE_1->value];
+        foreach ($result as $item) {
+            assert($item instanceof MiniJobCardDefinition);
         }
         return $result;
     }

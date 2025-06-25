@@ -30,10 +30,10 @@ class AcceptJobOffersAktion extends Aktion
         return $eventsThisTurn->findLastOrNull(JobOffersWereRequested::class);
     }
 
-    public function validate(PlayerId $player, GameEvents $gameEvents): AktionValidationResult
+    public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
         $currentPlayer = CurrentPlayerAccessor::forStream($gameEvents);
-        if (!$currentPlayer->equals($player)) {
+        if (!$currentPlayer->equals($playerId)) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: 'Du kannst nur einen Job annehmen, wenn du dran bist'
@@ -47,7 +47,7 @@ class AcceptJobOffersAktion extends Aktion
             );
         }
 
-        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($player, new ResourceChanges(zeitsteineChange: -1))) {
+        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($playerId, new ResourceChanges(zeitsteineChange: -1))) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: 'Du hast nicht genug Zeitsteine, um den Job anzunehmen',
@@ -56,7 +56,7 @@ class AcceptJobOffersAktion extends Aktion
 
         /** @var JobCardDefinition $jobCard */
         $jobCard = CardFinder::getInstance()->getCardById($this->jobId);
-        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordJobCard($player, $jobCard)) {
+        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordJobCard($playerId, $jobCard)) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: 'Du erfüllst nicht die Voraussetzungen für diesen Job',
@@ -66,16 +66,16 @@ class AcceptJobOffersAktion extends Aktion
         return new AktionValidationResult(canExecute: true);
     }
 
-    public function execute(PlayerId $player, GameEvents $gameEvents): GameEventsToPersist
+    public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist
     {
-        $result = $this->validate($player, $gameEvents);
+        $result = $this->validate($playerId, $gameEvents);
         if (!$result->canExecute) {
             throw new \RuntimeException('Cannot Accept Job Offer: ' . $result->reason, 1749043636);
         }
         /** @var JobCardDefinition $job */
         $job = CardFinder::getInstance()->getCardById($this->jobId);
         return GameEventsToPersist::with(
-            new JobOfferWasAccepted($player, $job->id, $job->gehalt),
+            new JobOfferWasAccepted($playerId, $job->id, $job->gehalt),
         );
     }
 }

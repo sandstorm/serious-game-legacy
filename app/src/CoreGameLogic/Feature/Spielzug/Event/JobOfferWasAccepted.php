@@ -45,8 +45,4 @@ final readonly class JobOfferWasAccepted implements GameEventInterface, Provides
         return new ModifierCollection([new Modifier(ModifierId::BIND_ZEITSTEIN)]);
     }
 
-    public function getPlayerId(): PlayerId
-    {
-        return $this->playerId;
-    }
 }

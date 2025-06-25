@@ -6,20 +6,17 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Command;
 
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\PlayerId;
-use Domain\Definitions\Card\ValueObject\CardId;
 
-final readonly class ActivateMiniJob implements CommandInterface
+final readonly class DoMiniJob implements CommandInterface
 {
     public static function create(
         PlayerId $playerId,
-        CardId $cardId,
-    ): ActivateMiniJob {
-        return new self($playerId, $cardId);
+    ): DoMiniJob {
+        return new self($playerId);
     }
 
     private function __construct(
         public PlayerId $player,
-        public CardId $jobId
     ) {
     }
 

@@ -15,7 +15,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ActivateCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SkipCardAktion as SkipCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateMiniJob;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMiniJob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
@@ -33,7 +33,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             || $command instanceof RequestJobOffers
             || $command instanceof AcceptJobOffer
             || $command instanceof EndSpielzug
-            || $command instanceof ActivateMiniJob;
+            || $command instanceof DoMiniJob;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameEvents): GameEventsToPersist
@@ -45,13 +45,13 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             RequestJobOffers::class => $this->handleRequestJobOffers($command, $gameEvents),
             AcceptJobOffer::class => $this->handleAcceptJobOffer($command, $gameEvents),
             EndSpielzug::class => $this->handleEndSpielzug($command, $gameEvents),
-            ActivateMiniJob::class => $this->handleActivateMiniJob($command, $gameEvents),
+            DoMiniJob::class => $this->handleActivateMiniJob($command, $gameEvents),
         };
     }
 
-    private function handleActivateMiniJob(ActivateMiniJob $command, GameEvents $gameEvents): GameEventsToPersist{
+    private function handleActivateMiniJob(DoMiniJob $command, GameEvents $gameEvents): GameEventsToPersist{
 
-        $aktion = new Aktion\ActivateMiniJobAktion();
+        $aktion = new Aktion\DoMiniJobAktion($command-> miniJobCardId);
         return $aktion->execute($command->player, $gameEvents);
     }
 

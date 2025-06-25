@@ -4,17 +4,16 @@ declare(strict_types=1);
 namespace Domain\Definitions\Card\Dto;
 
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\PileId;
 
 final readonly class MiniJobCardDefinition implements CardDefinition
 {
-public function __construct(
+
+    public function __construct(
     public CardId           $id,
     public PileId           $pileId,
     public string           $title,
     public string           $description,
-    public MoneyAmount      $gehalt,
     public ResourceChanges  $resourceChanges,
 ) {
 }

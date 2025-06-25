@@ -66,10 +66,10 @@ class ActivateCardAktion extends Aktion
         return new AktionValidationResult(true);
     }
 
-    public function validate(PlayerId $player, GameEvents $gameEvents): AktionValidationResult
+    public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
         $currentPlayer = CurrentPlayerAccessor::forStream($gameEvents);
-        if (!$currentPlayer->equals($player)) {
+        if (!$currentPlayer->equals($playerId)) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: 'Du kannst Karten nur spielen, wenn du dran bist'
@@ -84,8 +84,8 @@ class ActivateCardAktion extends Aktion
         $topCardOnPile = PileState::topCardIdForPile($gameEvents, $this->pileId);
         $this->card = CardFinder::getInstance()->getCardById($topCardOnPile);
 
-        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($player,
-            $this->getTotalCosts($gameEvents, $player))) {
+        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($playerId,
+            $this->getTotalCosts($gameEvents, $playerId))) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: 'Du hast nicht genug Ressourcen um die Karte zu spielen',
@@ -111,20 +111,20 @@ class ActivateCardAktion extends Aktion
         return $this->card instanceof KategorieCardDefinition ? $costToActivate->accumulate($this->card->resourceChanges) : $costToActivate;
     }
 
-    public function execute(PlayerId $player, GameEvents $gameEvents): GameEventsToPersist
+    public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist
     {
-        $result = $this->validate($player, $gameEvents);
+        $result = $this->validate($playerId, $gameEvents);
         if (!$result->canExecute) {
             throw new \RuntimeException('' . $result->reason, 1748951140);
         }
         return GameEventsToPersist::with(
             new CardWasActivated(
-                $player,
+                $playerId,
                 $this->card->getPileId(),
                 $this->card->getId(),
                 $this->category,
-                $this->getTotalCosts($gameEvents, $player),
-                AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound($player) ? 0 : 1,
+                $this->getTotalCosts($gameEvents, $playerId),
+                AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound($playerId) ? 0 : 1,
             )
         );
     }
