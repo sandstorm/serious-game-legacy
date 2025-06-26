@@ -18,15 +18,15 @@ final readonly class JobOffersWereRequested implements ZeitsteinAktion, GameEven
      * @param CardId[] $jobs
      */
     public function __construct(
-        public PlayerId $player,
-        public array $jobs,
+        public PlayerId $playerId,
+        public array    $jobs,
     ) {
     }
 
     public static function fromArray(array $values): GameEventInterface
     {
         return new self(
-            player: PlayerId::fromString($values['player']),
+            playerId: PlayerId::fromString($values['player']),
             jobs: array_map(fn ($job) => CardId::fromString($job), $values['jobs']),
         );
     }
@@ -34,14 +34,14 @@ final readonly class JobOffersWereRequested implements ZeitsteinAktion, GameEven
     public function jsonSerialize(): array
     {
         return [
-            'player' => $this->player,
+            'player' => $this->playerId,
             'jobs' => $this->jobs,
         ];
     }
 
     public function getResourceChanges(PlayerId $playerId): ResourceChanges
     {
-        if ($playerId->equals($this->player)) {
+        if ($playerId->equals($this->playerId)) {
             return new ResourceChanges(zeitsteineChange: -1);
         }
         return new ResourceChanges();
@@ -54,7 +54,7 @@ final readonly class JobOffersWereRequested implements ZeitsteinAktion, GameEven
 
     public function getPlayerId(): PlayerId
     {
-        return $this->player;
+        return $this->playerId;
     }
 
     public function getNumberOfZeitsteinslotsUsed(): int

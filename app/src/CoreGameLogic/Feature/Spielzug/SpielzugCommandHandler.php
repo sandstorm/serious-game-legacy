@@ -15,6 +15,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ActivateCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SkipCardAktion as SkipCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
@@ -31,7 +32,8 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             || $command instanceof ActivateCard
             || $command instanceof RequestJobOffers
             || $command instanceof AcceptJobOffer
-            || $command instanceof EndSpielzug;
+            || $command instanceof EndSpielzug
+            || $command instanceof DoMinijob;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameEvents): GameEventsToPersist
@@ -43,7 +45,14 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             RequestJobOffers::class => $this->handleRequestJobOffers($command, $gameEvents),
             AcceptJobOffer::class => $this->handleAcceptJobOffer($command, $gameEvents),
             EndSpielzug::class => $this->handleEndSpielzug($command, $gameEvents),
+            DoMinijob::class => $this->handleActivateMinijob($command, $gameEvents),
         };
+    }
+
+    private function handleActivateMinijob(DoMinijob $command, GameEvents $gameEvents): GameEventsToPersist
+    {
+        $aktion = new Aktion\DoMinijobAktion();
+        return $aktion->execute($command->playerId, $gameEvents);
     }
 
     private function handleEndSpielzug(EndSpielzug $command, GameEvents $gameEvents): GameEventsToPersist
@@ -61,13 +70,13 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
     private function handleRequestJobOffers(RequestJobOffers $command, GameEvents $gameEvents): GameEventsToPersist
     {
         $aktion = new Aktion\RequestJobOffersAktion();
-        return $aktion->execute($command->player, $gameEvents);
+        return $aktion->execute($command->playerId, $gameEvents);
     }
 
     private function handleAcceptJobOffer(AcceptJobOffer $command, GameEvents $gameEvents): GameEventsToPersist
     {
         $aktion = new AcceptJobOffersAktion($command->jobId);
-        return $aktion->execute($command->player, $gameEvents);
+        return $aktion->execute($command->playerId, $gameEvents);
     }
 
     private function handleActivateCard(

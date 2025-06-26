@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
@@ -7,28 +6,26 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
-use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\CardFinder;
+use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\PileId;
-use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
+use RuntimeException;
 
-class SkipCardAktion extends Aktion
+class DoMinijobAktion extends Aktion
 {
-    private PileId $pileId;
 
-    public function __construct(
-        public CategoryId $category,
-    ) {
-        parent::__construct('skip-card', 'Karte überspringen');
-        $this->pileId = PileState::getPileIdForCategoryAndPhase($this->category);
+    public function __construct()
+    {
+        parent::__construct('do-minijiob','Minijob machen');
     }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
@@ -37,7 +34,14 @@ class SkipCardAktion extends Aktion
         if (!$currentPlayer->equals($playerId)) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Du kannst Karten nur überspringen, wenn du dran bist'
+                reason: 'Du kannst nur Minijobs machen, wenn du dran bist'
+            );
+        }
+
+        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($playerId, new ResourceChanges(zeitsteineChange: -1))) {
+            return new AktionValidationResult(
+                canExecute: false,
+                reason: 'Du hast nicht genug Zeitsteine, um den Minijob anzunehmen',
             );
         }
 
@@ -49,34 +53,23 @@ class SkipCardAktion extends Aktion
                 reason: 'Du kannst nur eine Zeitsteinaktion pro Runde ausführen',
             );
         }
-
-        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($playerId, new ResourceChanges(zeitsteineChange: -1))) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: 'Du hast nicht genug Ressourcen um die Karte zu überspringen',
-            );
-        }
-
-        $hasFreeTimeSlots = GamePhaseState::hasFreeTimeSlotsForCategory($gameEvents, $this->category);
-        if (!$hasFreeTimeSlots) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: 'Es gibt keine freien Zeitsteine mehr.',
-            );
-        }
-
-        return new AktionValidationResult(canExecute: true);
+        return new AktionValidationResult(
+            canExecute: true,
+        );
     }
 
     public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist
     {
         $result = $this->validate($playerId, $gameEvents);
-        $topCardOnPile = PileState::topCardIdForPile($gameEvents, $this->pileId);
         if (!$result->canExecute) {
-            throw new \RuntimeException('' . $result->reason, 1747325793);
+            throw new RuntimeException('Cannot Do Mini Job: ' . $result->reason, 1750854280);
         }
+        $topCardOnPile = PileState::topCardIdForPile($gameEvents, PileId::MINIJOBS_PHASE_1);
+
+        /** @var MinijobCardDefinition $minijobCardDefinition */
+        $minijobCardDefinition = CardFinder::getInstance()->getCardById($topCardOnPile);
         return GameEventsToPersist::with(
-            new CardWasSkipped($playerId, $topCardOnPile, $this->pileId, $this->category),
+            new MinijobWasDone($playerId, $minijobCardDefinition->id),
         );
     }
 }

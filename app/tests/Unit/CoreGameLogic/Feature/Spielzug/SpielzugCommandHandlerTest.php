@@ -12,6 +12,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
@@ -26,6 +27,7 @@ use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
+use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
@@ -502,7 +504,7 @@ describe('handleRequestJobOffers', function () {
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         /** @var JobOffersWereRequested $actualEvent */
         $actualEvent = $stream->findLast(JobOffersWereRequested::class);
-        expect($actualEvent->player)->toEqual($this->players[0])
+        expect($actualEvent->playerId)->toEqual($this->players[0])
             ->and($actualEvent->jobs)->toEqual([new CardId('j0')]);
 
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
@@ -567,7 +569,7 @@ describe('handleRequestJobOffers', function () {
 
         /** @var JobOffersWereRequested $actualEvent */
         $actualEvent = $stream->findLast(JobOffersWereRequested::class);
-        expect($actualEvent->player)->toEqual($this->players[0])
+        expect($actualEvent->playerId)->toEqual($this->players[0])
             ->and(count($actualEvent->jobs))->toBe(3)
             ->and($actualEvent->jobs)->toContainEqual(new CardId('j0'))
             ->and($actualEvent->jobs)->toContainEqual(new CardId('j1'))
@@ -607,7 +609,7 @@ describe('handleRequestJobOffers', function () {
 
         /** @var JobOffersWereRequested $actualEvent */
         $actualEvent = $stream->findLast(JobOffersWereRequested::class);
-        expect($actualEvent->player)->toEqual($this->players[0])
+        expect($actualEvent->playerId)->toEqual($this->players[0])
             ->and(count($actualEvent->jobs))->toBe(2)
             ->and($actualEvent->jobs)->toContainEqual(new CardId('j0'))
             ->and($actualEvent->jobs)->toContainEqual(new CardId('j3'));
@@ -663,7 +665,7 @@ describe('handleRequestJobOffers', function () {
 
         /** @var JobOffersWereRequested $actualEvent */
         $actualEvent = $stream->findLast(JobOffersWereRequested::class);
-        expect($actualEvent->player)->toEqual($this->players[0])
+        expect($actualEvent->playerId)->toEqual($this->players[0])
             ->and(count($actualEvent->jobs))->toBe(3);
     });
 
@@ -852,6 +854,63 @@ describe('handleAcceptJobOffer', function () {
         expect($stream->FindLast(JobOfferWasAccepted::class)->gehalt)->toEqual(new MoneyAmount(34000))
             ->and($stream->FindLast(JobOfferWasAccepted::class)->cardId->value)->toBe('j0');
     });
+});
+
+describe('handleDoMinijob', function () {
+
+    it('returns money to the player once after doing the minijob', function () {
+
+        $minijobs = [
+            "testMinijob" => new MinijobCardDefinition(
+                id: new CardId('textMinijob'),
+                pileId: PileId::MINIJOBS_PHASE_1,
+                title: 'Softwaretester',
+                description: 'Du arbeitest nebenbei als Softwaretester und bekommst einmalig Gehalt',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+500),
+                ),
+            )];
+
+        $this->shuffle($minijobs, PileId::MINIJOBS_PHASE_1);
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getGehaltForPlayer($stream, $this->players[0]))->toBe(2000);
+        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getGehaltForPlayer($stream, $this->players[0]))->toBe(2500);
+
+        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getGehaltForPlayer($stream, $this->players[0]))->toBe(2500);
+    });
+
+    it('throws an exception when the player does not have enough Zeitsteine', function () {
+
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(0);
+
+        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
+
+    })->throws(
+        \RuntimeException::class,
+        'Cannot do minijob: Du hast nicht genug Zeitsteine',
+        1750928806
+    );
+
+    it('throws an exception when the player wants to do more than one Zeitsteinaktion', function () {
+
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(3);
+
+        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(2);
+
+        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
+    })->throws(
+        \RuntimeException::class,
+        'Cannot do more than one Zeitsteinaktion.',
+        1750930007
+    );
 });
 
 describe('handleEndSpielzug', function () {
