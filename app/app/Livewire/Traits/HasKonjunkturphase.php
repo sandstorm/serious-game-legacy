@@ -5,11 +5,28 @@ declare(strict_types=1);
 namespace App\Livewire\Traits;
 
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\StartKonjunkturphaseForPlayer;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Illuminate\View\View;
 
 trait HasKonjunkturphase
 {
+    // shows/hides details modal
     public bool $konjunkturphaseDetailsVisible = false;
+    public int $konjunkturphaseStartScreenPage = 0;
+
+    public function renderKonjunkturphaseEndScreen(): View
+    {
+        return view('livewire.screens.konjunkturphase-ending', [
+        ]);
+    }
+
+    public function renderKonjunkturphaseStartScreen(): View
+    {
+        return view('livewire.screens.konjunkturphase-start', [
+            'konjunkturphase' => KonjunkturphaseState::getCurrentKonjunkturphase($this->gameEvents),
+            'currentPage' => $this->konjunkturphaseStartScreenPage,
+        ]);
+    }
 
     public function showKonjunkturphaseDetails(): void
     {
@@ -21,17 +38,9 @@ trait HasKonjunkturphase
         $this->konjunkturphaseDetailsVisible = false;
     }
 
-
-    public function renderKonjunkturphaseEndScreen(): View
+    public function nextKonjunkturphaseStartScreenPage(): void
     {
-        return view('livewire.screens.konjunkturphaseEnding', [
-        ]);
-    }
-
-    public function renderKonjunkturphaseStartScreen(): View
-    {
-        return view('livewire.screens.konjunkturphaseStart', [
-        ]);
+        $this->konjunkturphaseStartScreenPage++;
     }
 
     public function startKonjunkturphaseForPlayer(): void
