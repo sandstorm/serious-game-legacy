@@ -21,6 +21,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Neos\EventStore\Model\Event;
 use Neos\EventStore\Model\Event\EventData;
@@ -68,6 +69,7 @@ final readonly class EventNormalizer
             LebenshaltungskostenForPlayerWereCorrected::class,
             LebenshaltungskostenForPlayerWereEntered::class,
             LebenszielWasSelected::class,
+            MinijobWasDone::class,
             NameForPlayerWasSet::class,
             PlayerColorWasSelected::class,
             PreGameStarted::class,

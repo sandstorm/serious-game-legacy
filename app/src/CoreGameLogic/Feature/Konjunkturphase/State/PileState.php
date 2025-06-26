@@ -66,6 +66,7 @@ class PileState
             CategoryId::BILDUNG_UND_KARRIERE => PileId::BILDUNG_PHASE_1,
             CategoryId::SOZIALES_UND_FREIZEIT => PileId::FREIZEIT_PHASE_1,
             CategoryId::JOBS => PileId::JOBS_PHASE_1,
+            CategoryId::MINIJOBS => PileId::MINIJOBS_PHASE_1,
             default => PileId::BILDUNG_PHASE_1, // TODO add all Categories and consider the phase
         };
     }

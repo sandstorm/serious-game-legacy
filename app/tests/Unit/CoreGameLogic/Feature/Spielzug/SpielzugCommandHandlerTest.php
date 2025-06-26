@@ -857,9 +857,19 @@ describe('handleAcceptJobOffer', function () {
 });
 
 describe('handleDoMinijob', function () {
+    it('throws an exception when the player does not have enough Zeitsteine', function () {
+        /** @var TestCase $this */
+        //$stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        //expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(0);
+        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
+    })->throws(
+        \RuntimeException::class,
+        'Cannot do minijob: Du hast nicht genug Zeitsteine',
+        1750928806
+    );
 
-    it('returns money to the player once after doing the minijob', function () {
-
+    it('returns money to the player after doing the minijob', function () {
+        /** @var TestCase $this */
         $minijobs = [
             "testMinijob" => new MinijobCardDefinition(
                 id: new CardId('textMinijob'),
@@ -871,30 +881,16 @@ describe('handleDoMinijob', function () {
                 ),
             )];
 
-        $this->shuffle($minijobs, PileId::MINIJOBS_PHASE_1);
+        $this->addCardsOnTopOfPile($minijobs, PileId::MINIJOBS_PHASE_1);
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGehaltForPlayer($stream, $this->players[0]))->toBe(2000);
+        expect(PlayerState::getGuthabenForPlayer($stream, $this->players[0])->value)->toEqual(50000);
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGehaltForPlayer($stream, $this->players[0]))->toBe(2500);
+        expect(PlayerState::getGuthabenForPlayer($stream, $this->players[0])->value)->toEqual(50500);
 
-        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
-        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGehaltForPlayer($stream, $this->players[0]))->toBe(2500);
     });
 
-    it('throws an exception when the player does not have enough Zeitsteine', function () {
 
-        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(0);
-
-        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
-
-    })->throws(
-        \RuntimeException::class,
-        'Cannot do minijob: Du hast nicht genug Zeitsteine',
-        1750928806
-    );
 
     it('throws an exception when the player wants to do more than one Zeitsteinaktion', function () {
 

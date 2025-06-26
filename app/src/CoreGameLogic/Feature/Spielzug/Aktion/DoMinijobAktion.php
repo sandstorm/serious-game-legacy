@@ -69,7 +69,7 @@ class DoMinijobAktion extends Aktion
         /** @var MinijobCardDefinition $minijobCardDefinition */
         $minijobCardDefinition = CardFinder::getInstance()->getCardById($topCardOnPile);
         return GameEventsToPersist::with(
-            new MinijobWasDone($playerId, $minijobCardDefinition->id),
+            new MinijobWasDone($playerId, $minijobCardDefinition->id, $minijobCardDefinition->resourceChanges),
         );
     }
 }

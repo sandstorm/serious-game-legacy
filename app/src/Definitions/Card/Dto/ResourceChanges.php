@@ -6,7 +6,7 @@ namespace Domain\Definitions\Card\Dto;
 
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
-final readonly class ResourceChanges implements \JsonSerializable
+final readonly class    ResourceChanges implements \JsonSerializable
 {
     public function __construct(
         public MoneyAmount $guthabenChange = new MoneyAmount(0),
