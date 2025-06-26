@@ -5,6 +5,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 
 final readonly class MinijobWasDone implements GameEventInterface
@@ -29,5 +30,13 @@ final readonly class MinijobWasDone implements GameEventInterface
             'playerId' => $this->playerId,
             'minijobCardId' => $this->minijobCardId,
         ];
+    }
+
+    public function getResourceChanges(PlayerId $playerId): ResourceChanges
+    {
+        if ($playerId->equals($this->playerId)) {
+            return new ResourceChanges(zeitsteineChange: -1);
+        }
+        return new ResourceChanges();
     }
 }

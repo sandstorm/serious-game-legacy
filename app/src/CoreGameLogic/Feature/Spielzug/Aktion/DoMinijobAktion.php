@@ -73,5 +73,3 @@ class DoMinijobAktion extends Aktion
         );
     }
 }
-
-//TODO Test dafür schreiben
