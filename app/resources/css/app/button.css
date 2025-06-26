@@ -42,6 +42,11 @@
     }
 }
 
+.button--type-text {
+    background: transparent;
+    color: var(--color-primary);
+}
+
 .button--size-small {
     padding: var(--spacing-25) var(--spacing-50);
     min-height: 30px;
