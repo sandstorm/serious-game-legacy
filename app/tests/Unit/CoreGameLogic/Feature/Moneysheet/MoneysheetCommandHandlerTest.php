@@ -3,13 +3,16 @@ declare(strict_types=1);
 
 namespace Tests\CoreGameLogic\Feature\Moneysheet;
 
+use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Leitzins;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\CancelInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterSteuernUndAbgabenForPlayer;
+use Domain\CoreGameLogic\Feature\Moneysheet\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\LebenshaltungskostenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\SteuernUndAbgabenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
+use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanAmount;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
@@ -294,4 +297,16 @@ describe('handleConcludeInsuranceForPlayer', function () {
             ->and(MoneySheetState::doesPlayerHaveThisInsurance($gameEvents, $this->players[0], $this->insurances[1]->id))->toBeTrue()
             ->and(MoneySheetState::doesPlayerHaveThisInsurance($gameEvents, $this->players[0], $this->insurances[2]->id))->toBeTrue();
     });
+});
+
+describe('handleTakeOutALoanForPlayer', function () {
+    it('throws an exception when trying to take out a loan without a job', function () {
+        $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
+            $this->players[0],
+            'loan1',
+            new MoneyAmount(10000),
+            new MoneyAmount(12500),
+            new MoneyAmount(625),
+        ));
+    })->throws(\RuntimeException::class, 'Cannot take out a loan without a job.');
 });

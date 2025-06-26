@@ -12,6 +12,7 @@ use Domain\CoreGameLogic\Feature\Moneysheet\Event\InsuranceForPlayerWasCancelled
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\InsuranceForPlayerWasConcluded;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\LebenshaltungskostenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\LebenshaltungskostenForPlayerWereEntered;
+use Domain\CoreGameLogic\Feature\Moneysheet\Event\LoanWasTakenOutForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\SteuernUndAbgabenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\SteuernUndAbgabenForPlayerWereEntered;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
@@ -232,5 +233,26 @@ class MoneySheetState
         }
 
         return new MoneyAmount($totalCost);
+    }
+
+    /**
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return LoanWasTakenOutForPlayer[]
+     */
+    public static function getLoansForPlayer(GameEvents $gameEvents, PlayerId $playerId): array
+    {
+        return $gameEvents->findAllOfType(LoanWasTakenOutForPlayer::class)
+            ->filter(fn (LoanWasTakenOutForPlayer $event) => $event->playerId === $playerId);
+    }
+
+    public static function getSumOfAllLoansForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
+    {
+        $loans = self::getLoansForPlayer($gameEvents, $playerId);
+        $sum = 0;
+        foreach ($loans as $loan) {
+            $sum += $loan->loanAmount->value;
+        }
+        return new MoneyAmount($sum);
     }
 }

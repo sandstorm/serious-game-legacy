@@ -12,13 +12,16 @@ use Domain\CoreGameLogic\Feature\Moneysheet\Command\CancelInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterSteuernUndAbgabenForPlayer;
+use Domain\CoreGameLogic\Feature\Moneysheet\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\InsuranceForPlayerWasConcluded;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\LebenshaltungskostenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\LebenshaltungskostenForPlayerWereEntered;
+use Domain\CoreGameLogic\Feature\Moneysheet\Event\LoanWasTakenOutForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\SteuernUndAbgabenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\SteuernUndAbgabenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Configuration\Configuration;
 
 /**
@@ -31,7 +34,8 @@ final readonly class MoneysheetCommandHandler implements CommandHandlerInterface
         return $command instanceof EnterSteuernUndAbgabenForPlayer
             || $command instanceof EnterLebenshaltungskostenForPlayer
             || $command instanceof ConcludeInsuranceForPlayer
-            || $command instanceof CancelInsuranceForPlayer;
+            || $command instanceof CancelInsuranceForPlayer
+            || $command instanceof TakeOutALoanForPlayer;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameEvents): GameEventsToPersist
@@ -45,6 +49,8 @@ final readonly class MoneysheetCommandHandler implements CommandHandlerInterface
             ConcludeInsuranceForPlayer::class => $this->handleConcludeInsuranceForPlayer(
                 $command, $gameEvents),
             CancelInsuranceForPlayer::class => $this->handleCancelInsuranceForPlayer(
+                $command, $gameEvents),
+            TakeOutALoanForPlayer::class => $this->handleTakeOutALoanForPlayer(
                 $command, $gameEvents),
         };
     }
@@ -131,6 +137,26 @@ final readonly class MoneysheetCommandHandler implements CommandHandlerInterface
             new InsuranceForPlayerWasCancelled(
                 playerId: $command->playerId,
                 insuranceId: $command->insuranceId,
+            )
+        );
+    }
+
+    private function handleTakeOutALoanForPlayer(TakeOutALoanForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
+    {
+        $playerHasJob = PlayerState::getJobForPlayer($gameEvents, $command->playerId);
+        if ($playerHasJob === null) {
+            throw new \RuntimeException("Cannot take out a loan without a job.");
+        }
+
+        // TODO how many loans can a player take out?
+
+        return GameEventsToPersist::with(
+            new LoanWasTakenOutForPlayer(
+                playerId: $command->playerId,
+                intendedUse: $command->intendedUse,
+                loanAmount: $command->loanAmount,
+                repaymentAmount: $command->repaymentAmount,
+                repaymentPerKonjunkturphase: $command->repaymentPerKonjunkturphase,
             )
         );
     }

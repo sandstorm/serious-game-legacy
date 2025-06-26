@@ -17,6 +17,7 @@ use Domain\CoreGameLogic\Feature\Moneysheet\Event\InsuranceForPlayerWasCancelled
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\InsuranceForPlayerWasConcluded;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\LebenshaltungskostenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\LebenshaltungskostenForPlayerWereEntered;
+use Domain\CoreGameLogic\Feature\Moneysheet\Event\LoanWasTakenOutForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\SteuernUndAbgabenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\SteuernUndAbgabenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
@@ -79,7 +80,8 @@ final readonly class EventNormalizer
             SteuernUndAbgabenForPlayerWereCorrected::class,
             SteuernUndAbgabenForPlayerWereEntered::class,
             InsuranceForPlayerWasConcluded::class,
-            InsuranceForPlayerWasCancelled::class
+            InsuranceForPlayerWasCancelled::class,
+            LoanWasTakenOutForPlayer::class
         ];
 
         $fullClassNameToShortEventType = [];

@@ -19,7 +19,7 @@ class KonjunkturphaseDefinition
      * @param KonjunkturphaseTypeEnum $type
      * @param string $description
      * @param string $additionalEvents
-     * @param int $leitzins
+     * @param float $leitzins
      * @param KompetenzbereichDefinition[] $kompetenzbereiche
      * @param AuswirkungDefinition[] $auswirkungen
      */
@@ -28,7 +28,7 @@ class KonjunkturphaseDefinition
         public KonjunkturphaseTypeEnum $type,
         public string                  $description,
         public string                  $additionalEvents,
-        public int                     $leitzins,
+        public float                   $leitzins,
         public array                   $kompetenzbereiche,
         public array                   $auswirkungen = [],
     )

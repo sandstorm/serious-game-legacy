@@ -7,9 +7,9 @@ namespace Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject;
 readonly class Leitzins implements \JsonSerializable
 {
     /**
-     * @param int $value in %
+     * @param float $value in %
      */
-    public function __construct(public int $value)
+    public function __construct(public float $value)
     {
     }
 
@@ -18,7 +18,7 @@ readonly class Leitzins implements \JsonSerializable
         return '[Leitzins: '.$this->value.']';
     }
 
-    public function jsonSerialize(): int
+    public function jsonSerialize(): float
     {
         return $this->value;
     }

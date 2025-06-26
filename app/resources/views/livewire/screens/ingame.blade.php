@@ -84,15 +84,14 @@
 
     <aside class="game__aside">
         <h4>Money Sheet</h4>
-        <button class="button button--type-primary"
-                wire:click="showMoneySheet()">{{ PlayerState::getGuthabenForPlayer($this->gameEvents(), $myself) }}€
+        <button class="button button--type-primary" wire:click="showMoneySheet()">
+            {{ number_format(PlayerState::getGuthabenForPlayer($this->gameEvents, $myself)->value, 2, ',', '.') }} €
         </button>
         @if ($moneySheetIsVisible)
             @if ($editIncomeIsVisible)
                 <x-gameboard.moneySheet.money-sheet-income-modal :player-id="$myself" :game-events="$this->gameEvents"/>
             @elseif ($editExpensesIsVisible)
-                <x-gameboard.moneySheet.money-sheet-expenses-modal :player-id="$myself"
-                                                                   :game-events="$this->gameEvents"/>
+                <x-gameboard.moneySheet.money-sheet-expenses-modal :player-id="$myself" :game-events="$this->gameEvents"/>
             @else
                 <x-money-sheet.money-sheet :player-id="$myself" :game-events="$this->gameEvents"/>
             @endif
