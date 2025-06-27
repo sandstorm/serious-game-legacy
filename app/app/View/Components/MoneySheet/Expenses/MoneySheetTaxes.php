@@ -33,8 +33,9 @@ class MoneySheetTaxes extends Component
                 doesLebenshaltungskostenRequirePlayerAction: MoneySheetState::doesLebenshaltungskostenRequirePlayerAction($this->gameEvents, $this->playerId),
                 steuernUndAbgaben: MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameEvents, $this->playerId),
                 doesSteuernUndAbgabenRequirePlayerAction: MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($this->gameEvents, $this->playerId),
-                gehalt: PlayerState::getGehaltForPlayer($this->gameEvents, $this->playerId),
-                totalInsuranceCost: MoneySheetState::getCostOfAllInsurances($this->gameEvents, $this->playerId),
+                gehalt: PlayerState::getGehaltForPlayer($this->gameEvents, $this->playerId)->value,
+                total: MoneySheetState::calculateTotalForPlayer($this->gameEvents, $this->playerId)->value,
+                totalInsuranceCost: MoneySheetState::getCostOfAllInsurances($this->gameEvents, $this->playerId)->value,
                 sumOfAllLoans: MoneySheetState::getSumOfAllLoansForPlayer($this->gameEvents, $this->playerId),
             ),
         ]);

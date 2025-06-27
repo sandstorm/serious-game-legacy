@@ -5,10 +5,6 @@ declare(strict_types=1);
 namespace App\View\Components\MoneySheet;
 
 use App\Livewire\Dto\MoneySheet as MoneySheetDto;
-use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
-use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
-use Domain\CoreGameLogic\PlayerId;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
@@ -18,8 +14,7 @@ class MoneySheet extends Component
      * Create the component instance.
      */
     public function __construct(
-        public PlayerId $playerId,
-        public GameEvents $gameEvents,
+        public MoneySheetDto $moneySheet,
     ) {}
 
     /**
@@ -27,23 +22,9 @@ class MoneySheet extends Component
      */
     public function render(): View
     {
-        return view('components.gameboard.moneySheet.money-sheet', [
-            'moneySheet' => $this->getMoneysheetForPlayerId($this->playerId),
+        return view('components.gameboard.moneySheet.money-sheet-modal', [
+            'moneySheet' => $this->moneySheet,
         ]);
-    }
-
-
-    private function getMoneysheetForPlayerId(PlayerId $playerId): MoneySheetDto
-    {
-        return new MoneySheetDto(
-            lebenshaltungskosten: MoneySheetState::getLastInputForLebenshaltungskosten($this->gameEvents, $playerId),
-            doesLebenshaltungskostenRequirePlayerAction: MoneySheetState::doesLebenshaltungskostenRequirePlayerAction($this->gameEvents, $playerId),
-            steuernUndAbgaben: MoneySheetState::getLastInputForSteuernUndAbgaben($this->gameEvents, $playerId),
-            doesSteuernUndAbgabenRequirePlayerAction: MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($this->gameEvents, $playerId),
-            gehalt: PlayerState::getGehaltForPlayer($this->gameEvents, $playerId),
-            totalInsuranceCost: MoneySheetState::getCostOfAllInsurances($this->gameEvents, $playerId),
-            sumOfAllLoans: MoneySheetState::getSumOfAllLoansForPlayer($this->gameEvents, $playerId),
-        );
     }
 
 }

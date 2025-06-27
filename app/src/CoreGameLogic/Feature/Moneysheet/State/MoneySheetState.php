@@ -26,10 +26,15 @@ use Domain\Definitions\Insurance\ValueObject\InsuranceTypeEnum;
 
 class MoneySheetState
 {
-    public static function calculateLebenshaltungskostenForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
-    {
+    public static function calculateLebenshaltungskostenForPlayer(
+        GameEvents $gameEvents,
+        PlayerId $playerId
+    ): MoneyAmount {
         $gehalt = PlayerState::getGehaltForPlayer($gameEvents, $playerId);
-        return new MoneyAmount(max([$gehalt->value * Configuration::LEBENSHALTUNGSKOSTEN_MULTIPLIER, Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE]));
+        return new MoneyAmount(max([
+            $gehalt->value * Configuration::LEBENSHALTUNGSKOSTEN_MULTIPLIER,
+            Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE
+        ]));
     }
 
     public static function calculateSteuernUndAbgabenForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
@@ -104,7 +109,8 @@ class MoneySheetState
         PlayerId $playerId
     ): InputResult {
         $lastInputEventForPlayer = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof UpdatesInputForLebenshaltungskosten && $event->getPlayerId()->equals($playerId));
+            fn($event) => $event instanceof UpdatesInputForLebenshaltungskosten
+                && $event->getPlayerId()->equals($playerId));
 
         if ($lastInputEventForPlayer === null) {
             // No error message before first input
@@ -117,7 +123,10 @@ class MoneySheetState
 
         if ($lastInputEventForPlayer instanceof LebenshaltungskostenForPlayerWereCorrected) {
             // multiply resource change with -1 to get a positive value
-            return new InputResult(false, new MoneyAmount(-1 * $lastInputEventForPlayer->getResourceChanges($playerId)->guthabenChange->value));
+            return new InputResult(
+                false,
+                new MoneyAmount(-1 * $lastInputEventForPlayer->getResourceChanges($playerId)->guthabenChange->value)
+            );
         }
         throw new \RuntimeException("Unknown Event type " . $lastInputEventForPlayer::class);
     }
@@ -134,7 +143,8 @@ class MoneySheetState
     {
         /** @var UpdatesInputForLebenshaltungskosten|null $lastInputEvent @phpstan-ignore varTag.type */
         $lastInputEvent = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof UpdatesInputForLebenshaltungskosten && $event->getPlayerId()->equals($myself));
+            fn($event) => $event instanceof UpdatesInputForLebenshaltungskosten
+                && $event->getPlayerId()->equals($myself));
         return $lastInputEvent === null ? new MoneyAmount(0) : $lastInputEvent->getUpdatedValue();
     }
 
@@ -148,16 +158,19 @@ class MoneySheetState
     {
         /** @var UpdatesInputForSteuernUndAbgaben|null $lastInputEvent @phpstan-ignore varTag.type */
         $lastInputEvent = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof UpdatesInputForSteuernUndAbgaben && $event->getPlayerId()->equals($playerId));
+            fn($event) => $event instanceof UpdatesInputForSteuernUndAbgaben
+                && $event->getPlayerId()->equals($playerId));
         if ($lastInputEvent === null) {
             // There has not been any player input for this field
             // -> the current value is the default value
             // -> check if the default value is also the correct value
             // Return true, if the default value does NOT match the expected value
-            return !self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId)->equals(Configuration::STEUERN_UND_ABGABEN_DEFAULT_VALUE);
+            return !self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId)
+                ->equals(Configuration::STEUERN_UND_ABGABEN_DEFAULT_VALUE);
         }
         // Return true, if the last input does NOT match the expected value
-        return !self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId)->equals($lastInputEvent->getUpdatedValue());
+        return !self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId)
+            ->equals($lastInputEvent->getUpdatedValue());
     }
 
     /**
@@ -170,16 +183,32 @@ class MoneySheetState
     {
         /** @var UpdatesInputForLebenshaltungskosten|null $lastInputEvent @phpstan-ignore varTag.type */
         $lastInputEvent = $gameEvents->findLastOrNullWhere(
-           fn($event) => $event instanceof UpdatesInputForLebenshaltungskosten && $event->getPlayerId()->equals($playerId));
+            fn($event) => $event instanceof UpdatesInputForLebenshaltungskosten
+                && $event->getPlayerId()->equals($playerId));
         if ($lastInputEvent === null) {
             // There has not been any player input for this field
             // -> the current value is the default value
             // -> check if the default value is also the correct value
             // Return true, if the default value does NOT match the expected value
-            return !self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId)->equals(Configuration::LEBENSHALTUNGSKOSTEN_DEFAULT_VALUE);
+            return !self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId)
+                ->equals(Configuration::LEBENSHALTUNGSKOSTEN_DEFAULT_VALUE);
         }
         // Return true, if the last input does NOT match the expected value
-        return !self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId)->equals($lastInputEvent->getUpdatedValue());
+        return !self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId)
+            ->equals($lastInputEvent->getUpdatedValue());
+    }
+
+    public static function hasPlayerCompletedMoneysheet(GameEvents $gameEvents, PlayerId $playerId): bool
+    {
+        return !self::doesLebenshaltungskostenRequirePlayerAction($gameEvents, $playerId)
+            && !self::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $playerId);
+    }
+
+    public static function calculateTotalForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
+    {
+        return PlayerState::getGehaltForPlayer($gameEvents, $playerId)
+            ->subtract(self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId))
+            ->subtract(self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId));
     }
 
     public static function doesPlayerHaveThisInsurance(GameEvents $gameEvents, PlayerId $playerId, InsuranceId $insuranceId): bool

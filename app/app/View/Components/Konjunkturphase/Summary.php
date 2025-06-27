@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\View\Components\MoneySheet\Expenses;
+namespace App\View\Components\Konjunkturphase;
 
 use App\Livewire\Dto\MoneySheet as MoneySheetDto;
 use Domain\CoreGameLogic\EventStore\GameEvents;
@@ -12,14 +12,14 @@ use Domain\CoreGameLogic\PlayerId;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
-class MoneySheetExpenses extends Component
+class Summary extends Component
 {
     /**
      * Create the component instance.
      */
     public function __construct(
-        public PlayerId $playerId,
         public GameEvents $gameEvents,
+        public PlayerId $playerId,
     ) {}
 
     /**
@@ -27,16 +27,14 @@ class MoneySheetExpenses extends Component
      */
     public function render(): View
     {
-        return view('components.gameboard.moneySheet.expenses.money-sheet-expenses', [
+        return view('components.konjunkturphase.summary', [
             'moneySheet' => new MoneySheetDto(
-                lebenshaltungskosten: MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameEvents, $this->playerId),
+                lebenshaltungskosten: MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameEvents, $this->playerId)->value,
                 doesLebenshaltungskostenRequirePlayerAction: MoneySheetState::doesLebenshaltungskostenRequirePlayerAction($this->gameEvents, $this->playerId),
-                steuernUndAbgaben: MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameEvents, $this->playerId),
+                steuernUndAbgaben: MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameEvents, $this->playerId)->value,
                 doesSteuernUndAbgabenRequirePlayerAction: MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($this->gameEvents, $this->playerId),
                 gehalt: PlayerState::getGehaltForPlayer($this->gameEvents, $this->playerId)->value,
                 total: MoneySheetState::calculateTotalForPlayer($this->gameEvents, $this->playerId)->value,
-                totalInsuranceCost: 0,
-                sumOfAllLoans: MoneySheetState::getSumOfAllLoansForPlayer($this->gameEvents, $this->playerId),
             ),
         ]);
     }
