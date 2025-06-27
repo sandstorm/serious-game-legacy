@@ -19,6 +19,7 @@ use Domain\Definitions\Card\Dto\CardDefinition;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
+use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
@@ -66,11 +67,12 @@ abstract class TestCase extends BaseTestCase
     protected array $cardsMinijobs;
 
 
-    private function generatePlayerIds(int $numberOfPlayers) {
-        assert (2 <= $numberOfPlayers && $numberOfPlayers <=4, "Only 2-4 players are supported");
+    private function generatePlayerIds(int $numberOfPlayers)
+    {
+        assert(2 <= $numberOfPlayers && $numberOfPlayers <= 4, "Only 2-4 players are supported");
         $playerIds = [];
         for ($i = 0; $i < $numberOfPlayers; $i++) {
-            $playerIds[$i] = PlayerId::fromString('p'. $i+1);
+            $playerIds[$i] = PlayerId::fromString('p' . $i + 1);
         }
         return $playerIds;
     }
@@ -84,7 +86,7 @@ abstract class TestCase extends BaseTestCase
             PileId::BILDUNG_PHASE_1->value => $this->getCardsForBildungAndKarriere(),
             PileId::FREIZEIT_PHASE_1->value => $this->getCardsForSozialesAndFreizeit(),
             PileId::JOBS_PHASE_1->value => $this->getCardsForJobs(),
-            PileId::MINIJOBS_PHASE_1->value => [],
+            PileId::MINIJOBS_PHASE_1->value => $this->getCardsForMinijobs(),
         ]);
 
         $this->pileIdBildung = PileId::BILDUNG_PHASE_1;
@@ -94,7 +96,7 @@ abstract class TestCase extends BaseTestCase
         $this->pileIdJobs = PileId::JOBS_PHASE_1;
         $this->cardsJobs = $this->getCardsForJobs();
         $this->pileIdMinijobs = PileId::MINIJOBS_PHASE_1;
-        $this->cardsMinijobs = [];
+        $this->cardsMinijobs = $this->getCardsForMinijobs();
 
         $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
             numberOfPlayers: $numberOfPlayers,
@@ -171,10 +173,10 @@ Der steigende Leitzins erhÃ¶ht die Deflation, die Kaufkraft der Barreserven erhÃ
             ChangeKonjunkturphase::create()
                 ->withFixedKonjunkturphaseForTesting($this->konjunkturphaseDefinition)
                 ->withFixedCardOrderForTesting(
-                    new CardOrder( pileId: $this->pileIdBildung, cards: array_map(fn ($card) => $card->id, $this->cardsBildung)),
-                    new CardOrder( pileId: $this->pileIdFreizeit, cards: array_map(fn ($card) => $card->id, $this->cardsFreizeit)),
-                    new CardOrder( pileId: $this->pileIdJobs, cards: array_map(fn ($card) => $card->id, $this->cardsJobs)),
-                    new CardOrder( pileId: $this->pileIdMinijobs, cards: array_map(fn ($card) => $card->id, [])),
+                    new CardOrder(pileId: $this->pileIdBildung, cards: array_map(fn($card) => $card->id, $this->cardsBildung)),
+                    new CardOrder(pileId: $this->pileIdFreizeit, cards: array_map(fn($card) => $card->id, $this->cardsFreizeit)),
+                    new CardOrder(pileId: $this->pileIdJobs, cards: array_map(fn($card) => $card->id, $this->cardsJobs)),
+                    new CardOrder(pileId: $this->pileIdMinijobs, cards: array_map(fn($card) => $card->id, $this->cardsMinijobs)),
                 )
         );
     }
@@ -300,6 +302,34 @@ Der steigende Leitzins erhÃ¶ht die Deflation, die Kaufkraft der Barreserven erhÃ
     }
 
     /**
+     * @return MinijobCardDefinition[]
+     */
+    private function getCardsForMinijobs(): array
+    {
+        return [
+            "mj0" => new MinijobCardDefinition(
+                id: new CardId('mj0'),
+                pileId: PileId::MINIJOBS_PHASE_1,
+                title: 'Minijob',
+                description: 'Kellnerin im Ausland. Einmalzahlung 5.000 â‚¬.',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+5000),
+                ),
+            ),
+            "mj1" => new MinijobCardDefinition(
+                id: new CardId('mj1'),
+                pileId: PileId::MINIJOBS_PHASE_1,
+                title: 'Minijob',
+                description: 'Putzkraft im Ausland. Einmalzahlung 2.000 â‚¬.',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+2000),
+                ),
+            ),
+
+        ];
+    }
+
+    /**
      * @param CardDefinition[] $cards
      * @param PileId $pileId
      * @return void
@@ -314,20 +344,20 @@ Der steigende Leitzins erhÃ¶ht die Deflation, die Kaufkraft der Barreserven erhÃ
             PileId::BILDUNG_PHASE_1->value => $this->getCardsForBildungAndKarriere(),
             PileId::FREIZEIT_PHASE_1->value => $this->getCardsForSozialesAndFreizeit(),
             PileId::JOBS_PHASE_1->value => $this->getCardsForJobs(),
-            PileId::MINIJOBS_PHASE_1->value => [],
+            PileId::MINIJOBS_PHASE_1->value => $this->getCardsForMinijobs(),
         ];
         $testCards[$pileId->value] = [...$cardsToAdd, ...$testCards[$pileId->value]];
         CardFinder::getInstance()->overrideCardsForTesting($testCards);
         $this->coreGameLogic->handle(
             $this->gameId,
             ChangeKonjunkturphase::create()
-            ->withFixedKonjunkturphaseForTesting($this->konjunkturphaseDefinition)
-            ->withFixedCardOrderForTesting(
-                new CardOrder( pileId: $this->pileIdBildung, cards: array_map(fn ($card) => $card->getId(), $testCards[PileId::BILDUNG_PHASE_1->value])),
-                new CardOrder( pileId: $this->pileIdFreizeit, cards: array_map(fn ($card) => $card->getId(), $testCards[PileId::FREIZEIT_PHASE_1->value])),
-                new CardOrder( pileId: $this->pileIdJobs, cards: array_map(fn ($card) => $card->getId(), $testCards[PileId::JOBS_PHASE_1->value])),
-                new CardOrder( pileId: $this->pileIdMinijobs, cards: array_map(fn ($card) => $card->getId(), $testCards[PileId::MINIJOBS_PHASE_1->value])),
-            ));
+                ->withFixedKonjunkturphaseForTesting($this->konjunkturphaseDefinition)
+                ->withFixedCardOrderForTesting(
+                    new CardOrder(pileId: $this->pileIdBildung, cards: array_map(fn($card) => $card->getId(), $testCards[PileId::BILDUNG_PHASE_1->value])),
+                    new CardOrder(pileId: $this->pileIdFreizeit, cards: array_map(fn($card) => $card->getId(), $testCards[PileId::FREIZEIT_PHASE_1->value])),
+                    new CardOrder(pileId: $this->pileIdJobs, cards: array_map(fn($card) => $card->getId(), $testCards[PileId::JOBS_PHASE_1->value])),
+                    new CardOrder(pileId: $this->pileIdMinijobs, cards: array_map(fn($card) => $card->getId(), $testCards[PileId::MINIJOBS_PHASE_1->value])),
+                ));
     }
 
 
@@ -339,7 +369,8 @@ Der steigende Leitzins erhÃ¶ht die Deflation, die Kaufkraft der Barreserven erhÃ
         return [
             ...$this->getCardsForSozialesAndFreizeit(),
             ...$this->getCardsForBildungAndKarriere(),
-            ...$this->getCardsForJobs()
+            ...$this->getCardsForJobs(),
+            ...$this->getCardsForMinijobs()
         ];
     }
 }

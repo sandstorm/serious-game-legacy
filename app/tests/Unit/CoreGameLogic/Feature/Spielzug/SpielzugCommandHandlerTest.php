@@ -32,10 +32,12 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
+use RuntimeException;
 use Tests\TestCase;
 
 @covers(SpielzugCommandHandler::class);
@@ -68,7 +70,7 @@ describe('handleSkipCard', function () {
         $this->coreGameLogic->handle($this->gameId,
             new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
     })->throws(
-        \RuntimeException::class,
+        RuntimeException::class,
         'Du kannst nur eine Zeitsteinaktion pro Runde ausführen',
         1747325793);
 
@@ -77,7 +79,7 @@ describe('handleSkipCard', function () {
         $this->coreGameLogic->handle($this->gameId,
             new SkipCard(playerId: $this->players[1], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
     })->throws(
-        \RuntimeException::class,
+        RuntimeException::class,
         'Du kannst Karten nur überspringen, wenn du dran bist',
         1747325793);
 
@@ -119,7 +121,7 @@ describe('handleSkipCard', function () {
 
         $this->coreGameLogic->handle($this->gameId,
             new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
-    })->throws(\RuntimeException::class,
+    })->throws(RuntimeException::class,
         'Du hast nicht genug Ressourcen um die Karte zu überspringen', 1747325793);
 
     it("card cannot be skipped when no free slots are available for this konjunkturphase", function () {
@@ -162,7 +164,7 @@ describe('handleSkipCard', function () {
             playerId: $this->players[1],
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
-    })->throws(\RuntimeException::class,
+    })->throws(RuntimeException::class,
         'Es gibt keine freien Zeitsteine mehr.',
         1747325793);
 });
@@ -322,7 +324,7 @@ describe('handleActivateCard', function () {
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
     })->throws(
-        \RuntimeException::class,
+        RuntimeException::class,
         'Du hast bereits eine Karte in einer anderen Kategorie übersprungen',
         1748951140);
 
@@ -358,7 +360,7 @@ describe('handleActivateCard', function () {
         $actualEvent = $stream->findLast(CardWasActivated::class);
         expect($actualEvent->cardId->value)->toEqual('buk2');
     })->throws(
-        \RuntimeException::class,
+        RuntimeException::class,
         'Du hast bereits eine andere Aktion ausgeführt',
         1748951140);
 
@@ -409,7 +411,7 @@ describe('handleActivateCard', function () {
             playerId: $this->players[1],
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
-    })->throws(\RuntimeException::class, 'Du kannst Karten nur spielen, wenn du dran bist',
+    })->throws(RuntimeException::class, 'Du kannst Karten nur spielen, wenn du dran bist',
         1748951140);
 
     it("will not activate the card if the requirements are not met", function () {
@@ -431,7 +433,7 @@ describe('handleActivateCard', function () {
             playerId: $this->players[0],
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
-    })->throws(\RuntimeException::class,
+    })->throws(RuntimeException::class,
         'Du hast nicht genug Ressourcen um die Karte zu spielen',
         1748951140);
 
@@ -475,7 +477,7 @@ describe('handleActivateCard', function () {
             playerId: $this->players[1],
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
-    })->throws(\RuntimeException::class,
+    })->throws(RuntimeException::class,
         'Es gibt keine freien Slots für Zeitsteine mehr.',
         1748951140);
 
@@ -522,7 +524,7 @@ describe('handleRequestJobOffers', function () {
         // this request fails, no free slots available
         $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
-    })->throws(\RuntimeException::class,
+    })->throws(RuntimeException::class,
         'Es gibt keine freien Zeitsteine mehr.', 1749043606);
 
 
@@ -707,7 +709,7 @@ describe('handleAcceptJobOffer', function () {
         ]);
 
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j3')));
-    })->throws(\RuntimeException::class, 'Du kannst nur einen Job annehmen, der dir vorgeschlagen wurde', 1749043636);
+    })->throws(RuntimeException::class, 'Du kannst nur einen Job annehmen, der dir vorgeschlagen wurde', 1749043636);
 
     it('throws an exception if job was not previously offered to player', function () {
         /** @var TestCase $this */
@@ -764,7 +766,7 @@ describe('handleAcceptJobOffer', function () {
 
         $this->coreGameLogic->handle($this->gameId,
             AcceptJobOffer::create($this->players[0], new CardId($jobThatWasNotOffered)));
-    })->throws(\RuntimeException::class,
+    })->throws(RuntimeException::class,
         'Du kannst nur einen Job annehmen, der dir vorgeschlagen wurde', 1749043636);
 
     it('permanently removes 1 Zeitstein while the player has a job', function () {
@@ -859,20 +861,36 @@ describe('handleAcceptJobOffer', function () {
 describe('handleDoMinijob', function () {
     it('throws an exception when the player does not have enough Zeitsteine', function () {
         /** @var TestCase $this */
-        //$stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        //expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(0);
+        $cardsForTesting = [
+            "cardToRemoveZeitsteine" => new KategorieCardDefinition(
+                id: new CardId('cardToRemoveZeitsteine'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS +1,
+                ),
+            ),
+        ];
+        $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+        ));
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(0);
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
     })->throws(
-        \RuntimeException::class,
-        'Cannot do minijob: Du hast nicht genug Zeitsteine',
-        1750928806
+        RuntimeException::class,
+        'Du hast nicht genug Zeitsteine, um den Minijob anzunehmen',
+        1750854280
     );
 
-    it('returns money to the player after doing the minijob', function () {
+    it('adds money to the players account after doing the minijob', function () {
         /** @var TestCase $this */
         $minijobs = [
             "testMinijob" => new MinijobCardDefinition(
-                id: new CardId('textMinijob'),
+                id: new CardId('testMinijob'),
                 pileId: PileId::MINIJOBS_PHASE_1,
                 title: 'Softwaretester',
                 description: 'Du arbeitest nebenbei als Softwaretester und bekommst einmalig Gehalt',
@@ -883,29 +901,22 @@ describe('handleDoMinijob', function () {
 
         $this->addCardsOnTopOfPile($minijobs, PileId::MINIJOBS_PHASE_1);
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGuthabenForPlayer($stream, $this->players[0])->value)->toEqual(50000);
+        expect(PlayerState::getGuthabenForPlayer($stream, $this->players[0])->value)->toEqual(Configuration::STARTKAPITAL_VALUE);
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGuthabenForPlayer($stream, $this->players[0])->value)->toEqual(50500);
-
+        expect(PlayerState::getGuthabenForPlayer($stream, $this->players[0])->value)->toEqual(Configuration::STARTKAPITAL_VALUE + 500);
     });
 
 
 
     it('throws an exception when the player wants to do more than one Zeitsteinaktion', function () {
-
-        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(3);
-
+        /** @var TestCase $this */
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
-        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(2);
-
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
     })->throws(
-        \RuntimeException::class,
-        'Cannot do more than one Zeitsteinaktion.',
-        1750930007
+        RuntimeException::class,
+        'Du kannst nur eine Zeitsteinaktion pro Runde ausführen',
+        1750854280
     );
 });
 
@@ -921,7 +932,7 @@ describe('handleEndSpielzug', function () {
             new EndSpielzug($this->players[1])
         );
     })->throws(
-        \RuntimeException::class,
+        RuntimeException::class,
         'Cannot end spielzug: Du bist gerade nicht dran',
         1748946243
     );
@@ -933,7 +944,7 @@ describe('handleEndSpielzug', function () {
             new EndSpielzug($this->players[0])
         );
     })->throws(
-        \RuntimeException::class,
+        RuntimeException::class,
         'Cannot end spielzug: Du musst erst einen Zeitstein für eine Aktion ausgeben',
         1748946243
     );

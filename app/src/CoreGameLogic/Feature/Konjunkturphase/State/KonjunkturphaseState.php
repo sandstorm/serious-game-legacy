@@ -9,6 +9,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\ZeitsteineForPlayer;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 
@@ -22,9 +23,8 @@ class KonjunkturphaseState
         $playerIds = $gameEvents->findFirst(GameWasStarted::class)->playerOrdering;
         $numberOfPlayers = count($playerIds);
         $numberOfZeitsteine = match($numberOfPlayers) {
-            2 => 6,
-            3 => 5,
-            4 => 4,
+            2 => Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS,
+            3, 4 => Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_THREE_OR_FOUR_PLAYERS,
             default => throw new \RuntimeException('Number of players not supported', 1748866080)
         };
         $zeitsteineForPlayers = [];

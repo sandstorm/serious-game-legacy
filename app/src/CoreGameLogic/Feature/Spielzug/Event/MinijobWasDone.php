@@ -5,11 +5,13 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
-final readonly class MinijobWasDone implements GameEventInterface, ProvidesResourceChanges
+final readonly class MinijobWasDone implements GameEventInterface, ProvidesResourceChanges, ZeitsteinAktion
 {
     public function __construct(
         public PlayerId        $playerId,
@@ -43,5 +45,20 @@ final readonly class MinijobWasDone implements GameEventInterface, ProvidesResou
             return $this->resourceChanges->accumulate(new ResourceChanges(zeitsteineChange: -1));
         }
         return new ResourceChanges();
+    }
+
+    public function getCategoryId(): CategoryId
+    {
+        return CategoryId::MINIJOBS;
+    }
+
+    public function getPlayerId(): PlayerId
+    {
+        return $this->playerId;
+    }
+
+    public function getNumberOfZeitsteinslotsUsed(): int
+    {
+        return 0;
     }
 }

@@ -62,7 +62,7 @@ class DoMinijobAktion extends Aktion
     {
         $result = $this->validate($playerId, $gameEvents);
         if (!$result->canExecute) {
-            throw new RuntimeException('Cannot Do Mini Job: ' . $result->reason, 1750854280);
+            throw new RuntimeException('Cannot Do minijob: ' . $result->reason, 1750854280);
         }
         $topCardOnPile = PileState::topCardIdForPile($gameEvents, PileId::MINIJOBS_PHASE_1);
 

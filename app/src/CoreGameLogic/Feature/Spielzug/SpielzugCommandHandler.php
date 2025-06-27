@@ -45,11 +45,11 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             RequestJobOffers::class => $this->handleRequestJobOffers($command, $gameEvents),
             AcceptJobOffer::class => $this->handleAcceptJobOffer($command, $gameEvents),
             EndSpielzug::class => $this->handleEndSpielzug($command, $gameEvents),
-            DoMinijob::class => $this->handleActivateMinijob($command, $gameEvents),
+            DoMinijob::class => $this->handleDoMinijob($command, $gameEvents),
         };
     }
 
-    private function handleActivateMinijob(DoMinijob $command, GameEvents $gameEvents): GameEventsToPersist
+    private function handleDoMinijob(DoMinijob $command, GameEvents $gameEvents): GameEventsToPersist
     {
         $aktion = new Aktion\DoMinijobAktion();
         return $aktion->execute($command->playerId, $gameEvents);
@@ -98,5 +98,4 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
         $aktion = new SkipCardAktion($command->categoryId);
         return $aktion->execute($command->playerId, $gameState);
     }
-
 }
