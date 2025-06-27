@@ -26,6 +26,14 @@ final class CardFinder
 
     private static ?self $instance = null;
 
+    /**
+     * @param array<PileID::value, CardDefinition[]> $cards
+     */
+    private function __construct(array $cards)
+    {
+        $this->cards = $cards;
+    }
+
     public static function getInstance(): self
     {
         if (self::$instance === null) {
@@ -37,6 +45,15 @@ final class CardFinder
     public static function initializeForTesting(): void
     {
         self::initialize();
+    }
+
+    /**
+     * @param array<PileID::value, CardDefinition[]> $cards
+     * @return void
+     */
+    public function overrideCardsForTesting(array $cards): void
+    {
+        self::getInstance()->cards = $cards;
     }
 
     private static function initialize(): self
@@ -175,23 +192,6 @@ final class CardFinder
             ]
         ]);
         return self::$instance;
-    }
-
-    /**
-     * @param array<PileID::value, CardDefinition[]> $cards
-     * @return void
-     */
-    public function overrideCardsForTesting(array $cards): void
-    {
-        self::getInstance()->cards = $cards;
-    }
-
-    /**
-     * @param array<PileID::value, CardDefinition[]> $cards
-     */
-    private function __construct(array $cards)
-    {
-        $this->cards = $cards;
     }
 
     /**

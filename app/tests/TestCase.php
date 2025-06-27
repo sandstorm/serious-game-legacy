@@ -23,6 +23,10 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\Definitions\Insurance\InsuranceDefinition;
+use Domain\Definitions\Insurance\InsuranceFinder;
+use Domain\Definitions\Insurance\ValueObject\InsuranceId;
+use Domain\Definitions\Insurance\ValueObject\InsuranceTypeEnum;
 use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
 use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
@@ -57,6 +61,11 @@ abstract class TestCase extends BaseTestCase
      */
     protected array $cardsJobs;
 
+    /**
+     * @var InsuranceDefinition[]
+     */
+    protected array $insurances;
+
     protected $konjunkturphaseDefinition;
 
     private function generatePlayerIds(int $numberOfPlayers) {
@@ -78,6 +87,41 @@ abstract class TestCase extends BaseTestCase
             PileId::FREIZEIT_PHASE_1->value => $this->getCardsForSozialesAndFreizeit(),
             PileId::JOBS_PHASE_1->value => $this->getCardsForJobs(),
         ]);
+
+        InsuranceFinder::getInstance()->overrideInsurancesForTesting([
+            new InsuranceDefinition(
+                id: InsuranceId::create(1),
+                type: InsuranceTypeEnum::HAFTPFLICHT,
+                description: 'Haftpflichtversicherung',
+                annualCost: [
+                    1 => new MoneyAmount(100),
+                    2 => new MoneyAmount(120),
+                    3 => new MoneyAmount(140),
+                ]
+            ),
+            new InsuranceDefinition(
+                id: InsuranceId::create(2),
+                type: InsuranceTypeEnum::UNFALLVERSICHERUNG,
+                description: 'Unfallversicherung',
+                annualCost: [
+                    1 => new MoneyAmount(150),
+                    2 => new MoneyAmount(180),
+                    3 => new MoneyAmount(200),
+                ]
+            ),
+            new InsuranceDefinition(
+                id: InsuranceId::create(3),
+                type: InsuranceTypeEnum::BERUFSUNFAEHIGKEITSVERSICHERUNG,
+                description: 'Berufsunfähigkeitsversicherung',
+                annualCost: [
+                    1 => new MoneyAmount(500),
+                    2 => new MoneyAmount(600),
+                    3 => new MoneyAmount(700),
+                ]
+            ),
+        ]);
+
+        $this->insurances = InsuranceFinder::getInstance()->getAllInsurances();
 
         $this->pileIdBildung = PileId::BILDUNG_PHASE_1;
         $this->cardsBildung = $this->getCardsForBildungAndKarriere();

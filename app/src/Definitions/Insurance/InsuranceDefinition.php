@@ -14,16 +14,25 @@ class InsuranceDefinition
      * @param InsuranceId $id
      * @param InsuranceTypeEnum $type
      * @param string $description
-     * @param MoneyAmount $annualCost
+     * @param MoneyAmount[] $annualCost
      */
     public function __construct(
         public InsuranceId       $id,
         public InsuranceTypeEnum $type,
         public string            $description,
-        // TODO some insurance have different costs per phase
-        public MoneyAmount       $annualCost,
+        public array             $annualCost,
         // TODO add field for benefits or coverage details
     )
     {
+    }
+
+    public function getAnnualCost(int $currentPhase = 1): MoneyAmount
+    {
+        return $this->annualCost[$currentPhase];
+    }
+
+    public function getLabelWithAnnualCost(int $currentPhase = 1): string
+    {
+        return sprintf('%s (%s € / Jahr)', $this->type->value, self::getAnnualCost($currentPhase)->value);
     }
 }

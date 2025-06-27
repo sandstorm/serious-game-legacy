@@ -6,7 +6,6 @@ namespace App\View\Components\MoneySheet\Expenses;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\PlayerId;
-use Domain\Definitions\Insurance\InsuranceFinder;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
@@ -25,10 +24,7 @@ class MoneySheetInsurances extends Component
      */
     public function render(): View
     {
-        $insurances = InsuranceFinder::getAllInsurances();
-
         return view('components.gameboard.moneySheet.expenses.money-sheet-insurances', [
-            'insurances' => $insurances,
         ]);
     }
 

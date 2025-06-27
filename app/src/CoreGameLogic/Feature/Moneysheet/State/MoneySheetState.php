@@ -8,6 +8,8 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Moneysheet\Dto\InputResult;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\Behaviour\UpdatesInputForLebenshaltungskosten;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\Behaviour\UpdatesInputForSteuernUndAbgaben;
+use Domain\CoreGameLogic\Feature\Moneysheet\Event\InsuranceForPlayerWasCancelled;
+use Domain\CoreGameLogic\Feature\Moneysheet\Event\InsuranceForPlayerWasConcluded;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\LebenshaltungskostenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\LebenshaltungskostenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\SteuernUndAbgabenForPlayerWereCorrected;
@@ -17,6 +19,9 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Configuration\Configuration;
+use Domain\Definitions\Insurance\InsuranceFinder;
+use Domain\Definitions\Insurance\ValueObject\InsuranceId;
+use Domain\Definitions\Insurance\ValueObject\InsuranceTypeEnum;
 
 class MoneySheetState
 {
@@ -174,5 +179,58 @@ class MoneySheetState
         }
         // Return true, if the last input does NOT match the expected value
         return !self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId)->equals($lastInputEvent->getUpdatedValue());
+    }
+
+    public static function doesPlayerHaveThisInsurance(GameEvents $gameEvents, PlayerId $playerId, InsuranceId $insuranceId): bool
+    {
+        // returns all events after the last insurance conclusion event for this player
+        // if no conclusion event was found, it returns null
+        // if no events after the conclusion event were found, it returns an empty array
+        $eventsAfterInsuranceWasConcluded = $gameEvents->findAllAfterLastOrNullWhere(
+            fn($event) => $event instanceof InsuranceForPlayerWasConcluded &&
+                $event->playerId->equals($playerId) &&
+                $event->insuranceId === $insuranceId
+        );
+
+        if ($eventsAfterInsuranceWasConcluded === null) {
+            // if this is null, the player never took out an insurance
+            return false;
+        }
+        if (count($eventsAfterInsuranceWasConcluded->events) > 0) {
+            // if there are any cancellation events after the conclusion event, the insurance is not active anymore
+            $lastCancellationEvent = $eventsAfterInsuranceWasConcluded->findLastOrNullWhere(
+                fn($event) => $event instanceof InsuranceForPlayerWasCancelled &&
+                    $event->playerId->equals($playerId) &&
+                    $event->insuranceId === $insuranceId
+            );
+            if ($lastCancellationEvent !== null) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Returns the total cost of all insurances concluded by the player.
+     *
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return MoneyAmount
+     */
+    public static function getCostOfAllInsurances(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
+    {
+        $insurances = InsuranceFinder::getInstance()->getAllInsurances();
+        $currentPlayerPhase = 1; // TODO
+
+        $totalCost = 0;
+        foreach ($insurances as $insurance) {
+            if (!self::doesPlayerHaveThisInsurance($gameEvents, $playerId, $insurance->id)) {
+                // Player does not have this insurance, skip it
+                continue;
+            }
+            $totalCost += $insurance->getAnnualCost($currentPlayerPhase)->value;
+        }
+
+        return new MoneyAmount($totalCost);
     }
 }

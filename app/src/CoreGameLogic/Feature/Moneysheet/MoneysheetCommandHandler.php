@@ -8,8 +8,12 @@ use Domain\CoreGameLogic\CommandHandler\CommandHandlerInterface;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
+use Domain\CoreGameLogic\Feature\Moneysheet\Command\CancelInsuranceForPlayer;
+use Domain\CoreGameLogic\Feature\Moneysheet\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterSteuernUndAbgabenForPlayer;
+use Domain\CoreGameLogic\Feature\Moneysheet\Event\InsuranceForPlayerWasCancelled;
+use Domain\CoreGameLogic\Feature\Moneysheet\Event\InsuranceForPlayerWasConcluded;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\LebenshaltungskostenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\LebenshaltungskostenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\SteuernUndAbgabenForPlayerWereCorrected;
@@ -25,7 +29,9 @@ final readonly class MoneysheetCommandHandler implements CommandHandlerInterface
     public function canHandle(CommandInterface $command): bool
     {
         return $command instanceof EnterSteuernUndAbgabenForPlayer
-            || $command instanceof EnterLebenshaltungskostenForPlayer;
+            || $command instanceof EnterLebenshaltungskostenForPlayer
+            || $command instanceof ConcludeInsuranceForPlayer
+            || $command instanceof CancelInsuranceForPlayer;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameEvents): GameEventsToPersist
@@ -36,6 +42,10 @@ final readonly class MoneysheetCommandHandler implements CommandHandlerInterface
                 $command, $gameEvents),
             EnterLebenshaltungskostenForPlayer::class => $this->handleEnterLebenshaltungskostenForPlayer(
                 $command, $gameEvents),
+            ConcludeInsuranceForPlayer::class => $this->handleConcludeInsuranceForPlayer(
+                $command, $gameEvents),
+            CancelInsuranceForPlayer::class => $this->handleCancelInsuranceForPlayer(
+                $command, $gameEvents),
         };
     }
 
@@ -44,7 +54,6 @@ final readonly class MoneysheetCommandHandler implements CommandHandlerInterface
         GameEvents $gameEvents
     ): GameEventsToPersist {
         $expectedInput = MoneySheetState::calculateSteuernUndAbgabenForPlayer($gameEvents, $command->playerId);
-
         $previousTries = MoneySheetState::getNumberOfTriesForSteuernUndAbgabenInput($gameEvents, $command->playerId);
 
         $returnEvents = GameEventsToPersist::with(
@@ -88,6 +97,42 @@ final readonly class MoneysheetCommandHandler implements CommandHandlerInterface
         }
 
         return $returnEvents;
+    }
+
+    private function handleConcludeInsuranceForPlayer(
+        ConcludeInsuranceForPlayer $command,
+        GameEvents                 $gameEvents
+    ): GameEventsToPersist {
+        $hasInsurance = MoneySheetState::doesPlayerHaveThisInsurance($gameEvents, $command->playerId, $command->insuranceId);
+
+        if ($hasInsurance) {
+            throw new \RuntimeException("Cannot conclude insurance that was already concluded.");
+        }
+
+        return GameEventsToPersist::with(
+            new InsuranceForPlayerWasConcluded(
+                playerId: $command->playerId,
+                insuranceId: $command->insuranceId,
+            )
+        );
+    }
+
+    private function handleCancelInsuranceForPlayer(
+        CancelInsuranceForPlayer $command,
+        GameEvents $gameEvents
+    ): GameEventsToPersist {
+        $hasInsurance = MoneySheetState::doesPlayerHaveThisInsurance($gameEvents, $command->playerId, $command->insuranceId);
+
+        if (!$hasInsurance) {
+            throw new \RuntimeException("Cannot cancel insurance that was not concluded.");
+        }
+
+        return GameEventsToPersist::with(
+            new InsuranceForPlayerWasCancelled(
+                playerId: $command->playerId,
+                insuranceId: $command->insuranceId,
+            )
+        );
     }
 
 }

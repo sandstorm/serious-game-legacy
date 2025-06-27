@@ -64,7 +64,7 @@
                 </tr>
                 <tr>
                     <td>Versicherungen</td>
-                    <td class="text-align--right">0€</td>
+                    <td class="text-align--right">{{$moneySheet->totalInsuranceCost}}€</td>
                     <td>
                         <button type="button" class="button button--type-primary button--size-small"
                                 wire:click="showExpensesTab('{{ ExpensesTabEnum::INSURANCES }}')">Bearbeiten
@@ -88,7 +88,7 @@
                     <td>Lebenshaltungskosten
                         @if($moneySheet->doesLebenshaltungskostenRequirePlayerAction)
                             <span><strong>(!!)</strong></span>
-                        @else <span>mist</span> @endif
+                        @endif
                     </td>
                     <td class="text-align--right">{{$moneySheet->lebenshaltungskosten}}€</td>
                     <td>

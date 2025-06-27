@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace App\Livewire\Traits;
 
+use App\Livewire\Forms\MoneySheetInsurancesForm;
 use App\Livewire\Forms\MoneySheetLebenshaltungskostenForm;
 use App\Livewire\Forms\MoneySheetSteuernUndAbgabenForm;
 use App\Livewire\ValueObject\ExpensesTabEnum;
 use App\Livewire\ValueObject\IncomeTabEnum;
+use Domain\CoreGameLogic\Feature\Moneysheet\Command\CancelInsuranceForPlayer;
+use Domain\CoreGameLogic\Feature\Moneysheet\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
+use Domain\Definitions\Insurance\InsuranceFinder;
+use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 
 
 trait HasMoneySheet
@@ -19,16 +24,31 @@ trait HasMoneySheet
     // forms
     public MoneySheetLebenshaltungskostenForm $moneySheetLebenshaltungskostenForm;
     public MoneySheetSteuernUndAbgabenForm $moneySheetSteuernUndAbgabenForm;
+    public MoneySheetInsurancesForm $moneySheetInsurancesForm;
 
     public bool $moneySheetIsVisible = false;
     public bool $editIncomeIsVisible = false;
     public bool $editExpensesIsVisible = false;
 
     // set in the view money-sheet-income.blade.php
-    public IncomeTabEnum $activeTabForIncome = IncomeTabEnum::INVESTMENTS; // 'investments', 'salary'
+    public IncomeTabEnum $activeTabForIncome = IncomeTabEnum::INVESTMENTS;
     // set in the view money-sheet-expenses.blade.php
-    public ExpensesTabEnum $activeTabForExpenses = ExpensesTabEnum::LOANS; // 'credits', 'kids', 'insurances', 'taxes', 'livingCosts'
+    public ExpensesTabEnum $activeTabForExpenses = ExpensesTabEnum::LOANS;
 
+    public function mountHasMoneySheet(): void
+    {
+        // init insurances form
+        $insurances = InsuranceFinder::getInstance()->getAllInsurances();
+        $currentPlayerPhase = 1;
+        foreach ($insurances as $insurance) {
+            $isActive = MoneySheetState::doesPlayerHaveThisInsurance($this->gameEvents, $this->myself, $insurance->id);
+            $this->moneySheetInsurancesForm->addInsurance(
+                $currentPlayerPhase,
+                $insurance,
+                $isActive
+            );
+        }
+    }
 
     /**
      * Update the form state on a rendering. Can happen for example when user changes their job.
@@ -38,21 +58,18 @@ trait HasMoneySheet
      */
     public function renderingHasMoneySheet(): void
     {
-        $latestInputForSteuernUndAbgaben = MoneySheetState::getLastInputForSteuernUndAbgaben($this->gameEvents,
-            $this->myself);
-        $calculatedSteuernUndAbgaben = MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameEvents,
-            $this->myself);
+        $latestInputForSteuernUndAbgaben = MoneySheetState::getLastInputForSteuernUndAbgaben($this->gameEvents, $this->myself);
+        $calculatedSteuernUndAbgaben = MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameEvents, $this->myself);
         $this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben = $latestInputForSteuernUndAbgaben->value;
         $this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled = $latestInputForSteuernUndAbgaben->equals($calculatedSteuernUndAbgaben);
 
-        $latestInputForLebenshaltungskosten = MoneySheetState::getLastInputForLebenshaltungskosten($this->gameEvents,
-            $this->myself);
-        $calculatedLebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameEvents,
-            $this->myself);
+        $latestInputForLebenshaltungskosten = MoneySheetState::getLastInputForLebenshaltungskosten($this->gameEvents, $this->myself);
+        $calculatedLebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameEvents, $this->myself);
         $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten = $latestInputForLebenshaltungskosten->value;
         $this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled = $latestInputForLebenshaltungskosten->equals($calculatedLebenshaltungskosten);
-    }
 
+
+    }
 
     public function showMoneySheet(): void
     {
@@ -141,6 +158,27 @@ trait HasMoneySheet
         } elseif (!$resultOfLastInput->wasSuccessful) {
             $this->moneySheetSteuernUndAbgabenForm->addError('steuernUndAbgaben',
                 "Du hast einen falschen Wert für die Steuern und Abgaben eingegeben.");
+        }
+
+        $this->broadcastNotify();
+    }
+
+    public function setInsurances(): void
+    {
+        foreach($this->moneySheetInsurancesForm->insurances as $insuranceFromForm) {
+            $insuranceId = InsuranceId::create($insuranceFromForm['id']);
+            $currentlyConcluded = MoneySheetState::doesPlayerHaveThisInsurance($this->gameEvents, $this->myself, $insuranceId);
+            $shouldBeConcluded = $insuranceFromForm['value'] === true;
+            if ($currentlyConcluded === $shouldBeConcluded) {
+                // nothing to do, insurance is already in the desired state
+                continue;
+            }
+            // conclude or cancel insurance
+            if ($shouldBeConcluded) {
+                $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->myself, $insuranceId));
+            } else {
+                $this->coreGameLogic->handle($this->gameId, CancelInsuranceForPlayer::create($this->myself, $insuranceId));
+            }
         }
 
         $this->broadcastNotify();
