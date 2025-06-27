@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Traits;
 
+use App\Livewire\Dto\MoneySheet as MoneySheetDto;
 use App\Livewire\Forms\MoneySheetLebenshaltungskostenForm;
 use App\Livewire\Forms\MoneySheetSteuernUndAbgabenForm;
 use App\Livewire\ValueObject\ExpensesTabEnum;
@@ -11,6 +12,8 @@ use App\Livewire\ValueObject\IncomeTabEnum;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
 
@@ -98,6 +101,18 @@ trait HasMoneySheet
         $this->editIncomeIsVisible = false;
         $this->editExpensesIsVisible = true;
         $this->activeTabForExpenses = ExpensesTabEnum::from($tab);
+    }
+
+    public function getMoneysheetForPlayerId(PlayerId $playerId): MoneySheetDto
+    {
+        return new MoneySheetDto(
+            lebenshaltungskosten: MoneySheetState::getLastInputForLebenshaltungskosten($this->gameEvents, $playerId)->value,
+            doesLebenshaltungskostenRequirePlayerAction: MoneySheetState::doesLebenshaltungskostenRequirePlayerAction($this->gameEvents, $playerId),
+            steuernUndAbgaben: MoneySheetState::getLastInputForSteuernUndAbgaben($this->gameEvents, $playerId)->value,
+            doesSteuernUndAbgabenRequirePlayerAction: MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($this->gameEvents, $playerId),
+            gehalt: PlayerState::getGehaltForPlayer($this->gameEvents, $playerId)->value,
+            total: MoneySheetState::calculateTotalForPlayer($this->gameEvents, $playerId)->value,
+        );
     }
 
     public function setLebenshaltungskosten(): void

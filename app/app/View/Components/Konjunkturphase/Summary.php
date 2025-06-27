@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\View\Components\MoneySheet\Expenses;
+namespace App\View\Components\Konjunkturphase;
 
 use App\Livewire\Dto\MoneySheet as MoneySheetDto;
 use Domain\CoreGameLogic\EventStore\GameEvents;
@@ -12,14 +12,14 @@ use Domain\CoreGameLogic\PlayerId;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
-class MoneySheetTaxes extends Component
+class Summary extends Component
 {
     /**
      * Create the component instance.
      */
     public function __construct(
-        public PlayerId $playerId,
         public GameEvents $gameEvents,
+        public PlayerId $playerId,
     ) {}
 
     /**
@@ -27,7 +27,7 @@ class MoneySheetTaxes extends Component
      */
     public function render(): View
     {
-        return view('components.gameboard.moneySheet.expenses.money-sheet-taxes', [
+        return view('components.konjunkturphase.summary', [
             'moneySheet' => new MoneySheetDto(
                 lebenshaltungskosten: MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameEvents, $this->playerId)->value,
                 doesLebenshaltungskostenRequirePlayerAction: MoneySheetState::doesLebenshaltungskostenRequirePlayerAction($this->gameEvents, $this->playerId),

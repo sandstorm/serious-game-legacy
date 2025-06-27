@@ -94,7 +94,7 @@
                 <x-gameboard.moneySheet.money-sheet-expenses-modal :player-id="$myself"
                                                                    :game-events="$this->gameEvents"/>
             @else
-                <x-money-sheet.money-sheet :player-id="$myself" :game-events="$this->gameEvents"/>
+                <x-money-sheet.money-sheet :money-sheet="$this->getMoneysheetForPlayerId($myself)"/>
             @endif
         @endif
 
