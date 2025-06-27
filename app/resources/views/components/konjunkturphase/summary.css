@@ -1,0 +1,20 @@
+.konjunkturphase-summary-table {
+    border-collapse: collapse;
+    border: none;
+
+    th, td {
+        border: none;
+    }
+}
+
+.konjunkturphase-summary-table__name-column {
+    padding-left: 20px;
+}
+
+.konjunkturphase-summary-table__value-column {
+    text-align: right;
+}
+
+.konjunkturphase-summary-table__bottom-row {
+    border-bottom: 1px solid;
+}

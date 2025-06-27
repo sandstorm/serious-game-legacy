@@ -10,13 +10,16 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\StartKonjunkturphaseForPlayer;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\PlayerHasStartedKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;
+use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Zinssatz;
 use Domain\Definitions\Card\PileFinder;
 use Domain\Definitions\Card\ValueObject\CardId;
@@ -32,8 +35,9 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
 {
     public function canHandle(CommandInterface $command): bool
     {
-        return $command instanceof ChangeKonjunkturphase ||
-            $command instanceof StartKonjunkturphaseForPlayer;
+        return $command instanceof ChangeKonjunkturphase
+            || $command instanceof CompleteMoneysheetForPlayer
+            || $command instanceof StartKonjunkturphaseForPlayer;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameEvents): GameEventsToPersist
@@ -41,6 +45,7 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
         /** @phpstan-ignore-next-line */
         return match ($command::class) {
             ChangeKonjunkturphase::class => $this->handleChangeKonjunkturphase($command, $gameEvents),
+            CompleteMoneysheetForPlayer::class => $this->handleCompleteMoneysheetForPlayer($command, $gameEvents),
             StartKonjunkturphaseForPlayer::class => $this->handleStartKonjunkturphaseForPlayer($command, $gameEvents),
         };
     }
@@ -151,7 +156,20 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
         return GameEventsToPersist::with(
             new PlayerHasStartedKonjunkturphase(
                 playerId: $command->playerId,
-                year: KonjunkturphaseState::getCurrentYear($gameEvents)
+                year: KonjunkturphaseState::getCurrentYear($gameEvents),
+            )
+        );
+    }
+
+    private function handleCompleteMoneysheetForPlayer(
+        CompleteMoneysheetForPlayer $command,
+        GameEvents $gameEvents
+    ): GameEventsToPersist {
+        // TODO validate -> Aktion?
+        return GameEventsToPersist::with(
+            new PlayerHasCompletedMoneysheetForCurrentKonjunkturphase(
+                playerId: $command->playerId,
+                year: KonjunkturphaseState::getCurrentYear($gameEvents),
             )
         );
     }

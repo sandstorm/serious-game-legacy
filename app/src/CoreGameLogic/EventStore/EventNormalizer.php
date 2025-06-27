@@ -12,6 +12,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\PlayerHasStartedKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\InsuranceForPlayerWasConcluded;
@@ -74,6 +75,7 @@ final readonly class EventNormalizer
             LebenszielWasSelected::class,
             NameForPlayerWasSet::class,
             PlayerColorWasSelected::class,
+            PlayerHasCompletedMoneysheetForCurrentKonjunkturphase::class,
             PlayerHasStartedKonjunkturphase::class,
             PreGameStarted::class,
             SpielzugWasEnded::class,
