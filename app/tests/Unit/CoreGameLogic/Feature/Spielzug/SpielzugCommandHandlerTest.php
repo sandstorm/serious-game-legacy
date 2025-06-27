@@ -54,13 +54,13 @@ describe('handleSkipCard', function () {
         /** @var TestCase $this */
         // Check the initial assumption of how many Zeitsteine the player has at the start of the test
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(6);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS);
 
         $this->coreGameLogic->handle($this->gameId,
             new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(5);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(4);
     });
 
     it('Cannot skip twice', function () {
@@ -92,7 +92,7 @@ describe('handleSkipCard', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -5,
+                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS +1,
                 ),
             ),
         ];
@@ -100,7 +100,7 @@ describe('handleSkipCard', function () {
 
         // Check the initial assumption of how many Zeitsteine the player has at the start of the test
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(6);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS);
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
             playerId: $this->players[0],
@@ -187,10 +187,11 @@ describe('handleActivateCard', function () {
             ],
             PileId::FREIZEIT_PHASE_1->value => [],
             PileId::JOBS_PHASE_1->value => [],
+            PileId::MINIJOBS_PHASE_1->value => [],
         ]);
         // Check the initial assumption of how many Zeitsteine the player has at the start of the test
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(6);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS);
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -201,7 +202,7 @@ describe('handleActivateCard', function () {
             ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(5);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS -1);
     });
 
     it('will consume a Zeitstein (later turns)', function () {
@@ -223,6 +224,7 @@ describe('handleActivateCard', function () {
             ],
             PileId::FREIZEIT_PHASE_1->value => [],
             PileId::JOBS_PHASE_1->value => [],
+            PileId::MINIJOBS_PHASE_1->value => [],
         ]);
 
         $this->coreGameLogic->handle(
@@ -233,7 +235,7 @@ describe('handleActivateCard', function () {
 
         // Check the initial assumption of how many Zeitsteine the player has at the start of the test
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(6);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS);
 
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
             playerId: $this->players[0],
@@ -251,7 +253,7 @@ describe('handleActivateCard', function () {
         ));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[1]))->toBe(5);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[1]))->toBe(4);
     });
 
     it('will not consume a Zeitstein after skipping a Card', function () {
@@ -280,7 +282,7 @@ describe('handleActivateCard', function () {
 
         // Check the initial assumption of how many Zeitsteine the player has at the start of the test
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(6);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS);
 
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
             playerId: $this->players[0],
@@ -289,7 +291,7 @@ describe('handleActivateCard', function () {
 
         // Skipping will consume a Zeitstein
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(5);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(4);
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
             playerId: $this->players[0],
@@ -298,7 +300,7 @@ describe('handleActivateCard', function () {
 
         // Expect no additional Zeitstein being used
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(5);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(4);
     });
 
     it('Will not activate a card after skipping in a different category', function () {
@@ -685,10 +687,10 @@ describe('handleRequestJobOffers', function () {
         ];
         $this->addCardsOnTopOfPile($jobs, PileId::JOBS_PHASE_1);
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(6);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS);
         $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(5);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(4);
     });
 });
 
@@ -774,12 +776,13 @@ describe('handleAcceptJobOffer', function () {
         // Reaffirm the "normal" number of Zeitsteine (in case we change something and forget to adjust this test)
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(6);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS);
 
         // Add the job we want to accept
         CardFinder::getInstance()->overrideCardsForTesting([
             PileId::BILDUNG_PHASE_1->value => [],
             PileId::FREIZEIT_PHASE_1->value => [],
+            PileId::MINIJOBS_PHASE_1->value => [],
             PileId::JOBS_PHASE_1->value => [
                 "j0" => new JobCardDefinition(
                     id: new CardId('j0'),
@@ -801,7 +804,7 @@ describe('handleAcceptJobOffer', function () {
         // Expect two fewer Zeitsteine (-1 for the RequestJobOffers and one should now be permanently unavailable)
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(4);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(3);
 
         // Start a new Konjunkturphase to see if the Zeitstein change persists
         $this->coreGameLogic->handle(
@@ -818,7 +821,7 @@ describe('handleAcceptJobOffer', function () {
 
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(5);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS - 1);
     });
 
     it('returns 1 Zeitstein to the player after quitting the job (in the next Konjunkturphase)', function () {
@@ -960,7 +963,7 @@ describe('handleEndSpielzug', function () {
                 description: '...',
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-200),
-                    zeitsteineChange: -5, // Remove all Zeitsteine
+                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS +1, // Remove all Zeitsteine
                     bildungKompetenzsteinChange: +1,
                 ),
             );
@@ -1043,7 +1046,7 @@ describe('handleEndSpielzug', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -5,
+                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS +1,
                 ),
             ),
             "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
@@ -1052,7 +1055,7 @@ describe('handleEndSpielzug', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -5,
+                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS +1,
                 ),
             ),
         ];

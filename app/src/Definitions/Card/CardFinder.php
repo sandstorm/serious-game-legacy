@@ -540,6 +540,15 @@ final class CardFinder
                         guthabenChange: new MoneyAmount(+5000),
                     ),
                 ),
+                "mj1" => new MinijobCardDefinition(
+                    id: new CardId('mj1'),
+                    pileId: PileId::MINIJOBS_PHASE_1,
+                    title: 'Minijob1',
+                    description: 'Jobbezeichnung: Kellnerin Voraussetzung: keine Einmalige Einnahmen: 5.000 €',
+                    resourceChanges: new ResourceChanges(
+                        guthabenChange: new MoneyAmount(+5000),
+                    ),
+                ),
             ],
         ]);
         return self::$instance;
@@ -572,7 +581,7 @@ final class CardFinder
             PileId::BILDUNG_PHASE_1 => $this->getCardsForBildungAndKarriere1(),
             PileId::FREIZEIT_PHASE_1 => $this->getCardsForSozialesAndFreizeit1(),
             PileId::JOBS_PHASE_1 => $this->getCardsForJobs1(),
-            PileId::MINIJOBS_PHASE_1 => $this->getCardsForMiniJobs1(),
+            PileId::MINIJOBS_PHASE_1 => $this->getCardsForMinijobs1(),
             // TODO
             PileId::BILDUNG_PHASE_2 => [],
             PileId::FREIZEIT_PHASE_2 => [],
@@ -648,7 +657,7 @@ final class CardFinder
     /**
      * @return CardDefinition[]
      */
-    private function getCardsForMiniJobs1(): array
+    private function getCardsForMinijobs1(): array
     {
         $result = $this->cards[PileId::MINIJOBS_PHASE_1->value];
         foreach ($result as $item) {

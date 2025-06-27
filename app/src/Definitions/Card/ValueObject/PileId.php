@@ -15,5 +15,5 @@ enum PileId: string
     case JOBS_PHASE_1 = 'Jobs | Phase 1';
     case JOBS_PHASE_2 = 'Jobs | Phase 2';
     case JOBS_PHASE_3 = 'Jobs | Phase 3';
-    case MINIJOBS_PHASE_1 = 'MiniJobs | Phase 1';
+    case MINIJOBS_PHASE_1 = 'Minijobs | Phase 1';
 }

@@ -82,5 +82,5 @@ test('Test shuffle event', function () {
     $stream = $this->coreGameLogic->getGameEvents($this->gameId);
     expect($stream->findLast(CardsWereShuffled::class)->piles)->toBeArray();
     expect($stream->findLast(CardsWereShuffled::class)->piles[0]->cards)->toBeArray();
-    expect(count($stream->findLast(CardsWereShuffled::class)->piles))->toBe(9);
+    expect(count($stream->findLast(CardsWereShuffled::class)->piles))->toBe(10);
 });

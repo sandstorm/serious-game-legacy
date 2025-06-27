@@ -8,6 +8,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Tests\TestCase;
 
@@ -18,9 +19,8 @@ describe('calculateInitialZeitsteineForPlayers', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actualNumbers = KonjunkturphaseState::calculateInitialZeitsteineForPlayers($gameEvents);
         $expectedNumber = match($numberOfPlayers) {
-            2 => 6,
-            3 => 5,
-            4 => 4,
+            2 => Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS ,
+            3, 4 => Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_THREE_OR_FOUR_PLAYERS
         };
         expect(array_shift($actualNumbers)->zeitsteine)->toBe($expectedNumber)
             ->and(array_shift($actualNumbers)->zeitsteine)->toBe($expectedNumber);
@@ -48,7 +48,7 @@ describe('isEndOfKonjunkturphase', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -5,
+                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS +1,
                 ),
             ),
         ];
@@ -72,7 +72,7 @@ describe('isEndOfKonjunkturphase', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -5,
+                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS +1,
                 ),
             ),
             "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
@@ -81,7 +81,7 @@ describe('isEndOfKonjunkturphase', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -5,
+                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS +1,
                 ),
             ),
         ];

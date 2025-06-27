@@ -26,8 +26,8 @@ describe('getZeitsteineForPlayer', function () {
     it('returns the correct number', function () {
         $this->coreGameLogic->handle($this->gameId, new SkipCard($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(5)
-            ->and(PlayerState::getZeitsteineForPlayer($stream, $this->players[1]))->toBe(6);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(4)
+            ->and(PlayerState::getZeitsteineForPlayer($stream, $this->players[1]))->toBe(5);
     });
 
     it('Throws an exception if the player does not exist', function () {
@@ -63,6 +63,7 @@ describe('getGuthabenForPlayer', function () {
             ],
             PileId::FREIZEIT_PHASE_1->value => [],
             PileId::JOBS_PHASE_1->value => [],
+            PileId::MINIJOBS_PHASE_1->value => [],
         ]);
 
         $this->coreGameLogic->handle(
