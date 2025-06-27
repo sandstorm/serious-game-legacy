@@ -12,6 +12,7 @@ class MoneySheet
         public float $steuernUndAbgaben,
         public bool  $doesSteuernUndAbgabenRequirePlayerAction,
         public float $gehalt,
-        public float $totalInsuranceCost
+        public float $totalInsuranceCost,
+        public float $sumOfAllLoans
     ) {}
 }
