@@ -168,7 +168,7 @@ final readonly class MoneysheetCommandHandler implements CommandHandlerInterface
                 playerId: $command->playerId,
                 intendedUse: $command->intendedUse,
                 loanAmount: $command->loanAmount,
-                repaymentAmount: $command->repaymentAmount,
+                totalRepayment: $command->totalRepayment,
                 repaymentPerKonjunkturphase: $command->repaymentPerKonjunkturphase,
             )
         );

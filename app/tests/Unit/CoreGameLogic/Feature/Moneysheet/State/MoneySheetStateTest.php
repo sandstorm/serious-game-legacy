@@ -623,7 +623,7 @@ describe('getLoansForPlayer', function () {
         expect($loans)->toHaveCount(1)
             ->and($loans[0]->intendedUse)->toEqual('loan1')
             ->and($loans[0]->loanAmount->value)->toEqual(10000)
-            ->and($loans[0]->repaymentAmount->value)->toEqual(12500)
+            ->and($loans[0]->totalRepayment->value)->toEqual(12500)
             ->and($loans[0]->repaymentPerKonjunkturphase->value)->toEqual(625)
             ->and(MoneySheetState::getSumOfAllLoansForPlayer($gameEvents, $this->players[0])->value)->toEqual(10000);
 

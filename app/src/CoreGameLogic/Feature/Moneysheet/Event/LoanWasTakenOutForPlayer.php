@@ -14,7 +14,7 @@ class LoanWasTakenOutForPlayer implements GameEventInterface
         public PlayerId $playerId,
         public string $intendedUse,
         public MoneyAmount $loanAmount,
-        public MoneyAmount $repaymentAmount,
+        public MoneyAmount $totalRepayment,
         public MoneyAmount $repaymentPerKonjunkturphase,
     ) {
     }
@@ -25,7 +25,7 @@ class LoanWasTakenOutForPlayer implements GameEventInterface
             playerId: PlayerId::fromString($values['player']),
             intendedUse: $values['intendedUse'],
             loanAmount: new MoneyAmount($values['loanAmount']),
-            repaymentAmount: new MoneyAmount($values['repaymentAmount']),
+            totalRepayment: new MoneyAmount($values['totalRepayment']),
             repaymentPerKonjunkturphase: new MoneyAmount($values['repaymentPerKonjunkturphase']),
         );
     }
@@ -36,7 +36,7 @@ class LoanWasTakenOutForPlayer implements GameEventInterface
             'player' => $this->playerId,
             'intendedUse' => $this->intendedUse,
             'loanAmount' => $this->loanAmount,
-            'repaymentAmount' => $this->repaymentAmount,
+            'totalRepayment' => $this->totalRepayment,
             'repaymentPerKonjunkturphase' => $this->repaymentPerKonjunkturphase,
         ];
     }

@@ -48,4 +48,9 @@ readonly class MoneyAmount implements \JsonSerializable
         }
         return $otherValue - $tolerance < $this->value && $this->value < $otherValue + $tolerance;
     }
+
+    public function format(): string
+    {
+        return number_format($this->value, 2, ',', '.') . ' €';
+    }
 }

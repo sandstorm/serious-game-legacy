@@ -69,7 +69,7 @@
                                         <li>-{{ $jobDefinition->requirements->zeitsteine }}</li>
                                         <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($this->gameEvents, $myself)])></li>
                                     </ul>
-                                    <span>Mein Job. {{ $jobDefinition->gehalt->value}}€</span>
+                                    <span>Mein Job. {{ $jobDefinition->gehalt->format()}}</span>
                                 </button>
                             @endif
                             @if ($jobOfferIsVisible)
@@ -85,7 +85,7 @@
     <aside class="game__aside">
         <h4>Money Sheet</h4>
         <button class="button button--type-primary" wire:click="showMoneySheet()">
-            {{ number_format(PlayerState::getGuthabenForPlayer($this->gameEvents, $myself)->value, 2, ',', '.') }} €
+            {{ PlayerState::getGuthabenForPlayer($this->gameEvents, $myself)->format() }}
         </button>
         @if ($moneySheetIsVisible)
             @if ($editIncomeIsVisible)

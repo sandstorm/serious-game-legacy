@@ -46,7 +46,7 @@
                     Aktueller {{ KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->zinssatz }}% Zins.
                 </p>
                 <p>
-                    Guthaben: {{ number_format(PlayerState::getGuthabenForPlayer($gameEvents, $playerId)->value, 2, ',', '.') }} €
+                    Guthaben: {{ PlayerState::getGuthabenForPlayer($gameEvents, $playerId)->format() }}
                 </p>
 
             </div>
@@ -76,9 +76,9 @@
         @foreach($loans as $loan)
             <tr>
                 <td>{{ $loan->intendedUse }}</td>
-                <td>{{ number_format($loan->loanAmount->value, 2, ',', '.') }} €</td>
-                <td>{{ number_format($loan->totalRepayment->value, 2, ',', '.') }} €</td>
-                <td>{{ number_format($loan->repaymentPerKonjunkturphase->value, 2, ',', '.') }} €</td>
+                <td>{{ $loan->loanAmount->format() }}</td>
+                <td>{{ $loan->totalRepayment->format() }}</td>
+                <td>{{ $loan->repaymentPerKonjunkturphase->format() }}</td>
                 <td>xxx €</td>
             </tr>
         @endforeach
