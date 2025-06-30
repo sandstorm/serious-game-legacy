@@ -168,7 +168,7 @@ Alle erhalten ihr jährliches Einkommen und begleichen ihre Verbindlichkeiten.',
 wird fällig. 1000 €/Immobilie müssen bezahlt werden.
 
 Der steigende Leitzins erhöht die Deflation, die Kaufkraft der Barreserven erhöht sich: Die auf den Karten angegebenen Kosten müssen in diesem Jahr nur zu 90 % beglichen werden.',
-            leitzins: 5,
+            zinssatz: 5,
             kompetenzbereiche: [
                 new KompetenzbereichDefinition(
                     name: CategoryId::BILDUNG_UND_KARRIERE,

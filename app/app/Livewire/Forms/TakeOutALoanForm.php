@@ -26,7 +26,7 @@ class TakeOutALoanForm extends Form
 
     // public properties needed for validation
     public float $guthaben = 0;
-    public float $leitzins = 0;
+    public float $zinssatz = 0;
 
     /**
      * Set of custom validation rules for the form.
@@ -45,14 +45,14 @@ class TakeOutALoanForm extends Form
             ],
             'totalRepayment' => [
                 'required', 'numeric', function ($attribute, $value, $fail) {
-                    if ($this->totalRepayment !== $this->getCalculatedRepayment($this->leitzins)) {
+                    if ($this->totalRepayment !== $this->getCalculatedRepayment($this->zinssatz)) {
                         $fail("Die Rückzahlung muss dem Kreditbetrag multipliziert mit dem Zinssatz geteilt durch 20 entsprechen.");
                     }
                 }
             ],
             'repaymentPerKonjunkturphase' => [
                 'required', 'numeric', function ($attribute, $value, $fail) {
-                    if ($this->repaymentPerKonjunkturphase !== $this->getCalculatedRepayment($this->leitzins) / self::REPAYMENT_PERIOD) {
+                    if ($this->repaymentPerKonjunkturphase !== $this->getCalculatedRepayment($this->zinssatz) / self::REPAYMENT_PERIOD) {
                         $fail("Die Rückzahlung pro Runde muss der Rückzahlungssumme geteilt durch 20 entsprechen.");
                     }
                 }
@@ -60,9 +60,9 @@ class TakeOutALoanForm extends Form
         ];
     }
 
-    private function getCalculatedRepayment(float $leitzins): float
+    private function getCalculatedRepayment(float $zinssatz): float
     {
         $repaymentPeriod = self::REPAYMENT_PERIOD;
-        return $this->loanAmount * (1 + $leitzins / $repaymentPeriod);
+        return $this->loanAmount * (1 + $zinssatz / $repaymentPeriod);
     }
 }

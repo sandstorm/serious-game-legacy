@@ -25,7 +25,7 @@ describe('TakeOutALoanForm', function () {
             ->set('form.intendedUse', 'Investition in neue Maschinen')
             ->set('form.loanAmount', 550)
             ->set('form.guthaben', 50)
-            ->set('form.leitzins', 5)
+            ->set('form.zinssatz', 5)
             ->call('validate')
             ->assertHasErrors(['form.loanAmount' => 'Du kannst keinen Kredit aufnehmen, der höher ist als das 10-fache deines aktuellen Guthabens.']);
     });
@@ -38,7 +38,7 @@ describe('TakeOutALoanForm', function () {
             ->set('form.loanAmount', 10000)
             ->set('form.totalRepayment', 11000) // Incorrect repayment
             ->set('form.guthaben', 10000)
-            ->set('form.leitzins', 5)
+            ->set('form.zinssatz', 5)
             ->call('validate')
             ->assertHasErrors(['form.totalRepayment' => 'Die Rückzahlung muss dem Kreditbetrag multipliziert mit dem Zinssatz geteilt durch 20 entsprechen.']);
     });
@@ -52,7 +52,7 @@ describe('TakeOutALoanForm', function () {
             ->set('form.totalRepayment', 12500)
             ->set('form.repaymentPerKonjunkturphase', 700) // Incorrect repayment per konjunkturphase
             ->set('form.guthaben', 10000)
-            ->set('form.leitzins', 5)
+            ->set('form.zinssatz', 5)
             ->call('validate')
             ->assertHasErrors(['form.repaymentPerKonjunkturphase' => 'Die Rückzahlung pro Runde muss der Rückzahlungssumme geteilt durch 20 entsprechen.']);
     });
@@ -66,7 +66,7 @@ describe('TakeOutALoanForm', function () {
             ->set('form.totalRepayment', 12500)
             ->set('form.repaymentPerKonjunkturphase', 625)
             ->set('form.guthaben', 10000)
-            ->set('form.leitzins', 5)
+            ->set('form.zinssatz', 5)
             ->call('validate')
             ->assertHasNoErrors();
     });

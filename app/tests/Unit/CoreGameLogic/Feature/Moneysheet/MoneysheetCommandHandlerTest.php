@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Tests\CoreGameLogic\Feature\Moneysheet;
 
-use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Leitzins;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Zinssatz;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\CancelInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterLebenshaltungskostenForPlayer;

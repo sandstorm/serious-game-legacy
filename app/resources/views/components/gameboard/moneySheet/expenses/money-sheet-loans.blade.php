@@ -42,7 +42,7 @@
             </div>
             <div class="take-out-loan__info">
                 <p>
-                    Aktueller {{ KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->leitzins }}% Zins.
+                    Aktueller {{ KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->zinssatz }}% Zins.
                 </p>
                 <p>
                     Guthaben: {{ number_format(PlayerState::getGuthabenForPlayer($gameEvents, $playerId)->value, 2, ',', '.') }} €

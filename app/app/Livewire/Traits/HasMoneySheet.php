@@ -11,7 +11,7 @@ use App\Livewire\Forms\TakeOutALoanForm;
 use App\Livewire\ValueObject\ExpensesTabEnum;
 use App\Livewire\ValueObject\IncomeTabEnum;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Leitzins;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Zinssatz;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\CancelInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterLebenshaltungskostenForPlayer;
@@ -194,7 +194,7 @@ trait HasMoneySheet
         $this->takeOutALoanIsVisible = !$this->takeOutALoanIsVisible;
         $this->takeOutALoanForm->reset();
         $this->takeOutALoanForm->guthaben = PlayerState::getGuthabenForPlayer($this->gameEvents, $this->myself)->value;
-        $this->takeOutALoanForm->leitzins = KonjunkturphaseState::getCurrentKonjunkturphase($this->gameEvents)->leitzins;
+        $this->takeOutALoanForm->zinssatz = KonjunkturphaseState::getCurrentKonjunkturphase($this->gameEvents)->zinssatz;
     }
 
     public function takeOutALoan(): void

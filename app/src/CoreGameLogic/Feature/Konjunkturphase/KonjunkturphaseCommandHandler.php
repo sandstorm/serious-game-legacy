@@ -17,7 +17,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\PlayerHasStartedKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Leitzins;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Zinssatz;
 use Domain\Definitions\Card\PileFinder;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
@@ -71,7 +71,7 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
                 id: $nextKonjunkturphase->id,
                 year: new CurrentYear($year),
                 type: $nextKonjunkturphase->type,
-                leitzins: new Leitzins($nextKonjunkturphase->leitzins),
+                zinssatz: new Zinssatz($nextKonjunkturphase->zinssatz),
                 kompetenzbereiche: $nextKonjunkturphase->kompetenzbereiche,
                 zeitsteineForPlayers: KonjunkturphaseState::calculateInitialZeitsteineForPlayers($gameState),
             ),

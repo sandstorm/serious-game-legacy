@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject;
 
-readonly class Leitzins implements \JsonSerializable
+readonly class Zinssatz implements \JsonSerializable
 {
     /**
      * @param float $value in %
@@ -15,7 +15,7 @@ readonly class Leitzins implements \JsonSerializable
 
     public function __toString(): string
     {
-        return '[Leitzins: '.$this->value.']';
+        return '[Zinssatz: '.$this->value.']';
     }
 
     public function jsonSerialize(): float

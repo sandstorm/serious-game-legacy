@@ -41,7 +41,7 @@ describe('handleChangeKonjunkturphase', function () {
                 type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
                 description: 'no changes',
                 additionalEvents: '',
-                leitzins: 5,
+                zinssatz: 5,
                 kompetenzbereiche: [],
                 auswirkungen: []
             )));
