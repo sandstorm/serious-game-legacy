@@ -2,7 +2,8 @@
 @use('Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState')
 
 @props([
-    'loans' => [],
+    '$loans' => null,
+    '$playerCanTakeOutALoan' => null,
 ])
 
 @if ($this->takeOutALoanIsVisible)
@@ -92,14 +93,14 @@
     @endif
 
     <button
-        {{ PlayerState::getJobForPlayer($gameEvents, $playerId) === null ? 'disabled' : '' }}
+        {{ $playerCanTakeOutALoan ? '' : 'disabled' }}
         type="button" class="button button--type-primary" wire:click="toggleTakeOutALoan()"
     >
         Kredit aufnehmen
     </button>
 
-    @if (PlayerState::getJobForPlayer($gameEvents, $playerId) === null)
-        <div>Kredit aufnehmen ist nur möglich, wenn du einen Job hast!</div>
+    @if (!$playerCanTakeOutALoan)
+        <div>Kredit aufnehmen ist nur möglich, wenn du einen Job hast und eine Berufsunfähigkeitsversicherung!</div>
     @endif
 @endif
 

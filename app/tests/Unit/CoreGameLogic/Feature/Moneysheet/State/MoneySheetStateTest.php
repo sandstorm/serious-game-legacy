@@ -607,6 +607,9 @@ describe('getLoansForPlayer', function () {
         $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j0')));
 
+        // player needs to conclude an insurance to take out a loan
+        $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->players[0], $this->insurances[2]->id));
+
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
             $this->players[0],
             'loan1',

@@ -93,4 +93,18 @@ class InsuranceFinder
         return $this->insurances;
     }
 
+    /**
+     * @param InsuranceTypeEnum $type
+     * @return InsuranceDefinition
+     */
+    public function findInsuranceByType(InsuranceTypeEnum $type): InsuranceDefinition {
+        foreach ($this->insurances as $insurance) {
+            if ($insurance->type === $type) {
+                return $insurance;
+            }
+        }
+
+        throw new \InvalidArgumentException('Insurance not found');
+    }
+
 }

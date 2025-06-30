@@ -309,4 +309,34 @@ describe('handleTakeOutALoanForPlayer', function () {
             new MoneyAmount(625),
         ));
     })->throws(\RuntimeException::class, 'Cannot take out a loan without a job.');
+
+    it('throws an exception when trying to take out a loan without a BU insurance', function () {
+        // player needs a job to take out a loan
+        /** @var TestCase $this */
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::JOBS_PHASE_1->value => [
+                "j0" => new JobCardDefinition(
+                    id: new CardId('j0'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'offered 1',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                    ),
+                ),
+            ]
+        ]);
+
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j0')));
+
+        $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
+            $this->players[0],
+            'loan1',
+            new MoneyAmount(10000),
+            new MoneyAmount(12500),
+            new MoneyAmount(625),
+        ));
+    })->throws(\RuntimeException::class, 'Cannot take out a loan without Berufsunfähigkeitsversicherung.');
 });
