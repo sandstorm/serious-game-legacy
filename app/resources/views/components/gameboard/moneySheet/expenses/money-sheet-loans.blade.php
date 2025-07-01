@@ -34,7 +34,7 @@
                 <div class="form__group">
                     <label for="totalRepayment">Rückzahlungssumme</label>
                     <x-form.textfield wire:model="takeOutALoanForm.totalRepayment" id="totalRepayment" name="totalRepayment" type="number" step="0.1" />
-                    <span>Rückzahlungssumme = Kreditsumme * (1 + Zinssatz/ 20).</span>
+                    <span>Rückzahlungssumme = Kreditsumme * (1 + Zinssatz/ {{ $repaymentPeriod }}).</span>
                     @error('takeOutALoanForm.totalRepayment') <span class="form__error">{{ $message }}</span> @enderror
                 </div>
 

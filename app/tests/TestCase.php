@@ -381,27 +381,3 @@ Der steigende Leitzins erhÃ¶ht die Deflation, die Kaufkraft der Barreserven erhÃ
         ];
     }
 }
-
-class ComponentWithForm extends Component
-{
-    public string $formClass = '';
-
-    public Form $form;
-
-    public function mount($formClass): void
-    {
-        $this->form = new $formClass($this, 'form');
-    }
-
-    public function validate($rules = null, $messages = [], $attributes = []): void
-    {
-        if (method_exists($this->form, 'validate')) {
-            $this->form->validate();
-        }
-    }
-
-    public function render(): string
-    {
-        return '<div></div>';
-    }
-}

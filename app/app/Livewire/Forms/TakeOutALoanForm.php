@@ -52,9 +52,9 @@ class TakeOutALoanForm extends Form
                 }
             ],
             'totalRepayment' => [
-                'required', 'numeric', function ($attribute, $value, $fail) {
+                'required', 'numeric', function ($attribute, $value, $fail) use ($repaymentPeriod) {
                     if ($this->totalRepayment !== $this->getCalculatedRepayment($this->zinssatz)) {
-                        $fail("Die Rückzahlung muss dem Kreditbetrag multipliziert mit dem Zinssatz geteilt durch 20 entsprechen.");
+                        $fail("Die Rückzahlung muss dem Kreditbetrag multipliziert mit dem Zinssatz geteilt durch $repaymentPeriod entsprechen.");
                     }
                 }
             ],
