@@ -25,6 +25,7 @@ class TakeOutALoanForm extends Form
     // public properties needed for validation
     public float $guthaben = 0;
     public float $zinssatz = 0;
+    public bool $hasJob = false;
 
     /**
      * Set of custom validation rules for the form.
@@ -37,8 +38,16 @@ class TakeOutALoanForm extends Form
         return [
             'loanAmount' => [
                 'required', 'numeric', 'min:1', function ($attribute, $value, $fail) {
-                    if ($this->loanAmount > $this->guthaben * 10) {
-                        $fail("Du kannst keinen Kredit aufnehmen, der höher ist als das 10-fache deines aktuellen Guthabens.");
+                    // without job only a loan of 80% of the current balance is allowed
+                    // if player has a job, they can take a loan of 10 times their current balance
+                    $maxLoanAmount = $this->hasJob ? $this->guthaben * 10 : $this->guthaben * 0.8;
+
+                    if ($this->loanAmount > $maxLoanAmount) {
+                        if ($this->hasJob) {
+                            $fail("Du kannst keinen Kredit aufnehmen, der höher ist als das 10-fache deines aktuellen Guthabens.");
+                        } else {
+                            $fail("Du kannst keinen Kredit aufnehmen, der höher ist als 80% deines aktuellen Guthabens.");
+                        }
                     }
                 }
             ],

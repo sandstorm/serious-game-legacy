@@ -21,10 +21,7 @@ use Domain\CoreGameLogic\Feature\Moneysheet\Event\LoanWasTakenOutForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\SteuernUndAbgabenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\SteuernUndAbgabenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
-use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Configuration\Configuration;
-use Domain\Definitions\Insurance\InsuranceFinder;
-use Domain\Definitions\Insurance\ValueObject\InsuranceTypeEnum;
 
 /**
  * @internal no public API, because commands are no extension points. ALWAYS USE {@see ForCoreGameLogic::handle()} to trigger commands.
@@ -145,24 +142,6 @@ final readonly class MoneysheetCommandHandler implements CommandHandlerInterface
 
     private function handleTakeOutALoanForPlayer(TakeOutALoanForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
     {
-        // player needs a job to take out a loan
-        $playerHasJob = PlayerState::getJobForPlayer($gameEvents, $command->playerId);
-        if ($playerHasJob === null) {
-            throw new \RuntimeException("Cannot take out a loan without a job.");
-        }
-
-        // player needs BU insurance to take out a loan
-        $insurance = InsuranceFinder::getInstance()->findInsuranceByType(InsuranceTypeEnum::BERUFSUNFAEHIGKEITSVERSICHERUNG);
-        $hasInsurance = MoneySheetState::doesPlayerHaveThisInsurance(
-            $gameEvents,
-            $command->playerId,
-            $insurance->id
-        );
-
-        if (!$hasInsurance) {
-            throw new \RuntimeException("Cannot take out a loan without Berufsunfähigkeitsversicherung.");
-        }
-
         return GameEventsToPersist::with(
             new LoanWasTakenOutForPlayer(
                 playerId: $command->playerId,

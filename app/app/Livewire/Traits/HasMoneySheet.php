@@ -193,6 +193,7 @@ trait HasMoneySheet
         $this->takeOutALoanForm->reset();
         $this->takeOutALoanForm->guthaben = PlayerState::getGuthabenForPlayer($this->gameEvents, $this->myself)->value;
         $this->takeOutALoanForm->zinssatz = KonjunkturphaseState::getCurrentKonjunkturphase($this->gameEvents)->zinssatz;
+        $this->takeOutALoanForm->hasJob = PlayerState::getJobForPlayer($this->gameEvents, $this->myself) !== null;
     }
 
     public function takeOutALoan(): void

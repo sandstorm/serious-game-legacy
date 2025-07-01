@@ -3,7 +3,6 @@
 
 @props([
     '$loans' => null,
-    '$playerCanTakeOutALoan' => null,
     '$repaymentPeriod' => null,
 ])
 
@@ -23,7 +22,11 @@
                     <label for="loanAmount">Kredithöhe</label>
                     <x-form.textfield wire:model="takeOutALoanForm.loanAmount" id="loanAmount" name="loanAmount" type="number" />
                     <span>
-                        Gesamtes Kreditvolumen darf 10-faches der aktuellen Einnahmen + Vermögenswerte nicht übersteigen!
+                        @if (PlayerState::getJobForPlayer($gameEvents, $playerId) !== null)
+                            Gesamtes Kreditvolumen darf 10-faches der aktuellen Einnahmen + Vermögenswerte nicht übersteigen!
+                        @else
+                            Gesamtes Kreditvolumen darf 80% der aktuellen Einnahmen + Vermögenswerte nicht übersteigen!
+                        @endif
                     </span>
                     @error('takeOutALoanForm.loanAmount') <span class="form__error">{{ $message }}</span> @enderror
                 </div>
@@ -94,14 +97,9 @@
     @endif
 
     <button
-        {{ $playerCanTakeOutALoan ? '' : 'disabled' }}
         type="button" class="button button--type-primary" wire:click="toggleTakeOutALoan()"
     >
         Kredit aufnehmen
     </button>
-
-    @if (!$playerCanTakeOutALoan)
-        <div>Kredit aufnehmen ist nur möglich, wenn du einen Job hast und eine Berufsunfähigkeitsversicherung!</div>
-    @endif
 @endif
 
