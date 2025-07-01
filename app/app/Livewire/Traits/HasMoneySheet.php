@@ -11,13 +11,13 @@ use App\Livewire\Forms\MoneySheetSteuernUndAbgabenForm;
 use App\Livewire\Forms\TakeOutALoanForm;
 use App\Livewire\ValueObject\ExpensesTabEnum;
 use App\Livewire\ValueObject\IncomeTabEnum;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
-use Domain\CoreGameLogic\Feature\Moneysheet\Command\CancelInsuranceForPlayer;
-use Domain\CoreGameLogic\Feature\Moneysheet\Command\ConcludeInsuranceForPlayer;
-use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterLebenshaltungskostenForPlayer;
-use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterSteuernUndAbgabenForPlayer;
-use Domain\CoreGameLogic\Feature\Moneysheet\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelInsuranceForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
+use Domain\CoreGameLogic\Feature\Moneysheet\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
@@ -74,8 +74,6 @@ trait HasMoneySheet
         $calculatedLebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameEvents, $this->myself);
         $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten = $latestInputForLebenshaltungskosten->value;
         $this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled = $latestInputForLebenshaltungskosten->equals($calculatedLebenshaltungskosten);
-
-
     }
 
     public function showMoneySheet(): void
@@ -133,6 +131,8 @@ trait HasMoneySheet
             doesSteuernUndAbgabenRequirePlayerAction: MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($this->gameEvents, $playerId),
             gehalt: PlayerState::getGehaltForPlayer($this->gameEvents, $playerId)->value,
             total: MoneySheetState::calculateTotalForPlayer($this->gameEvents, $playerId)->value,
+            totalInsuranceCost: 0, // todo
+            sumOfAllLoans: new MoneyAmount(0), //todo
         );
     }
 

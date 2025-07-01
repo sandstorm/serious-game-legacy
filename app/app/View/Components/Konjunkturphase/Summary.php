@@ -29,12 +29,13 @@ class Summary extends Component
     {
         return view('components.konjunkturphase.summary', [
             'moneySheet' => new MoneySheetDto(
-                lebenshaltungskosten: MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameEvents, $this->playerId)->value,
+                lebenshaltungskosten: MoneySheetState::getLastInputForLebenshaltungskosten($this->gameEvents, $this->playerId)->value,
                 doesLebenshaltungskostenRequirePlayerAction: MoneySheetState::doesLebenshaltungskostenRequirePlayerAction($this->gameEvents, $this->playerId),
-                steuernUndAbgaben: MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameEvents, $this->playerId)->value,
+                steuernUndAbgaben: MoneySheetState::getLastInputForSteuernUndAbgaben($this->gameEvents, $this->playerId)->value,
                 doesSteuernUndAbgabenRequirePlayerAction: MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($this->gameEvents, $this->playerId),
                 gehalt: PlayerState::getGehaltForPlayer($this->gameEvents, $this->playerId)->value,
-                total: MoneySheetState::calculateTotalForPlayer($this->gameEvents, $this->playerId)->value,
+                total: MoneySheetState::hasPlayerCompletedMoneysheet($this->gameEvents, $this->playerId) ? MoneySheetState::calculateTotalForPlayer($this->gameEvents, $this->playerId)->value : 0,
+                totalInsuranceCost: 0,
             ),
         ]);
     }

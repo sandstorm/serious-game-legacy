@@ -31,10 +31,10 @@ class SkipCardAktion extends Aktion
         $this->pileId = PileState::getPileIdForCategoryAndPhase($this->category);
     }
 
-    public function validate(PlayerId $player, GameEvents $gameEvents): AktionValidationResult
+    public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
         $currentPlayer = CurrentPlayerAccessor::forStream($gameEvents);
-        if (!$currentPlayer->equals($player)) {
+        if (!$currentPlayer->equals($playerId)) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: 'Du kannst Karten nur überspringen, wenn du dran bist'
@@ -50,7 +50,7 @@ class SkipCardAktion extends Aktion
             );
         }
 
-        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($player, new ResourceChanges(zeitsteineChange: -1))) {
+        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($playerId, new ResourceChanges(zeitsteineChange: -1))) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: 'Du hast nicht genug Ressourcen um die Karte zu überspringen',
@@ -68,15 +68,15 @@ class SkipCardAktion extends Aktion
         return new AktionValidationResult(canExecute: true);
     }
 
-    public function execute(PlayerId $player, GameEvents $gameEvents): GameEventsToPersist
+    public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist
     {
-        $result = $this->validate($player, $gameEvents);
+        $result = $this->validate($playerId, $gameEvents);
         $topCardOnPile = PileState::topCardIdForPile($gameEvents, $this->pileId);
         if (!$result->canExecute) {
             throw new \RuntimeException('' . $result->reason, 1747325793);
         }
         return GameEventsToPersist::with(
-            new CardWasSkipped($player, $topCardOnPile, $this->pileId, $this->category),
+            new CardWasSkipped($playerId, $topCardOnPile, $this->pileId, $this->category),
         );
     }
 }

@@ -24,7 +24,7 @@
     <x-konjunkturphase.summary :game-events="$this->gameEvents"
                                :player-id="PlayerId::fromString($this->summaryActiveTabId)"/>
 
-    <button wire:click="showMoneySheet()"
+    <button wire:click="()"
             type="button"
             class="button button--type-primary">
         TODO

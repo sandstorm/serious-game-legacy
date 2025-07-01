@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Feature\Moneysheet\Event\Behaviour;
+namespace Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior;
 
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 

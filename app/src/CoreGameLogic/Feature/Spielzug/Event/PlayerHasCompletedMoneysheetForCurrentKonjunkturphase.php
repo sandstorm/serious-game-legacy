@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Event;
+namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;
 use Domain\CoreGameLogic\PlayerId;
 
-final readonly class PlayerHasStartedKonjunkturphase implements GameEventInterface
+final readonly class PlayerHasCompletedMoneysheetForCurrentKonjunkturphase implements GameEventInterface
 {
     public function __construct(
         public PlayerId $playerId,

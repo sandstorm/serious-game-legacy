@@ -12,5 +12,15 @@
 @endsection
 
 @section('footer')
-    <button type="button" class="button button--type-primary" wire:click="completeMoneysheetForPlayer()">Weiter</button>
+    <button
+            type="button"
+            @class([
+                "button",
+                "button--type-primary",
+                "button--disabled" => !$this->canCompleteMoneysheet(),
+            ])
+            wire:click="completeMoneysheetForPlayer()"
+    >
+        Weiter brot
+    </button>
 @endsection

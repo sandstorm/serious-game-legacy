@@ -25,10 +25,10 @@ class RequestJobOffersAktion extends Aktion
         parent::__construct('request-job-offers', 'Jobs anzeigen');
     }
 
-    public function validate(PlayerId $player, GameEvents $gameEvents): AktionValidationResult
+    public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
         $currentPlayer = CurrentPlayerAccessor::forStream($gameEvents);
-        if (!$currentPlayer->equals($player)) {
+        if (!$currentPlayer->equals($playerId)) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: 'Du kannst nur Jobs anfragen, wenn du dran bist'
@@ -45,7 +45,7 @@ class RequestJobOffersAktion extends Aktion
             );
         }
 
-        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($player,
+        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($playerId,
             new ResourceChanges(zeitsteineChange: -2))) {
             return new AktionValidationResult(
                 canExecute: false,
@@ -64,15 +64,15 @@ class RequestJobOffersAktion extends Aktion
         return new AktionValidationResult(canExecute: true);
     }
 
-    public function execute(PlayerId $player, GameEvents $gameEvents): GameEventsToPersist
+    public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist
     {
-        $result = $this->validate($player, $gameEvents);
+        $result = $this->validate($playerId, $gameEvents);
         if (!$result->canExecute) {
             throw new \RuntimeException("" . $result->reason, 1749043606);
         }
-        $jobs = CardFinder::getInstance()->getThreeRandomJobs(PlayerState::getResourcesForPlayer($gameEvents, $player));
+        $jobs = CardFinder::getInstance()->getThreeRandomJobs(PlayerState::getResourcesForPlayer($gameEvents, $playerId));
         return GameEventsToPersist::with(
-            new JobOffersWereRequested($player, array_map(fn($job) => $job->getId(), $jobs))
+            new JobOffersWereRequested($playerId, array_map(fn($job) => $job->getId(), $jobs))
         );
     }
 }

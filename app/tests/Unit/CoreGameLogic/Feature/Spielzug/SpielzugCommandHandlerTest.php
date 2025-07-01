@@ -10,15 +10,23 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\LebenshaltungskostenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SteuernUndAbgabenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
@@ -1002,3 +1010,428 @@ describe('handleEndSpielzug', function () {
         expect($gameEvents->findLast(KonjunkturphaseHasEnded::class) instanceof KonjunkturphaseHasEnded)->toBeTrue();
     });
 });
+
+describe('handleStartKonjunkturphaseForPlayer', function () {
+    it('throws an exception if the player has already started this Konjunkturphase', function () {
+        /** @var TestCase $this */
+        $this->coreGameLogic->handle($this->gameId, StartKonjunkturPhaseForPlayer::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, StartKonjunkturPhaseForPlayer::create($this->players[0]));
+    })->throws(\RuntimeException::class, 'Cannot start Konjunkturphase: Du hast diese Konjunkturphase bereits gestartet', 1751373528);
+
+    it('works after a new Konjunkturphase has started', function () {
+        /** @var TestCase $this */
+        $cardsForTesting = [
+            "cardToRemoveZeitsteine" => new KategorieCardDefinition(
+                id: new CardId('cardToRemoveZeitsteine'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -5,
+                ),
+            ),
+            "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
+                id: new CardId('cardToRemoveZeitsteine2'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -5,
+                ),
+            ),
+        ];
+        $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
+
+        $this->coreGameLogic->handle($this->gameId, StartKonjunkturPhaseForPlayer::create($this->players[1]));
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents, $this->players[0]))->toBeFalse()
+            ->and(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents, $this->players[1]))->toBeTrue();
+
+        $this->coreGameLogic->handle($this->gameId, StartKonjunkturPhaseForPlayer::create($this->players[0]));
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents, $this->players[0]))->toBeTrue()
+            ->and(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents, $this->players[1]))->toBeTrue();
+
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
+
+        $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create());
+
+        $this->coreGameLogic->handle($this->gameId, StartKonjunkturPhaseForPlayer::create($this->players[1]));
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents, $this->players[0]))->toBeFalse()
+            ->and(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents, $this->players[1]))->toBeTrue();
+    });
+});
+
+describe('handleCompleteMoneysheetForPlayer', function () {
+    it('it works if the player has filled out all required fields', function () {
+        /** @var TestCase $this */
+
+        $cardsForTesting = [
+            "cardToRemoveZeitsteine" => new KategorieCardDefinition(
+                id: new CardId('cardToRemoveZeitsteine'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -5,
+                ),
+            ),
+            "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
+                id: new CardId('cardToRemoveZeitsteine2'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -5,
+                ),
+            ),
+        ];
+        $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[0])
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE)
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[1])
+        );
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(5000))
+        );
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            CompleteMoneysheetForPlayer::create($this->players[0])
+        );
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect($gameEvents->findLastOrNullWhere(
+                fn($event) => $event instanceof PlayerHasCompletedMoneysheetForCurrentKonjunkturphase
+                    && $event->playerId->equals($this->players[0])
+                    && $event->year->equals(KonjunkturphaseState::getCurrentYear($gameEvents))
+            ) === null
+        )->toBeFalse('Moneysheet should have been completed');
+    });
+
+    it('it throws an error if the player did not yet fill out the money sheet', function () {
+        /** @var TestCase $this */
+
+        $cardsForTesting = [
+            "cardToRemoveZeitsteine" => new KategorieCardDefinition(
+                id: new CardId('cardToRemoveZeitsteine'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -5,
+                ),
+            ),
+            "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
+                id: new CardId('cardToRemoveZeitsteine2'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -5,
+                ),
+            ),
+        ];
+        $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[0])
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE)
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[1])
+        );
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            CompleteMoneysheetForPlayer::create($this->players[0])
+        );
+    })->throws(\RuntimeException::class, 'Cannot complete money sheet: Du musst erst dein Money Sheet korrekt ausfüllen', 1751375431);
+});
+describe('handleEnterSteuernUndAbgabenForPlayer', function () {
+    it('works for correct player input when the player has no job', function () {
+        /** @var TestCase $this */
+
+        $this->coreGameLogic->handle($this->gameId,
+            EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(0)));
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        /** @var SteuernUndAbgabenForPlayerWereEntered $actualEvent */
+        $actualEvent = $gameEvents->findLast(SteuernUndAbgabenForPlayerWereEntered::class);
+        expect($actualEvent->getPlayerInput())->toEqual(new MoneyAmount(0))
+            ->and($actualEvent->getExpectedInput())->toEqual(new MoneyAmount(0))
+            ->and($actualEvent->wasInputCorrect())->toBeTrue();
+    });
+
+    it('works for correct player input when the player has a job', function () {
+        /** @var TestCase $this */
+
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::JOBS_PHASE_1->value => [
+                "j0" => new JobCardDefinition(
+                    id: new CardId('j0'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'offered 1',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                    ),
+                ),
+            ]
+        ]);
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j0')));
+
+        $playerInput = new MoneyAmount(8500);
+        $this->coreGameLogic->handle($this->gameId,
+            EnterSteuernUndAbgabenForPlayer::create($this->players[0], $playerInput));
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        /** @var SteuernUndAbgabenForPlayerWereEntered $actualEvent */
+        $actualEvent = $gameEvents->findLast(SteuernUndAbgabenForPlayerWereEntered::class);
+        expect($actualEvent->getPlayerInput())->toEqual($playerInput, 'Player input should be ' . $playerInput)
+            ->and($actualEvent->getExpectedInput())->toEqual($playerInput)
+            ->and($actualEvent->wasInputCorrect())->toBeTrue();
+    });
+
+    it('works for incorrect player input when the player has no job', function () {
+        /** @var TestCase $this */
+
+        $this->coreGameLogic->handle($this->gameId,
+            EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(200)));
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        /** @var SteuernUndAbgabenForPlayerWereEntered $actualEvent */
+        $actualEvent = $gameEvents->findLast(SteuernUndAbgabenForPlayerWereEntered::class);
+        expect($actualEvent->getPlayerInput())->toEqual(new MoneyAmount(200))
+            ->and($actualEvent->getExpectedInput())->toEqual(new MoneyAmount(0))
+            ->and($actualEvent->wasInputCorrect())->toBeFalse();
+    });
+
+    it('works for incorrect player input when the player has a job', function () {
+        /** @var TestCase $this */
+
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::JOBS_PHASE_1->value => [
+                "j0" => new JobCardDefinition(
+                    id: new CardId('j0'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'offered 1',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                    ),
+                ),
+            ]
+        ]);
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j0')));
+
+        $playerInput = new MoneyAmount(7500);
+        $expectedValue = new MoneyAmount(8500);
+        $this->coreGameLogic->handle($this->gameId,
+            EnterSteuernUndAbgabenForPlayer::create($this->players[0], $playerInput));
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        /** @var SteuernUndAbgabenForPlayerWereEntered $actualEvent */
+        $actualEvent = $gameEvents->findLast(SteuernUndAbgabenForPlayerWereEntered::class);
+        expect($actualEvent->getPlayerInput())->toEqual($playerInput, 'Player input should be ' . $playerInput)
+            ->and($actualEvent->getExpectedInput())->toEqual($expectedValue)
+            ->and($actualEvent->wasInputCorrect())->toBeFalse();
+    });
+
+    it('charges a fee after two incorrect entries', function () {
+        /** @var TestCase $this */
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(50000));
+
+        $this->coreGameLogic->handle($this->gameId,
+            EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(200)));
+        $this->coreGameLogic->handle($this->gameId,
+            EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(300)));
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(49750));
+    });
+
+    it('charges no fee after one incorrect entries', function () {
+        /** @var TestCase $this */
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(50000));
+
+        $this->coreGameLogic->handle($this->gameId,
+            EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(200)));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(50000));
+    });
+});
+
+describe('handleEnterLebenshaltungskostenForPlayer', function () {
+    it('works for correct player input when the player has no job', function () {
+        /** @var TestCase $this */
+
+        $this->coreGameLogic->handle($this->gameId,
+            EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(5000)));
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        /** @var LebenshaltungskostenForPlayerWereEntered $actualEvent */
+        $actualEvent = $gameEvents->findLast(LebenshaltungskostenForPlayerWereEntered::class);
+        expect($actualEvent->getPlayerInput())->toEqual(new MoneyAmount(5000))
+            ->and($actualEvent->getExpectedInput())->toEqual(new MoneyAmount(5000))
+            ->and($actualEvent->wasInputCorrect())->toBeTrue();
+    });
+
+    it('works for correct player input when the player has a job', function () {
+        /** @var TestCase $this */
+
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::JOBS_PHASE_1->value => [
+                "j0" => new JobCardDefinition(
+                    id: new CardId('j0'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'offered 1',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                    ),
+                ),
+            ]
+        ]);
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j0')));
+
+        $playerInput = new MoneyAmount(11900);
+        $this->coreGameLogic->handle($this->gameId,
+            EnterLebenshaltungskostenForPlayer::create($this->players[0], $playerInput));
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        /** @var LebenshaltungskostenForPlayerWereEntered $actualEvent */
+        $actualEvent = $gameEvents->findLast(LebenshaltungskostenForPlayerWereEntered::class);
+        expect($actualEvent->getPlayerInput())->toEqual($playerInput, 'Player input should be ' . $playerInput)
+            ->and($actualEvent->getExpectedInput())->toEqual($playerInput)
+            ->and($actualEvent->wasInputCorrect())->toBeTrue();
+    });
+
+    it('works for incorrect player input when the player has no job', function () {
+        /** @var TestCase $this */
+
+        $this->coreGameLogic->handle($this->gameId,
+            EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(200)));
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        /** @var LebenshaltungskostenForPlayerWereEntered $actualEvent */
+        $actualEvent = $gameEvents->findLast(LebenshaltungskostenForPlayerWereEntered::class);
+        expect($actualEvent->getPlayerInput())->toEqual(new MoneyAmount(200))
+            ->and($actualEvent->getExpectedInput())->toEqual(new MoneyAmount(5000))
+            ->and($actualEvent->wasInputCorrect())->toBeFalse();
+    });
+
+    it('works for incorrect player input when the player has a job', function () {
+        /** @var TestCase $this */
+
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::JOBS_PHASE_1->value => [
+                "j0" => new JobCardDefinition(
+                    id: new CardId('j0'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'offered 1',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                    ),
+                ),
+            ]
+        ]);
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j0')));
+
+        $playerInput = new MoneyAmount(7500);
+        $expectedValue = new MoneyAmount(11900);
+        $this->coreGameLogic->handle($this->gameId,
+            EnterLebenshaltungskostenForPlayer::create($this->players[0], $playerInput));
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        /** @var LebenshaltungskostenForPlayerWereEntered $actualEvent */
+        $actualEvent = $gameEvents->findLast(LebenshaltungskostenForPlayerWereEntered::class);
+        expect($actualEvent->getPlayerInput())->toEqual($playerInput, 'Player input should be ' . $playerInput)
+            ->and($actualEvent->getExpectedInput())->toEqual($expectedValue)
+            ->and($actualEvent->wasInputCorrect())->toBeFalse();
+    });
+
+    it('charges a fee after two incorrect entries', function () {
+        /** @var TestCase $this */
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(50000));
+
+        $this->coreGameLogic->handle($this->gameId,
+            EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(200)));
+        $this->coreGameLogic->handle($this->gameId,
+            EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(300)));
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(49750));
+    });
+
+    it('charges no fee after one incorrect entries', function () {
+        /** @var TestCase $this */
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(50000));
+
+        $this->coreGameLogic->handle($this->gameId,
+            EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(200)));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(50000));
+    });
+});
+
+describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
+    it('throws an error if it\'s not the end of the konjunkturphase', function () {
+        // TODO
+    });
+
+    it('throws an error if the player has not completed the money sheet', function () {
+        // TODO
+    });
+
+    it('marks the player as ready', function () {
+        // TODO
+    });
+});
+

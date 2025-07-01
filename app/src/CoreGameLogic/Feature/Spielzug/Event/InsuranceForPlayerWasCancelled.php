@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Feature\Moneysheet\Event;
+namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 
-final readonly class InsuranceForPlayerWasConcluded implements GameEventInterface
+final readonly class InsuranceForPlayerWasCancelled implements GameEventInterface
 {
     public function __construct(
         public PlayerId     $playerId,

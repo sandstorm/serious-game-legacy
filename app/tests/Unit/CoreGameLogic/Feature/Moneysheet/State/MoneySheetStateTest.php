@@ -3,16 +3,16 @@ declare(strict_types=1);
 
 namespace Tests\CoreGameLogic\Feature\Moneysheet\State;
 
-use Domain\CoreGameLogic\Feature\Moneysheet\Command\CancelInsuranceForPlayer;
-use Domain\CoreGameLogic\Feature\Moneysheet\Command\ConcludeInsuranceForPlayer;
-use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterLebenshaltungskostenForPlayer;
-use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterSteuernUndAbgabenForPlayer;
-use Domain\CoreGameLogic\Feature\Moneysheet\Command\TakeOutALoanForPlayer;
-use Domain\CoreGameLogic\Feature\Moneysheet\Event\InsuranceForPlayerWasCancelled;
-use Domain\CoreGameLogic\Feature\Moneysheet\Event\InsuranceForPlayerWasConcluded;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
+use Domain\CoreGameLogic\Feature\Moneysheet\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelInsuranceForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;

@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Livewire\Traits;
 
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\CompleteMoneysheetForPlayer;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\StartKonjunkturphaseForPlayer;
+use App\Livewire\ValueObject\NotificationTypeEnum;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CompleteMoneySheetForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\StartKonjunkturphaseForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Illuminate\View\View;
@@ -45,11 +48,11 @@ trait HasKonjunkturphase
             if ($this->summaryActiveTabId === null) {
                 $this->summaryActiveTabId = $this->myself->value;
             }
-            return view('livewire.screens.konjunkturphaseSummary', [
+            return view('livewire.screens.konjunkturphase-summary', [
                 'summaryActiveTabId' => $this->summaryActiveTabId,
             ]);
         }
-        return view('livewire.screens.konjunkturphaseEnding', [
+        return view('livewire.screens.konjunkturphase-ending', [
         ]);
     }
 
@@ -61,12 +64,32 @@ trait HasKonjunkturphase
 
     public function startKonjunkturphaseForPlayer(): void
     {
+        $aktion = new StartKonjunkturphaseForPlayerAktion();
+        $validationResult = $aktion->validate($this->myself, $this->gameEvents);
+        if (!$validationResult->canExecute) {
+            $this->showNotification(
+                $validationResult->reason,
+                NotificationTypeEnum::ERROR
+            );
+            $this->broadcastNotify();
+            return;
+        }
         $this->coreGameLogic->handle($this->gameId, StartKonjunkturphaseForPlayer::create($this->myself));
         $this->broadcastNotify();
     }
 
     public function completeMoneysheetForPlayer(): void
     {
+        $aktion = new CompleteMoneySheetForPlayerAktion();
+        $validationResult = $aktion->validate($this->myself, $this->gameEvents);
+        if (!$validationResult->canExecute) {
+            $this->showNotification(
+                $validationResult->reason,
+                NotificationTypeEnum::ERROR
+            );
+            $this->broadcastNotify();
+            return;
+        }
         $this->coreGameLogic->handle($this->gameId, CompleteMoneysheetForPlayer::create($this->myself));
         $this->broadcastNotify();
     }
