@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Feature\Moneysheet\Event;
+namespace Domain\CoreGameLogic\Feature\Spielzug\Command;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
-use Domain\CoreGameLogic\Feature\Moneysheet\Event\Behaviour\UpdatesInputForLebenshaltungskosten;
-use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\UpdatesInputForLebenshaltungskosten;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
 
 final readonly class LebenshaltungskostenForPlayerWereCorrected implements GameEventInterface, ProvidesResourceChanges, UpdatesInputForLebenshaltungskosten

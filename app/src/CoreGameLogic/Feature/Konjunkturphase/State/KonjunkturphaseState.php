@@ -5,11 +5,13 @@ namespace Domain\CoreGameLogic\Feature\Konjunkturphase\State;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
+use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\ZeitsteineForPlayer;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\PlayerHasStartedKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasStartedKonjunkturphase;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerWasMarkedAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
@@ -101,5 +103,23 @@ class KonjunkturphaseState
         }
         $latestKonjunkturphaseWasChangedEvent = $gameEvents->findLast(KonjunkturphaseWasChanged::class);
         return $latestPlayerHasStartedKonjunkturphaseEvent->year->equals($latestKonjunkturphaseWasChangedEvent->year);
+    }
+
+    public static function isPlayerReadyForKonjunkturphaseChange(GameEvents $gameEvents, PlayerId $playerId): bool
+    {
+        return $gameEvents->findLastOrNullWhere(
+            fn($event) => $event instanceof PlayerWasMarkedAsReadyForKonjunkturphaseChange
+                && $event->playerId->equals($playerId)) !== null;
+    }
+
+    public static function areAllPlayersMarkedAsReadyForKonjunkturphaseChange(GameEvents $gameEvents): bool
+    {
+        $players = PreGameState::playersWithNameAndLebensziel($gameEvents);
+        $areAllPlayersReady = true;
+        foreach ($players as $player) {
+            $areAllPlayersReady = $areAllPlayersReady
+                && KonjunkturphaseState::isPlayerReadyForKonjunkturphaseChange($gameEvents, $player->playerId);
+        }
+        return $areAllPlayersReady;
     }
 }

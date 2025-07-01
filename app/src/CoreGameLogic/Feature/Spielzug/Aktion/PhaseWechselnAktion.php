@@ -16,7 +16,7 @@ class PhaseWechselnAktion extends Aktion
         parent::__construct('phase-wechseln', 'Phase wechseln');
     }
 
-    public function validate(PlayerId $player, GameEvents $gameEvents): AktionValidationResult
+    public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
         // TODO:
         //$kontostand = KontostandAccessor::forPlayer($player, $eventStream);
@@ -28,7 +28,7 @@ class PhaseWechselnAktion extends Aktion
         return new AktionValidationResult(true);
     }
 
-    public function execute(PlayerId $player, GameEvents $gameEvents): GameEventsToPersist
+    public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist
     {
         // TODO: Implement execute() method.
         return GameEventsToPersist::empty();

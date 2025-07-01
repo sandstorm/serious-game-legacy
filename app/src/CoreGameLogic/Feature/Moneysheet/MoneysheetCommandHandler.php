@@ -1,3 +1,4 @@
+
 <?php
 
 declare(strict_types=1);
@@ -10,17 +11,10 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\CancelInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\ConcludeInsuranceForPlayer;
-use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterLebenshaltungskostenForPlayer;
-use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\InsuranceForPlayerWasConcluded;
-use Domain\CoreGameLogic\Feature\Moneysheet\Event\LebenshaltungskostenForPlayerWereCorrected;
-use Domain\CoreGameLogic\Feature\Moneysheet\Event\LebenshaltungskostenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\LoanWasTakenOutForPlayer;
-use Domain\CoreGameLogic\Feature\Moneysheet\Event\SteuernUndAbgabenForPlayerWereCorrected;
-use Domain\CoreGameLogic\Feature\Moneysheet\Event\SteuernUndAbgabenForPlayerWereEntered;
-use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\Definitions\Configuration\Configuration;
 
 /**
@@ -30,9 +24,7 @@ final readonly class MoneysheetCommandHandler implements CommandHandlerInterface
 {
     public function canHandle(CommandInterface $command): bool
     {
-        return $command instanceof EnterSteuernUndAbgabenForPlayer
-            || $command instanceof EnterLebenshaltungskostenForPlayer
-            || $command instanceof ConcludeInsuranceForPlayer
+        return $command instanceof ConcludeInsuranceForPlayer
             || $command instanceof CancelInsuranceForPlayer
             || $command instanceof TakeOutALoanForPlayer;
     }
@@ -41,10 +33,6 @@ final readonly class MoneysheetCommandHandler implements CommandHandlerInterface
     {
         /** @phpstan-ignore-next-line */
         return match ($command::class) {
-            EnterSteuernUndAbgabenForPlayer::class => $this->handleEnterSteuernUndAbgabenForPlayer(
-                $command, $gameEvents),
-            EnterLebenshaltungskostenForPlayer::class => $this->handleEnterLebenshaltungskostenForPlayer(
-                $command, $gameEvents),
             ConcludeInsuranceForPlayer::class => $this->handleConcludeInsuranceForPlayer(
                 $command, $gameEvents),
             CancelInsuranceForPlayer::class => $this->handleCancelInsuranceForPlayer(
@@ -54,55 +42,7 @@ final readonly class MoneysheetCommandHandler implements CommandHandlerInterface
         };
     }
 
-    private function handleEnterSteuernUndAbgabenForPlayer(
-        EnterSteuernUndAbgabenForPlayer $command,
-        GameEvents $gameEvents
-    ): GameEventsToPersist {
-        $expectedInput = MoneySheetState::calculateSteuernUndAbgabenForPlayer($gameEvents, $command->playerId);
-        $previousTries = MoneySheetState::getNumberOfTriesForSteuernUndAbgabenInput($gameEvents, $command->playerId);
 
-        $returnEvents = GameEventsToPersist::with(
-            new SteuernUndAbgabenForPlayerWereEntered(
-                playerId: $command->playerId,
-                playerInput: $command->input,
-                expectedInput: $expectedInput,
-                wasInputCorrect: $expectedInput->equals($command->input),
-            )
-        );
-
-        if ($previousTries >= Configuration::MAX_NUMBER_OF_TRIES_PER_INPUT - 1 && !$expectedInput->equals($command->input)) {
-            return $returnEvents->withAppendedEvents(
-                new SteuernUndAbgabenForPlayerWereCorrected($command->playerId, $expectedInput)
-            );
-        }
-
-        return $returnEvents;
-    }
-
-    private function handleEnterLebenshaltungskostenForPlayer(
-        EnterLebenshaltungskostenForPlayer $command,
-        GameEvents $gameEvents
-    ): GameEventsToPersist {
-        $expectedInput = MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $command->playerId);
-        $previousTries = MoneySheetState::getNumberOfTriesForLebenshaltungskostenInput($gameEvents, $command->playerId);
-
-        $returnEvents = GameEventsToPersist::with(
-            new LebenshaltungskostenForPlayerWereEntered(
-                playerId: $command->playerId,
-                playerInput: $command->input,
-                expectedInput: $expectedInput,
-                wasInputCorrect: $expectedInput->equals($command->input),
-            )
-        );
-
-        if ($previousTries >= Configuration::MAX_NUMBER_OF_TRIES_PER_INPUT - 1 && !$expectedInput->equals($command->input)) {
-            return $returnEvents->withAppendedEvents(
-                new LebenshaltungskostenForPlayerWereCorrected($command->playerId, $expectedInput)
-            );
-        }
-
-        return $returnEvents;
-    }
 
     private function handleConcludeInsuranceForPlayer(
         ConcludeInsuranceForPlayer $command,

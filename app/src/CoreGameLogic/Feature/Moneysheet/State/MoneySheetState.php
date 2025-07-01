@@ -5,24 +5,25 @@ namespace Domain\CoreGameLogic\Feature\Moneysheet\State;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\Dto\InputResult;
-use Domain\CoreGameLogic\Feature\Moneysheet\Event\Behaviour\UpdatesInputForLebenshaltungskosten;
-use Domain\CoreGameLogic\Feature\Moneysheet\Event\Behaviour\UpdatesInputForSteuernUndAbgaben;
-use Domain\CoreGameLogic\Feature\Moneysheet\Event\InsuranceForPlayerWasCancelled;
-use Domain\CoreGameLogic\Feature\Moneysheet\Event\InsuranceForPlayerWasConcluded;
-use Domain\CoreGameLogic\Feature\Moneysheet\Event\LebenshaltungskostenForPlayerWereCorrected;
-use Domain\CoreGameLogic\Feature\Moneysheet\Event\LebenshaltungskostenForPlayerWereEntered;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\LebenshaltungskostenForPlayerWereCorrected;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\LebenshaltungskostenForPlayerWereEntered;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SteuernUndAbgabenForPlayerWereCorrected;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SteuernUndAbgabenForPlayerWereEntered;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\UpdatesInputForLebenshaltungskosten;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\UpdatesInputForSteuernUndAbgaben;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\LoanWasTakenOutForPlayer;
-use Domain\CoreGameLogic\Feature\Moneysheet\Event\SteuernUndAbgabenForPlayerWereCorrected;
-use Domain\CoreGameLogic\Feature\Moneysheet\Event\SteuernUndAbgabenForPlayerWereEntered;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Insurance\InsuranceFinder;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
-use Domain\Definitions\Insurance\ValueObject\InsuranceTypeEnum;
 
 class MoneySheetState
 {
@@ -200,8 +201,18 @@ class MoneySheetState
 
     public static function hasPlayerCompletedMoneysheet(GameEvents $gameEvents, PlayerId $playerId): bool
     {
-        return !self::doesLebenshaltungskostenRequirePlayerAction($gameEvents, $playerId)
-            && !self::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $playerId);
+        $lastPlayerHasCompletedMoneysheetEvent = $gameEvents->findLastOrNullWhere(function ($event) use ($playerId, $gameEvents) {
+            return $event instanceof PlayerHasCompletedMoneysheetForCurrentKonjunkturphase &&
+                $event->playerId->equals($playerId) &&
+                $event->year->equals(KonjunkturphaseState::getCurrentYear($gameEvents));
+        });
+        return $lastPlayerHasCompletedMoneysheetEvent !== null;
+    }
+
+    public static function doesMoneySheetRequirePlayerAction(GameEvents $gameEvents, PlayerId $playerId): bool
+    {
+        return self::doesLebenshaltungskostenRequirePlayerAction($gameEvents, $playerId)
+            || self::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $playerId);
     }
 
     public static function calculateTotalForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount

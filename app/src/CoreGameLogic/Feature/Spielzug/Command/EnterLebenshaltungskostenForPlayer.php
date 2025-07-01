@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Feature\Moneysheet\Command;
+namespace Domain\CoreGameLogic\Feature\Spielzug\Command;
 
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
-use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
 final readonly class EnterLebenshaltungskostenForPlayer implements CommandInterface
 {

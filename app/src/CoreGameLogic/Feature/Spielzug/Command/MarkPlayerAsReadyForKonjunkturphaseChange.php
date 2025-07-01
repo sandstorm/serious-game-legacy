@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Command;
+namespace Domain\CoreGameLogic\Feature\Spielzug\Command;
 
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\PlayerId;
 
-final readonly class CompleteMoneysheetForPlayer implements CommandInterface
+final readonly class MarkPlayerAsReadyForKonjunkturphaseChange implements CommandInterface
 {
     public static function create(PlayerId $playerId): self
     {

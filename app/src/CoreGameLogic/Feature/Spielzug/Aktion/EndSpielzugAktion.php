@@ -21,10 +21,10 @@ class EndSpielzugAktion extends Aktion
         parent::__construct('end-spielzug', 'Spielzug beenden');
     }
 
-    public function validate(PlayerId $player, GameEvents $gameEvents): AktionValidationResult
+    public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
         $currentPlayer = CurrentPlayerAccessor::forStream($gameEvents);
-        if (!$currentPlayer->equals($player)) {
+        if (!$currentPlayer->equals($playerId)) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: 'Du bist gerade nicht dran'
@@ -37,7 +37,7 @@ class EndSpielzugAktion extends Aktion
         }
         if (
             $eventsThisTurn->findLastOrNull(ZeitsteinAktion::class) === null
-            && PlayerState::getZeitsteineForPlayer($gameEvents, $player) !== 0
+            && PlayerState::getZeitsteineForPlayer($gameEvents, $playerId) !== 0
         ) {
             return new AktionValidationResult(
                 canExecute: false,
@@ -49,14 +49,14 @@ class EndSpielzugAktion extends Aktion
         );
     }
 
-    public function execute(PlayerId $player, GameEvents $gameEvents): GameEventsToPersist
+    public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist
     {
-        $result = $this->validate($player, $gameEvents);
+        $result = $this->validate($playerId, $gameEvents);
         if (!$result->canExecute) {
             throw new \RuntimeException('Cannot end spielzug: ' . $result->reason, 1748946243);
         }
         return GameEventsToPersist::with(
-            new SpielzugWasEnded($player)
+            new SpielzugWasEnded($playerId)
         );
     }
 }

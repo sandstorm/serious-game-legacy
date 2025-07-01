@@ -11,6 +11,7 @@ use Domain\CoreGameLogic\PlayerId;
 
 abstract class Aktion
 {
+    // TODO remove id and label
     public function __construct(protected string $id, protected string $label)
     {
     }
@@ -18,7 +19,7 @@ abstract class Aktion
     /**
      * Preconditions - kann Aktion aktuell ausgeführt werden?
      */
-    abstract public function validate(PlayerId $player, GameEvents $gameEvents): AktionValidationResult;
+    abstract public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult;
 
-    abstract public function execute(PlayerId $player, GameEvents $gameEvents): GameEventsToPersist;
+    abstract public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist;
 }
