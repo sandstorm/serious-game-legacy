@@ -56,4 +56,11 @@ final readonly class Configuration
      * @var int
      */
     public final const FINE_VALUE = 250;
+
+    /**
+     * the number of Konjunkturphasen an loan will be repaid over.
+     * @var int
+     */
+    public final const REPAYMENT_PERIOD = 20;
+
 }

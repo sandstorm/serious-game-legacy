@@ -4,6 +4,7 @@
 @props([
     '$loans' => null,
     '$playerCanTakeOutALoan' => null,
+    '$repaymentPeriod' => null,
 ])
 
 @if ($this->takeOutALoanIsVisible)
@@ -37,7 +38,7 @@
                 <div class="form__group">
                     <label for="repaymentPerKonjunkturphase">Rückzahlung pro Runde</label>
                     <x-form.textfield wire:model="takeOutALoanForm.repaymentPerKonjunkturphase" id="repaymentPerKonjunkturphase" name="repaymentPerKonjunkturphase" type="number" step="0.1" />
-                    <span>Der Kredit wird innerhalb von 20 Jahren abbezahlt!</span>
+                    <span>Der Kredit wird innerhalb von {{ $repaymentPeriod }} Jahren abbezahlt!</span>
                     @error('takeOutALoanForm.repaymentPerKonjunkturphase') <span class="form__error">{{ $message }}</span> @enderror
                 </div>
             </div>

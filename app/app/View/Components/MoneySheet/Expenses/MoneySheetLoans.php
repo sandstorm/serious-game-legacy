@@ -8,6 +8,7 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Insurance\InsuranceFinder;
 use Domain\Definitions\Insurance\ValueObject\InsuranceTypeEnum;
 use Illuminate\View\Component;
@@ -31,6 +32,7 @@ class MoneySheetLoans extends Component
         return view('components.gameboard.moneySheet.expenses.money-sheet-loans', [
             'loans' => MoneySheetState::getLoansForPlayer($this->gameEvents, $this->playerId),
             'playerCanTakeOutALoan' => $this->getPlayerCanTakeOutALoan(),
+            'repaymentPeriod' => Configuration::REPAYMENT_PERIOD
         ]);
     }
 

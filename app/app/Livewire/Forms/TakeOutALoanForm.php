@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace App\Livewire\Forms;
 
+use Domain\Definitions\Configuration\Configuration;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class TakeOutALoanForm extends Form
 {
-    // TODO is the period fixed?
-    public const REPAYMENT_PERIOD = 20;
-
     #[Validate('required|string|max:255')]
     public string $intendedUse = '';
 
@@ -35,6 +33,7 @@ class TakeOutALoanForm extends Form
      */
     protected function rules(): array
     {
+        $repaymentPeriod = Configuration::REPAYMENT_PERIOD;
         return [
             'loanAmount' => [
                 'required', 'numeric', 'min:1', function ($attribute, $value, $fail) {
@@ -51,9 +50,9 @@ class TakeOutALoanForm extends Form
                 }
             ],
             'repaymentPerKonjunkturphase' => [
-                'required', 'numeric', function ($attribute, $value, $fail) {
-                    if ($this->repaymentPerKonjunkturphase !== $this->getCalculatedRepayment($this->zinssatz) / self::REPAYMENT_PERIOD) {
-                        $fail("Die Rückzahlung pro Runde muss der Rückzahlungssumme geteilt durch 20 entsprechen.");
+                'required', 'numeric', function ($attribute, $value, $fail) use ($repaymentPeriod) {
+                    if ($this->repaymentPerKonjunkturphase !== $this->getCalculatedRepayment($this->zinssatz) / Configuration::REPAYMENT_PERIOD) {
+                        $fail("Die Rückzahlung pro Runde muss der Rückzahlungssumme geteilt durch $repaymentPeriod entsprechen.");
                     }
                 }
             ],
@@ -62,7 +61,7 @@ class TakeOutALoanForm extends Form
 
     private function getCalculatedRepayment(float $zinssatz): float
     {
-        $repaymentPeriod = self::REPAYMENT_PERIOD;
+        $repaymentPeriod = Configuration::REPAYMENT_PERIOD;
         return $this->loanAmount * (1 + $zinssatz / $repaymentPeriod);
     }
 }
