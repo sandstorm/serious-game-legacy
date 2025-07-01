@@ -10,7 +10,7 @@
     <table>
         <tbody>
         <tr>
-            <td><small>Dein Gehalt</small> <br /> {{ $moneySheet->gehalt->format() }} / Jahr</td>
+            <td><small>Dein Gehalt</small> <br /> {!! $moneySheet->gehalt->format() !!} / Jahr</td>
             <td>
                 <small>35% deines Gehalts</small> <br />
 

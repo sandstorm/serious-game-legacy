@@ -51,6 +51,6 @@ readonly class MoneyAmount implements \JsonSerializable
 
     public function format(): string
     {
-        return number_format($this->value, 2, ',', '.') . ' €';
+        return "<span class='text--currency'>" . number_format($this->value, 2, ',', '.') . ' €' . "</span>";
     }
 }

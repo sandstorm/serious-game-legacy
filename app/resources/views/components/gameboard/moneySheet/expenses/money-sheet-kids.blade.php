@@ -6,7 +6,7 @@
 <table>
     <tbody>
     <tr>
-        <td><small>Dein Brutto gehalt</small> <br /> {{ $gehalt->format() }}</td>
+        <td><small>Dein Brutto gehalt</small> <br /> {!! $gehalt->format() !!}</td>
         <td>
             1.400 € <br />
             <small>
