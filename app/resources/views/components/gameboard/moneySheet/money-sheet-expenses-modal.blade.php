@@ -9,7 +9,7 @@
 @endsection
 
 @section('content')
-    <x-money-sheet.expenses.money-sheet-expenses :game-events="$gameEvents" :player-id="$playerId" />
+    <x-money-sheet.expenses.money-sheet-expenses :money-sheet="$moneySheet" :game-events="$gameEvents" :player-id="$playerId" />
 @endsection
 
 @section('footer')

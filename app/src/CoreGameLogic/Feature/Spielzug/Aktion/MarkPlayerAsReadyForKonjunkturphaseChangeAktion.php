@@ -14,6 +14,7 @@ use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\LebenshaltungskostenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\LebenshaltungskostenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasStartedKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerWasMarkedAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\PlayerId;
@@ -29,8 +30,10 @@ class MarkPlayerAsReadyForKonjunkturphaseChangeAktion extends Aktion
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
+        // TODO add validator isEndOfKonjunkturphase
+
         $lastCompletedMoneysheetEvent = $gameEvents->findLastOrNullWhere(function ($event) use ($playerId, $gameEvents) {
-            return $event instanceof PlayerWasMarkedAsReadyForKonjunkturphaseChange &&
+            return $event instanceof PlayerHasCompletedMoneysheetForCurrentKonjunkturphase &&
                 $event->playerId->equals($playerId) &&
                 KonjunkturphaseState::getCurrentYear($gameEvents)->equals($event->year);
         });
@@ -60,17 +63,24 @@ class MarkPlayerAsReadyForKonjunkturphaseChangeAktion extends Aktion
             ),
 
         );
-        if (KonjunkturphaseState::areAllPlayersMarkedAsReadyForKonjunkturphaseChange(GameEvents::fromArray([
+
+        // We want to check if all players are ready now. Therefore we need all game events AND the new events that have
+        // not yet been persisted. If there are any decorated events we need to unpack them first (we only need the
+        // inner event for the check).
+        $gameEventsAndEventsToPersist = GameEvents::fromArray([
             ...$gameEvents,
             ...array_map(fn($event) => $event instanceof DecoratedEvent ? $event->innerEvent : $event,
                 $eventsToPersist->events)
-        ]))) {
-            $eventsToPersist->withAppendedEvents(
-                // TODO find a better way
-                ...(new KonjunkturphaseCommandHandler())->handleChangeKonjunkturphase(ChangeKonjunkturphase::create(),
+        ]);
+        if (KonjunkturphaseState::areAllPlayersMarkedAsReadyForKonjunkturphaseChange($gameEventsAndEventsToPersist)) {
+            // If all players are ready -> change Konjunkturphase
+            $konjunkturphaseCommandHandler = new KonjunkturphaseCommandHandler();
+            return $eventsToPersist->withAppendedEvents(
+                ...$konjunkturphaseCommandHandler->handleChangeKonjunkturphase(ChangeKonjunkturphase::create(),
                 $gameEvents)->events
             );
         }
+
         return $eventsToPersist;
     }
 }

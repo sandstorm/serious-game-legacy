@@ -31,9 +31,11 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunktur
 use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasTakenOutForPlayer;
 
 /**
  * @internal no public API, because commands are no extension points. ALWAYS USE {@see ForCoreGameLogic::handle()} to trigger commands.
@@ -53,7 +55,8 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             || $command instanceof EnterSteuernUndAbgabenForPlayer
             || $command instanceof EnterLebenshaltungskostenForPlayer
             || $command instanceof ConcludeInsuranceForPlayer
-            || $command instanceof CancelInsuranceForPlayer;
+            || $command instanceof CancelInsuranceForPlayer
+            || $command instanceof TakeOutALoanForPlayer;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameEvents): GameEventsToPersist
@@ -76,6 +79,8 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             ConcludeInsuranceForPlayer::class => $this->handleConcludeInsuranceForPlayer(
                 $command, $gameEvents),
             CancelInsuranceForPlayer::class => $this->handleCancelInsuranceForPlayer(
+                $command, $gameEvents),
+            TakeOutALoanForPlayer::class => $this->handleTakeOutALoanForPlayer(
                 $command, $gameEvents),
         };
     }
@@ -201,6 +206,19 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             new InsuranceForPlayerWasCancelled(
                 playerId: $command->playerId,
                 insuranceId: $command->insuranceId,
+            )
+        );
+    }
+
+    private function handleTakeOutALoanForPlayer(TakeOutALoanForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
+    {
+        return GameEventsToPersist::with(
+            new LoanWasTakenOutForPlayer(
+                playerId: $command->playerId,
+                intendedUse: $command->intendedUse,
+                loanAmount: $command->loanAmount,
+                totalRepayment: $command->totalRepayment,
+                repaymentPerKonjunkturphase: $command->repaymentPerKonjunkturphase,
             )
         );
     }

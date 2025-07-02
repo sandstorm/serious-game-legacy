@@ -9,8 +9,13 @@ use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasStartedKonjunkturphase;
+use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Domain\CoreGameLogic\PlayerId;
 
+/**
+ * This event is fired when the player has handled the dialogue at the start of each Konjunkturphase.
+ * After this event is fired, the player can see the GameBoard again.
+ */
 class StartKonjunkturphaseForPlayerAktion extends Aktion
 {
     public function __construct()
@@ -18,12 +23,19 @@ class StartKonjunkturphaseForPlayerAktion extends Aktion
         parent::__construct('end-spielzug', 'Spielzug beenden');
     }
 
+    /**
+     * Use this to check if this Aktion can be executed.
+     * `execute()` will also use this function to check before actually creating any events.
+     * @param PlayerId $playerId
+     * @param GameEvents $gameEvents
+     * @return AktionValidationResult
+     */
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
         /** @var PlayerHasStartedKonjunkturphase $lastStartKonjunkturphaseEvent */
         $lastStartKonjunkturphaseEvent = $gameEvents->findLastOrNullWhere(
             fn($event) => $event instanceof PlayerHasStartedKonjunkturphase && $event->playerId->equals($playerId));
-        if (
+        if ( // has player already started this Konjunkturphase?
             $lastStartKonjunkturphaseEvent !== null &&
             $lastStartKonjunkturphaseEvent->year->equals(KonjunkturphaseState::getCurrentYear($gameEvents))
         ) {
@@ -37,6 +49,23 @@ class StartKonjunkturphaseForPlayerAktion extends Aktion
         );
     }
 
+    /**
+     * This is used to actually create the Events for this Aktion. Should only be used in the {@see SpielzugCommandHandler}.
+     *
+     * @param PlayerId $playerId
+     * @param GameEvents $gameEvents
+     * @return GameEventsToPersist
+     *
+     * @example
+     * // in SpielzugCommandHandler
+     * $aktion = new StartKonjunkturphaseForPlayerAktion();
+     * return $aktion->execute(
+     *      playerId: $command->playerId,
+     *      gameEvents: $gameEvents,
+     * );
+     *
+     * @internal this is only meant to be used inside the respective command handlers
+     */
     public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist
     {
         $result = $this->validate($playerId, $gameEvents);

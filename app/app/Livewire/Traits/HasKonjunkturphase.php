@@ -6,8 +6,10 @@ namespace App\Livewire\Traits;
 
 use App\Livewire\ValueObject\NotificationTypeEnum;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CompleteMoneySheetForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\MarkPlayerAsReadyForKonjunkturphaseChangeAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\StartKonjunkturphaseForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
@@ -91,6 +93,29 @@ trait HasKonjunkturphase
             return;
         }
         $this->coreGameLogic->handle($this->gameId, CompleteMoneysheetForPlayer::create($this->myself));
+        $this->broadcastNotify();
+    }
+
+    public function canCompleteMoneysheet(): bool
+    {
+        $aktion = new CompleteMoneySheetForPlayerAktion();
+        $validationResult = $aktion->validate($this->myself, $this->gameEvents);
+        return $validationResult->canExecute;
+    }
+
+    public function markPlayerAsReady(): void
+    {
+        $aktion = new MarkPlayerAsReadyForKonjunkturphaseChangeAktion();
+        $validationResult = $aktion->validate($this->myself, $this->gameEvents);
+        if (!$validationResult->canExecute) {
+            $this->showNotification(
+                $validationResult->reason,
+                NotificationTypeEnum::ERROR
+            );
+            $this->broadcastNotify();
+            return;
+        }
+        $this->coreGameLogic->handle($this->gameId, MarkPlayerAsReadyForKonjunkturphaseChange::create($this->myself));
         $this->broadcastNotify();
     }
 }

@@ -64,7 +64,8 @@
 
                             @if ($jobDefinition !== null)
                                 <hr/>
-                                <button class="button button--type-outline-primary" wire:click="showIncomeTab('salary')">
+                                <button class="button button--type-outline-primary"
+                                        wire:click="showIncomeTab('salary')">
                                     <ul class="zeitsteine">
                                         <li>-{{ $jobDefinition->requirements->zeitsteine }}</li>
                                         <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($this->gameEvents, $myself)])></li>
@@ -89,9 +90,17 @@
         </button>
         @if ($moneySheetIsVisible)
             @if ($editIncomeIsVisible)
-                <x-gameboard.moneySheet.money-sheet-income-modal :player-id="$myself" :game-events="$this->gameEvents"/>
+                <x-gameboard.moneySheet.money-sheet-income-modal
+                    :money-sheet="$this->getMoneysheetForPlayerId($myself)"
+                    :game-events="$this->gameEvents"
+                    :player-id="$myself"
+                />
             @elseif ($editExpensesIsVisible)
-                <x-gameboard.moneySheet.money-sheet-expenses-modal :player-id="$myself" :game-events="$this->gameEvents"/>
+                <x-gameboard.moneySheet.money-sheet-expenses-modal
+                    :money-sheet="$this->getMoneysheetForPlayerId($myself)"
+                    :game-events="$this->gameEvents"
+                    :player-id="$myself"
+                />
             @else
                 <x-money-sheet.money-sheet :money-sheet="$this->getMoneysheetForPlayerId($myself)"/>
             @endif
@@ -116,7 +125,7 @@
     <div class="dev-bar">
         <button type="button" class="button button--type-primary" wire:click="showLog()">Log</button>
         @if ($isLogVisible)
-            <x-gameboard.log />
+            <x-gameboard.log/>
         @endif
     </div>
 </div>

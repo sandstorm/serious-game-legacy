@@ -18,6 +18,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\LebenshaltungskostenForPlayerWereEntered;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
@@ -27,6 +28,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerWasMarkedAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
@@ -1000,10 +1002,12 @@ describe('handleEndSpielzug', function () {
         ];
         $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
 
-        $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId,
+            ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
 
-        $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId,
+            ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -1016,7 +1020,8 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
         /** @var TestCase $this */
         $this->coreGameLogic->handle($this->gameId, StartKonjunkturPhaseForPlayer::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, StartKonjunkturPhaseForPlayer::create($this->players[0]));
-    })->throws(\RuntimeException::class, 'Cannot start Konjunkturphase: Du hast diese Konjunkturphase bereits gestartet', 1751373528);
+    })->throws(\RuntimeException::class,
+        'Cannot start Konjunkturphase: Du hast diese Konjunkturphase bereits gestartet', 1751373528);
 
     it('works after a new Konjunkturphase has started', function () {
         /** @var TestCase $this */
@@ -1044,26 +1049,33 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
 
         $this->coreGameLogic->handle($this->gameId, StartKonjunkturPhaseForPlayer::create($this->players[1]));
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents, $this->players[0]))->toBeFalse()
-            ->and(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents, $this->players[1]))->toBeTrue();
+        expect(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents,
+            $this->players[0]))->toBeFalse()
+            ->and(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents,
+                $this->players[1]))->toBeTrue();
 
         $this->coreGameLogic->handle($this->gameId, StartKonjunkturPhaseForPlayer::create($this->players[0]));
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents, $this->players[0]))->toBeTrue()
-            ->and(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents, $this->players[1]))->toBeTrue();
+            ->and(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents,
+                $this->players[1]))->toBeTrue();
 
-        $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId,
+            ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
 
-        $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId,
+            ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
 
         $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create());
 
         $this->coreGameLogic->handle($this->gameId, StartKonjunkturPhaseForPlayer::create($this->players[1]));
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents, $this->players[0]))->toBeFalse()
-            ->and(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents, $this->players[1]))->toBeTrue();
+        expect(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents,
+            $this->players[0]))->toBeFalse()
+            ->and(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents,
+                $this->players[1]))->toBeTrue();
     });
 });
 
@@ -1173,7 +1185,8 @@ describe('handleCompleteMoneysheetForPlayer', function () {
             $this->gameId,
             CompleteMoneysheetForPlayer::create($this->players[0])
         );
-    })->throws(\RuntimeException::class, 'Cannot complete money sheet: Du musst erst dein Money Sheet korrekt ausfüllen', 1751375431);
+    })->throws(\RuntimeException::class,
+        'Cannot complete money sheet: Du musst erst dein Money Sheet korrekt ausfüllen', 1751375431);
 });
 describe('handleEnterSteuernUndAbgabenForPlayer', function () {
     it('works for correct player input when the player has no job', function () {
@@ -1422,16 +1435,127 @@ describe('handleEnterLebenshaltungskostenForPlayer', function () {
 });
 
 describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
+
     it('throws an error if it\'s not the end of the konjunkturphase', function () {
-        // TODO
-    });
+        /** @var TestCase $this */
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            MarkPlayerAsReadyForKonjunkturphaseChange::create($this->players[0])
+        );
+    })->throws(\RuntimeException::class, 'TODO', 123)->todo('Implement isEndOfKonjunkturphase validator first');
 
     it('throws an error if the player has not completed the money sheet', function () {
-        // TODO
-    });
+        /** @var TestCase $this */
+
+        $cardsForTesting = [
+            "cardToRemoveZeitsteine" => new KategorieCardDefinition(
+                id: new CardId('cardToRemoveZeitsteine'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -5,
+                ),
+            ),
+            "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
+                id: new CardId('cardToRemoveZeitsteine2'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -5,
+                ),
+            ),
+        ];
+        $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[0])
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE)
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[1])
+        );
+
+        $this->coreGameLogic->handle($this->gameId,
+            EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(5000)));
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            MarkPlayerAsReadyForKonjunkturphaseChange::create($this->players[0])
+        );
+    })->throws(\RuntimeException::class, "Cannot mark player as ready: Du musst erst das Money Sheet korrekt ausfüllen", 1751373528);
 
     it('marks the player as ready', function () {
-        // TODO
+        /** @var TestCase $this */
+
+        $cardsForTesting = [
+            "cardToRemoveZeitsteine" => new KategorieCardDefinition(
+                id: new CardId('cardToRemoveZeitsteine'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -5,
+                ),
+            ),
+            "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
+                id: new CardId('cardToRemoveZeitsteine2'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -5,
+                ),
+            ),
+        ];
+        $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[0])
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE)
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[1])
+        );
+
+        $this->coreGameLogic->handle($this->gameId,
+            EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(5000)));
+
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            CompleteMoneysheetForPlayer::create($this->players[0])
+        );
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            MarkPlayerAsReadyForKonjunkturphaseChange::create($this->players[0])
+        );
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect($gameEvents->findLastOrNullWhere(
+            fn ($event) => $event instanceof PlayerWasMarkedAsReadyForKonjunkturphaseChange
+                && $event->playerId->equals($this->players[0])
+                && $event->year->equals(KonjunkturphaseState::getCurrentYear($gameEvents))
+            ) !== null)
+            ->toBeTrue('The PlayerWasMarkedAsReadyForKonjunkturphaseChange event should exist for this player');
     });
 });
 

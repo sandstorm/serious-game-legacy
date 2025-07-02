@@ -5,6 +5,9 @@ namespace Tests\CoreGameLogic\Feature\Konjunkturphase\State;
 
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
@@ -12,6 +15,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Tests\TestCase;
 
@@ -385,13 +389,76 @@ describe('isPlayerReadyForKonjunkturphaseChange', function () {
             new EndSpielzug($this->players[1])
         );
 
+        $this->coreGameLogic->handle($this->gameId,
+            EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(5000)));
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
         $this->coreGameLogic->handle(
             $this->gameId,
             CompleteMoneysheetForPlayer::create($this->players[0])
         );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(KonjunkturphaseState::hasCurrentKonjunkturphaseEnded($gameEvents))
-            ->toBeTrue('Konjunkturphase should have ended after the last player ended their turn');
-    })->todo('Fix me before merge');
+        expect(KonjunkturphaseState::isPlayerReadyForKonjunkturphaseChange($gameEvents, $this->players[0]))
+            ->toBeFalse('The player should not be marked as ready');
+    });
+
+    it('returns true if the player is ready', function () {
+        /** @var TestCase $this */
+
+        $cardsForTesting = [
+            "cardToRemoveZeitsteine" => new KategorieCardDefinition(
+                id: new CardId('cardToRemoveZeitsteine'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -5,
+                ),
+            ),
+            "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
+                id: new CardId('cardToRemoveZeitsteine2'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -5,
+                ),
+            ),
+        ];
+        $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[0])
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE)
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[1])
+        );
+
+        $this->coreGameLogic->handle($this->gameId,
+            EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(5000)));
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            CompleteMoneysheetForPlayer::create($this->players[0])
+        );
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            MarkPlayerAsReadyForKonjunkturphaseChange::create($this->players[0])
+        );
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(KonjunkturphaseState::isPlayerReadyForKonjunkturphaseChange($gameEvents, $this->players[0]))
+            ->toBeTrue('The player should be marked as ready');
+    });
 });
