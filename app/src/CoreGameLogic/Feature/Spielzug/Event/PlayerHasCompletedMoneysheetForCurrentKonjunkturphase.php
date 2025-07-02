@@ -6,13 +6,17 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
-final readonly class PlayerHasCompletedMoneysheetForCurrentKonjunkturphase implements GameEventInterface
+final readonly class PlayerHasCompletedMoneysheetForCurrentKonjunkturphase implements GameEventInterface, ProvidesResourceChanges
 {
     public function __construct(
         public PlayerId $playerId,
         public CurrentYear $year,
+        public MoneyAmount $guthabenChange,
     ) {
     }
 
@@ -25,6 +29,7 @@ final readonly class PlayerHasCompletedMoneysheetForCurrentKonjunkturphase imple
         return new self(
             playerId: PlayerId::fromString($values['playerId']),
             year: new CurrentYear($values['year']),
+            guthabenChange: new MoneyAmount($values['guthabenChange']),
         );
     }
 
@@ -36,6 +41,17 @@ final readonly class PlayerHasCompletedMoneysheetForCurrentKonjunkturphase imple
         return [
             "year" => $this->year,
             "playerId" => $this->playerId,
+            "guthabenChange" => $this->guthabenChange,
         ];
+    }
+
+    public function getResourceChanges(PlayerId $playerId): ResourceChanges
+    {
+        if ($this->playerId->equals($playerId)) {
+            return new ResourceChanges(
+                guthabenChange: $this->guthabenChange
+            );
+        }
+        return new ResourceChanges();
     }
 }

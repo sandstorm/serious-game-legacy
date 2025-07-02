@@ -1633,7 +1633,6 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
         $this->coreGameLogic->handle($this->gameId,
             EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)));
 
-
         $this->coreGameLogic->handle(
             $this->gameId,
             CompleteMoneysheetForPlayer::create($this->players[0])

@@ -207,13 +207,13 @@ trait HasMoneySheet
     {
         $this->takeOutALoanIsVisible = !$this->takeOutALoanIsVisible;
         $this->takeOutALoanForm->reset();
-        $this->takeOutALoanForm->guthaben = PlayerState::getGuthabenForPlayer($this->gameEvents, $this->myself)->value;
-        $this->takeOutALoanForm->zinssatz = KonjunkturphaseState::getCurrentKonjunkturphase($this->gameEvents)->zinssatz;
-        $this->takeOutALoanForm->hasJob = PlayerState::getJobForPlayer($this->gameEvents, $this->myself) !== null;
     }
 
     public function takeOutALoan(): void
     {
+        $this->takeOutALoanForm->guthaben = PlayerState::getGuthabenForPlayer($this->gameEvents, $this->myself)->value;
+        $this->takeOutALoanForm->zinssatz = KonjunkturphaseState::getCurrentKonjunkturphase($this->gameEvents)->zinssatz;
+        $this->takeOutALoanForm->hasJob = PlayerState::getJobForPlayer($this->gameEvents, $this->myself) !== null;
         $this->takeOutALoanForm->validate();
 
         // TODO what happens if the player makes mistakes?

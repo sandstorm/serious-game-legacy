@@ -58,6 +58,7 @@ class MarkPlayerAsReadyForKonjunkturphaseChangeAktion extends Aktion
             // If all players are ready -> change Konjunkturphase
             $konjunkturphaseCommandHandler = new KonjunkturphaseCommandHandler();
             return $eventsToPersist->withAppendedEvents(
+                // TODO direct call of command handler
                 ...$konjunkturphaseCommandHandler->handleChangeKonjunkturphase(ChangeKonjunkturphase::create(),
                 $gameEvents)->events
             );

@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace Tests\CoreGameLogic\Feature\Moneysheet\State;
 
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
+use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
@@ -13,6 +16,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
@@ -586,6 +590,9 @@ describe('getLoansForPlayer', function () {
     });
 
     it('returns existing loans', function () {
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->value)->toEqual(50000);
+
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
             $this->players[0],
             'loan1',
@@ -596,12 +603,84 @@ describe('getLoansForPlayer', function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $loans = MoneySheetState::getLoansForPlayer($gameEvents, $this->players[0]);
+
         expect($loans)->toHaveCount(1)
             ->and($loans[0]->intendedUse)->toEqual('loan1')
+            ->and($loans[0]->year->value)->toEqual(1)
+            ->and($loans[0]->loanId->value)->toEqual(1)
             ->and($loans[0]->loanAmount->value)->toEqual(10000)
             ->and($loans[0]->totalRepayment->value)->toEqual(12500)
             ->and($loans[0]->repaymentPerKonjunkturphase->value)->toEqual(625)
-            ->and(MoneySheetState::getSumOfAllLoansForPlayer($gameEvents, $this->players[0])->value)->toEqual(10000);
+            ->and(MoneySheetState::getSumOfAllLoansForPlayer($gameEvents, $this->players[0])->value)->toEqual(10000)
+            ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->value)->toEqual(60000);
 
+    });
+});
+
+describe('getOpenRatesForLoan', function () {
+    it('returns 0 if no loans exist', function () {
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        expect(MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], new LoanId(1))->value)->toEqual(0);
+    })->throws(\RuntimeException::class, 'No loan found for player p1 with ID 1');
+
+    it('returns correct open rates for loans', function () {
+        $this->startNewKonjunkturPhaseWithCardsForTesting();
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ChangeKonjunkturphase::create()
+        );
+
+        $initialGuthaben = 50000;
+        $loanAmount = 10000;
+        $repayment = 12500;
+        $rate = 625;
+        // player 0 takes out a loan
+        $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
+            $this->players[0],
+            'loan1',
+            new MoneyAmount($loanAmount),
+            new MoneyAmount($repayment),
+            new MoneyAmount($rate)
+        ));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        $expectedYear = 2;
+        $loans = MoneySheetState::getLoansForPlayer($gameEvents, $this->players[0]);
+        $openRates = MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], $loans[0]->loanId);
+        $currentYear = KonjunkturphaseState::getCurrentYear($gameEvents);
+        expect($loans)->toHaveCount(1)
+            ->and($loans[0]->year->value)->toEqual($expectedYear)
+            ->and($loans[0]->loanId->value)->toEqual(1)
+            ->and($openRates->value)->toEqual($repayment)
+            ->and($currentYear->value)->toEqual($expectedYear)
+            ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->value)->toEqual($initialGuthaben + $loanAmount);
+
+        for($i = 1; $i <= 20; $i++) {
+            $expectedYear++;
+            $expectedOpenRates = $repayment - ($rate * $i);
+            $expectedGuthaben = $initialGuthaben + $loanAmount - ($rate * $i);
+            $this->makeSpielzugForPlayersAndChangeKonjunkturphase();
+
+            $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+            $openRates = MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], $loans[0]->loanId);
+            $currentYear = KonjunkturphaseState::getCurrentYear($gameEvents);
+            expect($loans)->toHaveCount(1)
+                ->and($openRates->value)->toEqual($expectedOpenRates)
+                ->and($currentYear->value)->toEqual($expectedYear)
+                ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->value)->toEqual($expectedGuthaben);
+        }
+
+        // after 20 years, the loan should be fully repaid
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->value)->toEqual($initialGuthaben + $loanAmount - $repayment);
+        $openRates = MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], $loans[0]->loanId);
+        expect($openRates->value)->toEqual(0);
+
+        // the loan rates should not be paid anymore the next year
+        $this->makeSpielzugForPlayersAndChangeKonjunkturphase();
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->value)->toEqual($initialGuthaben + $loanAmount - $repayment);
+        $openRates = MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], $loans[0]->loanId);
+        expect($openRates->value)->toEqual(0);
     });
 });

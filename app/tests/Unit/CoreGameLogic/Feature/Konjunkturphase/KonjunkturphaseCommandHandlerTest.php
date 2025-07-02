@@ -60,7 +60,8 @@ describe('handleChangeKonjunkturphase', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $lastPhase = KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents);
         expect($lastPhase)->not()->toBeNull()
-            ->and($lastPhase->type)->toBe(KonjunkturphaseTypeEnum::AUFSCHWUNG);
+            ->and($lastPhase->type)->toBe(KonjunkturphaseTypeEnum::AUFSCHWUNG)
+            ->and(KonjunkturphaseState::getCurrentYear($gameEvents)->value)->toBe(1);
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -74,7 +75,8 @@ describe('handleChangeKonjunkturphase', function () {
                 KonjunkturphaseTypeEnum::AUFSCHWUNG,
                 KonjunkturphaseTypeEnum::BOOM,
                 KonjunkturphaseTypeEnum::REZESSION
-            ]);
+            ])
+            ->and(KonjunkturphaseState::getCurrentYear($gameEvents)->value)->toBe(2);
     });
 
 });
