@@ -109,6 +109,7 @@ class KonjunkturphaseState
     {
         return $gameEvents->findLastOrNullWhere(
             fn($event) => $event instanceof PlayerWasMarkedAsReadyForKonjunkturphaseChange
+                && $event->year->equals(KonjunkturphaseState::getCurrentYear($gameEvents))
                 && $event->playerId->equals($playerId)) !== null;
     }
 

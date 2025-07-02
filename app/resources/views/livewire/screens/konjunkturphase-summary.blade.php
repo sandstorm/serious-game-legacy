@@ -24,12 +24,13 @@
     <x-konjunkturphase.summary :game-events="$this->gameEvents"
                                :player-id="PlayerId::fromString($this->summaryActiveTabId)"/>
 
-    <button wire:click="()"
+    <button wire:click="markPlayerAsReady()"
             type="button"
             class="button button--type-primary">
-        TODO
+        Ich bin fertig
     </button>
 
+    <x-notification.notification/>
 
     <div class="dev-bar">
         <button type="button" class="button button--type-primary" wire:click="showLog()">Log</button>

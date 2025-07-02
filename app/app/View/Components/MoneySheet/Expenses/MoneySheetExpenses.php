@@ -6,8 +6,6 @@ namespace App\View\Components\MoneySheet\Expenses;
 
 use App\Livewire\Dto\MoneySheet as MoneySheetDto;
 use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
-use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Illuminate\View\Component;
 use Illuminate\View\View;
@@ -18,6 +16,7 @@ class MoneySheetExpenses extends Component
      * Create the component instance.
      */
     public function __construct(
+        public MoneySheetDto $moneySheet,
         public PlayerId $playerId,
         public GameEvents $gameEvents,
     ) {}
@@ -28,16 +27,7 @@ class MoneySheetExpenses extends Component
     public function render(): View
     {
         return view('components.gameboard.moneySheet.expenses.money-sheet-expenses', [
-            'moneySheet' => new MoneySheetDto(
-                lebenshaltungskosten: MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameEvents, $this->playerId),
-                doesLebenshaltungskostenRequirePlayerAction: MoneySheetState::doesLebenshaltungskostenRequirePlayerAction($this->gameEvents, $this->playerId),
-                steuernUndAbgaben: MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameEvents, $this->playerId),
-                doesSteuernUndAbgabenRequirePlayerAction: MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($this->gameEvents, $this->playerId),
-                gehalt: PlayerState::getGehaltForPlayer($this->gameEvents, $this->playerId)->value,
-                total: MoneySheetState::calculateTotalForPlayer($this->gameEvents, $this->playerId)->value,
-                totalInsuranceCost: 0,
-                sumOfAllLoans: MoneySheetState::getSumOfAllLoansForPlayer($this->gameEvents, $this->playerId),
-            ),
+            'moneySheet' => $this->moneySheet,
         ]);
     }
 

@@ -58,11 +58,11 @@
         </div>
     @elseif ($this->activeTabForExpenses === ExpensesTabEnum::TAXES)
         <div aria-labelledby="taxes" role="tabpanel" class="tabs__tab">
-            <x-money-sheet.expenses.money-sheet-taxes :gameEvents="$gameEvents" :playerId="$playerId"/>
+            <x-money-sheet.expenses.money-sheet-taxes :money-sheet="$moneySheet"/>
         </div>
     @elseif ($this->activeTabForExpenses === ExpensesTabEnum::LIVING_COSTS)
         <div aria-labelledby="livingCosts" role="tabpanel" class="tabs__tab">
-            <x-money-sheet.expenses.money-sheet-living-costs :gameEvents="$gameEvents" :playerId="$playerId"/>
+            <x-money-sheet.expenses.money-sheet-living-costs :money-sheet="$moneySheet"/>
         </div>
     @endif
 </div>

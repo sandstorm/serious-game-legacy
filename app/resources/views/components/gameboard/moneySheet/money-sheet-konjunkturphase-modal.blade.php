@@ -21,6 +21,6 @@
             ])
             wire:click="completeMoneysheetForPlayer()"
     >
-        Weiter brot
+        Weiter
     </button>
 @endsection

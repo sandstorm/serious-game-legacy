@@ -13,9 +13,9 @@ class MoneySheet
         public bool  $doesLebenshaltungskostenRequirePlayerAction,
         public MoneyAmount $steuernUndAbgaben,
         public bool  $doesSteuernUndAbgabenRequirePlayerAction,
-        public float $gehalt,
-        public float $total,
-        public float $totalInsuranceCost,
+        public MoneyAmount $gehalt,
+        public MoneyAmount $total,
+        public MoneyAmount $totalInsuranceCost,
         public MoneyAmount $sumOfAllLoans
     ) {}
 }
