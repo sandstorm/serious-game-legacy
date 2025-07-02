@@ -606,6 +606,7 @@ final class CardFinder
         $allCards = array_reduce($this->cards, function ($cards, $currentPile) {
             return [...$cards, ...$currentPile];
         }, []);
+
         if (array_key_exists($cardId->value, $allCards)) {
             return $allCards[$cardId->value];
         }

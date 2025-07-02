@@ -12,6 +12,12 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
@@ -230,6 +236,61 @@ Der steigende Leitzins erhÃ¶ht die Deflation, die Kaufkraft der Barreserven erhÃ
                     new CardOrder(pileId: $this->pileIdMinijobs, cards: array_map(fn($card) => $card->id, $this->cardsMinijobs)),
                 )
         );
+    }
+
+    public function startNewKonjunkturPhaseWithCardsForTesting(): void
+    {
+        $cardsForTesting = [];
+        for($i = 0; $i < count($this->players); $i++) {
+            $cardID = new CardId('cardToRemoveZeitsteine' . $i);
+            $cardsForTesting[$cardID->value] = new KategorieCardDefinition(
+                id: $cardID,
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -5,
+                ),
+            );
+        }
+        $testCards = [
+            PileId::BILDUNG_PHASE_1->value => $cardsForTesting,
+            PileId::FREIZEIT_PHASE_1->value => $this->cardsFreizeit,
+            PileId::JOBS_PHASE_1->value => $this->cardsJobs,
+        ];
+        CardFinder::getInstance()->overrideCardsForTesting($testCards);
+    }
+
+    public function makeSpielzugForPlayersAndChangeKonjunkturphase(): void
+    {
+        foreach($this->players as $player) {
+            $this->coreGameLogic->handle(
+                $this->gameId,
+                ActivateCard::create($player, CategoryId::BILDUNG_UND_KARRIERE)
+            );
+            $this->coreGameLogic->handle(
+                $this->gameId,
+                new EndSpielzug($player)
+            );
+        }
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect($gameEvents->findLast(KonjunkturphaseHasEnded::class) instanceof KonjunkturphaseHasEnded)->toBeTrue();
+
+        foreach($this->players as $player) {
+            $this->coreGameLogic->handle(
+                $this->gameId,
+                EnterLebenshaltungskostenForPlayer::create($player, new MoneyAmount(5000))
+            );
+            $this->coreGameLogic->handle(
+                $this->gameId,
+                CompleteMoneysheetForPlayer::create($player)
+            );
+            $this->coreGameLogic->handle(
+                $this->gameId,
+                MarkPlayerAsReadyForKonjunkturphaseChange::create($player)
+            );
+        }
     }
 
     /**

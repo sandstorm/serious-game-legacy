@@ -391,7 +391,6 @@ describe('isPlayerReadyForKonjunkturphaseChange', function () {
 
         $this->coreGameLogic->handle($this->gameId,
             EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(5000)));
-        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
         $this->coreGameLogic->handle(
             $this->gameId,
