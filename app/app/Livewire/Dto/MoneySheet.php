@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\Livewire\Dto;
 
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
+
 class MoneySheet
 {
     public function __construct(
-        public float $lebenshaltungskosten,
+        public MoneyAmount $lebenshaltungskosten,
         public bool  $doesLebenshaltungskostenRequirePlayerAction,
-        public float $steuernUndAbgaben,
+        public MoneyAmount $steuernUndAbgaben,
         public bool  $doesSteuernUndAbgabenRequirePlayerAction,
-        public float $gehalt,
-        public float $totalInsuranceCost
+        public MoneyAmount $gehalt,
+        public MoneyAmount $totalInsuranceCost,
+        public MoneyAmount $sumOfAllLoans
     ) {}
 }

@@ -7,7 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Event;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\ZeitsteineForPlayer;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Leitzins;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Zinssatz;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
@@ -20,12 +20,12 @@ final readonly class KonjunkturphaseWasChanged implements GameEventInterface
      * @param ZeitsteineForPlayer[] $zeitsteineForPlayers
      */
     public function __construct(
-        public KonjunkturphasenId $id,
-        public CurrentYear $year,
+        public KonjunkturphasenId      $id,
+        public CurrentYear             $year,
         public KonjunkturphaseTypeEnum $type,
-        public Leitzins $leitzins,
-        public array $kompetenzbereiche,
-        public array $zeitsteineForPlayers,
+        public Zinssatz                $zinssatz,
+        public array                   $kompetenzbereiche,
+        public array                   $zeitsteineForPlayers,
     ) {
     }
 
@@ -35,7 +35,7 @@ final readonly class KonjunkturphaseWasChanged implements GameEventInterface
             id: KonjunkturphasenId::create($in['id']),
             year: new CurrentYear($in['year']),
             type: KonjunkturphaseTypeEnum::fromString($in['type']),
-            leitzins: new Leitzins($in['leitzins']),
+            zinssatz: new Zinssatz($in['zinssatz']),
             kompetenzbereiche: array_map(
                 static fn(array $kompetenzbereich) => KompetenzbereichDefinition::fromArray($kompetenzbereich),
                 $in['kompetenzbereiche']
@@ -56,7 +56,7 @@ final readonly class KonjunkturphaseWasChanged implements GameEventInterface
             'id' => $this->id->jsonSerialize(),
             'year' => $this->year->jsonSerialize(),
             'type' => $this->type,
-            'leitzins' => $this->leitzins->jsonSerialize(),
+            'zinssatz' => $this->zinssatz->jsonSerialize(),
             'kompetenzbereiche' => $this->kompetenzbereiche,
             'zeitsteineForPlayers' => $this->zeitsteineForPlayers,
         ];

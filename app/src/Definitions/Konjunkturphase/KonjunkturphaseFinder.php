@@ -29,7 +29,7 @@ Alle erhalten ihr jährliches Einkommen und begleichen ihre Verbindlichkeiten.',
 wird fällig. 1000 €/Immobilie müssen bezahlt werden.
 
 Der steigende Leitzins erhöht die Deflation, die Kaufkraft der Barreserven erhöht sich: Die auf den Karten angegebenen Kosten müssen in diesem Jahr nur zu 90 % beglichen werden.',
-            leitzins: 5,
+            zinssatz: 5,
             kompetenzbereiche: [
                 new KompetenzbereichDefinition(
                     name: CategoryId::BILDUNG_UND_KARRIERE,
@@ -79,7 +79,7 @@ Alle erhalten ihr jährliches Einkommen und begleichen ihre Verbindlichkeiten.',
 verliert zunehmend an Wert. Jede verliert 20 % ihrer Aktien.
 
 Die Regierung fördert eine neue Bilungsoffensive. Jede erhält - wenn gewünscht - eine Karte (Bildung/Karriere), ohne einen Zeitstein setzten zu müssen. ',
-            leitzins: 5,
+            zinssatz: 5,
             kompetenzbereiche: [
                 new KompetenzbereichDefinition(
                     name: CategoryId::BILDUNG_UND_KARRIERE,
@@ -124,7 +124,7 @@ Jede zahlt 2.000 € zusätzlich.
 Eine Naturkatastrophe bricht über das Land hinein: Sturm
 Olga verwüstet ganze Städte. Die Bewohnerinnen werden
 dazu aufgerufen, bei den Räumungsarbeiten zu helfen (Kosten = 1 Zeitstein). Alle haben in dieser Runde nur 2 Zeitsteine zur Verfügung. ',
-            leitzins: 0,
+            zinssatz: 0,
             kompetenzbereiche: [
                 new KompetenzbereichDefinition(
                     name: CategoryId::BILDUNG_UND_KARRIERE,
@@ -169,7 +169,7 @@ Jede zahlt 2.000 € zusätzlich.
 Eine Naturkatastrophe bricht über das Land hinein: Sturm
 Olga verwüstet ganze Städte. Die Bewohnerinnen werden
 dazu aufgerufen, bei den Räumungsarbeiten zu helfen (Kosten = 1 Zeitstein). Alle haben in dieser Runde nur 2 Zeitsteine zur Verfügung. ',
-            leitzins: 0,
+            zinssatz: 0,
             kompetenzbereiche: [
                 new KompetenzbereichDefinition(
                     name: CategoryId::BILDUNG_UND_KARRIERE,

@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\View\Components\MoneySheet\Expenses;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Configuration\Configuration;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
@@ -25,6 +27,8 @@ class MoneySheetLoans extends Component
     public function render(): View
     {
         return view('components.gameboard.moneySheet.expenses.money-sheet-loans', [
+            'loans' => MoneySheetState::getLoansForPlayer($this->gameEvents, $this->playerId),
+            'repaymentPeriod' => Configuration::REPAYMENT_PERIOD
         ]);
     }
 

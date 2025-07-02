@@ -7,17 +7,20 @@ namespace App\Livewire\Traits;
 use App\Livewire\Forms\MoneySheetInsurancesForm;
 use App\Livewire\Forms\MoneySheetLebenshaltungskostenForm;
 use App\Livewire\Forms\MoneySheetSteuernUndAbgabenForm;
+use App\Livewire\Forms\TakeOutALoanForm;
 use App\Livewire\ValueObject\ExpensesTabEnum;
 use App\Livewire\ValueObject\IncomeTabEnum;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\CancelInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterSteuernUndAbgabenForPlayer;
+use Domain\CoreGameLogic\Feature\Moneysheet\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Insurance\InsuranceFinder;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
-
 
 trait HasMoneySheet
 {
@@ -25,10 +28,12 @@ trait HasMoneySheet
     public MoneySheetLebenshaltungskostenForm $moneySheetLebenshaltungskostenForm;
     public MoneySheetSteuernUndAbgabenForm $moneySheetSteuernUndAbgabenForm;
     public MoneySheetInsurancesForm $moneySheetInsurancesForm;
+    public TakeOutALoanForm $takeOutALoanForm;
 
     public bool $moneySheetIsVisible = false;
     public bool $editIncomeIsVisible = false;
     public bool $editExpensesIsVisible = false;
+    public bool $takeOutALoanIsVisible = false;
 
     // set in the view money-sheet-income.blade.php
     public IncomeTabEnum $activeTabForIncome = IncomeTabEnum::INVESTMENTS;
@@ -67,8 +72,6 @@ trait HasMoneySheet
         $calculatedLebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameEvents, $this->myself);
         $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten = $latestInputForLebenshaltungskosten->value;
         $this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled = $latestInputForLebenshaltungskosten->equals($calculatedLebenshaltungskosten);
-
-
     }
 
     public function showMoneySheet(): void
@@ -130,7 +133,7 @@ trait HasMoneySheet
 
         if (!$resultOfLastInput->wasSuccessful && $resultOfLastInput->fine->value > 0) {
             $this->moneySheetLebenshaltungskostenForm->addError('lebenshaltungskosten',
-                "Du hast einen falschen Wert für die Lebenshaltungskosten eingegeben. Dir wurden $resultOfLastInput->fine € abgezogen. Wir haben den Wert für dich korrigiert.");
+                "Du hast einen falschen Wert für die Lebenshaltungskosten eingegeben. Dir wurden {$resultOfLastInput->fine->value} € abgezogen. Wir haben den Wert für dich korrigiert.");
             $this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled = true;
         } elseif (!$resultOfLastInput->wasSuccessful) {
             $this->moneySheetLebenshaltungskostenForm->addError('lebenshaltungskosten',
@@ -153,7 +156,7 @@ trait HasMoneySheet
 
         if (!$resultOfLastInput->wasSuccessful && $resultOfLastInput->fine->value > 0) {
             $this->moneySheetSteuernUndAbgabenForm->addError('steuernUndAbgaben',
-                "Du hast einen falschen Wert für die Steuern und Abgaben eingegeben. Dir wurden $resultOfLastInput->fine € abgezogen. Wir haben den Wert für dich korrigiert.");
+                "Du hast einen falschen Wert für die Steuern und Abgaben eingegeben. Dir wurden {$resultOfLastInput->fine->value} € abgezogen. Wir haben den Wert für dich korrigiert.");
             $this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled = true;
         } elseif (!$resultOfLastInput->wasSuccessful) {
             $this->moneySheetSteuernUndAbgabenForm->addError('steuernUndAbgaben',
@@ -184,4 +187,29 @@ trait HasMoneySheet
         $this->broadcastNotify();
     }
 
+    public function toggleTakeOutALoan(): void
+    {
+        $this->takeOutALoanIsVisible = !$this->takeOutALoanIsVisible;
+        $this->takeOutALoanForm->reset();
+        $this->takeOutALoanForm->guthaben = PlayerState::getGuthabenForPlayer($this->gameEvents, $this->myself)->value;
+        $this->takeOutALoanForm->zinssatz = KonjunkturphaseState::getCurrentKonjunkturphase($this->gameEvents)->zinssatz;
+        $this->takeOutALoanForm->hasJob = PlayerState::getJobForPlayer($this->gameEvents, $this->myself) !== null;
+    }
+
+    public function takeOutALoan(): void
+    {
+        $this->takeOutALoanForm->validate();
+
+        // TODO what happens if the player makes mistakes?
+        $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
+            $this->myself,
+            $this->takeOutALoanForm->intendedUse,
+            new MoneyAmount($this->takeOutALoanForm->loanAmount),
+            new MoneyAmount($this->takeOutALoanForm->totalRepayment),
+            new MoneyAmount($this->takeOutALoanForm->repaymentPerKonjunkturphase)
+        ));
+
+        $this->toggleTakeOutALoan();
+        $this->broadcastNotify();
+    }
 }

@@ -89,5 +89,4 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
         $aktion = new SkipCardAktion($command->categoryId);
         return $aktion->execute($command->playerId, $gameState);
     }
-
 }

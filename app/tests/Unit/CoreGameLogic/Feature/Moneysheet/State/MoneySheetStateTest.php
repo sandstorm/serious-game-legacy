@@ -7,6 +7,7 @@ use Domain\CoreGameLogic\Feature\Moneysheet\Command\CancelInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Command\EnterSteuernUndAbgabenForPlayer;
+use Domain\CoreGameLogic\Feature\Moneysheet\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\Feature\Moneysheet\Event\InsuranceForPlayerWasConcluded;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
@@ -558,5 +559,49 @@ describe('doesPlayerHaveThisInsurance', function () {
         expect(MoneySheetState::doesPlayerHaveThisInsurance($gameEvents, $this->players[0], $this->insurances[0]->id))->toBeTrue()
             ->and(MoneySheetState::doesPlayerHaveThisInsurance($gameEvents, $this->players[0], $this->insurances[1]->id))->toBeFalse()
             ->and(count($gameEvents->findAllOfType(InsuranceForPlayerWasConcluded::class)))->toBe(3);
+    });
+});
+
+describe('getCostOfAllInsurances', function () {
+    it('returns correct sum of all insurance costs', function () {
+        $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->players[0], $this->insurances[0]->id));
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(MoneySheetState::getCostOfAllInsurances($gameEvents, $this->players[0])->value)->toEqual(100);
+
+        $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->players[0], $this->insurances[1]->id));
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(MoneySheetState::getCostOfAllInsurances($gameEvents, $this->players[0])->value)->toEqual(250);
+
+        $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->players[0], $this->insurances[2]->id));
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(MoneySheetState::getCostOfAllInsurances($gameEvents, $this->players[0])->value)->toEqual(750);
+    });
+});
+
+describe('getLoansForPlayer', function () {
+    it('returns empty array if no loans exist', function () {
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        expect(MoneySheetState::getLoansForPlayer($gameEvents, $this->players[0]))->toBeEmpty();
+    });
+
+    it('returns existing loans', function () {
+        $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
+            $this->players[0],
+            'loan1',
+            new MoneyAmount(10000),
+            new MoneyAmount(12500),
+            new MoneyAmount(625)
+        ));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        $loans = MoneySheetState::getLoansForPlayer($gameEvents, $this->players[0]);
+        expect($loans)->toHaveCount(1)
+            ->and($loans[0]->intendedUse)->toEqual('loan1')
+            ->and($loans[0]->loanAmount->value)->toEqual(10000)
+            ->and($loans[0]->totalRepayment->value)->toEqual(12500)
+            ->and($loans[0]->repaymentPerKonjunkturphase->value)->toEqual(625)
+            ->and(MoneySheetState::getSumOfAllLoansForPlayer($gameEvents, $this->players[0])->value)->toEqual(10000);
+
     });
 });

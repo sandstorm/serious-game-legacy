@@ -27,7 +27,7 @@
                 </tr>
                 <tr>
                     <td>Gehalt</td>
-                    <td class="text-align--right">{{$moneySheet->gehalt}}€</td>
+                    <td class="text-align--right">{!! $moneySheet->gehalt->format() !!}</td>
                     <td>
                         <button type="button" class="button button--type-primary button--size-small"
                                 wire:click="showIncomeTab('{{ IncomeTabEnum::SALARY }}')">Bearbeiten
@@ -46,7 +46,9 @@
                 <tbody>
                 <tr>
                     <td>Kredite</td>
-                    <td class="text-align--right">0€</td>
+                    <td class="text-align--right">
+                        {!! $moneySheet->sumOfAllLoans->format() !!}
+                    </td>
                     <td>
                         <button type="button" class="button button--type-primary button--size-small"
                                 wire:click="showExpensesTab('{{ ExpensesTabEnum::LOANS }}')">Bearbeiten
@@ -55,7 +57,9 @@
                 </tr>
                 <tr>
                     <td>Kinder</td>
-                    <td class="text-align--right">0€</td>
+                    <td class="text-align--right">
+                        0 €
+                    </td>
                     <td>
                         <button type="button" class="button button--type-primary button--size-small"
                                 wire:click="showExpensesTab('{{ ExpensesTabEnum::KIDS }}')">Bearbeiten
@@ -64,7 +68,9 @@
                 </tr>
                 <tr>
                     <td>Versicherungen</td>
-                    <td class="text-align--right">{{$moneySheet->totalInsuranceCost}}€</td>
+                    <td class="text-align--right">
+                        {!! $moneySheet->totalInsuranceCost->format() !!}
+                    </td>
                     <td>
                         <button type="button" class="button button--type-primary button--size-small"
                                 wire:click="showExpensesTab('{{ ExpensesTabEnum::INSURANCES }}')">Bearbeiten
@@ -77,7 +83,9 @@
                             <span><strong>(!!)</strong></span>
                         @endif
                     </td>
-                    <td class="text-align--right">{{$moneySheet->steuernUndAbgaben}}€</td>
+                    <td class="text-align--right">
+                        {!! $moneySheet->steuernUndAbgaben->format() !!}
+                    </td>
                     <td>
                         <button type="button" class="button button--type-primary button--size-small"
                                 wire:click="showExpensesTab('{{ ExpensesTabEnum::TAXES }}')">Bearbeiten
@@ -90,7 +98,9 @@
                             <span><strong>(!!)</strong></span>
                         @endif
                     </td>
-                    <td class="text-align--right">{{$moneySheet->lebenshaltungskosten}}€</td>
+                    <td class="text-align--right">
+                        {!! $moneySheet->lebenshaltungskosten->format() !!}
+                    </td>
                     <td>
                         <button type="button" class="button button--type-primary button--size-small"
                                 wire:click="showExpensesTab('{{ ExpensesTabEnum::LIVING_COSTS }}')">Bearbeiten
@@ -101,13 +111,13 @@
             </table>
         </div>
         <div class="moneysheet__income-sum">
-            {{$moneySheet->gehalt}}€
+            {!! $moneySheet->gehalt->format() !!}
         </div>
         <div class="moneysheet__expenses-sum">
-            - {{$moneySheet->lebenshaltungskosten + $moneySheet->steuernUndAbgaben}}€
+            - {{ number_format($moneySheet->lebenshaltungskosten->value + $moneySheet->steuernUndAbgaben->value, 2, ',', '.') }} €
         </div>
         <div class="moneysheet__sum">
-            = {{ $moneySheet->gehalt - $moneySheet->lebenshaltungskosten - $moneySheet->steuernUndAbgaben}}€
+            = {{ number_format($moneySheet->gehalt->value - $moneySheet->lebenshaltungskosten->value - $moneySheet->steuernUndAbgaben->value, 2, ',', '.') }} €
         </div>
     </div>
 @endsection
