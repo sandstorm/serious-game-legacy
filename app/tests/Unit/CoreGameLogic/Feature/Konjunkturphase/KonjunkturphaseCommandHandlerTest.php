@@ -9,11 +9,12 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\Definitions\Card\Dto\KategorieCardDefinition;
+use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Configuration\Configuration;
-use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
-use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use Tests\TestCase;
 
@@ -31,24 +32,29 @@ describe('handleChangeKonjunkturphase', function () {
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe($expectedNumberOfZeitsteine);
 
         // use a Zeitstein
-        $cardToActivate = array_shift($this->cardsBildung);
+        $cardsForTesting = [
+            "cardToRemovZeitstein" => new KategorieCardDefinition(
+                id: new CardId('cardToRemovZeitstein'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges()
+            ),
+        ];
+        $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe($expectedNumberOfZeitsteine);
+
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe($expectedNumberOfZeitsteine-1);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe($expectedNumberOfZeitsteine - 1);
 
         // Change Konjunkturphase
         $this->coreGameLogic->handle(
             $this->gameId,
-            ChangeKonjunkturphase::create()->withFixedKonjunkturphaseForTesting(new KonjunkturphaseDefinition(
-                id: KonjunkturphasenId::create(161),
-                type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
-                description: 'no changes',
-                additionalEvents: '',
-                zinssatz: 5,
-                kompetenzbereiche: [],
-                auswirkungen: []
-            )));
+            ChangeKonjunkturphase::create()
+        );
 
         // Expect the number of Zeitsteine to be the initial value again
         /** @var GameEvents $stream */

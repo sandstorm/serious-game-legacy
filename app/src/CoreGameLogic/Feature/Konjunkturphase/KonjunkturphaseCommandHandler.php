@@ -78,7 +78,6 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
 
             // We ALSO SHUFFLE cards during Konjunkturphasenwechsel
             ...$this->handleShuffleCards($command)->events
-            // TODO pay salary, loan repayment rates, etc. for all players
         );
     }
 

@@ -43,8 +43,6 @@ use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Livewire\Component;
-use Livewire\Features\SupportFormObjects\Form;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -229,12 +227,6 @@ Der steigende Leitzins erhÃ¶ht die Deflation, die Kaufkraft der Barreserven erhÃ
             $this->gameId,
             ChangeKonjunkturphase::create()
                 ->withFixedKonjunkturphaseForTesting($this->konjunkturphaseDefinition)
-                ->withFixedCardOrderForTesting(
-                    new CardOrder(pileId: $this->pileIdBildung, cards: array_map(fn($card) => $card->id, $this->cardsBildung)),
-                    new CardOrder(pileId: $this->pileIdFreizeit, cards: array_map(fn($card) => $card->id, $this->cardsFreizeit)),
-                    new CardOrder(pileId: $this->pileIdJobs, cards: array_map(fn($card) => $card->id, $this->cardsJobs)),
-                    new CardOrder(pileId: $this->pileIdMinijobs, cards: array_map(fn($card) => $card->id, $this->cardsMinijobs)),
-                )
         );
     }
 
@@ -448,19 +440,5 @@ Der steigende Leitzins erhÃ¶ht die Deflation, die Kaufkraft der Barreserven erhÃ
                     new CardOrder(pileId: $this->pileIdJobs, cards: array_map(fn($card) => $card->getId(), $testCards[PileId::JOBS_PHASE_1->value])),
                     new CardOrder(pileId: $this->pileIdMinijobs, cards: array_map(fn($card) => $card->getId(), $testCards[PileId::MINIJOBS_PHASE_1->value])),
                 ));
-    }
-
-
-    /**
-     * @return CardDefinition[]
-     */
-    protected function getCardsForTesting(): array
-    {
-        return [
-            ...$this->getCardsForSozialesAndFreizeit(),
-            ...$this->getCardsForBildungAndKarriere(),
-            ...$this->getCardsForJobs(),
-            ...$this->getCardsForMinijobs()
-        ];
     }
 }
