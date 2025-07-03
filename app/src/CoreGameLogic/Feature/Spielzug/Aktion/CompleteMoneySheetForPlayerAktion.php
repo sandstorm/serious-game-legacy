@@ -14,6 +14,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerFilledOutMon
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
 class CompleteMoneySheetForPlayerAktion extends Aktion
@@ -38,18 +39,16 @@ class CompleteMoneySheetForPlayerAktion extends Aktion
             throw new \RuntimeException('Cannot complete money sheet: ' . $result->reason, 1751375431);
         }
 
-        // TODO move to state as getAnnualCostsForPlayer
-        // get rates for active loans and calculate the guthaben change
-        $loans = MoneySheetState::getLoansForPlayer($gameEvents, $playerId);
-        $guthabenChange = new MoneyAmount(0);
-        foreach ($loans as $loan) {
-            if (MoneySheetState::getOpenRatesForLoan($gameEvents, $playerId, $loan->loanId)->value > 0) {
-                $guthabenChange = $guthabenChange->subtract($loan->repaymentPerKonjunkturphase);
-            }
-        }
+        $annualExpenses = MoneySheetState::getAnnualExpensesForPlayer($gameEvents, $playerId);
 
         return GameEventsToPersist::with(
-            new PlayerHasCompletedMoneysheetForCurrentKonjunkturphase($playerId, KonjunkturphaseState::getCurrentYear($gameEvents), $guthabenChange)
+            new PlayerHasCompletedMoneysheetForCurrentKonjunkturphase(
+                $playerId,
+                KonjunkturphaseState::getCurrentYear($gameEvents),
+                new ResourceChanges(
+                    guthabenChange: new MoneyAmount($annualExpenses->value * -1)
+                )
+            )
         );
     }
 }

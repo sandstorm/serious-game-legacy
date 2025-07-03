@@ -20,6 +20,8 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
+use Domain\Definitions\Card\Dto\KategorieCardDefinition;
+use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\PileId;
@@ -482,7 +484,6 @@ describe('doesSteuernUndAbgabenRequirePlayerAction', function () {
 
     it('returns true if the last input was correct but the Gehalt changed since then', function () {
         /** @var TestCase $this */
-
         CardFinder::getInstance()->overrideCardsForTesting([
             PileId::JOBS_PHASE_1->value => [
                 "j0" => new JobCardDefinition(
@@ -625,7 +626,29 @@ describe('getOpenRatesForLoan', function () {
     })->throws(\RuntimeException::class, 'No loan found for player p1 with ID 1');
 
     it('returns correct open rates for loans', function () {
-        $this->startNewKonjunkturPhaseWithCardsForTesting();
+        $cardsForTesting = [];
+        for($i = 0; $i < count($this->players); $i++) {
+            $cardID = new CardId('cardToRemoveZeitsteine' . $i);
+            $cardsForTesting[$cardID->value] = new KategorieCardDefinition(
+                id: $cardID,
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(5000),
+                    zeitsteineChange: -4
+                ),
+            );
+        }
+        $testCards = [
+            PileId::BILDUNG_PHASE_1->value => $cardsForTesting,
+            PileId::FREIZEIT_PHASE_1->value => $this->cardsFreizeit,
+            PileId::JOBS_PHASE_1->value => $this->cardsJobs,
+            PileId::MINIJOBS_PHASE_1->value => $this->cardsMinijobs,
+        ];
+        CardFinder::getInstance()->overrideCardsForTesting($testCards);
+
+        // start new konjunkturphase to use the new cards
         $this->coreGameLogic->handle(
             $this->gameId,
             ChangeKonjunkturphase::create()
@@ -657,10 +680,11 @@ describe('getOpenRatesForLoan', function () {
             ->and($currentYear->value)->toEqual($expectedYear)
             ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->value)->toEqual($initialGuthaben + $loanAmount);
 
+        $expectedGuthaben = $initialGuthaben + $loanAmount;
         for($i = 1; $i <= 20; $i++) {
             $expectedYear++;
             $expectedOpenRates = $repayment - ($rate * $i);
-            $expectedGuthaben = $initialGuthaben + $loanAmount - ($rate * $i);
+            $expectedGuthaben -= $rate;
             $this->makeSpielzugForPlayersAndChangeKonjunkturphase();
 
             $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -683,4 +707,73 @@ describe('getOpenRatesForLoan', function () {
         $openRates = MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], $loans[0]->loanId);
         expect($openRates->value)->toEqual(0);
     });
+});
+
+describe("getAnnualExpensesForPlayer", function() {
+    it('returns 0 if player has no expenses', function () {
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        expect(MoneySheetState::getAnnualExpensesForPlayer($gameEvents, $this->players[0])->value)->toEqual(5000);
+    });
+
+    it('returns annual expenses', function () {
+        // player 0 takes out a loan
+        $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
+            $this->players[0],
+            'loan1',
+            new MoneyAmount(10000),
+            new MoneyAmount(12500),
+            new MoneyAmount(625)
+        ));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        $expectedAnnualExpenses = 5000 + 625; // 5000 Lebenshaltungskosten + 625 loan repayment
+        expect(MoneySheetState::getAnnualExpensesForPlayer($gameEvents, $this->players[0])->value)->toEqual($expectedAnnualExpenses);
+
+        // player 0 takes out a second loan
+        $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
+            $this->players[0],
+            'loan1',
+            new MoneyAmount(1000),
+            new MoneyAmount(1250),
+            new MoneyAmount(62.5)
+        ));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        $expectedAnnualExpenses += 62.5; // add second loan repayment
+        expect(MoneySheetState::getAnnualExpensesForPlayer($gameEvents, $this->players[0])->value)->toEqual($expectedAnnualExpenses);
+
+        // player 0 concludes an insurance
+        $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->players[0], $this->insurances[0]->id));
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        $expectedAnnualExpenses += 100; // add insurance cost
+        expect(MoneySheetState::getAnnualExpensesForPlayer($gameEvents, $this->players[0])->value)->toEqual($expectedAnnualExpenses);
+
+        // player 0 takes a job
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::JOBS_PHASE_1->value => [
+                "j0" => new JobCardDefinition(
+                    id: new CardId('j0'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'offered 1',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(10000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                    ),
+                ),
+            ]
+        ]);
+
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId("j0")));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        $expectedAnnualExpenses += 2500; // add job taxes (25% of 10000)
+        expect(MoneySheetState::getAnnualExpensesForPlayer($gameEvents, $this->players[0])->value)->toEqual($expectedAnnualExpenses);
+    });
+
 });

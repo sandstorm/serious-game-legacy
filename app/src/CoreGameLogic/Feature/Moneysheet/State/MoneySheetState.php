@@ -265,16 +265,16 @@ class MoneySheetState
         $insurances = InsuranceFinder::getInstance()->getAllInsurances();
         $currentPlayerPhase = 1; // TODO
 
-        $totalCost = 0;
+        $totalCost = new MoneyAmount(0);
         foreach ($insurances as $insurance) {
             if (!self::doesPlayerHaveThisInsurance($gameEvents, $playerId, $insurance->id)) {
                 // Player does not have this insurance, skip it
                 continue;
             }
-            $totalCost += $insurance->getAnnualCost($currentPlayerPhase)->value;
+            $totalCost = $totalCost->add($insurance->getAnnualCost($currentPlayerPhase));
         }
 
-        return new MoneyAmount($totalCost);
+        return $totalCost;
     }
 
     /**
@@ -335,8 +335,36 @@ class MoneySheetState
         return new MoneyAmount($sum);
     }
 
-    public function getAnnualExpensesForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
+    /**
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return MoneyAmount
+     */
+    public static function getAnnualExpensesForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
-        return new MoneyAmount(0);
+        $annualExpenses = (new MoneyAmount(0))
+            ->add(self::getAnnualExpensesForAllLoans($gameEvents, $playerId))
+            ->add(self::getCostOfAllInsurances($gameEvents, $playerId))
+            ->add(self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId))
+            ->add(self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId));
+
+        return $annualExpenses;
+    }
+
+    /**
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return MoneyAmount
+     */
+    private static function getAnnualExpensesForAllLoans(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
+    {
+        $annualExpenses = new MoneyAmount(0);
+        $loans = MoneySheetState::getLoansForPlayer($gameEvents, $playerId);
+        foreach ($loans as $loan) {
+            if (MoneySheetState::getOpenRatesForLoan($gameEvents, $playerId, $loan->loanId)->value > 0) {
+                $annualExpenses = $annualExpenses->add($loan->repaymentPerKonjunkturphase);
+            }
+        }
+        return $annualExpenses;
     }
 }

@@ -230,29 +230,12 @@ Der steigende Leitzins erh√∂ht die Deflation, die Kaufkraft der Barreserven erh√
         );
     }
 
-    public function startNewKonjunkturPhaseWithCardsForTesting(): void
-    {
-        $cardsForTesting = [];
-        for($i = 0; $i < count($this->players); $i++) {
-            $cardID = new CardId('cardToRemoveZeitsteine' . $i);
-            $cardsForTesting[$cardID->value] = new KategorieCardDefinition(
-                id: $cardID,
-                pileId: $this->pileIdBildung,
-                title: 'for testing',
-                description: '...',
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -5,
-                ),
-            );
-        }
-        $testCards = [
-            PileId::BILDUNG_PHASE_1->value => $cardsForTesting,
-            PileId::FREIZEIT_PHASE_1->value => $this->cardsFreizeit,
-            PileId::JOBS_PHASE_1->value => $this->cardsJobs,
-        ];
-        CardFinder::getInstance()->overrideCardsForTesting($testCards);
-    }
-
+    /**
+     * Simulate a complete game round for all players.
+     * Only works if the cards used consume all the Zeitsteine!
+     *
+     * @return void
+     */
     public function makeSpielzugForPlayersAndChangeKonjunkturphase(): void
     {
         foreach($this->players as $player) {
