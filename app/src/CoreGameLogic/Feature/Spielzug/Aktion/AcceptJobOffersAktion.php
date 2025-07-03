@@ -6,15 +6,15 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\DoesPlayerMeetJobRequirementsValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasJobBeenRequestedByPlayerValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughZeitsteineValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
-use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
-use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
-use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 
 class AcceptJobOffersAktion extends Aktion
@@ -24,46 +24,15 @@ class AcceptJobOffersAktion extends Aktion
         parent::__construct('request-job-offers', 'Jobs anzeigen');
     }
 
-    private function getRequestedJobOffersForThisTurn(GameEvents $gameEvents): ?JobOffersWereRequested
-    {
-        $eventsThisTurn = AktionsCalculator::forStream($gameEvents)->getEventsThisTurn();
-        return $eventsThisTurn->findLastOrNull(JobOffersWereRequested::class);
-    }
-
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
-        $currentPlayer = CurrentPlayerAccessor::forStream($gameEvents);
-        if (!$currentPlayer->equals($playerId)) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: 'Du kannst nur einen Job annehmen, wenn du dran bist'
-            );
-        }
-        $currentJobOffers = $this->getRequestedJobOffersForThisTurn($gameEvents);
-        if ($currentJobOffers === null || !in_array($this->jobId->value, array_map(fn ($jobId) => $jobId->value, $currentJobOffers->jobs), true)) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: 'Du kannst nur einen Job annehmen, der dir vorgeschlagen wurde'
-            );
-        }
+        $validatorChain = new IsPlayersTurnValidator();
+        $validatorChain
+            ->setNext(new HasJobBeenRequestedByPlayerValidator($this->jobId))
+            ->setNext(new HasPlayerEnoughZeitsteineValidator(1))
+            ->setNext(new DoesPlayerMeetJobRequirementsValidator($this->jobId));
 
-        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($playerId, new ResourceChanges(zeitsteineChange: -1))) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: 'Du hast nicht genug Zeitsteine, um den Job anzunehmen',
-            );
-        }
-
-        /** @var JobCardDefinition $jobCard */
-        $jobCard = CardFinder::getInstance()->getCardById($this->jobId);
-        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordJobCard($playerId, $jobCard)) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: 'Du erfüllst nicht die Voraussetzungen für diesen Job',
-            );
-        }
-
-        return new AktionValidationResult(canExecute: true);
+        return $validatorChain->validate($gameEvents, $playerId);
     }
 
     public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist

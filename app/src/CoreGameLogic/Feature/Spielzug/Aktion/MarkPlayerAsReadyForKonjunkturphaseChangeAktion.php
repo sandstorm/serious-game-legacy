@@ -10,16 +10,11 @@ use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\KonjunkturphaseCommandHandler;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
-use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\LebenshaltungskostenForPlayerWereCorrected;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\LebenshaltungskostenForPlayerWereEntered;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasKonjunkturphaseEndedValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerCompletedMoneySheetValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasStartedKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerWasMarkedAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\PlayerId;
-use Domain\Definitions\Card\ValueObject\MoneyAmount;
-use Domain\Definitions\Configuration\Configuration;
 
 class MarkPlayerAsReadyForKonjunkturphaseChangeAktion extends Aktion
 {
@@ -30,23 +25,10 @@ class MarkPlayerAsReadyForKonjunkturphaseChangeAktion extends Aktion
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
-        // TODO add validator isEndOfKonjunkturphase
+        $validatorChain = new HasKonjunkturphaseEndedValidator();
+        $validatorChain->setNext(new HasPlayerCompletedMoneySheetValidator());
 
-        $lastCompletedMoneysheetEvent = $gameEvents->findLastOrNullWhere(function ($event) use ($playerId, $gameEvents) {
-            return $event instanceof PlayerHasCompletedMoneysheetForCurrentKonjunkturphase &&
-                $event->playerId->equals($playerId) &&
-                KonjunkturphaseState::getCurrentYear($gameEvents)->equals($event->year);
-        });
-
-        if ($lastCompletedMoneysheetEvent === null) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: "Du musst erst das Money Sheet korrekt ausfüllen"
-            );
-        }
-        return new AktionValidationResult(
-            canExecute: true,
-        );
+        return $validatorChain->validate($gameEvents, $playerId);
     }
 
     public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist

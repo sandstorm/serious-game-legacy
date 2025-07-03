@@ -7,6 +7,8 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerDoneAtLeastOneZeitsteinaktionThisTurnValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
@@ -23,30 +25,10 @@ class EndSpielzugAktion extends Aktion
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
-        $currentPlayer = CurrentPlayerAccessor::forStream($gameEvents);
-        if (!$currentPlayer->equals($playerId)) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: 'Du bist gerade nicht dran'
-            );
-        }
+        $validatorChain = new IsPlayersTurnValidator();
+        $validatorChain->setNext(new HasPlayerDoneAtLeastOneZeitsteinaktionThisTurnValidator());
 
-        $eventsThisTurn = $gameEvents->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class);
-        if ($eventsThisTurn === null) {
-            $eventsThisTurn = $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
-        }
-        if (
-            $eventsThisTurn->findLastOrNull(ZeitsteinAktion::class) === null
-            && PlayerState::getZeitsteineForPlayer($gameEvents, $playerId) !== 0
-        ) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: 'Du musst erst einen Zeitstein für eine Aktion ausgeben'
-            );
-        }
-        return new AktionValidationResult(
-            canExecute: true,
-        );
+        return $validatorChain->validate($gameEvents, $playerId);
     }
 
     public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist
