@@ -7,6 +7,7 @@ namespace Domain\Definitions\Lebensziel;
 use Domain\Definitions\Lebensziel\Dto\LebenszielDefinition;
 use Domain\Definitions\Lebensziel\Dto\LebenszielPhaseDefinition;
 use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
+use RuntimeException;
 
 class LebenszielFinder
 {
@@ -92,7 +93,7 @@ class LebenszielFinder
             }
         }
 
-        throw new \RuntimeException('Lebensziel ' . $id . ' not found', 1747642070);
+        throw new RuntimeException('Lebensziel ' . $id . ' not found', 1747642070);
     }
 
 }

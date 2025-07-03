@@ -6,7 +6,9 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\State;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerColorWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
+use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\StockData;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
@@ -21,6 +23,7 @@ use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
+use Domain\Definitions\Lebensziel\Dto\LebenszielPhaseDefinition;
 use RuntimeException;
 
 class PlayerState
@@ -74,7 +77,7 @@ class PlayerState
     {
         $zeitsteineForPlayers = $gameEvents->findLast(KonjunkturphaseWasChanged::class)->zeitsteineForPlayers;
         // TODO make this safer (...[0] may not work)
-        return array_values(array_filter($zeitsteineForPlayers, fn ($forPlayer) => $forPlayer->playerId->equals($playerId)))[0]->zeitsteine;
+        return array_values(array_filter($zeitsteineForPlayers, fn($forPlayer) => $forPlayer->playerId->equals($playerId)))[0]->zeitsteine;
     }
 
     /**
@@ -232,5 +235,17 @@ class PlayerState
             $sum = $sum->add(new MoneyAmount($stock->price->value * $stock->amount));
         }
         return $sum;
+    }
+
+    public static function getCurrentLebenszielphaseDefinitionForPlayer(GameEvents $gameEvents, PlayerId $playerId): LebenszielPhaseDefinition
+    {
+        $lebenszielDefinition = PreGameState::lebenszielDefinitionForPlayer($gameEvents, $playerId);
+
+        /** @var LebenszielphaseWasChanged|null $lastLebenszielWasChangedEvent */
+        $lastLebenszielWasChangedEvent= $gameEvents->findLastOrNullWhere(fn ($event) => $event instanceof LebenszielphaseWasChanged && $event->playerId->equals($playerId));
+        if($lastLebenszielWasChangedEvent === null) { // We know we are in Lebenszielphase 1
+            return $lebenszielDefinition->phaseDefinitions[0];
+        }
+        return $lebenszielDefinition->phaseDefinitions[$lastLebenszielWasChangedEvent->currentPhase - 1];
     }
 }

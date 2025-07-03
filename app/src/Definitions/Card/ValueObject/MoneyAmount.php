@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Domain\Definitions\Card\ValueObject;
 
-readonly class MoneyAmount implements \JsonSerializable
+use JsonSerializable;
+
+readonly class MoneyAmount implements JsonSerializable
 {
     public float $value;
 
@@ -36,6 +38,11 @@ readonly class MoneyAmount implements \JsonSerializable
     public function subtract(MoneyAmount $other): self
     {
         return new self($this->value - $other->value);
+    }
+
+    public function multiply(MoneyAmount $other): self
+    {
+        return new self($this->value * $other->value);
     }
 
     public function equals(MoneyAmount|float $other): bool

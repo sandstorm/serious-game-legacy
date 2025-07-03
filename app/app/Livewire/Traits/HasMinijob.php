@@ -30,9 +30,9 @@ trait HasMinijob
             return;
         }
 
-        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->myself)); //Minijob wird ausgeführt, Spieler-ID mit Spielerlogik übergeben
-        $this->isMinijobVisible = true; //zeigt Minijob in UI an
-        $this->broadcastNotify(); //Benachrichtigung
+        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->myself));
+        $this->isMinijobVisible = true;
+        $this->broadcastNotify();
     }
 
     public function closeMinijob(): void

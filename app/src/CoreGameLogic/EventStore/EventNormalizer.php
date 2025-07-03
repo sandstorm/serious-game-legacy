@@ -19,6 +19,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereEntered;
@@ -79,6 +80,7 @@ final readonly class EventNormalizer
             LebenshaltungskostenForPlayerWereCorrected::class,
             LebenshaltungskostenForPlayerWereEntered::class,
             LebenszielWasSelected::class,
+            LebenszielphaseWasChanged::class,
             MinijobWasDone::class,
             NameForPlayerWasSet::class,
             PlayerColorWasSelected::class,

@@ -17,7 +17,7 @@ readonly class LebenszielPhaseDefinition
     }
 
     /**
-     * @param array<mixed> $values
+     * @param array $values
      * @return self
      */
     public static function fromArray(array $values): self
@@ -33,7 +33,7 @@ readonly class LebenszielPhaseDefinition
     }
 
     /**
-     * @return array<mixed>
+     * @return array
      */
     public function jsonSerialize(): array
     {
