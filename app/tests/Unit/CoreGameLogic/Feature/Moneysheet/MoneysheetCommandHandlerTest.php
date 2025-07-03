@@ -16,7 +16,7 @@ beforeEach(function () {
 describe('handleCancelInsuranceForPlayer', function () {
     it('throws an exception when trying to cancel an insurance the player does not have', function () {
         $this->coreGameLogic->handle($this->gameId, CancelInsuranceForPlayer::create($this->players[0], $this->insurances[0]->id));
-    })->throws(\RuntimeException::class, 'Cannot cancel insurance that was not concluded.');
+    })->throws(\RuntimeException::class, 'Cannot cancel insurance: Versicherung wurde bereits gekündigt.');
 
     it('can cancel an active insurance', function () {
         $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->players[0], $this->insurances[0]->id));
@@ -33,7 +33,7 @@ describe('handleConcludeInsuranceForPlayer', function () {
     it('throws an exception when trying to take out an active insurance again', function () {
         $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->players[0], $this->insurances[0]->id));
         $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->players[0], $this->insurances[0]->id));
-    })->throws(\RuntimeException::class, 'Cannot conclude insurance that was already concluded.');
+    })->throws(\RuntimeException::class, 'Cannot conclude insurance: Versicherung wurde bereits abgeschlossen.');
 
     it('works as expected with multiple players taking out and cancelling insurances simultaneously', function () {
         $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->players[0], $this->insurances[0]->id));
