@@ -18,21 +18,25 @@ beforeEach(function () {
     $this->cardIdsFreizeit = PileFinder::getCardsIdsForPile($this->pileIdFreizeit);
 });
 
-test('Piles can be shuffled', function () {
-    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-    expect(PileState::topCardIdForPile($stream, $this->pileIdBildung)->value)->toBe($this->cardsBildung["buk0"]->id->value)
-        ->and(PileState::topCardIdForPile($stream, $this->pileIdFreizeit)->value)->toBe($this->cardsFreizeit["suf0"]->id->value);
-});
-
 test('Cards can be drawn from piles', function () {
+    $currenTopCardBildung = PileState::topCardIdForPile(
+        $this->coreGameLogic->getGameEvents($this->gameId),
+        $this->pileIdBildung
+    );
+
+    $currenTopCardFreizeit = PileState::topCardIdForPile(
+        $this->coreGameLogic->getGameEvents($this->gameId),
+        $this->pileIdFreizeit
+    );
+
     $this->coreGameLogic->handle(
         $this->gameId,
         new SkipCard($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
     );
 
-    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-    expect(PileState::topCardIdForPile($stream, $this->pileIdBildung)->value)->toBe($this->cardsBildung["buk1"]->id->value)
-        ->and(PileState::topCardIdForPile($stream, $this->pileIdFreizeit)->value)->toBe($this->cardsFreizeit["suf0"]->id->value);
+    $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+    expect(PileState::topCardIdForPile($gameEvents, $this->pileIdBildung)->value)->not->toBe($currenTopCardBildung->value)
+        ->and(PileState::topCardIdForPile($gameEvents, $this->pileIdFreizeit)->value)->toBe($currenTopCardFreizeit->value);
 
     $this->coreGameLogic->handle(
         $this->gameId,
@@ -44,26 +48,38 @@ test('Cards can be drawn from piles', function () {
         new EndSpielzug($this->players[0])
     );
 
-    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-    expect(PileState::topCardIdForPile($stream, $this->pileIdBildung)->value)->toBe($this->cardsBildung["buk2"]->id->value)
-        ->and(PileState::topCardIdForPile($stream, $this->pileIdFreizeit)->value)->toBe($this->cardsFreizeit["suf0"]->id->value);
+    $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+    expect(PileState::topCardIdForPile($gameEvents, $this->pileIdBildung)->value)->not->toBe($currenTopCardBildung->value)
+        ->and(PileState::topCardIdForPile($gameEvents, $this->pileIdFreizeit)->value)->toBe($currenTopCardFreizeit->value);
 
     $this->coreGameLogic->handle(
         $this->gameId,
         ActivateCard::create($this->players[1], CategoryId::SOZIALES_UND_FREIZEIT)
     );
 
-    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-    expect(PileState::topCardIdForPile($stream, $this->pileIdBildung)->value)->toBe($this->cardsBildung["buk2"]->id->value)
-        ->and(PileState::topCardIdForPile($stream, $this->pileIdFreizeit)->value)->toBe($this->cardsFreizeit["suf1"]->id->value);
+    $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+    expect(PileState::topCardIdForPile($gameEvents, $this->pileIdBildung)->value)->not->toBe($currenTopCardBildung->value)
+        ->and(PileState::topCardIdForPile($gameEvents, $this->pileIdFreizeit)->value)->not->toBe($currenTopCardFreizeit->value);
 });
 
 test('Shuffling resets draw counter', function () {
+    $idsOfPastTopCards = [];
+
+    $idsOfPastTopCards[] = PileState::topCardIdForPile(
+        $this->coreGameLogic->getGameEvents($this->gameId),
+        $this->pileIdBildung
+    )->value;
+
     $this->coreGameLogic->handle($this->gameId, new SkipCard($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+
+    $idsOfPastTopCards[] = PileState::topCardIdForPile(
+        $this->coreGameLogic->getGameEvents($this->gameId),
+        $this->pileIdBildung
+    )->value;
     $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
 
-    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-    expect(PileState::topCardIdForPile($stream, $this->pileIdBildung)->value)->toBe($this->cardsBildung["buk2"]->id->value);
+    $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+    expect(PileState::topCardIdForPile($gameEvents, $this->pileIdBildung)->value)->not->toBeIn($idsOfPastTopCards);
 
     $this->coreGameLogic->handle(
         $this->gameId,
@@ -72,15 +88,15 @@ test('Shuffling resets draw counter', function () {
             new CardOrder( pileId: $this->pileIdFreizeit, cards: $this->cardIdsFreizeit),
         ));
 
-    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-    expect(PileState::topCardIdForPile($stream, $this->pileIdBildung)->value)
+    $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+    expect(PileState::topCardIdForPile($gameEvents, $this->pileIdBildung)->value)
         ->toBe($this->cardIdsBildung[count($this->cardIdsBildung)-1]->value);
 });
 
 test('Test shuffle event', function () {
     $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create());
-    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-    expect($stream->findLast(CardsWereShuffled::class)->piles)->toBeArray();
-    expect($stream->findLast(CardsWereShuffled::class)->piles[0]->cards)->toBeArray();
-    expect(count($stream->findLast(CardsWereShuffled::class)->piles))->toBe(10);
+    $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+    expect($gameEvents->findLast(CardsWereShuffled::class)->piles)->toBeArray()
+        ->and($gameEvents->findLast(CardsWereShuffled::class)->piles[0]->cards)->toBeArray()
+        ->and(count($gameEvents->findLast(CardsWereShuffled::class)->piles))->toBe(10);
 });

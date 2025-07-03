@@ -16,6 +16,7 @@ final readonly class ChangeKonjunkturphase implements CommandInterface
     }
 
     /**
+     * @param KonjunkturphaseDefinition|null $fixedKonjunkturphaseForTesting
      * @param CardOrder[] $fixedCardOrderForTesting
      */
     private function __construct(
