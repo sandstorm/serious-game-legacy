@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Domain\Definitions\Card\Dto;
 
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
+use JsonSerializable;
 
-final readonly class ResourceChanges implements \JsonSerializable
+final readonly class ResourceChanges implements JsonSerializable
 {
     public function __construct(
         public MoneyAmount $guthabenChange = new MoneyAmount(0),
@@ -52,7 +53,7 @@ final readonly class ResourceChanges implements \JsonSerializable
         );
     }
 
-    public function jsonSerialize(): mixed
+    public function jsonSerialize(): array
     {
         return [
             'guthabenChange' => $this->guthabenChange,
