@@ -183,7 +183,6 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
     ): GameEventsToPersist {
         $aktion = new EnterLebenshaltungskostenForPlayerAktion($command->input);
         return $aktion->execute($command->playerId, $gameEvents);
-
     }
 
     private function handleConcludeInsuranceForPlayer(

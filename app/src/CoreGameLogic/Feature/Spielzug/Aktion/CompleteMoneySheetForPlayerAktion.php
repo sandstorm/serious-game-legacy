@@ -9,6 +9,8 @@ use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasKonjunkturphaseEndedValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerFilledOutMoneySheetValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
 use Domain\CoreGameLogic\PlayerId;
@@ -22,24 +24,10 @@ class CompleteMoneySheetForPlayerAktion extends Aktion
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
-        /** @var KonjunkturphaseHasEnded $lastKonjunkturphaseHasEndedEvent */
-        $lastKonjunkturphaseHasEndedEvent = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof KonjunkturphaseHasEnded && $event->year->equals(KonjunkturphaseState::getCurrentYear($gameEvents)));
-        if ($lastKonjunkturphaseHasEndedEvent === null) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: 'Die aktuelle Konjunkturphase ist noch nicht zu Ende'
-            );
-        }
-        if (MoneySheetState::doesMoneySheetRequirePlayerAction($gameEvents, $playerId)) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: 'Du musst erst dein Money Sheet korrekt ausfüllen'
-            );
-        }
-        return new AktionValidationResult(
-            canExecute: true,
-        );
+        $validationChain = new HasKonjunkturphaseEndedValidator();
+        $validationChain->setNext(new HasPlayerFilledOutMoneySheetValidator());
+
+        return $validationChain->validate($gameEvents, $playerId);
     }
 
     public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist

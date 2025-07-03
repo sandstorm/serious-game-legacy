@@ -7,6 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasKonjunkturphaseNotStartedValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasStartedKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
@@ -32,21 +33,8 @@ class StartKonjunkturphaseForPlayerAktion extends Aktion
      */
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
-        /** @var PlayerHasStartedKonjunkturphase $lastStartKonjunkturphaseEvent */
-        $lastStartKonjunkturphaseEvent = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof PlayerHasStartedKonjunkturphase && $event->playerId->equals($playerId));
-        if ( // has player already started this Konjunkturphase?
-            $lastStartKonjunkturphaseEvent !== null &&
-            $lastStartKonjunkturphaseEvent->year->equals(KonjunkturphaseState::getCurrentYear($gameEvents))
-        ) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: 'Du hast diese Konjunkturphase bereits gestartet'
-            );
-        }
-        return new AktionValidationResult(
-            canExecute: true,
-        );
+        $validatorChain = new HasKonjunkturphaseNotStartedValidator();
+        return $validatorChain->validate($gameEvents, $playerId);
     }
 
     /**

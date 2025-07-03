@@ -7,6 +7,10 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasCategoryFreeZeitsteinslotsValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerDoneNoZeitsteinaktionThisTurnValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughZeitsteineValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
@@ -27,48 +31,20 @@ class RequestJobOffersAktion extends Aktion
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
-        $currentPlayer = CurrentPlayerAccessor::forStream($gameEvents);
-        if (!$currentPlayer->equals($playerId)) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: 'Du kannst nur Jobs anfragen, wenn du dran bist'
-            );
-        }
+        $validatorChain = new IsPlayersTurnValidator();
+        $validatorChain
+            ->setNext(new HasPlayerDoneNoZeitsteinaktionThisTurnValidator())
+            ->setNext(new HasPlayerEnoughZeitsteineValidator(2))
+            ->setNext(new HasCategoryFreeZeitsteinslotsValidator(CategoryId::JOBS));
 
-        $zeitsteinEventsThisTurn = AktionsCalculator::forStream($gameEvents)
-            ->getEventsThisTurn()
-            ->findAllOfType(ZeitsteinAktion::class);
-        if (count($zeitsteinEventsThisTurn) > 0) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: 'Du hast bereits eine andere Aktion ausgeführt'
-            );
-        }
-
-        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($playerId,
-            new ResourceChanges(zeitsteineChange: -2))) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: 'Du hast nicht genug Zeitsteine, um dir Jobs anzeigen zu lassen',
-            );
-        }
-
-        $hasFreeTimeSlots = GamePhaseState::hasFreeTimeSlotsForCategory($gameEvents, CategoryId::JOBS);
-        if (!$hasFreeTimeSlots) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: 'Es gibt keine freien Zeitsteine mehr.',
-            );
-        }
-
-        return new AktionValidationResult(canExecute: true);
+        return $validatorChain->validate($gameEvents, $playerId);
     }
 
     public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist
     {
         $result = $this->validate($playerId, $gameEvents);
         if (!$result->canExecute) {
-            throw new \RuntimeException("" . $result->reason, 1749043606);
+            throw new \RuntimeException("Cannot request job offers" . $result->reason, 1749043606);
         }
         $jobs = CardFinder::getInstance()->getThreeRandomJobs(PlayerState::getResourcesForPlayer($gameEvents, $playerId));
         return GameEventsToPersist::with(

@@ -6,6 +6,7 @@ namespace Tests\CoreGameLogic\Feature\Spielzug;
 
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
@@ -89,7 +90,7 @@ describe('handleSkipCard', function () {
             new SkipCard(playerId: $this->players[1], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
     })->throws(
         RuntimeException::class,
-        'Du kannst Karten nur überspringen, wenn du dran bist',
+        'Cannot skip card: Du bist gerade nicht dran',
         1747325793);
 
     it('cannot skip without a Zeitstein', function () {
@@ -131,7 +132,7 @@ describe('handleSkipCard', function () {
         $this->coreGameLogic->handle($this->gameId,
             new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
     })->throws(RuntimeException::class,
-        'Du hast nicht genug Ressourcen um die Karte zu überspringen', 1747325793);
+        'Cannot skip card: Du hast nicht genug Zeitsteine', 1747325793);
 
     it("card cannot be skipped when no free slots are available for this konjunkturphase", function () {
         /** @var TestCase $this */
@@ -174,7 +175,7 @@ describe('handleSkipCard', function () {
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
     })->throws(RuntimeException::class,
-        'Es gibt keine freien Zeitsteine mehr.',
+        'Cannot skip card: Es gibt keine freien Zeitsteinslots mehr',
         1747325793);
 });
 
@@ -422,7 +423,7 @@ describe('handleActivateCard', function () {
             playerId: $this->players[1],
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
-    })->throws(RuntimeException::class, 'Du kannst Karten nur spielen, wenn du dran bist',
+    })->throws(RuntimeException::class, 'Cannot activate Card: Du bist gerade nicht dran',
         1748951140);
 
     it("will not activate the card if the requirements are not met", function () {
@@ -483,13 +484,16 @@ describe('handleActivateCard', function () {
         ));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
 
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(GamePhaseState::hasFreeTimeSlotsForCategory($gameEvents, CategoryId::BILDUNG_UND_KARRIERE))->toBeFalse();
+
         // this fails, no free slots available
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
             playerId: $this->players[1],
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
     })->throws(RuntimeException::class,
-        'Es gibt keine freien Slots für Zeitsteine mehr.',
+        'Cannot activate Card: Es gibt keine freien Zeitsteinslots mehr',
         1748951140);
 
 });
@@ -536,7 +540,7 @@ describe('handleRequestJobOffers', function () {
         $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
     })->throws(RuntimeException::class,
-        'Es gibt keine freien Zeitsteine mehr.', 1749043606);
+        'Es gibt keine freien Zeitsteinslots mehr', 1749043606);
 
 
     it('returns 3 jobs', function () {
@@ -719,7 +723,7 @@ describe('handleAcceptJobOffer', function () {
         ]);
 
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j3')));
-    })->throws(RuntimeException::class, 'Du kannst nur einen Job annehmen, der dir vorgeschlagen wurde', 1749043636);
+    })->throws(RuntimeException::class, 'Cannot Accept Job Offer: Dieser Job wurde dir noch nicht vorgeschlagen', 1749043636);
 
     it('throws an exception if job was not previously offered to player', function () {
         /** @var TestCase $this */
@@ -777,7 +781,7 @@ describe('handleAcceptJobOffer', function () {
         $this->coreGameLogic->handle($this->gameId,
             AcceptJobOffer::create($this->players[0], new CardId($jobThatWasNotOffered)));
     })->throws(RuntimeException::class,
-        'Du kannst nur einen Job annehmen, der dir vorgeschlagen wurde', 1749043636);
+        'Cannot Accept Job Offer: Dieser Job wurde dir noch nicht vorgeschlagen', 1749043636);
 
     it('permanently removes 1 Zeitstein while the player has a job', function () {
         /** @var TestCase $this */
@@ -875,7 +879,7 @@ describe('handleDoMinijob', function () {
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[1]));
     })->throws(
         RuntimeException::class,
-        'Du kannst nur Minijobs machen, wenn du dran bist',
+        'Cannot Do minijob: Du bist gerade nicht dran',
         1750854280
     );
 
@@ -902,7 +906,7 @@ describe('handleDoMinijob', function () {
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
     })->throws(
         RuntimeException::class,
-        'Du hast nicht genug Zeitsteine, um den Minijob anzunehmen',
+        'Cannot Do minijob: Du hast nicht genug Zeitsteine',
         1750854280
     );
 
@@ -1516,7 +1520,7 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
             $this->gameId,
             MarkPlayerAsReadyForKonjunkturphaseChange::create($this->players[0])
         );
-    })->throws(\RuntimeException::class, 'TODO', 123)->todo('Implement isEndOfKonjunkturphase validator first');
+    })->throws(\RuntimeException::class, 'Cannot mark player as ready: Die aktuelle Konjunkturphase ist noch nicht zu Ende', 1751373528);
 
     it('throws an error if the player has not completed the money sheet', function () {
         /** @var TestCase $this */

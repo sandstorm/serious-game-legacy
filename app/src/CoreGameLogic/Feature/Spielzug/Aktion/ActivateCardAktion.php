@@ -8,6 +8,11 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\CanPlayerAffordTopCardOnPileValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasCategoryFreeZeitsteinslotsValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerDoneNoZeitsteinaktionThisTurnValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughResourcesValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
@@ -25,7 +30,6 @@ use RuntimeException;
 
 class ActivateCardAktion extends Aktion
 {
-    private CardDefinition $card;
     private PileId $pileId;
 
     public function __construct(public CategoryId $category)
@@ -36,95 +40,41 @@ class ActivateCardAktion extends Aktion
         $this->pileId = PileState::getPileIdForCategoryAndPhase($category);
     }
 
-    /**
-     * Returns false, if the player performed any Aktionen this turn, that prevent this Aktion (e.g. another ActivateCard).
-     *
-     * @param GameEvents $gameEvents
-     * @return AktionValidationResult
-     */
-    private function validateWithPreviousActions(GameEvents $gameEvents): AktionValidationResult
-    {
-        $eventsThisTurn = AktionsCalculator::forStream($gameEvents)->getEventsThisTurn();
-        $zeitsteinEventsThisTurn = $eventsThisTurn->findAllOfType(ZeitsteinAktion::class);
-        if (count($zeitsteinEventsThisTurn) === 0) {
-            return new AktionValidationResult(true);
-        }
-
-        if (count($zeitsteinEventsThisTurn) > 1 || $zeitsteinEventsThisTurn->findFirstOrNull(CardWasSkipped::class) === null) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: 'Du hast bereits eine andere Aktion ausgeführt'
-            );
-        }
-
-        if ($zeitsteinEventsThisTurn->findFirst(CardWasSkipped::class)->categoryId->value !== $this->category->value) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: 'Du hast bereits eine Karte in einer anderen Kategorie übersprungen'
-            );
-        }
-
-        return new AktionValidationResult(true);
-    }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
-        $currentPlayer = CurrentPlayerAccessor::forStream($gameEvents);
-        if (!$currentPlayer->equals($playerId)) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: 'Du kannst Karten nur spielen, wenn du dran bist'
-            );
-        }
+        $validationChain = new IsPlayersTurnValidator();
+        $validationChain
+            ->setNext(new CanPlayerAffordTopCardOnPileValidator($this->pileId))
+            ->setNext(HasPlayerDoneNoZeitsteinaktionThisTurnValidator::withSpecialRulesForActivateCard($this->category))
+            ->setNext(new HasCategoryFreeZeitsteinslotsValidator($this->category));
 
-        $validationResultAfterPreviousActions = $this->validateWithPreviousActions($gameEvents);
-        if (!$validationResultAfterPreviousActions->canExecute) {
-            return $validationResultAfterPreviousActions;
-        }
-
-        $topCardOnPile = PileState::topCardIdForPile($gameEvents, $this->pileId);
-        $this->card = CardFinder::getInstance()->getCardById($topCardOnPile);
-
-        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($playerId,
-            $this->getTotalCosts($gameEvents, $playerId))) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: 'Du hast nicht genug Ressourcen um die Karte zu spielen',
-            );
-        }
-
-        $hasFreeTimeSlots = GamePhaseState::hasFreeTimeSlotsForCategory($gameEvents, $this->category);
-        if (!$hasFreeTimeSlots) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: 'Es gibt keine freien Slots für Zeitsteine mehr.',
-            );
-        }
-
-        return new AktionValidationResult(canExecute: true);
+        return $validationChain->validate($gameEvents, $playerId);
     }
 
-    private function getTotalCosts(GameEvents $gameEvents, PlayerId $player): ResourceChanges
+    private function getTotalCosts(GameEvents $gameEvents, PlayerId $player, CardDefinition $cardDefinition): ResourceChanges
     {
         $costToActivate = new ResourceChanges(
             zeitsteineChange: AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound($player) ? 0 : -1
         );
-        return $this->card instanceof KategorieCardDefinition ? $costToActivate->accumulate($this->card->resourceChanges) : $costToActivate;
+        return $cardDefinition instanceof KategorieCardDefinition ? $costToActivate->accumulate($cardDefinition->resourceChanges) : $costToActivate;
     }
 
     public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist
     {
         $result = $this->validate($playerId, $gameEvents);
         if (!$result->canExecute) {
-            throw new RuntimeException('' . $result->reason, 1748951140);
+            throw new RuntimeException('Cannot activate Card: ' . $result->reason, 1748951140);
         }
+        $topCardOnPile = PileState::topCardIdForPile($gameEvents, $this->pileId);
+        $cardDefinition = CardFinder::getInstance()->getCardById($topCardOnPile);
         return GameEventsToPersist::with(
             new CardWasActivated(
                 $playerId,
-                $this->card->getPileId(),
-                $this->card->getId(),
+                $this->pileId,
+                $cardDefinition->getId(),
                 $this->category,
-                $this->getTotalCosts($gameEvents, $playerId),
+                $this->getTotalCosts($gameEvents, $playerId, $cardDefinition),
                 AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound($playerId) ? 0 : 1,
             )
         );
