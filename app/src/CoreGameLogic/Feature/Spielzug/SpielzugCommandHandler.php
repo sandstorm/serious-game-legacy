@@ -13,12 +13,15 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\AcceptJobOffersAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ActivateCardAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CancelInsuranceForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CompleteMoneySheetForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ConcludeInsuranceForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterLebenshaltungskostenForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterSteuernUndAbgabenForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\MarkPlayerAsReadyForKonjunkturphaseChangeAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SkipCardAktion as SkipCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\StartKonjunkturphaseForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\TakeOutALoanForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
@@ -187,48 +190,26 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
         ConcludeInsuranceForPlayer $command,
         GameEvents                 $gameEvents
     ): GameEventsToPersist {
-        $hasInsurance = MoneySheetState::doesPlayerHaveThisInsurance($gameEvents, $command->playerId, $command->insuranceId);
-
-        if ($hasInsurance) {
-            throw new \RuntimeException("Cannot conclude insurance that was already concluded.");
-        }
-
-        return GameEventsToPersist::with(
-            new InsuranceForPlayerWasConcluded(
-                playerId: $command->playerId,
-                insuranceId: $command->insuranceId,
-            )
-        );
+        $aktion = new ConcludeInsuranceForPlayerAktion($command->insuranceId);
+        return $aktion->execute($command->playerId, $gameEvents);
     }
 
     private function handleCancelInsuranceForPlayer(
         CancelInsuranceForPlayer $command,
         GameEvents $gameEvents
     ): GameEventsToPersist {
-        $hasInsurance = MoneySheetState::doesPlayerHaveThisInsurance($gameEvents, $command->playerId, $command->insuranceId);
-
-        if (!$hasInsurance) {
-            throw new \RuntimeException("Cannot cancel insurance that was not concluded.");
-        }
-
-        return GameEventsToPersist::with(
-            new InsuranceForPlayerWasCancelled(
-                playerId: $command->playerId,
-                insuranceId: $command->insuranceId,
-            )
-        );
+        $aktion = new CancelInsuranceForPlayerAktion($command->insuranceId);
+        return $aktion->execute($command->playerId, $gameEvents);
     }
 
     private function handleTakeOutALoanForPlayer(TakeOutALoanForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
     {
-        return GameEventsToPersist::with(
-            new LoanWasTakenOutForPlayer(
-                playerId: $command->playerId,
-                intendedUse: $command->intendedUse,
-                loanAmount: $command->loanAmount,
-                totalRepayment: $command->totalRepayment,
-                repaymentPerKonjunkturphase: $command->repaymentPerKonjunkturphase,
-            )
+        $aktion = new TakeOutALoanForPlayerAktion(
+            $command->intendedUse,
+            $command->loanAmount,
+            $command->totalRepayment,
+            $command->repaymentPerKonjunkturphase,
         );
+        return $aktion->execute($command->playerId, $gameEvents);
     }
 }
