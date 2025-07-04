@@ -843,8 +843,25 @@ describe('handleAcceptJobOffer', function () {
 
     it('throws an exception if job requirements are not met', function () {
         /** @var TestCase $this */
-        // TODO discus -> this should not happen, since only eligible jobs are offered and nothing _should_ change until accepting the offer
-    })->todo('not yet implemented');
+
+        $this->addCardsOnTopOfPile([
+            "t0" => new JobCardDefinition(
+                id: new CardId('t0'),
+                pileId: PileId::JOBS_PHASE_1,
+                title: 'offered 1',
+                description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                gehalt: new MoneyAmount(34000),
+                requirements: new JobRequirements(
+                    zeitsteine: 1,
+                    bildungKompetenzsteine: 4,
+                ),
+            ),
+        ], PileId::JOBS_PHASE_1);
+
+        // Request and accept the job
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('t0')));
+    })->throws(\RuntimeException::class, 'Cannot Accept Job Offer: Du erfüllst nicht die Voraussetzungen für diesen Job', 1749043636);
 
     it('saves the correct Job and Gehalt', function () {
         /** @var TestCase $this */
