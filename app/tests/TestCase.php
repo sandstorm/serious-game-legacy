@@ -249,28 +249,6 @@ Der steigende Leitzins erhÃ¶ht die Deflation, die Kaufkraft der Barreserven erhÃ
                     bildungKompetenzsteine: 2,
                 ),
             ),
-            "j1" => new JobCardDefinition(
-                id: new CardId('j1'),
-                pileId: PileId::JOBS_PHASE_1,
-                title: 'Pflegefachkraft',
-                description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                gehalt: new MoneyAmount(25000),
-                requirements: new JobRequirements(
-                    zeitsteine: 1,
-                    bildungKompetenzsteine: 2,
-                ),
-            ),
-            "j2" => new JobCardDefinition(
-                id: new CardId('j2'),
-                pileId: PileId::JOBS_PHASE_1,
-                title: 'Taxifahrer:in',
-                description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                gehalt: new MoneyAmount(18000),
-                requirements: new JobRequirements(
-                    zeitsteine: 1,
-                    bildungKompetenzsteine: 1,
-                ),
-            ),
         ];
     }
 

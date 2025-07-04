@@ -59,8 +59,8 @@ describe('handleChangeKonjunkturphase', function () {
     it('type of the next konjunkturphase after the first one has correct type', function() {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $lastPhase = KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents);
-        expect($lastPhase)->not()->toBeNull();
-        expect($lastPhase->type)->toBe(KonjunkturphaseTypeEnum::AUFSCHWUNG);
+        expect($lastPhase)->not()->toBeNull()
+            ->and($lastPhase->type)->toBe(KonjunkturphaseTypeEnum::AUFSCHWUNG);
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -69,17 +69,14 @@ describe('handleChangeKonjunkturphase', function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $lastPhase = KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents);
-        expect($lastPhase)->not()->toBeNull();
-        expect($lastPhase->type)->toBeIn([
-            KonjunkturphaseTypeEnum::AUFSCHWUNG,
-            KonjunkturphaseTypeEnum::BOOM,
-            KonjunkturphaseTypeEnum::REZESSION
-        ]);
+        expect($lastPhase)->not()->toBeNull()
+            ->and($lastPhase->type)->toBeIn([
+                KonjunkturphaseTypeEnum::AUFSCHWUNG,
+                KonjunkturphaseTypeEnum::BOOM,
+                KonjunkturphaseTypeEnum::REZESSION
+            ]);
     });
 
-    it('happens automatically when no player has any Zeitsteine remaining', function () {
-        // TODO implement
-    })->todo('not yet implemented');
 });
 
 describe('getListOfPossibleNextPhaseTypes', function () {
