@@ -28,6 +28,7 @@ class MoneySheetLoans extends Component
     {
         return view('components.gameboard.moneySheet.expenses.money-sheet-loans', [
             'loans' => MoneySheetState::getLoansForPlayer($this->gameEvents, $this->playerId),
+            'sumOfLoans' => MoneySheetState::getSumOfAllLoansForPlayer($this->gameEvents, $this->playerId),
             'repaymentPeriod' => Configuration::REPAYMENT_PERIOD
         ]);
     }

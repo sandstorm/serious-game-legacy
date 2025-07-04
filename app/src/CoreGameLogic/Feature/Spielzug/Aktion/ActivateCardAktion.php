@@ -85,11 +85,13 @@ class ActivateCardAktion extends Aktion
         $topCardOnPile = PileState::topCardIdForPile($gameEvents, $this->pileId);
         $this->card = CardFinder::getInstance()->getCardById($topCardOnPile);
 
-        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($playerId,
-            $this->getTotalCosts($gameEvents, $playerId))) {
+        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction(
+            $playerId,
+            $this->getTotalCosts($gameEvents, $playerId))
+        ) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Du hast nicht genug Ressourcen um die Karte zu spielen',
+                reason: 'Du hast nicht genug Ressourcen um die Karte zu spielen.'
             );
         }
 

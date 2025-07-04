@@ -12,6 +12,8 @@ use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
 class CompleteMoneySheetForPlayerAktion extends Aktion
 {
@@ -48,8 +50,17 @@ class CompleteMoneySheetForPlayerAktion extends Aktion
         if (!$result->canExecute) {
             throw new \RuntimeException('Cannot complete money sheet: ' . $result->reason, 1751375431);
         }
+
+        $annualExpenses = MoneySheetState::getAnnualExpensesForPlayer($gameEvents, $playerId);
+
         return GameEventsToPersist::with(
-            new PlayerHasCompletedMoneysheetForCurrentKonjunkturphase($playerId, KonjunkturphaseState::getCurrentYear($gameEvents))
+            new PlayerHasCompletedMoneysheetForCurrentKonjunkturphase(
+                $playerId,
+                KonjunkturphaseState::getCurrentYear($gameEvents),
+                new ResourceChanges(
+                    guthabenChange: new MoneyAmount($annualExpenses->value * -1)
+                )
+            )
         );
     }
 }

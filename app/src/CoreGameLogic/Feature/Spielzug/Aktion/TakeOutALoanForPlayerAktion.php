@@ -6,6 +6,8 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;
+use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasTakenOutForPlayer;
 use Domain\CoreGameLogic\PlayerId;
@@ -13,12 +15,16 @@ use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
 class TakeOutALoanForPlayerAktion extends Aktion
 {
+    private CurrentYear $currentYear;
+    private LoanId $loanId;
     private string $intendedUse;
     private MoneyAmount $loanAmount;
     private MoneyAmount $totalRepayment;
     private MoneyAmount $repaymentPerKonjunkturphase;
 
     public function __construct(
+        CurrentYear $currentYear,
+        LoanId $loanId,
         string $intendedUse,
         MoneyAmount $loanAmount,
         MoneyAmount $totalRepayment,
@@ -29,6 +35,8 @@ class TakeOutALoanForPlayerAktion extends Aktion
         $this->loanAmount = $loanAmount;
         $this->totalRepayment = $totalRepayment;
         $this->repaymentPerKonjunkturphase = $repaymentPerKonjunkturphase;
+        $this->currentYear = $currentYear;
+        $this->loanId = $loanId;
     }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
@@ -48,6 +56,8 @@ class TakeOutALoanForPlayerAktion extends Aktion
         return GameEventsToPersist::with(
             new LoanWasTakenOutForPlayer(
                 playerId: $playerId,
+                year: $this->currentYear,
+                loanId: $this->loanId,
                 intendedUse: $this->intendedUse,
                 loanAmount: $this->loanAmount,
                 totalRepayment: $this->totalRepayment,
