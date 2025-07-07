@@ -12,6 +12,13 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
+use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
@@ -24,6 +31,7 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Insurance\InsuranceDefinition;
 use Domain\Definitions\Insurance\InsuranceFinder;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
@@ -37,8 +45,6 @@ use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Livewire\Component;
-use Livewire\Features\SupportFormObjects\Form;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -223,13 +229,45 @@ Der steigende Leitzins erhÃ¶ht die Deflation, die Kaufkraft der Barreserven erhÃ
             $this->gameId,
             ChangeKonjunkturphase::create()
                 ->withFixedKonjunkturphaseForTesting($this->konjunkturphaseDefinition)
-                ->withFixedCardOrderForTesting(
-                    new CardOrder(pileId: $this->pileIdBildung, cards: array_map(fn($card) => $card->id, $this->cardsBildung)),
-                    new CardOrder(pileId: $this->pileIdFreizeit, cards: array_map(fn($card) => $card->id, $this->cardsFreizeit)),
-                    new CardOrder(pileId: $this->pileIdJobs, cards: array_map(fn($card) => $card->id, $this->cardsJobs)),
-                    new CardOrder(pileId: $this->pileIdMinijobs, cards: array_map(fn($card) => $card->id, $this->cardsMinijobs)),
-                )
         );
+    }
+
+    /**
+     * Simulate a complete game round for all players.
+     * Only works if the cards used consume all the Zeitsteine!
+     *
+     * @return void
+     */
+    public function makeSpielzugForPlayersAndChangeKonjunkturphase(): void
+    {
+        foreach($this->players as $player) {
+            $this->coreGameLogic->handle(
+                $this->gameId,
+                ActivateCard::create($player, CategoryId::BILDUNG_UND_KARRIERE)
+            );
+            $this->coreGameLogic->handle(
+                $this->gameId,
+                new EndSpielzug($player)
+            );
+        }
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect($gameEvents->findLast(KonjunkturphaseHasEnded::class) instanceof KonjunkturphaseHasEnded)->toBeTrue();
+
+        foreach($this->players as $player) {
+            $this->coreGameLogic->handle(
+                $this->gameId,
+                EnterLebenshaltungskostenForPlayer::create($player, MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $player))
+            );
+            $this->coreGameLogic->handle(
+                $this->gameId,
+                CompleteMoneysheetForPlayer::create($player)
+            );
+            $this->coreGameLogic->handle(
+                $this->gameId,
+                MarkPlayerAsReadyForKonjunkturphaseChange::create($player)
+            );
+        }
     }
 
     /**
@@ -387,19 +425,5 @@ Der steigende Leitzins erhÃ¶ht die Deflation, die Kaufkraft der Barreserven erhÃ
                     new CardOrder(pileId: $this->pileIdJobs, cards: array_map(fn($card) => $card->getId(), $testCards[PileId::JOBS_PHASE_1->value])),
                     new CardOrder(pileId: $this->pileIdMinijobs, cards: array_map(fn($card) => $card->getId(), $testCards[PileId::MINIJOBS_PHASE_1->value])),
                 ));
-    }
-
-
-    /**
-     * @return CardDefinition[]
-     */
-    protected function getCardsForTesting(): array
-    {
-        return [
-            ...$this->getCardsForSozialesAndFreizeit(),
-            ...$this->getCardsForBildungAndKarriere(),
-            ...$this->getCardsForJobs(),
-            ...$this->getCardsForMinijobs()
-        ];
     }
 }

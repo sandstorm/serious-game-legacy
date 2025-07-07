@@ -13,7 +13,7 @@
     <div class="game__content">
         <div class="game-board">
             <div class="game-board__konjukturphase">
-                Jahr: {{ $currentYear->value }} - {{ $konjunkturphasenDefinition->type }}
+                Jahr: {{ $year->value }} - {{ $konjunkturphasenDefinition->type }}
                 <button type="button" class="button button--type-primary button--size-small"
                         wire:click="showKonjunkturphaseDetails()">Zeige Details
                 </button>

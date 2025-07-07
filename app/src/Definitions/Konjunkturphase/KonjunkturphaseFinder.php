@@ -209,19 +209,16 @@ dazu aufgerufen, bei den Räumungsarbeiten zu helfen (Kosten = 1 Zeitstein). All
     }
 
     /**
-     * returns a random Konjunkturphase that is not used in the given array of ids aka was not used in the past
+     * returns a random Konjunkturphase
      *
      * @param KonjunkturphaseTypeEnum|null $lastType
-     * @param int[] $idsOfPastKonjunkturphasen
      * @return KonjunkturphaseDefinition
      */
-    public static function getUnusedRandomKonjunkturphase(?KonjunkturphaseTypeEnum $lastType, array $idsOfPastKonjunkturphasen): KonjunkturphaseDefinition
+    public static function getRandomKonjunkturphase(?KonjunkturphaseTypeEnum $lastType): KonjunkturphaseDefinition
     {
         $possibleNextPhaseTypes = self::getListOfPossibleNextPhaseTypes($lastType);
-
         $konjunkturphasen = self::getAllKonjunkturphasenByTypes($possibleNextPhaseTypes);
-        $unusedKonjunkturphasen = array_filter($konjunkturphasen, static fn(KonjunkturphaseDefinition $konjunkturphase) => !in_array($konjunkturphase->id->value, $idsOfPastKonjunkturphasen, true));
-        return $unusedKonjunkturphasen[array_rand($unusedKonjunkturphasen)];
+        return $konjunkturphasen[array_rand($konjunkturphasen)];
     }
 
     /**

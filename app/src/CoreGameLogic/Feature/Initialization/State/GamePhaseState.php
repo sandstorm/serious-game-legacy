@@ -7,7 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Initialization\State;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Year;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
@@ -24,7 +24,7 @@ class GamePhaseState
         return $gameEvents->findLast(KonjunkturphaseWasChanged::class)->id;
     }
 
-    public static function currentKonjunkturphasenYear(GameEvents $gameEvents): CurrentYear
+    public static function currentKonjunkturphasenYear(GameEvents $gameEvents): Year
     {
         return $gameEvents->findLast(KonjunkturphaseWasChanged::class)->year;
     }

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject;
+namespace Domain\CoreGameLogic\Feature\Moneysheet\ValueObject;
 
-readonly class CurrentYear implements \JsonSerializable
+readonly class LoanId implements \JsonSerializable
 {
     public function __construct(public int $value)
     {
@@ -12,7 +12,7 @@ readonly class CurrentYear implements \JsonSerializable
 
     public function __toString(): string
     {
-        return '[Jahr: '.$this->value.']';
+        return '[LoanId: ' . $this->value . ']';
     }
 
     public function jsonSerialize(): int
@@ -20,7 +20,7 @@ readonly class CurrentYear implements \JsonSerializable
         return $this->value;
     }
 
-    public function equals(CurrentYear $other): bool
+    public function equals(LoanId $other): bool
     {
         return $this->value === $other->value;
     }

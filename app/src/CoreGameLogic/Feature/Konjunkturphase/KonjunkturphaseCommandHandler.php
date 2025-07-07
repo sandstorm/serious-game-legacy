@@ -14,20 +14,12 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;
-use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasStartedKonjunkturphase;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerWasMarkedAsReadyForKonjunkturphaseChange;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Year;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Zinssatz;
 use Domain\Definitions\Card\PileFinder;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
-use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use Random\Randomizer;
 
 /**
@@ -48,6 +40,13 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
         };
     }
 
+    /**
+     * Ends the current konjunkturphase and starts a new one.
+     *
+     * @param ChangeKonjunkturphase $command
+     * @param GameEvents $gameState
+     * @return GameEventsToPersist
+     */
     public function handleChangeKonjunkturphase(
         ChangeKonjunkturphase $command,
         GameEvents $gameState
@@ -63,16 +62,14 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
         }
 
         $lastKonjunkturphaseType = $gameState->findLastOrNull(KonjunkturphaseWasChanged::class)->type ?? null;
-        $idsOfPastKonjunkturphasen = $this->getIdsOfPastKonjunkturphasen($gameState);
 
-        // We pick a random next konjunkturphase from the definitions that was not used yet.
-        // If the max amount of defined konjunkturphasen is reached, we restart the konjunkturphasen.
-        $nextKonjunkturphase = $command->fixedKonjunkturphaseForTesting ?? KonjunkturphaseFinder::getUnusedRandomKonjunkturphase($lastKonjunkturphaseType, $idsOfPastKonjunkturphasen);
+        // We pick a random next konjunkturphase from the definitions.
+        $nextKonjunkturphase = $command->fixedKonjunkturphaseForTesting ?? KonjunkturphaseFinder::getRandomKonjunkturphase($lastKonjunkturphaseType);
 
         return GameEventsToPersist::with(
             new KonjunkturphaseWasChanged(
                 id: $nextKonjunkturphase->id,
-                year: new CurrentYear($year),
+                year: new Year($year),
                 type: $nextKonjunkturphase->type,
                 zinssatz: new Zinssatz($nextKonjunkturphase->zinssatz),
                 kompetenzbereiche: $nextKonjunkturphase->kompetenzbereiche,
@@ -81,36 +78,6 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
 
             // We ALSO SHUFFLE cards during Konjunkturphasenwechsel
             ...$this->handleShuffleCards($command)->events
-        );
-    }
-
-    /**
-     * Public for testing purposes only.
-     * Returns the ids of the last konjunkturphasen limited to the maximum amount of defined konjunkturphasen.
-     *
-     * @param GameEvents $gameState
-     * @return array<int>
-     */
-    public function getIdsOfPastKonjunkturphasen(GameEvents $gameState): array
-    {
-        // ids of all the past konjunkturphasen
-        $idsOfPastKonjunkturphasen = GamePhaseState::idsOfPastKonjunkturphasen($gameState);
-        $amountOfPastIds = count($idsOfPastKonjunkturphasen);
-        // amount of konjunkturphasen defined in the definitions
-        $amountOfKonjunkturphasen = count(KonjunkturphaseFinder::getAllKonjunkturphasen());
-
-        // Returns empty list if the amount of konjunkturphasen is 0 or a multiple of the amount of konjunkturphasen
-        // aka we have reached the max amount of konjunkturphasen and start over
-        if ($amountOfPastIds % $amountOfKonjunkturphasen === 0) {
-            return [];
-        }
-
-        // Returns the ids of the last konjunkturphasen, picking from the end of the array
-        return array_slice(
-            $idsOfPastKonjunkturphasen,
-            $amountOfPastIds - $amountOfPastIds % $amountOfKonjunkturphasen,
-            null,
-            true
         );
     }
 

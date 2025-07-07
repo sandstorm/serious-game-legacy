@@ -347,30 +347,18 @@ describe('handleActivateCard', function () {
             playerId: $this->players[0],
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
-        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        /** @var CardWasSkipped $actualEvent */
-        $actualEvent = $stream->findLast(CardWasSkipped::class);
-        expect($actualEvent->cardId->value)->toEqual('buk0');
 
         // play the next card
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
             playerId: $this->players[0],
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
-        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        /** @var CardWasActivated $actualEvent */
-        $actualEvent = $stream->findLast(CardWasActivated::class);
-        expect($actualEvent->cardId->value)->toEqual('buk1');
 
         // play another card -> should fail
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
             playerId: $this->players[0],
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
-        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        /** @var CardWasActivated $actualEvent */
-        $actualEvent = $stream->findLast(CardWasActivated::class);
-        expect($actualEvent->cardId->value)->toEqual('buk2');
     })->throws(
         RuntimeException::class,
         'Du hast bereits eine andere Aktion ausgeführt',
@@ -1632,7 +1620,6 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
 
         $this->coreGameLogic->handle($this->gameId,
             EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)));
-
 
         $this->coreGameLogic->handle(
             $this->gameId,

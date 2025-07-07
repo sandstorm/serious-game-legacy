@@ -8,9 +8,11 @@ use Domain\CoreGameLogic\CommandHandler\CommandHandlerInterface;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
+use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
+use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\AcceptJobOffersAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ActivateCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CancelInsuranceForPlayerAktion;
@@ -203,7 +205,12 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
 
     private function handleTakeOutALoanForPlayer(TakeOutALoanForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
     {
+        $loanId = new LoanId(count(MoneySheetState::getLoansForPlayer($gameEvents, $command->playerId)) + 1);
+        $year = GamePhaseState::currentKonjunkturphasenYear($gameEvents);
+
         $aktion = new TakeOutALoanForPlayerAktion(
+            $year,
+            $loanId,
             $command->intendedUse,
             $command->loanAmount,
             $command->totalRepayment,

@@ -69,7 +69,7 @@ trait HasGamePhase
         ];
 
         return view('livewire.screens.ingame', [
-            'currentYear' => GamePhaseState::currentKonjunkturphasenYear($this->gameEvents),
+            'year' => GamePhaseState::currentKonjunkturphasenYear($this->gameEvents),
             'konjunkturphasenDefinition' => $konjunkturphasenDefinition,
             'categories' => $categories,
             'jobDefinition' => PlayerState::getJobForPlayer($this->gameEvents, $this->myself),

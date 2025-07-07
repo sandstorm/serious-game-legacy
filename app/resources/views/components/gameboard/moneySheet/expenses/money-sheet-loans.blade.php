@@ -1,9 +1,11 @@
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
 @use('Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState')
+@use('Domain\CoreGameLogic\Feature\MoneySheet\State\MoneySheetState')
 
 @props([
     '$loans' => null,
     '$repaymentPeriod' => null,
+    '$sumOfLoans' => null,
 ])
 
 @if ($this->takeOutALoanIsVisible)
@@ -69,6 +71,7 @@
     <table>
         <thead>
         <tr>
+            <th>#</th>
             <th>Kreditverwendung</th>
             <th>Kredithöhe</th>
             <th>Rückzahlungssumme</th>
@@ -79,16 +82,17 @@
         <tbody>
         @foreach($loans as $loan)
             <tr>
+                <td>{{ $loan->loanId->value }}</td>
                 <td>{{ $loan->intendedUse }}</td>
                 <td>{!! $loan->loanAmount->format() !!}</td>
                 <td>{!! $loan->totalRepayment->format() !!}</td>
                 <td>{!! $loan->repaymentPerKonjunkturphase->format() !!}</td>
-                <td>xxx €</td>
+                <td>{!! MoneySheetState::getOpenRatesForLoan($gameEvents, $playerId, $loan->loanId)->format() !!}</td>
             </tr>
         @endforeach
         <tr>
-            <td colspan="4" class="text-align--right">Kredite gesamt</td>
-            <td>0€</td>
+            <td colspan="5" class="text-align--right">Kredite gesamt</td>
+            <td>{!! $sumOfLoans->format() !!}</td>
         </tr>
         </tbody>
     </table>
