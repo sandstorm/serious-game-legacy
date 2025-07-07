@@ -6,7 +6,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Year;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasTakenOutForPlayer;
@@ -15,7 +15,7 @@ use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
 class TakeOutALoanForPlayerAktion extends Aktion
 {
-    private CurrentYear $currentYear;
+    private Year $year;
     private LoanId $loanId;
     private string $intendedUse;
     private MoneyAmount $loanAmount;
@@ -23,9 +23,9 @@ class TakeOutALoanForPlayerAktion extends Aktion
     private MoneyAmount $repaymentPerKonjunkturphase;
 
     public function __construct(
-        CurrentYear $currentYear,
-        LoanId $loanId,
-        string $intendedUse,
+        Year        $year,
+        LoanId      $loanId,
+        string      $intendedUse,
         MoneyAmount $loanAmount,
         MoneyAmount $totalRepayment,
         MoneyAmount $repaymentPerKonjunkturphase,
@@ -35,7 +35,7 @@ class TakeOutALoanForPlayerAktion extends Aktion
         $this->loanAmount = $loanAmount;
         $this->totalRepayment = $totalRepayment;
         $this->repaymentPerKonjunkturphase = $repaymentPerKonjunkturphase;
-        $this->currentYear = $currentYear;
+        $this->year = $year;
         $this->loanId = $loanId;
     }
 
@@ -56,7 +56,7 @@ class TakeOutALoanForPlayerAktion extends Aktion
         return GameEventsToPersist::with(
             new LoanWasTakenOutForPlayer(
                 playerId: $playerId,
-                year: $this->currentYear,
+                year: $this->year,
                 loanId: $this->loanId,
                 intendedUse: $this->intendedUse,
                 loanAmount: $this->loanAmount,

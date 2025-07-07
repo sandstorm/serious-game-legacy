@@ -672,12 +672,12 @@ describe('getOpenRatesForLoan', function () {
         $expectedYear = 2;
         $loans = MoneySheetState::getLoansForPlayer($gameEvents, $this->players[0]);
         $openRates = MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], $loans[0]->loanId);
-        $currentYear = KonjunkturphaseState::getCurrentYear($gameEvents);
+        $year = KonjunkturphaseState::getCurrentYear($gameEvents);
         expect($loans)->toHaveCount(1)
             ->and($loans[0]->year->value)->toEqual($expectedYear)
             ->and($loans[0]->loanId->value)->toEqual(1)
             ->and($openRates->value)->toEqual($repayment)
-            ->and($currentYear->value)->toEqual($expectedYear)
+            ->and($year->value)->toEqual($expectedYear)
             ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->value)->toEqual($initialGuthaben + $loanAmount);
 
         $expectedGuthaben = $initialGuthaben + $loanAmount;
@@ -689,10 +689,10 @@ describe('getOpenRatesForLoan', function () {
 
             $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
             $openRates = MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], $loans[0]->loanId);
-            $currentYear = KonjunkturphaseState::getCurrentYear($gameEvents);
+            $year = KonjunkturphaseState::getCurrentYear($gameEvents);
             expect($loans)->toHaveCount(1)
                 ->and($openRates->value)->toEqual($expectedOpenRates)
-                ->and($currentYear->value)->toEqual($expectedYear)
+                ->and($year->value)->toEqual($expectedYear)
                 ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->value)->toEqual($expectedGuthaben);
         }
 

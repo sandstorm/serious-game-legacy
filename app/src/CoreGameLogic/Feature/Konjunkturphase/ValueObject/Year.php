@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject;
 
-readonly class CurrentYear implements \JsonSerializable
+readonly class Year implements \JsonSerializable
 {
     public function __construct(public int $value)
     {
@@ -12,7 +12,7 @@ readonly class CurrentYear implements \JsonSerializable
 
     public function __toString(): string
     {
-        return '[Jahr: '.$this->value.']';
+        return '[Year: '.$this->value.']';
     }
 
     public function jsonSerialize(): int
@@ -20,7 +20,7 @@ readonly class CurrentYear implements \JsonSerializable
         return $this->value;
     }
 
-    public function equals(CurrentYear $other): bool
+    public function equals(Year $other): bool
     {
         return $this->value === $other->value;
     }

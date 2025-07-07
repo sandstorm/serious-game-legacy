@@ -9,7 +9,7 @@ use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\ZeitsteineForPlayer;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Year;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasStartedKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerWasMarkedAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
@@ -86,7 +86,7 @@ class KonjunkturphaseState
         return KonjunkturphaseFinder::findKonjunkturphaseById($gameEvents->findLast(KonjunkturphaseWasChanged::class)->id);
     }
 
-    public static function getCurrentYear(GameEvents $gameEvents): CurrentYear
+    public static function getCurrentYear(GameEvents $gameEvents): Year
     {
         $lastKonjunkturphaseWasChangedEvent = $gameEvents->findLast(KonjunkturphaseWasChanged::class);
         return $lastKonjunkturphaseWasChangedEvent->year;

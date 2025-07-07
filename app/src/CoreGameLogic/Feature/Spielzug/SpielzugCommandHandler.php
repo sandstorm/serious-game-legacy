@@ -206,10 +206,10 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
     private function handleTakeOutALoanForPlayer(TakeOutALoanForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
     {
         $loanId = new LoanId(count(MoneySheetState::getLoansForPlayer($gameEvents, $command->playerId)) + 1);
-        $currentYear = GamePhaseState::currentKonjunkturphasenYear($gameEvents);
+        $year = GamePhaseState::currentKonjunkturphasenYear($gameEvents);
 
         $aktion = new TakeOutALoanForPlayerAktion(
-            $currentYear,
+            $year,
             $loanId,
             $command->intendedUse,
             $command->loanAmount,

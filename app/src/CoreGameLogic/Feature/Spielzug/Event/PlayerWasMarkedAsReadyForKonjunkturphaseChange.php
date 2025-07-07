@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Year;
 use Domain\CoreGameLogic\PlayerId;
 
 final readonly class PlayerWasMarkedAsReadyForKonjunkturphaseChange implements GameEventInterface
 {
     public function __construct(
         public PlayerId $playerId,
-        public CurrentYear $year,
+        public Year     $year,
     ) {
     }
 
@@ -24,7 +24,7 @@ final readonly class PlayerWasMarkedAsReadyForKonjunkturphaseChange implements G
     {
         return new self(
             playerId: PlayerId::fromString($values['playerId']),
-            year: new CurrentYear($values['year']),
+            year: new Year($values['year']),
         );
     }
 

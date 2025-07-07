@@ -311,12 +311,12 @@ class MoneySheetState
 
         // Calculate the open rates based on the total repayment and the repayment per Konjunkturphase
         $yearOfTheLoan = $loan->year->value;
-        $currentYear = GamePhaseState::currentKonjunkturphasenYear($gameEvents)->value;
+        $year = GamePhaseState::currentKonjunkturphasenYear($gameEvents)->value;
         $totalRepayment = $loan->totalRepayment->value;
         $repaymentPerKonjunkturphase = $loan->repaymentPerKonjunkturphase->value;
 
         return new MoneyAmount(
-            max(0, $totalRepayment - (($currentYear - $yearOfTheLoan) * $repaymentPerKonjunkturphase))
+            max(0, $totalRepayment - (($year - $yearOfTheLoan) * $repaymentPerKonjunkturphase))
         );
     }
 

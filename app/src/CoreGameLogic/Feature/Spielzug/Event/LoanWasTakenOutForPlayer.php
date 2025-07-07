@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\CurrentYear;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Year;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\PlayerId;
@@ -15,10 +15,10 @@ use Domain\Definitions\Card\ValueObject\MoneyAmount;
 class LoanWasTakenOutForPlayer implements GameEventInterface, ProvidesResourceChanges
 {
     public function __construct(
-        public PlayerId $playerId,
-        public CurrentYear $year,
-        public LoanId $loanId,
-        public string $intendedUse,
+        public PlayerId    $playerId,
+        public Year        $year,
+        public LoanId      $loanId,
+        public string      $intendedUse,
         public MoneyAmount $loanAmount,
         public MoneyAmount $totalRepayment,
         public MoneyAmount $repaymentPerKonjunkturphase,
@@ -29,7 +29,7 @@ class LoanWasTakenOutForPlayer implements GameEventInterface, ProvidesResourceCh
     {
         return new self(
             playerId: PlayerId::fromString($values['player']),
-            year: new CurrentYear($values['year']),
+            year: new Year($values['year']),
             loanId: new LoanId($values['loanId']),
             intendedUse: $values['intendedUse'],
             loanAmount: new MoneyAmount($values['loanAmount']),
