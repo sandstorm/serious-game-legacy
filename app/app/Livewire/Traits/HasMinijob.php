@@ -7,7 +7,6 @@ namespace App\Livewire\Traits;
 use App\Livewire\ValueObject\NotificationTypeEnum;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\DoMinijobAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
-use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 
 trait HasMinijob
 {

@@ -7,6 +7,7 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerColorWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
 use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
@@ -25,7 +26,7 @@ class PlayerState
     public static function getPlayerColor(GameEvents $stream, PlayerId $playerId): string|null
     {
         $playerColor = $stream->findAllOfType(PlayerColorWasSelected::class);
-        /** @var PlayerColorWasSelected $event **/
+        /** @var PlayerColorWasSelected $event * */
         foreach ($playerColor as $event) {
             if ($event->playerId->equals($playerId)) {
                 return $event->playerColor->value;
@@ -71,7 +72,7 @@ class PlayerState
     {
         $zeitsteineForPlayers = $gameEvents->findLast(KonjunkturphaseWasChanged::class)->zeitsteineForPlayers;
         // TODO make this safer (...[0] may not work)
-        return array_values(array_filter($zeitsteineForPlayers, fn ($forPlayer) => $forPlayer->playerId->equals($playerId)))[0]->zeitsteine;
+        return array_values(array_filter($zeitsteineForPlayers, fn($forPlayer) => $forPlayer->playerId->equals($playerId)))[0]->zeitsteine;
     }
 
     /**
@@ -187,4 +188,14 @@ class PlayerState
         $job = self::getJobForPlayer($stream, $playerId);
         return $job->gehalt ?? new MoneyAmount(0);
     }
+
+    public static function getCurrentLebenszielphaseForPlayer(GameEvents $stream, PlayerId $playerId): ?int
+    {
+        $currentLebenszielphaseForPlayer = $stream->findLastOrNullWhere(fn ($event) => $event instanceof LebenszielphaseWasChanged && $event->playerId->equals($playerId));
+        if($currentLebenszielphaseForPlayer === null) {
+            return 1;
+        }
+        return $currentLebenszielphaseForPlayer->phase;
+    }
 }
+

@@ -31,9 +31,9 @@
                     </div>
                 </div>
 
-                @if($phase->invenstition > 0)
+                @if($phase->investitionen > 0)
                 <div>
-                    <strong>Investitionen: </strong> {{$phase->invenstition}} €
+                    <strong>Investitionen: </strong> {{$phase->investitionen}} €
                 </div>
                 @endif
                 @if($phase->erwerbseinkommen > 0)

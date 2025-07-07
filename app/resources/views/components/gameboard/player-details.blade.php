@@ -13,7 +13,7 @@
     @if($playerDetails?->lebensziel)
         <x-lebensziel :lebensziel="$playerDetails?->lebensziel"/>
     @endif
-    <button type="button" class="button button--type-primary" wire:click="">Phase wechseln</button>
+    <button type="button" class="button button--type-primary" wire:click="changeLebenszielphase()">Phase wechseln</button>
 @endsection
 
 @section('footer')
