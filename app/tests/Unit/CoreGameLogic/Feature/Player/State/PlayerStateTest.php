@@ -73,8 +73,8 @@ describe('getGuthabenForPlayer', function () {
             ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGuthabenForPlayer($stream, $this->players[0])->value)->toEqual(50000 - 1000)
-            ->and(PlayerState::getGuthabenForPlayer($stream, $this->players[1])->value)->toEqual(50000 - 100);
+        expect(PlayerState::getGuthabenForPlayer($stream, $this->players[0])->value)->toEqual(Configuration::STARTKAPITAL_VALUE - 1000)
+            ->and(PlayerState::getGuthabenForPlayer($stream, $this->players[1])->value)->toEqual(Configuration::STARTKAPITAL_VALUE - 100);
     });
 
     it('Throws an exception if the player does not exist', function () {

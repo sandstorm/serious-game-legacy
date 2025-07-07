@@ -33,8 +33,8 @@ describe('handleChangeKonjunkturphase', function () {
 
         // use a Zeitstein
         $cardsForTesting = [
-            "cardToRemovZeitstein" => new KategorieCardDefinition(
-                id: new CardId('cardToRemovZeitstein'),
+            "cardForTesting" => new KategorieCardDefinition(
+                id: new CardId('cardForTesting'),
                 pileId: $this->pileIdBildung,
                 title: 'for testing',
                 description: '...',

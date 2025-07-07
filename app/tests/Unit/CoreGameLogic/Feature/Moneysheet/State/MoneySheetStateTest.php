@@ -25,6 +25,7 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\Definitions\Configuration\Configuration;
 use Tests\TestCase;
 
 beforeEach(function () {
@@ -592,7 +593,7 @@ describe('getLoansForPlayer', function () {
 
     it('returns existing loans', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->value)->toEqual(50000);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->value)->toEqual(Configuration::STARTKAPITAL_VALUE);
 
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
             $this->players[0],
@@ -613,16 +614,16 @@ describe('getLoansForPlayer', function () {
             ->and($loans[0]->totalRepayment->value)->toEqual(12500)
             ->and($loans[0]->repaymentPerKonjunkturphase->value)->toEqual(625)
             ->and(MoneySheetState::getSumOfAllLoansForPlayer($gameEvents, $this->players[0])->value)->toEqual(10000)
-            ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->value)->toEqual(60000);
+            ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->value)->toEqual(Configuration::STARTKAPITAL_VALUE + 10000);
 
     });
 });
 
 describe('getOpenRatesForLoan', function () {
-    it('returns 0 if no loans exist', function () {
+    it('throws an exception if no loans exist', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
-        expect(MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], new LoanId(1))->value)->toEqual(0);
+        expect(MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], new LoanId(1))->value);
     })->throws(\RuntimeException::class, 'No loan found for player p1 with ID 1');
 
     it('returns correct open rates for loans', function () {
@@ -635,8 +636,9 @@ describe('getOpenRatesForLoan', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(5000),
-                    zeitsteineChange: -4
+                    // add the money per round the player loses
+                    guthabenChange: new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE),
+                    zeitsteineChange: -Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_THREE_OR_FOUR_PLAYERS
                 ),
             );
         }
@@ -654,7 +656,7 @@ describe('getOpenRatesForLoan', function () {
             ChangeKonjunkturphase::create()
         );
 
-        $initialGuthaben = 50000;
+        $initialGuthaben = Configuration::STARTKAPITAL_VALUE;
         $loanAmount = 10000;
         $repayment = 12500;
         $rate = 625;
@@ -710,10 +712,10 @@ describe('getOpenRatesForLoan', function () {
 });
 
 describe("getAnnualExpensesForPlayer", function() {
-    it('returns 0 if player has no expenses', function () {
+    it('returns the lebenserhaltungskosten if player has no other expenses', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
-        expect(MoneySheetState::getAnnualExpensesForPlayer($gameEvents, $this->players[0])->value)->toEqual(5000);
+        expect(MoneySheetState::getAnnualExpensesForPlayer($gameEvents, $this->players[0])->value)->toEqual(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE);
     });
 
     it('returns annual expenses', function () {
@@ -728,7 +730,7 @@ describe("getAnnualExpensesForPlayer", function() {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
-        $expectedAnnualExpenses = 5000 + 625; // 5000 Lebenshaltungskosten + 625 loan repayment
+        $expectedAnnualExpenses = Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE + 625; // 5000 Lebenshaltungskosten + 625 loan repayment
         expect(MoneySheetState::getAnnualExpensesForPlayer($gameEvents, $this->players[0])->value)->toEqual($expectedAnnualExpenses);
 
         // player 0 takes out a second loan

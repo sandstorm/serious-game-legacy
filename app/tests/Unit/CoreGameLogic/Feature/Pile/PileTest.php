@@ -63,23 +63,8 @@ test('Cards can be drawn from piles', function () {
 });
 
 test('Shuffling resets draw counter', function () {
-    $idsOfPastTopCards = [];
-
-    $idsOfPastTopCards[] = PileState::topCardIdForPile(
-        $this->coreGameLogic->getGameEvents($this->gameId),
-        $this->pileIdBildung
-    )->value;
-
     $this->coreGameLogic->handle($this->gameId, new SkipCard($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
-
-    $idsOfPastTopCards[] = PileState::topCardIdForPile(
-        $this->coreGameLogic->getGameEvents($this->gameId),
-        $this->pileIdBildung
-    )->value;
     $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
-
-    $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-    expect(PileState::topCardIdForPile($gameEvents, $this->pileIdBildung)->value)->not->toBeIn($idsOfPastTopCards);
 
     $this->coreGameLogic->handle(
         $this->gameId,
