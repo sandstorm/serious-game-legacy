@@ -4,65 +4,100 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
+use App\Livewire\Forms\TakeOutALoanForm;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Year;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
+use Domain\CoreGameLogic\Feature\Moneysheet\State\LoanCalculator;
+use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\LoanData;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasCorrected;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasTakenOutForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
+use Domain\Definitions\Configuration\Configuration;
 
 class TakeOutALoanForPlayerAktion extends Aktion
 {
-    private Year $year;
-    private LoanId $loanId;
-    private string $intendedUse;
-    private MoneyAmount $loanAmount;
-    private MoneyAmount $totalRepayment;
-    private MoneyAmount $repaymentPerKonjunkturphase;
+    private TakeOutALoanForm $takeOutALoanForm;
 
     public function __construct(
-        Year        $year,
-        LoanId      $loanId,
-        string      $intendedUse,
-        MoneyAmount $loanAmount,
-        MoneyAmount $totalRepayment,
-        MoneyAmount $repaymentPerKonjunkturphase,
+        TakeOutALoanForm $takeOutALoanForm
     ) {
         parent::__construct('take-out-a-loan', 'Kredit aufnehmen');
-        $this->intendedUse = $intendedUse;
-        $this->loanAmount = $loanAmount;
-        $this->totalRepayment = $totalRepayment;
-        $this->repaymentPerKonjunkturphase = $repaymentPerKonjunkturphase;
-        $this->year = $year;
-        $this->loanId = $loanId;
+        $this->takeOutALoanForm = $takeOutALoanForm;
     }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
-        return new AktionValidationResult(
-            canExecute: true,
-        );
+        try {
+            $this->takeOutALoanForm->validate();
+            return new AktionValidationResult(
+                canExecute: true,
+            );
+        } catch (\Exception $e) {
+            return new AktionValidationResult(
+                canExecute: false,
+            );
+        }
     }
 
     public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist
     {
-        $result = $this->validate($playerId, $gameEvents);
-        if (!$result->canExecute) {
-            throw new \RuntimeException('Cannot take out a loan: ' . $result->reason, 1751554652);
-        }
+        $validationResult = $this->validate($playerId, $gameEvents);
 
-        return GameEventsToPersist::with(
-            new LoanWasTakenOutForPlayer(
+        $inputLoanData = new LoanData(
+            loanAmount: new MoneyAmount($this->takeOutALoanForm->loanAmount),
+            totalRepayment: new MoneyAmount($this->takeOutALoanForm->totalRepayment),
+            repaymentPerKonjunkturphase: new MoneyAmount($this->takeOutALoanForm->repaymentPerKonjunkturphase)
+        );
+
+        $expectedLoanAmount = min($this->takeOutALoanForm->loanAmount, LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->guthaben, $this->takeOutALoanForm->hasJob));
+        $expectedLoanData = new LoanData(
+            loanAmount: new MoneyAmount($expectedLoanAmount),
+            totalRepayment: new MoneyAmount(LoanCalculator::getCalculatedTotalRepayment($expectedLoanAmount, $this->takeOutALoanForm->zinssatz)),
+            repaymentPerKonjunkturphase: new MoneyAmount(LoanCalculator::getCalculatedRepaymentPerKonjunkturphase($expectedLoanAmount, $this->takeOutALoanForm->zinssatz))
+        );
+
+        $loanId = new LoanId($this->takeOutALoanForm->loanId);
+
+        $returnEvents = GameEventsToPersist::with(
+            new LoanForPlayerWasEntered(
                 playerId: $playerId,
-                year: $this->year,
-                loanId: $this->loanId,
-                intendedUse: $this->intendedUse,
-                loanAmount: $this->loanAmount,
-                totalRepayment: $this->totalRepayment,
-                repaymentPerKonjunkturphase: $this->repaymentPerKonjunkturphase,
+                loanId: $loanId,
+                loanInput: $inputLoanData,
+                expectedLoan: $expectedLoanData,
+                wasInputCorrect: $validationResult->canExecute
             )
         );
+
+        $previousTries = MoneySheetState::getNumberOfTriesForLoanInput($gameEvents, $playerId, $loanId);
+        if ($previousTries >= Configuration::MAX_NUMBER_OF_TRIES_PER_INPUT - 1 && !$validationResult->canExecute) {
+            return $returnEvents->withAppendedEvents(
+                new LoanForPlayerWasCorrected(
+                    $playerId,
+                    $loanId,
+                    $expectedLoanData
+                )
+            );
+        }
+
+        // If the input was correct, we take out the loan
+        if ($validationResult->canExecute) {
+            return $returnEvents->withAppendedEvents(
+                new LoanWasTakenOutForPlayer(
+                    playerId: $playerId,
+                    year: KonjunkturphaseState::getCurrentYear($gameEvents),
+                    loanId: $loanId,
+                    loanData: $inputLoanData
+                )
+            );
+        }
+
+        return $returnEvents;
     }
 }

@@ -7,22 +7,20 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Year;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\LoanData;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
-use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
 class LoanWasTakenOutForPlayer implements GameEventInterface, ProvidesResourceChanges
 {
     public function __construct(
-        public PlayerId    $playerId,
-        public Year        $year,
-        public LoanId      $loanId,
-        public string      $intendedUse,
-        public MoneyAmount $loanAmount,
-        public MoneyAmount $totalRepayment,
-        public MoneyAmount $repaymentPerKonjunkturphase,
-    ) {
+        public PlayerId $playerId,
+        public Year     $year,
+        public LoanId   $loanId,
+        public LoanData $loanData
+    )
+    {
     }
 
     public static function fromArray(array $values): GameEventInterface
@@ -31,10 +29,7 @@ class LoanWasTakenOutForPlayer implements GameEventInterface, ProvidesResourceCh
             playerId: PlayerId::fromString($values['player']),
             year: new Year($values['year']),
             loanId: new LoanId($values['loanId']),
-            intendedUse: $values['intendedUse'],
-            loanAmount: new MoneyAmount($values['loanAmount']),
-            totalRepayment: new MoneyAmount($values['totalRepayment']),
-            repaymentPerKonjunkturphase: new MoneyAmount($values['repaymentPerKonjunkturphase']),
+            loanData: LoanData::fromArray($values['loanData']),
         );
     }
 
@@ -44,10 +39,7 @@ class LoanWasTakenOutForPlayer implements GameEventInterface, ProvidesResourceCh
             'player' => $this->playerId,
             'year' => $this->year,
             'loanId' => $this->loanId,
-            'intendedUse' => $this->intendedUse,
-            'loanAmount' => $this->loanAmount,
-            'totalRepayment' => $this->totalRepayment,
-            'repaymentPerKonjunkturphase' => $this->repaymentPerKonjunkturphase,
+            'loanData' => $this->loanData->jsonSerialize(),
         ];
     }
 
@@ -55,7 +47,7 @@ class LoanWasTakenOutForPlayer implements GameEventInterface, ProvidesResourceCh
     {
         if ($this->playerId->equals($playerId)) {
             return new ResourceChanges(
-                guthabenChange: $this->loanAmount
+                guthabenChange: $this->loanData->loanAmount
             );
         }
         return new ResourceChanges();

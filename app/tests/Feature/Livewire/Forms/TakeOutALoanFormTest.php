@@ -14,7 +14,6 @@ describe('TakeOutALoanForm', function () {
             'formClass' => TakeOutALoanForm::class,
         ])
             ->call('validate')
-            ->assertHasErrors(['form.intendedUse' => 'required'])
             ->assertHasErrors(['form.loanAmount' => 'min:1']);
     });
 

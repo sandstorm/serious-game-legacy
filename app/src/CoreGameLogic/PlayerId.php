@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic;
 
+use Ramsey\Uuid\Uuid;
+
 class PlayerId implements \JsonSerializable
 {
     /**
@@ -21,11 +23,10 @@ class PlayerId implements \JsonSerializable
         return self::instance($value);
     }
 
-    public static function random(): self
+    public static function unique(): self
     {
-        // Generate a random 6-character alphanumeric string
-        $randomId = substr(bin2hex(random_bytes(4)), 0, 6);
-        return self::instance($randomId);
+        $uuid = Uuid::uuid4();
+        return new self($uuid->toString());
     }
 
     private function __construct(public readonly string $value)

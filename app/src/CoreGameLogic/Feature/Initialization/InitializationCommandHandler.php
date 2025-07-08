@@ -145,7 +145,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
         // Generate random, short PlayerIds
         $playerIds = [];
         for ($i = 0; $i < $command->numberOfPlayers; $i++) {
-            $playerIds[] = PlayerId::random();
+            $playerIds[] = PlayerId::unique();
         }
 
         return GameEventsToPersist::with(
