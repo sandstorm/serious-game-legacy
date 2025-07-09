@@ -7,6 +7,7 @@ namespace App\Livewire\Traits;
 use App\Livewire\Dto\GameboardInformationForCategory;
 use App\Livewire\Dto\ZeitsteineForPlayer;
 use App\Livewire\ValueObject\NotificationTypeEnum;
+use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EndSpielzugAktion;
@@ -34,12 +35,13 @@ trait HasGamePhase
         $placedZeitsteineInvestitionen = $this->getAllPlacedZeitsteineByPlayersInCategory(CategoryId::INVESTITIONEN);
 
         $lebenszielForPlayer = PreGameState::lebenszielForPlayer($this->gameEvents, $this->myself);
+        $currentPhaseForPlayer = PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($this->gameEvents, $this->myself)->phase;
 
         $categories = [
             new GameboardInformationForCategory(
                 title: CategoryId::BILDUNG_UND_KARRIERE,
                 kompetenzen: PlayerState::getBildungsKompetenzsteine($this->gameEvents(), $this->myself),
-                kompetenzenRequiredByPhase: $lebenszielForPlayer->definition->phaseDefinitions[0]->bildungsKompetenzSlots - PlayerState::getBildungsKompetenzsteine($this->gameEvents(), $this->myself),
+                kompetenzenRequiredByPhase: $lebenszielForPlayer->definition->phaseDefinitions[$currentPhaseForPlayer - 1]->bildungsKompetenzSlots - PlayerState::getBildungsKompetenzsteine($this->gameEvents(), $this->myself),
                 availableZeitsteine: $this->getSlotsForKompetenzbereich(CategoryId::BILDUNG_UND_KARRIERE) - $this->getSumOfPlacedZeitsteineInCategory($placedZeitsteineBildung),
                 placedZeitsteine: $placedZeitsteineBildung,
                 cardPile: PileId::BILDUNG_PHASE_1,
@@ -47,7 +49,7 @@ trait HasGamePhase
             new GameboardInformationForCategory(
                 title: CategoryId::SOZIALES_UND_FREIZEIT,
                 kompetenzen: PlayerState::getFreizeitKompetenzsteine($this->gameEvents(), $this->myself),
-                kompetenzenRequiredByPhase: $lebenszielForPlayer->definition->phaseDefinitions[0]->freizeitKompetenzSlots - PlayerState::getFreizeitKompetenzsteine($this->gameEvents(), $this->myself),
+                kompetenzenRequiredByPhase: $lebenszielForPlayer->definition->phaseDefinitions[$currentPhaseForPlayer - 1]->freizeitKompetenzSlots - PlayerState::getFreizeitKompetenzsteine($this->gameEvents(), $this->myself),
                 availableZeitsteine: $this->getSlotsForKompetenzbereich(CategoryId::SOZIALES_UND_FREIZEIT) - $this->getSumOfPlacedZeitsteineInCategory($placedZeitsteineFreizeit),
                 placedZeitsteine: $placedZeitsteineFreizeit,
                 cardPile: PileId::FREIZEIT_PHASE_1,
