@@ -18,8 +18,9 @@ class PlayerDetails extends Component
      * Create the component instance.
      */
     public function __construct(
-        public ?string $playerId,
+        public ?PlayerId $playerId,
         public GameEvents $gameEvents,
+        public PlayerId $myself,
     ) {}
 
     /**
@@ -29,17 +30,21 @@ class PlayerDetails extends Component
     {
         return view('components.gameboard.player-details', [
             'id' => $this->playerId,
-            'playerDetails' => $this->getPlayerDetailsForPlayerId($this->playerId),
-        ]);
+            'playerDetails' => $this->getPlayerDetailsForPlayerId($this->playerId),]);
     }
 
-    private function getPlayerDetailsForPlayerId(?string $playerId): ?PlayerDetailsDto
+    public function isCurrentPlayer(): bool
+    {
+        return $this->myself->equals($this->playerId);
+    }
+
+
+    private function getPlayerDetailsForPlayerId(?PlayerId $playerId): ?PlayerDetailsDto
     {
         if ($playerId === null) {
             return null;
         }
 
-        $playerId = PlayerId::fromString($playerId);
         $lebensziel = PreGameState::lebenszielForPlayer($this->gameEvents, $playerId);
 
         return new PlayerDetailsDto(
@@ -50,6 +55,7 @@ class PlayerDetails extends Component
             zeitsteine: PlayerState::getZeitsteineForPlayer($this->gameEvents, $playerId),
             kompetenzsteineBildung: PlayerState::getBildungsKompetenzsteine($this->gameEvents, $playerId),
             kompetenzsteineFreizeit: PlayerState::getFreizeitKompetenzsteine($this->gameEvents, $playerId),
+            lebenszielPhaseDefinition: PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($this->gameEvents, $playerId),
         );
     }
 

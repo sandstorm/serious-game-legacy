@@ -44,11 +44,11 @@ class ChangeLebenszielphaseAktion extends Aktion
         $resourceChanges = new ResourceChanges(
             guthabenChange: $guthabenChange,
             bildungKompetenzsteinChange: $bildungsKompetenzSteine,
-            freizeitKompetenzsteinChange: $freizeitKompetenzSteine
+            freizeitKompetenzsteinChange: $freizeitKompetenzSteine,
         );
 
         return GameEventsToPersist::with(
-            new LebenszielphaseWasChanged($playerId, $resourceChanges, $currentPhaseDefinition->phase)
+            new LebenszielphaseWasChanged($playerId, $resourceChanges, $currentPhaseDefinition->phase + 1)
         );
     }
 }
