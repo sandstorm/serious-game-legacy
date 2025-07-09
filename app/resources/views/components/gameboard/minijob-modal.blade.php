@@ -1,6 +1,4 @@
 @extends ('components.modal.modal', ['closeModal' => "closeMinijob()", 'size' => 'medium'])
-@use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
-@use('Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator')
 
 @section('title')
     Minijob

@@ -7,6 +7,7 @@ namespace App\Livewire;
 use App\Events\GameStateUpdated;
 use App\Livewire\Traits\HasCard;
 use App\Livewire\Traits\HasGamePhase;
+use App\Livewire\Traits\HasInvestitionen;
 use App\Livewire\Traits\HasJobOffer;
 use App\Livewire\Traits\HasKonjunkturphase;
 use App\Livewire\Traits\HasLog;
@@ -38,6 +39,7 @@ class GameUi extends Component
     use HasNotification;
     use HasLog;
     use HasMinijob;
+    use HasInvestitionen;
 
     // injected from outside -> game-play.blade.php
     // Not the current player, but the player connected to THIS SESSION

@@ -50,6 +50,4 @@ trait HasGamePhase
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->myself));
         $this->broadcastNotify();
     }
-
-
 }
