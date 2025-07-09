@@ -12,6 +12,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\AcceptJobOffersAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ActivateCardAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\BuyStocksForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CancelInsuranceForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CompleteMoneySheetForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ConcludeInsuranceForPlayerAktion;
@@ -23,6 +24,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\StartKonjunkturphaseForPlayerAk
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\TakeOutALoanForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyStocksForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
@@ -59,7 +61,9 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             || $command instanceof ConcludeInsuranceForPlayer
             || $command instanceof CancelInsuranceForPlayer
             || $command instanceof TakeOutALoanForPlayer
-            || $command instanceof QuitJob;
+            || $command instanceof QuitJob
+            || $command instanceof TakeOutALoanForPlayer
+            || $command instanceof BuyStocksForPlayer;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameEvents): GameEventsToPersist
@@ -88,7 +92,8 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             DoMinijob::class => $this->handleDoMinijob
                 ($command, $gameEvents),
             QuitJob::class => $this->handleQuitJob
-                ($command, $gameEvents)
+                ($command, $gameEvents),
+            BuyStocksForPlayer::class => $this->handleBuyStocks($command, $gameEvents),
         };
     }
 
@@ -211,6 +216,16 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
     {
         $aktion = new TakeOutALoanForPlayerAktion(
             $command->takeOutLoanForm
+        );
+        return $aktion->execute($command->playerId, $gameEvents);
+    }
+
+    private function handleBuyStocks(BuyStocksForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
+    {
+        $aktion = new BuyStocksForPlayerAktion(
+            $command->stockType,
+            $command->price,
+            $command->amount
         );
         return $aktion->execute($command->playerId, $gameEvents);
     }

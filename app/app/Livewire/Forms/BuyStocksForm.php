@@ -15,6 +15,8 @@ class BuyStocksForm extends Form
     public float $guthaben = 0;
     public float $price = 0;
 
+    public string $generalError = '';
+
     /**
      * Set of custom validation rules for the form.
      *

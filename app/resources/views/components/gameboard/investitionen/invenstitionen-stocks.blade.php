@@ -1,12 +1,18 @@
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
 
-
 @props([
     'gameEvents' => null,
     'playerId' => null,
 ])
 
 <h3>Aktien kaufen</h3>
+
+@if (!$this->canBuyStocks()->canExecute)
+    <div class="form__error">
+        Du kannst akuell keine Aktien kaufen: {{ $this->canBuyStocks()->reason }}
+    </div>
+@endif
+
 <p>
     Dein Guthaben: {!! PlayerState::getGuthabenForPlayer($gameEvents, $playerId)->format() !!}
 </p>
@@ -22,12 +28,10 @@
     <form wire:submit="buyLowRiskStocks">
         <div class="form__group">
             <label for="amount">Anzahl</label>
-            <x-form.textfield wire:model="buyLowRiskStocksForm.amount" id="amount" name="amount" type="number" step="1" />
+            <x-form.textfield wire:model="buyLowRiskStocksForm.amount" id="amount" name="amount" type="number" step="1" :disabled="!$this->canBuyStocks()->canExecute" />
             @error('buyLowRiskStocksForm.amount') <span class="form__error">{{ $message }}</span> @enderror
         </div>
-        <button>
-            <x-form.submit>Low Risk Aktien kaufen</x-form.submit>
-        </button>
+        <x-form.submit :disabled="!$this->canBuyStocks()->canExecute">Low Risk Aktien kaufen</x-form.submit>
     </form>
 </div>
 <hr />
@@ -43,12 +47,10 @@
     <form wire:submit="buyHighRiskStocks">
         <div class="form__group">
             <label for="amount">Anzahl</label>
-            <x-form.textfield wire:model="buyHighRiskStocksForm.amount" id="amount" name="amount" type="number" step="1" />
+            <x-form.textfield wire:model="buyHighRiskStocksForm.amount" id="amount" name="amount" type="number" step="1" :disabled="!$this->canBuyStocks()->canExecute" />
             @error('buyHighRiskStocksForm.amount') <span class="form__error">{{ $message }}</span> @enderror
         </div>
-        <button>
-            <x-form.submit>High Risk Aktien kaufen</x-form.submit>
-        </button>
+        <x-form.submit :disabled="!$this->canBuyStocks()->canExecute">High Risk Aktien kaufen</x-form.submit>
     </form>
 </div>
 

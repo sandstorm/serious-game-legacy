@@ -16,8 +16,9 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyStocksForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
@@ -41,6 +42,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\SteuernUndAbgabenForPlayerWereEn
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
@@ -1761,5 +1763,29 @@ describe('handleTakeOutALoanForPlayer', function () {
             ->and($loanWasCorrectedEvent->getResourceChanges($this->players[0])->guthabenChange)->toEqual(new MoneyAmount(-250))
             ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE - 250));
     });
+});
 
+describe('handleBuyStocksForPlayer', function () {
+    it('buying stocks works as expected', function () {
+        /** @var TestCase $this */
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            BuyStocksForPlayer::create(
+                $this->players[0],
+                StockType::LOW_RISK,
+                new MoneyAmount(50),
+                100
+            )
+        );
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        $stocks = PlayerState::getStocksForPlayer($gameEvents, $this->players[0]);
+
+        expect($stocks[0]->price)->toEqual(new MoneyAmount(50))
+            ->and($stocks[0]->amount)->toEqual(100)
+            ->and($stocks[0]->stockType)->toEqual(StockType::LOW_RISK)
+            ->and(count($stocks))->toEqual(1)
+            ->and(PlayerState::getSumOfAllStocksForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(50 * 100))
+            ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE - 50 * 100));
+    });
 });

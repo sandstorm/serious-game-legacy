@@ -77,5 +77,6 @@
 .modal__body {
     padding: var(--spacing-100);
     overflow-y: auto;
+    overflow-x: hidden;
     max-height: 70%;
 }

@@ -16,6 +16,7 @@ class MoneySheet
         public MoneyAmount $gehalt,
         public MoneyAmount $total,
         public MoneyAmount $totalInsuranceCost,
-        public MoneyAmount $sumOfAllLoans
+        public MoneyAmount $sumOfAllLoans,
+        public MoneyAmount $sumOfAllStocks
     ) {}
 }
