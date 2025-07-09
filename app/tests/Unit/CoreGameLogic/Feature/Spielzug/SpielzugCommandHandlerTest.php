@@ -1110,16 +1110,7 @@ describe('handleChangeLebenszielphase', function () {
             ->and($resources->freizeitKompetenzsteinChange)->toBe(3);
     });
 
-    it('set the correct slots for BildungsKompetenzsteine & FreizeitKompetenzsteine for the next phase', function () {
-    })->skip();
-
 });
-// Wann soll es nicht funktionieren Fälle und was passiert dann? Fehlschlagen?✅
-// Normalfall testen das es funktioniert✅
-// Fälle die besonders sind
-// ein spiel und der anderre✅
-// hinterher die ressourcen passen, komeptenzsteine, investitionen, fehlermeldung wenn du keine Ressourcen✅
-
 
 describe('handleDoMinijob', function () {
     it('throws an exception when it\'s not the players turn', function () {

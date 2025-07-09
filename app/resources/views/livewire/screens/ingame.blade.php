@@ -5,7 +5,7 @@
     <header class="game__header">
         <x-gameboard.player-list :myself="$myself"/>
         @if ($showDetailsForPlayer)
-            <x-player-details :player-id="$showDetailsForPlayer" :game-events="$this->gameEvents"/>
+            <x-player-details :player-id="$showDetailsForPlayer" :game-events="$this->gameEvents" :myself="$myself"/>
         @endif
     </header>
 

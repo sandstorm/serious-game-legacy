@@ -20,7 +20,7 @@ final class HasPlayerEnoughResourcesForLebenszielphasenChangeValidator extends A
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
         $currentLebensziel = PreGameState::lebenszielForPlayerOrNull($gameEvents, $playerId);
-        $currentLebenszielPhase = $currentLebensziel->phaseDefinitions[0]; // TODO use currentPhaseForPlayer - 1
+        $currentLebenszielPhase = $currentLebensziel->phaseDefinitions[PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($gameEvents, $playerId)->phase - 1];
 
         $playerResources =  PlayerState::getResourcesForPlayer($gameEvents, $playerId);
         if($currentLebenszielPhase->bildungsKompetenzSlots > $playerResources->bildungKompetenzsteinChange) {
@@ -36,10 +36,22 @@ final class HasPlayerEnoughResourcesForLebenszielphasenChangeValidator extends A
             );
         }
 
-        if($currentLebenszielPhase->investitionen >= $playerResources->guthabenChange->value) {
+        if($currentLebenszielPhase->investitionen > $playerResources->guthabenChange->value) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: "Du hast nicht genug Geld",
+            );
+        }
+
+        $currentJob = PlayerState::getJobForPlayer($gameEvents, $playerId);
+        if (
+            $currentLebenszielPhase->erwerbseinkommen > 0 &&
+            ($currentJob === null || $currentLebenszielPhase->erwerbseinkommen > $currentJob->gehalt->value)
+        )
+        {
+            return new AktionValidationResult(
+                canExecute: false,
+                reason: "Dein Job ist dumm du lauch",
             );
         }
 
