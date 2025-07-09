@@ -1,5 +1,4 @@
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
-@use('Domain\Definitions\Konjunkturphase\ValueObject\CategoryId')
 
 {{-- !!! Livewire components MUST have a single root element !!! --}}
 <div class="game">
@@ -22,80 +21,7 @@
                 @endif
             </div>
 
-            <div class="game-board__categories">
-                @foreach($categories as $category)
-                    <div class="game-board__category">
-                        <h3>{{ $category->title }}</h3>
-                        <ul class="zeitsteine">
-                            @foreach($category->placedZeitsteine as $placedZeitstein)
-                                @for($i = 0; $i < $placedZeitstein->zeitsteine; $i++)
-                                    <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($this->gameEvents(), $placedZeitstein->playerId)])></li>
-                                @endfor
-                            @endforeach
-                            @for($i = 0; $i < $category->availableZeitsteine; $i++)
-                                <li class="zeitsteine__item zeitsteine__item--empty"></li>
-                            @endfor
-                        </ul>
-
-                        <ul class="kompetenzen">
-                            @for($i = 0; $i < $category->kompetenzen; $i++)
-                                <li class="kompetenz"></li>
-                            @endfor
-
-                            @for($i = 0; $i < $category->kompetenzenRequiredByPhase; $i++)
-                                <li class="kompetenz kompetenz--empty"></li>
-                            @endfor
-                        </ul>
-                        @if ($category->cardPile !== null)
-                            <x-card-pile :category="$category->title->value" :card-pile="$category->cardPile->value"
-                                         :game-events="$this->gameEvents"/>
-                        @endif
-
-                        @if ($category->title->value === CategoryId::JOBS->value)
-                            <button
-                                type="button"
-                                @class([
-                                    "button",
-                                    "button--type-primary",
-                                    "button--disabled" => !$this->canRequestJobOffers()->canExecute,
-                                ])
-                                wire:click="showJobOffer()">
-                                Jobangebote anschauen (-1 Zeitstein)
-                            </button>
-
-                            @if ($jobDefinition !== null)
-                                <hr/>
-                                <button class="button button--type-outline-primary"
-                                        wire:click="showIncomeTab('salary')">
-                                    <ul class="zeitsteine">
-                                        <li>-{{ $jobDefinition->requirements->zeitsteine }}</li>
-                                        <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($this->gameEvents, $myself)])></li>
-                                    </ul>
-                                    <span>Mein Job. {!! $jobDefinition->gehalt->format() !!}</span>
-                                </button>
-                            @endif
-                            @if ($jobOfferIsVisible)
-                                <x-job-offers-modal :player-id="$myself" :game-events="$this->gameEvents"/>
-                            @endif
-                            <button
-                                type="button"
-                                @class([
-                                "minijob__button",
-                                "button",
-                                "button--type-primary",
-                                "button--disabled" => !$this->canDoMinijob(),
-                                ])
-                                wire:click="showMinijob()">
-                                Minijob ausführen (-1 Zeitstein)
-                            </button>
-
-                            @if ($isMinijobVisible)
-                                <x-minijob-modal :player-id="$myself" :game-events="$this->gameEvents"/>
-                            @endif
-                        @endif
-                    </div>
-                @endforeach
-            </div>
+            <x-gameboard.categories :game-events="$this->gameEvents" :player-id="$myself"/>
         </div>
     </div>
 
