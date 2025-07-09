@@ -12,6 +12,8 @@ use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use RuntimeException;
 
 class ChangeLebenszielphaseAktion extends Aktion
@@ -29,23 +31,24 @@ class ChangeLebenszielphaseAktion extends Aktion
         return $validatorChain->validate($gameEvents, $playerId);
     }
 
-    // TODO:
-    //$kontostand = KontostandAccessor::forPlayer($player, $eventStream);
-    //$aktuellePhaseDesSpielers = AktuellePhaseAccessor::forPlayer($player, $eventStream);
-    // TODO: für aktuelle Phase rausfinden was die Abschlussbedingungen sind - TODO: CONFIG / HARDCODED / LEBENSZIEL
-
-    // TODO: entscheidung
-
     public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist
     {
         $result = $this->validate($playerId, $gameEvents);
         if (!$result->canExecute) {
             throw new RuntimeException('Cannot Change Lebensphase: ' . $result->reason, 1751619852);
         }
-        $currentPhase = PlayerState::getCurrentLebenszielphaseForPlayer($gameEvents, $playerId);
-        $resourceChanges = PlayerState::getResourcesForPlayer($gameEvents, $playerId);
+        $currentPhaseDefinition = PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($gameEvents, $playerId);
+        $bildungsKompetenzSteine = -1 * PlayerState::getBildungsKompetenzsteine($gameEvents, $playerId);
+        $freizeitKompetenzSteine = -1 * PlayerState::getFreizeitKompetenzsteine($gameEvents, $playerId);
+        $guthabenChange = new MoneyAmount($currentPhaseDefinition->investitionen * -1);
+        $resourceChanges = new ResourceChanges(
+            guthabenChange: $guthabenChange,
+            bildungKompetenzsteinChange: $bildungsKompetenzSteine,
+            freizeitKompetenzsteinChange: $freizeitKompetenzSteine
+        );
+
         return GameEventsToPersist::with(
-            new LebenszielphaseWasChanged($playerId, $resourceChanges, $currentPhase)
+            new LebenszielphaseWasChanged($playerId, $resourceChanges, $currentPhaseDefinition->phase)
         );
     }
 }

@@ -6,6 +6,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\State;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerColorWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
+use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
@@ -19,6 +20,7 @@ use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
+use Domain\Definitions\Lebensziel\Dto\LebenszielPhaseDefinition;
 use RuntimeException;
 
 class PlayerState
@@ -189,13 +191,16 @@ class PlayerState
         return $job->gehalt ?? new MoneyAmount(0);
     }
 
-    public static function getCurrentLebenszielphaseForPlayer(GameEvents $stream, PlayerId $playerId): ?int
+    public static function getCurrentLebenszielphaseDefinitionForPlayer(GameEvents $gameEvents, PlayerId $playerId): LebenszielPhaseDefinition
     {
-        $currentLebenszielphaseForPlayer = $stream->findLastOrNullWhere(fn ($event) => $event instanceof LebenszielphaseWasChanged && $event->playerId->equals($playerId));
-        if($currentLebenszielphaseForPlayer === null) {
-            return 1;
+        $lebenszielDefinition = PreGameState::lebenszielDefinitionForPlayer($gameEvents, $playerId);
+
+        /** @var LebenszielphaseWasChanged|null $lastLebenszielWasChangedEvent */
+        $lastLebenszielWasChangedEvent= $gameEvents->findLastOrNullWhere(fn ($event) => $event instanceof LebenszielphaseWasChanged && $event->playerId->equals($playerId));
+        if($lastLebenszielWasChangedEvent === null) { // We know we are in Lebenszielphase 1
+            return $lebenszielDefinition->phaseDefinitions[0];
         }
-        return $currentLebenszielphaseForPlayer->phase;
+        return $lebenszielDefinition->phaseDefinitions[$lastLebenszielWasChangedEvent->currentPhase - 1];
     }
 }
 
