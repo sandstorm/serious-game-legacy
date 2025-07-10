@@ -203,17 +203,3 @@ class PlayerState
         return $lebenszielDefinition->phaseDefinitions[$lastLebenszielWasChangedEvent->currentPhase - 1];
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
