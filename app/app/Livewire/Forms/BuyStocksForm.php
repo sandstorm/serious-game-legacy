@@ -12,10 +12,9 @@ class BuyStocksForm extends Form
     #[Validate]
     public int $amount = 0;
 
+    // public properties needed for validation
+    public float $sharePrice = 0;
     public float $guthaben = 0;
-    public float $price = 0;
-
-    public string $generalError = '';
 
     /**
      * Set of custom validation rules for the form.
@@ -27,7 +26,7 @@ class BuyStocksForm extends Form
         return [
             'amount' => [
                 'required', 'numeric', 'min:1', function ($attribute, $value, $fail) {
-                    if ($this->amount * $this->price > $this->guthaben) {
+                    if ($this->amount * $this->sharePrice > $this->guthaben) {
                         $fail("Du kannst nicht mehr Aktien kaufen, als du dir leisten kannst.");
                     }
                 }

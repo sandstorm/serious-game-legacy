@@ -41,6 +41,8 @@ class CompleteMoneySheetForPlayerAktion extends Aktion
 
         $annualExpenses = MoneySheetState::getAnnualExpensesForPlayer($gameEvents, $playerId);
 
+        // TODO add job income, stocks
+
         return GameEventsToPersist::with(
             new PlayerHasCompletedMoneysheetForCurrentKonjunkturphase(
                 $playerId,

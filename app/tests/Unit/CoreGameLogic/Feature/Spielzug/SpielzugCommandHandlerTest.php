@@ -10,6 +10,7 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesStockPriceChanges;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
@@ -1767,25 +1768,43 @@ describe('handleTakeOutALoanForPlayer', function () {
 
 describe('handleBuyStocksForPlayer', function () {
     it('buying stocks works as expected', function () {
+        $amountOfStocks = 100;
+
         /** @var TestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyStocksForPlayer::create(
                 $this->players[0],
                 StockType::LOW_RISK,
-                new MoneyAmount(50),
-                100
+                $amountOfStocks
             )
         );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $stocks = PlayerState::getStocksForPlayer($gameEvents, $this->players[0]);
 
-        expect($stocks[0]->price)->toEqual(new MoneyAmount(50))
-            ->and($stocks[0]->amount)->toEqual(100)
+        expect($stocks[0]->price)->toEqual(new MoneyAmount(Configuration::INITIAL_STOCK_PRICE))
+            ->and($stocks[0]->amount)->toEqual($amountOfStocks)
             ->and($stocks[0]->stockType)->toEqual(StockType::LOW_RISK)
             ->and(count($stocks))->toEqual(1)
-            ->and(PlayerState::getSumOfAllStocksForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(50 * 100))
-            ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE - 50 * 100));
+            ->and(PlayerState::getSumOfAllStocksForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::INITIAL_STOCK_PRICE * $amountOfStocks))
+            ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE - Configuration::INITIAL_STOCK_PRICE * $amountOfStocks))
+            ->and(count($gameEvents->findAllOfType(ProvidesStockPriceChanges::class)))->toEqual(2);
+
+        // TODO build and test the annual return
     });
+
+    it('throws exception if player tries to buy more stocks than he can afford', function () {
+        $amountOfStocks = intval(Configuration::STARTKAPITAL_VALUE / Configuration::INITIAL_STOCK_PRICE + 1);
+
+        /** @var TestCase $this */
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            BuyStocksForPlayer::create(
+                $this->players[0],
+                StockType::LOW_RISK,
+                $amountOfStocks
+            )
+        );
+    })->throws(\RuntimeException::class, 'Du hast nicht genug Ressourcen', 1752066529);
 });

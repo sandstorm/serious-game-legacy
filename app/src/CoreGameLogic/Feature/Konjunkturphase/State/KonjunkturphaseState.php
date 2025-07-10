@@ -88,7 +88,12 @@ class KonjunkturphaseState
 
     public static function getCurrentYear(GameEvents $gameEvents): Year
     {
-        $lastKonjunkturphaseWasChangedEvent = $gameEvents->findLast(KonjunkturphaseWasChanged::class);
+        $lastKonjunkturphaseWasChangedEvent = $gameEvents->findLastOrNull(KonjunkturphaseWasChanged::class);
+
+        if ($lastKonjunkturphaseWasChangedEvent === null) {
+            return new Year(1); // Default to year 1 if no Konjunkturphase has been changed yet
+        }
+
         return $lastKonjunkturphaseWasChangedEvent->year;
     }
 

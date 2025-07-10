@@ -215,9 +215,11 @@ class PlayerState
         $buyStocksEvents = $stream->findAllOfType(StocksWereBoughtForPlayer::class)
             ->filter(fn(StocksWereBoughtForPlayer $event) => $event->playerId->equals($playerId));
 
+        // TODO stocks could be sold in another event
+
         return array_map(fn(StocksWereBoughtForPlayer $event) => new StockData(
             stockType: $event->stockType,
-            price: $event->price,
+            price: $event->sharePrice,
             amount: $event->amount
         ), $buyStocksEvents);
     }

@@ -10,6 +10,7 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\StockPriceState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\AcceptJobOffersAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ActivateCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\BuyStocksForPlayerAktion;
@@ -60,7 +61,6 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             || $command instanceof EnterLebenshaltungskostenForPlayer
             || $command instanceof ConcludeInsuranceForPlayer
             || $command instanceof CancelInsuranceForPlayer
-            || $command instanceof TakeOutALoanForPlayer
             || $command instanceof QuitJob
             || $command instanceof TakeOutALoanForPlayer
             || $command instanceof BuyStocksForPlayer;
@@ -224,8 +224,8 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
     {
         $aktion = new BuyStocksForPlayerAktion(
             $command->stockType,
-            $command->price,
-            $command->amount
+            StockPriceState::getCurrentStockPrice($gameEvents, $command->stockType),
+            $command->amount,
         );
         return $aktion->execute($command->playerId, $gameEvents);
     }

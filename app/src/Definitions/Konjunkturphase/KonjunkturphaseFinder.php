@@ -105,7 +105,7 @@ Die Regierung fördert eine neue Bilungsoffensive. Jede erhält - wenn gewünsch
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::INVESTITIONEN,
-                    modifier: 'Jede verliert 20 % ihrer Aktien. ',
+                    modifier: 'Jede verliert 20 % ihrer Aktien.',
                 ),
             ]
         );
@@ -281,5 +281,4 @@ dazu aufgerufen, bei den Räumungsarbeiten zu helfen (Kosten = 1 Zeitstein). All
             ]
         };
     }
-
 }
