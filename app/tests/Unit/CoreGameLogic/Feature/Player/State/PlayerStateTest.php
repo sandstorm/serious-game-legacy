@@ -3,15 +3,17 @@ declare(strict_types=1);
 
 namespace Tests\CoreGameLogic\Feature\Player\State;
 
+use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ChangeLebenszielphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
@@ -152,36 +154,68 @@ describe('getJobForPlayer', function () {
 });
 
 describe('getCurrentLebenszielphaseDefinitionForPlayer', function () {
-   it('returns 1 when nothing happend', function () {
-       $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-       expect(PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($stream, $this->players[0]))->phase->toEqual(1)
-           ->and(PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($stream, $this->players[1]))->phase->toEqual(1);
-   });
+    it('returns 1 when nothing happend', function () {
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($stream, $this->players[0]))->phase->toEqual(1)
+            ->and(PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($stream, $this->players[1]))->phase->toEqual(1);
+    });
 
-   it('returns 2 for Player 1 after switching the phase and 1 for Player 2', function () {
-       /** @var TestCase $this */
-       $cardsForTesting = [
-           "cardToTest" => new KategorieCardDefinition(
-               id: new CardId('cardToTest'),
-               pileId: $this->pileIdBildung,
-               title: 'for testing',
-               description: '...',
-               resourceChanges: new ResourceChanges(
-                   guthabenChange: new MoneyAmount(+100000),
-                   bildungKompetenzsteinChange: +5,
-                   freizeitKompetenzsteinChange: +5,
-               ),
-           ),
-       ];
-       $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
-       $this->coreGameLogic->handle($this->gameId, ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
+    it('returns 2 for Player 1 after switching the phase and 1 for Player 2', function () {
+        /** @var TestCase $this */
+        /** @var GameEvents $stream */
 
-       $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create(playerId: $this->players[0]));
-       $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::BILDUNG_PHASE_1->value => [
+                "cardToTest" => new KategorieCardDefinition(
+                    id: new CardId('cardToTest'),
+                    pileId: $this->pileIdBildung,
+                    title: 'for testing',
+                    description: '...',
+                    resourceChanges: new ResourceChanges(
+                        guthabenChange: new MoneyAmount(+500000),
+                        zeitsteineChange: +4,
+                        bildungKompetenzsteinChange: +5,
+                        freizeitKompetenzsteinChange: +5,
+                    ),
+                ),
+            ],
+            PileId::FREIZEIT_PHASE_1->value => [],
+            PileId::MINIJOBS_PHASE_1->value => $this->getCardsForMinijobs(),
+            PileId::JOBS_PHASE_1->value => [
+                "testJob" => new JobCardDefinition(
+                    id: new CardId('testJob'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'testtest',
+                    description: 'testest',
+                    gehalt: new MoneyAmount(80000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                    ),
+                ),
+            ]
+        ]);
 
-       expect(PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($stream,$this->players[0]))->phase->toEqual(2)
-           ->and(PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($stream, $this->players[1]))->phase->toEqual(1);
-   });
+        $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create()->withFixedCardOrderForTesting(
+            new CardOrder(pileId: $this->pileIdBildung, cards: [CardId::fromString('cardToTest')]),
+            new CardOrder(pileId: $this->pileIdFreizeit, cards: []),
+            new CardOrder(pileId: $this->pileIdJobs, cards: [CardId::fromString('testJob')]),
+            new CardOrder(pileId: $this->pileIdMinijobs, cards: array_map(fn($card) => $card->getId(), $this->getCardsForMinijobs())),
+        ));
+
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('testJob')));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+
+        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[1]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create(playerId: $this->players[0]));
+
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        expect(PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($stream, $this->players[0]))->phase->toEqual(2)
+            ->and(PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($stream, $this->players[1]))->phase->toEqual(1);
+    });
 });
 
 describe('getZeitsteineForPlayer', function () {
@@ -286,6 +320,6 @@ test('getKompetenzenForPlayer', function () {
     // kompetenzen are saved for the lebensziel
     expect(PreGameState::lebenszielForPlayer($gameEvents, $this->players[0])->phases[0]->placedKompetenzsteineBildung)->toBe(1)
         ->and(PlayerState::getBildungsKompetenzsteine($gameEvents, $this->players[0]))->toBe(1)
+        // is 0 again because we are in the next konjunkturphase
         ->and(PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($gameEvents, $this->players[0], CategoryId::BILDUNG_UND_KARRIERE))->toBe(0);
-    // is 0 again because we are in the next konjunkturphase
 });

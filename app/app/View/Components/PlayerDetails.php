@@ -35,7 +35,7 @@ class PlayerDetails extends Component
 
     public function isCurrentPlayer(): bool
     {
-        return $this->myself->equals($this->playerId);
+        return $this->playerId !== null && $this->myself->equals($this->playerId);
     }
 
 
@@ -55,7 +55,7 @@ class PlayerDetails extends Component
             zeitsteine: PlayerState::getZeitsteineForPlayer($this->gameEvents, $playerId),
             kompetenzsteineBildung: PlayerState::getBildungsKompetenzsteine($this->gameEvents, $playerId),
             kompetenzsteineFreizeit: PlayerState::getFreizeitKompetenzsteine($this->gameEvents, $playerId),
-            lebenszielPhaseDefinition: PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($this->gameEvents, $playerId),
+            currentLebenszielPhase: PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($this->gameEvents, $playerId)->phase,
         );
     }
 

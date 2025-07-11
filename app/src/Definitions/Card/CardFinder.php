@@ -575,33 +575,6 @@ final class CardFinder
                         guthabenChange: new MoneyAmount(+1000),
                     ),
                 ),
-                "mj3" => new MinijobCardDefinition(
-                    id: new CardId('mj3'),
-                    pileId: PileId::MINIJOBS_PHASE_1,
-                    title: 'Bekomme viel Geld.Test.',
-                    description: 'Bekommen einfach ganz viel Geld💰',
-                    resourceChanges: new ResourceChanges(
-                        guthabenChange: new MoneyAmount(+60000),
-                    ),
-                ),
-                "mj4" => new MinijobCardDefinition(
-                    id: new CardId('mj4'),
-                    pileId: PileId::MINIJOBS_PHASE_1,
-                    title: 'Bekomme viel Geld.Test.',
-                    description: 'Bekommen einfach ganz viel Geld💰',
-                    resourceChanges: new ResourceChanges(
-                        guthabenChange: new MoneyAmount(+60000),
-                    ),
-                ),
-                "mj5" => new MinijobCardDefinition(
-                    id: new CardId('mj5'),
-                    pileId: PileId::MINIJOBS_PHASE_1,
-                    title: 'Bekomme viel Geld.Test.',
-                    description: 'Bekommen einfach ganz viel Geld💰',
-                    resourceChanges: new ResourceChanges(
-                        guthabenChange: new MoneyAmount(+60000),
-                    ),
-                ),
             ],
         ]);
         return self::$instance;

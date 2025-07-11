@@ -53,6 +53,10 @@ final readonly class ResourceChanges implements JsonSerializable
         );
     }
 
+
+    /**
+     * @return array<int|MoneyAmount>
+     */
     public function jsonSerialize(): array
     {
         return [
