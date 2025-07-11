@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Livewire\Forms;
 
+use Domain\CoreGameLogic\Feature\Moneysheet\State\LoanCalculator;
 use Domain\Definitions\Configuration\Configuration;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
 class TakeOutALoanForm extends Form
 {
-    #[Validate('required|string|max:255')]
-    public string $intendedUse = '';
+    public string $loanId = '';
+    public string $generalError = '';
 
     #[Validate]
     public int $loanAmount = 0;
@@ -38,11 +39,7 @@ class TakeOutALoanForm extends Form
         return [
             'loanAmount' => [
                 'required', 'numeric', 'min:1', function ($attribute, $value, $fail) {
-                    // without job only a loan of 80% of the current balance is allowed
-                    // if player has a job, they can take a loan of 10 times their current balance
-                    $maxLoanAmount = $this->hasJob ? $this->guthaben * 10 : $this->guthaben * 0.8;
-
-                    if ($this->loanAmount > $maxLoanAmount) {
+                    if ($this->loanAmount > LoanCalculator::getMaxLoanAmount($this->guthaben, $this->hasJob)) {
                         if ($this->hasJob) {
                             $fail("Du kannst keinen Kredit aufnehmen, der höher ist als das 10-fache deines aktuellen Guthabens.");
                         } else {
@@ -53,14 +50,14 @@ class TakeOutALoanForm extends Form
             ],
             'totalRepayment' => [
                 'required', 'numeric', function ($attribute, $value, $fail) use ($repaymentPeriod) {
-                    if ($this->totalRepayment !== $this->getCalculatedRepayment($this->zinssatz)) {
+                    if ($this->totalRepayment !== LoanCalculator::getCalculatedTotalRepayment($this->loanAmount, $this->zinssatz)) {
                         $fail("Die Rückzahlung muss dem Kreditbetrag multipliziert mit dem Zinssatz geteilt durch $repaymentPeriod entsprechen.");
                     }
                 }
             ],
             'repaymentPerKonjunkturphase' => [
                 'required', 'numeric', function ($attribute, $value, $fail) use ($repaymentPeriod) {
-                    if ($this->repaymentPerKonjunkturphase !== $this->getCalculatedRepayment($this->zinssatz) / Configuration::REPAYMENT_PERIOD) {
+                    if ($this->repaymentPerKonjunkturphase !== LoanCalculator::getCalculatedRepaymentPerKonjunkturphase($this->loanAmount, $this->zinssatz)) {
                         $fail("Die Rückzahlung pro Runde muss der Rückzahlungssumme geteilt durch $repaymentPeriod entsprechen.");
                     }
                 }
@@ -68,9 +65,24 @@ class TakeOutALoanForm extends Form
         ];
     }
 
-    private function getCalculatedRepayment(float $zinssatz): float
+    /**
+     * @param mixed $field
+     * @return void
+     */
+    public function resetValidation(mixed $field = null): void
+    {
+        parent::resetValidation($field);
+        $this->generalError = '';
+    }
+
+    public function getCalculatedTotalRepayment(): float
     {
         $repaymentPeriod = Configuration::REPAYMENT_PERIOD;
-        return $this->loanAmount * (1 + $zinssatz / $repaymentPeriod);
+        return $this->loanAmount * (1 + $this->zinssatz / $repaymentPeriod);
+    }
+
+    public function getCalculatedRepaymentPerKonjunkturphase(): float
+    {
+        return $this->getCalculatedTotalRepayment() / Configuration::REPAYMENT_PERIOD;
     }
 }

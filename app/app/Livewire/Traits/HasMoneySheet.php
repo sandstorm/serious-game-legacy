@@ -12,17 +12,21 @@ use App\Livewire\Forms\TakeOutALoanForm;
 use App\Livewire\ValueObject\ExpensesTabEnum;
 use App\Livewire\ValueObject\IncomeTabEnum;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
+use Domain\CoreGameLogic\Feature\Moneysheet\State\LoanCalculator;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
+use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasCorrected;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Insurance\InsuranceFinder;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
+use Illuminate\Validation\ValidationException;
 
 trait HasMoneySheet
 {
@@ -86,14 +90,14 @@ trait HasMoneySheet
         $this->moneySheetIsVisible = false;
         $this->editIncomeIsVisible = false;
         $this->editExpensesIsVisible = false;
+        $this->takeOutALoanIsVisible = false;
     }
 
     public function toggleEditIncome(): void
     {
         $this->editIncomeIsVisible = !$this->editIncomeIsVisible;
         if ($this->editIncomeIsVisible) {
-            $this->editExpensesIsVisible = false;
-            $this->activeTabForIncome = IncomeTabEnum::INVESTMENTS; // reset to default tab when switching to income
+            $this->showIncomeTab(IncomeTabEnum::INVESTMENTS->value);
         }
     }
 
@@ -101,8 +105,7 @@ trait HasMoneySheet
     {
         $this->editExpensesIsVisible = !$this->editExpensesIsVisible;
         if ($this->editExpensesIsVisible) {
-            $this->editIncomeIsVisible = false;
-            $this->activeTabForExpenses = ExpensesTabEnum::LOANS; // reset to default tab when switching to expenses
+            $this->showExpensesTab(ExpensesTabEnum::LOANS->value);
         }
     }
 
@@ -112,6 +115,7 @@ trait HasMoneySheet
         $this->editIncomeIsVisible = true;
         $this->editExpensesIsVisible = false;
         $this->activeTabForIncome = IncomeTabEnum::from($tab);
+        $this->takeOutALoanIsVisible = false;
     }
 
     public function showExpensesTab(string $tab): void
@@ -120,6 +124,7 @@ trait HasMoneySheet
         $this->editIncomeIsVisible = false;
         $this->editExpensesIsVisible = true;
         $this->activeTabForExpenses = ExpensesTabEnum::from($tab);
+        $this->takeOutALoanIsVisible = false;
     }
 
     public function getMoneysheetForPlayerId(PlayerId $playerId): MoneySheetDto
@@ -203,29 +208,58 @@ trait HasMoneySheet
         $this->broadcastNotify();
     }
 
+    public function showTakeOutALoan(): void
+    {
+        $this->showExpensesTab(ExpensesTabEnum::LOANS->value);
+        $this->takeOutALoanIsVisible = true;
+        $this->resetTakeOutALoanForm();
+    }
+
     public function toggleTakeOutALoan(): void
     {
         $this->takeOutALoanIsVisible = !$this->takeOutALoanIsVisible;
+        $this->resetTakeOutALoanForm();
+    }
+
+    private function resetTakeOutALoanForm(): void
+    {
         $this->takeOutALoanForm->reset();
+        $this->takeOutALoanForm->resetValidation();
+        $this->takeOutALoanForm->loanId = LoanId::unique()->value;
+        $this->takeOutALoanForm->guthaben = PlayerState::getGuthabenForPlayer($this->gameEvents, $this->myself)->value;
+        $this->takeOutALoanForm->hasJob = PlayerState::getJobForPlayer($this->gameEvents, $this->myself) !== null;
+        $this->takeOutALoanForm->zinssatz = KonjunkturphaseState::getCurrentKonjunkturphase($this->gameEvents)->zinssatz;
     }
 
     public function takeOutALoan(): void
     {
-        $this->takeOutALoanForm->guthaben = PlayerState::getGuthabenForPlayer($this->gameEvents, $this->myself)->value;
-        $this->takeOutALoanForm->zinssatz = KonjunkturphaseState::getCurrentKonjunkturphase($this->gameEvents)->zinssatz;
-        $this->takeOutALoanForm->hasJob = PlayerState::getJobForPlayer($this->gameEvents, $this->myself) !== null;
-        $this->takeOutALoanForm->validate();
-
-        // TODO what happens if the player makes mistakes?
+        $loanId = new LoanId($this->takeOutALoanForm->loanId);
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
             $this->myself,
-            $this->takeOutALoanForm->intendedUse,
-            new MoneyAmount($this->takeOutALoanForm->loanAmount),
-            new MoneyAmount($this->takeOutALoanForm->totalRepayment),
-            new MoneyAmount($this->takeOutALoanForm->repaymentPerKonjunkturphase)
+            $this->takeOutALoanForm
         ));
 
-        $this->toggleTakeOutALoan();
+        $updatedEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        $resultOfLastInput = MoneySheetState::getResultOfLastLoanInput($updatedEvents, $this->myself, $loanId);
+
+        if (!$resultOfLastInput->wasSuccessful && $resultOfLastInput->fine->value > 0) {
+            $this->takeOutALoanForm->loanAmount = intval(min(
+                $this->takeOutALoanForm->loanAmount,
+                LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->guthaben, $this->takeOutALoanForm->hasJob)
+            ));
+            $this->takeOutALoanForm->totalRepayment = LoanCalculator::getCalculatedTotalRepayment($this->takeOutALoanForm->loanAmount, $this->takeOutALoanForm->zinssatz);
+            $this->takeOutALoanForm->repaymentPerKonjunkturphase = $this->takeOutALoanForm->getCalculatedRepaymentPerKonjunkturphase();
+
+            // reset old validation errors when correcting the input
+            $this->takeOutALoanForm->resetValidation();
+            $this->takeOutALoanForm->generalError = "Du hast falsche Werte für den Kredit eingegeben. Dir wurden {$resultOfLastInput->fine->value} € abgezogen. Wir haben die Werte für dich korrigiert.";
+        } elseif (!$resultOfLastInput->wasSuccessful) {
+            $this->takeOutALoanForm->generalError = "Du hast falsche Werte für den Kredit eingegeben.";
+        } else {
+            $this->takeOutALoanForm->resetValidation();
+            $this->toggleTakeOutALoan();
+        }
+
         $this->broadcastNotify();
     }
 }

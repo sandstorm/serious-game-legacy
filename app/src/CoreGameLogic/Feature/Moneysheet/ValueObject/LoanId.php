@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Moneysheet\ValueObject;
 
+use Ramsey\Uuid\Uuid;
+
 readonly class LoanId implements \JsonSerializable
 {
-    public function __construct(public int $value)
+    public function __construct(public string $value)
     {
     }
 
@@ -15,7 +17,7 @@ readonly class LoanId implements \JsonSerializable
         return '[LoanId: ' . $this->value . ']';
     }
 
-    public function jsonSerialize(): int
+    public function jsonSerialize(): string
     {
         return $this->value;
     }
@@ -23,5 +25,11 @@ readonly class LoanId implements \JsonSerializable
     public function equals(LoanId $other): bool
     {
         return $this->value === $other->value;
+    }
+
+    public static function unique(): self
+    {
+        $uuid = Uuid::uuid4();
+        return new self($uuid->toString());
     }
 }

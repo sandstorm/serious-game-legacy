@@ -30,6 +30,10 @@
         <button class="button button--type-primary" wire:click="showMoneySheet()">
             {!! PlayerState::getGuthabenForPlayer($this->gameEvents, $myself)->format() !!}
         </button>
+
+        <button class="button button--type-primary" wire:click="showTakeOutALoan()">
+            Kredit aufnehmen
+        </button>
         @if ($moneySheetIsVisible)
             @if ($editIncomeIsVisible)
                 <x-gameboard.moneySheet.money-sheet-income-modal

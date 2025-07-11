@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Feature\Spielzug\Command;
+namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesPlayerInput;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\UpdatesInputForSteuernUndAbgaben;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\UpdatesInputForLebenshaltungskosten;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
-final readonly class SteuernUndAbgabenForPlayerWereEntered implements GameEventInterface, ProvidesPlayerInput, UpdatesInputForSteuernUndAbgaben
+final readonly class LebenshaltungskostenForPlayerWereEntered implements GameEventInterface, ProvidesPlayerInput, UpdatesInputForLebenshaltungskosten
 {
     public function __construct(
-        public PlayerId $playerId,
+        public PlayerId     $playerId,
         private MoneyAmount $playerInput,
         private MoneyAmount $expectedInput,
-        private bool    $wasInputCorrect
+        private bool        $wasInputCorrect
     ) {
     }
 

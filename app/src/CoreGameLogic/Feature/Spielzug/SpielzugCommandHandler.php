@@ -32,16 +32,13 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasTakenOutForPlayer;
 
 /**
  * @internal no public API, because commands are no extension points. ALWAYS USE {@see ForCoreGameLogic::handle()} to trigger commands.
@@ -205,16 +202,8 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
 
     private function handleTakeOutALoanForPlayer(TakeOutALoanForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
     {
-        $loanId = new LoanId(count(MoneySheetState::getLoansForPlayer($gameEvents, $command->playerId)) + 1);
-        $year = GamePhaseState::currentKonjunkturphasenYear($gameEvents);
-
         $aktion = new TakeOutALoanForPlayerAktion(
-            $year,
-            $loanId,
-            $command->intendedUse,
-            $command->loanAmount,
-            $command->totalRepayment,
-            $command->repaymentPerKonjunkturphase,
+            $command->takeOutLoanForm
         );
         return $aktion->execute($command->playerId, $gameEvents);
     }

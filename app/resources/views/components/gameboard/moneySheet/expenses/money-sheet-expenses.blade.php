@@ -9,24 +9,24 @@
     <ul role="tablist" class="tabs__list">
         <li @class(['tabs__list-item', 'tabs__list-item--active' => $this->activeTabForExpenses === ExpensesTabEnum::LOANS])>
             <button id="investments" type="button" class="button" role="tab"
-                    wire:click="$set('activeTabForExpenses', '{{ ExpensesTabEnum::LOANS }}')">
+                    wire:click="showExpensesTab('{{ ExpensesTabEnum::LOANS }}')">
                 Kredite
             </button>
         </li>
         <li @class(['tabs__list-item', 'tabs__list-item--active' => $this->activeTabForExpenses === ExpensesTabEnum::KIDS])>
-            <button id="kids" type="button" class="button" role="tab" wire:click="$set('activeTabForExpenses', '{{ ExpensesTabEnum::KIDS }}')">
+            <button id="kids" type="button" class="button" role="tab" wire:click="showExpensesTab('{{ ExpensesTabEnum::KIDS }}')">
                 Kinder
             </button>
         </li>
         <li @class(['tabs__list-item', 'tabs__list-item--active' => $this->activeTabForExpenses === ExpensesTabEnum::INSURANCES])>
             <button id="insurances" type="button" class="button" role="tab"
-                    wire:click="$set('activeTabForExpenses', '{{ ExpensesTabEnum::INSURANCES }}')">
+                    wire:click="showExpensesTab('{{ ExpensesTabEnum::INSURANCES }}')">
                 Versicherungen
             </button>
         </li>
         <li @class(['tabs__list-item', 'tabs__list-item--active' => $this->activeTabForExpenses === ExpensesTabEnum::TAXES])>
             <button id="taxes" type="button" class="button" role="tab"
-                    wire:click="$set('activeTabForExpenses', '{{ ExpensesTabEnum::TAXES }}')">
+                    wire:click="showExpensesTab('{{ ExpensesTabEnum::TAXES }}')">
                 Steuern und Abgaben
                 @if($moneySheet->doesSteuernUndAbgabenRequirePlayerAction)
                     (!!)
@@ -35,7 +35,7 @@
         </li>
         <li @class(['tabs__list-item', 'tabs__list-item--active' => $this->activeTabForExpenses === ExpensesTabEnum::LIVING_COSTS])>
             <button id="livingCosts" type="button" class="button" role="tab"
-                    wire:click="$set('activeTabForExpenses', '{{ ExpensesTabEnum::LIVING_COSTS }}')">
+                    wire:click="showExpensesTab('{{ ExpensesTabEnum::LIVING_COSTS }}')">
                 Lebenshaltungskosten
                 @if($moneySheet->doesLebenshaltungskostenRequirePlayerAction)
                     (!!)

@@ -2,21 +2,24 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Feature\Spielzug\Command;
+namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
+use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\LoanData;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\UpdatesInputForLebenshaltungskosten;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\UpdatesInputForLoan;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
 
-final readonly class LebenshaltungskostenForPlayerWereCorrected implements GameEventInterface, ProvidesResourceChanges, UpdatesInputForLebenshaltungskosten
+final readonly class LoanForPlayerWasCorrected implements GameEventInterface, ProvidesResourceChanges, UpdatesInputForLoan
 {
     public function __construct(
         public PlayerId     $playerId,
-        private MoneyAmount $correctValue,
+        public LoanId $loanId,
+        private LoanData $correctLoan,
     ) {
     }
 
@@ -24,7 +27,8 @@ final readonly class LebenshaltungskostenForPlayerWereCorrected implements GameE
     {
         return new self(
             playerId: PlayerId::fromString($values['player']),
-            correctValue: new MoneyAmount($values['correctValue']),
+            loanId: new LoanId($values['loanId']),
+            correctLoan: LoanData::fromArray($values['correctLoan']),
         );
     }
 
@@ -32,7 +36,8 @@ final readonly class LebenshaltungskostenForPlayerWereCorrected implements GameE
     {
         return [
             'player' => $this->playerId,
-            'correctValue' => $this->correctValue,
+            'loanId' => $this->loanId,
+            'correctLoan' => $this->correctLoan->jsonSerialize(),
         ];
     }
 
@@ -49,8 +54,13 @@ final readonly class LebenshaltungskostenForPlayerWereCorrected implements GameE
         return $this->playerId;
     }
 
-    public function getUpdatedValue(): MoneyAmount
+    public function getLoanId(): LoanId
     {
-        return $this->correctValue;
+        return $this->loanId;
+    }
+
+    public function getLoanData(): LoanData
+    {
+        return $this->correctLoan;
     }
 }

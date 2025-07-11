@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Feature\Spielzug\Command;
+namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;

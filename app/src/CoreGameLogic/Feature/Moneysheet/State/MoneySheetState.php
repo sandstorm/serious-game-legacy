@@ -8,18 +8,21 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\LebenshaltungskostenForPlayerWereCorrected;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\LebenshaltungskostenForPlayerWereEntered;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\SteuernUndAbgabenForPlayerWereCorrected;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\SteuernUndAbgabenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\InputResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\UpdatesInputForLebenshaltungskosten;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\UpdatesInputForLoan;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\UpdatesInputForSteuernUndAbgaben;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereCorrected;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereEntered;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasCorrected;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasTakenOutForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\SteuernUndAbgabenForPlayerWereCorrected;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\SteuernUndAbgabenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
@@ -84,6 +87,17 @@ class MoneySheetState
         return count($tries);
     }
 
+    public static function getNumberOfTriesForLoanInput(GameEvents $gameEvents, PlayerId $playerId, LoanId $loanId): int
+    {
+        $tries = $gameEvents->findAllOfType(LoanForPlayerWasEntered::class)
+            ->filter(fn(LoanForPlayerWasEntered $event) =>
+                $event->playerId->equals($playerId)
+                && $event->loanId->equals($loanId)
+            );
+
+        return count($tries);
+    }
+
     public static function getResultOfLastSteuernUndAbgabenInput(
         GameEvents $gameEvents,
         PlayerId $playerId
@@ -125,6 +139,36 @@ class MoneySheetState
         } // after this we know that the input was NOT successful
 
         if ($lastInputEventForPlayer instanceof LebenshaltungskostenForPlayerWereCorrected) {
+            // multiply resource change with -1 to get a positive value
+            return new InputResult(
+                false,
+                new MoneyAmount(-1 * $lastInputEventForPlayer->getResourceChanges($playerId)->guthabenChange->value)
+            );
+        }
+        throw new \RuntimeException("Unknown Event type " . $lastInputEventForPlayer::class);
+    }
+
+    public static function getResultOfLastLoanInput(
+        GameEvents $gameEvents,
+        PlayerId $playerId,
+        LoanId $loanId
+    ): InputResult {
+        $lastInputEventForPlayer = $gameEvents->findLastOrNullWhere(
+            fn($event) => $event instanceof UpdatesInputForLoan
+                && $event->getPlayerId()->equals($playerId)
+                && $event->getLoanId()->equals($loanId)
+        );
+
+        if ($lastInputEventForPlayer === null) {
+            // No error message before first input
+            return new InputResult(wasSuccessful: true);
+        }
+
+        if ($lastInputEventForPlayer instanceof LoanForPlayerWasEntered) {
+            return new InputResult($lastInputEventForPlayer->wasInputCorrect());
+        } // after this we know that the input was NOT successful
+
+        if ($lastInputEventForPlayer instanceof LoanForPlayerWasCorrected) {
             // multiply resource change with -1 to get a positive value
             return new InputResult(
                 false,
@@ -312,8 +356,8 @@ class MoneySheetState
         // Calculate the open rates based on the total repayment and the repayment per Konjunkturphase
         $yearOfTheLoan = $loan->year->value;
         $year = GamePhaseState::currentKonjunkturphasenYear($gameEvents)->value;
-        $totalRepayment = $loan->totalRepayment->value;
-        $repaymentPerKonjunkturphase = $loan->repaymentPerKonjunkturphase->value;
+        $totalRepayment = $loan->loanData->totalRepayment->value;
+        $repaymentPerKonjunkturphase = $loan->loanData->repaymentPerKonjunkturphase->value;
 
         return new MoneyAmount(
             max(0, $totalRepayment - (($year - $yearOfTheLoan) * $repaymentPerKonjunkturphase))
@@ -330,7 +374,7 @@ class MoneySheetState
         $loans = self::getLoansForPlayer($gameEvents, $playerId);
         $sum = 0;
         foreach ($loans as $loan) {
-            $sum += $loan->loanAmount->value;
+            $sum += $loan->loanData->loanAmount->value;
         }
         return new MoneyAmount($sum);
     }
@@ -362,7 +406,7 @@ class MoneySheetState
         $loans = MoneySheetState::getLoansForPlayer($gameEvents, $playerId);
         foreach ($loans as $loan) {
             if (MoneySheetState::getOpenRatesForLoan($gameEvents, $playerId, $loan->loanId)->value > 0) {
-                $annualExpenses = $annualExpenses->add($loan->repaymentPerKonjunkturphase);
+                $annualExpenses = $annualExpenses->add($loan->loanData->repaymentPerKonjunkturphase);
             }
         }
         return $annualExpenses;

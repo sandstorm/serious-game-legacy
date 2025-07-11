@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\CoreGameLogic\Feature\Spielzug;
 
 
+use App\Livewire\Forms\TakeOutALoanForm;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
@@ -12,25 +13,29 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
+use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\LebenshaltungskostenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\SteuernUndAbgabenForPlayerWereEntered;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\LoanData;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereEntered;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasCorrected;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerWasMarkedAsReadyForKonjunkturphaseChange;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\SteuernUndAbgabenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
@@ -49,6 +54,7 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use RuntimeException;
+use Tests\ComponentWithForm;
 use Tests\TestCase;
 
 @covers(SpielzugCommandHandler::class);
@@ -1641,3 +1647,63 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
     });
 });
 
+describe('handleTakeOutALoanForPlayer', function () {
+    it('player gets 250 € fine for entering loan data wrong', function () {
+        $takeoutLoanFormComponent = new ComponentWithForm();
+        $takeoutLoanFormComponent->mount(TakeOutALoanForm::class);
+
+        /** @var TakeOutALoanForm $takeoutLoanForm */
+        $takeoutLoanForm = $takeoutLoanFormComponent->form;
+        $takeoutLoanForm->loanAmount = 10000;
+        $takeoutLoanForm->totalRepayment = 12500;
+        $takeoutLoanForm->repaymentPerKonjunkturphase = 600; // wrong value
+        $takeoutLoanForm->guthaben = Configuration::STARTKAPITAL_VALUE;
+        $takeoutLoanForm->zinssatz = 5;
+        $takeoutLoanForm->loanId = LoanId::unique()->value;
+
+        // player 0 takes out a loan
+        $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
+            $this->players[0],
+            $takeoutLoanForm
+        ));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        /** @var LoanForPlayerWasEntered $loanWasEnteredEvent */
+        $loanWasEnteredEvent = $gameEvents->findLast(LoanForPlayerWasEntered::class);
+
+        expect($loanWasEnteredEvent)->toBeInstanceOf(LoanForPlayerWasEntered::class)
+            ->and($loanWasEnteredEvent->wasInputCorrect())->toBeFalse()
+            ->and($loanWasEnteredEvent->getLoanData())->toEqual(new LoanData(
+                loanAmount: new MoneyAmount(10000),
+                totalRepayment: new MoneyAmount(12500),
+                repaymentPerKonjunkturphase: new MoneyAmount(600),
+            ))
+            ->and($loanWasEnteredEvent->getExpectedLoanData())->toEqual(new LoanData(
+                loanAmount: new MoneyAmount(10000),
+                totalRepayment: new MoneyAmount(12500),
+                repaymentPerKonjunkturphase: new MoneyAmount(625),
+            ));
+
+        // try again with also wrong values
+        $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
+            $this->players[0],
+            $takeoutLoanForm
+        ));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        /** @var LoanForPlayerWasCorrected $loanWasCorrectedEvent */
+        $loanWasCorrectedEvent = $gameEvents->findLast(LoanForPlayerWasCorrected::class);
+
+        expect($loanWasCorrectedEvent)->toBeInstanceOf(LoanForPlayerWasCorrected::class)
+            ->and($loanWasCorrectedEvent->getLoanData())->toEqual(new LoanData(
+                loanAmount: new MoneyAmount(10000),
+                totalRepayment: new MoneyAmount(12500),
+                repaymentPerKonjunkturphase: new MoneyAmount(625),
+            ))
+            ->and($loanWasCorrectedEvent->getResourceChanges($this->players[0])->guthabenChange)->toEqual(new MoneyAmount(-250))
+            ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE - 250));
+    });
+
+});
