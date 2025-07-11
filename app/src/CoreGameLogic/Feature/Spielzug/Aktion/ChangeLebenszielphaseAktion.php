@@ -26,6 +26,7 @@ class ChangeLebenszielphaseAktion extends Aktion
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
         $validatorChain = new IsPlayersTurnValidator();
+        //dd($gameEvents);
         $validatorChain->setNext(new HasPlayerEnoughResourcesForLebenszielphasenChangeValidator());
 
         return $validatorChain->validate($gameEvents, $playerId);

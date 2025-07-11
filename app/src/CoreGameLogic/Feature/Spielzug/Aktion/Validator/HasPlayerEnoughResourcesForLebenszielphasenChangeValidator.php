@@ -49,9 +49,10 @@ final class HasPlayerEnoughResourcesForLebenszielphasenChangeValidator extends A
             ($currentJob === null || $currentLebenszielPhase->erwerbseinkommen > $currentJob->gehalt->value)
         )
         {
+            //dd($currentJob, $currentLebenszielPhase);
             return new AktionValidationResult(
                 canExecute: false,
-                reason: "Dein Job ist dumm du lauch",
+                reason: "Du hast nicht genug Geld verdient",
             );
         }
 

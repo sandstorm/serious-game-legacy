@@ -333,7 +333,7 @@ Der steigende Leitzins erhÃ¶ht die Deflation, die Kaufkraft der Barreserven erhÃ
     /**
      * @return MinijobCardDefinition[]
      */
-    private function getCardsForMinijobs(): array
+    protected function getCardsForMinijobs(): array
     {
         return [
             "mj0" => new MinijobCardDefinition(
