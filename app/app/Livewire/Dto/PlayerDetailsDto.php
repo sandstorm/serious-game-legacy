@@ -18,7 +18,7 @@ class PlayerDetailsDto
         public int $zeitsteine,
         public int $kompetenzsteineBildung,
         public int $kompetenzsteineFreizeit,
-        public LebenszielPhaseDefinition $lebenszielPhaseDefinition,
+        public int $currentLebenszielPhase,
     ) {
     }
 

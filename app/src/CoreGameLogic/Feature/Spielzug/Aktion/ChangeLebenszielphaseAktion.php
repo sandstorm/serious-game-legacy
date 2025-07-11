@@ -31,6 +31,7 @@ class ChangeLebenszielphaseAktion extends Aktion
         return $validatorChain->validate($gameEvents, $playerId);
     }
 
+    // Moves to the next Lebenszielphase, changes the Ressources which are nessesary for the next phase and creating the event
     public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist
     {
         $result = $this->validate($playerId, $gameEvents);
@@ -38,13 +39,10 @@ class ChangeLebenszielphaseAktion extends Aktion
             throw new RuntimeException('Cannot Change Lebensphase: ' . $result->reason, 1751619852);
         }
         $currentPhaseDefinition = PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($gameEvents, $playerId);
-        $bildungsKompetenzSteine = -1 * PlayerState::getBildungsKompetenzsteine($gameEvents, $playerId);
-        $freizeitKompetenzSteine = -1 * PlayerState::getFreizeitKompetenzsteine($gameEvents, $playerId);
-        $guthabenChange = new MoneyAmount($currentPhaseDefinition->investitionen * -1);
         $resourceChanges = new ResourceChanges(
-            guthabenChange: $guthabenChange,
-            bildungKompetenzsteinChange: $bildungsKompetenzSteine,
-            freizeitKompetenzsteinChange: $freizeitKompetenzSteine,
+            guthabenChange: new MoneyAmount($currentPhaseDefinition->investitionen * -1),
+            bildungKompetenzsteinChange: -1 * PlayerState::getBildungsKompetenzsteine($gameEvents, $playerId),
+            freizeitKompetenzsteinChange: -1 * PlayerState::getFreizeitKompetenzsteine($gameEvents, $playerId),
         );
 
         return GameEventsToPersist::with(

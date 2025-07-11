@@ -15,11 +15,15 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\AcceptJobOffersAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ActivateCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\BuyStocksForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CancelInsuranceForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ChangeLebenszielphaseAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CompleteMoneySheetForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ConcludeInsuranceForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\DoMinijobAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EndSpielzugAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterLebenshaltungskostenForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterSteuernUndAbgabenForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\MarkPlayerAsReadyForKonjunkturphaseChangeAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\RequestJobOffersAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SkipCardAktion as SkipCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\StartKonjunkturphaseForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\TakeOutALoanForPlayerAktion;
@@ -102,7 +106,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
 
     private function handleLebenszielphase(ChangeLebenszielphase $command, GameEvents $gameEvents): GameEventsToPersist
     {
-        $aktion = new Aktion\ChangeLebenszielphaseAktion();
+        $aktion = new ChangeLebenszielphaseAktion();
         return $aktion->execute($command->playerId, $gameEvents);
     }
 
@@ -114,13 +118,13 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
 
     private function handleDoMinijob(DoMinijob $command, GameEvents $gameEvents): GameEventsToPersist
     {
-        $aktion = new Aktion\DoMinijobAktion();
+        $aktion = new DoMinijobAktion();
         return $aktion->execute($command->playerId, $gameEvents);
     }
 
     private function handleEndSpielzug(EndSpielzug $command, GameEvents $gameEvents): GameEventsToPersist
     {
-        $endSpielzugAktion = new Aktion\EndSpielzugAktion();
+        $endSpielzugAktion = new EndSpielzugAktion();
         $eventsToPersist = $endSpielzugAktion->execute($command->player, $gameEvents);
         if (KonjunkturphaseState::isConditionForEndOfKonjunkturphaseMet($gameEvents)) {
             return $eventsToPersist->withAppendedEvents(
@@ -132,7 +136,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
 
     private function handleRequestJobOffers(RequestJobOffers $command, GameEvents $gameEvents): GameEventsToPersist
     {
-        $aktion = new Aktion\RequestJobOffersAktion();
+        $aktion = new RequestJobOffersAktion;
         return $aktion->execute($command->playerId, $gameEvents);
     }
 
