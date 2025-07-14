@@ -19,6 +19,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuited;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasCorrected;
@@ -92,6 +93,7 @@ final readonly class EventNormalizer
             LoanWasTakenOutForPlayer::class,
             LoanForPlayerWasEntered::class,
             LoanForPlayerWasCorrected::class,
+            JobWasQuited::class,
         ];
 
         $fullClassNameToShortEventType = [];

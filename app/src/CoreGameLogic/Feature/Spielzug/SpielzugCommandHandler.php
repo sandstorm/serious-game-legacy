@@ -8,7 +8,6 @@ use Domain\CoreGameLogic\CommandHandler\CommandHandlerInterface;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
-use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
@@ -26,7 +25,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\StartKonjunkturphaseForPlayerAk
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\TakeOutALoanForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\ChangeLebenszielphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
@@ -66,7 +64,6 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             || $command instanceof ConcludeInsuranceForPlayer
             || $command instanceof CancelInsuranceForPlayer
             || $command instanceof TakeOutALoanForPlayer
-            || $command instanceof ChangeLebenszielphase
             || $command instanceof QuitJob;
     }
 
@@ -95,8 +92,6 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
                 $command, $gameEvents),
             DoMinijob::class => $this->handleDoMinijob
                 ($command, $gameEvents),
-            ChangeLebenszielphase::class => $this->handleLebenszielphase
-                ($command, $gameEvents),
             QuitJob::class => $this->handleQuitJob
                 ($command, $gameEvents)
         };
@@ -105,12 +100,6 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
     private function handleQuitJob(QuitJob $command, GameEvents $gameEvents): GameEventsToPersist
     {
         $aktion = new Aktion\QuitJobAktion();
-        return $aktion->execute($command->playerId, $gameEvents);
-    }
-
-    private function handleLebenszielphase(ChangeLebenszielphase $command, GameEvents $gameEvents): GameEventsToPersist
-    {
-        $aktion = new Aktion\ChangeLebenszielphaseAktion();
         return $aktion->execute($command->playerId, $gameEvents);
     }
 

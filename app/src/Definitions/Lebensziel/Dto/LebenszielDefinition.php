@@ -6,8 +6,9 @@ namespace Domain\Definitions\Lebensziel\Dto;
 
 
 use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
+use JsonSerializable;
 
-readonly class LebenszielDefinition implements \JsonSerializable
+readonly class LebenszielDefinition implements JsonSerializable
 {
     /**
      * @param LebenszielPhaseDefinition[] $phaseDefinitions
@@ -20,7 +21,7 @@ readonly class LebenszielDefinition implements \JsonSerializable
     }
 
     /**
-     * @param array<mixed> $values
+     * @param array $values
      * @return self
      */
     public static function fromArray(array $values): self
@@ -42,7 +43,7 @@ readonly class LebenszielDefinition implements \JsonSerializable
     }
 
     /**
-     * @return array<mixed>
+     * @return array
      */
     public function jsonSerialize(): array
     {

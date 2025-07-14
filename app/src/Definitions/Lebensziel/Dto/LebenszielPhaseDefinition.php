@@ -7,17 +7,17 @@ namespace Domain\Definitions\Lebensziel\Dto;
 readonly class LebenszielPhaseDefinition
 {
     public function __construct(
-        public int $phase,
+        public int    $phase,
         public string $description,
-        public float $invenstition,
-        public float $erwerbseinkommen,
-        public int $bildungsKompetenzSlots,
-        public int $freizeitKompetenzSlots,
+        public float  $investitionen,
+        public float  $erwerbseinkommen,
+        public int    $bildungsKompetenzSlots,
+        public int    $freizeitKompetenzSlots,
     ) {
     }
 
     /**
-     * @param array<mixed> $values
+     * @param array $values
      * @return self
      */
     public static function fromArray(array $values): self
@@ -25,7 +25,7 @@ readonly class LebenszielPhaseDefinition
         return new self(
             phase: $values['phase'],
             description: $values['description'],
-            invenstition: $values['invenstition'],
+            investitionen: $values['investitionen'],
             erwerbseinkommen: $values['erwerbseinkommen'],
             bildungsKompetenzSlots: $values['bildungsKompetenzSlots'],
             freizeitKompetenzSlots: $values['freizeitKompetenzSlots'],
@@ -33,14 +33,14 @@ readonly class LebenszielPhaseDefinition
     }
 
     /**
-     * @return array<mixed>
+     * @return array
      */
     public function jsonSerialize(): array
     {
         return [
             'phase' => $this->phase,
             'description' => $this->description,
-            'invenstition' => $this->invenstition,
+            'investitionen' => $this->investitionen,
             'erwerbseinkommen' => $this->erwerbseinkommen,
             'bildungsKompetenzSlots' => $this->bildungsKompetenzSlots,
             'freizeitKompetenzSlots' => $this->freizeitKompetenzSlots,
