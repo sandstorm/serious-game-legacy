@@ -40,7 +40,7 @@ class QuitJobAktion extends Aktion
         $job = PlayerState::getJobForPlayer($gameEvents, $playerId);
 
         if ($job === null) {
-            throw new RuntimeException('Spieler hat keinen aktiven Job.', 1752480505);
+            throw new RuntimeException('Cannot Quit Job: Du hast keinen aktiven Job', 1752480505);
         }
         return GameEventsToPersist::with(
             new JobWasQuited($playerId)
