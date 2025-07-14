@@ -840,7 +840,7 @@ describe('handleAcceptJobOffer', function () {
 
     it('returns 1 Zeitstein to the player after quitting the job (in the next Konjunkturphase)', function () {
         /** @var TestCase $this */
-        // TODO clarify if this is how it should work
+
     })->todo('not yet implemented');
 
     it('throws an exception if job requirements are not met', function () {

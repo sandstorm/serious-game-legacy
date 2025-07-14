@@ -33,6 +33,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
@@ -63,7 +64,8 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             || $command instanceof ConcludeInsuranceForPlayer
             || $command instanceof CancelInsuranceForPlayer
             || $command instanceof TakeOutALoanForPlayer
-            || $command instanceof ChangeLebenszielphase;
+            || $command instanceof ChangeLebenszielphase
+            || $command instanceof QuitJob;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameEvents): GameEventsToPersist
@@ -89,9 +91,19 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
                 $command, $gameEvents),
             TakeOutALoanForPlayer::class => $this->handleTakeOutALoanForPlayer(
                 $command, $gameEvents),
-            DoMinijob::class => $this->handleDoMinijob($command, $gameEvents),
-            ChangeLebenszielphase::class => $this->handleLebenszielphase($command, $gameEvents),
+            DoMinijob::class => $this->handleDoMinijob
+                ($command, $gameEvents),
+            ChangeLebenszielphase::class => $this->handleLebenszielphase
+                ($command, $gameEvents),
+            QuitJob::class => $this->handleQuitJob
+                ($command, $gameEvents)
         };
+    }
+
+    private function handleQuitJob(QuitJob $command, GameEvents $gameEvents): GameEventsToPersist
+    {
+        $aktion = new Aktion\QuitJobAktion();
+        return $aktion->execute($command->playerId, $gameEvents);
     }
 
     private function handleLebenszielphase(ChangeLebenszielphase $command, GameEvents $gameEvents): GameEventsToPersist
