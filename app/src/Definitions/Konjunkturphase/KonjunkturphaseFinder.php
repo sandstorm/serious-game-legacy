@@ -6,6 +6,10 @@ namespace Domain\Definitions\Konjunkturphase;
 
 use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
 use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
+use Domain\Definitions\Konjunkturphase\Dto\Zeitslots;
+use Domain\Definitions\Konjunkturphase\Dto\ZeitslotsPerPlayer;
+use Domain\Definitions\Konjunkturphase\Dto\Zeitsteine;
+use Domain\Definitions\Konjunkturphase\Dto\ZeitsteinePerPlayer;
 use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
@@ -14,198 +18,419 @@ use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 class KonjunkturphaseFinder
 {
     /**
-     * @return KonjunkturphaseDefinition[]
+     * @var KonjunkturphaseDefinition[]
      */
-    public static function getAllKonjunkturphasen(): array
+    private array $konjunkturphaseDefinitions;
+
+    private static ?self $instance = null;
+
+    /**
+     * @param KonjunkturphaseDefinition[] $konjunkturphaseDefinitions
+     */
+    private function __construct(array $konjunkturphaseDefinitions)
+    {
+        $this->konjunkturphaseDefinitions = $konjunkturphaseDefinitions;
+    }
+
+    public static function getInstance(): self
+    {
+        if (self::$instance === null) {
+            return self::initialize();
+        }
+        return self::$instance;
+    }
+
+    /**
+     * @param KonjunkturphaseDefinition[] $konjunkturphaseDefinitions
+     * @return void
+     */
+    public function overrideKonjunkturphaseDefinitionsForTesting(array $konjunkturphaseDefinitions): void
+    {
+        self::getInstance()->konjunkturphaseDefinitions = $konjunkturphaseDefinitions;
+    }
+
+    private static function initialize(): self
     {
         $year1 = new KonjunkturphaseDefinition(
             id: KonjunkturphasenId::create(1),
             type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
-            description: 'Die Wirtschaft wächst langsam aber stetig. Dadurch sind die KonsumentInnen in Kauflaune und steigern die Nachfrage deutlich.
-Die Notenbank ändert den Leitszins. Aus diesem Grund kann jede Person zu folgendem Zinnsatz Geld leihen: 5 %
-Das geliehene Geld muss innerhalb 20 Raten zurückgezahlt werden, d.h. es werden pro Jahr 5 % des Anfangsbetrags gefordert.
-Alle erhalten ihr jährliches Einkommen und begleichen ihre Verbindlichkeiten.',
-            additionalEvents: 'Immobilienmarkt - die jähliche Grundsteuer für Immobilien
-wird fällig. 1000 €/Immobilie müssen bezahlt werden.
-
-Der steigende Leitzins erhöht die Deflation, die Kaufkraft der Barreserven erhöht sich: Die auf den Karten angegebenen Kosten müssen in diesem Jahr nur zu 90 % beglichen werden.',
-            zinssatz: 5,
+            name: 'Erste Erholung',
+            description: 'Nachdem eine globale Krise die internationalen Lieferketten stark gestört hatte, ist der Konsum jedoch noch verhalten, da Haushalte und Unternehmen vorsichtig agieren. Unternehmen beginnen, ihre Lager aufzufüllen und Neueinstellungen zu tätigen. Die Zentralbank hält den Leitzins daher mit 1 % niedrig, um günstige Kredite zu ermöglichen und Investitionen sowie Konsumausgaben zu begünstigen. Dadurch bleiben Kredite günstig und die Unternehmen sowie Haushalte können leichter investieren und konsumieren.',
+            additionalEvents: '',
+            zeitsteine: new Zeitsteine(
+                [
+                    new ZeitsteinePerPlayer(2, 6),
+                    new ZeitsteinePerPlayer(3, 5),
+                    new ZeitsteinePerPlayer(4, 5),
+                ]
+            ),
             kompetenzbereiche: [
                 new KompetenzbereichDefinition(
                     name: CategoryId::BILDUNG_UND_KARRIERE,
-                    zeitsteinslots: 5,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 5),
+                        new ZeitslotsPerPlayer(3, 6),
+                        new ZeitslotsPerPlayer(4, 6),
+                    ])
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::SOZIALES_UND_FREIZEIT,
-                    zeitsteinslots: 4,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::INVESTITIONEN,
-                    zeitsteinslots: 4,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::JOBS,
-                    zeitsteinslots: 4,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
                 ),
             ],
             auswirkungen: [
                 new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::ZEITSTEINE,
+                    modifier: 1,
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LEBENSERHALTUNGSKOSTEN,
+                    modifier: 100
+                ),
+                new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::BILDUNG,
-                    modifier: '90 % der Kosten',
+                    modifier: 100
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::FREIZEIT,
-                    modifier: '90 % der Kosten',
+                    modifier: 100
                 ),
                 new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::INVESTITIONEN,
-                    modifier: '-1000 €/Immobilie',
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    modifier: 4
                 ),
                 new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::INVESTITIONEN,
-                    modifier: '90 % der Kosten',
+                    scope: AuswirkungScopeEnum::STOCKS_BONUS,
+                    modifier: 0
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    modifier: 1.40
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::REAL_ESTATE,
+                    modifier: 0
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::CRYPTO,
+                    modifier: 4
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::BONUS_INCOME,
+                    modifier: 0
                 ),
             ]
         );
 
         $year2 = new KonjunkturphaseDefinition(
-            id: KonjunkturphasenId::create(2),
-            type: KonjunkturphaseTypeEnum::REZESSION,
-            description: 'Der neue Präsident einer global bedeutsamen Volkswirtschaft provoziert einen Handelskrieg, was zu einer sinkenden Importnachfrage führt.
-Die Notenbank ändert den Leitszins. Aus diesem Grund kann jede Person zu folgendem Zinnsatz Geld leihen: 5 %
-Das geliehene Geld muss innerhalb 20 Raten zurückgezahlt werden, d.h. es werden pro Jahr 5 % des Anfangsbetrags gefordert.
-Alle erhalten ihr jährliches Einkommen und begleichen ihre Verbindlichkeiten.',
-            additionalEvents: 'An der Börse herrscht große Unsicherheit und der Aktienindex
-verliert zunehmend an Wert. Jede verliert 20 % ihrer Aktien.
-
-Die Regierung fördert eine neue Bilungsoffensive. Jede erhält - wenn gewünscht - eine Karte (Bildung/Karriere), ohne einen Zeitstein setzten zu müssen. ',
-            zinssatz: 5,
+            id: KonjunkturphasenId::create(1),
+            type: KonjunkturphaseTypeEnum::BOOM,
+            name: 'Frühe Expansion',
+            description: 'Niedrige Zinssätze der letzten Jahre führen dazu, dass Unternehmen und Verbraucher weiterhin großzügig investieren und konsumieren. Die Wirtschaft wächst stabil, die Stimmung bleibt optimistisch, und Arbeitsplätze sind sicher. Die Zentralbank erkennt die gute Lage und stabilisiert den Leitzins bei 2 %, sodass der Kreditzins weiterhin attraktiv bleibt.',
+            additionalEvents: '',
+            zeitsteine: new Zeitsteine(
+                [
+                    new ZeitsteinePerPlayer(2, 6),
+                    new ZeitsteinePerPlayer(3, 5),
+                    new ZeitsteinePerPlayer(4, 5),
+                ]
+            ),
             kompetenzbereiche: [
                 new KompetenzbereichDefinition(
                     name: CategoryId::BILDUNG_UND_KARRIERE,
-                    zeitsteinslots: 4,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::SOZIALES_UND_FREIZEIT,
-                    zeitsteinslots: 5,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::INVESTITIONEN,
-                    zeitsteinslots: 3,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::JOBS,
-                    zeitsteinslots: 3,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
                 ),
             ],
             auswirkungen: [
                 new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::BILDUNG,
-                    modifier: 'eine Karte ohne Zeitstein',
+                    scope: AuswirkungScopeEnum::ZEITSTEINE,
+                    modifier: 1,
                 ),
                 new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::INVESTITIONEN,
-                    modifier: 'Jede verliert 20 % ihrer Aktien.',
+                    scope: AuswirkungScopeEnum::LEBENSERHALTUNGSKOSTEN,
+                    modifier: 100
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::BILDUNG,
+                    modifier: 100
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::FREIZEIT,
+                    modifier: 100
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    modifier: 5
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::STOCKS_BONUS,
+                    modifier: 5
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    modifier: 1.60
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::REAL_ESTATE,
+                    modifier: 0
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::CRYPTO,
+                    modifier: 13
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::BONUS_INCOME,
+                    modifier: 0
                 ),
             ]
         );
 
         $year3 = new KonjunkturphaseDefinition(
-            id: KonjunkturphasenId::create(3),
-            type: KonjunkturphaseTypeEnum::BOOM,
-            description: 'Viele Staaten leiden immer noch unter den Folgen der Finanzkrise. Die Notenbank ändert den Leitszins. Aus diesem Grund kann jede Person zu folgendem Zinnsatz Geld leihen: 0 %
-Das geliehene Geld muss innerhalb 20 Raten zurückgezahlt werden, d.h. es werden pro Jahr 5 % des Anfangsbetrags gefordert.
-Alle erhalten ihr jährliches Einkommen und begleichen ihre Verbindlichkeiten.',
-            additionalEvents: 'Durch den niedrigen Leitzins erhöht sich die Geldmenge
-und damit auch die Lebenshaltungskosten, was zu einer
-Steigerung der Inflation führt.
-Jede zahlt 2.000 € zusätzlich.
-
-Eine Naturkatastrophe bricht über das Land hinein: Sturm
-Olga verwüstet ganze Städte. Die Bewohnerinnen werden
-dazu aufgerufen, bei den Räumungsarbeiten zu helfen (Kosten = 1 Zeitstein). Alle haben in dieser Runde nur 2 Zeitsteine zur Verfügung. ',
-            zinssatz: 0,
+            id: KonjunkturphasenId::create(1),
+            type: KonjunkturphaseTypeEnum::REZESSION,
+            name: 'Sanfte Abkühlung',
+            description: 'Die Wirtschaft verliert leicht an Schwung, da internationale Handelskonflikte und leichte Nachfragerückgänge erste Spuren hinterlassen. Unternehmen investieren vorsichtiger und verschieben größere Projekte. Die Zentralbank erkennt die schwache Entwicklung und senkt den Leitzins auf moderate 1  %, wodurch Kredite günstig bleiben und ein stärkerer Abschwung verhindert werden soll. Der Staat reagiert mit einem Bildungsgutschein, um die Qualifikation der Arbeitnehmer zu verbessern.',
+            additionalEvents: 'Bildungs-Bonus: 1 Bildungs- & Karrierepunkt',
+            zeitsteine: new Zeitsteine(
+                [
+                    new ZeitsteinePerPlayer(2, 5),
+                    new ZeitsteinePerPlayer(3, 4),
+                    new ZeitsteinePerPlayer(4, 4),
+                ]
+            ),
             kompetenzbereiche: [
                 new KompetenzbereichDefinition(
                     name: CategoryId::BILDUNG_UND_KARRIERE,
-                    zeitsteinslots: 3,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::SOZIALES_UND_FREIZEIT,
-                    zeitsteinslots: 6,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 5),
+                        new ZeitslotsPerPlayer(3, 6),
+                        new ZeitslotsPerPlayer(4, 6),
+                    ])
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::INVESTITIONEN,
-                    zeitsteinslots: 3,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 2),
+                        new ZeitslotsPerPlayer(3, 3),
+                        new ZeitslotsPerPlayer(4, 3),
+                    ])
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::JOBS,
-                    zeitsteinslots: 3,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 2),
+                        new ZeitslotsPerPlayer(3, 3),
+                        new ZeitslotsPerPlayer(4, 3),
+                    ])
                 ),
             ],
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::ZEITSTEINE,
-                    modifier: '-1 Zeitstein',
+                    modifier: 0,
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LEBENSERHALTUNGSKOSTEN,
-                    modifier: '-2.000 € zusätzlich',
-                )
+                    modifier: 100
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::BILDUNG,
+                    modifier: 100
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::FREIZEIT,
+                    modifier: 100
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    modifier: 4
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::STOCKS_BONUS,
+                    modifier: 0
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    modifier: 1.40
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::REAL_ESTATE,
+                    modifier: 0
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::CRYPTO,
+                    modifier: -6
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::BONUS_INCOME,
+                    modifier: 0
+                ),
             ]
         );
 
         $year4 = new KonjunkturphaseDefinition(
-            id: KonjunkturphasenId::create(3),
+            id: KonjunkturphasenId::create(1),
             type: KonjunkturphaseTypeEnum::DEPRESSION,
-            description: 'Viele Staaten leiden immer noch unter den Folgen der Finanzkrise. Die Notenbank ändert den Leitszins. Aus diesem Grund kann jede Person zu folgendem Zinnsatz Geld leihen: 0 %
-Das geliehene Geld muss innerhalb 20 Raten zurückgezahlt werden, d.h. es werden pro Jahr 5 % des Anfangsbetrags gefordert.
-Alle erhalten ihr jährliches Einkommen und begleichen ihre Verbindlichkeiten.',
-            additionalEvents: 'Durch den niedrigen Leitzins erhöht sich die Geldmenge
-und damit auch die Lebenshaltungskosten, was zu einer
-Steigerung der Inflation führt.
-Jede zahlt 2.000 € zusätzlich.
-
-Eine Naturkatastrophe bricht über das Land hinein: Sturm
-Olga verwüstet ganze Städte. Die Bewohnerinnen werden
-dazu aufgerufen, bei den Räumungsarbeiten zu helfen (Kosten = 1 Zeitstein). Alle haben in dieser Runde nur 2 Zeitsteine zur Verfügung. ',
-            zinssatz: 0,
+            name: 'Einsetzen der Deflation',
+            description: 'Die Wirtschaftskrise verschärft sich deutlich. Unternehmen finden kaum noch Abnehmer für ihre Produkte und Geschäfte reduzieren zunehmend ihre Preise, um damit Käufer anzulocken. Da immer weniger Menschen ihr Geld ausgeben, sinken die Preise weiter und es droht eine gefährliche Spirale. Die Zentralbank senkt die Zinsen nahezu auf null, doch die Zinssenkung zeigt kaum Wirkung. Die Verunsicherung am Markt lässt Immobilienpreise sinken.',
+            additionalEvents: 'Immobilienkauf und -verkauf -10 %',
+            zeitsteine: new Zeitsteine(
+                [
+                    new ZeitsteinePerPlayer(2, 4),
+                    new ZeitsteinePerPlayer(3, 3),
+                    new ZeitsteinePerPlayer(4, 3),
+                ]
+            ),
             kompetenzbereiche: [
                 new KompetenzbereichDefinition(
                     name: CategoryId::BILDUNG_UND_KARRIERE,
-                    zeitsteinslots: 3,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 2),
+                        new ZeitslotsPerPlayer(3, 3),
+                        new ZeitslotsPerPlayer(4, 3),
+                    ])
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::SOZIALES_UND_FREIZEIT,
-                    zeitsteinslots: 6,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 5),
+                        new ZeitslotsPerPlayer(3, 6),
+                        new ZeitslotsPerPlayer(4, 6),
+                    ])
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::INVESTITIONEN,
-                    zeitsteinslots: 3,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 2),
+                        new ZeitslotsPerPlayer(3, 3),
+                        new ZeitslotsPerPlayer(4, 3),
+                    ])
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::JOBS,
-                    zeitsteinslots: 3,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
                 ),
             ],
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::ZEITSTEINE,
-                    modifier: '-1 Zeitstein',
+                    modifier: -1,
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LEBENSERHALTUNGSKOSTEN,
-                    modifier: '-2.000 € zusätzlich',
-                )
+                    modifier: 95
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::BILDUNG,
+                    modifier: 95
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::FREIZEIT,
+                    modifier: 95
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    modifier: 3.25
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::STOCKS_BONUS,
+                    modifier: -15
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    modifier: 0.95
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::REAL_ESTATE,
+                    modifier: -10
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::CRYPTO,
+                    modifier: -22
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::BONUS_INCOME,
+                    modifier: 0
+                ),
             ]
         );
 
-        return [
+        self::$instance = new self([
             $year1,
             $year2,
             $year3,
             $year4,
-        ];
+        ]);
+
+        return self::$instance;
+    }
+
+    /**
+     * @return KonjunkturphaseDefinition[]
+     */
+    public static function getAllKonjunkturphasen(): array
+    {
+        return self::getInstance()->konjunkturphaseDefinitions;
     }
 
     /**

@@ -11,9 +11,13 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
  */
 class KompetenzbereichDefinition implements \JsonSerializable
 {
+    /**
+     * @param CategoryId $name
+     * @param Zeitslots $zeitslots
+     */
     public function __construct(
         public CategoryId $name,
-        public int        $zeitsteinslots = 0,
+        public Zeitslots  $zeitslots,
     )
     {
     }
@@ -25,7 +29,7 @@ class KompetenzbereichDefinition implements \JsonSerializable
     {
         return new self(
             name: CategoryId::from($in['name']),
-            zeitsteinslots: $in['zeitsteinslots'],
+            zeitslots: Zeitslots::fromArray($in['zeitslots']),
         );
     }
 
@@ -41,7 +45,7 @@ class KompetenzbereichDefinition implements \JsonSerializable
     {
         return [
             'name' => $this->name->value,
-            'zeitsteinslots' => $this->zeitsteinslots,
+            'zeitslots' => $this->zeitslots,
         ];
     }
 }

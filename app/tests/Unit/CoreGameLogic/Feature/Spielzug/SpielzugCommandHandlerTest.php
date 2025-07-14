@@ -56,7 +56,10 @@ use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Configuration\Configuration;
+use Domain\Definitions\Konjunkturphase\Dto\Zeitsteine;
+use Domain\Definitions\Konjunkturphase\Dto\ZeitsteinePerPlayer;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
+use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
@@ -77,13 +80,13 @@ describe('handleSkipCard', function () {
         /** @var TestCase $this */
         // Check the initial assumption of how many Zeitsteine the player has at the start of the test
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
 
         $this->coreGameLogic->handle($this->gameId,
             new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS - 1);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
     });
 
     it('Cannot skip twice', function () {
@@ -115,7 +118,7 @@ describe('handleSkipCard', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
+                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) +1,
                 ),
             ),
         ];
@@ -123,7 +126,7 @@ describe('handleSkipCard', function () {
 
         // Check the initial assumption of how many Zeitsteine the player has at the start of the test
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
             playerId: $this->players[0],
@@ -214,18 +217,18 @@ describe('handleActivateCard', function () {
         ]);
         // Check the initial assumption of how many Zeitsteine the player has at the start of the test
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
 
         $this->coreGameLogic->handle(
             $this->gameId,
-            ChangeKonjunkturphase::create()
+            ChangeKonjunkturphase::create()->withFixedKonjunkturphaseForTesting($this->konjunkturphaseDefinition)
         );
 
         $this->coreGameLogic->handle($this->gameId,
             ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS - 1);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) -1);
     });
 
     it('will consume a Zeitstein (later turns)', function () {
@@ -254,11 +257,12 @@ describe('handleActivateCard', function () {
             $this->gameId,
             ChangeKonjunkturphase::create()->withFixedCardOrderForTesting(
                 new CardOrder(pileId: $this->pileIdBildung, cards: [$skipThisCard, $cardToTest->id]),
-            ));
+            )->withFixedKonjunkturphaseForTesting($this->konjunkturphaseDefinition));
 
         // Check the initial assumption of how many Zeitsteine the player has at the start of the test
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS);
+
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
 
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
             playerId: $this->players[0],
@@ -276,7 +280,7 @@ describe('handleActivateCard', function () {
         ));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[1]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS - 1);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[1]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
     });
 
     it('will not consume a Zeitstein after skipping a Card', function () {
@@ -305,7 +309,7 @@ describe('handleActivateCard', function () {
 
         // Check the initial assumption of how many Zeitsteine the player has at the start of the test
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
 
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
             playerId: $this->players[0],
@@ -314,7 +318,7 @@ describe('handleActivateCard', function () {
 
         // Skipping will consume a Zeitstein
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS - 1);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
             playerId: $this->players[0],
@@ -323,7 +327,7 @@ describe('handleActivateCard', function () {
 
         // Expect no additional Zeitstein being used
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS - 1);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
     });
 
     it('Will not activate a card after skipping in a different category', function () {
@@ -700,10 +704,10 @@ describe('handleRequestJobOffers', function () {
         ];
         $this->addCardsOnTopOfPile($jobs, PileId::JOBS_PHASE_1);
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
         $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS - 1);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
     });
 });
 
@@ -789,7 +793,7 @@ describe('handleAcceptJobOffer', function () {
         // Reaffirm the "normal" number of Zeitsteine (in case we change something and forget to adjust this test)
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
 
         // Add the job we want to accept
         CardFinder::getInstance()->overrideCardsForTesting([
@@ -817,24 +821,38 @@ describe('handleAcceptJobOffer', function () {
         // Expect two fewer Zeitsteine (-1 for the RequestJobOffers and one should now be permanently unavailable)
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS - 2);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 2);
 
         // Start a new Konjunkturphase to see if the Zeitstein change persists
+        $testKonjunkturPhase = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(161),
+            type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
+            name: 'Aufschwung',
+            description: 'no changes',
+            additionalEvents: '',
+            zeitsteine: new Zeitsteine(
+                [
+                    new ZeitsteinePerPlayer(2, 6),
+                    new ZeitsteinePerPlayer(3, 5),
+                    new ZeitsteinePerPlayer(4, 5),
+                ]
+            ),
+            kompetenzbereiche: [],
+            auswirkungen: []
+        );
+
+        KonjunkturphaseFinder::getInstance()->overrideKonjunkturphaseDefinitionsForTesting([
+            $this->konjunkturphaseDefinition,
+            $testKonjunkturPhase
+        ]);
+
         $this->coreGameLogic->handle(
             $this->gameId,
-            ChangeKonjunkturphase::create()->withFixedKonjunkturphaseForTesting(new KonjunkturphaseDefinition(
-                id: KonjunkturphasenId::create(161),
-                type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
-                description: 'no changes',
-                additionalEvents: '',
-                zinssatz: 5,
-                kompetenzbereiche: [],
-                auswirkungen: []
-            )));
+            ChangeKonjunkturphase::create()->withFixedKonjunkturphaseForTesting($testKonjunkturPhase));
 
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS - 1);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
     });
 
     it('throws an exception if job requirements are not met', function () {
@@ -1221,7 +1239,7 @@ describe('handleDoMinijob', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
+                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) +1,
                 ),
             ),
         ];
@@ -1311,7 +1329,7 @@ describe('handleEndSpielzug', function () {
                 description: '...',
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-200),
-                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1, // Remove all Zeitsteine
+                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) +1, // Remove all Zeitsteine
                     bildungKompetenzsteinChange: +1,
                 ),
             );
@@ -1394,7 +1412,7 @@ describe('handleEndSpielzug', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
+                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) +1,
                 ),
             ),
             "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
@@ -1403,7 +1421,7 @@ describe('handleEndSpielzug', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
+                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) +1,
                 ),
             ),
         ];
@@ -1439,7 +1457,7 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
+                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
             "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
@@ -1448,7 +1466,7 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
+                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
         ];
@@ -1497,7 +1515,7 @@ describe('handleCompleteMoneysheetForPlayer', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
+                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
             "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
@@ -1506,7 +1524,7 @@ describe('handleCompleteMoneysheetForPlayer', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
+                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
         ];
@@ -1557,7 +1575,7 @@ describe('handleCompleteMoneysheetForPlayer', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
+                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
             "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
@@ -1566,7 +1584,7 @@ describe('handleCompleteMoneysheetForPlayer', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
+                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
         ];
@@ -1861,7 +1879,7 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
+                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
             "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
@@ -1870,7 +1888,7 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
+                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
         ];
@@ -1911,7 +1929,7 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
+                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
             "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
@@ -1920,7 +1938,7 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 * Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS + 1,
+                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
         ];

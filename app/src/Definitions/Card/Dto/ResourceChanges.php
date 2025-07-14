@@ -24,8 +24,6 @@ final readonly class ResourceChanges implements JsonSerializable
      *     zeitsteineChange: int,
      *     bildungKompetenzsteinChange: int,
      *     freizeitKompetenzsteinChange: int,
-     *     newErwerbseinkommen: int,
-     *     erwerbseinkommenChangeInPercent: int,
      * } $values
      */
     public static function fromArray(array $values): self

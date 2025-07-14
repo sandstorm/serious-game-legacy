@@ -30,6 +30,7 @@ use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Configuration\Configuration;
+use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Tests\ComponentWithForm;
 use Tests\TestCase;
 
@@ -653,7 +654,7 @@ describe('getOpenRatesForLoan', function () {
                 resourceChanges: new ResourceChanges(
                     // add the money per round the player loses
                     guthabenChange: new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE),
-                    zeitsteineChange: -Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_THREE_OR_FOUR_PLAYERS
+                    zeitsteineChange: -1 * ($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1)
                 ),
             );
         }
@@ -664,6 +665,11 @@ describe('getOpenRatesForLoan', function () {
             PileId::MINIJOBS_PHASE_1->value => $this->cardsMinijobs,
         ];
         CardFinder::getInstance()->overrideCardsForTesting($testCards);
+
+        // make sure we always use the same konjunkturphase definition for each round
+        KonjunkturphaseFinder::getInstance()->overrideKonjunkturphaseDefinitionsForTesting([
+            $this->konjunkturphaseDefinition
+        ]);
 
         // start new konjunkturphase to use the new cards
         $this->coreGameLogic->handle(

@@ -1,6 +1,7 @@
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
 @use('Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState')
 @use('Domain\CoreGameLogic\Feature\MoneySheet\State\MoneySheetState')
+@use('Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum')
 
 @props([
     '$loans' => null,
@@ -44,7 +45,7 @@
             </div>
             <div class="take-out-loan__info">
                 <p>
-                    Aktueller {{ KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->zinssatz }}% Zins.
+                    Aktueller {{ KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->modifier }}% Zins.
                 </p>
                 <p>
                     Guthaben: {!! PlayerState::getGuthabenForPlayer($gameEvents, $playerId)->format() !!}

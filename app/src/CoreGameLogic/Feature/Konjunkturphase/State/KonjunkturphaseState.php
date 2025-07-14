@@ -6,42 +6,18 @@ namespace Domain\CoreGameLogic\Feature\Konjunkturphase\State;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\ZeitsteineForPlayer;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Year;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasStartedKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerWasMarkedAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
-use Domain\Definitions\Configuration\Configuration;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 
 class KonjunkturphaseState
 {
-    /**
-     * @return ZeitsteineForPlayer[]
-     */
-    public static function calculateInitialZeitsteineForPlayers(GameEvents $gameEvents): array
-    {
-        $playerIds = $gameEvents->findFirst(GameWasStarted::class)->playerOrdering;
-        $numberOfPlayers = count($playerIds);
-        $numberOfZeitsteine = match($numberOfPlayers) {
-            2 => Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS,
-            3, 4 => Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_THREE_OR_FOUR_PLAYERS,
-            default => throw new \RuntimeException('Number of players not supported', 1748866080)
-        };
-        $zeitsteineForPlayers = [];
-        foreach ($playerIds as $playerId) {
-            $zeitsteineForPlayers[$playerId->value] = new ZeitsteineForPlayer(
-                $playerId,
-                $numberOfZeitsteine,
-            );
-        }
-        return $zeitsteineForPlayers;
-    }
-
     /**
      * Returns true if the condition for the end of the current Konjunkturphase is met.
      * Currently this means no player has any Zeitsteine left. This is used to decide if
@@ -127,5 +103,13 @@ class KonjunkturphaseState
                 && KonjunkturphaseState::isPlayerReadyForKonjunkturphaseChange($gameEvents, $player->playerId);
         }
         return $areAllPlayersReady;
+    }
+
+    public static function getInitialZeitsteineForCurrentKonjunkturphase(GameEvents $gameEvents): int
+    {
+        $amountOfPlayers = PreGameState::getAmountOfPlayers($gameEvents);
+        $konjunkturphasenId = $gameEvents->findLast(KonjunkturphaseWasChanged::class)->id;
+        $konjunkturphaseDefinition = KonjunkturphaseFinder::findKonjunkturphaseById($konjunkturphasenId);
+        return $konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer($amountOfPlayers);
     }
 }
