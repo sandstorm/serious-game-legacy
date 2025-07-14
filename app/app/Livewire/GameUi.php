@@ -10,12 +10,14 @@ use App\Livewire\Traits\HasGamePhase;
 use App\Livewire\Traits\HasInvestitionen;
 use App\Livewire\Traits\HasJobOffer;
 use App\Livewire\Traits\HasKonjunkturphase;
+use App\Livewire\Traits\HasLebenszielphase;
 use App\Livewire\Traits\HasLog;
 use App\Livewire\Traits\HasNotification;
 use App\Livewire\Traits\HasPlayerDetails;
 use App\Livewire\Traits\HasPreGamePhase;
 use App\Livewire\Traits\HasMoneySheet;
 use App\Livewire\Traits\HasMinijob;
+use App\Livewire\Traits\HasQuitJob;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
@@ -40,6 +42,8 @@ class GameUi extends Component
     use HasLog;
     use HasMinijob;
     use HasInvestitionen;
+    use HasLebenszielphase;
+    use HasQuitJob;
 
     // injected from outside -> game-play.blade.php
     // Not the current player, but the player connected to THIS SESSION
