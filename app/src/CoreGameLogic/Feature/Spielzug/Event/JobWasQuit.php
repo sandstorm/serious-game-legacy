@@ -9,7 +9,7 @@ use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
-final readonly class JobWasQuited implements GameEventInterface
+final readonly class JobWasQuit implements GameEventInterface
 {
     public function __construct(
         public PlayerId $playerId,

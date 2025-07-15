@@ -7,6 +7,7 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerColorWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
 use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
@@ -143,18 +144,31 @@ class PlayerState
     /**
      * Returns the JobCardDefinition of the currently active job for the specified player.
      *
-     * @param GameEvents $stream The collection of game events to be analyzed.
+     * @param GameEvents $gameEvents The collection of game events to be analyzed.
      * @param PlayerId $playerId The ID of the player
      * @return JobCardDefinition|null The last job accepted by the player, or null if none exists.
      */
-    public static function getJobForPlayer(GameEvents $stream, PlayerId $playerId): ?JobCardDefinition
+    public static function getJobForPlayer(GameEvents $gameEvents, PlayerId $playerId): ?JobCardDefinition
     {
-        /** @var JobOfferWasAccepted|null $jobOfferWasAcceptedEvent */
-        $jobOfferWasAcceptedEvent = $stream->findLastOrNullWhere(fn($e) => $e instanceof JobOfferWasAccepted && $e->playerId->equals($playerId));
-        if ($jobOfferWasAcceptedEvent === null) {
+        // Find all events AFTER the player accepted the last job (returns null, if player never accepted a job)
+        $eventsAfterJobWasAccepted = $gameEvents->findAllAfterLastOrNullWhere(
+            fn ($event) => $event instanceof JobOfferWasAccepted && $event->playerId->equals($playerId));
+
+        // player never accepted a job
+        if ($eventsAfterJobWasAccepted === null) {
             return null;
         }
 
+        $jobWasQuitEvent = $eventsAfterJobWasAccepted->findLastOrNullWhere(fn ($event) => $event instanceof JobWasQuit && $event->playerId->equals($playerId));
+
+        // player quit the last job
+        if ($jobWasQuitEvent !== null) {
+            return null;
+        }
+
+        /** @var  JobOfferWasAccepted $jobOfferWasAcceptedEvent */
+        $jobOfferWasAcceptedEvent = $gameEvents->findLastOrNullWhere(fn ($event) => $event instanceof JobOfferWasAccepted && $event->playerId->equals($playerId));
+        // Otherwise, return the active job definition
         /** @var JobCardDefinition $jobDefinition */
         $jobDefinition = CardFinder::getInstance()->getCardById($jobOfferWasAcceptedEvent->cardId);
         return $jobDefinition;

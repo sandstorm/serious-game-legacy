@@ -8,7 +8,7 @@ use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerAJobValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuited;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use RuntimeException;
@@ -43,7 +43,7 @@ class QuitJobAktion extends Aktion
             throw new RuntimeException('Cannot Quit Job: Du hast keinen aktiven Job', 1752480505);
         }
         return GameEventsToPersist::with(
-            new JobWasQuited($playerId)
+            new JobWasQuit($playerId)
         );
     }
 }
