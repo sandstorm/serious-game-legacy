@@ -37,11 +37,6 @@ class QuitJobAktion extends Aktion
             throw new RuntimeException('Cannot Quit Job: ' . $result->reason, 1752480505);
         }
 
-        $job = PlayerState::getJobForPlayer($gameEvents, $playerId);
-
-        if ($job === null) {
-            throw new RuntimeException('Cannot Quit Job: Du hast keinen aktiven Job', 1752480505);
-        }
         return GameEventsToPersist::with(
             new JobWasQuit($playerId)
         );
