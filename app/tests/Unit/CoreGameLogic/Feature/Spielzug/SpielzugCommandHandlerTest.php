@@ -31,7 +31,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Dto\LoanData;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuited;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasCorrected;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasEntered;
@@ -902,7 +902,7 @@ it('saves the correct Job and Gehalt', function () {
 
         $events = $this->coreGameLogic->getGameEvents($this->gameId);
 
-        $jobQuitEvent = $events->findLastOrNullWhere(fn($e) => $e instanceof JobWasQuited && $e->playerId->equals($this->players[0]));
+        $jobQuitEvent = $events->findLastOrNullWhere(fn($e) => $e instanceof JobWasQuit && $e->playerId->equals($this->players[0]));
         expect($jobQuitEvent)->not->toBeNull();
             //->and($jobQuitEvent->zeitsteinZurueck)->toBeTrue(); // ToDo: Hier fehlt der Modifier für den Zeitstein den man beim Job kündigen zurück bekommt
     });

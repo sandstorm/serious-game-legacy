@@ -4,15 +4,29 @@ declare(strict_types=1);
 
 namespace App\Livewire\Traits;
 
+use App\Livewire\ValueObject\NotificationTypeEnum;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\QuitJobAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 
 trait HasQuitJob
 {
-    public bool $quitJobIsVisible = false;
+    public bool $isQuitJobVisible = false;
 
-    public function quitJob(): bool
+    public function quitJob(): void
     {
         $aktion = new QuitJobAktion();
-        return $aktion->validate($this->myself, $this->gameEvents)->canExecute;
+        $validationResult = $aktion->validate($this->myself,$this->gameEvents);
+        if (!$validationResult->canExecute) {
+            $this->showNotification(
+                $validationResult->reason,
+                NotificationTypeEnum::ERROR
+            );
+            return;
+        }
+
+    $this->coreGameLogic->handle($this->gameId, QuitJob::create($this->myself));
+    $this->isQuitJobVisible = true;
+    $this->broadcastNotify();
     }
 }

@@ -11,7 +11,6 @@
 
 @section('content')
     <x-money-sheet.income.money-sheet-income :money-sheet="$moneySheet" :player-id="$playerId" :game-events="$gameEvents" />
-    <button type="button" class="button button--type-primary" wire:click="quitJob()">Job kündigen</button>
 @endsection
 
 @section('footer')
