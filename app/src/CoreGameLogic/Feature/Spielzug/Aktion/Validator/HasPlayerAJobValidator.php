@@ -14,12 +14,11 @@ final class HasPlayerAJobValidator extends AbstractValidator
 {
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
-        $playersJob = PlayerState::getJobForPlayer($gameEvents, $playerId);
 
-        if ($playersJob !== null) {
+        if (PlayerState::getJobForPlayer($gameEvents, $playerId) === null) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Du hast schon einen Job'
+                reason: 'Du hast keinen aktiven Job'
             );
         }
         return parent::validate($gameEvents, $playerId);
