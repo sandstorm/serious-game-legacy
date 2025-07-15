@@ -32,13 +32,13 @@ beforeEach(function () {
 });
 
 describe('getJobForPlayer', function () {
-    it('Player never accepted a job', function () {
+    it('returns null if player never accepted a job', function () {
         // expect returns null
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getJobForPlayer($stream, $this->players[0]))->toBeNull();
     });
 
-    it('Player accepted a job and never quit', function () {
+    it('returns a job if player accepted a job and never quit', function () {
         // expect return the correct JobCardDefinition
         CardFinder::getInstance()->overrideCardsForTesting([
             PileId::JOBS_PHASE_1->value => [
@@ -59,10 +59,11 @@ describe('getJobForPlayer', function () {
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('testJob')));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getJobForPlayer($stream, $this->players[0]))->toBe(CardFinder::getInstance()->getCardById(CardId::fromString('testJob')));
+        expect(PlayerState::getJobForPlayer($stream, $this->players[1]))->toBeNull()
+            ->and(PlayerState::getJobForPlayer($stream, $this->players[0]))->toBe(CardFinder::getInstance()->getCardById(CardId::fromString('testJob')));
     });
 
-    it('Player accepted a job and then quit', function () {
+    it('returns null if Player accepted a job and then quit', function () {
         // expect returns null
         CardFinder::getInstance()->overrideCardsForTesting([
             PileId::JOBS_PHASE_1->value => [
@@ -81,15 +82,14 @@ describe('getJobForPlayer', function () {
 
         $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('testJob')));
-
         $this->coreGameLogic->handle($this->gameId, QuitJob::create($this->players[0]));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getJobForPlayer($stream, $this->players[0]))->toBeNull();
-
+        expect(PlayerState::getJobForPlayer($stream, $this->players[1]))->toBeNull()
+            ->and(PlayerState::getJobForPlayer($stream, $this->players[0]))->toBeNull();
     });
 
-    it('Player accepted a job, quit the job and accept a new job', function () {
+    it('returns a new job if Player accepted a job, quit the job and accept a new job', function () {
         // expect returns the latest accepted JobCardDefinition, from the new Job
         CardFinder::getInstance()->overrideCardsForTesting([
             PileId::JOBS_PHASE_1->value => [
@@ -123,7 +123,6 @@ describe('getJobForPlayer', function () {
             )];
 
         $this->addCardsOnTopOfPile($minijobs, PileId::MINIJOBS_PHASE_1);
-
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[1]));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
 
@@ -145,9 +144,9 @@ describe('getJobForPlayer', function () {
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('testJob2')));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getJobForPlayer($stream, $this->players[0]))->toBe(CardFinder::getInstance()->getCardById(CardId::fromString('testJob2')));
+        expect(PlayerState::getJobForPlayer($stream, $this->players[0]))->toBe(CardFinder::getInstance()
+            ->getCardById(CardId::fromString('testJob2')));
     });
-
 });
 
 describe('getZeitsteineForPlayer', function () {

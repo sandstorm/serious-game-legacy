@@ -7,16 +7,14 @@ namespace App\Livewire\Traits;
 use App\Livewire\ValueObject\NotificationTypeEnum;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\QuitJobAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
-use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 
 trait HasQuitJob
 {
-    public bool $isQuitJobVisible = false;
 
     public function quitJob(): void
     {
         $aktion = new QuitJobAktion();
-        $validationResult = $aktion->validate($this->myself,$this->gameEvents);
+        $validationResult = $aktion->validate($this->myself, $this->gameEvents);
         if (!$validationResult->canExecute) {
             $this->showNotification(
                 $validationResult->reason,
@@ -24,9 +22,7 @@ trait HasQuitJob
             );
             return;
         }
-
-    $this->coreGameLogic->handle($this->gameId, QuitJob::create($this->myself));
-    $this->isQuitJobVisible = true;
-    $this->broadcastNotify();
+        $this->coreGameLogic->handle($this->gameId, QuitJob::create($this->myself));
+        $this->broadcastNotify();
     }
 }
