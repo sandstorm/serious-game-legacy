@@ -5,12 +5,20 @@ namespace Tests\CoreGameLogic\Feature\Player\State;
 
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\CardFinder;
+use Domain\Definitions\Card\Dto\JobCardDefinition;
+use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
+use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
@@ -21,6 +29,125 @@ use Tests\TestCase;
 
 beforeEach(function () {
     $this->setupBasicGame();
+});
+
+describe('getJobForPlayer', function () {
+    it('Player never accepted a job', function () {
+        // expect returns null
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getJobForPlayer($stream, $this->players[0]))->toBeNull();
+    });
+
+    it('Player accepted a job and never quit', function () {
+        // expect return the correct JobCardDefinition
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::JOBS_PHASE_1->value => [
+                "testJob" => new JobCardDefinition(
+                    id: new CardId('testJob'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'testtestetest',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                    ),
+                ),
+            ]
+        ]);
+
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('testJob')));
+
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getJobForPlayer($stream, $this->players[0]))->toBe(CardFinder::getInstance()->getCardById(CardId::fromString('testJob')));
+    });
+
+    it('Player accepted a job and then quit', function () {
+        // expect returns null
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::JOBS_PHASE_1->value => [
+                "testJob" => new JobCardDefinition(
+                    id: new CardId('testJob'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'testtestetest',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                    ),
+                ),
+            ]
+        ]);
+
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('testJob')));
+
+        $this->coreGameLogic->handle($this->gameId, QuitJob::create($this->players[0]));
+
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getJobForPlayer($stream, $this->players[0]))->toBeNull();
+
+    });
+
+    it('Player accepted a job, quit the job and accept a new job', function () {
+        // expect returns the latest accepted JobCardDefinition, from the new Job
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::JOBS_PHASE_1->value => [
+                "testJob" => new JobCardDefinition(
+                    id: new CardId('testJob'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'testtestetest',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                    ),
+                ),
+            ]
+        ]);
+
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('testJob')));
+        $this->coreGameLogic->handle($this->gameId, QuitJob::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+
+        $minijobs = [
+            "testMinijob" => new MinijobCardDefinition(
+                id: new CardId('testMinijob'),
+                pileId: PileId::MINIJOBS_PHASE_1,
+                title: 'Softwaretester',
+                description: 'Du arbeitest nebenbei als Softwaretester und bekommst einmalig Gehalt',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+500),
+                ),
+            )];
+
+        $this->addCardsOnTopOfPile($minijobs, PileId::MINIJOBS_PHASE_1);
+
+        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[1]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
+
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::JOBS_PHASE_1->value => [
+                "testJob2" => new JobCardDefinition(
+                    id: new CardId('testJob2'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'testtestetest',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                    ),
+                ),
+            ]
+        ]);
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('testJob2')));
+
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getJobForPlayer($stream, $this->players[0]))->toBe(CardFinder::getInstance()->getCardById(CardId::fromString('testJob2')));
+    });
+
 });
 
 describe('getZeitsteineForPlayer', function () {
