@@ -832,54 +832,59 @@ describe('handleAcceptJobOffer', function () {
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS - 1);
     });
 
-it('throws an exception if job requirements are not met', function () {
-    /** @var TestCase $this */
+    it('throws an exception if job requirements are not met', function () {
+        /** @var TestCase $this */
 
-    $this->addCardsOnTopOfPile([
-        "t0" => new JobCardDefinition(
-            id: new CardId('t0'),
-            pileId: PileId::JOBS_PHASE_1,
-            title: 'offered 1',
-            description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-            gehalt: new MoneyAmount(34000),
-            requirements: new JobRequirements(
-                zeitsteine: 1,
-                bildungKompetenzsteine: 4,
-            ),
-        ),
-    ], PileId::JOBS_PHASE_1);
-
-    // Request and accept the job
-    $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
-    $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('t0')));
-})->throws(RuntimeException::class, 'Cannot Accept Job Offer: Du erfüllst nicht die Voraussetzungen für diesen Job', 1749043636);
-
-it('saves the correct Job and Gehalt', function () {
-    /** @var TestCase $this */
-    CardFinder::getInstance()->overrideCardsForTesting([
-        PileId::JOBS_PHASE_1->value => [
-            "j0" => new JobCardDefinition(
-                id: new CardId('j0'),
+        $this->addCardsOnTopOfPile([
+            "t0" => new JobCardDefinition(
+                id: new CardId('t0'),
                 pileId: PileId::JOBS_PHASE_1,
                 title: 'offered 1',
                 description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
                 gehalt: new MoneyAmount(34000),
                 requirements: new JobRequirements(
                     zeitsteine: 1,
+                    bildungKompetenzsteine: 4,
                 ),
             ),
-        ]
-    ]);
+        ], PileId::JOBS_PHASE_1);
 
-    $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
-    $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j0')));
+        // Request and accept the job
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('t0')));
+    })->throws(
+        RuntimeException::class,
+        'Cannot Accept Job Offer: Du erfüllst nicht die Voraussetzungen für diesen Job',
+        1749043636
+    );
 
-    /** @var GameEvents $stream */
-    $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-    expect($stream->FindLast(JobOfferWasAccepted::class)->gehalt)->toEqual(new MoneyAmount(34000))
-        ->and($stream->FindLast(JobOfferWasAccepted::class)->cardId->value)->toBe('j0');
-});
-    it('returns 1 Zeitstein to the player after quitting the job (direkt nach Abschluss)', function () {
+    it('saves the correct Job and Gehalt', function () {
+        /** @var TestCase $this */
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::JOBS_PHASE_1->value => [
+                "j0" => new JobCardDefinition(
+                    id: new CardId('j0'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'offered 1',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                    ),
+                ),
+            ]
+        ]);
+
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j0')));
+
+        /** @var GameEvents $stream */
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect($stream->FindLast(JobOfferWasAccepted::class)->gehalt)->toEqual(new MoneyAmount(34000))
+            ->and($stream->FindLast(JobOfferWasAccepted::class)->cardId->value)->toBe('j0');
+    });
+
+    it('returns 1 Zeitstein to the player after quitting the job', function () {
         /** @var TestCase $this */
         CardFinder::getInstance()->overrideCardsForTesting([
             PileId::JOBS_PHASE_1->value => [
@@ -897,14 +902,13 @@ it('saves the correct Job and Gehalt', function () {
         ]);
         $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('testJob')));
-
         $this->coreGameLogic->handle($this->gameId, QuitJob::create($this->players[0]));
 
         $events = $this->coreGameLogic->getGameEvents($this->gameId);
 
         $jobQuitEvent = $events->findLastOrNullWhere(fn($e) => $e instanceof JobWasQuit && $e->playerId->equals($this->players[0]));
         expect($jobQuitEvent)->not->toBeNull();
-            //->and($jobQuitEvent->zeitsteinZurueck)->toBeTrue(); // ToDo: Hier fehlt der Modifier für den Zeitstein den man beim Job kündigen zurück bekommt
+        //->and($jobQuitEvent->zeitsteinZurueck)->toBeTrue(); // ToDo: Hier fehlt der Modifier für den Zeitstein den man beim Job kündigen zurück bekommt
     });
 });
 
@@ -923,7 +927,7 @@ describe('handleQuitJob', function () {
         1752480505
     );
 
-    it('throws an exception, when the player has no activ job', function () {
+    it('throws an exception, when the player has no job', function () {
         /** @var TestCase $this */
         /** @var GameEvents $stream */
 
@@ -931,7 +935,7 @@ describe('handleQuitJob', function () {
         );
     })->throws(
         RuntimeException::class,
-        'Cannot Quit Job: Du hast keinen aktiven Job',
+        'Cannot Quit Job: Du hast keinen Job',
         1752480505
     );
 });
