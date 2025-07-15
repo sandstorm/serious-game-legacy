@@ -21,7 +21,7 @@ readonly class LebenszielDefinition implements JsonSerializable
     }
 
     /**
-     * @param array $values
+     * @param array<mixed> $values
      * @return self
      */
     public static function fromArray(array $values): self
@@ -43,7 +43,7 @@ readonly class LebenszielDefinition implements JsonSerializable
     }
 
     /**
-     * @return array
+     * @return array<mixed>
      */
     public function jsonSerialize(): array
     {

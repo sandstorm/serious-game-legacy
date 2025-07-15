@@ -14,9 +14,9 @@ final class HasPlayerAJobValidator extends AbstractValidator
 {
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
-        $currentPlayer = CurrentPlayerAccessor::forStream($gameEvents);
-        $playersJob = PlayerState::getJobForPlayer($gameEvents, $currentPlayer);
-        if (!$currentPlayer->equals($playerId) && $playersJob) {
+        $playersJob = PlayerState::getJobForPlayer($gameEvents, $playerId);
+
+        if ($playersJob !== null) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: 'Du hast schon einen Job'
