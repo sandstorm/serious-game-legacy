@@ -5,7 +5,7 @@
 
 @section('content')
     {{$playerDetails?->name}} ({{$playerDetails?->playerId->value}}) <br/>
-    Phase: {{$playerDetails?->lebenszielPhaseDefinition->phase}} <br/>
+    Phase: {{$playerDetails?->currentLebenszielPhase}} <br/>
     Guthaben: {{$playerDetails?->guthaben}}€ <br/>
     Zeitsteine: {{$playerDetails?->zeitsteine}} <br/>
     Kompetenzen Bildung & Karriere: {{$playerDetails?->kompetenzsteineBildung}} <br/>
