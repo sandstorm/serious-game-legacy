@@ -12,6 +12,12 @@ enum AuswirkungScopeEnum: string
     case FREIZEIT = 'Freizeit & Sozial';
     case INVESTITIONEN = 'Investitionen';
     case ERWEBSEINKOMMEN = 'Erwerbseinkommen';
+    case LOANS_INTEREST_RATE = 'Kreditzins';
+    case STOCKS_BONUS = 'Aktien Kursbonus';
+    case DIVIDEND = 'Dividende';
+    case REAL_ESTATE = 'Immobilien';
+    case CRYPTO = 'Crypto Kursbonus';
+    case BONUS_INCOME = 'Bonuseinkommen';
 
     public static function fromString(string $value): self
     {
@@ -22,7 +28,13 @@ enum AuswirkungScopeEnum: string
             'Freizeit & Sozial' => self::FREIZEIT,
             'Investitionen' => self::INVESTITIONEN,
             'Erwerbseinkommen' => self::ERWEBSEINKOMMEN,
-            default => throw new \InvalidArgumentException("Invalid Kompetenzbereich: $value"),
+            'Kreditzins' => self::LOANS_INTEREST_RATE,
+            'Aktien Kursbonus' => self::STOCKS_BONUS,
+            'Dividende' => self::DIVIDEND,
+            'Immobilien' => self::REAL_ESTATE,
+            'Crypto Kursbonus' => self::CRYPTO,
+            'Bonuseinkommen' => self::BONUS_INCOME,
+            default => throw new \InvalidArgumentException("Invalid value: $value"),
         };
     }
 }

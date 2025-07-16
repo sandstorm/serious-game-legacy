@@ -31,13 +31,16 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\PileId;
-use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Insurance\InsuranceDefinition;
 use Domain\Definitions\Insurance\InsuranceFinder;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 use Domain\Definitions\Insurance\ValueObject\InsuranceTypeEnum;
 use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
 use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
+use Domain\Definitions\Konjunkturphase\Dto\Zeitslots;
+use Domain\Definitions\Konjunkturphase\Dto\ZeitslotsPerPlayer;
+use Domain\Definitions\Konjunkturphase\Dto\Zeitsteine;
+use Domain\Definitions\Konjunkturphase\Dto\ZeitsteinePerPlayer;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
@@ -178,53 +181,93 @@ abstract class TestCase extends BaseTestCase
         $this->konjunkturphaseDefinition = new KonjunkturphaseDefinition(
             id: KonjunkturphasenId::create(1),
             type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
-            description: 'Die Wirtschaft wächst langsam aber stetig. Dadurch sind die KonsumentInnen in Kauflaune und steigern die Nachfrage deutlich.
-Die Notenbank ändert den Leitszins. Aus diesem Grund kann jede Person zu folgendem Zinnsatz Geld leihen: 5 %
-Das geliehene Geld muss innerhalb 20 Raten zurückgezahlt werden, d.h. es werden pro Jahr 5 % des Anfangsbetrags gefordert.
-Alle erhalten ihr jährliches Einkommen und begleichen ihre Verbindlichkeiten.',
-            additionalEvents: 'Immobilienmarkt - die jähliche Grundsteuer für Immobilien
-wird fällig. 1000 €/Immobilie müssen bezahlt werden.
-
-Der steigende Leitzins erhöht die Deflation, die Kaufkraft der Barreserven erhöht sich: Die auf den Karten angegebenen Kosten müssen in diesem Jahr nur zu 90 % beglichen werden.',
-            zinssatz: 5,
+            name: 'Erste Erholung',
+            description: 'Nachdem eine globale Krise die internationalen Lieferketten stark gestört hatte, ist der Konsum jedoch noch verhalten, da Haushalte und Unternehmen vorsichtig agieren. Unternehmen beginnen, ihre Lager aufzufüllen und Neueinstellungen zu tätigen. Die Zentralbank hält den Leitzins daher mit 1 % niedrig, um günstige Kredite zu ermöglichen und Investitionen sowie Konsumausgaben zu begünstigen. Dadurch bleiben Kredite günstig und die Unternehmen sowie Haushalte können leichter investieren und konsumieren.',
+            additionalEvents: '',
+            zeitsteine: new Zeitsteine(
+                [
+                    new ZeitsteinePerPlayer(2, 6),
+                    new ZeitsteinePerPlayer(3, 5),
+                    new ZeitsteinePerPlayer(4, 5),
+                ]
+            ),
             kompetenzbereiche: [
                 new KompetenzbereichDefinition(
                     name: CategoryId::BILDUNG_UND_KARRIERE,
-                    zeitsteinslots: 3,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 2),
+                        new ZeitslotsPerPlayer(4, 2),
+                    ])
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::SOZIALES_UND_FREIZEIT,
-                    zeitsteinslots: 3,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::INVESTITIONEN,
-                    zeitsteinslots: 2,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
                 ),
                 new KompetenzbereichDefinition(
                     name: CategoryId::JOBS,
-                    zeitsteinslots: 4,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
                 ),
             ],
             auswirkungen: [
                 new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::ZEITSTEINE,
+                    modifier: 1,
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LEBENSERHALTUNGSKOSTEN,
+                    modifier: 100
+                ),
+                new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::BILDUNG,
-                    modifier: '90 % der Kosten',
+                    modifier: 100
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::FREIZEIT,
-                    modifier: '90 % der Kosten',
+                    modifier: 100
                 ),
                 new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::INVESTITIONEN,
-                    modifier: '-1000 €/Immobilie',
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    modifier: 4
                 ),
                 new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::INVESTITIONEN,
-                    modifier: '90 % der Kosten',
+                    scope: AuswirkungScopeEnum::STOCKS_BONUS,
+                    modifier: 0
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    modifier: 1.40
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::REAL_ESTATE,
+                    modifier: 0
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::CRYPTO,
+                    modifier: 4
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::BONUS_INCOME,
+                    modifier: 0
                 ),
             ]
         );
-
         $this->coreGameLogic->handle(
             $this->gameId,
             ChangeKonjunkturphase::create()

@@ -6,6 +6,9 @@ namespace Domain\Definitions\Konjunkturphase;
 
 use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
 use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
+use Domain\Definitions\Konjunkturphase\Dto\Zeitsteine;
+use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 
@@ -17,21 +20,51 @@ class KonjunkturphaseDefinition
     /**
      * @param KonjunkturphasenId $id
      * @param KonjunkturphaseTypeEnum $type
+     * @param string $name
      * @param string $description
      * @param string $additionalEvents
-     * @param float $zinssatz
+     * @param Zeitsteine $zeitsteine
      * @param KompetenzbereichDefinition[] $kompetenzbereiche
      * @param AuswirkungDefinition[] $auswirkungen
      */
     public function __construct(
         public KonjunkturphasenId      $id,
         public KonjunkturphaseTypeEnum $type,
+        public string                  $name,
         public string                  $description,
         public string                  $additionalEvents,
-        public float                   $zinssatz,
+        public Zeitsteine              $zeitsteine,
         public array                   $kompetenzbereiche,
         public array                   $auswirkungen = [],
     )
     {
+    }
+
+    public function getAuswirkungByScope(AuswirkungScopeEnum $scope): AuswirkungDefinition
+    {
+        foreach ($this->auswirkungen as $auswirkung) {
+            if ($auswirkung->scope === $scope) {
+                return $auswirkung;
+            }
+        }
+
+        throw new \RuntimeException(
+            'Auswirkung not found for scope: ' . $scope->value,
+            1747148685
+        );
+    }
+
+    public function getKompetenzbereichByName(CategoryId $name): KompetenzbereichDefinition
+    {
+        foreach ($this->kompetenzbereiche as $kompetenzbereich) {
+            if ($kompetenzbereich->name === $name) {
+                return $kompetenzbereich;
+            }
+        }
+
+        throw new \RuntimeException(
+            'Kompetenzbereich not found for name: ' . $name->value,
+            1747148686
+        );
     }
 }

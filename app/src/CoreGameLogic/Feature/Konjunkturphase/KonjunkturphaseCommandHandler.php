@@ -9,6 +9,7 @@ use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
+use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
@@ -22,6 +23,7 @@ use Domain\Definitions\Card\PileFinder;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
+use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Random\Randomizer;
 
 /**
@@ -73,9 +75,6 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
                 id: $nextKonjunkturphase->id,
                 year: new Year($year),
                 type: $nextKonjunkturphase->type,
-                zinssatz: new Zinssatz($nextKonjunkturphase->zinssatz),
-                kompetenzbereiche: $nextKonjunkturphase->kompetenzbereiche,
-                zeitsteineForPlayers: KonjunkturphaseState::calculateInitialZeitsteineForPlayers($gameState),
                 stockPrices: StockPriceState::calculateStockPrices($gameState),
             ),
 

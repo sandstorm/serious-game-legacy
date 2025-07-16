@@ -33,11 +33,6 @@ class InsuranceFinder
         return self::$instance;
     }
 
-    public static function initializeForTesting(): void
-    {
-        self::initialize();
-    }
-
     /**
      * @param InsuranceDefinition[] $insurances
      * @return void

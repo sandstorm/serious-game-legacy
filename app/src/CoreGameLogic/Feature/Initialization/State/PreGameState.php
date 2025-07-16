@@ -153,4 +153,9 @@ class PreGameState
     {
         return $gameEvents->findFirst(PreGameStarted::class)->playerIds;
     }
+
+    public static function getAmountOfPlayers(GameEvents $gameEvents): int
+    {
+        return count(self::playerIds($gameEvents));
+    }
 }

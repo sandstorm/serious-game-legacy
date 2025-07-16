@@ -9,6 +9,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Year;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 
@@ -45,32 +46,17 @@ class GamePhaseState
         CategoryId $category
     ): bool {
         $konjunkturPhaseWasChanged = $gameEvents->findLast(KonjunkturphaseWasChanged::class);
-        $freeSlots = collect($konjunkturPhaseWasChanged->kompetenzbereiche)
-            ->firstWhere('name', $category)->zeitsteinslots ?? 0;
+        $players = PreGameState::playersWithNameAndLebensziel($gameEvents);
+
+        $konjunkturphaseDefinition = KonjunkturphaseFinder::findKonjunkturphaseById($konjunkturPhaseWasChanged->id);
+        $freeSlots = $konjunkturphaseDefinition->getKompetenzbereichByName($category)->zeitslots->getAmountOfZeitslotsForPlayer(count($players));
 
         // now get all players and their placed Zeitsteine in this category
-        $players = PreGameState::playersWithNameAndLebensziel($gameEvents);
         $usedSlots = 0;
         foreach ($players as $player) {
             $usedSlots += PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($gameEvents, $player->playerId, $category);
         }
 
         return $freeSlots > $usedSlots;
-    }
-
-    /**
-     * @param GameEvents $gameEvents
-     * @return int[]
-     */
-    public static function idsOfPastKonjunkturphasen(GameEvents $gameEvents): array
-    {
-        // get all ids of the KonjunkturphaseWechselExecuted events
-        $events = $gameEvents->findAllOfType(KonjunkturphaseWasChanged::class);
-        $ids = [];
-        /** @var KonjunkturphaseWasChanged $event */
-        foreach ($events as $event) {
-            $ids[] = $event->id->value;
-        }
-        return $ids;
     }
 }

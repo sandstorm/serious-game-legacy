@@ -7,6 +7,7 @@ namespace App\View\Components\Gameboard;
 use App\Livewire\Dto\GameboardInformationForCategory;
 use App\Livewire\Dto\ZeitsteineForPlayer;
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
@@ -130,17 +131,19 @@ class Categories extends Component
     }
 
     /**
-     * @param CategoryId $category
+     * @param CategoryId $categoryId
      * @return int
      */
-    private function getSlotsForKompetenzbereich(CategoryId $category): int
+    private function getSlotsForKompetenzbereich(CategoryId $categoryId): int
     {
         $konjunkturphasenId = GamePhaseState::currentKonjunkturphasenId($this->gameEvents);
         $konjunkturphasenDefinition = KonjunkturphaseFinder::findKonjunkturphaseById(
             $konjunkturphasenId
         );
 
-        return collect($konjunkturphasenDefinition->kompetenzbereiche)
-            ->firstWhere('name', $category)->zeitsteinslots ?? 0;
+        $kompetenzbereich = $konjunkturphasenDefinition->getKompetenzbereichByName($categoryId);
+        $playerIds = $this->gameEvents->findFirst(GameWasStarted::class)->playerOrdering;
+
+        return $kompetenzbereich->zeitslots->getAmountOfZeitslotsForPlayer(count($playerIds));
     }
 }

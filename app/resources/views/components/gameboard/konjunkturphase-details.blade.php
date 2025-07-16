@@ -1,4 +1,6 @@
 @extends ('components.modal.modal', ['closeModal' => "closeKonjunkturphaseDetails()",  'size' => 'medium'])
+@use('Domain\CoreGameLogic\Feature\Initialization\State\PreGameState')
+
 @section('title')
     {{ $konjunkturphase->type }}
 @endsection
@@ -15,7 +17,8 @@
     <ul>
         @foreach($konjunkturphase->kompetenzbereiche as $kompetenzbereich)
             <li>
-                <strong>{{ $kompetenzbereich->name }}: </strong> {{ $kompetenzbereich->zeitsteinslots }}
+                <strong>{{ $kompetenzbereich->name }}
+                    : </strong> {{ $kompetenzbereich->zeitslots->getAmountOfZeitslotsForPlayer(PreGameState::getAmountOfPlayers($gameEvents)) }}
             </li>
         @endforeach
     </ul>

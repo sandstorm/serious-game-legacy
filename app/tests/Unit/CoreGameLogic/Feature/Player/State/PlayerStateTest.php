@@ -222,8 +222,8 @@ describe('getZeitsteineForPlayer', function () {
     it('returns the correct number', function () {
         $this->coreGameLogic->handle($this->gameId, new SkipCard($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS - 1)
-            ->and(PlayerState::getZeitsteineForPlayer($stream, $this->players[1]))->toBe(Configuration::INITIAL_AMOUNT_OF_ZEITSTEINE_FOR_TWO_PLAYERS);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1)
+            ->and(PlayerState::getZeitsteineForPlayer($stream, $this->players[1]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
     });
 
     it('Throws an exception if the player does not exist', function () {

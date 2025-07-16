@@ -11,9 +11,13 @@ use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
  */
 class AuswirkungDefinition
 {
+    /**
+     * @param AuswirkungScopeEnum $scope
+     * @param float $modifier
+     */
     public function __construct(
         public AuswirkungScopeEnum $scope,
-        public string $modifier,
+        public float $modifier,
     ) {
     }
 }

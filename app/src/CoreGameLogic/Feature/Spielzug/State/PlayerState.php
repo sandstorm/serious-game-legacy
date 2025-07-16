@@ -9,6 +9,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\StockData;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
@@ -64,20 +65,8 @@ class PlayerState
         $accumulatedResourceChangesForPlayer = $stream->findAllAfterLastOfType(KonjunkturphaseWasChanged::class)->findAllOfType(ProvidesResourceChanges::class)
             ->reduce(fn(ResourceChanges $accumulator, ProvidesResourceChanges $event) => $accumulator->accumulate($event->getResourceChanges($playerId)), new ResourceChanges());
 
-        $zeitsteineForPlayer = $accumulatedResourceChangesForPlayer->accumulate(new ResourceChanges(zeitsteineChange: +self::getInitialZeitsteineForKonjunkturphase($stream, $playerId)))->zeitsteineChange;
+        $zeitsteineForPlayer = $accumulatedResourceChangesForPlayer->accumulate(new ResourceChanges(zeitsteineChange: + KonjunkturphaseState::getInitialZeitsteineForCurrentKonjunkturphase($stream)))->zeitsteineChange;
         return ModifierCalculator::forStream($stream)->forPlayer($playerId)->applyToAvailableZeitsteine($zeitsteineForPlayer);
-    }
-
-    /**
-     * @param GameEvents $gameEvents
-     * @param PlayerId $playerId
-     * @return int
-     */
-    private static function getInitialZeitsteineForKonjunkturphase(GameEvents $gameEvents, PlayerId $playerId): int
-    {
-        $zeitsteineForPlayers = $gameEvents->findLast(KonjunkturphaseWasChanged::class)->zeitsteineForPlayers;
-        // TODO make this safer (...[0] may not work)
-        return array_values(array_filter($zeitsteineForPlayers, fn($forPlayer) => $forPlayer->playerId->equals($playerId)))[0]->zeitsteine;
     }
 
     /**
