@@ -1,5 +1,7 @@
 @use('Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType')
 @use('Domain\CoreGameLogic\Feature\Konjunkturphase\State\StockPriceState')
+@use('Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState')
+@use('Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum')
 
 @props([
     'stocks' => []
@@ -25,7 +27,7 @@
             <td>{!! $stock->price->format() !!}</td>
             <td>
                 @if ($stock->stockType === StockType::LOW_RISK)
-                    1.20 € pro stück (TODO)
+                    {{ KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->getAuswirkungByScope(AuswirkungScopeEnum::DIVIDEND)->modifier }}
                 @else
                     keine
                 @endif

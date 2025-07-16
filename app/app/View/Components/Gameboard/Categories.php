@@ -141,7 +141,7 @@ class Categories extends Component
             $konjunkturphasenId
         );
 
-        $kompetenzbereich = $konjunkturphasenDefinition->getKompetenzbereichByName($categoryId);
+        $kompetenzbereich = $konjunkturphasenDefinition->getKompetenzbereichByCategory($categoryId);
         $playerIds = $this->gameEvents->findFirst(GameWasStarted::class)->playerOrdering;
 
         return $kompetenzbereich->zeitslots->getAmountOfZeitslotsForPlayer(count($playerIds));

@@ -820,3 +820,34 @@ describe("getAnnualExpensesForPlayer", function() {
     });
 
 });
+
+describe("getAnnualIncomeForPlayer", function() {
+    it('returns no income', function () {
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        expect(MoneySheetState::getAnnualIncomeForPlayer($gameEvents, $this->players[0])->value)->toEqual(0);
+    });
+
+    it('returns gehalt if player has a job', function () {
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::JOBS_PHASE_1->value => [
+                "j0" => new JobCardDefinition(
+                    id: new CardId('j0'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'offered 1',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(10000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                    ),
+                ),
+            ]
+        ]);
+
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId("j0")));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(MoneySheetState::getAnnualIncomeForPlayer($gameEvents, $this->players[0])->value)->toEqual(10000);
+    });
+});

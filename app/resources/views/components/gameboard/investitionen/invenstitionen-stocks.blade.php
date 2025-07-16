@@ -22,7 +22,6 @@
         @endif
 
         <ul>
-            <li>Handelsspanne: 10-50 €</li>
             <li>Erwartete Jahresrendite: 7% - 9%</li>
             <li>Jahresvolatilität: 15% </li>
             <li>Erwartungswert: -8% bis 22%</li>
@@ -51,7 +50,6 @@
 
 
         <ul>
-            <li>Handelsspanne: 10-50 € </li>
             <li>Erwartete Jahresrendite: keine </li>
             <li>Jahresvolatilität: 40% </li>
             <li>Erwartungswert: -31% bis 49%</li>

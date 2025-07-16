@@ -54,7 +54,7 @@ class KonjunkturphaseDefinition
         );
     }
 
-    public function getKompetenzbereichByName(CategoryId $name): KompetenzbereichDefinition
+    public function getKompetenzbereichByCategory(CategoryId $name): KompetenzbereichDefinition
     {
         foreach ($this->kompetenzbereiche as $kompetenzbereich) {
             if ($kompetenzbereich->name === $name) {
@@ -63,7 +63,7 @@ class KonjunkturphaseDefinition
         }
 
         throw new \RuntimeException(
-            'Kompetenzbereich not found for name: ' . $name->value,
+            'Kompetenzbereich not found for category: ' . $name->value,
             1747148686
         );
     }
