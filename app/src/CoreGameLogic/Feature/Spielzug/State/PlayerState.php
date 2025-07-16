@@ -8,7 +8,9 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerColorWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\StockData;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereBoughtForPlayer;
 use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
@@ -200,5 +202,35 @@ class PlayerState
         // TODO modifier berücksichtigen
         $job = self::getJobForPlayer($stream, $playerId);
         return $job->gehalt ?? new MoneyAmount(0);
+    }
+
+    /**
+     * @param GameEvents $stream
+     * @param PlayerId $playerId
+     * @return StockData[]
+     */
+    public static function getStocksForPlayer(GameEvents $stream, PlayerId $playerId): array
+    {
+        // get all BuyStocksForPlayer events for the player
+        $buyStocksEvents = $stream->findAllOfType(StocksWereBoughtForPlayer::class)
+            ->filter(fn(StocksWereBoughtForPlayer $event) => $event->playerId->equals($playerId));
+
+        // TODO stocks could be sold in another event
+
+        return array_map(fn(StocksWereBoughtForPlayer $event) => new StockData(
+            stockType: $event->stockType,
+            price: $event->sharePrice,
+            amount: $event->amount
+        ), $buyStocksEvents);
+    }
+
+    public static function getSumOfAllStocksForPlayer(GameEvents $stream, PlayerId $playerId): MoneyAmount
+    {
+        $stocks = self::getStocksForPlayer($stream, $playerId);
+        $sum = new MoneyAmount(0);
+        foreach ($stocks as $stock) {
+            $sum = $sum->add(new MoneyAmount($stock->price->value * $stock->amount));
+        }
+        return $sum;
     }
 }

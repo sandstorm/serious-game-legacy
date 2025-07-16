@@ -12,7 +12,7 @@
             <tbody>
             <tr>
                 <td>Finanzanlagen und Vermögenswerte</td>
-                <td class="text-align--right">0€</td>
+                <td class="text-align--right">{!! $moneySheet->sumOfAllStocks->format() !!}</td>
                 <td>
                     <button type="button" class="button button--type-primary button--size-small"
                             wire:click="showIncomeTab('{{ IncomeTabEnum::INVESTMENTS }}')">Bearbeiten

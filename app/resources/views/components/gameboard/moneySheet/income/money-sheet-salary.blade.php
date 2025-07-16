@@ -31,5 +31,5 @@
         </tbody>
     </table>
 @else
-    Arbeitslos und Spaß dabei!
+    <p>Du hast gerade keinen Job.</p>
 @endif

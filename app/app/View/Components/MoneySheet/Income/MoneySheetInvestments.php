@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\View\Components\MoneySheet\Income;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Illuminate\View\Component;
 use Illuminate\View\View;
@@ -25,6 +26,7 @@ class MoneySheetInvestments extends Component
     public function render(): View
     {
         return view('components.gameboard.moneySheet.income.money-sheet-investments', [
+            'stocks' => PlayerState::getStocksForPlayer($this->gameEvents, $this->playerId)
         ]);
     }
 

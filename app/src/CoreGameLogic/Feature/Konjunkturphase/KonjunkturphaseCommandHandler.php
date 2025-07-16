@@ -14,8 +14,10 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\StockPriceState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Year;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Zinssatz;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
 use Domain\Definitions\Card\PileFinder;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
@@ -74,6 +76,7 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
                 zinssatz: new Zinssatz($nextKonjunkturphase->zinssatz),
                 kompetenzbereiche: $nextKonjunkturphase->kompetenzbereiche,
                 zeitsteineForPlayers: KonjunkturphaseState::calculateInitialZeitsteineForPlayers($gameState),
+                stockPrices: StockPriceState::calculateStockPrices($gameState),
             ),
 
             // We ALSO SHUFFLE cards during Konjunkturphasenwechsel
