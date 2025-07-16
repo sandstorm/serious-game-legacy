@@ -34,7 +34,7 @@ class Summary extends Component
                 doesLebenshaltungskostenRequirePlayerAction: MoneySheetState::doesLebenshaltungskostenRequirePlayerAction($this->gameEvents, $this->playerId),
                 steuernUndAbgaben: MoneySheetState::getLastInputForSteuernUndAbgaben($this->gameEvents, $this->playerId),
                 doesSteuernUndAbgabenRequirePlayerAction: MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($this->gameEvents, $this->playerId),
-                gehalt: PlayerState::getGehaltForPlayer($this->gameEvents, $this->playerId),
+                gehalt: PlayerState::getBaseGehaltForPlayer($this->gameEvents, $this->playerId),
                 total: MoneySheetState::hasPlayerCompletedMoneysheet($this->gameEvents, $this->playerId) ? MoneySheetState::calculateTotalForPlayer($this->gameEvents, $this->playerId) : new MoneyAmount(0),
                 totalInsuranceCost: MoneySheetState::getCostOfAllInsurances($this->gameEvents, $this->playerId),
                 sumOfAllLoans: MoneySheetState::getSumOfAllLoansForPlayer($this->gameEvents, $this->playerId),

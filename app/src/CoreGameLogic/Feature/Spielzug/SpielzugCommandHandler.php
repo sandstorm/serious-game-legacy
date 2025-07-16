@@ -155,13 +155,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
         GameEvents $gameEvents
     ): GameEventsToPersist {
         $aktion = new ActivateCardAktion($command->categoryId);
-        $events = $aktion->execute($command->playerId, $gameEvents);
-        if ($command->attachedEreignis !== null) {
-            $events = $events->withAppendedEvents(
-                new EreignisWasTriggered($command->playerId, $command->attachedEreignis)
-            );
-        }
-        return $events;
+        return $aktion->execute($command->playerId, $gameEvents);
     }
 
     private function handleSkipCard(SkipCard $command, GameEvents $gameState): GameEventsToPersist

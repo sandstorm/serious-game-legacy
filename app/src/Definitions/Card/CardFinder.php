@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Domain\Definitions\Card;
 
-use Domain\Definitions\Card\Dto\MinijobCardDefinition;
-use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\Dto\CardDefinition;
+use Domain\Definitions\Card\Dto\EreignisCardDefinition;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
+use Domain\Definitions\Card\Dto\MinijobCardDefinition;
+use Domain\Definitions\Card\Dto\ModifierParameters;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
+use Domain\Definitions\Card\ValueObject\ModifierId;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Random\Randomizer;
 
@@ -576,6 +580,42 @@ final class CardFinder
                     ),
                 ),
             ],
+            PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => [
+                "e0" => new EreignisCardDefinition(
+                    id: new CardId('e0'),
+                    pileId: PileId::MINIJOBS_PHASE_1,
+                    title: 'Teilnahme Coaching-Seminaren',
+                    description: 'Glückwunsch! Deine Teilnahme an Coaching-Seminaren zahlt sich aus: Du gewinnst bei einem Wettbewerb für junge Führungskräfte den ersten Platz und erhältst eine Finanzspritze für dein erstes Start-up.',
+                    resourceChanges: new ResourceChanges(
+                        guthabenChange: new MoneyAmount(+5000),
+                    ),
+                    modifierIds: [],
+                    modifierParameters: new ModifierParameters(),
+                ),
+                "e1" => new EreignisCardDefinition(
+                    id: new CardId('e1'),
+                    pileId: PileId::MINIJOBS_PHASE_1,
+                    title: 'Neue Liebe',
+                    description: 'Du bist verliebt und vernachlässigst dadurch deine (Lern-)Pflichten. Alles wieder aufzuholen kostet viel Zeit.',
+                    resourceChanges: new ResourceChanges(
+                        zeitsteineChange: -1,
+                    ),
+                    modifierIds: [],
+                    modifierParameters: new ModifierParameters(),
+                ),
+                "e2" => new EreignisCardDefinition(
+                    id: new CardId('e2'),
+                    pileId: PileId::MINIJOBS_PHASE_1,
+                    title: 'Beförderung',
+                    description: 'Du wirst befördert – dein Gehalt erhöht sich dieses Jahr um 20%.',
+                    resourceChanges: new ResourceChanges(),
+                    modifierIds: [ModifierId::GEHALT_CHANGE],
+                    modifierParameters: new ModifierParameters(
+                        modifyGehaltPercent: 120,
+                    ),
+                    ereignisRequirementIds: [EreignisPrerequisitesId::JOB]
+                ),
+            ],
         ]);
         return self::$instance;
     }
@@ -591,6 +631,7 @@ final class CardFinder
             PileId::FREIZEIT_PHASE_1 => $this->getCardsForSozialesAndFreizeit1(),
             PileId::JOBS_PHASE_1 => $this->getCardsForJobs1(),
             PileId::MINIJOBS_PHASE_1 => $this->getCardsForMinijobs1(),
+            PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1 => $this->getCardsForEreignisseBildungUndKarriere1(),
             // TODO
             PileId::BILDUNG_PHASE_2 => [],
             PileId::FREIZEIT_PHASE_2 => [],
@@ -601,17 +642,27 @@ final class CardFinder
         };
     }
 
-    public function getCardById(CardId $cardId): CardDefinition
+    /**
+     * @template T
+     * @param CardId $cardId
+     * @param class-string<T>|null $classString
+     * @return T
+     */
+    public function getCardById(CardId $cardId, ?string $classString = CardDefinition::class): mixed
     {
         $allCards = array_reduce($this->cards, function ($cards, $currentPile) {
             return [...$cards, ...$currentPile];
         }, []);
 
-        if (array_key_exists($cardId->value, $allCards)) {
-            return $allCards[$cardId->value];
+        if (!array_key_exists($cardId->value, $allCards)) {
+            throw new \RuntimeException('Card ' . $cardId . ' does not exist', 1747645954);
         }
 
-        throw new \RuntimeException('Card ' . $cardId . ' does not exist', 1747645954);
+        $card = $allCards[$cardId->value];
+        if ($classString !== null && !$card instanceof $classString) {
+            throw new \RuntimeException('Card ' . $cardId . ' expected to be of type ' . $classString . ' but was ' . get_class($card), 1752499517);
+        }
+        return $card;
     }
 
     /**
@@ -672,6 +723,18 @@ final class CardFinder
         $result = $this->cards[PileId::MINIJOBS_PHASE_1->value];
         foreach ($result as $item) {
             assert($item instanceof MinijobCardDefinition);
+        }
+        return $result;
+    }
+
+    /**
+     * @return CardDefinition[]
+     */
+    private function getCardsForEreignisseBildungUndKarriere1(): array
+    {
+        $result = $this->cards[PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value];
+        foreach ($result as $item) {
+            assert($item instanceof EreignisCardDefinition);
         }
         return $result;
     }

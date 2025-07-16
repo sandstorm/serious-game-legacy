@@ -47,16 +47,6 @@ final class HasPlayerEnoughResourcesForLebenszielphasenChangeValidator extends A
             );
         }
 
-        $currentJob = PlayerState::getJobForPlayer($gameEvents, $playerId);
-        if (
-            $currentLebenszielPhase->erwerbseinkommen > 0 &&
-            ($currentJob === null || $currentLebenszielPhase->erwerbseinkommen > $currentJob->gehalt->value)
-        ) {
-            return new AktionValidationResult(
-                canExecute: false,
-                reason: "Dein Gehalt ist zu niedrig",
-            );
-        }
 
         return parent::validate($gameEvents, $playerId);
     }

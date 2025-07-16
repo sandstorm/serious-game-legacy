@@ -36,7 +36,9 @@ class MoneySheetState
         GameEvents $gameEvents,
         PlayerId $playerId
     ): MoneyAmount {
-        $gehalt = PlayerState::getGehaltForPlayer($gameEvents, $playerId);
+        // TODO use modifiedGehalt, once the input for Gehalt Tab exists:
+        // $gehalt = PlayerState::getModifiedGehaltForPlayer($gameEvents, $playerId);
+        $gehalt = PlayerState::getBaseGehaltForPlayer($gameEvents, $playerId);
         return new MoneyAmount(max([
             $gehalt->value * Configuration::LEBENSHALTUNGSKOSTEN_MULTIPLIER,
             Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE
@@ -45,7 +47,9 @@ class MoneySheetState
 
     public static function calculateSteuernUndAbgabenForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
-        $gehalt = PlayerState::getGehaltForPlayer($gameEvents, $playerId);
+        // TODO use modifiedGehalt, once the input for Gehalt Tab exists:
+        // $gehalt = PlayerState::getModifiedGehaltForPlayer($gameEvents, $playerId);
+        $gehalt = PlayerState::getBaseGehaltForPlayer($gameEvents, $playerId);
         return new MoneyAmount($gehalt->value * Configuration::STEUERN_UND_ABGABEN_MULTIPLIER);
     }
 
@@ -54,6 +58,7 @@ class MoneySheetState
         PlayerId $playerId
     ): GameEvents {
         // TODO We may need to change this later (e.g. quit job, modifiers)
+        // FIXME this needs to change now with the modifiers
         $eventsAfterLastGehaltChange = $gameEvents->findAllAfterLastOrNullWhere(
             fn($event) => $event instanceof JobOfferWasAccepted && $event->playerId->equals($playerId));
         if ($eventsAfterLastGehaltChange === null) {
@@ -263,7 +268,7 @@ class MoneySheetState
 
     public static function calculateTotalForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
-        return PlayerState::getGehaltForPlayer($gameEvents, $playerId)
+        return PlayerState::getBaseGehaltForPlayer($gameEvents, $playerId)
             ->subtract(self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId))
             ->subtract(self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId));
     }
@@ -420,7 +425,7 @@ class MoneySheetState
     public static function getAnnualIncomeForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
         $annualIncome = (new MoneyAmount(0))
-            ->add(PlayerState::getGehaltForPlayer($gameEvents, $playerId))
+            ->add(PlayerState::getBaseGehaltForPlayer($gameEvents, $playerId))
             ->add(PlayerState::getDividendForAllStocksForPlayer($gameEvents, $playerId));
 
         return $annualIncome;

@@ -36,7 +36,7 @@ class JobOffersModal extends Component
         if ($jobOfferWasRequested !== null) {
             $jobIds = $jobOfferWasRequested->jobs;
             foreach ($jobIds as $jobId) {
-                $jobs[] = CardFinder::getInstance()->getCardById($jobId);
+                $jobs[] = CardFinder::getInstance()->getCardById($jobId, JobCardDefinition::class);
             }
         } else {
             // TODO close modal, show error?

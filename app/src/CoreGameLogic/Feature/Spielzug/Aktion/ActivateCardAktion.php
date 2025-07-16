@@ -11,7 +11,9 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\CanPlayerAffordTopCar
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasCategoryFreeZeitsteinslotsValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerDoneNoZeitsteinaktionThisTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\MaybeTriggerEreignis;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
+use Domain\CoreGameLogic\Feature\Spielzug\EreignisCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\PlayerId;
@@ -47,8 +49,11 @@ class ActivateCardAktion extends Aktion
         return $validationChain->validate($gameEvents, $playerId);
     }
 
-    private function getTotalCosts(GameEvents $gameEvents, PlayerId $player, CardDefinition $cardDefinition): ResourceChanges
-    {
+    private function getTotalCosts(
+        GameEvents $gameEvents,
+        PlayerId $player,
+        CardDefinition $cardDefinition
+    ): ResourceChanges {
         $costToActivate = new ResourceChanges(
             zeitsteineChange: AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound($player) ? 0 : -1
         );
@@ -63,7 +68,7 @@ class ActivateCardAktion extends Aktion
         }
         $topCardOnPile = PileState::topCardIdForPile($gameEvents, $this->pileId);
         $cardDefinition = CardFinder::getInstance()->getCardById($topCardOnPile);
-        return GameEventsToPersist::with(
+        $eventsFromActivation = GameEventsToPersist::with(
             new CardWasActivated(
                 $playerId,
                 $this->pileId,
@@ -72,6 +77,11 @@ class ActivateCardAktion extends Aktion
                 $this->getTotalCosts($gameEvents, $playerId, $cardDefinition),
                 AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound($playerId) ? 0 : 1,
             )
+        );
+
+        // Append Ereignis-Events (this has a 25 percent chance to be triggered, otherwise nothing gets added)
+        return $eventsFromActivation->withAppendedEvents(
+            ...(new EreignisCommandHandler())->handle(MaybeTriggerEreignis::create($playerId), $gameEvents)
         );
     }
 }

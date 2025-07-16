@@ -26,7 +26,7 @@ class MoneySheetKids extends Component
     public function render(): View
     {
         return view('components.gameboard.moneySheet.expenses.money-sheet-kids', [
-            'gehalt' => PlayerState::getGehaltForPlayer($this->gameEvents, $this->playerId),
+            'gehalt' => PlayerState::getBaseGehaltForPlayer($this->gameEvents, $this->playerId),
         ]);
     }
 

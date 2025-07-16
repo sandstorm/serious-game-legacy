@@ -36,11 +36,6 @@
                     <strong>Investitionen: </strong> {{$phase->investitionen}} €
                 </div>
                 @endif
-                @if($phase->erwerbseinkommen > 0)
-                    <div>
-                        <strong>Erwerbseinkommen: </strong> {{$phase->erwerbseinkommen}} €
-                    </div>
-                @endif
             </li>
         @endforeach
     </ul>

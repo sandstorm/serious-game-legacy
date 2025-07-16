@@ -34,6 +34,9 @@
         <button class="button button--type-primary" wire:click="showTakeOutALoan()">
             Kredit aufnehmen
         </button>
+        @if($isEreignisCardVisible)
+            <x-ereignis-modal :game-events="$this->gameEvents" :player-id="$myself" />
+        @endif
         @if ($moneySheetIsVisible)
             @if ($editIncomeIsVisible)
                 <x-gameboard.moneySheet.money-sheet-income-modal
