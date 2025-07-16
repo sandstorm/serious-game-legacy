@@ -38,7 +38,10 @@ class EndSpielzugAktion extends Aktion
             throw new \RuntimeException('Cannot end spielzug: ' . $result->reason, 1748946243);
         }
         return GameEventsToPersist::with(
-            new SpielzugWasEnded($playerId)
+            new SpielzugWasEnded(
+                playerId: $playerId,
+                playerTurn: PlayerState::getCurrentTurnForPlayer($gameEvents, $playerId),
+            )
         );
     }
 }

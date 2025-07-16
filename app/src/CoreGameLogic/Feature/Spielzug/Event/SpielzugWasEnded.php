@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
 use Domain\CoreGameLogic\PlayerId;
 
 final readonly class SpielzugWasEnded implements GameEventInterface
 {
     public function __construct(
         public PlayerId $playerId,
+        public PlayerTurn $playerTurn,
     ) {
     }
 
@@ -18,6 +20,7 @@ final readonly class SpielzugWasEnded implements GameEventInterface
     {
         return new self(
             playerId: PlayerId::fromString($values['playerId']),
+            playerTurn: new PlayerTurn($values['playerTurn']),
         );
     }
 
@@ -25,6 +28,7 @@ final readonly class SpielzugWasEnded implements GameEventInterface
     {
         return [
             'playerId' => $this->playerId,
+            'playerTurn' => $this->playerTurn,
         ];
     }
 }

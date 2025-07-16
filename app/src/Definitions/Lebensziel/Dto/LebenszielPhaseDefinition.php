@@ -10,7 +10,6 @@ readonly class LebenszielPhaseDefinition
         public int    $phase,
         public string $description,
         public float  $investitionen,
-        public float  $erwerbseinkommen,
         public int    $bildungsKompetenzSlots,
         public int    $freizeitKompetenzSlots,
     ) {
@@ -26,7 +25,6 @@ readonly class LebenszielPhaseDefinition
             phase: $values['phase'],
             description: $values['description'],
             investitionen: $values['investitionen'],
-            erwerbseinkommen: $values['erwerbseinkommen'],
             bildungsKompetenzSlots: $values['bildungsKompetenzSlots'],
             freizeitKompetenzSlots: $values['freizeitKompetenzSlots'],
         );
@@ -41,7 +39,6 @@ readonly class LebenszielPhaseDefinition
             'phase' => $this->phase,
             'description' => $this->description,
             'investitionen' => $this->investitionen,
-            'erwerbseinkommen' => $this->erwerbseinkommen,
             'bildungsKompetenzSlots' => $this->bildungsKompetenzSlots,
             'freizeitKompetenzSlots' => $this->freizeitKompetenzSlots,
         ];

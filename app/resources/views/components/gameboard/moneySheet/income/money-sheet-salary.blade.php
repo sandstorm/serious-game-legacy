@@ -4,6 +4,8 @@
     '$jobDefinition' => null,
     '$gameEvents' => null,
     '$playerId' => null,
+    '$modifiers' => null,
+    '$gehalt' => null,
 ])
 
 <h3>Gehalt</h3>
@@ -11,23 +13,27 @@
     <table>
         <tbody>
         <tr>
-            <td><small>Mein Job</small> <br /> {{ $jobDefinition->getTitle() }}</td>
-            <td><small>Mein Gehalt</small> <br /> {{ $jobDefinition->gehalt->value }} €</td>
-            <td><button type="button" class="button button--type-primary" wire:click="quitJob()">Job kündigen</button></td>
+            <td><small>Mein Job</small> <br/> {{ $jobDefinition->getTitle() }}</td>
+            <td>
+                <small>Mein Gehalt</small> <br/>
+                {!! $gehalt->format() !!}
+                @if(!$gehalt->equals($jobDefinition->gehalt))
+                    (Basisgehalt: {!! $jobDefinition->gehalt->format() !!})
+                @endif
+            </td>
+            <td>
+                <button type="button" class="button button--type-primary" wire:click="quitJob()">Job kündigen</button>
+            </td>
         </tr>
         </tbody>
     </table>
     <table>
         <tbody>
-        <tr>
-            <td>Du hast wegen deines Jobs weniger Zeit und kannst pro Jahr einen zeitstein weniger setzen. Bei Kündigung erhälst du diesen Zeitstein zurück.</td>
-            <td>
-                <ul class="zeitsteine">
-                    <li>-{{ $jobDefinition->requirements->zeitsteine }}</li>
-                    <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($gameEvents, $playerId)])></li>
-                </ul>
-            </td>
-        </tr>
+        @foreach($modifiers as $modifier)
+            <tr>
+                <td>{{$modifier}}</td>
+            </tr>
+        @endforeach
         </tbody>
     </table>
 @else

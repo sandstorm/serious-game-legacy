@@ -24,10 +24,12 @@ use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\CardDefinition;
+use Domain\Definitions\Card\Dto\EreignisCardDefinition;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\MinijobCardDefinition;
+use Domain\Definitions\Card\Dto\ModifierParameters;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
@@ -89,6 +91,11 @@ abstract class TestCase extends BaseTestCase
      * @var CardDefinition[]
      */
     protected array $cardsMinijobs;
+    protected PileId $pileIdEreignisseBildungUndKarriere;
+    /**
+     * @var EreignisCardDefinition[]
+     */
+    protected array $cardsEreignisseBildungUndKarriere;
 
 
     private function generatePlayerIds(int $numberOfPlayers)
@@ -111,6 +118,7 @@ abstract class TestCase extends BaseTestCase
             PileId::FREIZEIT_PHASE_1->value => $this->getCardsForSozialesAndFreizeit(),
             PileId::JOBS_PHASE_1->value => $this->getCardsForJobs(),
             PileId::MINIJOBS_PHASE_1->value => $this->getCardsForMinijobs(),
+            PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => $this->getCardsForEreignisseBildungUndKarriere(),
         ]);
 
         InsuranceFinder::getInstance()->overrideInsurancesForTesting([
@@ -156,6 +164,9 @@ abstract class TestCase extends BaseTestCase
         $this->cardsJobs = $this->getCardsForJobs();
         $this->pileIdMinijobs = PileId::MINIJOBS_PHASE_1;
         $this->cardsMinijobs = $this->getCardsForMinijobs();
+        $this->pileIdEreignisseBildungUndKarriere = PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1;
+        $this->cardsEreignisseBildungUndKarriere = $this->getCardsForEreignisseBildungUndKarriere();
+
 
         $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
             numberOfPlayers: $numberOfPlayers,
@@ -287,7 +298,7 @@ abstract class TestCase extends BaseTestCase
      */
     public function makeSpielzugForPlayersAndChangeKonjunkturphase(): void
     {
-        foreach($this->players as $player) {
+        foreach ($this->players as $player) {
             $this->coreGameLogic->handle(
                 $this->gameId,
                 ActivateCard::create($player, CategoryId::BILDUNG_UND_KARRIERE)
@@ -301,10 +312,11 @@ abstract class TestCase extends BaseTestCase
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect($gameEvents->findLast(KonjunkturphaseHasEnded::class) instanceof KonjunkturphaseHasEnded)->toBeTrue();
 
-        foreach($this->players as $player) {
+        foreach ($this->players as $player) {
             $this->coreGameLogic->handle(
                 $this->gameId,
-                EnterLebenshaltungskostenForPlayer::create($player, MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $player))
+                EnterLebenshaltungskostenForPlayer::create($player,
+                    MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $player))
             );
             $this->coreGameLogic->handle(
                 $this->gameId,
@@ -463,6 +475,7 @@ abstract class TestCase extends BaseTestCase
             PileId::FREIZEIT_PHASE_1->value => $this->getCardsForSozialesAndFreizeit(),
             PileId::JOBS_PHASE_1->value => $this->getCardsForJobs(),
             PileId::MINIJOBS_PHASE_1->value => $this->getCardsForMinijobs(),
+            PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => $this->getCardsForEreignisseBildungUndKarriere(),
         ];
         $testCards[$pileId->value] = [...$cardsToAdd, ...$testCards[$pileId->value]];
         CardFinder::getInstance()->overrideCardsForTesting($testCards);
@@ -471,10 +484,34 @@ abstract class TestCase extends BaseTestCase
             ChangeKonjunkturphase::create()
                 ->withFixedKonjunkturphaseForTesting($this->konjunkturphaseDefinition)
                 ->withFixedCardOrderForTesting(
-                    new CardOrder(pileId: $this->pileIdBildung, cards: array_map(fn($card) => $card->getId(), $testCards[PileId::BILDUNG_PHASE_1->value])),
-                    new CardOrder(pileId: $this->pileIdFreizeit, cards: array_map(fn($card) => $card->getId(), $testCards[PileId::FREIZEIT_PHASE_1->value])),
-                    new CardOrder(pileId: $this->pileIdJobs, cards: array_map(fn($card) => $card->getId(), $testCards[PileId::JOBS_PHASE_1->value])),
-                    new CardOrder(pileId: $this->pileIdMinijobs, cards: array_map(fn($card) => $card->getId(), $testCards[PileId::MINIJOBS_PHASE_1->value])),
+                    new CardOrder(pileId: $this->pileIdBildung, cards: array_map(fn($card) => $card->getId(),
+                        $testCards[PileId::BILDUNG_PHASE_1->value])),
+                    new CardOrder(pileId: $this->pileIdFreizeit, cards: array_map(fn($card) => $card->getId(),
+                        $testCards[PileId::FREIZEIT_PHASE_1->value])),
+                    new CardOrder(pileId: $this->pileIdJobs, cards: array_map(fn($card) => $card->getId(),
+                        $testCards[PileId::JOBS_PHASE_1->value])),
+                    new CardOrder(pileId: $this->pileIdMinijobs, cards: array_map(fn($card) => $card->getId(),
+                        $testCards[PileId::MINIJOBS_PHASE_1->value])),
+                    new CardOrder(pileId: $this->pileIdEreignisseBildungUndKarriere, cards: array_map(fn($card) => $card->getId(),
+                        $testCards[PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value])),
                 ));
+    }
+
+    /**
+     * @return EreignisCardDefinition[]
+     */
+    private function getCardsForEreignisseBildungUndKarriere(): array
+    {
+        return [
+            "e0" => new EreignisCardDefinition(
+                id: new CardId('e0'),
+                pileId: PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1,
+                title: 'Nichts',
+                description: 'Es passiert nichts, damit die Tests vorhersehbar bleiben',
+                resourceChanges: new ResourceChanges(),
+                modifierIds: [],
+                modifierParameters: new ModifierParameters(),
+            ),
+        ];
     }
 }

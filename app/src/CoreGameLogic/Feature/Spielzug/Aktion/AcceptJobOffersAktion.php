@@ -12,6 +12,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughZeitst
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
@@ -42,9 +43,14 @@ class AcceptJobOffersAktion extends Aktion
             throw new \RuntimeException('Cannot Accept Job Offer: ' . $result->reason, 1749043636);
         }
         /** @var JobCardDefinition $job */
-        $job = CardFinder::getInstance()->getCardById($this->jobId);
+        $job = CardFinder::getInstance()->getCardById($this->jobId, JobCardDefinition::class);
         return GameEventsToPersist::with(
-            new JobOfferWasAccepted($playerId, $job->id, $job->gehalt),
+            new JobOfferWasAccepted(
+                playerId: $playerId,
+                cardId: $job->id,
+                gehalt: $job->gehalt,
+                playerTurn: PlayerState::getCurrentTurnForPlayer($gameEvents, $playerId)
+            ),
         );
     }
 }

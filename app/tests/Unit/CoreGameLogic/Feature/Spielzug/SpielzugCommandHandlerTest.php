@@ -59,8 +59,13 @@ use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Configuration\Configuration;
+use Domain\Definitions\Konjunkturphase\Dto\Zeitsteine;
+use Domain\Definitions\Konjunkturphase\Dto\ZeitsteinePerPlayer;
+use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
+use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
+use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use RuntimeException;
 use Tests\ComponentWithForm;
 use Tests\TestCase;
@@ -78,13 +83,15 @@ describe('handleSkipCard', function () {
         /** @var TestCase $this */
         // Check the initial assumption of how many Zeitsteine the player has at the start of the test
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
+        expect(PlayerState::getZeitsteineForPlayer($stream,
+            $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
 
         $this->coreGameLogic->handle($this->gameId,
             new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
+        expect(PlayerState::getZeitsteineForPlayer($stream,
+            $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
     });
 
     it('Cannot skip twice', function () {
@@ -116,7 +123,7 @@ describe('handleSkipCard', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) +1,
+                    zeitsteineChange: -1 * $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
         ];
@@ -124,7 +131,8 @@ describe('handleSkipCard', function () {
 
         // Check the initial assumption of how many Zeitsteine the player has at the start of the test
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
+        expect(PlayerState::getZeitsteineForPlayer($stream,
+            $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
             playerId: $this->players[0],
@@ -148,19 +156,44 @@ describe('handleSkipCard', function () {
     })->throws(RuntimeException::class,
         'Cannot skip card: Du hast nicht genug Zeitsteine', 1747325793);
 
-    it("card cannot be skipped when no free slots are available for this konjunkturphase", function () {
+    it("cannot skip card when no free slots are available for this konjunkturphase", function () {
         /** @var TestCase $this */
-        $cardToTest = new KategorieCardDefinition(
-            id: new CardId('testcard'),
-            pileId: $this->pileIdBildung,
-            title: 'for testing',
-            description: '...',
-            resourceChanges: new ResourceChanges(
-                guthabenChange: new MoneyAmount(0),
-                bildungKompetenzsteinChange: +1,
+        KonjunkturphaseFinder::getInstance()->overrideKonjunkturphaseDefinitionsForTesting([
+            $this->konjunkturphaseDefinition,
+        ]);
+        $cardsToTest = [
+            new KategorieCardDefinition(
+                id: new CardId('testcard'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(0),
+                    bildungKompetenzsteinChange: +1,
+                ),
             ),
-        );
-        $this->addCardsOnTopOfPile([$cardToTest], $this->pileIdBildung);
+            new KategorieCardDefinition(
+                id: new CardId('testcard1'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing 1',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(0),
+                    bildungKompetenzsteinChange: +1,
+                ),
+            ),
+            new KategorieCardDefinition(
+                id: new CardId('testcard2'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing 2',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(0),
+                    bildungKompetenzsteinChange: +1,
+                ),
+            ),
+        ];
+        $this->addCardsOnTopOfPile($cardsToTest, $this->pileIdBildung);
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         $events = $stream->findAllOfType(KonjunkturphaseWasChanged::class);
         expect(count($events))->toBe(2);
@@ -182,6 +215,9 @@ describe('handleSkipCard', function () {
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(GamePhaseState::hasFreeTimeSlotsForCategory($gameEvents, CategoryId::BILDUNG_UND_KARRIERE))->toBeFalse();
 
         // this fails, no free slots available
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
@@ -212,10 +248,12 @@ describe('handleActivateCard', function () {
             PileId::FREIZEIT_PHASE_1->value => [],
             PileId::JOBS_PHASE_1->value => [],
             PileId::MINIJOBS_PHASE_1->value => [],
+            PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => $this->cardsEreignisseBildungUndKarriere,
         ]);
         // Check the initial assumption of how many Zeitsteine the player has at the start of the test
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
+        expect(PlayerState::getZeitsteineForPlayer($stream,
+            $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -226,7 +264,8 @@ describe('handleActivateCard', function () {
             ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) -1);
+        expect(PlayerState::getZeitsteineForPlayer($stream,
+            $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
     });
 
     it('will consume a Zeitstein (later turns)', function () {
@@ -249,6 +288,7 @@ describe('handleActivateCard', function () {
             PileId::FREIZEIT_PHASE_1->value => [],
             PileId::JOBS_PHASE_1->value => [],
             PileId::MINIJOBS_PHASE_1->value => [],
+            PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => $this->cardsEreignisseBildungUndKarriere,
         ]);
 
         $this->coreGameLogic->handle(
@@ -260,7 +300,8 @@ describe('handleActivateCard', function () {
         // Check the initial assumption of how many Zeitsteine the player has at the start of the test
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
 
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
+        expect(PlayerState::getZeitsteineForPlayer($stream,
+            $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
 
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
             playerId: $this->players[0],
@@ -278,7 +319,8 @@ describe('handleActivateCard', function () {
         ));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[1]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
+        expect(PlayerState::getZeitsteineForPlayer($stream,
+            $this->players[1]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
     });
 
     it('will not consume a Zeitstein after skipping a Card', function () {
@@ -307,7 +349,8 @@ describe('handleActivateCard', function () {
 
         // Check the initial assumption of how many Zeitsteine the player has at the start of the test
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
+        expect(PlayerState::getZeitsteineForPlayer($stream,
+            $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
 
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
             playerId: $this->players[0],
@@ -316,7 +359,8 @@ describe('handleActivateCard', function () {
 
         // Skipping will consume a Zeitstein
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
+        expect(PlayerState::getZeitsteineForPlayer($stream,
+            $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
             playerId: $this->players[0],
@@ -325,7 +369,8 @@ describe('handleActivateCard', function () {
 
         // Expect no additional Zeitstein being used
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
+        expect(PlayerState::getZeitsteineForPlayer($stream,
+            $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
     });
 
     it('Will not activate a card after skipping in a different category', function () {
@@ -454,20 +499,54 @@ describe('handleActivateCard', function () {
 
     it("cannot activate card when no free slots are available for this konjunkturphase", function () {
         /** @var TestCase $this */
-        $cardToTest = new KategorieCardDefinition(
-            id: new CardId('testcard'),
-            pileId: $this->pileIdBildung,
-            title: 'for testing',
-            description: '...',
-            resourceChanges: new ResourceChanges(
-                guthabenChange: new MoneyAmount(0),
-                bildungKompetenzsteinChange: +1,
+        $cardsToTest = [
+            new KategorieCardDefinition(
+                id: new CardId('testcard'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(0),
+                    bildungKompetenzsteinChange: +1,
+                ),
             ),
-        );
-        $this->addCardsOnTopOfPile([$cardToTest], $this->pileIdBildung);
+            new KategorieCardDefinition(
+                id: new CardId('testcard1'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing 1',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(0),
+                    bildungKompetenzsteinChange: +1,
+                ),
+            ),
+            new KategorieCardDefinition(
+                id: new CardId('testcard2'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing 2',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(0),
+                    bildungKompetenzsteinChange: +1,
+                ),
+            ),
+        ];
+        $this->addCardsOnTopOfPile($cardsToTest, $this->pileIdBildung);
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         $events = $stream->findAllOfType(KonjunkturphaseWasChanged::class);
         expect(count($events))->toBe(2);
+
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+        ));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
+            playerId: $this->players[1],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+        ));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
             playerId: $this->players[0],
@@ -702,10 +781,12 @@ describe('handleRequestJobOffers', function () {
         ];
         $this->addCardsOnTopOfPile($jobs, PileId::JOBS_PHASE_1);
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
+        expect(PlayerState::getZeitsteineForPlayer($stream,
+            $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
         $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
+        expect(PlayerState::getZeitsteineForPlayer($stream,
+            $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
     });
 });
 
@@ -726,7 +807,8 @@ describe('handleAcceptJobOffer', function () {
         ]);
 
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j3')));
-    })->throws(RuntimeException::class, 'Cannot Accept Job Offer: Dieser Job wurde dir noch nicht vorgeschlagen', 1749043636);
+    })->throws(RuntimeException::class, 'Cannot Accept Job Offer: Dieser Job wurde dir noch nicht vorgeschlagen',
+        1749043636);
 
     it('throws an exception if job was not previously offered to player', function () {
         /** @var TestCase $this */
@@ -804,6 +886,7 @@ describe('handleAcceptJobOffer', function () {
             PileId::BILDUNG_PHASE_1->value => [],
             PileId::FREIZEIT_PHASE_1->value => [],
             PileId::MINIJOBS_PHASE_1->value => [],
+            PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => [],
             PileId::JOBS_PHASE_1->value => [
                 "j0" => new JobCardDefinition(
                     id: new CardId('j0'),
@@ -884,6 +967,74 @@ describe('handleAcceptJobOffer', function () {
             ->and(PlayerState::getGuthabenForPlayer($stream, $this->players[1]))->toEqual(new MoneyAmount($expectedGuthabenPlayer1));
     });
 
+    it('still only binds one Zeitstein after switching jobs', function () {
+        /** @var TestCase $this */
+        // Reaffirm the "normal" number of Zeitsteine (in case we change something and forget to adjust this test)
+        /** @var GameEvents $stream */
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getZeitsteineForPlayer($stream,
+            $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
+
+        // Add the job we want to accept
+        CardFinder::getInstance()->overrideCardsForTesting([
+            PileId::BILDUNG_PHASE_1->value => [],
+            PileId::FREIZEIT_PHASE_1->value => [],
+            PileId::MINIJOBS_PHASE_1->value => [],
+            PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => [],
+            PileId::JOBS_PHASE_1->value => [
+                "j0" => new JobCardDefinition(
+                    id: new CardId('j0'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'offered 1',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(34000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                    ),
+                ),
+                "j1" => new JobCardDefinition(
+                    id: new CardId('j1'),
+                    pileId: PileId::JOBS_PHASE_1,
+                    title: 'offered 2',
+                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    gehalt: new MoneyAmount(44000),
+                    requirements: new JobRequirements(
+                        zeitsteine: 1,
+                    ),
+                ),
+            ]
+        ]);
+
+        // Request and accept the job
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j0')));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[1]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
+
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j1')));
+
+        // Expect three fewer Zeitsteine (-2 for the RequestJobOffers and one should now be permanently unavailable)
+        /** @var GameEvents $stream */
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getZeitsteineForPlayer($stream,
+            $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 3);
+
+        // Start a new Konjunkturphase to see if the Zeitstein change persists
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ChangeKonjunkturphase::create()->withFixedKonjunkturphaseForTesting($this->konjunkturphaseDefinition));
+
+        /** @var GameEvents $stream */
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getZeitsteineForPlayer($stream,
+            $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1)
+            ->and(PlayerState::getZeitsteineForPlayer($stream,
+                $this->players[1]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
+    });
+
     it('throws an exception if job requirements are not met', function () {
         /** @var TestCase $this */
 
@@ -958,7 +1109,8 @@ describe('handleAcceptJobOffer', function () {
 
         $events = $this->coreGameLogic->getGameEvents($this->gameId);
 
-        $jobQuitEvent = $events->findLastOrNullWhere(fn($e) => $e instanceof JobWasQuit && $e->playerId->equals($this->players[0]));
+        $jobQuitEvent = $events->findLastOrNullWhere(fn($e
+        ) => $e instanceof JobWasQuit && $e->playerId->equals($this->players[0]));
         expect($jobQuitEvent)->not->toBeNull();
         //->and($jobQuitEvent->zeitsteinZurueck)->toBeTrue(); // ToDo: Hier fehlt der Modifier für den Zeitstein den man beim Job kündigen zurück bekommt
     });
@@ -993,51 +1145,55 @@ describe('handleQuitJob', function () {
 });
 
 describe('handleChangeLebenszielphase', function () {
-    it('throws an exception when the player does not have enough BildungsKompetenzsteine to finish the phase', function () {
-        /** @var TestCase $this */
-        $cardsForTesting = [
-            "cardToTest" => new KategorieCardDefinition(
-                id: new CardId('cardToTest'),
-                pileId: $this->pileIdBildung,
-                title: 'for testing',
-                description: '...',
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(+50000),
-                    freizeitKompetenzsteinChange: +5,
+    it('throws an exception when the player does not have enough BildungsKompetenzsteine to finish the phase',
+        function () {
+            /** @var TestCase $this */
+            $cardsForTesting = [
+                "cardToTest" => new KategorieCardDefinition(
+                    id: new CardId('cardToTest'),
+                    pileId: $this->pileIdBildung,
+                    title: 'for testing',
+                    description: '...',
+                    resourceChanges: new ResourceChanges(
+                        guthabenChange: new MoneyAmount(+50000),
+                        freizeitKompetenzsteinChange: +5,
+                    ),
                 ),
-            ),
-        ];
-        $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
-        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
-        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getBildungsKompetenzsteine($stream, $this->players[0]));
-        $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create(playerId: $this->players[0])
-        );
-    })->throws(
+            ];
+            $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
+            $this->coreGameLogic->handle($this->gameId,
+                ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
+            $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+            expect(PlayerState::getBildungsKompetenzsteine($stream, $this->players[0]));
+            $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create(playerId: $this->players[0])
+            );
+        })->throws(
         RuntimeException::class,
         'Cannot Change Lebensphase: Du hast nicht genug Kompetenzsteine in Bildung & Karriere',
         1751619852
     );
 
-    it('throws an exception when the player does not have enough FreizeitKompetenzsteine to finish the phase', function () {
-        /** @var TestCase $this */
-        $cardsForTesting = [
-            "cardToTest" => new KategorieCardDefinition(
-                id: new CardId('cardToTest'),
-                pileId: $this->pileIdFreizeit,
-                title: 'for testing',
-                description: '...',
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(+50000),
-                    bildungKompetenzsteinChange: +5,
+    it('throws an exception when the player does not have enough FreizeitKompetenzsteine to finish the phase',
+        function () {
+            /** @var TestCase $this */
+            $cardsForTesting = [
+                "cardToTest" => new KategorieCardDefinition(
+                    id: new CardId('cardToTest'),
+                    pileId: $this->pileIdFreizeit,
+                    title: 'for testing',
+                    description: '...',
+                    resourceChanges: new ResourceChanges(
+                        guthabenChange: new MoneyAmount(+50000),
+                        bildungKompetenzsteinChange: +5,
+                    ),
                 ),
-            ),
-        ];
-        $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdFreizeit);
-        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::SOZIALES_UND_FREIZEIT));
-        $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create(playerId: $this->players[0])
-        );
-    })->throws(
+            ];
+            $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdFreizeit);
+            $this->coreGameLogic->handle($this->gameId,
+                ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::SOZIALES_UND_FREIZEIT));
+            $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create(playerId: $this->players[0])
+            );
+        })->throws(
         RuntimeException::class,
         'Cannot Change Lebensphase: Du hast nicht genug Kompetenzsteine in Freizeit & Sozial',
         1751619852
@@ -1061,94 +1217,14 @@ describe('handleChangeLebenszielphase', function () {
         ];
 
         $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
-        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
-        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
-
-        $minijobs = [
-            "testMinijob" => new MinijobCardDefinition(
-                id: new CardId('testMinijob'),
-                pileId: PileId::MINIJOBS_PHASE_1,
-                title: 'Softwaretester',
-                description: 'Du arbeitest nebenbei als Softwaretester und bekommst einmalig Gehalt',
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(+500),
-                ),
-            )];
-
-        $this->addCardsOnTopOfPile($minijobs, PileId::MINIJOBS_PHASE_1);
-        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[1]));
-        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
-
-        CardFinder::getInstance()->overrideCardsForTesting([
-            PileId::JOBS_PHASE_1->value => [
-                "testJob" => new JobCardDefinition(
-                    id: new CardId('testJob'),
-                    pileId: PileId::JOBS_PHASE_1,
-                    title: 'testtestetest',
-                    description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new MoneyAmount(100000),
-                    requirements: new JobRequirements(
-                        zeitsteine: 1,
-                    ),
-                ),
-            ]
-        ]);
-
-
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
-        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('testJob')));
+        $this->coreGameLogic->handle($this->gameId,
+            ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
 
         $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create(playerId: $this->players[0])
         );
     })->throws(
         RuntimeException::class,
         'Cannot Change Lebensphase: Du hast nicht genug Geld',
-        1751619852
-    );
-
-    it('throws an exception when the player does not have enough Gehalt to finish the phase ', function () {
-        /** @var TestCase $this */
-        $cardsForTesting1 = [
-            "cardToTest" => new KategorieCardDefinition(
-                id: new CardId('cardToTest'),
-                pileId: $this->pileIdBildung,
-                title: 'for testing',
-                description: '...',
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(+500000),
-                    zeitsteineChange: +4,
-                    bildungKompetenzsteinChange: +5,
-                    freizeitKompetenzsteinChange: +5,
-                ),
-            ),
-        ];
-        $cardsForTesting2 = [
-            "j0" => new JobCardDefinition(
-                id: new CardId('j0'),
-                pileId: PileId::JOBS_PHASE_1,
-                title: 'Testjob',
-                description: 'Testjob',
-                gehalt: new MoneyAmount(20000),
-                requirements: new JobRequirements(zeitsteine: 0),
-            ),
-        ];
-
-
-        $this->addCardsOnTopOfPile($cardsForTesting1, $this->pileIdBildung);
-        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
-        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
-
-        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[1]));
-        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
-
-        $this->addCardsOnTopOfPile($cardsForTesting2, PileId::JOBS_PHASE_1);
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
-        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j0')));
-
-        $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create(playerId: $this->players[0]));
-    })->throws(
-        RuntimeException::class,
-        'Cannot Change Lebensphase: Dein Gehalt ist zu niedrig',
         1751619852
     );
 
@@ -1170,53 +1246,25 @@ describe('handleChangeLebenszielphase', function () {
         /** @var TestCase $this */
         /** @var GameEvents $stream */
 
-        CardFinder::getInstance()->overrideCardsForTesting([
-            PileId::BILDUNG_PHASE_1->value => [
-                "cardToTest" => new KategorieCardDefinition(
-                    id: new CardId('cardToTest'),
-                    pileId: $this->pileIdBildung,
-                    title: 'for testing',
-                    description: '...',
-                    resourceChanges: new ResourceChanges(
-                        guthabenChange: new MoneyAmount(+500000),
-                        zeitsteineChange: +4,
-                        bildungKompetenzsteinChange: +5,
-                        freizeitKompetenzsteinChange: +5,
-                    ),
+        $setupCards = [
+            "cardToTest" => new KategorieCardDefinition(
+                id: new CardId('cardToTest'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+500000),
+                    zeitsteineChange: +4,
+                    bildungKompetenzsteinChange: +5,
+                    freizeitKompetenzsteinChange: +5,
                 ),
-            ],
-            PileId::FREIZEIT_PHASE_1->value => [],
-            PileId::MINIJOBS_PHASE_1->value => $this->getCardsForMinijobs(),
-            PileId::JOBS_PHASE_1->value => [
-                "testJob" => new JobCardDefinition(
-                    id: new CardId('testJob'),
-                    pileId: PileId::JOBS_PHASE_1,
-                    title: 'testtest',
-                    description: 'testest',
-                    gehalt: new MoneyAmount(80000),
-                    requirements: new JobRequirements(
-                        zeitsteine: 1,
-                    ),
-                ),
-            ]
-        ]);
+            ),
+        ];
 
-        KonjunkturphaseFinder::getInstance()->overrideKonjunkturphaseDefinitionsForTesting([$this->konjunkturphaseDefinition]);
+        $this->addCardsOnTopOfPile($setupCards, PileId::BILDUNG_PHASE_1);
 
-        $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create()->withFixedCardOrderForTesting(
-            new CardOrder(pileId: $this->pileIdBildung, cards: [CardId::fromString('cardToTest')]),
-            new CardOrder(pileId: $this->pileIdFreizeit, cards: []),
-            new CardOrder(pileId: $this->pileIdJobs, cards: [CardId::fromString('testJob')]),
-            new CardOrder(pileId: $this->pileIdMinijobs, cards: array_map(fn($card) => $card->getId(), $this->getCardsForMinijobs())),
-        ));
-
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
-        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('testJob')));
-        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
-
-        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[1]));
-        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
-        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId,
+            ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
 
         $eventsBefore = $this->coreGameLogic->getGameEvents($this->gameId)->findAllOfType(LebenszielphaseWasChanged::class);
         $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create(playerId: $this->players[0]));
@@ -1241,7 +1289,8 @@ describe('handleChangeLebenszielphase', function () {
             ),
         ];
         $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
-        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId,
+            ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         $resources = PlayerState::getResourcesForPlayer($stream, $this->players[0]);
 
@@ -1270,7 +1319,7 @@ describe('handleDoMinijob', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) +1,
+                    zeitsteineChange: -1 * $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
         ];
@@ -1299,14 +1348,17 @@ describe('handleDoMinijob', function () {
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(+500),
                 ),
-            )];
+            )
+        ];
 
         $this->addCardsOnTopOfPile($minijobs, PileId::MINIJOBS_PHASE_1);
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGuthabenForPlayer($stream, $this->players[0])->value)->toEqual(Configuration::STARTKAPITAL_VALUE);
+        expect(PlayerState::getGuthabenForPlayer($stream,
+            $this->players[0])->value)->toEqual(Configuration::STARTKAPITAL_VALUE);
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGuthabenForPlayer($stream, $this->players[0])->value)->toEqual(Configuration::STARTKAPITAL_VALUE + 500);
+        expect(PlayerState::getGuthabenForPlayer($stream,
+            $this->players[0])->value)->toEqual(Configuration::STARTKAPITAL_VALUE + 500);
     });
 
     it('throws an exception when the player wants to do more than one Zeitsteinaktion', function () {
@@ -1360,7 +1412,8 @@ describe('handleEndSpielzug', function () {
                 description: '...',
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-200),
-                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) +1, // Remove all Zeitsteine
+                    zeitsteineChange: -1 * $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
+                    // Remove all Zeitsteine
                     bildungKompetenzsteinChange: +1,
                 ),
             );
@@ -1443,7 +1496,7 @@ describe('handleEndSpielzug', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) +1,
+                    zeitsteineChange: -1 * $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
             "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
@@ -1452,7 +1505,7 @@ describe('handleEndSpielzug', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) +1,
+                    zeitsteineChange: -1 * $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
         ];
@@ -1488,7 +1541,7 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
+                    zeitsteineChange: -1 * $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
             "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
@@ -1497,7 +1550,7 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
+                    zeitsteineChange: -1 * $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
         ];
@@ -1546,7 +1599,7 @@ describe('handleCompleteMoneysheetForPlayer', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
+                    zeitsteineChange: -1 * $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
             "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
@@ -1555,7 +1608,7 @@ describe('handleCompleteMoneysheetForPlayer', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
+                    zeitsteineChange: -1 * $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
         ];
@@ -1579,7 +1632,8 @@ describe('handleCompleteMoneysheetForPlayer', function () {
 
         $this->coreGameLogic->handle(
             $this->gameId,
-            EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE))
+            EnterLebenshaltungskostenForPlayer::create($this->players[0],
+                new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE))
         );
 
         $this->coreGameLogic->handle(
@@ -1606,7 +1660,7 @@ describe('handleCompleteMoneysheetForPlayer', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
+                    zeitsteineChange: -1 * $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
             "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
@@ -1615,7 +1669,7 @@ describe('handleCompleteMoneysheetForPlayer', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
+                    zeitsteineChange: -1 * $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
         ];
@@ -1898,7 +1952,8 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
             $this->gameId,
             MarkPlayerAsReadyForKonjunkturphaseChange::create($this->players[0])
         );
-    })->throws(RuntimeException::class, 'Cannot mark player as ready: Die aktuelle Konjunkturphase ist noch nicht zu Ende', 1751373528);
+    })->throws(RuntimeException::class,
+        'Cannot mark player as ready: Die aktuelle Konjunkturphase ist noch nicht zu Ende', 1751373528);
 
     it('throws an error if the player has not completed the money sheet', function () {
         /** @var TestCase $this */
@@ -1910,7 +1965,7 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
+                    zeitsteineChange: -1 * $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
             "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
@@ -1919,7 +1974,7 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
+                    zeitsteineChange: -1 * $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
         ];
@@ -1942,13 +1997,15 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
         );
 
         $this->coreGameLogic->handle($this->gameId,
-            EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)));
+            EnterLebenshaltungskostenForPlayer::create($this->players[0],
+                new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)));
 
         $this->coreGameLogic->handle(
             $this->gameId,
             MarkPlayerAsReadyForKonjunkturphaseChange::create($this->players[0])
         );
-    })->throws(RuntimeException::class, "Cannot mark player as ready: Du musst erst das Money Sheet korrekt ausfüllen", 1751373528);
+    })->throws(RuntimeException::class, "Cannot mark player as ready: Du musst erst das Money Sheet korrekt ausfüllen",
+        1751373528);
 
     it('marks the player as ready', function () {
         /** @var TestCase $this */
@@ -1960,7 +2017,7 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
+                    zeitsteineChange: -1 * $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
             "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
@@ -1969,7 +2026,7 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
+                    zeitsteineChange: -1 * $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
         ];
@@ -1992,7 +2049,8 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
         );
 
         $this->coreGameLogic->handle($this->gameId,
-            EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)));
+            EnterLebenshaltungskostenForPlayer::create($this->players[0],
+                new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)));
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -2070,7 +2128,8 @@ describe('handleTakeOutALoanForPlayer', function () {
                 repaymentPerKonjunkturphase: new MoneyAmount(625),
             ))
             ->and($loanWasCorrectedEvent->getResourceChanges($this->players[0])->guthabenChange)->toEqual(new MoneyAmount(-250))
-            ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE - 250));
+            ->and(PlayerState::getGuthabenForPlayer($gameEvents,
+                $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE - 250));
     });
 });
 
@@ -2078,6 +2137,8 @@ describe('handleBuyStocksForPlayer', function () {
     it('buying stocks works as expected', function () {
         // buy low risk stocks
         $amountOfStocks = 100;
+
+        /** @var TestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyStocksForPlayer::create(

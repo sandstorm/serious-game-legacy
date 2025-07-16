@@ -643,6 +643,7 @@ describe('getOpenRatesForLoan', function () {
     })->throws(\RuntimeException::class, 'No loan found for player p1 with ID test');
 
     it('returns correct open rates for loans', function () {
+        /** @var TestCase $this */
         $cardsForTesting = [];
         for($i = 0; $i < count($this->players); $i++) {
             $cardID = new CardId('cardToRemoveZeitsteine' . $i);
@@ -663,6 +664,7 @@ describe('getOpenRatesForLoan', function () {
             PileId::FREIZEIT_PHASE_1->value => $this->cardsFreizeit,
             PileId::JOBS_PHASE_1->value => $this->cardsJobs,
             PileId::MINIJOBS_PHASE_1->value => $this->cardsMinijobs,
+            PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => $this->cardsEreignisseBildungUndKarriere,
         ];
         CardFinder::getInstance()->overrideCardsForTesting($testCards);
 

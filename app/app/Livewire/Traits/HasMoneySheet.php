@@ -133,7 +133,7 @@ trait HasMoneySheet
             doesLebenshaltungskostenRequirePlayerAction: MoneySheetState::doesLebenshaltungskostenRequirePlayerAction($this->gameEvents, $playerId),
             steuernUndAbgaben: MoneySheetState::getLastInputForSteuernUndAbgaben($this->gameEvents, $playerId),
             doesSteuernUndAbgabenRequirePlayerAction: MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($this->gameEvents, $playerId),
-            gehalt: PlayerState::getGehaltForPlayer($this->gameEvents, $playerId),
+            gehalt: PlayerState::getBaseGehaltForPlayer($this->gameEvents, $playerId),
             total: MoneySheetState::calculateTotalForPlayer($this->gameEvents, $playerId),
             totalInsuranceCost: MoneySheetState::getCostOfAllInsurances($this->gameEvents, $playerId),
             sumOfAllLoans: MoneySheetState::getSumOfAllLoansForPlayer($this->gameEvents, $playerId),

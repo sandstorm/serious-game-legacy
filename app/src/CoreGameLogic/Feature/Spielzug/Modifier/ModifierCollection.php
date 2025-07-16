@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Modifier;
 
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Aktion;
+use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Traversable;
 
 /**
@@ -18,6 +19,14 @@ readonly class ModifierCollection implements \IteratorAggregate
      */
     public function __construct(private array $modifiers)
     {
+    }
+
+    /**
+     * @return Modifier[]
+     */
+    public function getModifiers(): array
+    {
+        return $this->modifiers;
     }
 
 
@@ -35,28 +44,20 @@ readonly class ModifierCollection implements \IteratorAggregate
     }
 
     /**
-     * @param Aktion[] $applicableAktionen
-     * @return Aktion[]
-     * @deprecated this will be refactored
+     * @template T
+     * @param T $value
+     * @return T
      */
-    public function applyToAvailableAktionen(array $applicableAktionen): array
+    public function modify(GameEvents $gameEvents, HookEnum $hookEnum, mixed $value): mixed
     {
-        // TODO refactor
+        $returnValue = $value;
         foreach ($this->modifiers as $modifier) {
             assert($modifier instanceof Modifier);
-            $applicableAktionen = $modifier->applyToAvailableAktionen($applicableAktionen);
+            if ($modifier->canModify($hookEnum) && $modifier->isActive($gameEvents)) {
+                $returnValue = $modifier->modify($value);
+            }
         }
-        return $applicableAktionen;
-    }
-
-    public function applyToAvailableZeitsteine(int $currentlyAvailableZeitsteine): int
-    {
-        $availableZeitsteine = $currentlyAvailableZeitsteine;
-        foreach ($this->modifiers as $modifier) {
-            assert($modifier instanceof Modifier);
-            $availableZeitsteine = $modifier->applyToAvailableZeitsteine($availableZeitsteine);
-        }
-        return $availableZeitsteine;
+        return $returnValue;
     }
 
     /**
@@ -77,5 +78,10 @@ readonly class ModifierCollection implements \IteratorAggregate
     public function reduce(callable $callback, mixed $initial): mixed
     {
         return array_reduce($this->modifiers, $callback, $initial);
+    }
+
+    public function getModifiersForHook(HookEnum $hookEnum): self
+    {
+        return $this->filter(fn (Modifier $modifier) => $modifier->canModify($hookEnum));
     }
 }

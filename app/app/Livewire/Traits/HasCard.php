@@ -5,16 +5,23 @@ declare(strict_types=1);
 namespace App\Livewire\Traits;
 
 use App\Livewire\ValueObject\NotificationTypeEnum;
+use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ActivateCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SkipCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
+use Domain\Definitions\Card\CardFinder;
+use Domain\Definitions\Card\Dto\EreignisCardDefinition;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 trait HasCard
 {
     public ?string $showCardActionsForCard = null;
+    public bool $isEreignisCardVisible = false;
+    public ?string $ereignisCardDefinition = null;
 
     /**
      * @param string $cardId
@@ -27,6 +34,11 @@ trait HasCard
         } else {
             $this->showCardActionsForCard = $cardId;
         }
+    }
+
+    public function closeEreignisCard(): void
+    {
+        $this->isEreignisCardVisible = false;
     }
 
     /**
@@ -69,6 +81,17 @@ trait HasCard
             $this->myself,
             CategoryId::from($category)
         ));
+
+        // WHY: refresh the gameEvents - otherwise the modal for the last Ereignis will not be rendered correctly
+        $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        $eventsAfterActivateCard = $this->gameEvents->findAllAfterLastOfType(CardWasActivated::class);
+        /** @var EreignisWasTriggered|null $ereignisOrNull */
+        $ereignisOrNull = $eventsAfterActivateCard->findLastOrNull(EreignisWasTriggered::class);
+        if ($ereignisOrNull !== null) {
+            $ereignisCardDefinition = CardFinder::getInstance()->getCardById($ereignisOrNull->ereignisCardId, EreignisCardDefinition::class);
+            $this->ereignisCardDefinition = $ereignisCardDefinition->description();
+            $this->isEreignisCardVisible = true;
+        }
         $this->broadcastNotify();
     }
 

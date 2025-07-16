@@ -23,7 +23,7 @@
             <li>-{{ $jobDefinition->requirements->zeitsteine }}</li>
             <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($gameEvents, $playerId)])></li>
         </ul>
-        <span>Mein Job. {!! $jobDefinition->gehalt->format() !!}</span>
+        <span>Mein Job. {!! PlayerState::getBaseGehaltForPlayer($gameEvents, $playerId)->format() !!}</span>
     </button>
 @endif
 @if ($this->jobOfferIsVisible)

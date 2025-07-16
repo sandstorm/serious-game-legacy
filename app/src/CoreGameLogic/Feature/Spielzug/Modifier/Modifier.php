@@ -4,41 +4,47 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Modifier;
 
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Aktion;
-use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\ModifierId;
+use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
+use Domain\Definitions\Card\ValueObject\ModifierId;
 
-/**
- * TODO: make abstract
- */
-readonly class Modifier
+readonly abstract class Modifier
 {
-    public function __construct(public ModifierId $id)
-    {
+    public function __construct(
+        public ModifierId $id,
+        public PlayerTurn $startingTurn,
+        public string     $description,
+    ) {
     }
 
     public function __toString(): string
     {
-        return '[ModifierId: '.$this->id->value.']';
+        return '[ModifierId: ' . $this->id->value . ']';
     }
+
+    public function isActive(GameEvents $gameEvents): bool
+    {
+        $eventsAfterModifierBecameActive = $gameEvents->findAllAfterLastOrNullWhere(
+            fn($event) => $event instanceof SpielzugWasEnded
+                && $event->playerTurn->value === $this->startingTurn->value
+        );
+        if ($eventsAfterModifierBecameActive === null) {
+            return true;
+        }
+        $konjunkturphaseWasChangedEvent = $eventsAfterModifierBecameActive->findLastOrNull(KonjunkturphaseWasChanged::class);
+        return $konjunkturphaseWasChangedEvent === null;
+    }
+
+    public abstract function canModify(HookEnum $hook): bool;
 
     /**
-     * @param mixed $applicableAktionen
-     * @return Aktion[]
-     * @deprecated this needs to be refactored
+     * @template T
+     * @param T $value
+     * @return T
      */
-    public function applyToAvailableAktionen(mixed $applicableAktionen): array
-    {
-        if ($this->id === ModifierId::AUSSETZEN) {
-            return [];
-        }
-        return $applicableAktionen;
-    }
+    public abstract function modify(mixed $value): mixed;
 
-    public function applyToAvailableZeitsteine(int $currentlyAvailableZeitsteine): int
-    {
-        if ($this->id === ModifierId::BIND_ZEITSTEIN) {
-            return max([$currentlyAvailableZeitsteine - 1, 0]);
-        }
-        return $currentlyAvailableZeitsteine;
-    }
 }

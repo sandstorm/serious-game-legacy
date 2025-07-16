@@ -9,8 +9,8 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\ChangeLebenszielphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\ChangeLebenszielphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
@@ -107,31 +107,6 @@ describe('getJobForPlayer', function () {
                         zeitsteine: 1,
                     ),
                 ),
-            ]
-        ]);
-
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
-        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('testJob')));
-        $this->coreGameLogic->handle($this->gameId, QuitJob::create($this->players[0]));
-        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
-
-        $minijobs = [
-            "testMinijob" => new MinijobCardDefinition(
-                id: new CardId('testMinijob'),
-                pileId: PileId::MINIJOBS_PHASE_1,
-                title: 'Softwaretester',
-                description: 'Du arbeitest nebenbei als Softwaretester und bekommst einmalig Gehalt',
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(+500),
-                ),
-            )];
-
-        $this->addCardsOnTopOfPile($minijobs, PileId::MINIJOBS_PHASE_1);
-        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[1]));
-        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
-
-        CardFinder::getInstance()->overrideCardsForTesting([
-            PileId::JOBS_PHASE_1->value => [
                 "testJob2" => new JobCardDefinition(
                     id: new CardId('testJob2'),
                     pileId: PileId::JOBS_PHASE_1,
@@ -144,6 +119,15 @@ describe('getJobForPlayer', function () {
                 ),
             ]
         ]);
+
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('testJob')));
+        $this->coreGameLogic->handle($this->gameId, QuitJob::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+
+        $this->coreGameLogic->handle($this->gameId,RequestJobOffers::create($this->players[1]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
+
         $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('testJob2')));
 
@@ -192,7 +176,8 @@ describe('getCurrentLebenszielphaseDefinitionForPlayer', function () {
                         zeitsteine: 1,
                     ),
                 ),
-            ]
+            ],
+            PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => $this->cardsEreignisseBildungUndKarriere,
         ]);
 
         $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create()->withFixedCardOrderForTesting(
@@ -322,4 +307,22 @@ test('getKompetenzenForPlayer', function () {
         ->and(PlayerState::getBildungsKompetenzsteine($gameEvents, $this->players[0]))->toBe(1)
         // is 0 again because we are in the next konjunkturphase
         ->and(PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($gameEvents, $this->players[0], CategoryId::BILDUNG_UND_KARRIERE))->toBe(0);
+});
+
+describe("getCurrentTurnForPlayer", function () {
+    it("returns 1 in the first round", function () {
+        /** @var TestCase $this */
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getCurrentTurnForPlayer($gameEvents, $this->players[0])->value)->toBe(1);
+    });
+
+    it("increases after the player ends their turn", function () {
+        /** @var TestCase $this */
+        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getCurrentTurnForPlayer($gameEvents, $this->players[0])->value)->toBe(2)
+            ->and(PlayerState::getCurrentTurnForPlayer($gameEvents, $this->players[1])->value)->toBe(1);
+    });
 });

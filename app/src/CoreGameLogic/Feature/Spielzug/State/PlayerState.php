@@ -21,6 +21,9 @@ use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
@@ -60,16 +63,16 @@ class PlayerState
     /**
      * Returns the current amount of Zeitsteine available to the player.
      */
-    public static function getZeitsteineForPlayer(GameEvents $stream, PlayerId $playerId): int
+    public static function getZeitsteineForPlayer(GameEvents $gameEvents, PlayerId $playerId): int
     {
-        if (!in_array(needle: $playerId, haystack: $stream->findLast(PreGameStarted::class)->playerIds, strict: true)) {
+        if (!in_array(needle: $playerId, haystack: $gameEvents->findLast(PreGameStarted::class)->playerIds, strict: true)) {
             throw new RuntimeException('Player ' . $playerId . ' does not exist', 1748432811);
         }
-        $accumulatedResourceChangesForPlayer = $stream->findAllAfterLastOfType(KonjunkturphaseWasChanged::class)->findAllOfType(ProvidesResourceChanges::class)
+        $accumulatedResourceChangesForPlayer = $gameEvents->findAllAfterLastOfType(KonjunkturphaseWasChanged::class)->findAllOfType(ProvidesResourceChanges::class)
             ->reduce(fn(ResourceChanges $accumulator, ProvidesResourceChanges $event) => $accumulator->accumulate($event->getResourceChanges($playerId)), new ResourceChanges());
 
-        $zeitsteineForPlayer = $accumulatedResourceChangesForPlayer->accumulate(new ResourceChanges(zeitsteineChange: + KonjunkturphaseState::getInitialZeitsteineForCurrentKonjunkturphase($stream)))->zeitsteineChange;
-        return ModifierCalculator::forStream($stream)->forPlayer($playerId)->applyToAvailableZeitsteine($zeitsteineForPlayer);
+        $zeitsteineForPlayer = $accumulatedResourceChangesForPlayer->accumulate(new ResourceChanges(zeitsteineChange: + KonjunkturphaseState::getInitialZeitsteineForCurrentKonjunkturphase($gameEvents)))->zeitsteineChange;
+        return ModifierCalculator::forStream($gameEvents)->forPlayer($playerId)->modify($gameEvents, HookEnum::ZEITSTEINE, $zeitsteineForPlayer);
     }
 
     /**
@@ -167,7 +170,7 @@ class PlayerState
         $jobOfferWasAcceptedEvent = $gameEvents->findLastOrNullWhere(fn ($event) => $event instanceof JobOfferWasAccepted && $event->playerId->equals($playerId));
         // Otherwise, return the active job definition
         /** @var JobCardDefinition $jobDefinition */
-        $jobDefinition = CardFinder::getInstance()->getCardById($jobOfferWasAcceptedEvent->cardId);
+        $jobDefinition = CardFinder::getInstance()->getCardById($jobOfferWasAcceptedEvent->cardId, JobCardDefinition::class);
         return $jobDefinition;
     }
 
@@ -183,7 +186,7 @@ class PlayerState
         $cardId = $minijobWasDoneEvent->minijobCardId;
 
         /** @var MinijobCardDefinition $minijobDefinition */
-        $minijobDefinition = CardFinder::getInstance()->getCardById($cardId);
+        $minijobDefinition = CardFinder::getInstance()->getCardById($cardId, MinijobCardDefinition::class);
         return $minijobDefinition;
     }
 
@@ -192,11 +195,38 @@ class PlayerState
      * @param PlayerId $playerId
      * @return MoneyAmount
      */
-    public static function getGehaltForPlayer(GameEvents $stream, PlayerId $playerId): MoneyAmount
+    public static function getBaseGehaltForPlayer(GameEvents $stream, PlayerId $playerId): MoneyAmount
     {
-        // TODO modifier berücksichtigen
         $job = self::getJobForPlayer($stream, $playerId);
-        return $job->gehalt ?? new MoneyAmount(0);
+        $gehalt = $job->gehalt ?? new MoneyAmount(0);
+        return ModifierCalculator::forStream($stream)->forPlayer($playerId)->modify($stream, HookEnum::GEHALT, $gehalt);
+    }
+
+    /**
+     * @param GameEvents $stream
+     * @param PlayerId $playerId
+     * @return MoneyAmount
+     */
+    public static function getModifiedGehaltForPlayer(GameEvents $stream, PlayerId $playerId): MoneyAmount
+    {
+        $job = self::getJobForPlayer($stream, $playerId);
+        $gehalt = $job->gehalt ?? new MoneyAmount(0);
+        return ModifierCalculator::forStream($stream)->forPlayer($playerId)->modify($stream, HookEnum::GEHALT, $gehalt);
+    }
+
+    /**
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return PlayerTurn the current turn number for the player (starting at 1)
+     */
+    public static function getCurrentTurnForPlayer(GameEvents $gameEvents, PlayerId $playerId): PlayerTurn
+    {
+        $spielzugWasEndedEvents = $gameEvents->findAllOfType(SpielzugWasEnded::class)
+            ->filter(fn (SpielzugWasEnded $event) => $event->playerId->equals($playerId));
+        if ($spielzugWasEndedEvents === null) {
+            return new PlayerTurn(1);
+        }
+        return new PlayerTurn(count($spielzugWasEndedEvents) + 1);
     }
 
     /**

@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
+use Domain\CoreGameLogic\Feature\Spielzug\Modifier\BindZeitsteinForJobModifier;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
+use Domain\Definitions\Card\CardFinder;
+use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
-use Domain\CoreGameLogic\Feature\Spielzug\Modifier\Modifier;
 use Domain\CoreGameLogic\Feature\Spielzug\Modifier\ModifierCollection;
-use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\ModifierId;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\CardId;
 
@@ -19,6 +21,7 @@ final readonly class JobOfferWasAccepted implements GameEventInterface, Provides
         public PlayerId    $playerId,
         public CardId      $cardId,
         public MoneyAmount $gehalt,
+        public PlayerTurn  $playerTurn,
     ) {
     }
 
@@ -27,7 +30,8 @@ final readonly class JobOfferWasAccepted implements GameEventInterface, Provides
         return new self(
             playerId: PlayerId::fromString($values['playerId']),
             cardId: CardId::fromString($values['cardId']),
-            gehalt: new MoneyAmount($values['gehalt'])
+            gehalt: new MoneyAmount($values['gehalt']),
+            playerTurn: new PlayerTurn($values['playerTurn']),
         );
     }
 
@@ -37,16 +41,18 @@ final readonly class JobOfferWasAccepted implements GameEventInterface, Provides
             'playerId' => $this->playerId,
             'cardId' => $this->cardId,
             'gehalt' => $this->gehalt,
+            'playerTurn' => $this->playerTurn,
         ];
     }
 
     public function getModifiers(PlayerId $playerId): ModifierCollection
     {
-        if ($this->playerId !== $playerId) {
+        if (!$this->playerId->equals($playerId)){
             return new ModifierCollection([]);
         }
 
-        return new ModifierCollection([new Modifier(ModifierId::BIND_ZEITSTEIN)]);
+        $cardDefinition = CardFinder::getInstance()->getCardById($this->cardId, JobCardDefinition::class);
+        return new ModifierCollection([new BindZeitsteinForJobModifier($this->playerId, $this->playerTurn, $cardDefinition->description())]);
     }
 
 }
