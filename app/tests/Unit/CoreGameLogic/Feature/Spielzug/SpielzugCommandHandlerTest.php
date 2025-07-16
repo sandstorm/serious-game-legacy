@@ -14,6 +14,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesStockPri
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
+use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
@@ -788,14 +789,20 @@ describe('handleAcceptJobOffer', function () {
     })->throws(RuntimeException::class,
         'Cannot Accept Job Offer: Dieser Job wurde dir noch nicht vorgeschlagen', 1749043636);
 
-    it('permanently removes 1 Zeitstein while the player has a job', function () {
+    it('permanently removes 1 Zeitstein while the player has a job and adds salary to gehalt', function () {
         /** @var TestCase $this */
+        KonjunkturphaseFinder::getInstance()->overrideKonjunkturphaseDefinitionsForTesting([
+            $this->konjunkturphaseDefinition,
+        ]);
+
         // Reaffirm the "normal" number of Zeitsteine (in case we change something and forget to adjust this test)
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2))
+            ->and(PlayerState::getZeitsteineForPlayer($stream, $this->players[1]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
 
         // Add the job we want to accept
+        $gehalt = new MoneyAmount(34000);
         CardFinder::getInstance()->overrideCardsForTesting([
             PileId::BILDUNG_PHASE_1->value => [],
             PileId::FREIZEIT_PHASE_1->value => [],
@@ -806,7 +813,7 @@ describe('handleAcceptJobOffer', function () {
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'offered 1',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                    gehalt: new MoneyAmount(34000),
+                    gehalt: $gehalt,
                     requirements: new JobRequirements(
                         zeitsteine: 1,
                     ),
@@ -817,42 +824,67 @@ describe('handleAcceptJobOffer', function () {
         // Request and accept the job
         $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j0')));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[0])
+        );
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[1]));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[1])
+        );
 
         // Expect two fewer Zeitsteine (-1 for the RequestJobOffers and one should now be permanently unavailable)
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 2);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 2)
+            ->and(PlayerState::getZeitsteineForPlayer($stream, $this->players[1]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
+
+        $cardsForTesting = [
+            "cardToRemoveZeitsteine" => new KategorieCardDefinition(
+                id: new CardId('cardToRemoveZeitsteine'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -1 * (PlayerState::getZeitsteineForPlayer($stream, $this->players[0])),
+                ),
+            ),
+            "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
+                id: new CardId('cardToRemoveZeitsteine2'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -1 * (PlayerState::getZeitsteineForPlayer($stream, $this->players[1])),
+                ),
+            ),
+        ];
+        $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
+
+        $this->makeSpielzugForPlayersAndChangeKonjunkturphase();
 
         // Start a new Konjunkturphase to see if the Zeitstein change persists
-        $testKonjunkturPhase = new KonjunkturphaseDefinition(
-            id: KonjunkturphasenId::create(161),
-            type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
-            name: 'Aufschwung',
-            description: 'no changes',
-            additionalEvents: '',
-            zeitsteine: new Zeitsteine(
-                [
-                    new ZeitsteinePerPlayer(2, 6),
-                    new ZeitsteinePerPlayer(3, 5),
-                    new ZeitsteinePerPlayer(4, 5),
-                ]
-            ),
-            kompetenzbereiche: [],
-            auswirkungen: []
-        );
-
-        KonjunkturphaseFinder::getInstance()->overrideKonjunkturphaseDefinitionsForTesting([
-            $this->konjunkturphaseDefinition,
-            $testKonjunkturPhase
-        ]);
-
         $this->coreGameLogic->handle(
             $this->gameId,
-            ChangeKonjunkturphase::create()->withFixedKonjunkturphaseForTesting($testKonjunkturPhase));
+            ChangeKonjunkturphase::create()->withFixedKonjunkturphaseForTesting($this->konjunkturphaseDefinition));
 
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
+        // also check if the salary is correctly calculated
+        $expectedGuthabenPlayer0 = Configuration::STARTKAPITAL_VALUE
+            + PlayerState::getJobForPlayer($stream, $this->players[0])->gehalt->value
+            - MoneySheetState::calculateLebenshaltungskostenForPlayer($stream, $this->players[0])->value
+            - MoneySheetState::calculateSteuernUndAbgabenForPlayer($stream, $this->players[0])->value;
+
+        $expectedGuthabenPlayer1 = Configuration::STARTKAPITAL_VALUE
+            - MoneySheetState::calculateLebenshaltungskostenForPlayer($stream, $this->players[1])->value
+            - MoneySheetState::calculateSteuernUndAbgabenForPlayer($stream, $this->players[1])->value;
+
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1)
+            ->and(PlayerState::getZeitsteineForPlayer($stream, $this->players[1]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2))
+            ->and(PlayerState::getGuthabenForPlayer($stream, $this->players[0]))->toEqual(new MoneyAmount($expectedGuthabenPlayer0))
+            ->and(PlayerState::getGuthabenForPlayer($stream, $this->players[1]))->toEqual(new MoneyAmount($expectedGuthabenPlayer1));
     });
 
     it('throws an exception if job requirements are not met', function () {
@@ -1171,6 +1203,8 @@ describe('handleChangeLebenszielphase', function () {
                 ),
             ]
         ]);
+
+        KonjunkturphaseFinder::getInstance()->overrideKonjunkturphaseDefinitionsForTesting([$this->konjunkturphaseDefinition]);
 
         $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create()->withFixedCardOrderForTesting(
             new CardOrder(pileId: $this->pileIdBildung, cards: [CardId::fromString('cardToTest')]),

@@ -6,7 +6,6 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasKonjunkturphaseEndedValidator;
@@ -15,7 +14,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
-use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
 class CompleteMoneySheetForPlayerAktion extends Aktion
 {
@@ -40,15 +38,16 @@ class CompleteMoneySheetForPlayerAktion extends Aktion
         }
 
         $annualExpenses = MoneySheetState::getAnnualExpensesForPlayer($gameEvents, $playerId);
+        $annualIncome = MoneySheetState::getAnnualIncomeForPlayer($gameEvents, $playerId);
 
-        // TODO add job income, stocks
+        $guthabenChange = $annualIncome->subtract($annualExpenses);
 
         return GameEventsToPersist::with(
             new PlayerHasCompletedMoneysheetForCurrentKonjunkturphase(
                 $playerId,
                 KonjunkturphaseState::getCurrentYear($gameEvents),
                 new ResourceChanges(
-                    guthabenChange: new MoneyAmount($annualExpenses->value * -1)
+                    guthabenChange: $guthabenChange
                 )
             )
         );

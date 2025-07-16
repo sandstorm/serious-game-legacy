@@ -11,7 +11,8 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesStockPri
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
-use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
+use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
+use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Random\RandomException;
 
 class StockPriceState
@@ -60,7 +61,7 @@ class StockPriceState
         }
 
         $konjunkturphaseDefinition = KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents);
-        $schock = self::getSchock($konjunkturphaseDefinition->type);
+        $schock = self::getSchock($konjunkturphaseDefinition);
         $annualVolatility = self::getAnnualVolatility($stockType);
         $annualReturn = self::getAnnualReturn($stockType);
         $z = random_int(-1000, 1000) / 1000.0; // Random number from N(0,1), here simplified as a uniform distribution
@@ -102,16 +103,11 @@ class StockPriceState
     /**
      * Returns the shock (s) based on the current economic phase.
      *
-     * @param KonjunkturphaseTypeEnum $type
+     * @param KonjunkturphaseDefinition $konjunkturphaseDefinition
      * @return float
      */
-    private static function getSchock(KonjunkturphaseTypeEnum $type): float
+    private static function getSchock(KonjunkturphaseDefinition $konjunkturphaseDefinition): float
     {
-        return match ($type) {
-            KonjunkturphaseTypeEnum::AUFSCHWUNG => 0.05,
-            KonjunkturphaseTypeEnum::BOOM => 0.15,
-            KonjunkturphaseTypeEnum::REZESSION => -0.2,
-            KonjunkturphaseTypeEnum::DEPRESSION => -0.1,
-        };
+        return $konjunkturphaseDefinition->getAuswirkungByScope(AuswirkungScopeEnum::STOCKS_BONUS)->modifier;
     }
 }

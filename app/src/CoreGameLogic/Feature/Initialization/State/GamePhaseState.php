@@ -49,7 +49,7 @@ class GamePhaseState
         $players = PreGameState::playersWithNameAndLebensziel($gameEvents);
 
         $konjunkturphaseDefinition = KonjunkturphaseFinder::findKonjunkturphaseById($konjunkturPhaseWasChanged->id);
-        $freeSlots = $konjunkturphaseDefinition->getKompetenzbereichByName($category)->zeitslots->getAmountOfZeitslotsForPlayer(count($players));
+        $freeSlots = $konjunkturphaseDefinition->getKompetenzbereichByCategory($category)->zeitslots->getAmountOfZeitslotsForPlayer(count($players));
 
         // now get all players and their placed Zeitsteine in this category
         $usedSlots = 0;

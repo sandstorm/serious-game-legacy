@@ -18,6 +18,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
@@ -301,6 +302,10 @@ abstract class TestCase extends BaseTestCase
             $this->coreGameLogic->handle(
                 $this->gameId,
                 EnterLebenshaltungskostenForPlayer::create($player, MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $player))
+            );
+            $this->coreGameLogic->handle(
+                $this->gameId,
+                EnterSteuernUndAbgabenForPlayer::create($player, MoneySheetState::calculateSteuernUndAbgabenForPlayer($gameEvents, $player))
             );
             $this->coreGameLogic->handle(
                 $this->gameId,
