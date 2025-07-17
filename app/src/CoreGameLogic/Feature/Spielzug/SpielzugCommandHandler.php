@@ -24,6 +24,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterLebenshaltungskostenForPla
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterSteuernUndAbgabenForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\MarkPlayerAsReadyForKonjunkturphaseChangeAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\RequestJobOffersAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellStocksForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SkipCardAktion as SkipCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\StartKonjunkturphaseForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\TakeOutALoanForPlayerAktion;
@@ -37,6 +38,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SellStocksForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
@@ -69,7 +71,8 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             || $command instanceof TakeOutALoanForPlayer
             || $command instanceof ChangeLebenszielphase
             || $command instanceof QuitJob
-            || $command instanceof BuyStocksForPlayer;
+            || $command instanceof BuyStocksForPlayer
+            || $command instanceof SellStocksForPlayer;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameEvents): GameEventsToPersist
@@ -100,6 +103,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             QuitJob::class => $this->handleQuitJob
                 ($command, $gameEvents),
             BuyStocksForPlayer::class => $this->handleBuyStocks($command, $gameEvents),
+            SellStocksForPlayer::class => $this->handleSellStocks($command, $gameEvents),
             ChangeLebenszielphase::class => $this->handleLebenszielphase($command, $gameEvents),
         };
     }
@@ -233,9 +237,29 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
         return $aktion->execute($command->playerId, $gameEvents);
     }
 
+    /**
+     * @param BuyStocksForPlayer $command
+     * @param GameEvents $gameEvents
+     * @return GameEventsToPersist
+     */
     private function handleBuyStocks(BuyStocksForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
     {
         $aktion = new BuyStocksForPlayerAktion(
+            $command->stockType,
+            StockPriceState::getCurrentStockPrice($gameEvents, $command->stockType),
+            $command->amount,
+        );
+        return $aktion->execute($command->playerId, $gameEvents);
+    }
+
+    /**
+     * @param SellStocksForPlayer $command
+     * @param GameEvents $gameEvents
+     * @return GameEventsToPersist
+     */
+    private function handleSellStocks(SellStocksForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
+    {
+        $aktion = new SellStocksForPlayerAktion(
             $command->stockType,
             StockPriceState::getCurrentStockPrice($gameEvents, $command->stockType),
             $command->amount,

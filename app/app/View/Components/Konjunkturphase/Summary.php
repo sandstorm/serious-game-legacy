@@ -38,7 +38,7 @@ class Summary extends Component
                 total: MoneySheetState::hasPlayerCompletedMoneysheet($this->gameEvents, $this->playerId) ? MoneySheetState::calculateTotalForPlayer($this->gameEvents, $this->playerId) : new MoneyAmount(0),
                 totalInsuranceCost: MoneySheetState::getCostOfAllInsurances($this->gameEvents, $this->playerId),
                 sumOfAllLoans: MoneySheetState::getSumOfAllLoansForPlayer($this->gameEvents, $this->playerId),
-                sumOfAllStocks: PlayerState::getSumOfAllStocksForPlayer($this->gameEvents, $this->playerId),
+                sumOfAllStocks: PlayerState::getTotalValueOfAllStocksForPlayer($this->gameEvents, $this->playerId),
             ),
         ]);
     }

@@ -421,7 +421,7 @@ class MoneySheetState
     {
         $annualIncome = (new MoneyAmount(0))
             ->add(PlayerState::getGehaltForPlayer($gameEvents, $playerId))
-            ->add(PlayerState::getSumOfDividendForAllStocks($gameEvents, $playerId));
+            ->add(PlayerState::getDividendForAllStocksForPlayer($gameEvents, $playerId));
 
         return $annualIncome;
     }

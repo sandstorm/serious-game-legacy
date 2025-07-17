@@ -14,7 +14,7 @@
     <tr>
         <th>Menge</th>
         <th>Beschreibung</th>
-        <th>Kaufpreis/Stück</th>
+        <th>Aktueller Preis</th>
         <th>Dividende oder Mietertrag/Stück</th>
         <th>Einnahmen</th>
     </tr>
@@ -33,13 +33,13 @@
                 @endif
             </td>
             <td>
-                Aktueller Preis: {!! StockPriceState::getCurrentStockPrice($gameEvents, $stock->stockType)->format() !!}
+                {{ $stock->amount * $stock->price->value }} €
             </td>
         </tr>
     @endforeach
     <tr>
         <td colspan="4" class="text-align--right">Einnahmen Aktien gesamt</td>
-        <td>TODO </td>
+        <td>TODO</td>
     </tr>
     </tbody>
 </table>
