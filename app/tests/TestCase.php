@@ -80,6 +80,9 @@ abstract class TestCase extends BaseTestCase
      */
     protected array $insurances;
 
+    /**
+     * @var KonjunkturphaseDefinition|null
+     */
     protected $konjunkturphaseDefinition;
 
     /**

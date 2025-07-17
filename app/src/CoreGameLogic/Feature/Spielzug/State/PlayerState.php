@@ -14,6 +14,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\StockData;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereBoughtForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
 use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
@@ -23,6 +24,7 @@ use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Lebensziel\Dto\LebenszielPhaseDefinition;
 use RuntimeException;
@@ -222,6 +224,21 @@ class PlayerState
         $sum = new MoneyAmount(0);
         foreach ($stocks as $stock) {
             $sum = $sum->add(new MoneyAmount($stock->price->value * $stock->amount));
+        }
+        return $sum;
+    }
+
+    public static function getSumOfDividendForAllStocks(GameEvents $stream, PlayerId $playerId): MoneyAmount
+    {
+        $stocks = self::getStocksForPlayer($stream, $playerId);
+        $currentKonjunkturphase = KonjunkturphaseState::getCurrentKonjunkturphase($stream);
+        $currentDividend = $currentKonjunkturphase->getAuswirkungByScope(AuswirkungScopeEnum::DIVIDEND)->modifier;
+        $sum = new MoneyAmount(0);
+        foreach ($stocks as $stock) {
+            // only low risk stocks pay dividends
+            if ($stock->stockType === StockType::LOW_RISK) {
+                $sum = $sum->add(new MoneyAmount($currentDividend * $stock->amount));
+            }
         }
         return $sum;
     }
