@@ -7,13 +7,14 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerColorWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesStockAmountChanges;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\StockPriceState;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\StockAmountChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
-use Domain\CoreGameLogic\Feature\Spielzug\Dto\StockData;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereBoughtForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
 use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
@@ -201,46 +202,51 @@ class PlayerState
     /**
      * @param GameEvents $stream
      * @param PlayerId $playerId
-     * @return StockData[]
+     * @param StockType $stockType
+     * @return int
      */
-    public static function getStocksForPlayer(GameEvents $stream, PlayerId $playerId): array
+    public static function getAmountOfAllStocksOfTypeForPlayer(GameEvents $stream, PlayerId $playerId, StockType $stockType): int
     {
-        // get all BuyStocksForPlayer events for the player
-        $buyStocksEvents = $stream->findAllOfType(StocksWereBoughtForPlayer::class)
-            ->filter(fn(StocksWereBoughtForPlayer $event) => $event->playerId->equals($playerId));
+        $accumulatedStockAmountChangesForPlayer = $stream->findAllOfType(ProvidesStockAmountChanges::class)
+            ->reduce(fn(StockAmountChanges $accumulator, ProvidesStockAmountChanges $event) => $accumulator->accumulate($event->getStockAmountChanges($playerId, $stockType)), new StockAmountChanges());
 
-        // TODO stocks could be sold in another event
-
-        return array_map(fn(StocksWereBoughtForPlayer $event) => new StockData(
-            stockType: $event->stockType,
-            price: $event->sharePrice,
-            amount: $event->amount
-        ), $buyStocksEvents);
+        return $accumulatedStockAmountChangesForPlayer->amountChange;
     }
 
-    public static function getSumOfAllStocksForPlayer(GameEvents $stream, PlayerId $playerId): MoneyAmount
+    /**
+     * Returns the total of all stocks for the specified player, across all stock types.
+     *
+     * @param GameEvents $stream
+     * @param PlayerId $playerId
+     * @return MoneyAmount
+     */
+    public static function getTotalValueOfAllStocksForPlayer(GameEvents $stream, PlayerId $playerId): MoneyAmount
     {
-        $stocks = self::getStocksForPlayer($stream, $playerId);
         $sum = new MoneyAmount(0);
-        foreach ($stocks as $stock) {
-            $sum = $sum->add(new MoneyAmount($stock->price->value * $stock->amount));
+        foreach (StockType::cases() as $stockType) {
+            $amountOfStocks = self::getAmountOfAllStocksOfTypeForPlayer($stream, $playerId, $stockType);
+            $currentPrice = StockPriceState::getCurrentStockPrice($stream, $stockType);
+
+            $sum = $sum->add(new MoneyAmount($amountOfStocks * $currentPrice->value));
         }
         return $sum;
     }
 
-    public static function getSumOfDividendForAllStocks(GameEvents $stream, PlayerId $playerId): MoneyAmount
+    /**
+     * Returns the total of all dividends for all stocks of type LOW_RISK for the specified player.
+     *
+     * @param GameEvents $stream
+     * @param PlayerId $playerId
+     * @return MoneyAmount
+     */
+    public static function getDividendForAllStocksForPlayer(GameEvents $stream, PlayerId $playerId): MoneyAmount
     {
-        $stocks = self::getStocksForPlayer($stream, $playerId);
         $currentKonjunkturphase = KonjunkturphaseState::getCurrentKonjunkturphase($stream);
         $currentDividend = $currentKonjunkturphase->getAuswirkungByScope(AuswirkungScopeEnum::DIVIDEND)->modifier;
-        $sum = new MoneyAmount(0);
-        foreach ($stocks as $stock) {
-            // only low risk stocks pay dividends
-            if ($stock->stockType === StockType::LOW_RISK) {
-                $sum = $sum->add(new MoneyAmount($currentDividend * $stock->amount));
-            }
-        }
-        return $sum;
+        $amountOfLowRiskStocksForPlayer = self::getAmountOfAllStocksOfTypeForPlayer($stream, $playerId, StockType::LOW_RISK);
+
+
+        return new MoneyAmount($currentDividend * $amountOfLowRiskStocksForPlayer);
     }
 
     public static function getCurrentLebenszielphaseDefinitionForPlayer(GameEvents $gameEvents, PlayerId $playerId): LebenszielPhaseDefinition

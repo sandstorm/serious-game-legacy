@@ -34,6 +34,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SteuernUndAbgabenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SteuernUndAbgabenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereBoughtForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereSoldForPlayer;
 use Neos\EventStore\Model\Event;
 use Neos\EventStore\Model\Event\EventData;
 use Neos\EventStore\Model\Event\EventId;
@@ -97,7 +98,8 @@ final readonly class EventNormalizer
             LoanForPlayerWasEntered::class,
             LoanForPlayerWasCorrected::class,
             JobWasQuit::class,
-            StocksWereBoughtForPlayer::class
+            StocksWereBoughtForPlayer::class,
+            StocksWereSoldForPlayer::class,
         ];
 
         $fullClassNameToShortEventType = [];
