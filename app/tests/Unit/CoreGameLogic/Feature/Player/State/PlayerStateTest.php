@@ -35,6 +35,20 @@ beforeEach(function () {
     $this->setupBasicGame();
 });
 
+describe('getPlayerColorClass', function () {
+    it('returns player color class', function () {
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        expect(PlayerState::getPlayerColorClass($stream, $this->players[0]))->toBe('player-color-1')
+            ->and(PlayerState::getPlayerColorClass($stream, $this->players[1]))->toBe('player-color-2');
+    });
+
+    it('throws an exception if the player does not exist', function () {
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        PlayerState::getPlayerColorClass($stream, PlayerId::fromString('doesNotExist'));
+    })->throws(RuntimeException::class, 'Player doesNotExist not found in player ordering', 1752835827);
+});
+
 describe('getJobForPlayer', function () {
     it('returns null if player never accepted a job', function () {
         // expect returns null

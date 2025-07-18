@@ -1,25 +1,31 @@
 @use('Domain\CoreGameLogic\Feature\Initialization\State\PreGameState')
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
 
-@props(['myself' => null])
+@props([
+    'players' => []
+])
 
 <ul class="player-list">
-    @foreach(PreGameState::playersWithNameAndLebensziel($this->gameEvents()) as $playerAndLebensziel)
-        <li wire:click="showPlayerDetails('{{ $playerAndLebensziel->playerId->value }}')"
+    @foreach($players as $player)
+        <li wire:click="showPlayerDetails('{{ $player->playerId->value }}')"
             @class([
                 'player-list__player',
-                'player-list__player--is-active' => $playerAndLebensziel->playerId->equals($this->getCurrentPlayer()),
-                'player-list__player--is-active' => $playerAndLebensziel->playerId->equals($this->getCurrentPlayer())
+                'player-list__player--is-active' => $player->playersTurn
             ])>
 
             <ul class="zeitsteine">
-                @for($i = 0; $i < PlayerState::getZeitsteineForPlayer($this->gameEvents(), $playerAndLebensziel->playerId); $i++)
-                    <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($this->gameEvents(), $playerAndLebensziel->playerId)])></li>
-                @endfor
+                @foreach($player->zeitsteine as $playerZeitstein)
+                    <li @class([
+                        'zeitsteine__item',
+                        'zeitsteine__item--is-used' => !$playerZeitstein->isAvailable,
+                        $player->playerColor
+                    ])></li>
+                @endforeach
             </ul>
-            {{$playerAndLebensziel->name }}
-            @if($playerAndLebensziel->playerId->equals($this->getCurrentPlayer())) (aktiver Spieler) @endif
-            @if($playerAndLebensziel->playerId->equals($myself)) (Ich) @endif
+
+            {{$player->name }}
+            @if($player->playersTurn) (aktiver Spieler) @endif
+            @if($player->playerId->equals($myself)) (Ich) @endif
         </li>
     @endforeach
 </ul>

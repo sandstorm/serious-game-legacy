@@ -6,4 +6,20 @@
     --color-error: #d9534f;
     --color-warning: #f0ad4e;
     --color-grey: #888;
+
+    --color-player-1: #FFD655;
+    --color-player-1--light: #FEE9A6;
+    --color-player-1--dark: #E19C20;
+
+    --color-player-2: #62BDEE;
+    --color-player-2--light: #B6E6FA;
+    --color-player-2--dark: #3F89B0;
+
+    --color-player-3: #B38EF9;
+    --color-player-3--light: #E8DCFF;
+    --color-player-3--dark: #8A5BAD;
+
+    --color-player-4: #56D3A1;
+    --color-player-4--light: #ACFBD4;
+    --color-player-4--dark: #3EA693;
 }
