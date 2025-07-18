@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
-use Domain\CoreGameLogic\Feature\Initialization\Command\SelectPlayerColor;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
@@ -51,11 +50,7 @@ class GamePlayController extends Controller
             ));
             $this->coreGameLogic->handle($gameId, new SelectLebensziel(
                 playerId: $playerIds[$index],
-                lebensziel: LebenszielId::create($index % 2 + 1),
-            ));
-            $this->coreGameLogic->handle($gameId, new SelectPlayerColor(
-                playerId: $playerIds[$index],
-                playerColor: null,
+                lebenszielId: LebenszielId::create($index % 2 + 1),
             ));
 
         }

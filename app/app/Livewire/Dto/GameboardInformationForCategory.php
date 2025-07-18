@@ -14,8 +14,7 @@ class GameboardInformationForCategory
      * @param CategoryId $title
      * @param int|null $kompetenzen
      * @param int|null $kompetenzenRequiredByPhase
-     * @param int $availableZeitsteine
-     * @param ZeitsteineForPlayer[] $placedZeitsteine
+     * @param ZeitsteinWithColor[] $zeitsteine
      * @param PileId|null $cardPile
      */
     public function __construct(
@@ -23,8 +22,7 @@ class GameboardInformationForCategory
         public CategoryId $title,
         public ?int $kompetenzen,
         public ?int $kompetenzenRequiredByPhase,
-        public int $availableZeitsteine,
-        public array $placedZeitsteine,
+        public array $zeitsteine,
         public ?PileId $cardPile = null,
     ) {}
 

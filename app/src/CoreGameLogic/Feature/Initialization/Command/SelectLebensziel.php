@@ -11,8 +11,8 @@ use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
 final readonly class SelectLebensziel implements CommandInterface
 {
     public function __construct(
-        public PlayerId $playerId,
-        public LebenszielId $lebensziel,
+        public PlayerId     $playerId,
+        public LebenszielId $lebenszielId,
     ) {
     }
 }

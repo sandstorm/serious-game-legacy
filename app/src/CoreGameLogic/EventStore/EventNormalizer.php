@@ -7,7 +7,6 @@ namespace Domain\CoreGameLogic\EventStore;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
-use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerColorWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
@@ -84,7 +83,6 @@ final readonly class EventNormalizer
             LebenszielphaseWasChanged::class,
             MinijobWasDone::class,
             NameForPlayerWasSet::class,
-            PlayerColorWasSelected::class,
             PlayerHasCompletedMoneysheetForCurrentKonjunkturphase::class,
             PlayerHasStartedKonjunkturphase::class,
             PlayerWasMarkedAsReadyForKonjunkturphaseChange::class,

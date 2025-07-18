@@ -6,15 +6,12 @@ namespace Tests\CoreGameLogic\EventStore;
 
 use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
-use Domain\CoreGameLogic\Feature\Initialization\Command\SelectPlayerColor;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
-use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerColorWasSelected;
-use Domain\CoreGameLogic\Feature\Initialization\ValueObject\PlayerColor;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
@@ -39,19 +36,11 @@ beforeEach(function () {
     ));
     $this->coreGameLogic->handle($this->gameId, new SelectLebensziel(
         playerId: $this->p2,
-        lebensziel: LebenszielId::create(1),
+        lebenszielId: LebenszielId::create(1),
     ));
     $this->coreGameLogic->handle($this->gameId, new SelectLebensziel(
         playerId: $this->p1,
-        lebensziel: LebenszielId::create(2),
-    ));
-    $this->coreGameLogic->handle($this->gameId, new SelectPlayerColor(
-        playerId: $this->p1,
-        playerColor: new PlayerColor('#000'),
-    ));
-    $this->coreGameLogic->handle($this->gameId, new SelectPlayerColor(
-        playerId: $this->p2,
-        playerColor: new PlayerColor('#FFF'),
+        lebenszielId: LebenszielId::create(2),
     ));
     $this->coreGameLogic->handle($this->gameId, StartGame::create());
 });
@@ -61,7 +50,7 @@ describe('find all after last of type', function () {
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         $eventsAfterSelectedEvent = $stream->findAllAfterLastOfType(NameForPlayerWasSet::class);
 
-        expect($eventsAfterSelectedEvent->count())->toBe(5);
+        expect($eventsAfterSelectedEvent->count())->toBe(3);
 
         $events = iterator_to_array($eventsAfterSelectedEvent->getIterator());
 
@@ -69,15 +58,11 @@ describe('find all after last of type', function () {
         $expectedLebenszielForP2 = LebenszielFinder::findLebenszielById(LebenszielId::create(2));
 
         expect($events[0]::class)->toBe(LebenszielWasSelected::class)
-            ->and($events[0]->lebensziel->name)->toBe($expectedLebenszielForP1->name)
+            ->and($events[0]->lebenszielDefinition->name)->toBe($expectedLebenszielForP1->name)
             ->and($events[1]::class)->toBe(LebenszielWasSelected::class)
-            ->and($events[1]->lebensziel->name)->toBe($expectedLebenszielForP2->name)
-            ->and($events[2]::class)->toBe(PlayerColorWasSelected::class)
-            ->and($events[2]->playerColor->value)->toBe("#000")
-            ->and($events[3]::class)->toBe(PlayerColorWasSelected::class)
-            ->and($events[3]->playerColor->value)->toBe("#FFF")
-            ->and($events[4]::class)->toBe(GameWasStarted::class)
-            ->and($events[4]->playerOrdering[0])->toBe($this->p1);
+            ->and($events[1]->lebenszielDefinition->name)->toBe($expectedLebenszielForP2->name)
+            ->and($events[2]::class)->toBe(GameWasStarted::class)
+            ->and($events[2]->playerOrdering[0])->toBe($this->p1);
     });
 
 

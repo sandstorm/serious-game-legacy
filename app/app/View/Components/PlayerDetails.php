@@ -6,7 +6,6 @@ namespace App\View\Components;
 
 use App\Livewire\Dto\PlayerDetailsDto;
 use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Illuminate\View\Component;
@@ -45,10 +44,10 @@ class PlayerDetails extends Component
             return null;
         }
 
-        $lebensziel = PreGameState::lebenszielForPlayer($this->gameEvents, $playerId);
+        $lebensziel = PlayerState::lebenszielForPlayer($this->gameEvents, $playerId);
 
         return new PlayerDetailsDto(
-            name: PreGameState::nameForPlayer($this->gameEvents, $playerId),
+            name: PlayerState::nameForPlayer($this->gameEvents, $playerId),
             playerId: $playerId,
             lebensziel: $lebensziel->definition,
             guthaben: PlayerState::getGuthabenForPlayer($this->gameEvents, $playerId)->value,

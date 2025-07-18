@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
@@ -15,7 +14,7 @@ final class HasPlayerEnoughResourcesForLebenszielphasenChangeValidator extends A
 
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
-        $currentLebensziel = PreGameState::lebenszielForPlayerOrNull($gameEvents, $playerId);
+        $currentLebensziel = PlayerState::lebenszielDefinitionForPlayerOrNull($gameEvents, $playerId);
 
         if ($currentLebensziel === null) {
             return new AktionValidationResult(
