@@ -2101,8 +2101,6 @@ describe('handleBuyStocksForPlayer', function () {
             ->and(PlayerState::getSumOfAllStocksForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::INITIAL_STOCK_PRICE * $amountOfStocks))
             ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE - Configuration::INITIAL_STOCK_PRICE * $amountOfStocks))
             ->and(count($gameEvents->findAllOfType(ProvidesStockPriceChanges::class)))->toEqual(2);
-
-        // TODO build and test the annual return
     });
 
     it('throws exception if player tries to buy more stocks than he can afford', function () {
