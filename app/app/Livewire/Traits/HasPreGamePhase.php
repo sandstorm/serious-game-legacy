@@ -6,7 +6,6 @@ namespace App\Livewire\Traits;
 
 use App\Livewire\Forms\PreGameNameLebenszielForm;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
-use Domain\CoreGameLogic\Feature\Initialization\Command\SelectPlayerColor;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
@@ -48,9 +47,6 @@ trait HasPreGamePhase
         if ($this->nameLebenszielForm->lebensziel !== null) {
             $this->coreGameLogic->handle($this->gameId, new SelectLebensziel($this->myself, LebenszielId::create($this->nameLebenszielForm->lebensziel)));
         }
-
-        // color is part of the command, in case players can select their own color
-        $this->coreGameLogic->handle($this->gameId, new SelectPlayerColor($this->myself, null));
 
         $this->broadcastNotify();
     }

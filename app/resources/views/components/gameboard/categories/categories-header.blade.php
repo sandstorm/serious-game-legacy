@@ -9,7 +9,10 @@
 <ul class="zeitsteine">
     @foreach($category->placedZeitsteine as $placedZeitstein)
         @for($i = 0; $i < $placedZeitstein->zeitsteine; $i++)
-            <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($gameEvents, $placedZeitstein->playerId)])></li>
+            <li @class([
+                'zeitsteine__item',
+                PlayerState::getPlayerColorClass($gameEvents, $placedZeitstein->playerId)
+            ])></li>
         @endfor
     @endforeach
     @for($i = 0; $i < $category->availableZeitsteine; $i++)

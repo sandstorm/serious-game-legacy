@@ -9,6 +9,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Year;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
@@ -58,5 +59,15 @@ class GamePhaseState
         }
 
         return $freeSlots > $usedSlots;
+    }
+
+    /**
+     * @param GameEvents $gameEvents
+     * @return PlayerId[]
+     */
+    public static function getOrderedPlayers(GameEvents $gameEvents): array
+    {
+        $gameWasStarted = $gameEvents->findLast(GameWasStarted::class);
+        return $gameWasStarted->playerOrdering;
     }
 }

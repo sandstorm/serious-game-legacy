@@ -13,7 +13,6 @@ use Domain\CoreGameLogic\Feature\Initialization\State\Dto\NameAndLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\ValueObject\Lebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\ValueObject\LebenszielPhase;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
-use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Lebensziel\Dto\LebenszielDefinition;
@@ -31,8 +30,7 @@ class PreGameState
         $playersWithNameAndLebensziel = self::playersWithNameAndLebensziel($gameEvents);
         foreach ($playersWithNameAndLebensziel as $nameAndLebensziel) {
             if ($nameAndLebensziel->lebensziel === null ||
-                $nameAndLebensziel->name === null ||
-                PlayerState::getPlayerColor($gameEvents, $nameAndLebensziel->playerId) === null
+                $nameAndLebensziel->name === null
             ) {
                 return false;
             }
