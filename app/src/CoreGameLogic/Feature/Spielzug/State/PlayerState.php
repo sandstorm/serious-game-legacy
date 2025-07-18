@@ -4,8 +4,9 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\State;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\Feature\Initialization\Event\PlayerColorWasSelected;
+use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
+use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesStockAmountChanges;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
@@ -32,17 +33,24 @@ use RuntimeException;
 
 class PlayerState
 {
-    public static function getPlayerColor(GameEvents $stream, PlayerId $playerId): string|null
+    /**
+     * @param GameEvents $stream
+     * @param PlayerId $playerId
+     * @return string
+     */
+    public static function getPlayerColorClass(GameEvents $stream, PlayerId $playerId): string
     {
-        $playerColor = $stream->findAllOfType(PlayerColorWasSelected::class);
-        /** @var PlayerColorWasSelected $event **/
-        foreach ($playerColor as $event) {
-            if ($event->playerId->equals($playerId)) {
-                return $event->playerColor->value;
+        $playerOrder = GamePhaseState::getOrderedPlayers($stream);
+
+        foreach ($playerOrder as $index => $playerIdFromOrder) {
+            if ($playerIdFromOrder->equals($playerId)) {
+                // return the color class for the player
+                return "player-color-" . $index + 1;
             }
         }
 
-        return null;
+        // If playerId is not found in the player ordering, throw an exception
+        throw new RuntimeException('Player ' . $playerId . ' not found in player ordering', 1752835827);
     }
 
     public static function getResourcesForPlayer(GameEvents $stream, PlayerId $playerId): ResourceChanges

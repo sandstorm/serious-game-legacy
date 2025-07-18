@@ -7,14 +7,9 @@
 
 <h3>{{ $category->title }}</h3>
 <ul class="zeitsteine">
-    @foreach($category->placedZeitsteine as $placedZeitstein)
-        @for($i = 0; $i < $placedZeitstein->zeitsteine; $i++)
-            <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($gameEvents, $placedZeitstein->playerId)])></li>
-        @endfor
+    @foreach($category->zeitsteine as $zeitstein)
+        <x-gameboard.zeitsteine.zeitstein :player-color-class="$zeitstein->colorClass" :draw-empty="$zeitstein->drawEmpty" />
     @endforeach
-    @for($i = 0; $i < $category->availableZeitsteine; $i++)
-        <li class="zeitsteine__item zeitsteine__item--empty"></li>
-    @endfor
 </ul>
 
 <ul class="kompetenzen">

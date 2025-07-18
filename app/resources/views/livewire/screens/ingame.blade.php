@@ -3,7 +3,7 @@
 {{-- !!! Livewire components MUST have a single root element !!! --}}
 <div class="game">
     <header class="game__header">
-        <x-gameboard.player-list :myself="$myself"/>
+        <x-player-list :game-events="$this->gameEvents" :myself="$myself" :active-player="$this->getCurrentPlayer()"/>
         @if ($showDetailsForPlayer)
             <x-player-details :player-id="$showDetailsForPlayer" :game-events="$this->gameEvents" :myself="$myself"/>
         @endif

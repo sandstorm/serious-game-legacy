@@ -24,7 +24,7 @@
             <td>
                 <ul class="zeitsteine">
                     <li>-{{ $jobDefinition->requirements->zeitsteine }}</li>
-                    <li class="zeitsteine__item" @style(['background-color:' . PlayerState::getPlayerColor($gameEvents, $playerId)])></li>
+                    <x-gameboard.zeitsteine.zeitstein :player-color-class="PlayerState::getPlayerColorClass($gameEvents, $playerId)" />
                 </ul>
             </td>
         </tr>
