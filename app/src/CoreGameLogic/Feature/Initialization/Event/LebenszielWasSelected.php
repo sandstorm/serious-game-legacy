@@ -12,7 +12,7 @@ final readonly class LebenszielWasSelected implements GameEventInterface
 {
     public function __construct(
         public PlayerId   $playerId,
-        public LebenszielDefinition $lebensziel,
+        public LebenszielDefinition $lebenszielDefinition,
     ) {
     }
 
@@ -20,7 +20,7 @@ final readonly class LebenszielWasSelected implements GameEventInterface
     {
         return new self(
             playerId: PlayerId::fromString($values['playerId']),
-            lebensziel: LebenszielDefinition::fromArray($values['lebensziel']),
+            lebenszielDefinition: LebenszielDefinition::fromArray($values['lebenszielDefinition']),
         );
     }
 
@@ -28,7 +28,7 @@ final readonly class LebenszielWasSelected implements GameEventInterface
     {
         return [
             'playerId' => $this->playerId,
-            'lebensziel' => $this->lebensziel->jsonSerialize(),
+            'lebenszielDefinition' => $this->lebenszielDefinition->jsonSerialize(),
         ];
     }
 }

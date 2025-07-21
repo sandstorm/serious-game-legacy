@@ -35,6 +35,20 @@ beforeEach(function () {
     $this->setupBasicGame();
 });
 
+describe('getPlayerColorClass', function () {
+    it('returns player color class', function () {
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        expect(PlayerState::getPlayerColorClass($stream, $this->players[0]))->toBe('player-color-1')
+            ->and(PlayerState::getPlayerColorClass($stream, $this->players[1]))->toBe('player-color-2');
+    });
+
+    it('throws an exception if the player does not exist', function () {
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        PlayerState::getPlayerColorClass($stream, PlayerId::fromString('doesNotExist'));
+    })->throws(RuntimeException::class, 'Player doesNotExist not found in player ordering', 1752835827);
+});
+
 describe('getJobForPlayer', function () {
     it('returns null if player never accepted a job', function () {
         // expect returns null
@@ -287,10 +301,10 @@ test('getKompetenzenForPlayer', function () {
     $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
     // player 1
-    expect(PreGameState::lebenszielForPlayer($gameEvents, $this->players[0])->phases[0]->placedKompetenzsteineBildung)->toBe(1)
+    expect(PlayerState::lebenszielForPlayer($gameEvents, $this->players[0])->phases[0]->placedKompetenzsteineBildung)->toBe(1)
         ->and(PlayerState::getBildungsKompetenzsteine($gameEvents, $this->players[0]))->toBe(1)
         ->and(PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($gameEvents, $this->players[0], CategoryId::BILDUNG_UND_KARRIERE))->toBe(1)
-        ->and(PreGameState::lebenszielForPlayer($gameEvents, $this->players[1])->phases[0]->placedKompetenzsteineBildung)->toBe(0)
+        ->and(PlayerState::lebenszielForPlayer($gameEvents, $this->players[1])->phases[0]->placedKompetenzsteineBildung)->toBe(0)
         ->and(PlayerState::getBildungsKompetenzsteine($gameEvents, $this->players[1]))->toBe(0)
         ->and(PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($gameEvents, $this->players[1], CategoryId::BILDUNG_UND_KARRIERE))->toBe(0);
 
@@ -303,7 +317,7 @@ test('getKompetenzenForPlayer', function () {
 
     $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
     // kompetenzen are saved for the lebensziel
-    expect(PreGameState::lebenszielForPlayer($gameEvents, $this->players[0])->phases[0]->placedKompetenzsteineBildung)->toBe(1)
+    expect(PlayerState::lebenszielForPlayer($gameEvents, $this->players[0])->phases[0]->placedKompetenzsteineBildung)->toBe(1)
         ->and(PlayerState::getBildungsKompetenzsteine($gameEvents, $this->players[0]))->toBe(1)
         // is 0 again because we are in the next konjunkturphase
         ->and(PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($gameEvents, $this->players[0], CategoryId::BILDUNG_UND_KARRIERE))->toBe(0);

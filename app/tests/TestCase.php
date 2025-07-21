@@ -6,7 +6,6 @@ namespace Tests;
 use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
-use Domain\CoreGameLogic\Feature\Initialization\Command\SelectPlayerColor;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
@@ -178,11 +177,7 @@ abstract class TestCase extends BaseTestCase
             ));
             $this->coreGameLogic->handle($this->gameId, new SelectLebensziel(
                 playerId: $player,
-                lebensziel: LebenszielId::create($index % 2 + 1),
-            ));
-            $this->coreGameLogic->handle($this->gameId, new SelectPlayerColor(
-                playerId: $player,
-                playerColor: null,
+                lebenszielId: LebenszielId::create($index % 2 + 1),
             ));
         }
 

@@ -6,7 +6,6 @@ namespace App\Livewire\Dto;
 
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Lebensziel\Dto\LebenszielDefinition;
-use Domain\Definitions\Lebensziel\Dto\LebenszielPhaseDefinition;
 
 class PlayerDetailsDto
 {
