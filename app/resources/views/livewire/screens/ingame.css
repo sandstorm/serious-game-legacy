@@ -8,14 +8,6 @@
 
 .game__header {
     grid-area: header;
-    padding-left: var(--spacing-100);
-    padding-right: var(--spacing-100);
-
-    background-color:  var(--color-primary-light);
-
-    > h2 {
-        margin: 0;
-    }
 }
 
 .game__content {

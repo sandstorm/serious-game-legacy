@@ -49,7 +49,7 @@ trait HasMoneySheet
     {
         // init insurances form
         $insurances = InsuranceFinder::getInstance()->getAllInsurances();
-        $currentPlayerPhase = 1;
+        $currentPlayerPhase = PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($this->gameEvents, $this->myself)->phase;
         foreach ($insurances as $insurance) {
             $isActive = MoneySheetState::doesPlayerHaveThisInsurance($this->gameEvents, $this->myself, $insurance->id);
             $this->moneySheetInsurancesForm->addInsurance(

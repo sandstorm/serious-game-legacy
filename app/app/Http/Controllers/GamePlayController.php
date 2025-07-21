@@ -33,20 +33,20 @@ class GamePlayController extends Controller
         return view('controllers.gameplay.new');
     }
 
-    public function quickStart(Request $request): RedirectResponse
+    public function quickStart(Request $request, int $amountOfPlayers): RedirectResponse
     {
         $gameId = GameId::random();
         $this->coreGameLogic->handle($gameId, StartPreGame::create(
-            numberOfPlayers: 2
+            numberOfPlayers: $amountOfPlayers
         ));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($gameId);
         $playerIds = PreGameState::playerIds($gameEvents);
 
-        for ($index = 0; $index < 2; $index++) {
+        for ($index = 0; $index < $amountOfPlayers; $index++) {
             $this->coreGameLogic->handle($gameId, new SetNameForPlayer(
                 playerId: $playerIds[$index],
-                name: 'Player ' . $index,
+                name: 'Player ' . $index + 1,
             ));
             $this->coreGameLogic->handle($gameId, new SelectLebensziel(
                 playerId: $playerIds[$index],

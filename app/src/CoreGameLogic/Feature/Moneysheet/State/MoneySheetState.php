@@ -312,7 +312,7 @@ class MoneySheetState
     public static function getCostOfAllInsurances(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
         $insurances = InsuranceFinder::getInstance()->getAllInsurances();
-        $currentPlayerPhase = 1; // TODO
+        $currentPlayerPhase = PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($gameEvents, $playerId)->phase;
 
         $totalCost = new MoneyAmount(0);
         foreach ($insurances as $insurance) {

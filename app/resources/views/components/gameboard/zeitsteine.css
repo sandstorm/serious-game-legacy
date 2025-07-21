@@ -10,36 +10,19 @@
     display: inline-block;
     width: 20px;
     height: 20px;
-
-    border-radius: 50%;
-    background-color: var(--color-primary);
-    border: 1px solid var(--color-primary);
 }
 
 .zeitsteine__item.zeitsteine__item--is-empty {
-    background-color: var(--color-primary-fg) !important;
 }
 
 .zeitsteine__item.player-color-1 {
-    background-color: var(--color-player-1);
-    border-color: var(--color-player-1);
 }
 
 .zeitsteine__item.player-color-2 {
-    background-color: var(--color-player-2);
-    border-color: var(--color-player-2);
 }
 
 .zeitsteine__item.player-color-3 {
-    background-color: var(--color-player-3);
-    border-color: var(--color-player-3);
 }
 
 .zeitsteine__item.player-color-4 {
-    background-color: var(--color-player-4);
-    border-color: var(--color-player-4);
-}
-
-.zeitsteine__item.zeitsteine__item--empty {
-    background-color: var(--color-primary-fg);
 }

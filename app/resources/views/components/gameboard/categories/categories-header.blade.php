@@ -8,7 +8,7 @@
 <h3>{{ $category->title }}</h3>
 <ul class="zeitsteine">
     @foreach($category->zeitsteine as $zeitstein)
-        <x-gameboard.zeitsteine.zeitstein :player-color-class="$zeitstein->colorClass" :draw-empty="$zeitstein->drawEmpty" />
+        <x-gameboard.zeitsteine.zeitstein :player-name="$zeitstein->playerName" :player-color-class="$zeitstein->colorClass" :draw-empty="$zeitstein->drawEmpty" />
     @endforeach
 </ul>
 

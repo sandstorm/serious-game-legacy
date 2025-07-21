@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\View\Components;
 
-use App\Livewire\Dto\PlayerListDto;
+use App\Livewire\Dto\PlayerListEmptySlotDto;
+use App\Livewire\Dto\PlayerListPlayerDto;
 use App\Livewire\Dto\ZeitsteinWithColor;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
@@ -30,26 +31,53 @@ class PlayerList extends Component
      */
     public function render(): View
     {
+        $players = $this->getPlayers();
+
+        // if amount of players < 4, insert empty player slots
+        $emptySlots = [];
+        $amountOfPlayers = count($players);
+        if ($amountOfPlayers < 4) {
+            for ($i = 0; $i < 4 - $amountOfPlayers; $i++) {
+                $emptySlots[] = new PlayerListEmptySlotDto(
+                    playerColorClass: 'player-color-' . ($amountOfPlayers + $i + 1),
+                );
+            }
+        }
+
         return view('components.gameboard.player-list', [
-            'players' => $this->getPlayers(),
+            'players' => $players,
+            'emptySlots' => $emptySlots
         ]);
     }
 
     /**
-     * @return PlayerListDto[]
+     * @return PlayerListPlayerDto[]
      */
     private function getPlayers(): array
     {
         $orderedPlayers = GamePhaseState::getOrderedPlayers($this->gameEvents);
         $playerList = [];
         foreach ($orderedPlayers as $playerId) {
-            $playerList[] = new PlayerListDto(
+            $playerDto = new PlayerListPlayerDto(
                 name: PlayerState::nameForPlayer($this->gameEvents, $playerId),
                 playerId: $playerId,
+                playerColorClass: PlayerState::getPlayerColorClass($this->gameEvents, $playerId),
                 isPlayersTurn: $playerId->equals($this->activePlayer),
                 zeitsteine: $this->getZeitsteineForPlayer($playerId),
+                phase: PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($this->gameEvents, $playerId)->phase
             );
+
+            $playerList[] = $playerDto;
         }
+
+        // sort array and move player with isPlayersTurn to the end
+        usort($playerList, function (PlayerListPlayerDto $a, PlayerListPlayerDto $b) {
+            if ($a->isPlayersTurn === $b->isPlayersTurn) {
+                return 0;
+            }
+            return $a->isPlayersTurn ? 1 : -1; // move player with isPlayersTurn to the end
+        });
+
         return $playerList;
     }
 

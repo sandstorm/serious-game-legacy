@@ -295,7 +295,7 @@ class PlayerState
         $lebenszielDefinition = self::lebenszielDefinitionForPlayer($gameEvents, $playerId);
 
         /** @var LebenszielphaseWasChanged|null $lastLebenszielWasChangedEvent */
-        $lastLebenszielWasChangedEvent= $gameEvents->findLastOrNullWhere(fn ($event) => $event instanceof LebenszielphaseWasChanged && $event->playerId->equals($playerId));
+        $lastLebenszielWasChangedEvent = $gameEvents->findLastOrNullWhere(fn ($event) => $event instanceof LebenszielphaseWasChanged && $event->playerId->equals($playerId));
         if($lastLebenszielWasChangedEvent === null) { // We know we are in Lebenszielphase 1
             return $lebenszielDefinition->phaseDefinitions[0];
         }
