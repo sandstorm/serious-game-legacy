@@ -32,38 +32,27 @@ class Categories extends Component
      */
     public function render(): View
     {
-        $lebenszielForPlayer = PlayerState::lebenszielForPlayer($this->gameEvents, $this->playerId);
-        $currentLebenszielPhase = PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($this->gameEvents, $this->playerId)->phase;
-
         $categories = [
             new GameboardInformationForCategory(
                 componentName: 'gameboard.categories.categories-bildung',
                 title: CategoryId::BILDUNG_UND_KARRIERE,
-                kompetenzen: PlayerState::getBildungsKompetenzsteine($this->gameEvents, $this->playerId),
-                kompetenzenRequiredByPhase: $lebenszielForPlayer->definition->phaseDefinitions[$currentLebenszielPhase - 1]->bildungsKompetenzSlots - PlayerState::getBildungsKompetenzsteine($this->gameEvents, $this->playerId),
                 zeitsteine: $this->getZeitsteineForCategory(CategoryId::BILDUNG_UND_KARRIERE),
                 cardPile: PileId::BILDUNG_PHASE_1,
             ),
             new GameboardInformationForCategory(
                 componentName: 'gameboard.categories.categories-freizeit',
                 title: CategoryId::SOZIALES_UND_FREIZEIT,
-                kompetenzen: PlayerState::getFreizeitKompetenzsteine($this->gameEvents, $this->playerId),
-                kompetenzenRequiredByPhase: $lebenszielForPlayer->definition->phaseDefinitions[$currentLebenszielPhase - 1]->freizeitKompetenzSlots - PlayerState::getFreizeitKompetenzsteine($this->gameEvents, $this->playerId),
                 zeitsteine: $this->getZeitsteineForCategory(CategoryId::SOZIALES_UND_FREIZEIT),
                 cardPile: PileId::FREIZEIT_PHASE_1,
             ),
             new GameboardInformationForCategory(
                 componentName: 'gameboard.categories-jobs',
                 title: CategoryId::JOBS,
-                kompetenzen: null,
-                kompetenzenRequiredByPhase: null,
                 zeitsteine: $this->getZeitsteineForCategory(CategoryId::JOBS),
             ),
             new GameboardInformationForCategory(
                 componentName: 'gameboard.categories.categories-investitionen',
                 title: CategoryId::INVESTITIONEN,
-                kompetenzen: null,
-                kompetenzenRequiredByPhase: null,
                 zeitsteine: $this->getZeitsteineForCategory(CategoryId::INVESTITIONEN),
             ),
         ];

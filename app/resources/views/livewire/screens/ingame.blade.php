@@ -11,17 +11,19 @@
 
     <div class="game__content">
         <div class="game-board">
-            <div class="game-board__konjukturphase">
-                Jahr: {{ $year->value }} - {{ $konjunkturphasenDefinition->type }}
-                <button type="button" class="button button--type-primary button--size-small"
-                        wire:click="showKonjunkturphaseDetails()">Zeige Details
-                </button>
-                @if ($konjunkturphaseDetailsVisible)
-                    <x-konjunkturphase-details :game-events="$this->gameEvents"/>
-                @endif
-            </div>
+            <x-gameboard.kompetenzen-overview :game-events="$this->gameEvents" :player-id="$myself" />
 
-            <x-gameboard.categories :game-events="$this->gameEvents" :player-id="$myself"/>
+            <div class="game-board__konjukturphase">
+                <button type="button" class="button button--type-text"
+                        wire:click="showKonjunkturphaseDetails()">
+                    Konjunktur: {{ $konjunkturphasenDefinition->type }}
+                </button>
+            </div>
+            @if ($konjunkturphaseDetailsVisible)
+                <x-konjunkturphase-details :game-events="$this->gameEvents"/>
+            @endif
+
+            <x-gameboard.categories :game-events="$this->gameEvents" :player-id="$myself" />
         </div>
     </div>
 
