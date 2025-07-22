@@ -8,17 +8,23 @@
 }
 
 .player-list__player {
-    padding: var(--spacing-50) var(--spacing-100);
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    gap: var(--spacing-100);
-
-    color: var(--color-primary-fg);
     background: var(--color-player-list-bg);
 
     .zeitsteine {
         margin-left: auto;
+    }
+
+    .button {
+        padding: var(--spacing-50) var(--spacing-100);
+        width: 100%;
+        min-height: 100%;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        gap: var(--spacing-100);
+
+        color: var(--color-primary-fg);
+        text-align: left;
     }
 }
 
