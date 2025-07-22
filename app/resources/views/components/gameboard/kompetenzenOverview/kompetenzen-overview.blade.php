@@ -1,21 +1,36 @@
+@use('\Domain\Definitions\Konjunkturphase\ValueObject\CategoryId')
+@use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
+
 @props([
     'categories' => [],
 ])
 
-<div class="game-board__kompetenzen-overview">
+<div class="kompetenzen-overview">
     @foreach($categories as $category)
-        <div>
+        <div class="kompetenzen-overview__category">
             <h4>{{ $category->title }}</h4>
 
-            <ul class="kompetenzen">
-                @for($i = 0; $i < $category->kompetenzen; $i++)
-                    <li class="kompetenz"></li>
-                @endfor
+            @if (count($category->kompetenzen) > 0)
+                <ul class="kompetenzen">
+                    @foreach($category->kompetenzen as $kompetenz)
+                        <x-dynamic-component :component="$kompetenz->iconComponentName"
+                            :playerName="$kompetenz->playerName"
+                            :playerColorClass="$kompetenz->colorClass"
+                            :drawEmpty="$kompetenz->drawEmpty" />
+                    @endforeach
+                </ul>
+            @endif
 
-                @for($i = 0; $i < $category->kompetenzenRequiredByPhase; $i++)
-                    <li class="kompetenz kompetenz--empty"></li>
-                @endfor
-            </ul>
+            @if ($category->title === CategoryId::INVESTITIONEN)
+                <button @class([
+                    'button',
+                    'button--type-primary',
+                    PlayerState::getPlayerColorClass($gameEvents, $playerId)
+                ]) wire:click="showMoneySheet()">
+                    {!! PlayerState::getGuthabenForPlayer($gameEvents, $playerId)->format() !!}
+                </button>
+                TODO
+            @endif
         </div>
     @endforeach
 </div>

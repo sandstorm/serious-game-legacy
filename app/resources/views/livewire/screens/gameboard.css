@@ -2,15 +2,6 @@
 .game-board {
 }
 
-
-.game-board__kompetenzen-overview {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    margin-bottom: var(--spacing-100);
-
-    text-align: center;
-}
-
 .game-board__konjukturphase {
     display: flex;
     align-items: center;

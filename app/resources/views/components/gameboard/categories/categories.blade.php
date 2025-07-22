@@ -7,7 +7,7 @@
         <div class="game-board__category">
             <ul class="zeitsteine">
                 @foreach($category->zeitsteine as $zeitstein)
-                    <x-gameboard.zeitsteine.zeitstein :player-name="$zeitstein->playerName" :player-color-class="$zeitstein->colorClass" :draw-empty="$zeitstein->drawEmpty" />
+                    <x-gameboard.zeitsteine.zeitstein-icon :player-name="$zeitstein->playerName" :player-color-class="$zeitstein->colorClass" :draw-empty="$zeitstein->drawEmpty" />
                 @endforeach
             </ul>
 

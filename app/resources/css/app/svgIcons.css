@@ -1,0 +1,59 @@
+svg .svg-empty-color {
+    fill: var(--color-grey);
+}
+
+.player-color-1 {
+    svg .svg-player-color-dark {
+        fill: var(--color-player-1--dark);
+    }
+
+    svg .svg-player-color {
+        fill: var(--color-player-1);
+    }
+
+    svg .svg-player-color-super-dark {
+        fill: var(--color-player-1--super-dark);
+    }
+}
+
+.player-color-2 {
+    svg .svg-player-color-dark {
+        fill: var(--color-player-2--dark);
+    }
+
+    svg .svg-player-color {
+        fill: var(--color-player-2);
+    }
+
+    svg .svg-player-color-super-dark {
+        fill: var(--color-player-2--super-dark);
+    }
+}
+
+.player-color-3 {
+    svg .svg-player-color-dark {
+        fill: var(--color-player-3--dark);
+    }
+
+    svg .svg-player-color {
+        fill: var(--color-player-3);
+    }
+
+    svg .svg-player-color-super-dark {
+        fill: var(--color-player-3--super-dark);
+    }
+}
+
+.player-color-4 {
+    svg .svg-player-color-dark {
+        fill: var(--color-player-4--dark);
+    }
+
+    svg .svg-player-color {
+        fill: var(--color-player-4);
+    }
+
+    svg .svg-player-color-super-dark {
+        fill: var(--color-player-4--super-dark);
+    }
+}
