@@ -12,12 +12,11 @@
 
 .game__content {
     grid-area: content;
-    padding: var(--spacing-100);
 }
 
 .game__aside {
     grid-area: aside;
     padding: var(--spacing-100);
 
-    border-left: 1px solid var(--color-grey);
+    background-image: radial-gradient(75% 75% at 50% 50%, #ECEEF6 0%, #ECF5F4 100%);
 }
