@@ -19,25 +19,27 @@
     @endforeach
 
     @foreach($players as $player)
-        <li wire:click="showPlayerDetails('{{ $player->playerId->value }}')"
+        <li
             @class([
                 'player-list__player',
                 'player-list__player--is-active' => $player->isPlayersTurn,
                 $player->playerColorClass,
             ])>
 
-            {{ $player->name }}
-            @if($player->playerId->equals($myself)) (Ich) @endif
+            <button type="button" title="Zeige Lebensziel des Spielers" class="button button--type-text" wire:click="showPlayerDetails('{{ $player->playerId->value }}')">
+                {{ $player->name }}
+                @if($player->playerId->equals($myself)) (Ich) @endif
 
-            <ul class="zeitsteine">
-                @foreach($player->zeitsteine as $playerZeitstein)
-                    <x-gameboard.zeitsteine.zeitstein :player-name="$player->name" :player-color-class="$playerZeitstein->colorClass" :draw-empty="$playerZeitstein->drawEmpty" />
-                @endforeach
-            </ul>
+                <ul class="zeitsteine">
+                    @foreach($player->zeitsteine as $playerZeitstein)
+                        <x-gameboard.zeitsteine.zeitstein :player-name="$player->name" :player-color-class="$playerZeitstein->colorClass" :draw-empty="$playerZeitstein->drawEmpty" />
+                    @endforeach
+                </ul>
 
-            <div class="player-list__player-phase">
-                {{ $player->phase }}
-            </div>
+                <div class="player-list__player-phase">
+                    {{ $player->phase }}
+                </div>
+            </button>
         </li>
     @endforeach
 </ul>
