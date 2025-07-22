@@ -6,7 +6,7 @@ namespace App\Livewire\Dto;
 
 use Domain\CoreGameLogic\PlayerId;
 
-class PlayerListDto
+class PlayerListPlayerDto
 {
     /**
      * @param ZeitsteinWithColor[] $zeitsteine
@@ -14,9 +14,12 @@ class PlayerListDto
     public function __construct(
         public string   $name,
         public PlayerId $playerId,
-        public bool     $isPlayersTurn = false,
-        public array    $zeitsteine = []
-    ) {
+        public string   $playerColorClass,
+        public bool     $isPlayersTurn,
+        public array    $zeitsteine,
+        public int      $phase,
+    )
+    {
     }
 
 }

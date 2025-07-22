@@ -9,6 +9,7 @@ class ZeitsteinWithColor
     public function __construct(
         public bool $drawEmpty = true,
         public string $colorClass = '',
+        public string $playerName = ''
     ) {
     }
 

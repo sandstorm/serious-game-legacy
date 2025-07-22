@@ -2,18 +2,57 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: row;
-    gap: var(--spacing-100);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
 }
 
 .player-list__player {
-    padding-top: var(--spacing-50);
-    padding-bottom: var(--spacing-50);
+    padding: var(--spacing-50) var(--spacing-100);
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: var(--spacing-100);
+
+    color: var(--color-primary-fg);
+    background: var(--color-player-list-bg);
+
+    .zeitsteine {
+        margin-left: auto;
+    }
+}
+
+.player-list__player.player-color-1 {
+    border-top-color: var(--color-player-1);
+    background: linear-gradient(90deg, var(--color-player-list-bg) 0%, var(--color-player-1--super-dark) 100%);
+}
+
+.player-list__player.player-color-2 {
+    border-top-color: var(--color-player-2);
+    background: linear-gradient(90deg, var(--color-player-list-bg) 0%, var(--color-player-2--super-dark) 100%);
+}
+
+.player-list__player.player-color-3 {
+    border-top-color: var(--color-player-3);
+    background: linear-gradient(90deg, var(--color-player-list-bg) 0%, var(--color-player-3--super-dark) 100%);
+}
+
+.player-list__player.player-color-4 {
+    border-top-color: var(--color-player-4);
+    background: linear-gradient(90deg, var(--color-player-list-bg) 0%, var(--color-player-4--super-dark) 100%);
 }
 
 .player-list__player--is-active {
-    border-bottom: 2px solid var(--color-primary);
+    border-top: var(--spacing-25) solid;
+    padding-top: var(--spacing-25);
 }
 
+.player-list__player-phase {
+    height: 20px;
+    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-primary-fg);
+}
 
