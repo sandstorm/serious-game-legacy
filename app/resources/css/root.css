@@ -12,4 +12,7 @@
 
 body {
     font-family: var(--font-family-sans);
+    color: var(--color-primary-dark);
+
+    background-image: radial-gradient(circle, #97e2fe, #8febeb, #a7f0ce, #d0efb3, #FEE9A6);
 }

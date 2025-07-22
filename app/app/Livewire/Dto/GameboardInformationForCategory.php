@@ -12,16 +12,12 @@ class GameboardInformationForCategory
     /**
      * @param string $componentName
      * @param CategoryId $title
-     * @param int|null $kompetenzen
-     * @param int|null $kompetenzenRequiredByPhase
      * @param ZeitsteinWithColor[] $zeitsteine
      * @param PileId|null $cardPile
      */
     public function __construct(
         public string $componentName,
         public CategoryId $title,
-        public ?int $kompetenzen,
-        public ?int $kompetenzenRequiredByPhase,
         public array $zeitsteine,
         public ?PileId $cardPile = null,
     ) {}
