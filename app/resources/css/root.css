@@ -7,6 +7,7 @@
 @import "./app/button.css";
 @import "./app/form.css";
 @import "./app/table.css";
+@import "./app/svgIcons.css";
 
 /* NOTE: Components are included automatically via Vite, see app.js */
 

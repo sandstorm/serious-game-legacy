@@ -1,0 +1,22 @@
+.kompetenzen-overview {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-bottom: var(--spacing-100);
+    gap: var(--spacing-100);
+    padding: var(--spacing-100);
+
+    text-align: center;
+}
+
+.kompetenzen-overview__category {
+    h4 {
+        margin-bottom: var(--spacing-100);
+    }
+
+    .button {
+        width: 100%;
+
+        text-align: center;
+        justify-content: center;
+    }
+}

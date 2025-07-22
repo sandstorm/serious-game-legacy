@@ -10,13 +10,11 @@ class GameboardInformationForKompetenzenOverview
 {
     /**
      * @param CategoryId $title
-     * @param int|null $kompetenzen
-     * @param int|null $kompetenzenRequiredByPhase
+     * @param AbstractIconWithColor[] $kompetenzen
      */
     public function __construct(
         public CategoryId $title,
-        public ?int $kompetenzen,
-        public ?int $kompetenzenRequiredByPhase,
+        public array $kompetenzen,
     ) {}
 
 }
