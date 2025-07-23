@@ -11,6 +11,7 @@ use App\Livewire\Forms\MoneySheetSteuernUndAbgabenForm;
 use App\Livewire\Forms\TakeOutALoanForm;
 use App\Livewire\ValueObject\ExpensesTabEnum;
 use App\Livewire\ValueObject\IncomeTabEnum;
+use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\LoanCalculator;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
@@ -47,6 +48,11 @@ trait HasMoneySheet
 
     public function mountHasMoneySheet(): void
     {
+        if (PreGameState::isInPreGamePhase($this->gameEvents)) {
+            // do not mount the money sheet if we are in pre-game phase
+            return;
+        }
+
         // init insurances form
         $insurances = InsuranceFinder::getInstance()->getAllInsurances();
         $currentPlayerPhase = PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($this->gameEvents, $this->myself)->phase;
