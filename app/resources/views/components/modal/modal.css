@@ -35,10 +35,12 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    gap: var(--spacing-200);
     margin: auto;
     width: 80%;
     max-width: 800px;
     max-height: 80%;
+    padding: var(--spacing-250);
 
     background-color: var(--color-primary-fg);
     border: 1px solid var(--color-grey);
@@ -54,13 +56,28 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-inline: var(--spacing-100);
-        padding-top: var(--spacing-50);
-        padding-bottom: var(--spacing-50);
-
-        border-bottom: 1px solid var(--color-grey);
 
         font-size: 1.5rem;
+    }
+}
+
+.modal__icon {
+    position: absolute;
+    left: var(--spacing-50);
+    top: var(--spacing-50);
+
+    font-size: var(--font-size-xl);
+}
+
+.modal__close-button {
+    position: absolute;
+    right: var(--spacing-50);
+    top: var(--spacing-50);
+
+    font-size: var(--font-size-xl);
+
+    i {
+        transform: rotate(45deg);
     }
 }
 
@@ -69,15 +86,10 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    padding-inline: var(--spacing-100);
-    padding-top: var(--spacing-50);
-    padding-bottom: var(--spacing-50);
-
-    border-top: 1px solid var(--color-grey);
+    gap: var(--spacing-100);
 }
 
 .modal__body {
-    padding: var(--spacing-100);
     overflow-y: auto;
     overflow-x: hidden;
     max-height: 70%;

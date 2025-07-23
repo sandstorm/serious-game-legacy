@@ -4,35 +4,18 @@
 ])
 
 <div class="card-pile">
-    <div class="card" wire:click="toggleCardActionsModal()">
+    <div class="card" role="button" aria-label="Karte anzeigen" wire:click="showCardActions('{{$card->id->value}}')">
         <div class="card__icon">
-            <i class="icon-lupe"></i>
+            <i class="icon-lupe" aria-hidden="true"></i>
         </div>
         <h4 class="card__title">{{ $card->title }}</h4>
 
-        <div class="card__effects">
-            @if ($card->resourceChanges->guthabenChange->value != 0)
-                <div class="card__effect">{!! $card->resourceChanges->guthabenChange->formatWithIcon() !!}</div>
-            @endif
-            @if ($card->resourceChanges->zeitsteineChange)
-                <div class="card__effect">
-                    <x-gameboard.cardPile.card-effects :change="$card->resourceChanges->zeitsteineChange" iconClass="icon-fehler" />
-                </div>
-            @endif
-            @if ($card->resourceChanges->bildungKompetenzsteinChange)
-                <div class="card__effect">
-                    <x-gameboard.cardPile.card-effects :change="$card->resourceChanges->bildungKompetenzsteinChange" iconClass="icon-bildungundkarriere" />
-                </div>
-            @endif
-            @if ($card->resourceChanges->freizeitKompetenzsteinChange)
-                <div class="card__effect">
-                    <x-gameboard.cardPile.card-effects :change="$card->resourceChanges->freizeitKompetenzsteinChange" iconClass="icon-freizeitundsoziales" />
-                </div>
-            @endif
+        <div class="card__content">
+            <x-gameboard.cardPile.card-effects :card="$card" />
         </div>
     </div>
 </div>
 
-@if ($this->cardActionsModalIsVisible)
+@if ($this->cardActionsVisible($card->id->value))
     <x-gameboard.cardPile.card-actions-modal :category="$category" :card="$card" />
 @endif

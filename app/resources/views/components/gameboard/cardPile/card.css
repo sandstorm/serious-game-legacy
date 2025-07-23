@@ -20,14 +20,33 @@
     margin-bottom: var(--spacing-100);
 }
 
+.card__content {
+    padding: var(--spacing-100);
+
+    background-color: var(--color-primary-fg);
+    border-radius: 10px;
+}
+
 .card__effects {
     display: flex;
     flex-direction: column;
-    padding: var(--spacing-100);
     gap: var(--spacing-100);
 
-    border-radius: 10px;
-    background-color: var(--color-primary-fg);
+    &.card__effects--horizontal {
+        flex-direction: row;
+
+        .card__effect {
+            padding-right: var(--spacing-100);
+
+            border-right: 1px solid var(--color-grey);
+
+            &:last-child {
+                padding-right: 0;
+
+                border-right: none;
+            }
+        }
+    }
 }
 
 .card__effect {
@@ -42,5 +61,18 @@
 
     i.text--danger, i.text--success {
         font-size: var(--font-size-base);
+    }
+}
+
+
+.card__actions-footer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-100);
+
+    .card__effects {
+        margin-right: auto;
     }
 }
