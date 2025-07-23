@@ -18,13 +18,31 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 trait HasCard
 {
-    public bool $cardActionsModalIsVisible = false;
+    public ?string $showCardActionsForCard = null;
     public bool $isEreignisCardVisible = false;
     public ?string $ereignisCardDefinition = null;
 
-    public function toggleCardActionsModal(): void
+    /**
+     * @param string $cardId
+     * @return void
+     */
+    public function showCardActions(string $cardId): void
     {
-        $this->cardActionsModalIsVisible = !$this->cardActionsModalIsVisible;
+        $this->showCardActionsForCard = $cardId;
+    }
+
+    public function closeCardActions(): void
+    {
+        $this->showCardActionsForCard = null;
+    }
+
+    /**
+     * @param string $cardId
+     * @return bool
+     */
+    public function cardActionsVisible(string $cardId): bool
+    {
+        return $this->showCardActionsForCard === $cardId && $this->currentPlayerIsMyself();
     }
 
     public function closeEreignisCard(): void

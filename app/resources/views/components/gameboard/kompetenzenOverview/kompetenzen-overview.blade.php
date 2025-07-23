@@ -23,15 +23,15 @@
             @endif
 
             @if ($category->title === CategoryId::INVESTITIONEN)
-                <button @class([
+                <button title="Moneysheet öffnen" @class([
                     'button',
                     'button--type-primary',
                     PlayerState::getPlayerColorClass($gameEvents, $playerId)
                 ]) wire:click="showMoneySheet()">
                     {!! PlayerState::getGuthabenForPlayer($gameEvents, $playerId)->format() !!}
                 </button>
-                <div class="kompetenzen-overview__investitionen-target">
-                    {!! $investitionen->format() !!} <i class=icon-phasenwechsel></i>
+                <div class="kompetenzen-overview__investitionen-target" title="Benötigte Investitionen für die nächste Phase">
+                    {!! $investitionen->format() !!} <i class="icon-phasenwechsel" aria-hidden="true"></i>
                 </div>
             @endif
         </div>
