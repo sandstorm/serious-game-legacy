@@ -14,7 +14,7 @@ final class HasPlayerEnoughResourcesForLebenszielphasenChangeValidator extends A
 
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
-        $currentLebensziel = PlayerState::lebenszielDefinitionForPlayerOrNull($gameEvents, $playerId);
+        $currentLebensziel = PlayerState::getLebenszielDefinitionForPlayerOrNull($gameEvents, $playerId);
 
         if ($currentLebensziel === null) {
             return new AktionValidationResult(

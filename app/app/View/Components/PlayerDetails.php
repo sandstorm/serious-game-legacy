@@ -44,12 +44,12 @@ class PlayerDetails extends Component
             return null;
         }
 
-        $lebensziel = PlayerState::lebenszielForPlayer($this->gameEvents, $playerId);
+        $lebensziel = PlayerState::getLebenszielDefinitionForPlayer($this->gameEvents, $playerId);
 
         return new PlayerDetailsDto(
-            name: PlayerState::nameForPlayer($this->gameEvents, $playerId),
+            name: PlayerState::getNameForPlayer($this->gameEvents, $playerId),
             playerId: $playerId,
-            lebensziel: $lebensziel->definition,
+            lebenszielDefinition: $lebensziel,
             guthaben: PlayerState::getGuthabenForPlayer($this->gameEvents, $playerId)->value,
             zeitsteine: PlayerState::getZeitsteineForPlayer($this->gameEvents, $playerId),
             kompetenzsteineBildung: PlayerState::getBildungsKompetenzsteine($this->gameEvents, $playerId),

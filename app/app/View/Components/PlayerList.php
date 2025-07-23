@@ -59,7 +59,7 @@ class PlayerList extends Component
         $playerList = [];
         foreach ($orderedPlayers as $playerId) {
             $playerDto = new PlayerListPlayerDto(
-                name: PlayerState::nameForPlayer($this->gameEvents, $playerId),
+                name: PlayerState::getNameForPlayer($this->gameEvents, $playerId),
                 playerId: $playerId,
                 playerColorClass: PlayerState::getPlayerColorClass($this->gameEvents, $playerId),
                 isPlayersTurn: $playerId->equals($this->activePlayer),
@@ -70,12 +70,15 @@ class PlayerList extends Component
             $playerList[] = $playerDto;
         }
 
-        // sort array and move player with isPlayersTurn to the end
+        // sort myself to the end of the list
         usort($playerList, function (PlayerListPlayerDto $a, PlayerListPlayerDto $b) {
-            if ($a->isPlayersTurn === $b->isPlayersTurn) {
-                return 0;
+            if ($a->playerId->equals($this->myself)) {
+                return 1; // move myself to the end
             }
-            return $a->isPlayersTurn ? 1 : -1; // move player with isPlayersTurn to the end
+            if ($b->playerId->equals($this->myself)) {
+                return -1; // move myself to the end
+            }
+            return 0; // keep the order for other players
         });
 
         return $playerList;

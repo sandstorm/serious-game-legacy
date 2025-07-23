@@ -11,6 +11,7 @@ use App\Livewire\Dto\ZeitsteinWithColor;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Illuminate\View\Component;
 use Illuminate\View\View;
@@ -30,15 +31,14 @@ class KompetenzenOverview extends Component
      */
     public function render(): View
     {
-        $lebenszielForPlayer = PlayerState::lebenszielForPlayer($this->gameEvents, $this->playerId);
-        $currentLebenszielPhase = PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($this->gameEvents, $this->playerId)->phase;
+        $currentLebenszielPhaseDefinition = PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($this->gameEvents, $this->playerId);
 
         $categories = [
             new GameboardInformationForKompetenzenOverview(
                 title: CategoryId::BILDUNG_UND_KARRIERE,
                 kompetenzen: $this->getKompetenzen(
                     PlayerState::getBildungsKompetenzsteine($this->gameEvents, $this->playerId),
-                    $lebenszielForPlayer->definition->phaseDefinitions[$currentLebenszielPhase - 1]->bildungsKompetenzSlots,
+                    $currentLebenszielPhaseDefinition->bildungsKompetenzSlots,
                     'gameboard.kompetenzen.kompetenz-icon-bildung'
                 ),
             ),
@@ -46,7 +46,7 @@ class KompetenzenOverview extends Component
                 title: CategoryId::SOZIALES_UND_FREIZEIT,
                 kompetenzen: $this->getKompetenzen(
                     PlayerState::getFreizeitKompetenzsteine($this->gameEvents, $this->playerId),
-                    $lebenszielForPlayer->definition->phaseDefinitions[$currentLebenszielPhase - 1]->freizeitKompetenzSlots,
+                    $currentLebenszielPhaseDefinition->freizeitKompetenzSlots,
                     'gameboard.kompetenzen.kompetenz-icon-freizeit',
                 ),
             ),
@@ -62,6 +62,7 @@ class KompetenzenOverview extends Component
 
         return view('components.gameboard.kompetenzenOverview.kompetenzen-overview', [
             'categories' => $categories,
+            'investitionen' => new MoneyAmount(PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($this->gameEvents, $this->playerId)->investitionen)
         ]);
     }
 
@@ -78,7 +79,7 @@ class KompetenzenOverview extends Component
             $kompetenzenArray[] = new KompetenzWithColor(
                 drawEmpty: false,
                 colorClass: PlayerState::getPlayerColorClass($this->gameEvents, $this->playerId),
-                playerName: PlayerState::nameForPlayer($this->gameEvents, $this->playerId),
+                playerName: PlayerState::getNameForPlayer($this->gameEvents, $this->playerId),
                 iconComponentName: $iconComponentName,
             );
         }
@@ -116,13 +117,13 @@ class KompetenzenOverview extends Component
                 new KompetenzWithColor(
                     drawEmpty: false,
                     colorClass: PlayerState::getPlayerColorClass($this->gameEvents, $this->playerId),
-                    playerName: PlayerState::nameForPlayer($this->gameEvents, $this->playerId),
+                    playerName: PlayerState::getNameForPlayer($this->gameEvents, $this->playerId),
                     iconComponentName: 'gameboard.kompetenzen.kompetenz-icon-beruf',
                 ),
                 new ZeitsteinWithColor(
                     drawEmpty: false,
                     colorClass: PlayerState::getPlayerColorClass($this->gameEvents, $this->playerId),
-                    playerName: PlayerState::nameForPlayer($this->gameEvents, $this->playerId),
+                    playerName: PlayerState::getNameForPlayer($this->gameEvents, $this->playerId),
                 ),
             ];
         }

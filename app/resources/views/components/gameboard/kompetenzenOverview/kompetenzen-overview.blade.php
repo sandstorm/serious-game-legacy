@@ -3,6 +3,7 @@
 
 @props([
     'categories' => [],
+    'investitionen' => null,
 ])
 
 <div class="kompetenzen-overview">
@@ -14,9 +15,9 @@
                 <ul class="kompetenzen">
                     @foreach($category->kompetenzen as $kompetenz)
                         <x-dynamic-component :component="$kompetenz->iconComponentName"
-                            :playerName="$kompetenz->playerName"
-                            :playerColorClass="$kompetenz->colorClass"
-                            :drawEmpty="$kompetenz->drawEmpty" />
+                            :player-name="$kompetenz->playerName"
+                            :player-color-class="$kompetenz->colorClass"
+                            :draw-empty="$kompetenz->drawEmpty" />
                     @endforeach
                 </ul>
             @endif
@@ -29,7 +30,7 @@
                 ]) wire:click="showMoneySheet()">
                     {!! PlayerState::getGuthabenForPlayer($gameEvents, $playerId)->format() !!}
                 </button>
-                TODO
+                {!! $investitionen->format() !!}
             @endif
         </div>
     @endforeach

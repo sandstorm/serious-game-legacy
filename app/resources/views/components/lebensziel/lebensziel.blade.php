@@ -14,20 +14,22 @@
                 <div class="lebensziel__phase-kompetenzen">
                     <div>
                         <strong>Bildung & Karriere</strong>
-                        <div class="kompetenzen">
+                        <ul class="kompetenzen">
                             @for($i = 0; $i < $phase->bildungsKompetenzSlots; $i++)
-                                <div class="kompetenz"></div>
+                                <x-gameboard.kompetenzen.kompetenz-icon-bildung
+                                     :draw-empty="true" />
                             @endfor
-                        </div>
+                        </ul>
                     </div>
 
                     <div>
                         <strong>Soziales & Freizeit</strong>
-                        <div class="kompetenzen">
+                        <ul class="kompetenzen">
                             @for($i = 0; $i < $phase->freizeitKompetenzSlots; $i++)
-                                <div class="kompetenz"></div>
+                                <x-gameboard.kompetenzen.kompetenz-icon-freizeit
+                                     :draw-empty="true" />
                             @endfor
-                        </div>
+                        </ul>
                     </div>
                 </div>
 

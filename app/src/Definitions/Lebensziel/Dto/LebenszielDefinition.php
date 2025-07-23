@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\Definitions\Lebensziel\Dto;
 
-
 use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
 use JsonSerializable;
 
