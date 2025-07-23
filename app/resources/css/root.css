@@ -3,6 +3,7 @@
 @import "./spacing.css";
 @import "./z-index.css";
 @import "./typography.css";
+@import "./app/icons.css";
 @import "./app/layout.css";
 @import "./app/button.css";
 @import "./app/form.css";

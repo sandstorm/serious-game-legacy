@@ -1,0 +1,129 @@
+@font-face {
+    font-family: 'icomoon';
+    src: url('/fonts/icomoon.woff2?somf2k') format('woff2'),
+    url('/fonts/icomoon.ttf?somf2k') format('truetype'),
+    url('/fonts/icomoon.woff?somf2k') format('woff'),
+    url('/fonts/icomoon.svg?somf2k#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'icomoon' !important;
+    speak: never;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-Icon_Lupe-21:before {
+    content: "\e900";
+}
+
+.icon-Icon_Ereignis:before {
+    content: "\e901";
+}
+
+.icon-Icon_Immobilien:before {
+    content: "\e902";
+}
+
+.icon-Icon_Phase-1:before {
+    content: "\e903";
+}
+
+.icon-Icon_Lupe-19:before {
+    content: "\e904";
+}
+
+.icon-Icon_Phase-3:before {
+    content: "\e905";
+}
+
+.icon-Icon_Bildung--Karriere:before {
+    content: "\e906";
+}
+
+.icon-Icon_Phase-2:before {
+    content: "\e907";
+}
+
+.icon-Icon_info:before {
+    content: "\e908";
+}
+
+.icon-Icon_Edelmetalle:before {
+    content: "\e909";
+}
+
+.icon-Icon_plus:before {
+    content: "\e90a";
+}
+
+.icon-Icon_Weiterbildung:before {
+    content: "\e90b";
+}
+
+.icon-Icon_Sanduhr:before {
+    content: "\e90c";
+}
+
+.icon-Icon_Euro:before {
+    content: "\e90d";
+}
+
+.icon-Icon_Erwerbseinkommen:before {
+    content: "\e90e";
+}
+
+.icon-Icon_Aktien:before {
+    content: "\e90f";
+}
+
+.icon-Icon_insolvent-2:before {
+    content: "\e910";
+}
+
+.icon-Icon_Phasenwechsel:before {
+    content: "\e911";
+}
+
+.icon-Icon_Fehler:before {
+    content: "\e912";
+}
+
+.icon-Icon_Log-ausklappen:before {
+    content: "\e913";
+}
+
+.icon-Icon_ETF:before {
+    content: "\e914";
+}
+
+.icon-Icon_Krypto:before {
+    content: "\e915";
+}
+
+.icon-Icon_minus:before {
+    content: "\e916";
+}
+
+.icon-Icon_Freizeit--Soziales:before {
+    content: "\e917";
+}
+
+.icon-Icon_insolvent:before {
+    content: "\e918";
+}
+
+.icon-Icon_skippen:before {
+    content: "\e919";
+}

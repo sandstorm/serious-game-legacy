@@ -6,15 +6,19 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: var(--spacing-50);
-    padding-bottom: var(--spacing-100);
-    position: relative;
+    padding: var(--spacing-100);
+    gap: var(--spacing-100);
 
     .button {
+        flex-shrink: 0;
         padding-inline: 1px;
         color: var(--color-primary-dark);
         font-weight: bold;
         font-size: 1.2rem;
+    }
+
+    hr {
+        width: 100%;
     }
 }
 
