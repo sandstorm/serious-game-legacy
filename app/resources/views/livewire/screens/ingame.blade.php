@@ -15,10 +15,12 @@
             <x-gameboard.kompetenzen-overview :game-events="$this->gameEvents" :player-id="$myself" />
 
             <div class="game-board__konjukturphase">
+                <hr />
                 <button type="button" class="button button--type-text"
                         wire:click="showKonjunkturphaseDetails()">
-                    Konjunktur: {{ $konjunkturphasenDefinition->type }}
+                    Konjunktur: {{ $konjunkturphasenDefinition->type }} <i class="icon-Icon_info"></i>
                 </button>
+                <hr />
             </div>
             @if ($konjunkturphaseDetailsVisible)
                 <x-konjunkturphase-details :game-events="$this->gameEvents"/>

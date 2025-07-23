@@ -1,7 +1,6 @@
 .kompetenzen-overview {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    margin-bottom: var(--spacing-100);
     gap: var(--spacing-100);
     padding: var(--spacing-100);
 
@@ -15,8 +14,17 @@
 
     .button {
         width: 100%;
+        margin-bottom: var(--spacing-50);
 
         text-align: center;
         justify-content: center;
+        font-size: var(--font-size-5);
     }
+}
+
+.kompetenzen-overview__investitionen-target {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-50);
 }

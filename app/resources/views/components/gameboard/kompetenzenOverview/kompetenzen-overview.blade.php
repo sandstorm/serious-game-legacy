@@ -30,7 +30,9 @@
                 ]) wire:click="showMoneySheet()">
                     {!! PlayerState::getGuthabenForPlayer($gameEvents, $playerId)->format() !!}
                 </button>
-                {!! $investitionen->format() !!}
+                <div class="kompetenzen-overview__investitionen-target">
+                    {!! $investitionen->format() !!} <i class="icon-Icon_Phasenwechsel"></i>
+                </div>
             @endif
         </div>
     @endforeach
