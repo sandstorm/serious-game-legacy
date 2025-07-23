@@ -1,0 +1,46 @@
+
+.card {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    padding: var(--spacing-50);
+
+    border-radius: 10px;
+    background-color: var(--color-cards-bg);
+    cursor: pointer;
+}
+
+.card__icon {
+    text-align: right;
+}
+
+.card__title {
+    text-align: center;
+    margin-bottom: var(--spacing-100);
+}
+
+.card__effects {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-100);
+    gap: var(--spacing-100);
+
+    border-radius: 10px;
+    background-color: var(--color-primary-fg);
+}
+
+.card__effect {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--spacing-50);
+
+    font-size: var(--font-size-xxl);
+    font-weight: var(--font-weight-light);
+
+    i.text--danger, i.text--success {
+        font-size: var(--font-size-base);
+    }
+}

@@ -58,6 +58,15 @@ readonly class MoneyAmount implements JsonSerializable
 
     public function format(): string
     {
-        return "<span class='text--currency'>" . number_format($this->value, 2, ',', '.') . ' €' . "</span>";
+        $value = number_format($this->value, 2, ',', '.');
+        return "<span class='text--currency'>" . $value . " €" . "</span>";
+    }
+
+    public function formatWithIcon(): string
+    {
+        $mathSignIcon = $this->value < 0 ? '<i class="text--danger icon-minus"></i>' : '<i class="text--success icon-plus"></i>';
+        $valueNormalized = number_format(abs($this->value), 2, ',', '.');
+
+        return "<span class='text--currency'>" . $mathSignIcon . " " . $valueNormalized . " <i class='icon-euro'></i>" . "</span>";
     }
 }

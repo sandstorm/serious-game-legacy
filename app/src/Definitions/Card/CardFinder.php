@@ -81,6 +81,7 @@ final class CardFinder
                     title: 'Erste-Hilfe-Kurs',
                     description: 'Du machst einen Erste-Hilfe-Kurs, um im Notfall richtig zu reagieren.',
                     resourceChanges: new ResourceChanges(
+                        zeitsteineChange: 1,
                         guthabenChange: new MoneyAmount(-300),
                         bildungKompetenzsteinChange: +1,
                     ),

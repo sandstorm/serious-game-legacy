@@ -5,10 +5,12 @@
     --color-primary-fg: #ffffff;
     --color-primary-bg: #171717;
     --color-player-list-bg: #47484A;
+    --color-cards-bg: #ECF5F4;
 
     --color-error: #d9534f;
     --color-warning: #f0ad4e;
     --color-grey: #888;
+    --color-success: #5cb85c;
 
     --color-player-1: #FFD655;
     --color-player-1--light: #FEE9A6;

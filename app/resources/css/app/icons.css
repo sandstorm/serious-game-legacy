@@ -1,9 +1,9 @@
 @font-face {
     font-family: 'icomoon';
-    src: url('/fonts/icomoon.woff2?somf2k') format('woff2'),
-    url('/fonts/icomoon.ttf?somf2k') format('truetype'),
-    url('/fonts/icomoon.woff?somf2k') format('woff'),
-    url('/fonts/icomoon.svg?somf2k#icomoon') format('svg');
+    src: url('/fonts/icomoon.woff2?8amxx8') format('woff2'),
+    url('/fonts/icomoon.ttf?8amxx8') format('truetype'),
+    url('/fonts/icomoon.woff?8amxx8') format('woff'),
+    url('/fonts/icomoon.svg?8amxx8#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
@@ -24,106 +24,106 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-Icon_Lupe-21:before {
+.icon-lupe-2:before {
     content: "\e900";
 }
 
-.icon-Icon_Ereignis:before {
+.icon-ereignis:before {
     content: "\e901";
 }
 
-.icon-Icon_Immobilien:before {
+.icon-immobilien:before {
     content: "\e902";
 }
 
-.icon-Icon_Phase-1:before {
+.icon-phase1:before {
     content: "\e903";
 }
 
-.icon-Icon_Lupe-19:before {
+.icon-lupe:before {
     content: "\e904";
 }
 
-.icon-Icon_Phase-3:before {
+.icon-phase3:before {
     content: "\e905";
 }
 
-.icon-Icon_Bildung--Karriere:before {
+.icon-bildungundkarriere:before {
     content: "\e906";
 }
 
-.icon-Icon_Phase-2:before {
+.icon-phase2:before {
     content: "\e907";
 }
 
-.icon-Icon_info:before {
+.icon-info:before {
     content: "\e908";
 }
 
-.icon-Icon_Edelmetalle:before {
+.icon-edelmetalle:before {
     content: "\e909";
 }
 
-.icon-Icon_plus:before {
+.icon-plus:before {
     content: "\e90a";
 }
 
-.icon-Icon_Weiterbildung:before {
+.icon-weiterbildung:before {
     content: "\e90b";
 }
 
-.icon-Icon_Sanduhr:before {
+.icon-sanduhr:before {
     content: "\e90c";
 }
 
-.icon-Icon_Euro:before {
+.icon-euro:before {
     content: "\e90d";
 }
 
-.icon-Icon_Erwerbseinkommen:before {
+.icon-erwerbseinkommen:before {
     content: "\e90e";
 }
 
-.icon-Icon_Aktien:before {
+.icon-aktien:before {
     content: "\e90f";
 }
 
-.icon-Icon_insolvent-2:before {
+.icon-insolvent2:before {
     content: "\e910";
 }
 
-.icon-Icon_Phasenwechsel:before {
+.icon-phasenwechsel:before {
     content: "\e911";
 }
 
-.icon-Icon_Fehler:before {
+.icon-fehler:before {
     content: "\e912";
 }
 
-.icon-Icon_Log-ausklappen:before {
+.icon-logausklappen:before {
     content: "\e913";
 }
 
-.icon-Icon_ETF:before {
+.icon-ETF:before {
     content: "\e914";
 }
 
-.icon-Icon_Krypto:before {
+.icon-krypto:before {
     content: "\e915";
 }
 
-.icon-Icon_minus:before {
+.icon-minus:before {
     content: "\e916";
 }
 
-.icon-Icon_Freizeit--Soziales:before {
+.icon-freizeitundsoziales:before {
     content: "\e917";
 }
 
-.icon-Icon_insolvent:before {
+.icon-insolvent:before {
     content: "\e918";
 }
 
-.icon-Icon_skippen:before {
+.icon-skippen:before {
     content: "\e919";
 }

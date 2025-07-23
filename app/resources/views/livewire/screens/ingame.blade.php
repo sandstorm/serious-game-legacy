@@ -18,7 +18,7 @@
                 <hr />
                 <button type="button" class="button button--type-text"
                         wire:click="showKonjunkturphaseDetails()">
-                    Konjunktur: {{ $konjunkturphasenDefinition->type }} <i class="icon-Icon_info"></i>
+                    Konjunktur: {{ $konjunkturphasenDefinition->type }} <i class="icon-info"></i>
                 </button>
                 <hr />
             </div>
