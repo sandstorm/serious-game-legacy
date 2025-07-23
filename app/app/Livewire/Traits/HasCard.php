@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\Traits;
 
 use App\Livewire\ValueObject\NotificationTypeEnum;
-use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ActivateCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SkipCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
@@ -19,35 +18,18 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 trait HasCard
 {
-    public ?string $showCardActionsForCard = null;
+    public bool $cardActionsModalIsVisible = false;
     public bool $isEreignisCardVisible = false;
     public ?string $ereignisCardDefinition = null;
 
-    /**
-     * @param string $cardId
-     * @return void
-     */
-    public function showCardActions(string $cardId): void
+    public function toggleCardActionsModal(): void
     {
-        if ($this->showCardActionsForCard === $cardId) {
-            $this->showCardActionsForCard = null;
-        } else {
-            $this->showCardActionsForCard = $cardId;
-        }
+        $this->cardActionsModalIsVisible = !$this->cardActionsModalIsVisible;
     }
 
     public function closeEreignisCard(): void
     {
         $this->isEreignisCardVisible = false;
-    }
-
-    /**
-     * @param string $cardId
-     * @return bool
-     */
-    public function cardActionsVisible(string $cardId): bool
-    {
-        return $this->showCardActionsForCard === $cardId && $this->currentPlayerIsMyself();
     }
 
     public function canActivateCard(string $category): AktionValidationResult

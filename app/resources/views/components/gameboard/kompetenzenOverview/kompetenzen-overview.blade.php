@@ -31,7 +31,7 @@
                     {!! PlayerState::getGuthabenForPlayer($gameEvents, $playerId)->format() !!}
                 </button>
                 <div class="kompetenzen-overview__investitionen-target">
-                    {!! $investitionen->format() !!} <i class="icon-Icon_Phasenwechsel"></i>
+                    {!! $investitionen->format() !!} <i class=icon-phasenwechsel></i>
                 </div>
             @endif
         </div>

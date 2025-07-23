@@ -28,9 +28,8 @@ class CardPile extends Component
      */
     public function render(): View
     {
-        // TODO get next card when played/skipped
         $topCardIdForPile = PileState::topCardIdForPile($this->gameEvents, PileId::from($this->cardPile));
-        return view('components.gameboard.card-pile', [
+        return view('components.gameboard.cardPile.card-pile', [
             'category' => CategoryId::from($this->category),
             'card' => CardFinder::getInstance()->getCardById($topCardIdForPile),
         ]);
