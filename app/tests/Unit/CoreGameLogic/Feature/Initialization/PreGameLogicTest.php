@@ -82,28 +82,6 @@ test('PreGameLogic normal flow', function () {
         ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->p1))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE));
 });
 
-test('test lebensziel kompetenzen', function() {
-    $this->setupBasicGame();
-
-    $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-    // player 1
-    // bildung
-    expect(PlayerState::lebenszielForPlayer($gameEvents, $this->players[0])->phases[0]->definition->bildungsKompetenzSlots)->toBe(2);
-    expect(PlayerState::lebenszielForPlayer($gameEvents, $this->players[0])->phases[0]->placedKompetenzsteineBildung)->toBe(0);
-    // freizeit
-    expect(PlayerState::lebenszielForPlayer($gameEvents, $this->players[0])->phases[0]->definition->freizeitKompetenzSlots)->toBe(1);
-    expect(PlayerState::lebenszielForPlayer($gameEvents, $this->players[0])->phases[0]->placedKompetenzsteineFreizeit)->toBe(0);
-
-    // player 2
-    // bildung
-    expect(PlayerState::lebenszielForPlayer($gameEvents, $this->players[1])->phases[0]->definition->bildungsKompetenzSlots)->toBe(1);
-    expect(PlayerState::lebenszielForPlayer($gameEvents, $this->players[1])->phases[0]->placedKompetenzsteineBildung)->toBe(0);
-    // freizeit
-    expect(PlayerState::lebenszielForPlayer($gameEvents, $this->players[1])->phases[0]->definition->freizeitKompetenzSlots)->toBe(3);
-    expect(PlayerState::lebenszielForPlayer($gameEvents, $this->players[1])->phases[0]->placedKompetenzsteineFreizeit)->toBe(0);
-
-});
-
 test('PreGameLogic can only start once', function () {
     $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
         numberOfPlayers: 2,

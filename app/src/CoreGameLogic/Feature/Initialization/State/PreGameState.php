@@ -54,8 +54,8 @@ class PreGameState
             // TODO create new object with better naming and maybe different ones for different use cases
             $playerIdsToNameMap[$playerId->value] = new NameAndLebensziel(
                 playerId: $playerId,
-                name: PlayerState::nameForPlayerOrNull($gameEvents, $playerId),
-                lebensziel: PlayerState::lebenszielDefinitionForPlayerOrNull($gameEvents, $playerId),
+                name: PlayerState::getNameForPlayerOrNull($gameEvents, $playerId),
+                lebensziel: PlayerState::getLebenszielDefinitionForPlayerOrNull($gameEvents, $playerId),
             );
         }
         return $playerIdsToNameMap;

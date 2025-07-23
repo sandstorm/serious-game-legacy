@@ -1243,9 +1243,6 @@ describe('handleChangeLebenszielphase', function () {
     );
 
     it('changes the phase correctly', function () {
-        /** @var TestCase $this */
-        /** @var GameEvents $stream */
-
         $setupCards = [
             "cardToTest" => new KategorieCardDefinition(
                 id: new CardId('cardToTest'),

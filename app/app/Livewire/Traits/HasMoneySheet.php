@@ -126,6 +126,13 @@ trait HasMoneySheet
         $this->takeOutALoanIsVisible = false;
     }
 
+    public function showTakeOutALoan(): void
+    {
+        $this->showExpensesTab(ExpensesTabEnum::LOANS->value);
+        $this->takeOutALoanIsVisible = true;
+        $this->resetTakeOutALoanForm();
+    }
+
     public function getMoneysheetForPlayerId(PlayerId $playerId): MoneySheetDto
     {
         return new MoneySheetDto(
@@ -206,13 +213,6 @@ trait HasMoneySheet
         }
 
         $this->broadcastNotify();
-    }
-
-    public function showTakeOutALoan(): void
-    {
-        $this->showExpensesTab(ExpensesTabEnum::LOANS->value);
-        $this->takeOutALoanIsVisible = true;
-        $this->resetTakeOutALoanForm();
     }
 
     public function toggleTakeOutALoan(): void

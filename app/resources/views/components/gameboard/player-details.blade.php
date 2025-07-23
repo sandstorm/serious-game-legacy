@@ -11,8 +11,8 @@
     Kompetenzen Bildung & Karriere: {{$playerDetails?->kompetenzsteineBildung}} <br/>
     Kompetenzen Soziales & Freizeit: {{$playerDetails?->kompetenzsteineFreizeit}} <br/>
     <hr/>
-    @if($playerDetails?->lebensziel)
-        <x-lebensziel :lebensziel="$playerDetails?->lebensziel"/>
+    @if($playerDetails?->lebenszielDefinition)
+        <x-lebensziel :lebensziel="$playerDetails?->lebenszielDefinition"/>
     @endif
     @if($isCurrentPlayer())
         <button

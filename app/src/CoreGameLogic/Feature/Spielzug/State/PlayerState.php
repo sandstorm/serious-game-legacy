@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\State;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
@@ -99,7 +100,7 @@ class PlayerState
     }
 
     /**
-     * Returns the accumulated amount of Bildungskompetenzsteine of the player.
+     * Returns the accumulated amount of Bildungskompetenzsteine of the player for current Lebenszielphase.
      *
      * @param GameEvents $stream
      * @param PlayerId $playerId
@@ -107,15 +108,20 @@ class PlayerState
      */
     public static function getBildungsKompetenzsteine(GameEvents $stream, PlayerId $playerId): int
     {
-        // TODO for current lebensziel phase only?
-        $accumulatedResourceChangesForPlayer = $stream->findAllOfType(ProvidesResourceChanges::class)
+        $lebenszielPhaseWasChanged = $stream->findLastOrNull(LebenszielphaseWasChanged::class);
+        $findAfterEvent = LebenszielphaseWasChanged::class;
+        if ($lebenszielPhaseWasChanged === null) {
+            $findAfterEvent = GameWasStarted::class;
+        }
+
+        $accumulatedResourceChangesForPlayer = $stream->findAllAfterLastOfType($findAfterEvent)->findAllOfType(ProvidesResourceChanges::class)
             ->reduce(fn(ResourceChanges $accumulator, ProvidesResourceChanges $event) => $accumulator->accumulate($event->getResourceChanges($playerId)), new ResourceChanges());
 
         return $accumulatedResourceChangesForPlayer->bildungKompetenzsteinChange;
     }
 
     /**
-     * Returns the accumulated amount of Freizeitkompetenzsteine of the player.
+     * Returns the accumulated amount of Freizeitkompetenzsteine of the player for current Lebenszielphase.
      *
      * @param GameEvents $stream
      * @param PlayerId $playerId
@@ -123,8 +129,13 @@ class PlayerState
      */
     public static function getFreizeitKompetenzsteine(GameEvents $stream, PlayerId $playerId): int
     {
-        // TODO for current lebensziel phase only?
-        $accumulatedResourceChangesForPlayer = $stream->findAllOfType(ProvidesResourceChanges::class)
+        $lebenszielPhaseWasChanged = $stream->findLastOrNull(LebenszielphaseWasChanged::class);
+        $findAfterEvent = LebenszielphaseWasChanged::class;
+        if ($lebenszielPhaseWasChanged === null) {
+            $findAfterEvent = GameWasStarted::class;
+        }
+
+        $accumulatedResourceChangesForPlayer = $stream->findAllAfterLastOfType($findAfterEvent)->findAllOfType(ProvidesResourceChanges::class)
             ->reduce(fn(ResourceChanges $accumulator, ProvidesResourceChanges $event) => $accumulator->accumulate($event->getResourceChanges($playerId)), new ResourceChanges());
 
         return $accumulatedResourceChangesForPlayer->freizeitKompetenzsteinChange;
@@ -292,7 +303,7 @@ class PlayerState
 
     public static function getCurrentLebenszielphaseDefinitionForPlayer(GameEvents $gameEvents, PlayerId $playerId): LebenszielPhaseDefinition
     {
-        $lebenszielDefinition = self::lebenszielDefinitionForPlayer($gameEvents, $playerId);
+        $lebenszielDefinition = self::getLebenszielDefinitionForPlayer($gameEvents, $playerId);
 
         /** @var LebenszielphaseWasChanged|null $lastLebenszielWasChangedEvent */
         $lastLebenszielWasChangedEvent = $gameEvents->findLastOrNullWhere(fn ($event) => $event instanceof LebenszielphaseWasChanged && $event->playerId->equals($playerId));
@@ -307,9 +318,9 @@ class PlayerState
      * @param PlayerId $playerId
      * @return string
      */
-    public static function nameForPlayer(GameEvents $gameEvents, PlayerId $playerId): string
+    public static function getNameForPlayer(GameEvents $gameEvents, PlayerId $playerId): string
     {
-        $name = self::nameForPlayerOrNull($gameEvents, $playerId);
+        $name = self::getNameForPlayerOrNull($gameEvents, $playerId);
         if ($name === null) {
             throw new \RuntimeException('No Player Name found', 1753088654);
         }
@@ -322,7 +333,7 @@ class PlayerState
      * @param PlayerId $playerId
      * @return string|null
      */
-    public static function nameForPlayerOrNull(GameEvents $gameEvents, PlayerId $playerId): ?string
+    public static function getNameForPlayerOrNull(GameEvents $gameEvents, PlayerId $playerId): ?string
     {
         // @phpstan-ignore property.notFound
         return $gameEvents->findLastOrNullWhere(fn($e) => $e instanceof NameForPlayerWasSet && $e->playerId->equals($playerId))?->name;
@@ -333,9 +344,9 @@ class PlayerState
      * @param PlayerId $playerId
      * @return LebenszielDefinition
      */
-    public static function lebenszielDefinitionForPlayer(GameEvents $gameEvents, PlayerId $playerId): LebenszielDefinition
+    public static function getLebenszielDefinitionForPlayer(GameEvents $gameEvents, PlayerId $playerId): LebenszielDefinition
     {
-        $lebensziel = self::lebenszielDefinitionForPlayerOrNull($gameEvents, $playerId);
+        $lebensziel = self::getLebenszielDefinitionForPlayerOrNull($gameEvents, $playerId);
         if ($lebensziel === null) {
             throw new \RuntimeException('No Lebensziel found', 1753088724);
         }
@@ -348,33 +359,9 @@ class PlayerState
      * @param PlayerId $playerId
      * @return LebenszielDefinition|null
      */
-    public static function lebenszielDefinitionForPlayerOrNull(GameEvents $gameEvents, PlayerId $playerId): ?LebenszielDefinition
+    public static function getLebenszielDefinitionForPlayerOrNull(GameEvents $gameEvents, PlayerId $playerId): ?LebenszielDefinition
     {
         // @phpstan-ignore property.notFound
         return $gameEvents->findLastOrNullWhere(fn($e) => $e instanceof LebenszielWasSelected && $e->playerId->equals($playerId))?->lebenszielDefinition;
-    }
-
-    /**
-     * @param GameEvents $gameEvents
-     * @param PlayerId $playerId
-     * @return Lebensziel
-     */
-    public static function lebenszielForPlayer(GameEvents $gameEvents, PlayerId $playerId): Lebensziel
-    {
-        $lebenszielDefinition = self::lebenszielDefinitionForPlayer($gameEvents, $playerId);
-        $phases = [];
-        foreach ($lebenszielDefinition->phaseDefinitions as $phaseDefinition) {
-            $phases[] = LebenszielPhase::fromDefinition($phaseDefinition);
-        }
-        $lebensziel = new Lebensziel(
-            definition: $lebenszielDefinition,
-            phases: $phases,
-        );
-        $kompetenzsteinChanges = $gameEvents
-            ->findAllOfType(ProvidesResourceChanges::class)
-            ->reduce(fn(ResourceChanges $accumulator, ProvidesResourceChanges $event) => $accumulator->accumulate($event->getResourceChanges($playerId)), new ResourceChanges());
-        // TODO: place kompetenzsteine in the currently active phase in the future
-        $newPhase0 = $lebensziel->phases[0]->withChange($kompetenzsteinChanges);
-        return $lebensziel->withUpdatedPhase(0, $newPhase0);
     }
 }

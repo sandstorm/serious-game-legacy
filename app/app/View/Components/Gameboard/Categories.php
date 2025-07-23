@@ -80,7 +80,7 @@ class Categories extends Component
                 $zeitsteine[] = new ZeitsteinWithColor(
                     drawEmpty: false,
                     colorClass: PlayerState::getPlayerColorClass($this->gameEvents, $player),
-                    playerName: PlayerState::nameForPlayer($this->gameEvents, $player),
+                    playerName: PlayerState::getNameForPlayer($this->gameEvents, $player),
                 );
             }
         }

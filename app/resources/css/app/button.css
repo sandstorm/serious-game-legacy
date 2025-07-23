@@ -39,38 +39,38 @@
 }
 
 .button--type-primary.player-color-1 {
-    background: var(--color-player-1);
+    background: var(--color-player-1--light);
     border-color: var(--color-player-1--dark);
 
     &:hover:not(&.button--disabled) {
-        background: var(--color-player-1--dark);
+        background: var(--color-player-1);
     }
 }
 
 .button--type-primary.player-color-2 {
-    background: var(--color-player-2);
+    background: var(--color-player-2--light);
     border-color: var(--color-player-2--dark);
 
     &:hover:not(&.button--disabled) {
-        background: var(--color-player-2--dark);
+        background: var(--color-player-2);
     }
 }
 
 .button--type-primary.player-color-3 {
-    background: var(--color-player-3);
+    background: var(--color-player-3--light);
     border-color: var(--color-player-3--dark);
 
     &:hover:not(&.button--disabled) {
-        background: var(--color-player-3--dark);
+        background: var(--color-player-3);
     }
 }
 
 .button--type-primary.player-color-4 {
-    background: var(--color-player-4);
+    background: var(--color-player-4--light);
     border-color: var(--color-player-4--dark);
 
     &:hover:not(&.button--disabled) {
-        background: var(--color-player-4--dark);
+        background: var(--color-player-4);
     }
 }
 

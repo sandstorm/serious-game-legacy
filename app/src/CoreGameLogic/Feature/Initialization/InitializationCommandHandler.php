@@ -61,7 +61,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
 
     private function handleSelectLebensziel(SelectLebensziel $command, GameEvents $gameState): GameEventsToPersist
     {
-        $lebensziel = PlayerState::lebenszielDefinitionForPlayerOrNull($gameState, $command->playerId);
+        $lebensziel = PlayerState::getLebenszielDefinitionForPlayerOrNull($gameState, $command->playerId);
         if ($lebensziel !== null) {
             throw new \RuntimeException('Player has already selected a Lebensziel', 1746713490);
         }

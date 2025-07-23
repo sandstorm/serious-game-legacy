@@ -583,7 +583,7 @@ final class CardFinder
             PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => [
                 "e0" => new EreignisCardDefinition(
                     id: new CardId('e0'),
-                    pileId: PileId::MINIJOBS_PHASE_1,
+                    pileId: PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1,
                     title: 'Teilnahme Coaching-Seminaren',
                     description: 'Glückwunsch! Deine Teilnahme an Coaching-Seminaren zahlt sich aus: Du gewinnst bei einem Wettbewerb für junge Führungskräfte den ersten Platz und erhältst eine Finanzspritze für dein erstes Start-up.',
                     resourceChanges: new ResourceChanges(
@@ -594,7 +594,7 @@ final class CardFinder
                 ),
                 "e1" => new EreignisCardDefinition(
                     id: new CardId('e1'),
-                    pileId: PileId::MINIJOBS_PHASE_1,
+                    pileId: PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1,
                     title: 'Neue Liebe',
                     description: 'Du bist verliebt und vernachlässigst dadurch deine (Lern-)Pflichten. Alles wieder aufzuholen kostet viel Zeit.',
                     resourceChanges: new ResourceChanges(
@@ -605,7 +605,7 @@ final class CardFinder
                 ),
                 "e2" => new EreignisCardDefinition(
                     id: new CardId('e2'),
-                    pileId: PileId::MINIJOBS_PHASE_1,
+                    pileId: PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1,
                     title: 'Beförderung',
                     description: 'Du wirst befördert – dein Gehalt erhöht sich dieses Jahr um 20%.',
                     resourceChanges: new ResourceChanges(),

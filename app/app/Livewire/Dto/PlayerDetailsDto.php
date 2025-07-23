@@ -12,7 +12,7 @@ class PlayerDetailsDto
     public function __construct(
         public string $name,
         public PlayerId $playerId,
-        public LebenszielDefinition $lebensziel,
+        public LebenszielDefinition $lebenszielDefinition,
         public float $guthaben,
         public int $zeitsteine,
         public int $kompetenzsteineBildung,
