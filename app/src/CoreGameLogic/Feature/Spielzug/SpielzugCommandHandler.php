@@ -18,6 +18,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CancelInsuranceForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ChangeLebenszielphaseAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CompleteMoneySheetForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ConcludeInsuranceForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\PutCardBackOnTopOfPileAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\DoMinijobAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EndSpielzugAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterLebenshaltungskostenForPlayerAktion;
@@ -32,6 +33,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyStocksForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ChangeLebenszielphase;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\PutCardBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
@@ -46,7 +48,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 
 /**
  * @internal no public API, because commands are no extension points. ALWAYS USE {@see ForCoreGameLogic::handle()} to trigger commands.
@@ -72,7 +73,8 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             || $command instanceof ChangeLebenszielphase
             || $command instanceof QuitJob
             || $command instanceof BuyStocksForPlayer
-            || $command instanceof SellStocksForPlayer;
+            || $command instanceof SellStocksForPlayer
+            || $command instanceof PutCardBackOnTopOfPile;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameEvents): GameEventsToPersist
@@ -105,6 +107,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             BuyStocksForPlayer::class => $this->handleBuyStocks($command, $gameEvents),
             SellStocksForPlayer::class => $this->handleSellStocks($command, $gameEvents),
             ChangeLebenszielphase::class => $this->handleLebenszielphase($command, $gameEvents),
+            PutCardBackOnTopOfPile::class => $this->handlePutCardBackOnTopOfPile($command, $gameEvents),
         };
     }
 
@@ -258,6 +261,17 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             StockPriceState::getCurrentStockPrice($gameEvents, $command->stockType),
             $command->amount,
         );
+        return $aktion->execute($command->playerId, $gameEvents);
+    }
+
+    /**
+     * @param PutCardBackOnTopOfPile $command
+     * @param GameEvents $gameEvents
+     * @return GameEventsToPersist
+     */
+    private function handlePutCardBackOnTopOfPile(PutCardBackOnTopOfPile $command, GameEvents $gameEvents): GameEventsToPersist
+    {
+        $aktion = new PutCardBackOnTopOfPileAktion($command->categoryId);
         return $aktion->execute($command->playerId, $gameEvents);
     }
 }

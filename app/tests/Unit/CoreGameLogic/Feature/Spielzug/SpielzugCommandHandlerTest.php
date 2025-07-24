@@ -21,6 +21,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ChangeLebenszielphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyStocksForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\PutCardBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
@@ -35,6 +36,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\LoanData;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasPutBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
@@ -59,13 +61,8 @@ use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Configuration\Configuration;
-use Domain\Definitions\Konjunkturphase\Dto\Zeitsteine;
-use Domain\Definitions\Konjunkturphase\Dto\ZeitsteinePerPlayer;
-use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
-use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
-use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use RuntimeException;
 use Tests\ComponentWithForm;
 use Tests\TestCase;
@@ -227,6 +224,192 @@ describe('handleSkipCard', function () {
     })->throws(RuntimeException::class,
         'Cannot skip card: Es gibt keine freien Zeitsteinslots mehr',
         1747325793);
+});
+
+describe('handleDiscardCard', function () {
+    it('Throws exception if no card was skipped', function () {
+        $this->coreGameLogic->handle($this->gameId, new PutCardBackOnTopOfPile(
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+        ));
+    })->throws(RuntimeException::class,
+        'Karte ablegen nur möglich, wenn vorher eine Karte übersprungen wurde',
+        1753362843);
+
+    it('Throws exception if a card was skipped and the next one was played', function () {
+        $cardToTest = [
+            // card to skip
+            new KategorieCardDefinition(
+                id: new CardId('testcard1'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(1000),
+                    bildungKompetenzsteinChange: +1,
+                ),
+            ),
+            // card player can play
+            new KategorieCardDefinition(
+                id: new CardId('testcard2'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(2000),
+                ),
+            )
+        ];
+
+        $this->addCardsOnTopOfPile($cardToTest, $this->pileIdBildung);
+
+        $this->coreGameLogic->handle($this->gameId,
+            new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
+
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+        ));
+
+        $this->coreGameLogic->handle($this->gameId, new PutCardBackOnTopOfPile(
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+        ));
+    })->throws(RuntimeException::class,
+        'Karte ablegen nur möglich, wenn noch keine Karte gespielt oder zurückgelegt wurde',
+        1753362843);
+
+    it('Throws exception if a card was skipped and player can play the next card', function () {
+        $cardToTest = [
+            // card to skip
+            new KategorieCardDefinition(
+                id: new CardId('testcard1'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(1000),
+                    bildungKompetenzsteinChange: +1,
+                ),
+            ),
+            // card player can play
+            new KategorieCardDefinition(
+                id: new CardId('testcard2'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(2000),
+                ),
+            )
+        ];
+
+        $this->addCardsOnTopOfPile($cardToTest, $this->pileIdBildung);
+
+        $this->coreGameLogic->handle($this->gameId,
+            new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
+
+        $this->coreGameLogic->handle($this->gameId, new PutCardBackOnTopOfPile(
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+        ));
+
+    })->throws(RuntimeException::class,
+        'Du hast genug Ressourcen um die Karte zu spielen, du darfs sie nicht ablegen.',
+        1753362843);
+
+    it('Throws exception if a card was skipped and the next one was discarded', function () {
+        $cardToTest = [
+            // card to skip
+            new KategorieCardDefinition(
+                id: new CardId('testcard1'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(1000),
+                    bildungKompetenzsteinChange: +1,
+                ),
+            ),
+            // card player cannot play
+            new KategorieCardDefinition(
+                id: new CardId('testcard2'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount((Configuration::STARTKAPITAL_VALUE + 1) * -1),
+                    bildungKompetenzsteinChange: +1,
+                ),
+            )
+        ];
+
+        $this->addCardsOnTopOfPile($cardToTest, $this->pileIdBildung);
+
+        $this->coreGameLogic->handle($this->gameId,
+            new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
+
+        $this->coreGameLogic->handle($this->gameId, new PutCardBackOnTopOfPile(
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+        ));
+
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        $events = $stream->findAllOfType(CardWasPutBackOnTopOfPile::class);
+        expect(count($events))->toBe(1);
+
+        $this->coreGameLogic->handle($this->gameId, new PutCardBackOnTopOfPile(
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+        ));
+
+    })->throws(RuntimeException::class,
+        'Karte ablegen nur möglich, wenn noch keine Karte gespielt oder zurückgelegt wurde',
+        1753362843);
+
+    it('Discarding a card works', function () {
+        $cardToTest = [
+            // card to skip
+            new KategorieCardDefinition(
+                id: new CardId('testcard1'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(1000),
+                    bildungKompetenzsteinChange: +1,
+                ),
+            ),
+            // card player cannot play
+            new KategorieCardDefinition(
+                id: new CardId('testcard2'),
+                pileId: $this->pileIdBildung,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount((Configuration::STARTKAPITAL_VALUE + 1) * -1),
+                    bildungKompetenzsteinChange: +1,
+                ),
+            )
+        ];
+
+        $this->addCardsOnTopOfPile($cardToTest, $this->pileIdBildung);
+
+        $this->coreGameLogic->handle($this->gameId,
+            new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
+
+        $this->coreGameLogic->handle($this->gameId, new PutCardBackOnTopOfPile(
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+        ));
+
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        $events = $stream->findAllOfType(CardWasPutBackOnTopOfPile::class);
+
+        expect(count($events))->toBe(1)
+            ->and(PlayerState::getZeitsteineForPlayer($stream,
+                $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
+    });
 });
 
 describe('handleActivateCard', function () {

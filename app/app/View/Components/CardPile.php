@@ -31,6 +31,7 @@ class CardPile extends Component
         $topCardIdForPile = PileState::topCardIdForPile($this->gameEvents, PileId::from($this->cardPile));
         return view('components.gameboard.cardPile.card-pile', [
             'category' => CategoryId::from($this->category),
+            'pileId' => PileId::from($this->cardPile),
             'card' => CardFinder::getInstance()->getCardById($topCardIdForPile),
         ]);
     }

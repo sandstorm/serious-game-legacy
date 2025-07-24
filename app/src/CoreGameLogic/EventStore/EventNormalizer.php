@@ -12,6 +12,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasPutBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
@@ -98,6 +99,7 @@ final readonly class EventNormalizer
             JobWasQuit::class,
             StocksWereBoughtForPlayer::class,
             StocksWereSoldForPlayer::class,
+            CardWasPutBackOnTopOfPile::class,
         ];
 
         $fullClassNameToShortEventType = [];
