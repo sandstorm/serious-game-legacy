@@ -89,7 +89,7 @@ trait HasCard
         $ereignisOrNull = $eventsAfterActivateCard->findLastOrNull(EreignisWasTriggered::class);
         if ($ereignisOrNull !== null) {
             $ereignisCardDefinition = CardFinder::getInstance()->getCardById($ereignisOrNull->ereignisCardId, EreignisCardDefinition::class);
-            $this->ereignisCardDefinition = $ereignisCardDefinition->description();
+            $this->ereignisCardDefinition = $ereignisCardDefinition->getDescription();
             $this->isEreignisCardVisible = true;
         }
         $this->broadcastNotify();

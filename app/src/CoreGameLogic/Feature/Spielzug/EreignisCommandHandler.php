@@ -45,7 +45,7 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
     private function getRandomEreignis(GameEvents $gameEvents, PlayerId $playerId): EreignisCardDefinition
     {
         /** @var EreignisCardDefinition[] $allCards */
-        $allCards = CardFinder::getInstance()->getCardsForPile(PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1);
+        $allCards = CardFinder::getInstance()->getCardsForPile(PileId::BILDUNG_UND_KARRIERE_PHASE_1_EREIGNISSE);
         $filteredCards = array_filter($allCards, function ($cardDefinition) use ($gameEvents, $playerId) {
             $hasPlayerAllPrerequisites = true;
             foreach ($cardDefinition->ereignisRequirementIds as $requirementId) {

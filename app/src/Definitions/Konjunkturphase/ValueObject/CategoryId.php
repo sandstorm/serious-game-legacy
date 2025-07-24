@@ -10,4 +10,5 @@ enum CategoryId: string
     case SOZIALES_UND_FREIZEIT = 'Freizeit & Sozial';
     case INVESTITIONEN = 'Investitionen';
     case JOBS = 'Job';
+    case MINIJOBS = 'Minijobs';
 }

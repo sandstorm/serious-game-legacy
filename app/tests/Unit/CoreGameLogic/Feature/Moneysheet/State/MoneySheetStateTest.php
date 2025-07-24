@@ -660,11 +660,11 @@ describe('getOpenRatesForLoan', function () {
             );
         }
         $testCards = [
-            PileId::BILDUNG_PHASE_1->value => $cardsForTesting,
-            PileId::FREIZEIT_PHASE_1->value => $this->cardsFreizeit,
+            PileId::BILDUNG_UND_KARRIERE_PHASE_1->value => $cardsForTesting,
+            PileId::SOZIALES_UND_FREIZEIT_PHASE_1->value => $this->cardsFreizeit,
             PileId::JOBS_PHASE_1->value => $this->cardsJobs,
-            PileId::MINIJOBS_PHASE_1->value => $this->cardsMinijobs,
-            PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => $this->cardsEreignisseBildungUndKarriere,
+            PileId::MINIJOBS->value => $this->cardsMinijobs,
+            PileId::BILDUNG_UND_KARRIERE_PHASE_1_EREIGNISSE->value => $this->cardsEreignisseBildungUndKarriere,
         ];
         CardFinder::getInstance()->overrideCardsForTesting($testCards);
 

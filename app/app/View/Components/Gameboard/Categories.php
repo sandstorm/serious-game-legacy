@@ -49,7 +49,7 @@ class Categories extends Component
                 kompetenzenRequiredByPhase: $lebenszielForPlayer->definition->phaseDefinitions[$currentLebenszielPhase - 1]->bildungsKompetenzSlots - PlayerState::getBildungsKompetenzsteine($this->gameEvents, $this->playerId),
                 availableZeitsteine: $this->getSlotsForKompetenzbereich(CategoryId::BILDUNG_UND_KARRIERE) - $this->getSumOfPlacedZeitsteineInCategory($placedZeitsteineBildung),
                 placedZeitsteine: $placedZeitsteineBildung,
-                cardPile: PileId::BILDUNG_PHASE_1,
+                cardPile: PileId::BILDUNG_UND_KARRIERE_PHASE_1,
             ),
             new GameboardInformationForCategory(
                 componentName: 'gameboard.categories.categories-freizeit',
@@ -58,7 +58,7 @@ class Categories extends Component
                 kompetenzenRequiredByPhase: $lebenszielForPlayer->definition->phaseDefinitions[$currentLebenszielPhase - 1]->freizeitKompetenzSlots - PlayerState::getFreizeitKompetenzsteine($this->gameEvents, $this->playerId),
                 availableZeitsteine: $this->getSlotsForKompetenzbereich(CategoryId::SOZIALES_UND_FREIZEIT) - $this->getSumOfPlacedZeitsteineInCategory($placedZeitsteineFreizeit),
                 placedZeitsteine: $placedZeitsteineFreizeit,
-                cardPile: PileId::FREIZEIT_PHASE_1,
+                cardPile: PileId::SOZIALES_UND_FREIZEIT_PHASE_1,
             ),
             new GameboardInformationForCategory(
                 componentName: 'gameboard.categories-jobs',

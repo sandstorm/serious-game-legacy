@@ -114,11 +114,11 @@ abstract class TestCase extends BaseTestCase
         $this->gameId = GameId::fromString('game1');
         $this->players = $this->generatePlayerIds($numberOfPlayers);
         CardFinder::getInstance()->overrideCardsForTesting([
-            PileId::BILDUNG_PHASE_1->value => $this->getCardsForBildungAndKarriere(),
-            PileId::FREIZEIT_PHASE_1->value => $this->getCardsForSozialesAndFreizeit(),
+            PileId::BILDUNG_UND_KARRIERE_PHASE_1->value => $this->getCardsForBildungAndKarriere(),
+            PileId::SOZIALES_UND_FREIZEIT_PHASE_1->value => $this->getCardsForSozialesAndFreizeit(),
             PileId::JOBS_PHASE_1->value => $this->getCardsForJobs(),
-            PileId::MINIJOBS_PHASE_1->value => $this->getCardsForMinijobs(),
-            PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => $this->getCardsForEreignisseBildungUndKarriere(),
+            PileId::MINIJOBS->value => $this->getCardsForMinijobs(),
+            PileId::BILDUNG_UND_KARRIERE_PHASE_1_EREIGNISSE->value => $this->getCardsForEreignisseBildungUndKarriere(),
         ]);
 
         InsuranceFinder::getInstance()->overrideInsurancesForTesting([
@@ -156,15 +156,15 @@ abstract class TestCase extends BaseTestCase
 
         $this->insurances = InsuranceFinder::getInstance()->getAllInsurances();
 
-        $this->pileIdBildung = PileId::BILDUNG_PHASE_1;
+        $this->pileIdBildung = PileId::BILDUNG_UND_KARRIERE_PHASE_1;
         $this->cardsBildung = $this->getCardsForBildungAndKarriere();
-        $this->pileIdFreizeit = PileId::FREIZEIT_PHASE_1;
+        $this->pileIdFreizeit = PileId::SOZIALES_UND_FREIZEIT_PHASE_1;
         $this->cardsFreizeit = $this->getCardsForSozialesAndFreizeit();
         $this->pileIdJobs = PileId::JOBS_PHASE_1;
         $this->cardsJobs = $this->getCardsForJobs();
-        $this->pileIdMinijobs = PileId::MINIJOBS_PHASE_1;
+        $this->pileIdMinijobs = PileId::MINIJOBS;
         $this->cardsMinijobs = $this->getCardsForMinijobs();
-        $this->pileIdEreignisseBildungUndKarriere = PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1;
+        $this->pileIdEreignisseBildungUndKarriere = PileId::BILDUNG_UND_KARRIERE_PHASE_1_EREIGNISSE;
         $this->cardsEreignisseBildungUndKarriere = $this->getCardsForEreignisseBildungUndKarriere();
 
 
@@ -361,7 +361,7 @@ abstract class TestCase extends BaseTestCase
         return [
             "suf0" => new KategorieCardDefinition(
                 id: new CardId('suf0'),
-                pileId: PileId::FREIZEIT_PHASE_1,
+                pileId: PileId::SOZIALES_UND_FREIZEIT_PHASE_1,
                 title: 'Ehrenamtliches Engagement',
                 description: 'Du engagierst dich ehrenamtlich für eine Organisation, die es Menschen mit Behinderung ermöglicht einen genialen Urlaub mit Sonne, Strand und Meer zu erleben. Du musst die Kosten dafür allerdings selbst tragen.',
                 resourceChanges: new ResourceChanges(
@@ -371,7 +371,7 @@ abstract class TestCase extends BaseTestCase
             ),
             "suf1" => new KategorieCardDefinition(
                 id: new CardId('suf1'),
-                pileId: PileId::FREIZEIT_PHASE_1,
+                pileId: PileId::SOZIALES_UND_FREIZEIT_PHASE_1,
                 title: 'Spende',
                 description: 'Bei deinem Einkauf spendest du nun immer Tiernahrung für die umliegende Tierheime. Dein Spendebeitrag ist 200 €.',
                 resourceChanges: new ResourceChanges(
@@ -381,7 +381,7 @@ abstract class TestCase extends BaseTestCase
             ),
             "suf2" => new KategorieCardDefinition(
                 id: new CardId('suf2'),
-                pileId: PileId::FREIZEIT_PHASE_1,
+                pileId: PileId::SOZIALES_UND_FREIZEIT_PHASE_1,
                 title: 'kostenlose Nachhilfe',
                 description: 'Du gibst kostenlose Nachhilfe für sozial benachteiligte Kinder. Du verlierst einen Zeitstein.',
                 resourceChanges: new ResourceChanges(
@@ -400,7 +400,7 @@ abstract class TestCase extends BaseTestCase
         return [
             "buk0" => new KategorieCardDefinition(
                 id: new CardId('buk0'),
-                pileId: PileId::BILDUNG_PHASE_1,
+                pileId: PileId::BILDUNG_UND_KARRIERE_PHASE_1,
                 title: 'Sprachkurs',
                 description: 'Mache einen Sprachkurs über drei Monate im Ausland.',
                 resourceChanges: new ResourceChanges(
@@ -410,7 +410,7 @@ abstract class TestCase extends BaseTestCase
             ),
             "buk1" => new KategorieCardDefinition(
                 id: new CardId('buk1'),
-                pileId: PileId::BILDUNG_PHASE_1,
+                pileId: PileId::BILDUNG_UND_KARRIERE_PHASE_1,
                 title: 'Erste-Hilfe-Kurs',
                 description: 'Du machst einen Erste-Hilfe-Kurs, um im Notfall richtig zu reagieren.',
                 resourceChanges: new ResourceChanges(
@@ -420,7 +420,7 @@ abstract class TestCase extends BaseTestCase
             ),
             "buk2" => new KategorieCardDefinition(
                 id: new CardId('buk2'),
-                pileId: PileId::BILDUNG_PHASE_1,
+                pileId: PileId::BILDUNG_UND_KARRIERE_PHASE_1,
                 title: 'Gedächtnistraining',
                 description: 'Mache jeden Tag 20 Minuten Gedächtnistraining, um dich geistig fit zu halten.',
                 resourceChanges: new ResourceChanges(
@@ -439,7 +439,7 @@ abstract class TestCase extends BaseTestCase
         return [
             "mj0" => new MinijobCardDefinition(
                 id: new CardId('mj0'),
-                pileId: PileId::MINIJOBS_PHASE_1,
+                pileId: PileId::MINIJOBS,
                 title: 'Minijob',
                 description: 'Kellnerin im Ausland. Einmalzahlung 5.000 €.',
                 resourceChanges: new ResourceChanges(
@@ -448,7 +448,7 @@ abstract class TestCase extends BaseTestCase
             ),
             "mj1" => new MinijobCardDefinition(
                 id: new CardId('mj1'),
-                pileId: PileId::MINIJOBS_PHASE_1,
+                pileId: PileId::MINIJOBS,
                 title: 'Minijob',
                 description: 'Putzkraft im Ausland. Einmalzahlung 2.000 €.',
                 resourceChanges: new ResourceChanges(
@@ -471,11 +471,11 @@ abstract class TestCase extends BaseTestCase
             $cardsToAdd[$card->getId()->value] = $card;
         }
         $testCards = [
-            PileId::BILDUNG_PHASE_1->value => $this->getCardsForBildungAndKarriere(),
-            PileId::FREIZEIT_PHASE_1->value => $this->getCardsForSozialesAndFreizeit(),
+            PileId::BILDUNG_UND_KARRIERE_PHASE_1->value => $this->getCardsForBildungAndKarriere(),
+            PileId::SOZIALES_UND_FREIZEIT_PHASE_1->value => $this->getCardsForSozialesAndFreizeit(),
             PileId::JOBS_PHASE_1->value => $this->getCardsForJobs(),
-            PileId::MINIJOBS_PHASE_1->value => $this->getCardsForMinijobs(),
-            PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => $this->getCardsForEreignisseBildungUndKarriere(),
+            PileId::MINIJOBS->value => $this->getCardsForMinijobs(),
+            PileId::BILDUNG_UND_KARRIERE_PHASE_1_EREIGNISSE->value => $this->getCardsForEreignisseBildungUndKarriere(),
         ];
         $testCards[$pileId->value] = [...$cardsToAdd, ...$testCards[$pileId->value]];
         CardFinder::getInstance()->overrideCardsForTesting($testCards);
@@ -485,15 +485,15 @@ abstract class TestCase extends BaseTestCase
                 ->withFixedKonjunkturphaseForTesting($this->konjunkturphaseDefinition)
                 ->withFixedCardOrderForTesting(
                     new CardOrder(pileId: $this->pileIdBildung, cards: array_map(fn($card) => $card->getId(),
-                        $testCards[PileId::BILDUNG_PHASE_1->value])),
+                        $testCards[PileId::BILDUNG_UND_KARRIERE_PHASE_1->value])),
                     new CardOrder(pileId: $this->pileIdFreizeit, cards: array_map(fn($card) => $card->getId(),
-                        $testCards[PileId::FREIZEIT_PHASE_1->value])),
+                        $testCards[PileId::SOZIALES_UND_FREIZEIT_PHASE_1->value])),
                     new CardOrder(pileId: $this->pileIdJobs, cards: array_map(fn($card) => $card->getId(),
                         $testCards[PileId::JOBS_PHASE_1->value])),
                     new CardOrder(pileId: $this->pileIdMinijobs, cards: array_map(fn($card) => $card->getId(),
-                        $testCards[PileId::MINIJOBS_PHASE_1->value])),
+                        $testCards[PileId::MINIJOBS->value])),
                     new CardOrder(pileId: $this->pileIdEreignisseBildungUndKarriere, cards: array_map(fn($card) => $card->getId(),
-                        $testCards[PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value])),
+                        $testCards[PileId::BILDUNG_UND_KARRIERE_PHASE_1_EREIGNISSE->value])),
                 ));
     }
 
@@ -505,7 +505,7 @@ abstract class TestCase extends BaseTestCase
         return [
             "e0" => new EreignisCardDefinition(
                 id: new CardId('e0'),
-                pileId: PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1,
+                pileId: PileId::BILDUNG_UND_KARRIERE_PHASE_1_EREIGNISSE,
                 title: 'Nichts',
                 description: 'Es passiert nichts, damit die Tests vorhersehbar bleiben',
                 resourceChanges: new ResourceChanges(),

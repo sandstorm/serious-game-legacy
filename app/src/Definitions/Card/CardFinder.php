@@ -16,7 +16,10 @@ use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
 use Domain\Definitions\Card\ValueObject\ModifierId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
+use Domain\Definitions\Card\ValueObject\PhaseId;
 use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
+use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 use Random\Randomizer;
 
 /**
@@ -64,12 +67,15 @@ final class CardFinder
     private static function initialize(): self
     {
         self::$instance = new self([
-            PileId::BILDUNG_PHASE_1->value => [
+            PileId::BILDUNG_UND_KARRIERE_PHASE_1->value => [
                 "buk0" => new KategorieCardDefinition(
                     id: new CardId('buk0'),
-                    pileId: PileId::BILDUNG_PHASE_1,
+                    pileId: PileId::BILDUNG_UND_KARRIERE_PHASE_1,
                     title: 'Sprachkurs',
                     description: 'Mache einen Sprachkurs über drei Monate im Ausland.',
+                    categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     resourceChanges: new ResourceChanges(
                         guthabenChange: new MoneyAmount(-11000),
                         bildungKompetenzsteinChange: +1,
@@ -77,9 +83,12 @@ final class CardFinder
                 ),
                 "buk1" => new KategorieCardDefinition(
                     id: new CardId('buk1'),
-                    pileId: PileId::BILDUNG_PHASE_1,
+                    pileId: PileId::BILDUNG_UND_KARRIERE_PHASE_1,
                     title: 'Erste-Hilfe-Kurs',
                     description: 'Du machst einen Erste-Hilfe-Kurs, um im Notfall richtig zu reagieren.',
+                    categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     resourceChanges: new ResourceChanges(
                         guthabenChange: new MoneyAmount(-300),
                         bildungKompetenzsteinChange: +1,
@@ -87,9 +96,12 @@ final class CardFinder
                 ),
                 "buk2" => new KategorieCardDefinition(
                     id: new CardId('buk2'),
-                    pileId: PileId::BILDUNG_PHASE_1,
+                    pileId: PileId::BILDUNG_UND_KARRIERE_PHASE_1,
                     title: 'Gedächtnistraining',
                     description: 'Mache jeden Tag 20 Minuten Gedächtnistraining, um dich geistig fit zu halten.',
+                    categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     resourceChanges: new ResourceChanges(
                         zeitsteineChange: -1,
                         bildungKompetenzsteinChange: +1,
@@ -99,9 +111,12 @@ final class CardFinder
                 //TODO: Card is duplicate!
                 "buk3" => new KategorieCardDefinition(
                     id: new CardId('buk3'),
-                    pileId: PileId::BILDUNG_PHASE_1,
+                    pileId: PileId::BILDUNG_UND_KARRIERE_PHASE_1,
                     title: 'Irgendwas',
                     description: 'Mache jeden Tag 20 Minuten Gedächtnistraining, um dich geistig fit zu halten.',
+                    categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     resourceChanges: new ResourceChanges(
                         zeitsteineChange: -1,
                         bildungKompetenzsteinChange: +1,
@@ -122,9 +137,12 @@ final class CardFinder
 
                 "buk5" => new KategorieCardDefinition(
                     id: new CardId('buk5'),
-                    pileId: PileId::BILDUNG_PHASE_1,
+                    pileId: PileId::BILDUNG_UND_KARRIERE_PHASE_1,
                     title: 'Ausbildung zur SkilehrerIn',
                     description: 'Erfülle dir deinen Traum und mache eine Ausbildung zur SkilehrerIn. Neben technischen Wissen eignest du dir geografische und pädagogische Kenntnisse an.',
+                    categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     resourceChanges: new ResourceChanges(
                         guthabenChange: new MoneyAmount(-7000),
                         bildungKompetenzsteinChange: +1,
@@ -133,9 +151,12 @@ final class CardFinder
 
                 "buk6" => new KategorieCardDefinition(
                     id: new CardId('buk6'),
-                    pileId: PileId::BILDUNG_PHASE_1,
+                    pileId: PileId::BILDUNG_UND_KARRIERE_PHASE_1,
                     title: 'Nachhilfe',
                     description: 'Nehme dir Nachhilfe, um deine Noten zu verbessern.',
+                    categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     resourceChanges: new ResourceChanges(
                         guthabenChange: new MoneyAmount(-600),
                         bildungKompetenzsteinChange: +1,
@@ -198,9 +219,12 @@ final class CardFinder
 
                 "buk12" => new KategorieCardDefinition(
                     id: new CardId('buk12'),
-                    pileId: PileId::BILDUNG_PHASE_1,
+                    pileId: PileId::BILDUNG_UND_KARRIERE_PHASE_1,
                     title: 'Weiterbildung zur Meisterin',
                     description: 'Du entscheidest dich eine berufbegleitende Weiterbildung zur Meisterin zu machen. Die Weiterbildung erstreckt sich über 8 Monate. In dieser Zeit reduzierst du deine Arbeit auf 70 %. Solltest du bereits einen Job haben, so erhälst du 30 % weniger Gehalt. Wenn du noch keinen Job hast, so kostet es dich 8.000 €.',
+                    categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     resourceChanges: new ResourceChanges(
                         guthabenChange: new MoneyAmount(-8000),
                         bildungKompetenzsteinChange: +2,
@@ -230,12 +254,15 @@ final class CardFinder
 //                    ),
 //                ),
             ],
-            PileId::FREIZEIT_PHASE_1->value => [
+            PileId::SOZIALES_UND_FREIZEIT_PHASE_1->value => [
                 "suf0" => new KategorieCardDefinition(
                     id: new CardId('suf0'),
-                    pileId: PileId::FREIZEIT_PHASE_1,
+                    pileId: PileId::SOZIALES_UND_FREIZEIT_PHASE_1,
                     title: 'Ehrenamtliches Engagement',
                     description: 'Du engagierst dich ehrenamtlich für eine Organisation, die es Menschen mit Behinderung ermöglicht einen genialen Urlaub mit Sonne, Strand und Meer zu erleben. Du musst die Kosten dafür allerdings selbst tragen.',
+                    categoryId: CategoryId::SOZIALES_UND_FREIZEIT,
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     resourceChanges: new ResourceChanges(
                         guthabenChange: new MoneyAmount(-1200),
                         freizeitKompetenzsteinChange: +1,
@@ -243,9 +270,12 @@ final class CardFinder
                 ),
                 "suf1" => new KategorieCardDefinition(
                     id: new CardId('suf1'),
-                    pileId: PileId::FREIZEIT_PHASE_1,
+                    pileId: PileId::SOZIALES_UND_FREIZEIT_PHASE_1,
                     title: 'Spende',
                     description: 'Bei deinem Einkauf spendest du nun immer Tiernahrung für die umliegende Tierheime. Dein Spendebeitrag ist 200 €.',
+                    categoryId: CategoryId::SOZIALES_UND_FREIZEIT,
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     resourceChanges: new ResourceChanges(
                         guthabenChange: new MoneyAmount(-200),
                         freizeitKompetenzsteinChange: +1,
@@ -253,9 +283,12 @@ final class CardFinder
                 ),
                 "suf2" => new KategorieCardDefinition(
                     id: new CardId('suf2'),
-                    pileId: PileId::FREIZEIT_PHASE_1,
+                    pileId: PileId::SOZIALES_UND_FREIZEIT_PHASE_1,
                     title: 'kostenlose Nachhilfe',
                     description: 'Du gibst kostenlose Nachhilfe für sozial benachteiligte Kinder. Du verlierst einen Zeitstein.',
+                    categoryId: CategoryId::SOZIALES_UND_FREIZEIT,
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     resourceChanges: new ResourceChanges(
                         zeitsteineChange: -1,
                         freizeitKompetenzsteinChange: +1,
@@ -263,9 +296,12 @@ final class CardFinder
                 ),
                 "suf3" => new KategorieCardDefinition(
                     id: new CardId('suf3'),
-                    pileId: PileId::FREIZEIT_PHASE_1,
+                    pileId: PileId::SOZIALES_UND_FREIZEIT_PHASE_1,
                     title: 'Ehrenamtliches Engagement',
                     description: 'Du engagierst dich wöchentlich in einem örtlichen Jugendzentrum. Dies kostet dich ein Zeitstein.',
+                    categoryId: CategoryId::SOZIALES_UND_FREIZEIT,
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     resourceChanges: new ResourceChanges(
                         zeitsteineChange: -1,
                         freizeitKompetenzsteinChange: +1,
@@ -274,9 +310,12 @@ final class CardFinder
 
                 "suf4" => new KategorieCardDefinition(
                     id: new CardId('suf4'),
-                    pileId: PileId::FREIZEIT_PHASE_1,
+                    pileId: PileId::SOZIALES_UND_FREIZEIT_PHASE_1,
                     title: 'Sprachtandem',
                     description: 'Bilde ein Sprachtandem mit einem Erasmus-Studierenden und lerne viel über Sprache und fremde Kulturen.',
+                    categoryId: CategoryId::SOZIALES_UND_FREIZEIT,
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     resourceChanges: new ResourceChanges(
                         zeitsteineChange: -1,
                         freizeitKompetenzsteinChange: +1,
@@ -299,9 +338,12 @@ final class CardFinder
 
                 "suf6" => new KategorieCardDefinition(
                     id: new CardId('suf6'),
-                    pileId: PileId::FREIZEIT_PHASE_1,
+                    pileId: PileId::SOZIALES_UND_FREIZEIT_PHASE_1,
                     title: 'Spende',
                     description: 'Spende einmalig 10 % deines jährlichen Einkommes für einen wohltätigen Zweck. Bei keine Einkommen spende mindestens 300 €.',
+                    categoryId: CategoryId::SOZIALES_UND_FREIZEIT,
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     resourceChanges: new ResourceChanges(
                         freizeitKompetenzsteinChange: +1,
                         //TODO: (-)20% deines Gehalts oder 300€
@@ -310,9 +352,12 @@ final class CardFinder
 
                 "suf7" => new KategorieCardDefinition(
                     id: new CardId('suf7'),
-                    pileId: PileId::FREIZEIT_PHASE_1,
+                    pileId: PileId::SOZIALES_UND_FREIZEIT_PHASE_1,
                     title: 'Reduzierung Arbeitszeit',
                     description: 'Reduziere in deinem Job auf 50 %. Zahle dafür mit 50 % deines Gehalts oder einem Karrierepunkt. ',
+                    categoryId: CategoryId::SOZIALES_UND_FREIZEIT,
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     resourceChanges: new ResourceChanges(
                         freizeitKompetenzsteinChange: +1,
                         //TODO: (-) 50 % deines Gehalt Oder (-1) Karrierepunkt
@@ -344,9 +389,12 @@ final class CardFinder
 
                 "suf10" => new KategorieCardDefinition(
                     id: new CardId('suf10'),
-                    pileId: PileId::FREIZEIT_PHASE_1,
+                    pileId: PileId::SOZIALES_UND_FREIZEIT_PHASE_1,
                     title: 'Sozialhilfe',
                     description: 'Engagiere eine Sozialhilfe zur Pflege deiner Großeltern.',
+                    categoryId: CategoryId::SOZIALES_UND_FREIZEIT,
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     resourceChanges: new ResourceChanges(
                         guthabenChange: new MoneyAmount(-30.000),
                         freizeitKompetenzsteinChange: +2,
@@ -390,9 +438,12 @@ final class CardFinder
 
                 "suf14" => new KategorieCardDefinition(
                     id: new CardId('suf14'),
-                    pileId: PileId::FREIZEIT_PHASE_1,
+                    pileId: PileId::SOZIALES_UND_FREIZEIT_PHASE_1,
                     title: 'SteuerberaterIn',
                     description: 'Dir wachsen deine Unterlagen vom letzten Jahr langsam über den Kopf. Engagiere eine:n Steuerberater:in.',
+                    categoryId: CategoryId::SOZIALES_UND_FREIZEIT,
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     resourceChanges: new ResourceChanges(
                         //TODO: (-) 10% deines Gehalts oder min. 2000 €
                         freizeitKompetenzsteinChange: +1,
@@ -406,6 +457,8 @@ final class CardFinder
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Fachinformatikerin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
@@ -417,6 +470,8 @@ final class CardFinder
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Pflegefachkraft',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     gehalt: new MoneyAmount(25000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
@@ -428,6 +483,8 @@ final class CardFinder
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Taxifahrer:in',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     gehalt: new MoneyAmount(18000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
@@ -440,6 +497,8 @@ final class CardFinder
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Geschichtslehrer:in',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     gehalt: new MoneyAmount(40000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
@@ -452,6 +511,8 @@ final class CardFinder
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Bruchpilot:in',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     gehalt: new MoneyAmount(4000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
@@ -463,6 +524,8 @@ final class CardFinder
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Busfahrerin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen. ',
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     gehalt: new MoneyAmount(28000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
@@ -474,6 +537,8 @@ final class CardFinder
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Friseurin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
@@ -485,6 +550,8 @@ final class CardFinder
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Logistikerin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
@@ -497,6 +564,8 @@ final class CardFinder
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Försterin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
@@ -509,6 +578,8 @@ final class CardFinder
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Teamleitung NGO',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
@@ -521,6 +592,8 @@ final class CardFinder
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Gärtnerin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
@@ -533,6 +606,8 @@ final class CardFinder
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'Umwelttechnologin',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
@@ -544,6 +619,8 @@ final class CardFinder
                     pileId: PileId::JOBS_PHASE_1,
                     title: 'freiwilliges Praktikum',
                     description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     gehalt: new MoneyAmount(34000),
                     requirements: new JobRequirements(
                         zeitsteine: 1,
@@ -551,10 +628,10 @@ final class CardFinder
                     ),
                 ),
             ],
-            PileId::MINIJOBS_PHASE_1->value => [
+            PileId::MINIJOBS->value => [
                 "mj0" => new MinijobCardDefinition(
                     id: new CardId('mj0'),
-                    pileId: PileId::MINIJOBS_PHASE_1,
+                    pileId: PileId::MINIJOBS,
                     title: 'Kellnerin',
                     description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
                     resourceChanges: new ResourceChanges(
@@ -563,7 +640,7 @@ final class CardFinder
                 ),
                 "mj1" => new MinijobCardDefinition(
                     id: new CardId('mj1'),
-                    pileId: PileId::MINIJOBS_PHASE_1,
+                    pileId: PileId::MINIJOBS,
                     title: 'Nachhilfelehrerin',
                     description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
                     resourceChanges: new ResourceChanges(
@@ -572,7 +649,7 @@ final class CardFinder
                 ),
                 "mj2" => new MinijobCardDefinition(
                     id: new CardId('mj2'),
-                    pileId: PileId::MINIJOBS_PHASE_1,
+                    pileId: PileId::MINIJOBS,
                     title: 'Babysitterin',
                     description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
                     resourceChanges: new ResourceChanges(
@@ -580,12 +657,15 @@ final class CardFinder
                     ),
                 ),
             ],
-            PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => [
+            PileId::BILDUNG_UND_KARRIERE_PHASE_1_EREIGNISSE->value => [
                 "e0" => new EreignisCardDefinition(
                     id: new CardId('e0'),
-                    pileId: PileId::MINIJOBS_PHASE_1,
+                    pileId: PileId::MINIJOBS,
                     title: 'Teilnahme Coaching-Seminaren',
                     description: 'Glückwunsch! Deine Teilnahme an Coaching-Seminaren zahlt sich aus: Du gewinnst bei einem Wettbewerb für junge Führungskräfte den ersten Platz und erhältst eine Finanzspritze für dein erstes Start-up.',
+                    categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     resourceChanges: new ResourceChanges(
                         guthabenChange: new MoneyAmount(+5000),
                     ),
@@ -594,9 +674,12 @@ final class CardFinder
                 ),
                 "e1" => new EreignisCardDefinition(
                     id: new CardId('e1'),
-                    pileId: PileId::MINIJOBS_PHASE_1,
+                    pileId: PileId::MINIJOBS,
                     title: 'Neue Liebe',
                     description: 'Du bist verliebt und vernachlässigst dadurch deine (Lern-)Pflichten. Alles wieder aufzuholen kostet viel Zeit.',
+                    categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     resourceChanges: new ResourceChanges(
                         zeitsteineChange: -1,
                     ),
@@ -605,9 +688,12 @@ final class CardFinder
                 ),
                 "e2" => new EreignisCardDefinition(
                     id: new CardId('e2'),
-                    pileId: PileId::MINIJOBS_PHASE_1,
+                    pileId: PileId::MINIJOBS,
                     title: 'Beförderung',
                     description: 'Du wirst befördert – dein Gehalt erhöht sich dieses Jahr um 20%.',
+                    categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                    phaseId: PhaseId::PHASE_1,
+                    year: new Year(1),
                     resourceChanges: new ResourceChanges(),
                     modifierIds: [ModifierId::GEHALT_CHANGE],
                     modifierParameters: new ModifierParameters(
@@ -626,19 +712,24 @@ final class CardFinder
      */
     public function getCardsForPile(PileId $pileId): array
     {
-        return match ($pileId) {
-            PileId::BILDUNG_PHASE_1 => $this->getCardsForBildungAndKarriere1(),
-            PileId::FREIZEIT_PHASE_1 => $this->getCardsForSozialesAndFreizeit1(),
+        return match($pileId) {
+            PileId::BILDUNG_UND_KARRIERE_PHASE_1 => $this->getCardsForBildungAndKarriere1(),
+            PileId::SOZIALES_UND_FREIZEIT_PHASE_1 => $this->getCardsForSozialesAndFreizeit1(),
             PileId::JOBS_PHASE_1 => $this->getCardsForJobs1(),
-            PileId::MINIJOBS_PHASE_1 => $this->getCardsForMinijobs1(),
-            PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1 => $this->getCardsForEreignisseBildungUndKarriere1(),
+            PileId::MINIJOBS => $this->getCardsForMinijobs1(),
+            PileId::BILDUNG_UND_KARRIERE_PHASE_1_EREIGNISSE => $this->getCardsForEreignisseBildungUndKarriere1(),
             // TODO
-            PileId::BILDUNG_PHASE_2 => [],
-            PileId::FREIZEIT_PHASE_2 => [],
+            PileId::BILDUNG_UND_KARRIERE_PHASE_2 => [],
+            PileId::SOZIALES_UND_FREIZEIT_PHASE_2 => [],
             PileId::JOBS_PHASE_2 => [],
-            PileId::BILDUNG_PHASE_3 => [],
-            PileId::FREIZEIT_PHASE_3 => [],
+            PileId::BILDUNG_UND_KARRIERE_PHASE_3 => [],
+            PileId::SOZIALES_UND_FREIZEIT_PHASE_3 => [],
             PileId::JOBS_PHASE_3 => [],
+            PileId::BILDUNG_UND_KARRIERE_PHASE_2_EREIGNISSE => throw new \Exception('To be implemented'),
+            PileId::BILDUNG_UND_KARRIERE_PHASE_3_EREIGNISSE => throw new \Exception('To be implemented'),
+            PileId::SOZIALES_UND_FREIZEIT_PHASE_1_EREIGNISSE => throw new \Exception('To be implemented'),
+            PileId::SOZIALES_UND_FREIZEIT_PHASE_2_EREIGNISSE => throw new \Exception('To be implemented'),
+            PileId::SOZIALES_UND_FREIZEIT_PHASE_3_EREIGNISSE => throw new \Exception('To be implemented'),
         };
     }
 
@@ -684,7 +775,7 @@ final class CardFinder
      */
     private function getCardsForBildungAndKarriere1(): array
     {
-        $result = $this->cards[PileId::BILDUNG_PHASE_1->value];
+        $result = $this->cards[PileId::BILDUNG_UND_KARRIERE_PHASE_1->value];
         foreach ($result as $item) {
             assert($item instanceof KategorieCardDefinition);
         }
@@ -696,7 +787,7 @@ final class CardFinder
      */
     private function getCardsForSozialesAndFreizeit1(): array
     {
-        $result = $this->cards[PileId::FREIZEIT_PHASE_1->value];
+        $result = $this->cards[PileId::SOZIALES_UND_FREIZEIT_PHASE_1->value];
         foreach ($result as $item) {
             assert($item instanceof KategorieCardDefinition);
         }
@@ -720,7 +811,7 @@ final class CardFinder
      */
     private function getCardsForMinijobs1(): array
     {
-        $result = $this->cards[PileId::MINIJOBS_PHASE_1->value];
+        $result = $this->cards[PileId::MINIJOBS->value];
         foreach ($result as $item) {
             assert($item instanceof MinijobCardDefinition);
         }
@@ -732,7 +823,7 @@ final class CardFinder
      */
     private function getCardsForEreignisseBildungUndKarriere1(): array
     {
-        $result = $this->cards[PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value];
+        $result = $this->cards[PileId::BILDUNG_UND_KARRIERE_PHASE_1_EREIGNISSE->value];
         foreach ($result as $item) {
             assert($item instanceof EreignisCardDefinition);
         }

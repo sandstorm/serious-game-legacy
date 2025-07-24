@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Modifier;
 
-use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Year;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ModifierParameters;
 use Domain\Definitions\Card\ValueObject\ModifierId;
+use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 
 readonly final class ModifierBuilder
 {

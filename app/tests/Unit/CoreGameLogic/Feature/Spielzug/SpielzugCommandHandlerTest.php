@@ -233,7 +233,7 @@ describe('handleActivateCard', function () {
     it('will consume a Zeitstein (first turn)', function () {
         /** @var TestCase $this */
         CardFinder::getInstance()->overrideCardsForTesting([
-            PileId::BILDUNG_PHASE_1->value => [
+            PileId::BILDUNG_UND_KARRIERE_PHASE_1->value => [
                 "testcard" => new KategorieCardDefinition(
                     id: new CardId('testcard'),
                     pileId: $this->pileIdBildung,
@@ -245,10 +245,10 @@ describe('handleActivateCard', function () {
                     ),
                 ),
             ],
-            PileId::FREIZEIT_PHASE_1->value => [],
+            PileId::SOZIALES_UND_FREIZEIT_PHASE_1->value => [],
             PileId::JOBS_PHASE_1->value => [],
-            PileId::MINIJOBS_PHASE_1->value => [],
-            PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => $this->cardsEreignisseBildungUndKarriere,
+            PileId::MINIJOBS->value => [],
+            PileId::BILDUNG_UND_KARRIERE_PHASE_1_EREIGNISSE->value => $this->cardsEreignisseBildungUndKarriere,
         ]);
         // Check the initial assumption of how many Zeitsteine the player has at the start of the test
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -282,13 +282,13 @@ describe('handleActivateCard', function () {
             ),
         );
         CardFinder::getInstance()->overrideCardsForTesting([
-            PileId::BILDUNG_PHASE_1->value => [
+            PileId::BILDUNG_UND_KARRIERE_PHASE_1->value => [
                 "testcard" => $cardToTest,
             ],
-            PileId::FREIZEIT_PHASE_1->value => [],
+            PileId::SOZIALES_UND_FREIZEIT_PHASE_1->value => [],
             PileId::JOBS_PHASE_1->value => [],
-            PileId::MINIJOBS_PHASE_1->value => [],
-            PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => $this->cardsEreignisseBildungUndKarriere,
+            PileId::MINIJOBS->value => [],
+            PileId::BILDUNG_UND_KARRIERE_PHASE_1_EREIGNISSE->value => $this->cardsEreignisseBildungUndKarriere,
         ]);
 
         $this->coreGameLogic->handle(
@@ -883,10 +883,10 @@ describe('handleAcceptJobOffer', function () {
         // Add the job we want to accept
         $gehalt = new MoneyAmount(34000);
         CardFinder::getInstance()->overrideCardsForTesting([
-            PileId::BILDUNG_PHASE_1->value => [],
-            PileId::FREIZEIT_PHASE_1->value => [],
-            PileId::MINIJOBS_PHASE_1->value => [],
-            PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => [],
+            PileId::BILDUNG_UND_KARRIERE_PHASE_1->value => [],
+            PileId::SOZIALES_UND_FREIZEIT_PHASE_1->value => [],
+            PileId::MINIJOBS->value => [],
+            PileId::BILDUNG_UND_KARRIERE_PHASE_1_EREIGNISSE->value => [],
             PileId::JOBS_PHASE_1->value => [
                 "j0" => new JobCardDefinition(
                     id: new CardId('j0'),
@@ -977,10 +977,10 @@ describe('handleAcceptJobOffer', function () {
 
         // Add the job we want to accept
         CardFinder::getInstance()->overrideCardsForTesting([
-            PileId::BILDUNG_PHASE_1->value => [],
-            PileId::FREIZEIT_PHASE_1->value => [],
-            PileId::MINIJOBS_PHASE_1->value => [],
-            PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => [],
+            PileId::BILDUNG_UND_KARRIERE_PHASE_1->value => [],
+            PileId::SOZIALES_UND_FREIZEIT_PHASE_1->value => [],
+            PileId::MINIJOBS->value => [],
+            PileId::BILDUNG_UND_KARRIERE_PHASE_1_EREIGNISSE->value => [],
             PileId::JOBS_PHASE_1->value => [
                 "j0" => new JobCardDefinition(
                     id: new CardId('j0'),
@@ -1261,7 +1261,7 @@ describe('handleChangeLebenszielphase', function () {
             ),
         ];
 
-        $this->addCardsOnTopOfPile($setupCards, PileId::BILDUNG_PHASE_1);
+        $this->addCardsOnTopOfPile($setupCards, PileId::BILDUNG_UND_KARRIERE_PHASE_1);
 
         $this->coreGameLogic->handle($this->gameId,
             ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
@@ -1342,7 +1342,7 @@ describe('handleDoMinijob', function () {
         $minijobs = [
             "testMinijob" => new MinijobCardDefinition(
                 id: new CardId('testMinijob'),
-                pileId: PileId::MINIJOBS_PHASE_1,
+                pileId: PileId::MINIJOBS,
                 title: 'Softwaretester',
                 description: 'Du arbeitest nebenbei als Softwaretester und bekommst einmalig Gehalt',
                 resourceChanges: new ResourceChanges(
@@ -1351,7 +1351,7 @@ describe('handleDoMinijob', function () {
             )
         ];
 
-        $this->addCardsOnTopOfPile($minijobs, PileId::MINIJOBS_PHASE_1);
+        $this->addCardsOnTopOfPile($minijobs, PileId::MINIJOBS);
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getGuthabenForPlayer($stream,
             $this->players[0])->value)->toEqual(Configuration::STARTKAPITAL_VALUE);

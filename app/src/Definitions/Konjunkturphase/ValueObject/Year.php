@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject;
+namespace Domain\Definitions\Konjunkturphase\ValueObject;
 
 readonly class Year implements \JsonSerializable
 {

@@ -149,7 +149,7 @@ describe('getCurrentLebenszielphaseDefinitionForPlayer', function () {
         /** @var GameEvents $stream */
 
         CardFinder::getInstance()->overrideCardsForTesting([
-            PileId::BILDUNG_PHASE_1->value => [
+            PileId::BILDUNG_UND_KARRIERE_PHASE_1->value => [
                 "cardToTest" => new KategorieCardDefinition(
                     id: new CardId('cardToTest'),
                     pileId: $this->pileIdBildung,
@@ -163,8 +163,8 @@ describe('getCurrentLebenszielphaseDefinitionForPlayer', function () {
                     ),
                 ),
             ],
-            PileId::FREIZEIT_PHASE_1->value => [],
-            PileId::MINIJOBS_PHASE_1->value => $this->getCardsForMinijobs(),
+            PileId::SOZIALES_UND_FREIZEIT_PHASE_1->value => [],
+            PileId::MINIJOBS->value => $this->getCardsForMinijobs(),
             PileId::JOBS_PHASE_1->value => [
                 "testJob" => new JobCardDefinition(
                     id: new CardId('testJob'),
@@ -177,7 +177,7 @@ describe('getCurrentLebenszielphaseDefinitionForPlayer', function () {
                     ),
                 ),
             ],
-            PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => $this->cardsEreignisseBildungUndKarriere,
+            PileId::BILDUNG_UND_KARRIERE_PHASE_1_EREIGNISSE->value => $this->cardsEreignisseBildungUndKarriere,
         ]);
 
         $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create()->withFixedCardOrderForTesting(
@@ -266,14 +266,14 @@ describe('getGuthabenForPlayer', function () {
 test('getKompetenzenForPlayer', function () {
     $cardToTest = new KategorieCardDefinition(
         id: CardId::fromString('cardToTest'),
-        pileId: PileId::BILDUNG_PHASE_1,
+        pileId: PileId::BILDUNG_UND_KARRIERE_PHASE_1,
         title: 'setup Bildung',
         description: 'test',
         resourceChanges: new ResourceChanges(
             bildungKompetenzsteinChange: +1,
         )
     );
-    $this->addCardsOnTopOfPile([$cardToTest], PileId::BILDUNG_PHASE_1);
+    $this->addCardsOnTopOfPile([$cardToTest], PileId::BILDUNG_UND_KARRIERE_PHASE_1);
 
     $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
     expect(PlayerState::getBildungsKompetenzsteine($gameEvents, $this->players[0]))->toBe(0)

@@ -40,7 +40,7 @@ class DoMinijobAktion extends Aktion
         if (!$result->canExecute) {
             throw new RuntimeException('Cannot Do minijob: ' . $result->reason, 1750854280);
         }
-        $topCardOnPile = PileState::topCardIdForPile($gameEvents, PileId::MINIJOBS_PHASE_1);
+        $topCardOnPile = PileState::topCardIdForPile($gameEvents, PileId::MINIJOBS);
 
         /** @var MinijobCardDefinition $minijobCardDefinition */
         $minijobCardDefinition = CardFinder::getInstance()->getCardById($topCardOnPile);

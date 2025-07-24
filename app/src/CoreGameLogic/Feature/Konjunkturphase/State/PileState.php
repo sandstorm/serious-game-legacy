@@ -63,10 +63,10 @@ class PileState
     public static function getPileIdForCategoryAndPhase(CategoryId $category, int $phase = 1): PileId
     {
         return match ($category) {
-            CategoryId::BILDUNG_UND_KARRIERE => PileId::BILDUNG_PHASE_1,
-            CategoryId::SOZIALES_UND_FREIZEIT => PileId::FREIZEIT_PHASE_1,
+            CategoryId::BILDUNG_UND_KARRIERE => PileId::BILDUNG_UND_KARRIERE_PHASE_1,
+            CategoryId::SOZIALES_UND_FREIZEIT => PileId::SOZIALES_UND_FREIZEIT_PHASE_1,
             CategoryId::JOBS => PileId::JOBS_PHASE_1,
-            default => PileId::BILDUNG_PHASE_1, // TODO add all Categories and consider the phase
+            default => PileId::BILDUNG_UND_KARRIERE_PHASE_1, // TODO add all Categories and consider the phase
         };
     }
 }
