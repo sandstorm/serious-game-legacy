@@ -70,8 +70,8 @@
 
 .notification__close-button {
     position: absolute;
-    right: var(--spacing-50);
-    top: var(--spacing-50);
+    right: 0;
+    top: 0;
 
     font-size: var(--font-size-xl);
 }
