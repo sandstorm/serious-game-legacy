@@ -1,9 +1,9 @@
 @font-face {
     font-family: 'icomoon';
-    src: url('/fonts/icomoon.woff2?8amxx8') format('woff2'),
-    url('/fonts/icomoon.ttf?8amxx8') format('truetype'),
-    url('/fonts/icomoon.woff?8amxx8') format('woff'),
-    url('/fonts/icomoon.svg?8amxx8#icomoon') format('svg');
+    src: url('/fonts/icomoon.woff2?dhv1cf') format('woff2'),
+    url('/fonts/icomoon.ttf?dhv1cf') format('truetype'),
+    url('/fonts/icomoon.woff?dhv1cf') format('woff'),
+    url('/fonts/icomoon.svg?dhv1cf#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
@@ -24,6 +24,30 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-jobboerse:before {
+    content: "\e918";
+}
+
+.icon-burger:before {
+    content: "\e91a";
+}
+
+.icon-close:before {
+    content: "\e91b";
+}
+
+.icon-close-round:before {
+    content: "\e91c";
+}
+
+.icon-euro1:before {
+    content: "\e91d";
+}
+
+.icon-zeitstein:before {
+    content: "\e91e";
+}
+
 .icon-lupe-2:before {
     content: "\e900";
 }
@@ -36,7 +60,7 @@
     content: "\e902";
 }
 
-.icon-phase1:before {
+.icon-phase-1:before {
     content: "\e903";
 }
 
@@ -44,15 +68,15 @@
     content: "\e904";
 }
 
-.icon-phase3:before {
+.icon-phase-3:before {
     content: "\e905";
 }
 
-.icon-bildungundkarriere:before {
+.icon-bildung-und-karriere:before {
     content: "\e906";
 }
 
-.icon-phase2:before {
+.icon-phase-2:before {
     content: "\e907";
 }
 
@@ -88,7 +112,7 @@
     content: "\e90f";
 }
 
-.icon-insolvent2:before {
+.icon-insolvent-2:before {
     content: "\e910";
 }
 
@@ -100,7 +124,7 @@
     content: "\e912";
 }
 
-.icon-logausklappen:before {
+.icon-log-ausklappen:before {
     content: "\e913";
 }
 
@@ -116,12 +140,8 @@
     content: "\e916";
 }
 
-.icon-freizeitundsoziales:before {
+.icon-freizeit-und-soziales:before {
     content: "\e917";
-}
-
-.icon-insolvent:before {
-    content: "\e918";
 }
 
 .icon-skippen:before {

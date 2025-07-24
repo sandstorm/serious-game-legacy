@@ -1,4 +1,6 @@
 .card-pile {
     position: relative;
+    margin: auto;
     margin-top: var(--spacing-100);
+    width: 90%;
 }
