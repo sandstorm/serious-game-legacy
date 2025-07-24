@@ -14,12 +14,12 @@
     @endif
     @if ($card->resourceChanges->bildungKompetenzsteinChange)
         <div class="card__effect">
-            <x-gameboard.cardPile.card-effect sr-label="Bildung & Karriere Kompetenzen" :change="$card->resourceChanges->bildungKompetenzsteinChange" iconClass="icon-bildungundkarriere" />
+            <x-gameboard.cardPile.card-effect sr-label="Bildung & Karriere Kompetenzen" :change="$card->resourceChanges->bildungKompetenzsteinChange" iconClass="icon-bildung-und-karriere" />
         </div>
     @endif
     @if ($card->resourceChanges->freizeitKompetenzsteinChange)
         <div class="card__effect">
-            <x-gameboard.cardPile.card-effect sr-label="Freizeit & Soziales Kompetenzen" :change="$card->resourceChanges->freizeitKompetenzsteinChange" iconClass="icon-freizeitundsoziales" />
+            <x-gameboard.cardPile.card-effect sr-label="Freizeit & Soziales Kompetenzen" :change="$card->resourceChanges->freizeitKompetenzsteinChange" iconClass="icon-freizeit-und-soziales" />
         </div>
     @endif
 </div>
