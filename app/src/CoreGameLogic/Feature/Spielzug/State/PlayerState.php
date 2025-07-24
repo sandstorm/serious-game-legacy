@@ -15,11 +15,14 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesStockAmo
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\StockPriceState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\StockAmountChanges;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\WeiterbildungWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereBoughtForPlayer;
+use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
@@ -210,6 +213,24 @@ class PlayerState
         /** @var MinijobCardDefinition $minijobDefinition */
         $minijobDefinition = CardFinder::getInstance()->getCardById($cardId, MinijobCardDefinition::class);
         return $minijobDefinition;
+    }
+
+    public static function getLastWeiterbildungForPlayer(GameEvents $stream, PlayerId $playerId): ?WeiterbildungCardDefinition
+    {
+        /** @var WeiterbildungWasStarted|null $weiterbildungEvent */
+        $weiterbildungEvent = $stream->findLastOrNullWhere(
+            fn($e) => $e instanceof WeiterbildungWasStarted && $e->playerId->equals($playerId)
+        );
+
+        if ($weiterbildungEvent === null) {
+            return null;
+        }
+
+        $cardId = $weiterbildungEvent->weiterbildungCardId;
+
+        /** @var WeiterbildungCardDefinition $cardDefinition */
+        $cardDefinition = CardFinder::getInstance()->getCardById($cardId);
+        return $cardDefinition;
     }
 
     /**

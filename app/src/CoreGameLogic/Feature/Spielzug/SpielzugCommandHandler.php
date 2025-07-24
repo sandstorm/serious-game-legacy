@@ -18,20 +18,24 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CancelInsuranceForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ChangeLebenszielphaseAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CompleteMoneySheetForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ConcludeInsuranceForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\StartWeiterbildungAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\DoMinijobAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EndSpielzugAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterLebenshaltungskostenForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterSteuernUndAbgabenForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\MarkPlayerAsReadyForKonjunkturphaseChangeAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\QuitJobAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\RequestJobOffersAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellStocksForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SkipCardAktion as SkipCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\StartKonjunkturphaseForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SubmitAnswerForWeiterbildungAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\TakeOutALoanForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyStocksForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ChangeLebenszielphase;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartWeiterbildung;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
@@ -39,6 +43,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellStocksForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SubmitAnswerForWeiterbildung;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
@@ -72,7 +77,9 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             || $command instanceof ChangeLebenszielphase
             || $command instanceof QuitJob
             || $command instanceof BuyStocksForPlayer
-            || $command instanceof SellStocksForPlayer;
+            || $command instanceof StartWeiterbildung
+            || $command instanceof SellStocksForPlayer
+            || $command instanceof SubmitAnswerForWeiterbildung;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameEvents): GameEventsToPersist
@@ -102,10 +109,29 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
                 ($command, $gameEvents),
             QuitJob::class => $this->handleQuitJob
                 ($command, $gameEvents),
-            BuyStocksForPlayer::class => $this->handleBuyStocks($command, $gameEvents),
-            SellStocksForPlayer::class => $this->handleSellStocks($command, $gameEvents),
-            ChangeLebenszielphase::class => $this->handleLebenszielphase($command, $gameEvents),
+            SellStocksForPlayer::class => $this->handleSellStocks
+                ($command, $gameEvents),
+            ChangeLebenszielphase::class => $this->handleLebenszielphase
+                ($command, $gameEvents),
+            BuyStocksForPlayer::class => $this->handleBuyStocks
+                ($command, $gameEvents),
+            StartWeiterbildung::class => $this->handleStartWeiterbildung
+                ($command, $gameEvents),
+            SubmitAnswerForWeiterbildung::class => $this->handleSubmitAnswerWeiterbildung
+                ($command, $gameEvents),
         };
+    }
+
+    private function handleSubmitAnswerWeiterbildung(SubmitAnswerForWeiterbildung $command, GameEvents $gameEvents):GameEventsToPersist
+    {
+        $aktion = new SubmitAnswerForWeiterbildungAktion($command->selectedAnswer);
+        return $aktion->execute($command->playerId, $gameEvents);
+    }
+
+    private function handleStartWeiterbildung(StartWeiterbildung $command, GameEvents $gameEvents): GameEventsToPersist
+    {
+        $aktion = new StartWeiterbildungAktion();
+        return $aktion->execute($command->playerId, $gameEvents);
     }
 
     private function handleLebenszielphase(ChangeLebenszielphase $command, GameEvents $gameEvents): GameEventsToPersist
@@ -116,7 +142,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
 
     private function handleQuitJob(QuitJob $command, GameEvents $gameEvents): GameEventsToPersist
     {
-        $aktion = new Aktion\QuitJobAktion();
+        $aktion = new QuitJobAktion();
         return $aktion->execute($command->playerId, $gameEvents);
     }
 
