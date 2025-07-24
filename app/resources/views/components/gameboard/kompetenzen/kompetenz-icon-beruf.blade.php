@@ -4,13 +4,12 @@
     'drawEmpty' => false,
 ])
 
-<li @class([
-    'kompetenz',
+<div @class([
+    'kompetenz-icon',
     $playerColorClass
 ])>
     @if ($drawEmpty)
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-             viewBox="0 0 18 16">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 18 16" aria-hidden="true">
             <g>
                 <path class="svg-empty-color" d="M9.5,9h0c-.28,0-.49.22-.49.5s.23.5.5.5.5-.22.5-.5-.22-.5-.5-.5"/>
                 <g>
@@ -19,9 +18,9 @@
                 </g>
             </g>
         </svg>
+        <span class="sr-only">Leere Berufskompetenz</span>
     @else
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-             viewBox="0 0 18 16">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 18 16" aria-hidden="true">
             <g>
                 <path class="svg-player-color-dark" d="M9.5,9h0c-.28,0-.49.22-.49.5s.23.5.5.5.5-.22.5-.5-.22-.5-.5-.5"/>
                 <g>
@@ -30,5 +29,6 @@
                 </g>
             </g>
         </svg>
+        <span class="sr-only">Eine Berufskompetenz</span>
     @endif
-</li>
+</div>

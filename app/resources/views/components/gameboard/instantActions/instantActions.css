@@ -1,0 +1,17 @@
+.instant-actions {
+    padding-inline: var(--spacing-200);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-250);
+}
+
+.instant-action {
+    .button {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .kompetenz-icon {
+        width: 25px;
+    }
+}

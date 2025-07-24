@@ -12,14 +12,16 @@
             <h4>{{ $category->title }}</h4>
 
             @if (count($category->kompetenzen) > 0)
-                <ul class="kompetenzen">
+                <div class="kompetenzen">
                     @foreach($category->kompetenzen as $kompetenz)
                         <x-dynamic-component :component="$kompetenz->iconComponentName"
                             :player-name="$kompetenz->playerName"
                             :player-color-class="$kompetenz->colorClass"
-                            :draw-empty="$kompetenz->drawEmpty" />
+                            :draw-empty="$kompetenz->drawEmpty"
+                            :draw-half-empty="$kompetenz->drawHalfEmpty"
+                        />
                     @endforeach
-                </ul>
+                </div>
             @endif
 
             @if ($category->title === CategoryId::INVESTITIONEN)

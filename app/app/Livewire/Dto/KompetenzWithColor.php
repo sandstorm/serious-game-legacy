@@ -8,6 +8,7 @@ class KompetenzWithColor extends AbstractIconWithColor
 {
     public function __construct(
         public bool $drawEmpty = true,
+        public bool $drawHalfEmpty = false,
         public string $colorClass = '',
         public string $playerName = '',
         public string $iconComponentName = '',

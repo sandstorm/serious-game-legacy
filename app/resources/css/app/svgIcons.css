@@ -2,6 +2,10 @@ svg .svg-empty-color {
     fill: var(--color-grey);
 }
 
+svg .svg-player-color-dark {
+    fill: var(--color-primary);
+}
+
 .player-color-1 {
     svg .svg-player-color-dark {
         fill: var(--color-player-1--dark);

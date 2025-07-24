@@ -15,7 +15,7 @@ class PlayerDetailsDto
         public LebenszielDefinition $lebenszielDefinition,
         public float $guthaben,
         public int $zeitsteine,
-        public int $kompetenzsteineBildung,
+        public float $kompetenzsteineBildung,
         public int $kompetenzsteineFreizeit,
         public int $currentLebenszielPhase,
     ) {

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Definitions\Card;
 
+use Domain\Definitions\Card\Dto\AnswerOption;
 use Domain\Definitions\Card\Dto\CardDefinition;
 use Domain\Definitions\Card\Dto\CardWithYear;
 use Domain\Definitions\Card\Dto\EreignisCardDefinition;
@@ -14,6 +15,8 @@ use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\Dto\ModifierParameters;
 use Domain\Definitions\Card\Dto\Pile;
 use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
+use Domain\Definitions\Card\ValueObject\AnswerId;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
 use Domain\Definitions\Card\ValueObject\ModifierId;
@@ -507,6 +510,28 @@ final class CardFinder
                 ),
                 modifierIds: [],
                 modifierParameters: new ModifierParameters(),
+            ),
+            "wb0" => new WeiterbildungCardDefinition(
+                id: new CardId('wb0'),
+                title: 'Quiz – Protektionismus',
+                description: 'Nicht immer stimmen die Interessen von Arbeitgeberinnen und Arbeitnehmerinnnen überein. Welches der folgenden Interessen ist KEIN typisches Interesse von Arbeitnehmerinnen?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("a"), "Tarifliche Entlohnung und Arbeitsplatzsicherheit", true),
+                    new AnswerOption(new AnswerId("b"), "Angemessene Vergütung und soziale Absicherung"),
+                    new AnswerOption(new AnswerId("c"), "Maximale Kosteneffizienz und unternehmerische Flexibilität"),
+                    new AnswerOption(new AnswerId("d"), "Karriereförderung und Mitbestimmungsmöglichkeiten"),
+                ],
+            ),
+            "wb1" => new WeiterbildungCardDefinition(
+                id: new CardId('wb1'),
+                title: 'Quiz – Arbeitnehmerinteressen',
+                description: 'Nicht immer stimmen die Interessen von Arbeitgeberinnen und Arbeitnehmerinnnen überein. Welches der folgenden Interessen ist KEIN typisches Interesse von Arbeitnehmerinnen?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("a"), "Tarifliche Entlohnung und Arbeitsplatzsicherheit", true),
+                    new AnswerOption(new AnswerId("b"), "Angemessene Vergütung und soziale Absicherung"),
+                    new AnswerOption(new AnswerId("c"), "Maximale Kosteneffizienz und unternehmerische Flexibilität"),
+                    new AnswerOption(new AnswerId("d"), "Karriereförderung und Mitbestimmungsmöglichkeiten"),
+                ],
             ),
         ]);
         return self::$instance;

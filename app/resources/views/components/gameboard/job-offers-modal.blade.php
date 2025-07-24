@@ -60,6 +60,3 @@
         @endforeach
     </div>
 @endsection
-
-@section('footer')
-@endsection

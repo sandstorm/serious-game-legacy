@@ -11,10 +11,12 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\AnswerForWeiterbildungWasSubmitted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasPutBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\WeiterbildungWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
@@ -69,6 +71,7 @@ final readonly class EventNormalizer
     {
         /** @var array<class-string<GameEventInterface>> $supportedEventClassNames */
         $supportedEventClassNames = [
+            AnswerForWeiterbildungWasSubmitted::class,
             CardsWereShuffled::class,
             CardWasActivated::class,
             CardWasSkipped::class,
@@ -97,6 +100,7 @@ final readonly class EventNormalizer
             LoanForPlayerWasEntered::class,
             LoanForPlayerWasCorrected::class,
             JobWasQuit::class,
+            WeiterbildungWasStarted::class,
             StocksWereBoughtForPlayer::class,
             StocksWereSoldForPlayer::class,
             CardWasPutBackOnTopOfPile::class,

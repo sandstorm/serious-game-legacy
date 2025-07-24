@@ -1,4 +1,5 @@
 :root {
+    --color-grey: #BDC3CE;
     --color-primary: #5e7aa5;
     --color-primary-dark: #323C5E;
     --color-primary-light: #95b8e3;
@@ -8,9 +9,11 @@
     --color-cards-bg: #ECF5F4;
 
     --color-error: #d9534f;
+    --color-error--light: #fbe9e9;
     --color-warning: #f0ad4e;
-    --color-grey: #BDC3CE;
+    --color-warning--light: #fff4e5;
     --color-success: #5cb85c;
+    --color-success--light: #effbef;
 
     --color-player-1: #FFD655;
     --color-player-1--light: #FEE9A6;

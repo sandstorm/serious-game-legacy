@@ -3,16 +3,14 @@
     justify-content: center;
     align-items: center;
     gap: var(--spacing-50);
-    list-style: none;
     padding: var(--spacing-50) var(--spacing-100);
-    margin: 0;
     height: var(--button-height);
 
     border-radius: 40px;
     background-color: var(--color-primary-fg);
 }
 
-.kompetenz {
+.kompetenz-icon {
     display: inline-block;
     width: 30px;
 
