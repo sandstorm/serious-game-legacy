@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace Tests\CoreGameLogic\Feature\Player\State;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartWeiterbildung;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ChangeLebenszielphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
@@ -19,11 +19,13 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
+use Domain\Definitions\Card\Dto\AnswerOption;
+use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
-use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\AnswerId;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\PileId;
@@ -140,7 +142,7 @@ describe('getJobForPlayer', function () {
         $this->coreGameLogic->handle($this->gameId, QuitJob::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
 
-        $this->coreGameLogic->handle($this->gameId,RequestJobOffers::create($this->players[1]));
+        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[1]));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
 
         $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
@@ -179,6 +181,7 @@ describe('getCurrentLebenszielphaseDefinitionForPlayer', function () {
                 ),
             ],
             PileId::FREIZEIT_PHASE_1->value => [],
+            PileId::WEITERBILDUNG_PHASE_1->value => [],
             PileId::MINIJOBS_PHASE_1->value => $this->getCardsForMinijobs(),
             PileId::JOBS_PHASE_1->value => [
                 "testJob" => new JobCardDefinition(
@@ -200,6 +203,7 @@ describe('getCurrentLebenszielphaseDefinitionForPlayer', function () {
             new CardOrder(pileId: $this->pileIdFreizeit, cards: []),
             new CardOrder(pileId: $this->pileIdJobs, cards: [CardId::fromString('testJob')]),
             new CardOrder(pileId: $this->pileIdMinijobs, cards: array_map(fn($card) => $card->getId(), $this->getCardsForMinijobs())),
+            new CardOrder(pileId: $this->pileIdWeiterbildungen, cards: []),
         ));
 
         $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
@@ -222,14 +226,46 @@ describe('getZeitsteineForPlayer', function () {
     it('returns the correct number', function () {
         $this->coreGameLogic->handle($this->gameId, new SkipCard($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1)
-            ->and(PlayerState::getZeitsteineForPlayer($stream, $this->players[1]))->toBe( $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1)
+            ->and(PlayerState::getZeitsteineForPlayer($stream, $this->players[1]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
     });
 
-    it('Throws an exception if the player does not exist', function () {
+    it('throws an exception if the player does not exist', function () {
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         PlayerState::getZeitsteineForPlayer($stream, PlayerId::fromString('doesNotExist'));
     })->throws(RuntimeException::class, 'Player doesNotExist does not exist', 1748432811);
+});
+
+describe('getLastWeiterbildungForPlayer', function () {
+    it('returns null when no WeiterbildungWasDoneEvent is present', function () {
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getLastWeiterbildungCardDefinitionForPlayer($stream, $this->players[0]))->toBeNull();
+    });
+    it('returns the correct last WeiterbildungCardDefinition', function () {
+        /** @var TestCase $this */
+        $weiterbildung = [
+            "testWB" => new WeiterbildungCardDefinition(
+                id: new CardId('testWB'),
+                pileId: PileId::WEITERBILDUNG_PHASE_1,
+                title: 'testtest...',
+                description: 'Test für Weiterbildungen. Warum machst du die Weiterbildung?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("a"), "Tarifliche Entlohnung und Arbeitsplatzsicherheit", true),
+                    new AnswerOption(new AnswerId("b"), "Angemessene Vergütung und soziale Absicherung"),
+                    new AnswerOption(new AnswerId("c"), "Maximale Kosteneffizienz und unternehmerische Flexibilität"),
+                    new AnswerOption(new AnswerId("d"), "Karriereförderung und Mitbestimmungsmöglichkeiten"),
+                ],
+            )
+        ];
+
+        $this->addCardsOnTopOfPile($weiterbildung, PileId::WEITERBILDUNG_PHASE_1);
+        $this->coreGameLogic->handle($this->gameId, StartWeiterbildung::create($this->players[0]));
+
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        $result = PlayerState::getLastWeiterbildungCardDefinitionForPlayer($stream, $this->players[0]);
+        expect($result)->toEqual($weiterbildung['testWB']);
+
+    });
 });
 
 describe('getGuthabenForPlayer', function () {

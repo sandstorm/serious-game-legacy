@@ -6,6 +6,7 @@ namespace App\Livewire;
 
 use App\Events\GameStateUpdated;
 use App\Livewire\Traits\HasCard;
+use App\Livewire\Traits\HasWeiterbildung;
 use App\Livewire\Traits\HasGamePhase;
 use App\Livewire\Traits\HasInvestitionen;
 use App\Livewire\Traits\HasJobOffer;
@@ -25,6 +26,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\Dto\AnswerOption;
 use Illuminate\Events\Dispatcher;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -44,6 +46,7 @@ class GameUi extends Component
     use HasLebenszielphase;
     use HasInvestitionen;
     use HasQuitJob;
+    use HasWeiterbildung;
 
     // injected from outside -> game-play.blade.php
     // Not the current player, but the player connected to THIS SESSION

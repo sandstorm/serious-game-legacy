@@ -22,7 +22,9 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunktur
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
+use Domain\Definitions\Card\Dto\AnswerOption;
 use Domain\Definitions\Card\Dto\CardDefinition;
+use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\Dto\EreignisCardDefinition;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
@@ -30,6 +32,7 @@ use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\Dto\ModifierParameters;
 use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\AnswerId;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\PileId;
@@ -57,6 +60,7 @@ abstract class TestCase extends BaseTestCase
     protected GameId $gameId;
     protected PileId $pileIdBildung;
     protected PileId $pileIdMinijobs;
+    protected PileId $pileIdWeiterbildungen;
     /**
      * @var PlayerId[]
      */
@@ -90,6 +94,10 @@ abstract class TestCase extends BaseTestCase
      * @var CardDefinition[]
      */
     protected array $cardsMinijobs;
+    /**
+     * @var WeiterbildungCardDefinition[]
+     */
+    protected array $cardsWeiterbildungen;
     protected PileId $pileIdEreignisseBildungUndKarriere;
     /**
      * @var EreignisCardDefinition[]
@@ -117,6 +125,7 @@ abstract class TestCase extends BaseTestCase
             PileId::FREIZEIT_PHASE_1->value => $this->getCardsForSozialesAndFreizeit(),
             PileId::JOBS_PHASE_1->value => $this->getCardsForJobs(),
             PileId::MINIJOBS_PHASE_1->value => $this->getCardsForMinijobs(),
+            PileId::WEITERBILDUNG_PHASE_1->value => $this->getCardsForWeiterbildung(),
             PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => $this->getCardsForEreignisseBildungUndKarriere(),
         ]);
 
@@ -163,6 +172,8 @@ abstract class TestCase extends BaseTestCase
         $this->cardsJobs = $this->getCardsForJobs();
         $this->pileIdMinijobs = PileId::MINIJOBS_PHASE_1;
         $this->cardsMinijobs = $this->getCardsForMinijobs();
+        $this->pileIdWeiterbildungen = PileId::WEITERBILDUNG_PHASE_1;
+        $this->cardsWeiterbildungen = $this->getCardsForWeiterbildung();
         $this->pileIdEreignisseBildungUndKarriere = PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1;
         $this->cardsEreignisseBildungUndKarriere = $this->getCardsForEreignisseBildungUndKarriere();
 
@@ -455,6 +466,41 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
+     * @return WeiterbildungCardDefinition[]
+     */
+    protected function getCardsForWeiterbildung(): array
+    {
+        return [
+            "wb0" => new WeiterbildungCardDefinition(
+                id: new CardId('wb0'),
+                pileId: PileId::WEITERBILDUNG_PHASE_1,
+                title: 'Weiterbildung',
+                description: 'Ich mache eine Weiterbildung. Warum machst du die Weiterbildung?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("a"), "Tarifliche Entlohnung und Arbeitsplatzsicherheit", true),
+                    new AnswerOption(new AnswerId("b"), "Angemessene Vergütung und soziale Absicherung"),
+                    new AnswerOption(new AnswerId("c"), "Maximale Kosteneffizienz und unternehmerische Flexibilität"),
+                    new AnswerOption(new AnswerId("d"), "Karriereförderung und Mitbestimmungsmöglichkeiten"),
+                ],
+            ),
+            "wb1" => new WeiterbildungCardDefinition(
+                id: new CardId('wb1'),
+                pileId: PileId::WEITERBILDUNG_PHASE_1,
+                title: 'Weiterbildung',
+                description: 'Ich mache eine Weiterbildung. Warum machst du die Weiterbildung?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("a"), "sygyrsgsfgydrg", true),
+                    new AnswerOption(new AnswerId("b"), "hydrgdyrgydrgrydsgysgrygys"),
+                    new AnswerOption(new AnswerId("c"), "hhhhhhhhhhhhhhh"),
+                    new AnswerOption(new AnswerId("d"), "mmmmmmmmmmm"),
+                ],
+            ),
+
+        ];
+    }
+
+
+    /**
      * @param CardDefinition[] $cards
      * @param PileId $pileId
      * @return void
@@ -470,6 +516,7 @@ abstract class TestCase extends BaseTestCase
             PileId::FREIZEIT_PHASE_1->value => $this->getCardsForSozialesAndFreizeit(),
             PileId::JOBS_PHASE_1->value => $this->getCardsForJobs(),
             PileId::MINIJOBS_PHASE_1->value => $this->getCardsForMinijobs(),
+            PileId::WEITERBILDUNG_PHASE_1->value => $this->getCardsForWeiterbildung(),
             PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => $this->getCardsForEreignisseBildungUndKarriere(),
         ];
         $testCards[$pileId->value] = [...$cardsToAdd, ...$testCards[$pileId->value]];
@@ -489,6 +536,7 @@ abstract class TestCase extends BaseTestCase
                         $testCards[PileId::MINIJOBS_PHASE_1->value])),
                     new CardOrder(pileId: $this->pileIdEreignisseBildungUndKarriere, cards: array_map(fn($card) => $card->getId(),
                         $testCards[PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value])),
+                    new CardOrder(pileId: $this->pileIdWeiterbildungen, cards: array_map(fn($card) => $card->getId(), $testCards[PileId::WEITERBILDUNG_PHASE_1->value])),
                 ));
     }
 

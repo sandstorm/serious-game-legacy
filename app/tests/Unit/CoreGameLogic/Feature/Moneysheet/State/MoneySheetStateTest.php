@@ -664,6 +664,7 @@ describe('getOpenRatesForLoan', function () {
             PileId::FREIZEIT_PHASE_1->value => $this->cardsFreizeit,
             PileId::JOBS_PHASE_1->value => $this->cardsJobs,
             PileId::MINIJOBS_PHASE_1->value => $this->cardsMinijobs,
+            PileId::WEITERBILDUNG_PHASE_1->value => $this->cardsWeiterbildungen,
             PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => $this->cardsEreignisseBildungUndKarriere,
         ];
         CardFinder::getInstance()->overrideCardsForTesting($testCards);

@@ -44,3 +44,18 @@
 @if ($this->isMinijobVisible)
     <x-minijob-modal :player-id="$playerId" :game-events="$gameEvents"/>
 @endif
+
+<button
+    type="button"
+    @class([
+        "minijob__button",
+        "button",
+        "button--type-primary",
+        "button--disabled" => !$this->canStartWeiterbildung(),
+    ])
+    wire:click="showWeiterbildung()">
+    Weiterbildung ausführen (-1 Zeitstein)
+</button>
+@if ($this->isWeiterbildungVisible)
+    <x-weiterbildung-modal :player-id="$playerId" :game-events="$gameEvents"/>
+@endif
