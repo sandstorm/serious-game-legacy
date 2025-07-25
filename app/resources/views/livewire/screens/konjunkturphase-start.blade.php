@@ -12,17 +12,17 @@
         </div>
         @elseif ($currentPage === 1)
             <h2><strong>{{$konjunkturphase->type->value}}</strong></h2>
-            <p class="font-size--lg">
+            <p class="font-size--xl">
                 {{ $konjunkturphase->description }}
             </p>
         @elseif ($currentPage === 2)
             <h2><strong>{{$konjunkturphase->type->value}}</strong></h2>
-            <p class="font-size--lg">
+            <p class="font-size--xl">
                 {{ $konjunkturphase->additionalEvents }}
             </p>
         @elseif ($currentPage === 3)
             <h2><strong>{{$konjunkturphase->type->value}}</strong> - Auswirkung Zusammenfassung</h2>
-            <p class="font-size--lg">
+            <p class="font-size--xl">
                 <ul>
                     @foreach ($konjunkturphase->auswirkungen as $auswirkung)
                         <li>

@@ -38,8 +38,6 @@ class JobOffersModal extends Component
             foreach ($jobIds as $jobId) {
                 $jobs[] = CardFinder::getInstance()->getCardById($jobId, JobCardDefinition::class);
             }
-        } else {
-            // TODO close modal, show error?
         }
 
         return view('components.gameboard.job-offers-modal', [
