@@ -9,7 +9,7 @@
         @class(["card", !$this->canRequestJobOffers()->canExecute ? "card--disabled" : ""])
         role="button"
         aria-label="Jobangebote anschauen"
-        wire:click="showJobOffer()"
+        wire:click="showJobOffers()"
     >
         <div class="card__icon">
             <i class="icon-dots" aria-hidden="true"></i>

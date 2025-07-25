@@ -38,7 +38,11 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
-.font-size--lg {
+.font-size--sm {
+    font-size: var(--font-size-sm);
+}
+
+.font-size--xl {
     font-size: var(--font-size-xl);
 }
 
