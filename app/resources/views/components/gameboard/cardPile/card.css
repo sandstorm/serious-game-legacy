@@ -10,6 +10,11 @@
     background-color: var(--color-cards-bg);
     cursor: pointer;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    &.card--disabled {
+        opacity: 0.5;
+        cursor: default;
+    }
 }
 
 .shadow-card-1, .shadow-card-2 {
@@ -49,6 +54,7 @@
 
 .card__content {
     padding: var(--spacing-75);
+    width: 100%;
     min-height: 160px;
     display: flex;
     justify-content: flex-end;
@@ -56,6 +62,26 @@
 
     background-color: var(--color-primary-fg);
     border-radius: 10px;
+}
+
+.card__content--jobs {
+    justify-content: center;
+
+    i {
+        font-size: 4rem;
+    }
+}
+
+.card__content--investitionen {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    align-items: center;
+    text-align: center;
+
+    i {
+        font-size: 2rem;
+    }
 }
 
 .card__effects {

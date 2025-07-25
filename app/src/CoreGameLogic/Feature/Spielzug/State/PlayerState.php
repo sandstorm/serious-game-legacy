@@ -198,18 +198,13 @@ class PlayerState
 
     public static function getLastMinijobForPlayer(GameEvents $stream, PlayerId $playerId): ?MinijobCardDefinition
     {
-        /**@var MinijobWasDone|null $minijobWasDoneEvent */
+        /** @var MinijobWasDone|null $minijobWasDoneEvent */
         $minijobWasDoneEvent = $stream->findLastOrNullWhere(fn($e) => $e instanceof MinijobWasDone && $e->playerId->equals($playerId));
         if ($minijobWasDoneEvent === null) {
             return null;
         }
 
-        // @phpstan-ignore property.notFound (At this point we know this is an instance of MinijobWasDone and not null)
-        $cardId = $minijobWasDoneEvent->minijobCardId;
-
-        /** @var MinijobCardDefinition $minijobDefinition */
-        $minijobDefinition = CardFinder::getInstance()->getCardById($cardId, MinijobCardDefinition::class);
-        return $minijobDefinition;
+        return CardFinder::getInstance()->getCardById($minijobWasDoneEvent->minijobCardId, MinijobCardDefinition::class);
     }
 
     /**

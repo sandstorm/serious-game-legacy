@@ -8,7 +8,6 @@ use Domain\Definitions\Card\ValueObject\PileId;
 
 final readonly class MinijobCardDefinition implements CardDefinition
 {
-
     public function __construct(
     public CardId           $id,
     public PileId           $pileId,

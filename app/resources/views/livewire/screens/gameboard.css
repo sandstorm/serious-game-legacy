@@ -22,28 +22,15 @@
     }
 }
 
-.game-board__categories {
+.game-board__instant-actions {
+    padding-inline: var(--spacing-200);
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: var(--spacing-100);
-    padding: var(--spacing-100);
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-250);
 
-    .zeitsteine {
-        justify-content: center;
-        padding: var(--spacing-50) var(--spacing-100);
-        margin-bottom: var(--spacing-100);
-
-        border-radius: 40px;
-        background-color: var(--color-primary-fg);
+    .button {
+        width: 100%;
+        justify-content: space-between;
     }
-}
-
-.game-board__categories__category {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--spacing-50);
-    padding: var(--spacing-100);
 }
 

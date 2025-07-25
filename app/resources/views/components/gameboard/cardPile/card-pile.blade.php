@@ -13,7 +13,7 @@
         <h4 class="card__title">{{ $card->title }}</h4>
 
         <div class="card__content">
-            <x-gameboard.cardPile.card-effects :card="$card" />
+            <x-gameboard.cardPile.card-effects :resource-changes="$card->resourceChanges" />
         </div>
     </div>
 </div>

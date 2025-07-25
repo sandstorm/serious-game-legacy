@@ -27,6 +27,36 @@
             @endif
 
             <x-gameboard.categories :game-events="$this->gameEvents" :player-id="$myself" />
+
+            <div class="game-board__instant-actions">
+                <div>
+
+                </div>
+                <div>
+                    <button
+                        type="button"
+                        @class([
+                            "minijob__button",
+                            "button",
+                            "button--type-primary",
+                            "button--disabled" => !$this->canDoMinijob(),
+                        ])
+                        wire:click="doMinijob()"
+                    >
+                        <span>Minijob (sofort)</span>
+                        <div class="button__suffix">
+                            <div>
+                                <i class="icon-plus text--success" aria-hidden="true"></i><i class="icon-euro" aria-hidden="true"></i>
+                                <span class="sr-only">, gibt einmalige Zahlung</span>
+                            </div>
+                            <div>
+                                <i class="icon-minus text--danger" aria-hidden="true"></i><i class="icon-zeitstein" aria-hidden="true"></i>
+                                <span class="sr-only">, kostet einen Zeitstein</span>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -84,5 +114,7 @@
             <x-money-sheet.money-sheet :money-sheet="$this->getMoneysheetForPlayerId($myself)"/>
         @endif
     @endif
-
+    @if ($isMinijobVisible)
+        <x-minijob-modal :player-id="$myself" :game-events="$this->gameEvents"/>
+    @endif
 </div>

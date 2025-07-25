@@ -4,16 +4,22 @@
     'jobDefinition' => null,
 ])
 
-<button
-    type="button"
-    @class([
-        "button",
-        "button--type-primary",
-        "button--disabled" => !$this->canRequestJobOffers()->canExecute,
-    ])
-    wire:click="showJobOffer()">
-    Jobangebote anschauen (-1 Zeitstein)
-</button>
+<div class="card-pile">
+    <div
+        @class(["card", !$this->canRequestJobOffers()->canExecute ? "card--disabled" : ""])
+        role="button"
+        aria-label="Jobangebote anschauen"
+        wire:click="showJobOffer()"
+    >
+        <div class="card__icon">
+            <i class="icon-dots" aria-hidden="true"></i>
+        </div>
+        <h4 class="card__title">Jobbörse</h4>
+        <div class="card__content card__content--jobs">
+            <i class="icon-jobboerse" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
 
 @if ($jobDefinition !== null)
     <hr/>
@@ -28,19 +34,4 @@
 @endif
 @if ($this->jobOfferIsVisible)
     <x-job-offers-modal :player-id="$playerId" :game-events="$gameEvents"/>
-@endif
-<button
-    type="button"
-    @class([
-        "minijob__button",
-        "button",
-        "button--type-primary",
-        "button--disabled" => !$this->canDoMinijob(),
-    ])
-    wire:click="showMinijob()">
-    Minijob ausführen (-1 Zeitstein)
-</button>
-
-@if ($this->isMinijobVisible)
-    <x-minijob-modal :player-id="$playerId" :game-events="$gameEvents"/>
 @endif

@@ -18,7 +18,7 @@ trait HasMinijob
         return $aktion->validate($this->myself, $this->gameEvents)->canExecute;
     }
 
-    public function showMinijob(): void
+    public function doMinijob(): void
     {
         $aktion = new DoMinijobAktion();
         $validationResult = $aktion->validate($this->myself,$this->gameEvents);
@@ -31,13 +31,12 @@ trait HasMinijob
         }
 
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->myself));
-        $this->isMinijobVisible = true;
         $this->broadcastNotify();
+        $this->isMinijobVisible = true;
     }
 
     public function closeMinijob(): void
     {
         $this->isMinijobVisible = false;
     }
-
 }

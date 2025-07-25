@@ -37,7 +37,7 @@
                 </ul>
 
                 <div class="player-list__player-phase">
-                    {{ $player->phase }}
+                    <x-gameboard.phase-icon />
                 </div>
             </button>
         </li>
