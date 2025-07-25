@@ -75,10 +75,6 @@
     top: var(--spacing-50);
 
     font-size: var(--font-size-xl);
-
-    i {
-        transform: rotate(45deg);
-    }
 }
 
 .modal__actions {
