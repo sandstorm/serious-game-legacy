@@ -7,16 +7,24 @@ use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\Dto\AnswerOption;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 final readonly class WeiterbildungWasStarted implements GameEventInterface, ProvidesResourceChanges, ZeitsteinAktion
 {
+    /**
+     * @param PlayerId $playerId
+     * @param CardId $weiterbildungCardId
+     * @param ResourceChanges $resourceChanges
+     * @param AnswerOption[] $shuffeldAnswerOptions
+     */
     public function __construct(
         public PlayerId        $playerId,
         public CardId          $weiterbildungCardId,
         public ResourceChanges $resourceChanges,
+        public array           $shuffeldAnswerOptions
     )
     {
     }
@@ -27,6 +35,7 @@ final readonly class WeiterbildungWasStarted implements GameEventInterface, Prov
             playerId: PlayerId::fromString($values['playerId']),
             weiterbildungCardId: CardId::fromString($values['weiterbildungCardId']),
             resourceChanges: ResourceChanges::fromArray($values['resourceChanges']),
+            shuffeldAnswerOptions: array_map(fn($option) => AnswerOption::fromArray($option), $values['shuffeldAnswerOptions']),
         );
     }
 
@@ -36,6 +45,7 @@ final readonly class WeiterbildungWasStarted implements GameEventInterface, Prov
             'playerId' => $this->playerId,
             'weiterbildungCardId' => $this->weiterbildungCardId,
             'resourceChanges' => $this->resourceChanges,
+            'shuffeldAnswerOptions' => $this->shuffeldAnswerOptions,
         ];
     }
 
@@ -57,9 +67,8 @@ final readonly class WeiterbildungWasStarted implements GameEventInterface, Prov
         return $this->playerId;
     }
 
-    // This is a ZeitsteinAktion that does not use a Zeitsteinslot -> return 0
     public function getNumberOfZeitsteinslotsUsed(): int
     {
-        return 0;
+        return 1;
     }
 }

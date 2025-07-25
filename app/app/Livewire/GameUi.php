@@ -26,6 +26,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\Dto\AnswerOption;
 use Illuminate\Events\Dispatcher;
 use Illuminate\View\View;
 use Livewire\Component;

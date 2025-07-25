@@ -215,12 +215,9 @@ class PlayerState
         return $minijobDefinition;
     }
 
-    public static function getLastWeiterbildungForPlayer(GameEvents $stream, PlayerId $playerId): ?WeiterbildungCardDefinition
+    public static function getLastWeiterbildungCardDefinitionForPlayer(GameEvents $stream, PlayerId $playerId): ?WeiterbildungCardDefinition
     {
-        /** @var WeiterbildungWasStarted|null $weiterbildungEvent */
-        $weiterbildungEvent = $stream->findLastOrNullWhere(
-            fn($e) => $e instanceof WeiterbildungWasStarted && $e->playerId->equals($playerId)
-        );
+        $weiterbildungEvent = self::getLastWeiterbildungsEventForPlayer($stream, $playerId);
 
         if ($weiterbildungEvent === null) {
             return null;
@@ -231,6 +228,15 @@ class PlayerState
         /** @var WeiterbildungCardDefinition $cardDefinition */
         $cardDefinition = CardFinder::getInstance()->getCardById($cardId);
         return $cardDefinition;
+    }
+
+    public static function getLastWeiterbildungsEventForPlayer(GameEvents $gameEvents, PlayerId $playerId): ?WeiterbildungWasStarted
+    {
+        /** @var WeiterbildungWasStarted|null $weiterbildungEvent */
+        $weiterbildungEvent = $gameEvents->findLastOrNullWhere(
+            fn($e) => $e instanceof WeiterbildungWasStarted && $e->playerId->equals($playerId)
+        );
+        return $weiterbildungEvent;
     }
 
     /**

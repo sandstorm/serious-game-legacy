@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace Domain\Definitions\Card\ValueObject;
 
-class AnswerId
+use JsonSerializable;
+
+class AnswerId implements JsonSerializable
 {
     public function __construct(public string $value)
     {

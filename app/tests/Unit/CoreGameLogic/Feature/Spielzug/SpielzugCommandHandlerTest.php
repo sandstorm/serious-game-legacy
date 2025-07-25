@@ -1454,12 +1454,11 @@ describe('handleSubmitAnswerWeiterbildung', function () {
         ];
         $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
 
-        $this->coreGameLogic->handle($this->gameId, StartWeiterbildung::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
 
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(playerId: $this->players[1], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
 
-        $this->coreGameLogic->getGameEvents($this->gameId);
         $this->coreGameLogic->handle($this->gameId, SubmitAnswerForWeiterbildung::create($this->players[0], AnswerId::fromString("a")));
     })->throws(
         RuntimeException::class,

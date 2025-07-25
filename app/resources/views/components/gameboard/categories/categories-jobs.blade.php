@@ -51,7 +51,7 @@
         "minijob__button",
         "button",
         "button--type-primary",
-        "button--disabled" => !$this->canDoWeiterbildung(),
+        "button--disabled" => !$this->canStartWeiterbildung(),
     ])
     wire:click="showWeiterbildung()">
     Weiterbildung ausführen (-1 Zeitstein)

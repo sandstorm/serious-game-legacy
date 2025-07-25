@@ -16,15 +16,16 @@ use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\ValueObject\PileId;
+use Random\Randomizer;
 use RuntimeException;
 
 class StartWeiterbildungAktion extends Aktion
 {
 
-public function __construct()
-{
-    parent::__construct('start-weiterbildung','Weiterbildung starten');
-}
+    public function __construct()
+    {
+        parent::__construct('start-weiterbildung', 'Weiterbildung starten');
+    }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
@@ -47,8 +48,14 @@ public function __construct()
 
         /** @var WeiterbildungCardDefinition $weiterbildungCardDefinition */
         $weiterbildungCardDefinition = CardFinder::getInstance()->getCardById($topCardOnPile);
+        $weiterbildungsOptions = (new Randomizer())->shuffleArray($weiterbildungCardDefinition->answerOptions);
+
         return GameEventsToPersist::with(
-            new WeiterbildungWasStarted($playerId, $weiterbildungCardDefinition->id, resourceChanges: new ResourceChanges(zeitsteineChange: -1)),
+            new WeiterbildungWasStarted(
+                playerId: $playerId,
+                weiterbildungCardId: $weiterbildungCardDefinition->id,
+                resourceChanges: new ResourceChanges(zeitsteineChange: -1),
+                shuffeldAnswerOptions: $weiterbildungsOptions),
         );
     }
 }

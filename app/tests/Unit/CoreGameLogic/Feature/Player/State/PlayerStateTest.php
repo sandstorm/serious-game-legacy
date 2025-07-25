@@ -239,7 +239,7 @@ describe('getZeitsteineForPlayer', function () {
 describe('getLastWeiterbildungForPlayer', function () {
     it('returns null when no WeiterbildungWasDoneEvent is present', function () {
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getLastWeiterbildungForPlayer($stream, $this->players[0]))->toBeNull();
+        expect(PlayerState::getLastWeiterbildungCardDefinitionForPlayer($stream, $this->players[0]))->toBeNull();
     });
     it('returns the correct last WeiterbildungCardDefinition', function () {
         /** @var TestCase $this */
@@ -262,7 +262,7 @@ describe('getLastWeiterbildungForPlayer', function () {
         $this->coreGameLogic->handle($this->gameId, StartWeiterbildung::create($this->players[0]));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        $result = PlayerState::getLastWeiterbildungForPlayer($stream, $this->players[0]);
+        $result = PlayerState::getLastWeiterbildungCardDefinitionForPlayer($stream, $this->players[0]);
         expect($result)->toEqual($weiterbildung['testWB']);
 
     });

@@ -52,14 +52,14 @@ class SubmitAnswerForWeiterbildungAktion extends Aktion
         /** @var WeiterbildungCardDefinition $weiterbildungCardDefinition */
         $weiterbildungCardDefinition = CardFinder::getInstance()->getCardById($lastWeiterbildungWasStartedEvent->weiterbildungCardId, WeiterbildungCardDefinition::class);
 
-
         return GameEventsToPersist::with(
             new AnswerForWeiterbildungWasSubmitted(
                 playerId: $playerId,
                 weiterbildungCardId: $weiterbildungCardDefinition->id,
+                selectedAnswerId: $this->selectedAnswer,
                 wasCorrect: $weiterbildungCardDefinition->getCorrectAnswerId()->equals($this->selectedAnswer),
                 resourceChanges: new ResourceChanges(zeitsteineChange: -1)
-            ),
+            )
         );
     }
 }

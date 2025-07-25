@@ -117,13 +117,14 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
                 ($command, $gameEvents),
             StartWeiterbildung::class => $this->handleStartWeiterbildung
                 ($command, $gameEvents),
-            SubmitAnswerForWeiterbildung::class => $this->handleSubmitAnswerWeiterbildung
+            SubmitAnswerForWeiterbildung::class => $this->handleSubmitAnswerForWeiterbildung
                 ($command, $gameEvents),
         };
     }
 
-    private function handleSubmitAnswerWeiterbildung(SubmitAnswerForWeiterbildung $command, GameEvents $gameEvents):GameEventsToPersist
+    private function handleSubmitAnswerForWeiterbildung(SubmitAnswerForWeiterbildung $command, GameEvents $gameEvents):GameEventsToPersist
     {
+
         $aktion = new SubmitAnswerForWeiterbildungAktion($command->selectedAnswer);
         return $aktion->execute($command->playerId, $gameEvents);
     }

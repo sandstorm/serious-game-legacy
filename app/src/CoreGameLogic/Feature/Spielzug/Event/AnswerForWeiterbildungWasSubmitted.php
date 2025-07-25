@@ -7,6 +7,7 @@ use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\AnswerId;
 use Domain\Definitions\Card\ValueObject\CardId;
 
 final readonly class AnswerForWeiterbildungWasSubmitted implements GameEventInterface, ProvidesResourceChanges
@@ -14,6 +15,7 @@ final readonly class AnswerForWeiterbildungWasSubmitted implements GameEventInte
     public function __construct(
         public PlayerId        $playerId,
         public CardId          $weiterbildungCardId,
+        public AnswerId        $selectedAnswerId,
         public bool            $wasCorrect,
         public ResourceChanges $resourceChanges,
     )
@@ -25,6 +27,7 @@ final readonly class AnswerForWeiterbildungWasSubmitted implements GameEventInte
         return new self(
             playerId: PlayerId::fromString($values['playerId']),
             weiterbildungCardId:  CardId::fromString($values['weiterbildungCardId']),
+            selectedAnswerId: AnswerId::fromString($values['selectedAnswerId']),
             wasCorrect: $values['wasCorrect'],
             resourceChanges: ResourceChanges::fromArray($values['resourceChanges']),
         );
@@ -35,6 +38,7 @@ final readonly class AnswerForWeiterbildungWasSubmitted implements GameEventInte
         return [
             'playerId' => $this->playerId,
             'weiterbildungCardId' => $this->weiterbildungCardId,
+            'selectedAnswerId' => $this->selectedAnswerId,
             'wasCorrect' => $this->wasCorrect,
             'resourceChanges' => $this->resourceChanges,
         ];

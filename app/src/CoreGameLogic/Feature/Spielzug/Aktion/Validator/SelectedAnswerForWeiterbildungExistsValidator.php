@@ -20,7 +20,7 @@ final class SelectedAnswerForWeiterbildungExistsValidator extends AbstractValida
 
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
-        $answerOptions = PlayerState::getLastWeiterbildungForPlayer($gameEvents, $playerId)?->answerOptions;
+        $answerOptions = PlayerState::getLastWeiterbildungCardDefinitionForPlayer($gameEvents, $playerId)?->answerOptions;
         $selectedAnswerId = $this->selectedAnswer->value;
 
         if ($answerOptions === null) {

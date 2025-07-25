@@ -6,6 +6,7 @@ namespace Domain\Definitions\Card\Dto;
 use Domain\Definitions\Card\ValueObject\AnswerId;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
+use Random\Randomizer;
 use RuntimeException;
 
 class WeiterbildungCardDefinition implements CardDefinition
@@ -56,4 +57,10 @@ class WeiterbildungCardDefinition implements CardDefinition
         }
         throw new RuntimeException('No correct answer found', 1753189730);
     }
+
+//    public function getAnswerOptionsShuffled(WeiterbildungCardDefinition $weiterbildungCardDefinition): array
+//    {
+//        $randomizer = new Randomizer();
+//        return $randomizer->shuffleArray($weiterbildungCardDefinition->answerOptions);
+//    }
 }
