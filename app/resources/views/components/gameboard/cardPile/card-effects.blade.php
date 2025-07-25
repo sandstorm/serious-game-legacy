@@ -1,25 +1,25 @@
 @props([
-    'card' => null,
+    'resourceChanges' => null,
     'styleClass' => 'vertical', // vertical or horizontal
 ])
 
 <div @class(["card__effects", "card__effects--$styleClass"])>
-    @if ($card->resourceChanges->guthabenChange->value != 0)
-        <div class="card__effect">{!! $card->resourceChanges->guthabenChange->formatWithIcon() !!}</div>
+    @if ($resourceChanges->guthabenChange->value != 0)
+        <div class="card__effect">{!! $resourceChanges->guthabenChange->formatWithIcon() !!}</div>
     @endif
-    @if ($card->resourceChanges->zeitsteineChange)
+    @if ($resourceChanges->zeitsteineChange)
         <div class="card__effect">
-            <x-gameboard.cardPile.card-effect sr-label="Zeitsteine" :change="$card->resourceChanges->zeitsteineChange" iconClass="icon-fehler" />
+            <x-gameboard.cardPile.card-effect sr-label="Zeitsteine" :change="$resourceChanges->zeitsteineChange" iconClass="icon-zeitstein" />
         </div>
     @endif
-    @if ($card->resourceChanges->bildungKompetenzsteinChange)
+    @if ($resourceChanges->bildungKompetenzsteinChange)
         <div class="card__effect">
-            <x-gameboard.cardPile.card-effect sr-label="Bildung & Karriere Kompetenzen" :change="$card->resourceChanges->bildungKompetenzsteinChange" iconClass="icon-bildung-und-karriere" />
+            <x-gameboard.cardPile.card-effect sr-label="Bildung & Karriere Kompetenzen" :change="$resourceChanges->bildungKompetenzsteinChange" iconClass="icon-bildung-und-karriere" />
         </div>
     @endif
-    @if ($card->resourceChanges->freizeitKompetenzsteinChange)
+    @if ($resourceChanges->freizeitKompetenzsteinChange)
         <div class="card__effect">
-            <x-gameboard.cardPile.card-effect sr-label="Freizeit & Soziales Kompetenzen" :change="$card->resourceChanges->freizeitKompetenzsteinChange" iconClass="icon-freizeit-und-soziales" />
+            <x-gameboard.cardPile.card-effect sr-label="Freizeit & Soziales Kompetenzen" :change="$resourceChanges->freizeitKompetenzsteinChange" iconClass="icon-freizeit-und-soziales" />
         </div>
     @endif
 </div>

@@ -6,7 +6,7 @@
 ])
 
 @section('icon')
-    <i class="icon-phase1"></i>
+    <x-gameboard.phase-icon />
 @endsection
 
 @section('title')
@@ -21,7 +21,7 @@
 
 @section('footer')
     <div class="card__actions-footer">
-        <x-gameboard.cardPile.card-effects style-class="horizontal" :card="$card" />
+        <x-gameboard.cardPile.card-effects style-class="horizontal" :resource-changes="$card->resourceChanges" />
 
         <button
             type="button"

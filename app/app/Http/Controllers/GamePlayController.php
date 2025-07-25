@@ -11,6 +11,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
@@ -53,6 +54,7 @@ class GamePlayController extends Controller
                 lebenszielId: LebenszielId::create($index % 2 + 1),
             ));
 
+            $this->coreGameLogic->handle($gameId, StartKonjunkturphaseForPlayer::create($playerIds[$index]));
         }
 
         $this->coreGameLogic->handle($gameId, StartGame::create());

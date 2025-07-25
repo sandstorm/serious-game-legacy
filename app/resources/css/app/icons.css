@@ -1,9 +1,9 @@
 @font-face {
     font-family: 'icomoon';
-    src: url('/fonts/icomoon.woff2?dhv1cf') format('woff2'),
-    url('/fonts/icomoon.ttf?dhv1cf') format('truetype'),
-    url('/fonts/icomoon.woff?dhv1cf') format('woff'),
-    url('/fonts/icomoon.svg?dhv1cf#icomoon') format('svg');
+    src: url('/fonts/icomoon.woff2?cu9zkd') format('woff2'),
+    url('/fonts/icomoon.ttf?cu9zkd') format('truetype'),
+    url('/fonts/icomoon.woff?cu9zkd') format('woff'),
+    url('/fonts/icomoon.svg?cu9zkd#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
@@ -24,6 +24,10 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-dots:before {
+    content: "\e90d";
+}
+
 .icon-jobboerse:before {
     content: "\e918";
 }
@@ -40,7 +44,7 @@
     content: "\e91c";
 }
 
-.icon-euro1:before {
+.icon-euro:before {
     content: "\e91d";
 }
 
@@ -98,10 +102,6 @@
 
 .icon-sanduhr:before {
     content: "\e90c";
-}
-
-.icon-euro:before {
-    content: "\e90d";
 }
 
 .icon-erwerbseinkommen:before {

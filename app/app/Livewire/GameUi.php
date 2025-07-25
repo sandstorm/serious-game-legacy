@@ -23,6 +23,7 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
 use Illuminate\Events\Dispatcher;
@@ -123,4 +124,13 @@ class GameUi extends Component
         $this->eventDispatcher->dispatch(new GameStateUpdated($this->gameId));
     }
 
+    public function getButtonPlayerClass(): string
+    {
+        return PlayerState::getPlayerColorClass($this->gameEvents, $this->myself);
+    }
+
+    public function getPlayerPhase(): int
+    {
+        return PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($this->gameEvents, $this->myself)->phase;
+    }
 }
