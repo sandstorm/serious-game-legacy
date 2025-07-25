@@ -19,7 +19,7 @@
             </button>
         </div>
         <header>
-            <span>@yield('title')</span>
+            @yield('title')
         </header>
 
         <div class="modal__body">

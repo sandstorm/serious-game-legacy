@@ -6,12 +6,12 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\State;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasDiscarded;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\PlayerId;
-use Domain\Definitions\Card\Dto\CardDefinition;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
-use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 
 final readonly class AktionsCalculator
@@ -41,39 +41,32 @@ final readonly class AktionsCalculator
         return false;
     }
 
-    public function canPlayerAffordToSkipCard(PlayerId $playerId): bool
-    {
-        $costToSkip = new ResourceChanges(zeitsteineChange: -1);
-        return $this->canPlayerAffordAction($playerId, $costToSkip);
-    }
-
     public function getEventsThisTurn(): GameEvents
     {
         return $this->stream->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class)
             ?? $this->stream->findAllAfterLastOfType(GameWasStarted::class);
     }
 
-    public function hasPlayerSkippedACardThisRound(PlayerId $playerId): bool
+    public function hasPlayerSkippedACardThisRound(): bool
     {
         $eventsThisTurn = $this->getEventsThisTurn();
         return count($eventsThisTurn->findAllOfType(CardWasSkipped::class)) > 0;
     }
 
-    public function canPlayerAffordToActivateCard(PlayerId $player, CardDefinition $card):bool
+    public function hasPlayerSkippedACardThisRoundAndNotPlayedOrDiscardedTheNext(): bool
     {
-        /** @phpstan-ignore-next-line */
-        return match ($card::class) {
-            KategorieCardDefinition::class => $this->canPlayerAffordKategorieCard($player, $card),
-            JobCardDefinition::class => $this->canPlayerAffordJobCard($player, $card),
-        };
-    }
+        if ($this->hasPlayerSkippedACardThisRound()) {
+            $eventsThisTurn = $this->getEventsThisTurn();
+            $cardWasDiscarded = $eventsThisTurn->findLastOrNull(CardWasDiscarded::class);
+            $cardWasPlayed = $eventsThisTurn->findLastOrNull(CardWasActivated::class);
+            if ($cardWasDiscarded !== null || $cardWasPlayed !== null) {
+                return false;
+            }
 
-    private function canPlayerAffordKategorieCard(PlayerId $player, KategorieCardDefinition $card): bool
-    {
-        $costToActivate = new ResourceChanges(
-            zeitsteineChange: $this->hasPlayerSkippedACardThisRound($player) ? 0 : -1
-        );
-        return $this->canPlayerAffordAction($player, $card->resourceChanges->accumulate($costToActivate));
+            return true;
+        }
+
+        return false;
     }
 
     function canPlayerAffordJobCard(PlayerId $player, JobCardDefinition $card): bool
