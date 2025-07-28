@@ -49,8 +49,13 @@
 }
 
 .card__title {
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
     margin-bottom: var(--spacing-100);
+
+    text-align: center;
 }
 
 .card__content {
@@ -96,6 +101,7 @@
 
     &.card__effects--horizontal {
         flex-direction: row;
+        align-items: center;
 
         .card__effect {
             padding-right: var(--spacing-100);
@@ -123,6 +129,24 @@
 
     i.text--danger, i.text--success {
         font-size: var(--font-size-base);
+    }
+}
+
+.card__actions-header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card__actions-header-category {
+    font-size: var(--font-size-base);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-50);
+
+    i {
+        font-size: var(--font-size-xxl);
     }
 }
 

@@ -1,6 +1,7 @@
 @props([
     'card' => null,
     'category' => null,
+    'pileId' => null,
 ])
 
 <div class="card-pile">
@@ -19,5 +20,5 @@
 </div>
 
 @if ($this->cardActionsVisible($card->id->value))
-    <x-gameboard.cardPile.card-actions-modal :category="$category" :card="$card" />
+    <x-gameboard.cardPile.card-actions-modal :category="$category" :card="$card" :pile-id="$pileId" />
 @endif

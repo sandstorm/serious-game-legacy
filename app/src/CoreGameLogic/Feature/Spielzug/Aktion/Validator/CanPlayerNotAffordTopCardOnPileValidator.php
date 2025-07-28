@@ -15,9 +15,9 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\PileId;
 
 /**
- * Succeeds if the player has enough resources to activate the top card of the given pile
+ * Succeeds if the player has not enough resources to activate the top card of the given pile
  */
-final class CanPlayerAffordTopCardOnPileValidator extends AbstractValidator
+final class CanPlayerNotAffordTopCardOnPileValidator extends AbstractValidator
 {
     private PileId $pileId;
 
@@ -39,11 +39,11 @@ final class CanPlayerAffordTopCardOnPileValidator extends AbstractValidator
         $topCardOnPile = PileState::topCardIdForPile($gameEvents, $this->pileId);
         $cardDefinition = CardFinder::getInstance()->getCardById($topCardOnPile);
 
-        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($playerId,
+        if (AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($playerId,
             $this->getTotalCosts($gameEvents, $cardDefinition))) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Du hast nicht genug Ressourcen um die Karte zu spielen',
+                reason: 'Du hast genug Ressourcen um die Karte zu spielen, du darfs sie nicht ablegen.',
             );
         }
 
