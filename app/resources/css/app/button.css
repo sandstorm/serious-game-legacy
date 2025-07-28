@@ -151,7 +151,6 @@
     }
 }
 
-
 .button--type-text {
     background: transparent;
     border: none;
@@ -164,4 +163,18 @@
     padding: var(--spacing-25) var(--spacing-50);
     min-height: 30px;
     font-size: 0.875rem;
+}
+
+.button--type-icon {
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    min-height: unset;
+    width: var(--button-height);
+    height: var(--button-height);
+    border-radius: 50%;
+
+    i {
+        font-size: 1.25rem;
+    }
 }

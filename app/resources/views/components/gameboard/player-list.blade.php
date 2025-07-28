@@ -28,7 +28,6 @@
 
             <button type="button" title="Zeige Lebensziel des Spielers" class="button button--type-text" wire:click="showPlayerDetails('{{ $player->playerId->value }}')">
                 {{ $player->name }}
-                @if($player->playerId->equals($myself)) (Ich) @endif
 
                 <ul class="zeitsteine">
                     @foreach($player->zeitsteine as $playerZeitstein)

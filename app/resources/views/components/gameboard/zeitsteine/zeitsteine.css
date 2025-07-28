@@ -1,5 +1,6 @@
 .zeitsteine {
     display: flex;
+    flex-wrap: wrap;
     gap: var(--spacing-25);
     list-style: none;
     margin: 0;
