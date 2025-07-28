@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\Traits;
 
 use App\Livewire\Forms\BuyStocksForm;
-use App\Livewire\ValueObject\InvestitionenTabEnum;
 use App\Livewire\ValueObject\NotificationTypeEnum;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\StockPriceState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\BuyStocksForPlayerAktion;
@@ -16,14 +15,24 @@ use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
 
 trait HasInvestitionen
 {
-    public bool $showInvestitionen = false;
-    public InvestitionenTabEnum $investitionenActiveTab = InvestitionenTabEnum::STOCKS;
-    public BuyStocksForm $buyLowRiskStocksForm;
-    public BuyStocksForm $buyHighRiskStocksForm;
+    public bool $showInvestitionenSelelectionModal = false;
+    public bool $showStocksModal = false;
+    public ?StockType $buyStocksOfType = null;
+    public BuyStocksForm $buyStocksForm;
 
-    public function toggleInvestitionen(): void
+    public function toggleInvestitionenSelectionModal(): void
     {
-        $this->showInvestitionen = !$this->showInvestitionen;
+        $this->showInvestitionenSelelectionModal = !$this->showInvestitionenSelelectionModal;
+    }
+
+    public function toggleStocksModal(): void
+    {
+        if ($this->buyStocksOfType !== null) {
+            $this->buyStocksOfType = null;
+            return;
+        }
+
+        $this->showStocksModal = !$this->showStocksModal;
     }
 
     public function canBuyStocks(StockType $stockType): AktionValidationResult
@@ -31,54 +40,42 @@ trait HasInvestitionen
         $aktion = new BuyStocksForPlayerAktion(
             $stockType,
             StockPriceState::getCurrentStockPrice($this->gameEvents, $stockType),
-            $stockType === StockType::LOW_RISK
-                ? $this->buyLowRiskStocksForm->amount
-                : $this->buyHighRiskStocksForm->amount,
+            $this->buyStocksForm->amount
         );
         return $aktion->validate($this->myself, $this->gameEvents);
     }
 
-    public function buyLowRiskStocks(): void
+    public function showBuyStocksOfType(string $stockType): void
     {
-        if (!$this->canBuyStocks(StockType::LOW_RISK)->canExecute) {
+        $validationResult = self::canBuyStocks(StockType::from($stockType));
+        if (!$validationResult->canExecute) {
+            $this->showNotification(
+                $validationResult->reason,
+                NotificationTypeEnum::ERROR
+            );
             return;
         }
 
-        $this->buyLowRiskStocksForm->guthaben = PlayerState::getGuthabenForPlayer($this->gameEvents, $this->myself)->value;
-        $this->buyLowRiskStocksForm->sharePrice = StockPriceState::getCurrentStockPrice($this->gameEvents, StockType::LOW_RISK)->value;
-        $this->buyLowRiskStocksForm->validate();
-
-        $this->coreGameLogic->handle($this->gameId, BuyStocksForPlayer::create(
-            $this->myself,
-            StockType::LOW_RISK,
-            $this->buyLowRiskStocksForm->amount
-        ));
-
-        $this->toggleInvestitionen();
-        $this->showNotification(
-            'Aktien wurden erfolgreich gekauft.',
-            NotificationTypeEnum::INFO
-        );
-        $this->broadcastNotify();
+        $this->buyStocksOfType = StockType::from($stockType);
+        $this->buyStocksForm->guthaben = PlayerState::getGuthabenForPlayer($this->gameEvents, $this->myself)->value;
+        $this->buyStocksForm->sharePrice = StockPriceState::getCurrentStockPrice($this->gameEvents, StockType::from($stockType))->value;
     }
 
-    public function buyHighRiskStocks(): void
+    public function buyStocks(string $stockType): void
     {
-        if (!$this->canBuyStocks(StockType::HIGH_RISK)->canExecute) {
+        $this->buyStocksForm->validate();
+        $stockType = StockType::from($stockType);
+        if (!$this->canBuyStocks($stockType)->canExecute) {
             return;
         }
 
-        $this->buyHighRiskStocksForm->guthaben = PlayerState::getGuthabenForPlayer($this->gameEvents, $this->myself)->value;
-        $this->buyHighRiskStocksForm->sharePrice = StockPriceState::getCurrentStockPrice($this->gameEvents, StockType::HIGH_RISK)->value;
-        $this->buyHighRiskStocksForm->validate();
-
         $this->coreGameLogic->handle($this->gameId, BuyStocksForPlayer::create(
             $this->myself,
-            StockType::HIGH_RISK,
-            $this->buyHighRiskStocksForm->amount
+            $stockType,
+            $this->buyStocksForm->amount
         ));
 
-        $this->toggleInvestitionen();
+        $this->toggleStocksModal();
         $this->showNotification(
             'Aktien wurden erfolgreich gekauft.',
             NotificationTypeEnum::INFO

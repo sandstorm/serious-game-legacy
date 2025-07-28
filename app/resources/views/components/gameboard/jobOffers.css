@@ -39,3 +39,31 @@
         background-color: transparent;
     }
 }
+
+.job-offers__header {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-100);
+}
+
+.job-offers__header-info {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: var(--spacing-100);
+
+    font-size: var(--font-size-base);
+}
+
+.job-offers__header-category {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: var(--spacing-50);
+
+    i {
+        font-size: var(--font-size-xxl);
+    }
+}

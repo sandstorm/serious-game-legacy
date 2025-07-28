@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\Definitions\Konjunkturphase;
 
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
 use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
 use Domain\Definitions\Konjunkturphase\Dto\Zeitsteine;
@@ -52,6 +53,12 @@ class KonjunkturphaseDefinition
             'Auswirkung not found for scope: ' . $scope->value,
             1747148685
         );
+    }
+
+    public function getDividend(): MoneyAmount
+    {
+        $auswirkung = $this->getAuswirkungByScope(AuswirkungScopeEnum::DIVIDEND);
+        return new MoneyAmount($auswirkung->modifier);
     }
 
     public function getKompetenzbereichByCategory(CategoryId $name): KompetenzbereichDefinition
