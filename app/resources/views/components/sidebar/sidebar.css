@@ -1,0 +1,39 @@
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-100);
+    height: 100%;
+}
+
+.sidebar__header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-100);
+}
+
+.sidebar__lebensziel {
+
+}
+
+.sidebar__menu {
+    padding-left: var(--spacing-100);
+    border-left: 1px solid var(--color-grey);
+}
+
+
+.sidebar__protocol {
+
+}
+
+.sidebar__actions {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-100);
+
+    .button {
+        width: 100%;
+        justify-content: center;
+    }
+}

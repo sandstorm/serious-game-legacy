@@ -1,6 +1,3 @@
-@use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
-@use('\App\Livewire\ValueObject\ExpensesTabEnum')
-
 {{-- !!! Livewire components MUST have a single root element !!! --}}
 <div class="game">
     <header class="game__header">
@@ -61,29 +58,7 @@
     </div>
 
     <aside class="game__aside">
-        <p>
-            <strong>Lebensziel:</strong> {{ PlayerState::getLebenszielDefinitionForPlayer($this->gameEvents, $myself)->name }}
-        </p>
-
-        @if ($this->currentPlayerIsMyself())
-            <button class="button button--type-primary" wire:click="showTakeOutALoan()">
-                Kredit aufnehmen
-            </button>
-            <button class="button button--type-primary" wire:click="showExpensesTab('{{ ExpensesTabEnum::INSURANCES }}')">
-                Versicherung abschließen
-            </button>
-            <hr/>
-            <button
-                type="button"
-                @class([
-                    "button",
-                    "button--type-primary",
-                    "button--disabled" => !$this->canEndSpielzug()->canExecute,
-                ])
-                wire:click="spielzugAbschliessen()">
-                Spielzug abschließen
-            </button>
-        @endif
+        <x-sidebar.sidebar :player-id="$myself" />
     </aside>
     <x-notification.notification/>
 

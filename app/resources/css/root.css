@@ -15,6 +15,7 @@
 body {
     font-family: var(--font-family-sans);
     color: var(--color-primary-dark);
+    text-wrap: pretty;
 
     background-attachment: fixed;
     background-image: conic-gradient(from 0deg at 50% 50%, #fff6dc 20%, #eefbef 30%, #d5eff8 70%, #fff6dc 100%);
