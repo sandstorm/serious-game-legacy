@@ -36,6 +36,8 @@ trait HasCard
      */
     public function renderingHasCard(): void
     {
+        $this->playerHasToPlayCard = false;
+
         // if player skipped a card, we show the next card from the top of the pile
         $aktionsCalculator = AktionsCalculator::forStream($this->gameEvents);
         if ($aktionsCalculator->hasPlayerSkippedACardThisRound() && !$aktionsCalculator->hasPlayerPlayedACardOrPutOneBack()) {
