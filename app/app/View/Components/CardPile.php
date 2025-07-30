@@ -14,6 +14,8 @@ use Illuminate\View\Component;
 
 class CardPile extends Component
 {
+    private PileId $pileId;
+
     /**
      * Create a new component instance.
      */
@@ -21,17 +23,19 @@ class CardPile extends Component
         public string $category,
         public string $cardPile,
         public GameEvents $gameEvents,
-    ) {}
+    ) {
+        $this->pileId = PileId::fromString($this->cardPile);
+    }
 
     /**
      * Get the view / contents that represent the component.
      */
     public function render(): View
     {
-        $topCardIdForPile = PileState::topCardIdForPile($this->gameEvents, PileId::from($this->cardPile));
+        $topCardIdForPile = PileState::topCardIdForPile($this->gameEvents, $this->pileId);
         return view('components.gameboard.cardPile.card-pile', [
             'category' => CategoryId::from($this->category),
-            'pileId' => PileId::from($this->cardPile),
+            'pileId' => $this->pileId,
             'card' => CardFinder::getInstance()->getCardById($topCardIdForPile),
         ]);
     }

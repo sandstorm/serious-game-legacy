@@ -39,7 +39,7 @@ class MoneySheetSalary extends Component
         );
         return view('components.gameboard.moneySheet.income.money-sheet-salary', [
             'jobDefinition' => PlayerState::getJobForPlayer($this->gameEvents, $this->playerId),
-            'gehalt' => PlayerState::getBaseGehaltForPlayer($this->gameEvents, $this->playerId),
+            'gehalt' => PlayerState::getCurrentGehaltForPlayer($this->gameEvents, $this->playerId),
             'gameEvents' => $this->gameEvents,
             'playerId' => $this->playerId,
             'modifiers' => $modifierDescriptions,

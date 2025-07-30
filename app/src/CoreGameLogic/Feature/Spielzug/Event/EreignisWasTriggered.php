@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Year;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Modifier\ModifierBuilder;
@@ -16,6 +15,7 @@ use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\EreignisCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 
 final readonly class EreignisWasTriggered implements ProvidesModifiers, ProvidesResourceChanges, GameEventInterface
 {
@@ -48,14 +48,14 @@ final readonly class EreignisWasTriggered implements ProvidesModifiers, Provides
     {
         if ($playerId->equals($this->playerId)) {
             $modifiers = [];
-            foreach ($this->ereignisCardDefinition->modifierIds as $modifierId) {
+            foreach ($this->ereignisCardDefinition->getModifierIds() as $modifierId) {
                 $modifiers[] = ModifierBuilder::build(
                     modifierId: $modifierId,
                     playerId: $playerId,
                     playerTurn: $this->playerTurn,
                     year: $this->year,
-                    modifierParameters: $this->ereignisCardDefinition->modifierParameters,
-                    description: $this->ereignisCardDefinition->description(),
+                    modifierParameters: $this->ereignisCardDefinition->getModifierParameters(),
+                    description: $this->ereignisCardDefinition->getDescription(),
                 );
             }
             return new ModifierCollection($modifiers);
@@ -67,7 +67,7 @@ final readonly class EreignisWasTriggered implements ProvidesModifiers, Provides
     public function getResourceChanges(PlayerId $playerId): ResourceChanges
     {
         if ($playerId->equals($this->playerId)) {
-            return $this->ereignisCardDefinition->resourceChanges;
+            return $this->ereignisCardDefinition->getResourceChanges();
         }
         return new ResourceChanges();
     }

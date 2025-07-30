@@ -14,6 +14,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
@@ -34,9 +35,9 @@ describe('isConditionForEndOfKonjunkturphaseMet', function () {
     it('returns false if at least one player has Zeitsteine', function () {
         /** @var TestCase $this */
         $cardsForTesting = [
-            "cardToRemoveZeitsteine" => new KategorieCardDefinition(
+            new KategorieCardDefinition(
                 id: new CardId('cardToRemoveZeitsteine'),
-                pileId: $this->pileIdBildung,
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
@@ -44,7 +45,7 @@ describe('isConditionForEndOfKonjunkturphaseMet', function () {
                 ),
             ),
         ];
-        $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -58,18 +59,18 @@ describe('isConditionForEndOfKonjunkturphaseMet', function () {
     it('returns true if at no player has Zeitsteine', function () {
         /** @var TestCase $this */
         $cardsForTesting = [
-            "cardToRemoveZeitsteine" => new KategorieCardDefinition(
+            new KategorieCardDefinition(
                 id: new CardId('cardToRemoveZeitsteine'),
-                pileId: $this->pileIdBildung,
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
                     zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) +1,
                 ),
             ),
-            "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
+            new KategorieCardDefinition(
                 id: new CardId('cardToRemoveZeitsteine2'),
-                pileId: $this->pileIdBildung,
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
@@ -77,7 +78,7 @@ describe('isConditionForEndOfKonjunkturphaseMet', function () {
                 ),
             ),
         ];
-        $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -111,18 +112,18 @@ describe('hasCurrentKonjunkturphaseEnded', function () {
             ->toBeFalse('Konjunkturphase should not have ended at the start of the game');
 
         $cardsForTesting = [
-            "cardToRemoveZeitsteine" => new KategorieCardDefinition(
+            new KategorieCardDefinition(
                 id: new CardId('cardToRemoveZeitsteine'),
-                pileId: $this->pileIdBildung,
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
                     zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
-            "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
+            new KategorieCardDefinition(
                 id: new CardId('cardToRemoveZeitsteine2'),
-                pileId: $this->pileIdBildung,
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
@@ -130,7 +131,7 @@ describe('hasCurrentKonjunkturphaseEnded', function () {
                 ),
             ),
         ];
-        $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
@@ -167,18 +168,18 @@ describe('hasCurrentKonjunkturphaseEnded', function () {
         /** @var TestCase $this */
 
         $cardsForTesting = [
-            "cardToRemoveZeitsteine" => new KategorieCardDefinition(
+            new KategorieCardDefinition(
                 id: new CardId('cardToRemoveZeitsteine'),
-                pileId: $this->pileIdBildung,
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
                     zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
-            "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
+            new KategorieCardDefinition(
                 id: new CardId('cardToRemoveZeitsteine2'),
-                pileId: $this->pileIdBildung,
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
@@ -186,7 +187,7 @@ describe('hasCurrentKonjunkturphaseEnded', function () {
                 ),
             ),
         ];
-        $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
@@ -258,18 +259,18 @@ describe('hasPlayerStartetCurrentKonjunkturphase', function () {
         /** @var TestCase $this */
 
         $cardsForTesting = [
-            "cardToRemoveZeitsteine" => new KategorieCardDefinition(
+            new KategorieCardDefinition(
                 id: new CardId('cardToRemoveZeitsteine'),
-                pileId: $this->pileIdBildung,
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
                     zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
-            "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
+            new KategorieCardDefinition(
                 id: new CardId('cardToRemoveZeitsteine2'),
-                pileId: $this->pileIdBildung,
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
@@ -277,7 +278,7 @@ describe('hasPlayerStartetCurrentKonjunkturphase', function () {
                 ),
             ),
         ];
-        $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
@@ -336,18 +337,18 @@ describe('isPlayerReadyForKonjunkturphaseChange', function () {
         /** @var TestCase $this */
 
         $cardsForTesting = [
-            "cardToRemoveZeitsteine" => new KategorieCardDefinition(
+            new KategorieCardDefinition(
                 id: new CardId('cardToRemoveZeitsteine'),
-                pileId: $this->pileIdBildung,
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
                     zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
-            "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
+            new KategorieCardDefinition(
                 id: new CardId('cardToRemoveZeitsteine2'),
-                pileId: $this->pileIdBildung,
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
@@ -355,7 +356,7 @@ describe('isPlayerReadyForKonjunkturphaseChange', function () {
                 ),
             ),
         ];
-        $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
@@ -390,18 +391,18 @@ describe('isPlayerReadyForKonjunkturphaseChange', function () {
         /** @var TestCase $this */
 
         $cardsForTesting = [
-            "cardToRemoveZeitsteine" => new KategorieCardDefinition(
+            new KategorieCardDefinition(
                 id: new CardId('cardToRemoveZeitsteine'),
-                pileId: $this->pileIdBildung,
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
                     zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
-            "cardToRemoveZeitsteine2" => new KategorieCardDefinition(
+            new KategorieCardDefinition(
                 id: new CardId('cardToRemoveZeitsteine2'),
-                pileId: $this->pileIdBildung,
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
@@ -409,7 +410,7 @@ describe('isPlayerReadyForKonjunkturphaseChange', function () {
                 ),
             ),
         ];
-        $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)

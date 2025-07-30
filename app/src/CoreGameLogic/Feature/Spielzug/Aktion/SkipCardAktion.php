@@ -13,6 +13,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughZeitst
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
@@ -25,11 +26,14 @@ class SkipCardAktion extends Aktion
         public CategoryId $category,
     ) {
         parent::__construct('skip-card', 'Karte überspringen');
-        $this->pileId = PileState::getPileIdForCategoryAndPhase($this->category);
     }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
+        $this->pileId = new PileId(
+            $this->category,
+            PlayerState::getCurrentLebenszielphaseIdForPlayer($gameEvents, $playerId)
+        );
         $validatorChain = new IsPlayersTurnValidator();
         $validatorChain
             ->setNext(new HasPlayerDoneNoZeitsteinaktionThisTurnValidator())
@@ -46,7 +50,7 @@ class SkipCardAktion extends Aktion
             throw new \RuntimeException('Cannot skip card: ' . $result->reason, 1747325793);
         }
         return GameEventsToPersist::with(
-            new CardWasSkipped($playerId, $topCardOnPile, $this->pileId, $this->category),
+            new CardWasSkipped($playerId, $topCardOnPile, $this->pileId),
         );
     }
 }

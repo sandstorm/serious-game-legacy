@@ -15,6 +15,7 @@ use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use RuntimeException;
 
 class DoMinijobAktion extends Aktion
@@ -40,12 +41,12 @@ class DoMinijobAktion extends Aktion
         if (!$result->canExecute) {
             throw new RuntimeException('Cannot Do minijob: ' . $result->reason, 1750854280);
         }
-        $topCardOnPile = PileState::topCardIdForPile($gameEvents, PileId::MINIJOBS_PHASE_1);
+        $topCardOnPile = PileState::topCardIdForPile($gameEvents, new PileId(CategoryId::MINIJOBS));
 
         /** @var MinijobCardDefinition $minijobCardDefinition */
         $minijobCardDefinition = CardFinder::getInstance()->getCardById($topCardOnPile);
         return GameEventsToPersist::with(
-            new MinijobWasDone($playerId, $minijobCardDefinition->id, $minijobCardDefinition->resourceChanges),
+            new MinijobWasDone($playerId, $minijobCardDefinition->getId(), $minijobCardDefinition->getResourceChanges()),
         );
     }
 }

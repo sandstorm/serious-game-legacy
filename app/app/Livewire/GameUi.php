@@ -131,6 +131,6 @@ class GameUi extends Component
 
     public function getPlayerPhase(): int
     {
-        return PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($this->gameEvents, $this->myself)->phase;
+        return PlayerState::getCurrentLebenszielphaseIdForPlayer($this->gameEvents, $this->myself)->value;
     }
 }

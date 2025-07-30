@@ -38,7 +38,7 @@ class MoneySheetState
     ): MoneyAmount {
         // TODO use modifiedGehalt, once the input for Gehalt Tab exists:
         // $gehalt = PlayerState::getModifiedGehaltForPlayer($gameEvents, $playerId);
-        $gehalt = PlayerState::getBaseGehaltForPlayer($gameEvents, $playerId);
+        $gehalt = PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId);
         return new MoneyAmount(max([
             $gehalt->value * Configuration::LEBENSHALTUNGSKOSTEN_MULTIPLIER,
             Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE
@@ -49,7 +49,7 @@ class MoneySheetState
     {
         // TODO use modifiedGehalt, once the input for Gehalt Tab exists:
         // $gehalt = PlayerState::getModifiedGehaltForPlayer($gameEvents, $playerId);
-        $gehalt = PlayerState::getBaseGehaltForPlayer($gameEvents, $playerId);
+        $gehalt = PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId);
         return new MoneyAmount($gehalt->value * Configuration::STEUERN_UND_ABGABEN_MULTIPLIER);
     }
 
@@ -268,7 +268,7 @@ class MoneySheetState
 
     public static function calculateTotalForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
-        return PlayerState::getBaseGehaltForPlayer($gameEvents, $playerId)
+        return PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId)
             ->subtract(self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId))
             ->subtract(self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId));
     }
@@ -312,7 +312,7 @@ class MoneySheetState
     public static function getCostOfAllInsurances(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
         $insurances = InsuranceFinder::getInstance()->getAllInsurances();
-        $currentPlayerPhase = PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($gameEvents, $playerId)->phase;
+        $currentPlayerPhase = PlayerState::getCurrentLebenszielphaseIdForPlayer($gameEvents, $playerId)->value;
 
         $totalCost = new MoneyAmount(0);
         foreach ($insurances as $insurance) {
@@ -425,7 +425,7 @@ class MoneySheetState
     public static function getAnnualIncomeForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
         $annualIncome = (new MoneyAmount(0))
-            ->add(PlayerState::getBaseGehaltForPlayer($gameEvents, $playerId))
+            ->add(PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId))
             ->add(PlayerState::getDividendForAllStocksForPlayer($gameEvents, $playerId));
 
         return $annualIncome;

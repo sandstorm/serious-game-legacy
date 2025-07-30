@@ -70,9 +70,9 @@ final readonly class AktionsCalculator
     {
         $playerResources = PlayerState::getResourcesForPlayer($this->stream, $player);
         if (
-            $card->requirements->zeitsteine <= $playerResources->zeitsteineChange &&
-            $card->requirements->bildungKompetenzsteine <= $playerResources->bildungKompetenzsteinChange &&
-            $card->requirements->freizeitKompetenzsteine <= $playerResources->freizeitKompetenzsteinChange
+            $card->getRequirements()->zeitsteine <= $playerResources->zeitsteineChange &&
+            $card->getRequirements()->bildungKompetenzsteine <= $playerResources->bildungKompetenzsteinChange &&
+            $card->getRequirements()->freizeitKompetenzsteine <= $playerResources->freizeitKompetenzsteinChange
         ) {
             return true;
         }

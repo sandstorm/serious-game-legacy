@@ -22,7 +22,6 @@ final readonly class CardWasActivated implements ZeitsteinAktion, ProvidesModifi
         public PlayerId        $playerId,
         public PileId          $pileId,
         public CardId          $cardId,
-        public CategoryId      $categoryId,
         public ResourceChanges $resourceChanges,
         public int             $numberOfZeitsteinslotsUsed,
     ) {
@@ -45,9 +44,8 @@ final readonly class CardWasActivated implements ZeitsteinAktion, ProvidesModifi
     {
         return new self(
             playerId: PlayerId::fromString($values['playerId']),
-            pileId: PileId::from($values['pileId']),
+            pileId: PileId::fromArray($values['pileId']),
             cardId: new CardId($values['cardId']),
-            categoryId: CategoryId::from($values['categoryId']),
             resourceChanges: ResourceChanges::fromArray($values['resourceChanges']),
             numberOfZeitsteinslotsUsed: $values['numberOfZeitsteinslotsUsed'],
         );
@@ -59,20 +57,9 @@ final readonly class CardWasActivated implements ZeitsteinAktion, ProvidesModifi
             'playerId' => $this->playerId,
             'pileId' => $this->pileId,
             'cardId' => $this->cardId->jsonSerialize(),
-            'categoryId' => $this->categoryId->value,
             'resourceChanges' => $this->resourceChanges,
             'numberOfZeitsteinslotsUsed' => $this->numberOfZeitsteinslotsUsed,
         ];
-    }
-
-    public function getPileId(): PileId
-    {
-        return $this->pileId;
-    }
-
-    public function getCategoryId(): CategoryId
-    {
-        return $this->categoryId;
     }
 
     public function getPlayerId(): PlayerId
@@ -83,5 +70,15 @@ final readonly class CardWasActivated implements ZeitsteinAktion, ProvidesModifi
     public function getNumberOfZeitsteinslotsUsed(): int
     {
         return $this->numberOfZeitsteinslotsUsed;
+    }
+
+    public function getPileId(): PileId
+    {
+        return $this->pileId;
+    }
+
+    public function getCategoryId(): CategoryId
+    {
+        return $this->pileId->categoryId;
     }
 }

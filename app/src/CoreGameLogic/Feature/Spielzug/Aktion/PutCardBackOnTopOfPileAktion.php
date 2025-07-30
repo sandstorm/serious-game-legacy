@@ -13,6 +13,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerSkippedACard
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasPutBackOnTopOfPile;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
@@ -23,22 +24,23 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
  */
 class PutCardBackOnTopOfPileAktion extends Aktion
 {
-    private PileId $pileId;
-
     public function __construct(public CategoryId $category)
     {
         parent::__construct('put-card-back-on-top-of-pile', 'Karte Ablegen');
-
-        $this->pileId = PileState::getPileIdForCategoryAndPhase($category);
     }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
+        $pileId = new PileId(
+            $this->category,
+            PlayerState::getCurrentLebenszielphaseIdForPlayer($gameEvents, $playerId)
+        );
+
         $validatorChain = new IsPlayersTurnValidator();
         $validatorChain
             ->setNext(new HasPlayerSkippedACardThisTurn())
             ->setNext(new HasPlayerPlayedACardThisTurnOrPutOneBackValidator())
-            ->setNext(new CanPlayerNotAffordTopCardOnPileValidator($this->pileId));
+            ->setNext(new CanPlayerNotAffordTopCardOnPileValidator($pileId));
         return $validatorChain->validate($gameEvents, $playerId);
     }
 

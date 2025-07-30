@@ -37,7 +37,7 @@ class MinijobModal extends Component
         $miniJobResourceChanges = null;
         // add the cost (one zeitstein) for doing the minijob to the resource changes
         if ($minijobCardDefinition !== null) {
-            $miniJobResourceChanges = $minijobCardDefinition->resourceChanges->accumulate(new ResourceChanges(zeitsteineChange: -1));
+            $miniJobResourceChanges = $minijobCardDefinition->getResourceChanges()->accumulate(new ResourceChanges(zeitsteineChange: -1));
         }
 
         return view('components.gameboard.minijob-modal', [

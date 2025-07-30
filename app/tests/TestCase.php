@@ -10,7 +10,6 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
@@ -48,6 +47,7 @@ use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
+use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
@@ -55,26 +55,10 @@ abstract class TestCase extends BaseTestCase
 {
     protected ForCoreGameLogic $coreGameLogic;
     protected GameId $gameId;
-    protected PileId $pileIdBildung;
-    protected PileId $pileIdMinijobs;
     /**
      * @var PlayerId[]
      */
     protected array $players;
-    /**
-     * @var CardDefinition[]
-     */
-    protected array $cardsBildung;
-    protected PileId $pileIdFreizeit;
-    /**
-     * @var CardDefinition[]
-     */
-    protected array $cardsFreizeit;
-    protected PileId $pileIdJobs;
-    /**
-     * @var CardDefinition[]
-     */
-    protected array $cardsJobs;
 
     /**
      * @var InsuranceDefinition[]
@@ -84,18 +68,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * @var KonjunkturphaseDefinition|null
      */
-    protected $konjunkturphaseDefinition;
-
-    /**
-     * @var CardDefinition[]
-     */
-    protected array $cardsMinijobs;
-    protected PileId $pileIdEreignisseBildungUndKarriere;
-    /**
-     * @var EreignisCardDefinition[]
-     */
-    protected array $cardsEreignisseBildungUndKarriere;
-
+    protected ?KonjunkturphaseDefinition $konjunkturphaseDefinition;
 
     private function generatePlayerIds(int $numberOfPlayers)
     {
@@ -107,18 +80,27 @@ abstract class TestCase extends BaseTestCase
         return $playerIds;
     }
 
-    public function setupBasicGameWithoutKonjunkturphase(int $numberOfPlayers = 2): void
+    /**
+     * @param int $numberOfPlayers
+     * @param CardDefinition[]|null $cards
+     * @return void
+     */
+    public function setupBasicGameWithoutKonjunkturphase(int $numberOfPlayers = 2, ?array $cards = null): void
     {
         $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
         $this->gameId = GameId::fromString('game1');
         $this->players = $this->generatePlayerIds($numberOfPlayers);
-        CardFinder::getInstance()->overrideCardsForTesting([
-            PileId::BILDUNG_PHASE_1->value => $this->getCardsForBildungAndKarriere(),
-            PileId::FREIZEIT_PHASE_1->value => $this->getCardsForSozialesAndFreizeit(),
-            PileId::JOBS_PHASE_1->value => $this->getCardsForJobs(),
-            PileId::MINIJOBS_PHASE_1->value => $this->getCardsForMinijobs(),
-            PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => $this->getCardsForEreignisseBildungUndKarriere(),
-        ]);
+        CardFinder::getInstance()->overrideCardsForTesting(
+            $cards !== null
+            ? [...$cards, ...$this->getCardsForEreignisse()] // Add at least one ereignisCard for each category to avoid errors
+            : [
+                ...$this->getCardsForBildungAndKarriere(),
+                ...$this->getCardsForSozialesAndFreizeit(),
+                ...$this->getCardsForJobs(),
+                ...$this->getCardsForMinijobs(),
+                ...$this->getCardsForEreignisse(),
+            ]
+        );
 
         InsuranceFinder::getInstance()->overrideInsurancesForTesting([
             new InsuranceDefinition(
@@ -155,18 +137,6 @@ abstract class TestCase extends BaseTestCase
 
         $this->insurances = InsuranceFinder::getInstance()->getAllInsurances();
 
-        $this->pileIdBildung = PileId::BILDUNG_PHASE_1;
-        $this->cardsBildung = $this->getCardsForBildungAndKarriere();
-        $this->pileIdFreizeit = PileId::FREIZEIT_PHASE_1;
-        $this->cardsFreizeit = $this->getCardsForSozialesAndFreizeit();
-        $this->pileIdJobs = PileId::JOBS_PHASE_1;
-        $this->cardsJobs = $this->getCardsForJobs();
-        $this->pileIdMinijobs = PileId::MINIJOBS_PHASE_1;
-        $this->cardsMinijobs = $this->getCardsForMinijobs();
-        $this->pileIdEreignisseBildungUndKarriere = PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1;
-        $this->cardsEreignisseBildungUndKarriere = $this->getCardsForEreignisseBildungUndKarriere();
-
-
         $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
             numberOfPlayers: $numberOfPlayers,
         )->withFixedPlayerIdsForTesting(...$this->players));
@@ -184,9 +154,9 @@ abstract class TestCase extends BaseTestCase
         $this->coreGameLogic->handle($this->gameId, StartGame::create());
     }
 
-    public function setupBasicGame(int $numberOfPlayers = 2): void
+    public function setupBasicGame(int $numberOfPlayers = 2, ?array $cards = null): void
     {
-        $this->setupBasicGameWithoutKonjunkturphase($numberOfPlayers);
+        $this->setupBasicGameWithoutKonjunkturphase($numberOfPlayers, $cards);
 
         $this->konjunkturphaseDefinition = new KonjunkturphaseDefinition(
             id: KonjunkturphasenId::create(1),
@@ -282,6 +252,7 @@ abstract class TestCase extends BaseTestCase
             $this->gameId,
             ChangeKonjunkturphase::create()
                 ->withFixedKonjunkturphaseForTesting($this->konjunkturphaseDefinition)
+                ->withFixedCardOrderForTesting()
         );
     }
 
@@ -315,7 +286,8 @@ abstract class TestCase extends BaseTestCase
             );
             $this->coreGameLogic->handle(
                 $this->gameId,
-                EnterSteuernUndAbgabenForPlayer::create($player, MoneySheetState::calculateSteuernUndAbgabenForPlayer($gameEvents, $player))
+                EnterSteuernUndAbgabenForPlayer::create($player,
+                    MoneySheetState::calculateSteuernUndAbgabenForPlayer($gameEvents, $player))
             );
             $this->coreGameLogic->handle(
                 $this->gameId,
@@ -334,9 +306,8 @@ abstract class TestCase extends BaseTestCase
     protected function getCardsForJobs(): array
     {
         return [
-            "j0" => new JobCardDefinition(
-                id: new CardId('j0'),
-                pileId: PileId::JOBS_PHASE_1,
+            "j100" => new JobCardDefinition(
+                id: new CardId('j100'),
                 title: 'Fachinformatikerin',
                 description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
                 gehalt: new MoneyAmount(34000),
@@ -356,7 +327,7 @@ abstract class TestCase extends BaseTestCase
         return [
             "suf0" => new KategorieCardDefinition(
                 id: new CardId('suf0'),
-                pileId: PileId::FREIZEIT_PHASE_1,
+                categoryId: CategoryId::SOZIALES_UND_FREIZEIT,
                 title: 'Ehrenamtliches Engagement',
                 description: 'Du engagierst dich ehrenamtlich für eine Organisation, die es Menschen mit Behinderung ermöglicht einen genialen Urlaub mit Sonne, Strand und Meer zu erleben. Du musst die Kosten dafür allerdings selbst tragen.',
                 resourceChanges: new ResourceChanges(
@@ -366,7 +337,7 @@ abstract class TestCase extends BaseTestCase
             ),
             "suf1" => new KategorieCardDefinition(
                 id: new CardId('suf1'),
-                pileId: PileId::FREIZEIT_PHASE_1,
+                categoryId: CategoryId::SOZIALES_UND_FREIZEIT,
                 title: 'Spende',
                 description: 'Bei deinem Einkauf spendest du nun immer Tiernahrung für die umliegende Tierheime. Dein Spendebeitrag ist 200 €.',
                 resourceChanges: new ResourceChanges(
@@ -376,7 +347,7 @@ abstract class TestCase extends BaseTestCase
             ),
             "suf2" => new KategorieCardDefinition(
                 id: new CardId('suf2'),
-                pileId: PileId::FREIZEIT_PHASE_1,
+                categoryId: CategoryId::SOZIALES_UND_FREIZEIT,
                 title: 'kostenlose Nachhilfe',
                 description: 'Du gibst kostenlose Nachhilfe für sozial benachteiligte Kinder. Du verlierst einen Zeitstein.',
                 resourceChanges: new ResourceChanges(
@@ -390,12 +361,12 @@ abstract class TestCase extends BaseTestCase
     /**
      * @return KategorieCardDefinition[]
      */
-    private function getCardsForBildungAndKarriere(): array
+    protected function getCardsForBildungAndKarriere(): array
     {
         return [
             "buk0" => new KategorieCardDefinition(
                 id: new CardId('buk0'),
-                pileId: PileId::BILDUNG_PHASE_1,
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
                 title: 'Sprachkurs',
                 description: 'Mache einen Sprachkurs über drei Monate im Ausland.',
                 resourceChanges: new ResourceChanges(
@@ -405,7 +376,7 @@ abstract class TestCase extends BaseTestCase
             ),
             "buk1" => new KategorieCardDefinition(
                 id: new CardId('buk1'),
-                pileId: PileId::BILDUNG_PHASE_1,
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
                 title: 'Erste-Hilfe-Kurs',
                 description: 'Du machst einen Erste-Hilfe-Kurs, um im Notfall richtig zu reagieren.',
                 resourceChanges: new ResourceChanges(
@@ -415,7 +386,7 @@ abstract class TestCase extends BaseTestCase
             ),
             "buk2" => new KategorieCardDefinition(
                 id: new CardId('buk2'),
-                pileId: PileId::BILDUNG_PHASE_1,
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
                 title: 'Gedächtnistraining',
                 description: 'Mache jeden Tag 20 Minuten Gedächtnistraining, um dich geistig fit zu halten.',
                 resourceChanges: new ResourceChanges(
@@ -434,7 +405,6 @@ abstract class TestCase extends BaseTestCase
         return [
             "mj0" => new MinijobCardDefinition(
                 id: new CardId('mj0'),
-                pileId: PileId::MINIJOBS_PHASE_1,
                 title: 'Minijob',
                 description: 'Kellnerin im Ausland. Einmalzahlung 5.000 €.',
                 resourceChanges: new ResourceChanges(
@@ -443,7 +413,6 @@ abstract class TestCase extends BaseTestCase
             ),
             "mj1" => new MinijobCardDefinition(
                 id: new CardId('mj1'),
-                pileId: PileId::MINIJOBS_PHASE_1,
                 title: 'Minijob',
                 description: 'Putzkraft im Ausland. Einmalzahlung 2.000 €.',
                 resourceChanges: new ResourceChanges(
@@ -455,58 +424,58 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * @param CardDefinition[] $cards
-     * @param PileId $pileId
-     * @return void
-     */
-    protected function addCardsOnTopOfPile(array $cards, PileId $pileId): void
-    {
-        $cardsToAdd = [];
-        foreach ($cards as $card) {
-            $cardsToAdd[$card->getId()->value] = $card;
-        }
-        $testCards = [
-            PileId::BILDUNG_PHASE_1->value => $this->getCardsForBildungAndKarriere(),
-            PileId::FREIZEIT_PHASE_1->value => $this->getCardsForSozialesAndFreizeit(),
-            PileId::JOBS_PHASE_1->value => $this->getCardsForJobs(),
-            PileId::MINIJOBS_PHASE_1->value => $this->getCardsForMinijobs(),
-            PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value => $this->getCardsForEreignisseBildungUndKarriere(),
-        ];
-        $testCards[$pileId->value] = [...$cardsToAdd, ...$testCards[$pileId->value]];
-        CardFinder::getInstance()->overrideCardsForTesting($testCards);
-        $this->coreGameLogic->handle(
-            $this->gameId,
-            ChangeKonjunkturphase::create()
-                ->withFixedKonjunkturphaseForTesting($this->konjunkturphaseDefinition)
-                ->withFixedCardOrderForTesting(
-                    new CardOrder(pileId: $this->pileIdBildung, cards: array_map(fn($card) => $card->getId(),
-                        $testCards[PileId::BILDUNG_PHASE_1->value])),
-                    new CardOrder(pileId: $this->pileIdFreizeit, cards: array_map(fn($card) => $card->getId(),
-                        $testCards[PileId::FREIZEIT_PHASE_1->value])),
-                    new CardOrder(pileId: $this->pileIdJobs, cards: array_map(fn($card) => $card->getId(),
-                        $testCards[PileId::JOBS_PHASE_1->value])),
-                    new CardOrder(pileId: $this->pileIdMinijobs, cards: array_map(fn($card) => $card->getId(),
-                        $testCards[PileId::MINIJOBS_PHASE_1->value])),
-                    new CardOrder(pileId: $this->pileIdEreignisseBildungUndKarriere, cards: array_map(fn($card) => $card->getId(),
-                        $testCards[PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1->value])),
-                ));
-    }
-
-    /**
      * @return EreignisCardDefinition[]
      */
-    private function getCardsForEreignisseBildungUndKarriere(): array
+    protected function getCardsForEreignisse(): array
     {
         return [
             "e0" => new EreignisCardDefinition(
                 id: new CardId('e0'),
-                pileId: PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1,
+                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
                 title: 'Nichts',
                 description: 'Es passiert nichts, damit die Tests vorhersehbar bleiben',
+                year: new Year(1),
+                resourceChanges: new ResourceChanges(),
+                modifierIds: [],
+                modifierParameters: new ModifierParameters(),
+            ),
+            "e1" => new EreignisCardDefinition(
+                id: new CardId('e1'),
+                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+                title: 'Nichts',
+                description: 'Es passiert nichts, damit die Tests vorhersehbar bleiben',
+                year: new Year(1),
                 resourceChanges: new ResourceChanges(),
                 modifierIds: [],
                 modifierParameters: new ModifierParameters(),
             ),
         ];
+    }
+
+    public function startNewKonjunkturphaseWithCardsOnTop(array $cardsForTesting): void
+    {
+        /**
+         * @var CardDefinition[] $allCards
+         */
+        $allCards = [
+            ...$cardsForTesting, // Add cards to start of the list -> will be drawn first
+            ...$this->getCardsForBildungAndKarriere(),
+            ...$this->getCardsForSozialesAndFreizeit(),
+            ...$this->getCardsForJobs(),
+            ...$this->getCardsForMinijobs(),
+            ...$this->getCardsForEreignisse(),
+        ];
+        $allCardsWithIdsAsKey = [];
+        foreach ($allCards as $card) {
+            $allCardsWithIdsAsKey[$card->getId()->value] = $card;
+        }
+        CardFinder::getInstance()->overrideCardsForTesting($allCardsWithIdsAsKey);
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ChangeKonjunkturphase::create()
+                ->withFixedKonjunkturphaseForTesting($this->konjunkturphaseDefinition)
+                ->withFixedCardOrderForTesting()
+        );
     }
 }

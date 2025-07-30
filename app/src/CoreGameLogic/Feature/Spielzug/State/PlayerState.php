@@ -32,6 +32,7 @@ use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
 use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Lebensziel\Dto\LebenszielDefinition;
@@ -212,22 +213,10 @@ class PlayerState
      * @param PlayerId $playerId
      * @return MoneyAmount
      */
-    public static function getBaseGehaltForPlayer(GameEvents $stream, PlayerId $playerId): MoneyAmount
+    public static function getCurrentGehaltForPlayer(GameEvents $stream, PlayerId $playerId): MoneyAmount
     {
         $job = self::getJobForPlayer($stream, $playerId);
-        $gehalt = $job->gehalt ?? new MoneyAmount(0);
-        return ModifierCalculator::forStream($stream)->forPlayer($playerId)->modify($stream, HookEnum::GEHALT, $gehalt);
-    }
-
-    /**
-     * @param GameEvents $stream
-     * @param PlayerId $playerId
-     * @return MoneyAmount
-     */
-    public static function getModifiedGehaltForPlayer(GameEvents $stream, PlayerId $playerId): MoneyAmount
-    {
-        $job = self::getJobForPlayer($stream, $playerId);
-        $gehalt = $job->gehalt ?? new MoneyAmount(0);
+        $gehalt = $job?->getGehalt() ?? new MoneyAmount(0);
         return ModifierCalculator::forStream($stream)->forPlayer($playerId)->modify($stream, HookEnum::GEHALT, $gehalt);
     }
 
@@ -296,6 +285,17 @@ class PlayerState
         return new MoneyAmount($currentDividend * $amountOfLowRiskStocksForPlayer);
     }
 
+    public static function getCurrentLebenszielphaseIdForPlayer(GameEvents $gameEvents, PlayerId $playerId): LebenszielPhaseId
+    {
+        /** @var LebenszielphaseWasChanged|null $lastLebenszielWasChangedEvent */
+        $lastLebenszielWasChangedEvent = $gameEvents->findLastOrNullWhere(fn ($event) => $event instanceof LebenszielphaseWasChanged && $event->playerId->equals($playerId));
+        if($lastLebenszielWasChangedEvent === null) { // We know we are in Lebenszielphase 1
+            return LebenszielPhaseId::PHASE_1;
+        }
+        return $lastLebenszielWasChangedEvent->currentPhase;
+    }
+
+
     public static function getCurrentLebenszielphaseDefinitionForPlayer(GameEvents $gameEvents, PlayerId $playerId): LebenszielPhaseDefinition
     {
         $lebenszielDefinition = self::getLebenszielDefinitionForPlayer($gameEvents, $playerId);
@@ -305,7 +305,7 @@ class PlayerState
         if($lastLebenszielWasChangedEvent === null) { // We know we are in Lebenszielphase 1
             return $lebenszielDefinition->phaseDefinitions[0];
         }
-        return $lebenszielDefinition->phaseDefinitions[$lastLebenszielWasChangedEvent->currentPhase - 1];
+        return $lebenszielDefinition->phaseDefinitions[$lastLebenszielWasChangedEvent->currentPhase->value - 1];
     }
 
     /**

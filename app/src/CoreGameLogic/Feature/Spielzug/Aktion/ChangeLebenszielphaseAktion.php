@@ -14,6 +14,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
+use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
 use RuntimeException;
 
 class ChangeLebenszielphaseAktion extends Aktion
@@ -46,7 +47,7 @@ class ChangeLebenszielphaseAktion extends Aktion
         );
 
         return GameEventsToPersist::with(
-            new LebenszielphaseWasChanged($playerId, $resourceChanges, $currentPhaseDefinition->phase + 1)
+            new LebenszielphaseWasChanged($playerId, $resourceChanges, LebenszielPhaseId::from($currentPhaseDefinition->lebenszielPhaseId->value + 1))
         );
     }
 }

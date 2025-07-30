@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Domain\Definitions\Lebensziel\Dto;
 
+use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
+
 readonly class LebenszielPhaseDefinition
 {
     public function __construct(
-        public int    $phase,
+        public LebenszielPhaseId $lebenszielPhaseId,
         public string $description,
-        public float  $investitionen,
-        public int    $bildungsKompetenzSlots,
-        public int    $freizeitKompetenzSlots,
+        public float $investitionen,
+        public int $bildungsKompetenzSlots,
+        public int $freizeitKompetenzSlots,
     ) {
     }
 
@@ -22,7 +24,7 @@ readonly class LebenszielPhaseDefinition
     public static function fromArray(array $values): self
     {
         return new self(
-            phase: $values['phase'],
+            lebenszielPhaseId: LebenszielPhaseId::from($values['lebenszielPhaseId']),
             description: $values['description'],
             investitionen: $values['investitionen'],
             bildungsKompetenzSlots: $values['bildungsKompetenzSlots'],
@@ -36,7 +38,7 @@ readonly class LebenszielPhaseDefinition
     public function jsonSerialize(): array
     {
         return [
-            'phase' => $this->phase,
+            'lebenszielPhaseId' => $this->lebenszielPhaseId->value,
             'description' => $this->description,
             'investitionen' => $this->investitionen,
             'bildungsKompetenzSlots' => $this->bildungsKompetenzSlots,

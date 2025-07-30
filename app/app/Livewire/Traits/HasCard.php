@@ -20,6 +20,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\EreignisCardDefinition;
+use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 trait HasCard
@@ -47,8 +48,9 @@ trait HasCard
         // if player skipped a card, we show the next card from the top of the pile
         $aktionsCalculator = AktionsCalculator::forStream($this->gameEvents);
         if ($aktionsCalculator->hasPlayerSkippedACardThisRound() && !$aktionsCalculator->hasPlayerPlayedACardOrPutOneBack()) {
+            /** @var CardWasSkipped $cardWasSkipped */
             $cardWasSkipped = $this->gameEvents->findLast(CardWasSkipped::class);
-            $pileId = PileState::getPileIdForCategoryAndPhase($cardWasSkipped->categoryId, PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($this->gameEvents, $this->myself)->phase);
+            $pileId = new PileId($cardWasSkipped->getCategoryId(), PlayerState::getCurrentLebenszielphaseIdForPlayer($this->gameEvents, $this->myself));
 
             // get next card from top and show it
             $topCardIdForPile = PileState::topCardIdForPile($this->gameEvents, $pileId);
@@ -127,7 +129,7 @@ trait HasCard
         $ereignisOrNull = $eventsAfterActivateCard->findLastOrNull(EreignisWasTriggered::class);
         if ($ereignisOrNull !== null) {
             $ereignisCardDefinition = CardFinder::getInstance()->getCardById($ereignisOrNull->ereignisCardId, EreignisCardDefinition::class);
-            $this->ereignisCardDefinition = $ereignisCardDefinition->description();
+            $this->ereignisCardDefinition = $ereignisCardDefinition->getDescription();
             $this->isEreignisCardVisible = true;
         }
         $this->broadcastNotify();

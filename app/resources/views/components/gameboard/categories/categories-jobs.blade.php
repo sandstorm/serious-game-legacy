@@ -26,10 +26,10 @@
     <button class="button button--type-outline-primary"
             wire:click="showIncomeTab('salary')">
         <ul class="zeitsteine">
-            <li>-{{ $jobDefinition->requirements->zeitsteine }}</li>
+            <li>-{{ $jobDefinition->getRequirements()->zeitsteine }}</li>
             <x-gameboard.zeitsteine.zeitstein-icon :player-color-class="PlayerState::getPlayerColorClass($gameEvents, $playerId)" />
         </ul>
-        <span>Mein Job. {!! PlayerState::getBaseGehaltForPlayer($gameEvents, $playerId)->format() !!}</span>
+        <span>Mein Job. {!! PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId)->format() !!}</span>
     </button>
 @endif
 @if ($this->jobOfferIsVisible)

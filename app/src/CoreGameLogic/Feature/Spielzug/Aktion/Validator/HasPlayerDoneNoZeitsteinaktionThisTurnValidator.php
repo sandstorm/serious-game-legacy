@@ -82,7 +82,7 @@ final class HasPlayerDoneNoZeitsteinaktionThisTurnValidator extends AbstractVali
             );
         }
 
-        if ($zeitsteinEventsThisTurn->findFirst(CardWasSkipped::class)->categoryId->value !== $this->categoryId->value) {
+        if ($zeitsteinEventsThisTurn->findFirst(CardWasSkipped::class)->getCategoryId()->value !== $this->categoryId->value) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: 'Du hast bereits eine Karte in einer anderen Kategorie übersprungen'

@@ -23,7 +23,7 @@ final class HasPlayerEnoughResourcesForLebenszielphasenChangeValidator extends A
             );
         }
 
-        $currentLebenszielPhase = $currentLebensziel->phaseDefinitions[PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($gameEvents, $playerId)->phase - 1];
+        $currentLebenszielPhase = $currentLebensziel->phaseDefinitions[PlayerState::getCurrentLebenszielphaseIdForPlayer($gameEvents, $playerId)->value - 1];
 
         $playerResources = PlayerState::getResourcesForPlayer($gameEvents, $playerId);
         if ($currentLebenszielPhase->bildungsKompetenzSlots > $playerResources->bildungKompetenzsteinChange) {
