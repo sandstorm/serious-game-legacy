@@ -8,7 +8,7 @@
     <ul class="lebensziel__phasen">
         @foreach($lebensziel->phaseDefinitions as $phase)
             <li class="lebensziel__phase">
-                <h4>Phase {{$phase->phase}}</h4>
+                <h4>Phase {{$phase->lebenszielPhaseId->value}}</h4>
                 <p>{{$phase->description}}</p>
 
                 <div class="lebensziel__phase-kompetenzen">

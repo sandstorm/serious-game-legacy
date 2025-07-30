@@ -17,8 +17,8 @@
             <td>
                 <small>Mein Gehalt</small> <br/>
                 {!! $gehalt->format() !!}
-                @if(!$gehalt->equals($jobDefinition->gehalt))
-                    (Basisgehalt: {!! $jobDefinition->gehalt->format() !!})
+                @if(!$gehalt->equals($jobDefinition->getGehalt()))
+                    (Basisgehalt: {!! $jobDefinition->getGehalt()->format() !!})
                 @endif
             </td>
             <td>

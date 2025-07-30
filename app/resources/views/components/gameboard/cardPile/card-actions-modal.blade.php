@@ -15,7 +15,7 @@
 @section('title')
     <div class="card__actions-header">
         <div>
-            {{ $card->title }}
+            {{ $card->getTitle() }}
         </div>
         <div class="card__actions-header-category">
             @if ($category === CategoryId::SOZIALES_UND_FREIZEIT->value)
@@ -31,7 +31,7 @@
 
 @section('content')
     <p>
-        {{ $card->description }}
+        {{ $card->getDescription() }}
     </p>
 
     @if ($this->playerHasToPlayCard)
@@ -44,7 +44,7 @@
 
 @section('footer')
     <div class="card__actions-footer">
-        <x-gameboard.cardPile.card-effects style-class="horizontal" :resource-changes="$card->resourceChanges" />
+        <x-gameboard.cardPile.card-effects style-class="horizontal" :resource-changes="$card->getResourceChanges()" />
 
         @if (!$this->playerHasToPlayCard)
             <button

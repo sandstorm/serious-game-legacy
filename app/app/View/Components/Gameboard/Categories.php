@@ -32,18 +32,20 @@ class Categories extends Component
      */
     public function render(): View
     {
+        $currentLebenszielPhase = PlayerState::getCurrentLebenszielphaseIdForPlayer($this->gameEvents, $this->playerId);
+
         $categories = [
             new GameboardInformationForCategory(
                 componentName: 'gameboard.categories.categories-bildung',
                 title: CategoryId::BILDUNG_UND_KARRIERE,
                 zeitsteine: $this->getZeitsteineForCategory(CategoryId::BILDUNG_UND_KARRIERE),
-                cardPile: PileId::BILDUNG_PHASE_1,
+                cardPile: (string) new PileId(CategoryId::BILDUNG_UND_KARRIERE, $currentLebenszielPhase),
             ),
             new GameboardInformationForCategory(
                 componentName: 'gameboard.categories.categories-freizeit',
                 title: CategoryId::SOZIALES_UND_FREIZEIT,
                 zeitsteine: $this->getZeitsteineForCategory(CategoryId::SOZIALES_UND_FREIZEIT),
-                cardPile: PileId::FREIZEIT_PHASE_1,
+                cardPile: (string) new PileId(CategoryId::SOZIALES_UND_FREIZEIT, $currentLebenszielPhase),
             ),
             new GameboardInformationForCategory(
                 componentName: 'gameboard.categories-jobs',

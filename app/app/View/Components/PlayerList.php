@@ -64,7 +64,7 @@ class PlayerList extends Component
                 playerColorClass: PlayerState::getPlayerColorClass($this->gameEvents, $playerId),
                 isPlayersTurn: $playerId->equals($this->activePlayer),
                 zeitsteine: $this->getZeitsteineForPlayer($playerId),
-                phase: PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($this->gameEvents, $playerId)->phase
+                phase: PlayerState::getCurrentLebenszielphaseIdForPlayer($this->gameEvents, $playerId)->value,
             );
 
             $playerList[] = $playerDto;

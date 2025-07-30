@@ -40,9 +40,9 @@ class EreignisModal extends Component
             );
 
         return view('components.gameboard.ereignis-modal', [
-            'title' => $ereignisCardDefinition->title,
-            'description' => $ereignisCardDefinition->description(),
-            'resourceChanges' => $ereignisCardDefinition->resourceChanges,
+            'title' => $ereignisCardDefinition->getTitle(),
+            'description' => $ereignisCardDefinition->getDescription(),
+            'resourceChanges' => $ereignisCardDefinition->getResourceChanges(),
         ]);
     }
 }

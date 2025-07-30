@@ -12,18 +12,33 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
+use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
+use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 use Tests\TestCase;
 
 describe('handleChangeKonjunkturphase', function () {
     beforeEach(function () {
+        $cardsForTesting = [
+            "cardForTesting" => new KategorieCardDefinition(
+                id: new CardId('cardForTesting'),
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                title: 'for testing',
+                description: '...',
+                year: new Year(1),
+                resourceChanges: new ResourceChanges()
+            ),
+        ];
+
         /** @var TestCase $this */
-        $this->setupBasicGame();
+        $this->setupBasicGame(cards: $cardsForTesting);
     });
 
     it('redistributes Zeitsteine', function () {
+        /** @var TestCase $this */
         // Make sure the initial number of Zeitsteine is what we expect
         $expectedNumberOfZeitsteine = $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2);
         /** @var GameEvents $stream */
@@ -31,16 +46,7 @@ describe('handleChangeKonjunkturphase', function () {
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe($expectedNumberOfZeitsteine);
 
         // use a Zeitstein
-        $cardsForTesting = [
-            "cardForTesting" => new KategorieCardDefinition(
-                id: new CardId('cardForTesting'),
-                pileId: $this->pileIdBildung,
-                title: 'for testing',
-                description: '...',
-                resourceChanges: new ResourceChanges()
-            ),
-        ];
-        $this->addCardsOnTopOfPile($cardsForTesting, $this->pileIdBildung);
+
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe($expectedNumberOfZeitsteine);
 

@@ -9,21 +9,16 @@ use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
-use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\CardOrder;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\StockPriceState;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Year;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Zinssatz;
-use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
-use Domain\Definitions\Card\PileFinder;
+use Domain\Definitions\Card\CardFinder;
+use Domain\Definitions\Card\Dto\Pile;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
-use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
+use Domain\Definitions\Konjunkturphase\ValueObject\Year;
+use Random\RandomException;
 use Random\Randomizer;
 
 /**
@@ -50,6 +45,7 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
      * @param ChangeKonjunkturphase $command
      * @param GameEvents $gameState
      * @return GameEventsToPersist
+     * @throws RandomException
      */
     public function handleChangeKonjunkturphase(
         ChangeKonjunkturphase $command,
@@ -85,19 +81,19 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
 
     private function handleShuffleCards(ChangeKonjunkturphase $command): GameEventsToPersist
     {
-        if (isset($command->fixedCardOrderForTesting) && count($command->fixedCardOrderForTesting) > 0) {
+        if ($command->hasFixedCardOrderForTesting) {
             return GameEventsToPersist::with(
-                new CardsWereShuffled($command->fixedCardOrderForTesting)
+                new CardsWereShuffled(CardFinder::getInstance()->generatePilesFromCards())
             );
         }
 
         $piles = [];
-        foreach (PileId::cases() as $pileId) {
-            $cards = $this->shuffleCards(PileFinder::getCardsIdsForPile($pileId));
+        foreach (CardFinder::getInstance()->generatePilesFromCards() as $pile) {
+            $cardIds = $this->shuffleCards($pile->getCardIds());
 
-            $piles[] = new CardOrder(
-                pileId: $pileId,
-                cards: $cards
+            $piles[] = new Pile(
+                pileId: $pile->getPileId(),
+                cardIds: $cardIds
             );
         }
 

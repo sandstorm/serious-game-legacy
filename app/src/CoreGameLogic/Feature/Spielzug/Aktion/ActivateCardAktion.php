@@ -16,6 +16,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\EreignisCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\CardDefinition;
@@ -32,14 +33,16 @@ class ActivateCardAktion extends Aktion
     public function __construct(public CategoryId $category)
     {
         parent::__construct('activate-card', 'Karte Spielen');
-
-        // TODO reorganize piles -> Category and phase separate -> `PileState::topCardIdForPile($gameEvents, PileId::BILDUNG, phase: 1)`
-        $this->pileId = PileState::getPileIdForCategoryAndPhase($category);
     }
 
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
+        $this->pileId = new PileId(
+            $this->category,
+            PlayerState::getCurrentLebenszielphaseIdForPlayer($gameEvents, $playerId)
+        );
+
         $validationChain = new IsPlayersTurnValidator();
         $validationChain
             ->setNext(new CanPlayerAffordTopCardOnPileValidator($this->pileId))
@@ -56,7 +59,7 @@ class ActivateCardAktion extends Aktion
         $costToActivate = new ResourceChanges(
             zeitsteineChange: AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound() ? 0 : -1
         );
-        return $cardDefinition instanceof KategorieCardDefinition ? $costToActivate->accumulate($cardDefinition->resourceChanges) : $costToActivate;
+        return $cardDefinition instanceof KategorieCardDefinition ? $costToActivate->accumulate($cardDefinition->getResourceChanges()) : $costToActivate;
     }
 
     public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist
@@ -72,7 +75,6 @@ class ActivateCardAktion extends Aktion
                 $playerId,
                 $this->pileId,
                 $cardDefinition->getId(),
-                $this->category,
                 $this->getTotalCosts($gameEvents, $cardDefinition),
                 AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound() ? 0 : 1,
             )
@@ -80,7 +82,7 @@ class ActivateCardAktion extends Aktion
 
         // Append Ereignis-Events (this has a 25 percent chance to be triggered, otherwise nothing gets added)
         return $eventsFromActivation->withAppendedEvents(
-            ...(new EreignisCommandHandler())->handle(MaybeTriggerEreignis::create($playerId), $gameEvents)
+            ...(new EreignisCommandHandler())->handle(MaybeTriggerEreignis::create($playerId, $this->category), $gameEvents)
         );
     }
 }

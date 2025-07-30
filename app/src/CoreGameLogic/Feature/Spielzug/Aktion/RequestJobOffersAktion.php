@@ -46,7 +46,7 @@ class RequestJobOffersAktion extends Aktion
         if (!$result->canExecute) {
             throw new \RuntimeException("Cannot request job offers" . $result->reason, 1749043606);
         }
-        $jobs = CardFinder::getInstance()->getThreeRandomJobs(PlayerState::getResourcesForPlayer($gameEvents, $playerId));
+        $jobs = CardFinder::getInstance()->getThreeRandomJobs(PlayerState::getCurrentLebenszielphaseIdForPlayer($gameEvents, $playerId));
         return GameEventsToPersist::with(
             new JobOffersWereRequested($playerId, array_map(fn($job) => $job->getId(), $jobs))
         );

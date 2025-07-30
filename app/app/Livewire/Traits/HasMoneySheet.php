@@ -55,7 +55,7 @@ trait HasMoneySheet
 
         // init insurances form
         $insurances = InsuranceFinder::getInstance()->getAllInsurances();
-        $currentPlayerPhase = PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($this->gameEvents, $this->myself)->phase;
+        $currentPlayerPhase = PlayerState::getCurrentLebenszielphaseIdForPlayer($this->gameEvents, $this->myself)->value;
         foreach ($insurances as $insurance) {
             $isActive = MoneySheetState::doesPlayerHaveThisInsurance($this->gameEvents, $this->myself, $insurance->id);
             $this->moneySheetInsurancesForm->addInsurance(
@@ -146,7 +146,7 @@ trait HasMoneySheet
             doesLebenshaltungskostenRequirePlayerAction: MoneySheetState::doesLebenshaltungskostenRequirePlayerAction($this->gameEvents, $playerId),
             steuernUndAbgaben: MoneySheetState::getLastInputForSteuernUndAbgaben($this->gameEvents, $playerId),
             doesSteuernUndAbgabenRequirePlayerAction: MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($this->gameEvents, $playerId),
-            gehalt: PlayerState::getBaseGehaltForPlayer($this->gameEvents, $playerId),
+            gehalt: PlayerState::getCurrentGehaltForPlayer($this->gameEvents, $playerId),
             total: MoneySheetState::calculateTotalForPlayer($this->gameEvents, $playerId),
             totalInsuranceCost: MoneySheetState::getCostOfAllInsurances($this->gameEvents, $playerId),
             sumOfAllLoans: MoneySheetState::getSumOfAllLoansForPlayer($this->gameEvents, $playerId),

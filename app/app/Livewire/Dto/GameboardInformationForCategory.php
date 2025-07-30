@@ -13,13 +13,13 @@ class GameboardInformationForCategory
      * @param string $componentName
      * @param CategoryId $title
      * @param ZeitsteinWithColor[] $zeitsteine
-     * @param PileId|null $cardPile
+     * @param string|null $cardPile
      */
     public function __construct(
         public string $componentName,
         public CategoryId $title,
         public array $zeitsteine,
-        public ?PileId $cardPile = null,
+        public ?string $cardPile = null,
     ) {}
 
 }

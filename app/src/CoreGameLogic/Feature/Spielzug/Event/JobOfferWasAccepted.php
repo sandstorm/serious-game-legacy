@@ -52,7 +52,7 @@ final readonly class JobOfferWasAccepted implements GameEventInterface, Provides
         }
 
         $cardDefinition = CardFinder::getInstance()->getCardById($this->cardId, JobCardDefinition::class);
-        return new ModifierCollection([new BindZeitsteinForJobModifier($this->playerId, $this->playerTurn, $cardDefinition->description())]);
+        return new ModifierCollection([new BindZeitsteinForJobModifier($this->playerId, $this->playerTurn, $cardDefinition->getDescription())]);
     }
 
 }

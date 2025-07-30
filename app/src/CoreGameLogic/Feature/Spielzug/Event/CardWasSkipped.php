@@ -20,7 +20,6 @@ final readonly class CardWasSkipped implements ZeitsteinAktion, DrawsCard, GameE
         public PlayerId   $playerId,
         public CardId     $cardId,
         public PileId     $pileId,
-        public CategoryId $categoryId,
     ) {
     }
 
@@ -29,8 +28,7 @@ final readonly class CardWasSkipped implements ZeitsteinAktion, DrawsCard, GameE
         return new self(
             playerId: PlayerId::fromString($values['playerId']),
             cardId: new CardId($values['cardId']),
-            pileId: PileId::from($values['pileId']),
-            categoryId: CategoryId::from($values['categoryId']),
+            pileId: PileId::fromArray($values['pileId']),
         );
     }
 
@@ -40,13 +38,7 @@ final readonly class CardWasSkipped implements ZeitsteinAktion, DrawsCard, GameE
             'playerId' => $this->playerId,
             'cardId' => $this->cardId,
             'pileId' => $this->pileId,
-            'categoryId' => $this->categoryId->value,
         ];
-    }
-
-    public function getPileId(): PileId
-    {
-        return $this->pileId;
     }
 
     public function getResourceChanges(PlayerId $playerId): ResourceChanges
@@ -60,7 +52,7 @@ final readonly class CardWasSkipped implements ZeitsteinAktion, DrawsCard, GameE
 
     public function getCategoryId(): CategoryId
     {
-        return $this->categoryId;
+        return $this->pileId->categoryId;
     }
 
     public function getPlayerId(): PlayerId
@@ -71,5 +63,10 @@ final readonly class CardWasSkipped implements ZeitsteinAktion, DrawsCard, GameE
     public function getNumberOfZeitsteinslotsUsed(): int
     {
         return 1;
+    }
+
+    public function getPileId(): PileId
+    {
+        return $this->pileId;
     }
 }

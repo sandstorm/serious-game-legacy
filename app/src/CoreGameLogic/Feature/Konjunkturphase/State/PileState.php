@@ -22,7 +22,7 @@ class PileState
     {
         $currentDrawEventsForPile = $stream->findAllAfterLastOfType(CardsWereShuffled::class)
             ->findAllOfType(DrawsCard::class)
-            ->filter(fn (DrawsCard $event) => $event->getPileId() === $pileId);
+            ->filter(fn (DrawsCard $event) => $event->getPileId()->equals($pileId));
 
         return count($currentDrawEventsForPile);
     }
@@ -30,43 +30,25 @@ class PileState
     /**
      * Returns the CardId of the Card that is currently on top of a given pile.
      *
-     * @param GameEvents $stream
+     * @param GameEvents $gameEvents
      * @param PileId $pileId
      * @return CardId
      * @throws \RuntimeException
      */
-    public static function topCardIdForPile(GameEvents $stream, PileId $pileId): CardId
+    public static function topCardIdForPile(GameEvents $gameEvents, PileId $pileId): CardId
     {
-        $currentPiles = $stream->findLast(CardsWereShuffled::class)->piles;
+        $currentPiles = $gameEvents->findLast(CardsWereShuffled::class)->piles;
         foreach ($currentPiles as $pile) {
-            if ($pile->pileId === $pileId) {
-                $cardIndex = self::numberOfCardDrawsSinceLastShuffle($stream, $pileId);
-                if ($cardIndex >= count($pile->cards)) {
-                    throw new \RuntimeException("Card index ($cardIndex) out of bounds for pile ($pileId->value)", 1748003108);
+            if ($pile->getPileId()->equals($pileId)) {
+                $cardIndex = self::numberOfCardDrawsSinceLastShuffle($gameEvents, $pileId);
+                if ($cardIndex >= count($pile->getCardIds())) {
+                    throw new \RuntimeException("Card index ($cardIndex) out of bounds for pile ($pileId)", 1748003108);
                 }
 
-                return array_values($pile->cards)[$cardIndex];
+                return array_values($pile->getCardIds())[$cardIndex];
             }
         }
 
-        throw new \RuntimeException("Pile ($pileId->value) not found");
-    }
-
-
-    /**
-     * @param CategoryId $category
-     * @param int $phase
-     * @return PileId
-     *
-     * TODO make Phase Value Object
-     */
-    public static function getPileIdForCategoryAndPhase(CategoryId $category, int $phase = 1): PileId
-    {
-        return match ($category) {
-            CategoryId::BILDUNG_UND_KARRIERE => PileId::BILDUNG_PHASE_1,
-            CategoryId::SOZIALES_UND_FREIZEIT => PileId::FREIZEIT_PHASE_1,
-            CategoryId::JOBS => PileId::JOBS_PHASE_1,
-            default => PileId::BILDUNG_PHASE_1, // TODO add all Categories and consider the phase
-        };
+        throw new \RuntimeException("Pile ($pileId) not found");
     }
 }

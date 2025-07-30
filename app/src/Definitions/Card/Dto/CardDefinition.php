@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace Domain\Definitions\Card\Dto;
 
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 /**
- * Use this interface for Events that draw a card. It will be used to track which/how many cards have
- * been drawn from a pile and to determine the card that is currently on top of the pile.
+ * Use this interface for all cards
  */
 interface CardDefinition
 {
     public function getId(): CardId;
-    public function getPileId(): PileId;
+    public function getCategory(): CategoryId;
     public function getTitle(): string;
-    public function description(): string;
+    public function getDescription(): string;
+    public function getPhase(): LebenszielPhaseId;
 }

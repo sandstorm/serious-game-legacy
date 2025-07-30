@@ -18,10 +18,10 @@
     <div class="job-offers">
         @foreach($jobOffers as $jobOffer)
             <div @class(["card", "card--disabled" => !AktionsCalculator::forStream($gameEvents)->canPlayerAffordJobCard($playerId, $jobOffer)])>
-                <h4 class="card__title">{{ $jobOffer->title }}</h4>
+                <h4 class="card__title">{{ $jobOffer->getTitle() }}</h4>
                 <div class="card__content">
                     <div class="card__effect">
-                        {!! $jobOffer->gehalt->formatWithIcon() !!} <br />
+                        {!! $jobOffer->getGehalt()->formatWithIcon() !!} <br />
                     </div>
                     <span class="font-size--sm">Jahresgehalt brutto</span>
                     <button type="button"
@@ -31,7 +31,7 @@
                             "button--disabled" => !AktionsCalculator::forStream($gameEvents)->canPlayerAffordJobCard($playerId, $jobOffer),
                             $this->getButtonPlayerClass()
                         ])
-                        wire:click="applyForJob('{{ $jobOffer->id->value }}')"
+                        wire:click="applyForJob('{{ $jobOffer->getId()->value }}')"
                     >
                         Das mache ich!
                     </button>
@@ -39,16 +39,16 @@
 
                 <div class="job-offer__requirements">
                     <h5>Voraussetzungen:</h5>
-                    @if ($jobOffer->requirements->bildungKompetenzsteine === 0 && $jobOffer->requirements->freizeitKompetenzsteine === 0)
+                    @if ($jobOffer->getRequirements()->bildungKompetenzsteine === 0 && $jobOffer->getRequirements()->freizeitKompetenzsteine === 0)
                         <strong>Keine</strong>
                     @else
                         <ul class="kompetenzen">
-                            @for($i = 0; $i < $jobOffer->requirements->bildungKompetenzsteine; $i++)
+                            @for($i = 0; $i < $jobOffer->getRequirements()->bildungKompetenzsteine; $i++)
                                 <x-gameboard.kompetenzen.kompetenz-icon-bildung
                                     :drawEmpty="true"
                                 />
                             @endfor
-                            @for($i = 0; $i < $jobOffer->requirements->freizeitKompetenzsteine; $i++)
+                            @for($i = 0; $i < $jobOffer->getRequirements()->freizeitKompetenzsteine; $i++)
                                 <x-gameboard.kompetenzen.kompetenz-icon-freizeit
                                     :drawEmpty="true"
                                 />

@@ -54,7 +54,7 @@ class PlayerDetails extends Component
             zeitsteine: PlayerState::getZeitsteineForPlayer($this->gameEvents, $playerId),
             kompetenzsteineBildung: PlayerState::getBildungsKompetenzsteine($this->gameEvents, $playerId),
             kompetenzsteineFreizeit: PlayerState::getFreizeitKompetenzsteine($this->gameEvents, $playerId),
-            currentLebenszielPhase: PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($this->gameEvents, $playerId)->phase,
+            currentLebenszielPhase: PlayerState::getCurrentLebenszielphaseIdForPlayer($this->gameEvents, $playerId)->value,
         );
     }
 

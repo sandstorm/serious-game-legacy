@@ -47,8 +47,8 @@ class AcceptJobOffersAktion extends Aktion
         return GameEventsToPersist::with(
             new JobOfferWasAccepted(
                 playerId: $playerId,
-                cardId: $job->id,
-                gehalt: $job->gehalt,
+                cardId: $job->getId(),
+                gehalt: $job->getGehalt(),
                 playerTurn: PlayerState::getCurrentTurnForPlayer($gameEvents, $playerId)
             ),
         );

@@ -17,6 +17,7 @@ use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\EreignisCardDefinition;
 use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 /**
  * @internal no public API, because commands are no extension points. ALWAYS USE {@see ForCoreGameLogic::handle()} to trigger commands.
@@ -42,17 +43,30 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
         return rand(1, 4) === 1;
     }
 
-    private function getRandomEreignis(GameEvents $gameEvents, PlayerId $playerId): EreignisCardDefinition
+    private function getRandomEreignisForCategory(GameEvents $gameEvents, MaybeTriggerEreignis $command): EreignisCardDefinition
     {
+        $ereignisCardCategory = match ($command->categoryId) {
+            CategoryId::BILDUNG_UND_KARRIERE => CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+            CategoryId::SOZIALES_UND_FREIZEIT => CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+            default => throw new \RuntimeException("Cannot map category " . $command->categoryId->value . " to ereignis category"),
+        };
         /** @var EreignisCardDefinition[] $allCards */
-        $allCards = CardFinder::getInstance()->getCardsForPile(PileId::EREIGNISSE_BILDUNG_UND_KARRIERE_PHASE_1);
-        $filteredCards = array_filter($allCards, function ($cardDefinition) use ($gameEvents, $playerId) {
+        $allCards = CardFinder::getInstance()->getCardDefinitionsByCategoryAndPhase(
+            $ereignisCardCategory,
+            PlayerState::getCurrentLebenszielphaseIdForPlayer($gameEvents, $command->playerId),
+        );
+        $filteredCards = array_filter($allCards, function ($cardDefinition) use ($gameEvents, $command) {
             $hasPlayerAllPrerequisites = true;
-            foreach ($cardDefinition->ereignisRequirementIds as $requirementId) {
-                $hasPlayerAllPrerequisites = $hasPlayerAllPrerequisites && EreignisPrerequisiteChecker::forStream($gameEvents)->hasPlayerPrerequisites($playerId, $requirementId);
+            foreach ($cardDefinition->getEreignisRequirementIds() as $requirementId) {
+                $hasPlayerAllPrerequisites = $hasPlayerAllPrerequisites &&
+                    EreignisPrerequisiteChecker::forStream($gameEvents)
+                        ->hasPlayerPrerequisites($command->playerId, $requirementId);
             }
             return $hasPlayerAllPrerequisites;
         });
+        if (count($filteredCards) === 0) {
+            throw new \RuntimeException("No EreignisCard matches the current requirements", 1753874959); // We should always have cards
+        }
         return $filteredCards[array_rand($filteredCards)];
     }
 
@@ -61,11 +75,11 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
         if (!$this->doesTrigger()) {
             return GameEventsToPersist::empty();
         }
-        $ereignisDefinition = $this->getRandomEreignis($gameEvents, $command->playerId);
+        $ereignisDefinition = $this->getRandomEreignisForCategory($gameEvents, $command);
         return GameEventsToPersist::with(
             new EreignisWasTriggered(
                 playerId: $command->playerId,
-                ereignisCardId: $ereignisDefinition->id,
+                ereignisCardId: $ereignisDefinition->getId(),
                 playerTurn: PlayerState::getCurrentTurnForPlayer($gameEvents, $command->playerId),
                 year: KonjunkturphaseState::getCurrentYear($gameEvents),
             )

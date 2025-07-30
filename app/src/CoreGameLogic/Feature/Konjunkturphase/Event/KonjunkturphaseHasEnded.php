@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\ValueObject\Year;
+use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 
 final readonly class KonjunkturphaseHasEnded implements GameEventInterface
 {

@@ -62,7 +62,7 @@ class KompetenzenOverview extends Component
 
         return view('components.gameboard.kompetenzenOverview.kompetenzen-overview', [
             'categories' => $categories,
-            'investitionen' => new MoneyAmount(PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($this->gameEvents, $this->playerId)->investitionen)
+            'investitionen' => new MoneyAmount($currentLebenszielPhaseDefinition->investitionen)
         ]);
     }
 

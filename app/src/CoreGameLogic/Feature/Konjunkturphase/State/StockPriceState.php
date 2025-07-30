@@ -51,7 +51,7 @@ class StockPriceState
      * @param StockType $stockType
      * @param GameEvents $gameEvents
      * @return StockPrice
-     * @throws \Random\RandomException
+     * @throws RandomException
      */
     private static function calculateStockPrice(StockType $stockType, GameEvents $gameEvents): StockPrice
     {

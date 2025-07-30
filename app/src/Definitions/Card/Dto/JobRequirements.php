@@ -18,7 +18,7 @@ final readonly class JobRequirements
      * @param array{zeitsteine: int, bildungKompetenzsteine: int, freizeitKompetenzsteine: int} $values
      * @return self
      */
-    public static function fromString(array $values): self
+    public static function fromArray(array $values): self
     {
         return new self(
             zeitsteine: $values['zeitsteine'],
