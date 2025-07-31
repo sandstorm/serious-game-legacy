@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Traits;
 
 use App\Livewire\ValueObject\NotificationTypeEnum;
+use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ActivateCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SkipCardAktion;
@@ -36,6 +37,11 @@ trait HasCard
      */
     public function renderingHasCard(): void
     {
+        if (PreGameState::isInPreGamePhase($this->gameEvents)) {
+            // do not mount the money sheet if we are in pre-game phase
+            return;
+        }
+
         $this->playerHasToPlayCard = false;
 
         // if player skipped a card, we show the next card from the top of the pile
