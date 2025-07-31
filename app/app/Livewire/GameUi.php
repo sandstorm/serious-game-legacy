@@ -109,9 +109,21 @@ class GameUi extends Component
         return CurrentPlayerAccessor::forStream($this->gameEvents);
     }
 
+    /**
+     * @return bool
+     */
     public function currentPlayerIsMyself(): bool
     {
         return $this->getCurrentPlayer() === $this->myself;
+    }
+
+    /**
+     * @param PlayerId $playerId
+     * @return bool
+     */
+    public function playerIsMyself(PlayerId $playerId): bool
+    {
+        return $this->myself === $playerId;
     }
 
     public function notifyGameStateUpdated(): void

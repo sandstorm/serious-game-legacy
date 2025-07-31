@@ -7,12 +7,9 @@ namespace App\View\Components;
 use Closure;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
-use Domain\CoreGameLogic\Feature\Spielzug\Modifier\ModifierBuilder;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\EreignisCardDefinition;
-use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 

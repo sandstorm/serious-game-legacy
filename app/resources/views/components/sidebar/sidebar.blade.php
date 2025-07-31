@@ -7,7 +7,7 @@
     <div class="sidebar__header">
         <div class="sidebar__lebensziel">
             <strong>Lebensziel:</strong>
-            {{ PlayerState::getLebenszielDefinitionForPlayer($this->gameEvents, $playerId)->name }} <i class="icon-info" aria-hidden="true"></i>
+            {{ PlayerState::getLebenszielDefinitionForPlayer($this->gameEvents, $playerId)->name }} <i class="icon-info" aria-hidden="true" wire:click="showPlayerDetails('{{ $playerId }}')"></i>
         </div>
         <div class="sidebar__menu">
             <button class="button button--type-primary button--type-icon">
