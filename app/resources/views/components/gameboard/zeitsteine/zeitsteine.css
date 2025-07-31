@@ -1,6 +1,8 @@
 .zeitsteine {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
     gap: var(--spacing-25);
     list-style: none;
     margin: 0;
@@ -9,8 +11,8 @@
 
 .zeitstein {
     display: inline-block;
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
 
     svg {
         height: 100%;
