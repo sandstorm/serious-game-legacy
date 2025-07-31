@@ -39,7 +39,7 @@ final class HasPlayerEnoughResourcesForLebenszielphasenChangeValidator extends A
             );
         }
 
-        if ($currentLebenszielPhase->investitionen > $playerResources->guthabenChange->value) {
+        if ($currentLebenszielPhase->investitionen->value > $playerResources->guthabenChange->value) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: "Du hast nicht genug Geld",

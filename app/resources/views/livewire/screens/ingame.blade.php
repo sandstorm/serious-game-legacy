@@ -2,9 +2,6 @@
 <div class="game">
     <header class="game__header">
         <x-player-list :game-events="$this->gameEvents" :myself="$myself" :active-player="$this->getCurrentPlayer()"/>
-        @if ($showDetailsForPlayer)
-            <x-player-details :player-id="$showDetailsForPlayer" :game-events="$this->gameEvents" :myself="$myself"/>
-        @endif
     </header>
 
     <div class="game__content">
@@ -65,5 +62,8 @@
     @endif
     @if ($this->isWeiterbildungVisible)
         <x-weiterbildung-modal :player-id="$myself" :game-events="$this->gameEvents"/>
+    @endif
+    @if ($showDetailsForPlayer)
+        <x-player-details :player-id="$showDetailsForPlayer" :game-events="$this->gameEvents" />
     @endif
 </div>

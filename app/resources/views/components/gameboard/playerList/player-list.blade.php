@@ -26,7 +26,7 @@
                 $player->playerColorClass,
             ])>
 
-            <button type="button" title="Zeige Lebensziel des Spielers" class="button button--type-text" wire:click="showPlayerDetails('{{ $player->playerId->value }}')">
+            <button type="button" title="Zeige Lebensziel des Spielers" class="button button--type-text" wire:click="showPlayerDetails('{{ $player->playerId }}')">
                 {{ $player->name }}
 
                 <ul class="zeitsteine">

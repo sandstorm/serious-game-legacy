@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\View\Components\Gameboard;
 
+use App\Helper\KompetenzenHelper;
 use App\Livewire\Dto\AbstractIconWithColor;
 use App\Livewire\Dto\GameboardInformationForKompetenzenOverview;
 use App\Livewire\Dto\KompetenzWithColor;
@@ -11,7 +12,6 @@ use App\Livewire\Dto\ZeitsteinWithColor;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
-use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Illuminate\View\Component;
 use Illuminate\View\View;
@@ -36,7 +36,9 @@ class KompetenzenOverview extends Component
         $categories = [
             new GameboardInformationForKompetenzenOverview(
                 title: CategoryId::BILDUNG_UND_KARRIERE,
-                kompetenzen: $this->getKompetenzen(
+                kompetenzen: KompetenzenHelper::getKompetenzen(
+                    $this->gameEvents,
+                    $this->playerId,
                     PlayerState::getBildungsKompetenzsteine($this->gameEvents, $this->playerId),
                     $currentLebenszielPhaseDefinition->bildungsKompetenzSlots,
                     'gameboard.kompetenzen.kompetenz-icon-bildung'
@@ -44,7 +46,9 @@ class KompetenzenOverview extends Component
             ),
             new GameboardInformationForKompetenzenOverview(
                 title: CategoryId::SOZIALES_UND_FREIZEIT,
-                kompetenzen: $this->getKompetenzen(
+                kompetenzen: KompetenzenHelper::getKompetenzen(
+                    $this->gameEvents,
+                    $this->playerId,
                     PlayerState::getFreizeitKompetenzsteine($this->gameEvents, $this->playerId),
                     $currentLebenszielPhaseDefinition->freizeitKompetenzSlots,
                     'gameboard.kompetenzen.kompetenz-icon-freizeit',
@@ -62,41 +66,8 @@ class KompetenzenOverview extends Component
 
         return view('components.gameboard.kompetenzenOverview.kompetenzen-overview', [
             'categories' => $categories,
-            'investitionen' => new MoneyAmount($currentLebenszielPhaseDefinition->investitionen)
+            'investitionen' => $currentLebenszielPhaseDefinition->investitionen
         ]);
-    }
-
-    /**
-     * @param float $kompetenzen
-     * @param int $requiredKompetenzen
-     * @param string $iconComponentName
-     * @return KompetenzWithColor[]
-     */
-    private function getKompetenzen(float $kompetenzen, int $requiredKompetenzen, string $iconComponentName): array
-    {
-        $kompetenzenArray = [];
-        for ($i = 0; $i < $kompetenzen; $i++) {
-            $kompetenzenArray[] = new KompetenzWithColor(
-                drawEmpty: false,
-                // only possible for category bildung at the moment
-                drawHalfEmpty: abs($i + 0.5 - $kompetenzen) < 0.01,
-                colorClass: PlayerState::getPlayerColorClass($this->gameEvents, $this->playerId),
-                playerName: PlayerState::getNameForPlayer($this->gameEvents, $this->playerId),
-                iconComponentName: $iconComponentName,
-            );
-        }
-
-        // fill up the rest with empty ones
-        for ($i = $kompetenzen; $i < $requiredKompetenzen - $kompetenzen; $i++) {
-            $kompetenzenArray[] = new KompetenzWithColor(
-                drawEmpty: true,
-                colorClass: '',
-                playerName: '',
-                iconComponentName: $iconComponentName,
-            );
-        }
-
-        return $kompetenzenArray;
     }
 
     /**

@@ -1,0 +1,95 @@
+.lebensziel {
+
+}
+
+.lebensziel__phasen {
+    padding: var(--spacing-100);
+    padding-inline: 50px;
+    margin-top: var(--spacing-100);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--spacing-100);
+}
+
+.lebensziel__phase {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-100);
+
+    border: 1px solid var(--color-grey);
+    border-radius: 10px;
+    background-color: var(--color-primary-fg);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    &.lebensziel__phase--inactive {
+        opacity: 0.5;
+    }
+
+    .kompetenzen {
+        padding: 0;
+        justify-content: flex-start;
+
+        background-color: transparent;
+    }
+
+    .lebensziel__phase-cost {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+
+    &:first-of-type {
+        z-index: 15;
+
+        .lebensziel__phase-cost {
+            padding-left: 0;
+        }
+    }
+
+    &:last-of-type {
+        z-index: 5;
+
+        .lebensziel__phase-switch {
+            right: -40px;
+        }
+    }
+}
+
+.lebensziel__phase-kompetenzen {
+    margin-bottom: auto;
+}
+
+.lebensziel__phase-balance {
+    margin-top: var(--spacing-100);
+
+    > small {
+        display: inline-block;
+        width: 100%;
+        margin-bottom: var(--spacing-25);
+    }
+}
+
+.lebensziel__phase-cost {
+    margin-top: var(--spacing-100);
+
+    > small {
+        display: inline-block;
+        width: 100%;
+        margin-bottom: var(--spacing-25);
+    }
+}
+
+.lebensziel__phase-switch {
+    position: absolute;
+    z-index: 10;
+    right: -65px;
+    bottom: 20px;
+
+    .button {
+        display: block;
+        width: 110px;
+        padding: var(--spacing-25);
+        justify-content: center;
+    }
+}
