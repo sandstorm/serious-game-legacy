@@ -32,6 +32,8 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellStocksForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartWeiterbildung;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SubmitAnswerForWeiterbildung;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\LoanData;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
@@ -51,11 +53,14 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
 use Domain\Definitions\Card\CardFinder;
+use Domain\Definitions\Card\Dto\AnswerOption;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
+use Domain\Definitions\Card\ValueObject\AnswerId;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
@@ -1421,8 +1426,8 @@ describe('handleChangeLebenszielphase', function () {
         $resources = PlayerState::getResourcesForPlayer($stream, $this->players[0]);
 
         expect($resources->guthabenChange->value)->toBe(100000.0)
-            ->and($resources->bildungKompetenzsteinChange)->toBe(2)
-            ->and($resources->freizeitKompetenzsteinChange)->toBe(3);
+            ->and($resources->bildungKompetenzsteinChange)->toEqual(2)
+            ->and($resources->freizeitKompetenzsteinChange)->toEqual(3);
     });
 });
 
@@ -1495,6 +1500,182 @@ describe('handleDoMinijob', function () {
         'Du kannst nur eine Zeitsteinaktion pro Runde ausführen',
         1750854280
     );
+});
+
+describe('handleStartWeiterbildung', function () {
+    it('throws an exception when it\'s not the players turn', function () {
+        $this->coreGameLogic->handle($this->gameId, StartWeiterbildung::create($this->players[1]));
+    })->throws(
+        RuntimeException::class,
+        'Du bist gerade nicht dran',
+        1753087476
+        );
+
+    it('throws an exception when the player does not have enough Zeitsteine', function () {
+        $cardsForTesting = [
+            "cardToRemoveZeitsteine" => new KategorieCardDefinition(
+                id: new CardId('cardToRemoveZeitsteine'),
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -1 * $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1, // remove 5 zeitsteine, so that the player has 0 Zeitsteine left after playing this card
+                ),
+            ),
+        ];
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
+            playerId: $this->players[0],
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+        ));
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[0])
+        );
+
+        $this->coreGameLogic->handle($this->gameId,
+            new SkipCard(playerId: $this->players[1], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[1])
+        );
+
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(0);
+        $this->coreGameLogic->handle($this->gameId, StartWeiterbildung::create($this->players[0]));
+    })->throws(
+        RuntimeException::class,
+        'Du hast nicht genug Zeitsteine',
+        1753087476
+        );
+
+    it('throws an exception when the player wants to do more than one Zeitsteinaktion', function () {
+        $this->coreGameLogic->handle($this->gameId, StartWeiterbildung::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, StartWeiterbildung::create($this->players[0]));
+    })->throws(
+        RuntimeException::class,
+        'Du kannst nur eine Zeitsteinaktion pro Runde ausführen',
+        1753087476
+    );
+
+    it('removes one Zeitstein when the player performs a weiterbildung', function () {
+        $this->coreGameLogic->handle($this->gameId, StartWeiterbildung::create($this->players[0]));
+
+        $updateStream = $this->coreGameLogic->getGameEvents($this->gameId);
+        $updatedZeitsteine = PlayerState::getZeitsteineForPlayer($updateStream, $this->players[0]);
+        expect($updatedZeitsteine)->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
+    });
+});
+
+describe('handleSubmitAnswerWeiterbildung', function () {
+    it('throws an exception when it\'s not the players turn', function () {
+        $this->coreGameLogic->handle($this->gameId, SubmitAnswerForWeiterbildung::create($this->players[1], AnswerId::fromString("a")));
+    })->throws(
+        RuntimeException::class,
+        'Du bist gerade nicht dran',
+        1753265973
+    );
+
+    it('throws an exception if no weiterbildung was started', function () {
+        /** @var TestCase $this */
+        $selectedAnswer = AnswerId::fromString('a');
+        $this->coreGameLogic->handle($this->gameId, SubmitAnswerForWeiterbildung::create($this->players[0], $selectedAnswer));
+    })->throws(
+        RuntimeException::class,
+        'Du hast diese Runde noch keine Weiterbildung gestartet',
+        1753265973
+    );
+
+    it('throws an exception when player selects an answer that does not exist', function () {
+        /** @var TestCase $this */
+        $this->coreGameLogic->handle($this->gameId, StartWeiterbildung::create($this->players[0]));
+        $invalidAnswerId = AnswerId::fromString('invalid-answer');
+        $this->coreGameLogic->handle($this->gameId, SubmitAnswerForWeiterbildung::create($this->players[0], $invalidAnswerId));
+    })->throws(
+        RuntimeException::class,
+        'Die gewählte Antwort existiert nicht.',
+        1753265973
+    );
+
+    it('throws an exception when the player tries to answer twice', function () {
+        /** @var TestCase $this */
+        $this->coreGameLogic->handle($this->gameId, StartWeiterbildung::create($this->players[0]));
+        $answerOption = AnswerId::fromString('a');
+        $this->coreGameLogic->handle($this->gameId, SubmitAnswerForWeiterbildung::create($this->players[0], $answerOption));
+        $this->coreGameLogic->handle($this->gameId, SubmitAnswerForWeiterbildung::create($this->players[0], $answerOption));
+    })->throws(
+        RuntimeException::class,
+        'Du hast für diese Weiterbildung bereits eine Antwort abgegeben',
+        1753265973
+    );
+
+    it('submits an valid answer for Weiterbildung', function () {
+        $cardsForTesting = [
+            "cardWeiterbildungTest" => new WeiterbildungCardDefinition(
+                id: new CardId('cardWeiterbildungTest'),
+                title: 'for testing weiterbildung',
+                description: '...',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("a"), "antwort 1", true),
+                    new AnswerOption(new AnswerId("b"), "antwort 2"),
+                    new AnswerOption(new AnswerId("c"), "antwort 3"),
+                    new AnswerOption(new AnswerId("d"), "antwort 4"),
+                ],
+            ),
+        ];
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+
+        $this->coreGameLogic->handle($this->gameId, StartWeiterbildung::create($this->players[0]));
+
+        $selectedAnswer = AnswerId::fromString('a');
+        $this->coreGameLogic->handle($this->gameId, SubmitAnswerForWeiterbildung::create($this->players[0], $selectedAnswer));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        $cardDefinitionOfLastWeiterbildung = PlayerState::getLastWeiterbildungCardDefinitionForPlayer($gameEvents, $this->players[0]);
+        $answerEvent = PlayerState::getSubmittedAnswerForLatestWeiterbildung($gameEvents, $this->players[0], $cardDefinitionOfLastWeiterbildung->getId());
+
+        expect($answerEvent->playerId)->toEqual($this->players[0])
+            ->and($answerEvent->cardId)->toEqual(new CardId('cardWeiterbildungTest'))
+            ->and($answerEvent->wasCorrect)->toBeTrue()
+            ->and(PlayerState::getBildungsKompetenzsteine($gameEvents, $this->players[0]))->toEqual(.5)
+            ->and(PlayerState::getFreizeitKompetenzsteine($gameEvents, $this->players[0]))->toEqual(0)
+            ->and(PlayerState::getZeitsteineForPlayer($gameEvents, $this->players[0]))->toEqual($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
+    });
+
+    it('submits an invalid answer for Weiterbildung', function () {
+        $cardsForTesting = [
+            "cardWeiterbildungTest" => new WeiterbildungCardDefinition(
+                id: new CardId('cardWeiterbildungTest'),
+                title: 'for testing weiterbildung',
+                description: '...',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("a"), "antwort 1", true),
+                    new AnswerOption(new AnswerId("b"), "antwort 2"),
+                    new AnswerOption(new AnswerId("c"), "antwort 3"),
+                    new AnswerOption(new AnswerId("d"), "antwort 4"),
+                ],
+            ),
+        ];
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+
+        $this->coreGameLogic->handle($this->gameId, StartWeiterbildung::create($this->players[0]));
+
+        $selectedAnswer = AnswerId::fromString('b');
+        $this->coreGameLogic->handle($this->gameId, SubmitAnswerForWeiterbildung::create($this->players[0], $selectedAnswer));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        $cardDefinitionOfLastWeiterbildung = PlayerState::getLastWeiterbildungCardDefinitionForPlayer($gameEvents, $this->players[0]);
+        $answerEvent = PlayerState::getSubmittedAnswerForLatestWeiterbildung($gameEvents, $this->players[0], $cardDefinitionOfLastWeiterbildung->getId());
+
+        expect($answerEvent->playerId)->toEqual($this->players[0])
+            ->and($answerEvent->cardId)->toEqual(new CardId('cardWeiterbildungTest'))
+            ->and($answerEvent->wasCorrect)->toBeFalse()
+            ->and(PlayerState::getBildungsKompetenzsteine($gameEvents, $this->players[0]))->toEqual(0)
+            ->and(PlayerState::getFreizeitKompetenzsteine($gameEvents, $this->players[0]))->toEqual(0)
+            ->and(PlayerState::getZeitsteineForPlayer($gameEvents, $this->players[0]))->toEqual($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
+    });
 });
 
 describe('handleEndSpielzug', function () {

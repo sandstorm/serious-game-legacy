@@ -9,18 +9,20 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
-use Domain\CoreGameLogic\Feature\Initialization\ValueObject\Lebensziel;
-use Domain\CoreGameLogic\Feature\Initialization\ValueObject\LebenszielPhase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesStockAmountChanges;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\StockPriceState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\StockAmountChanges;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\AnswerForWeiterbildungWasSubmitted;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\WeiterbildungWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
+use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\Dto\MinijobCardDefinition;
+use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
@@ -105,9 +107,9 @@ class PlayerState
      *
      * @param GameEvents $stream
      * @param PlayerId $playerId
-     * @return int
+     * @return float
      */
-    public static function getBildungsKompetenzsteine(GameEvents $stream, PlayerId $playerId): int
+    public static function getBildungsKompetenzsteine(GameEvents $stream, PlayerId $playerId): float
     {
         $lebenszielPhaseWasChanged = $stream->findLastOrNull(LebenszielphaseWasChanged::class);
         $findAfterEvent = LebenszielphaseWasChanged::class;
@@ -197,6 +199,11 @@ class PlayerState
         return $jobDefinition;
     }
 
+    /**
+     * @param GameEvents $stream
+     * @param PlayerId $playerId
+     * @return MinijobCardDefinition|null
+     */
     public static function getLastMinijobForPlayer(GameEvents $stream, PlayerId $playerId): ?MinijobCardDefinition
     {
         /** @var MinijobWasDone|null $minijobWasDoneEvent */
@@ -206,6 +213,52 @@ class PlayerState
         }
 
         return CardFinder::getInstance()->getCardById($minijobWasDoneEvent->minijobCardId, MinijobCardDefinition::class);
+    }
+
+    /**
+     * @param GameEvents $stream
+     * @param PlayerId $playerId
+     * @return WeiterbildungCardDefinition|null
+     */
+    public static function getLastWeiterbildungCardDefinitionForPlayer(GameEvents $stream, PlayerId $playerId): ?WeiterbildungCardDefinition
+    {
+        $weiterbildungEvent = self::getLastWeiterbildungsEventForPlayer($stream, $playerId);
+        if ($weiterbildungEvent === null) {
+            return null;
+        }
+
+        return CardFinder::getInstance()->getCardById($weiterbildungEvent->weiterbildungCardId, WeiterbildungCardDefinition::class);
+    }
+
+    /**
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return WeiterbildungWasStarted|null
+     */
+    public static function getLastWeiterbildungsEventForPlayer(GameEvents $gameEvents, PlayerId $playerId): ?WeiterbildungWasStarted
+    {
+        /** @var WeiterbildungWasStarted|null $weiterbildungEvent */
+        $weiterbildungEvent = $gameEvents->findLastOrNullWhere(
+            fn($e) => $e instanceof WeiterbildungWasStarted && $e->playerId->equals($playerId)
+        );
+        return $weiterbildungEvent;
+    }
+
+    /**
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @param CardId $cardId
+     * @return AnswerForWeiterbildungWasSubmitted|null
+     */
+    public static function getSubmittedAnswerForLatestWeiterbildung(GameEvents $gameEvents, PlayerId $playerId, CardId $cardId): ?AnswerForWeiterbildungWasSubmitted
+    {
+        /** @var AnswerForWeiterbildungWasSubmitted|null $submittedAnswerEvent */
+        $submittedAnswerEvent = $gameEvents->findLastOrNullWhere(
+            fn($e) => $e instanceof AnswerForWeiterbildungWasSubmitted
+                && $e->playerId->equals($playerId)
+                && $e->cardId->equals($cardId)
+        );
+        return $submittedAnswerEvent;
     }
 
     /**

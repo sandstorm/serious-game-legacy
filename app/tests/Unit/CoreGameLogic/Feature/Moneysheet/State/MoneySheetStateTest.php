@@ -27,7 +27,6 @@ use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
-use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
@@ -706,6 +705,7 @@ describe('getOpenRatesForLoan', function () {
             ...$this->getCardsForMinijobs(),
             ...$this->getCardsForBildungAndKarriere(),
             ...$this->getCardsForEreignisse(),
+            ...$this->getCardsForWeiterbildung(),
         ];
         CardFinder::getInstance()->overrideCardsForTesting($testCards);
 

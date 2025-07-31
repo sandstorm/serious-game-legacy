@@ -21,6 +21,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunktur
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
+use Domain\Definitions\Card\Dto\AnswerOption;
 use Domain\Definitions\Card\Dto\CardDefinition;
 use Domain\Definitions\Card\Dto\EreignisCardDefinition;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
@@ -29,9 +30,10 @@ use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\Dto\ModifierParameters;
 use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
+use Domain\Definitions\Card\ValueObject\AnswerId;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
-use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Insurance\InsuranceDefinition;
 use Domain\Definitions\Insurance\InsuranceFinder;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
@@ -99,6 +101,7 @@ abstract class TestCase extends BaseTestCase
                 ...$this->getCardsForJobs(),
                 ...$this->getCardsForMinijobs(),
                 ...$this->getCardsForEreignisse(),
+                ...$this->getCardsForWeiterbildung(),
             ]
         );
 
@@ -452,6 +455,38 @@ abstract class TestCase extends BaseTestCase
         ];
     }
 
+    /**
+     * @return WeiterbildungCardDefinition[]
+     */
+    protected function getCardsForWeiterbildung(): array
+    {
+        return [
+            "wb0" => new WeiterbildungCardDefinition(
+                id: new CardId('wb0'),
+                title: 'Weiterbildung',
+                description: 'Ich mache eine Weiterbildung. Warum machst du die Weiterbildung?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("a"), "Tarifliche Entlohnung und Arbeitsplatzsicherheit", true),
+                    new AnswerOption(new AnswerId("b"), "Angemessene Vergütung und soziale Absicherung"),
+                    new AnswerOption(new AnswerId("c"), "Maximale Kosteneffizienz und unternehmerische Flexibilität"),
+                    new AnswerOption(new AnswerId("d"), "Karriereförderung und Mitbestimmungsmöglichkeiten"),
+                ],
+            ),
+            "wb1" => new WeiterbildungCardDefinition(
+                id: new CardId('wb1'),
+                title: 'Weiterbildung',
+                description: 'Ich mache eine Weiterbildung. Warum machst du die Weiterbildung?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("a"), "sygyrsgsfgydrg", true),
+                    new AnswerOption(new AnswerId("b"), "hydrgdyrgydrgrydsgysgrygys"),
+                    new AnswerOption(new AnswerId("c"), "hhhhhhhhhhhhhhh"),
+                    new AnswerOption(new AnswerId("d"), "mmmmmmmmmmm"),
+                ],
+            ),
+
+        ];
+    }
+
     public function startNewKonjunkturphaseWithCardsOnTop(array $cardsForTesting): void
     {
         /**
@@ -464,6 +499,7 @@ abstract class TestCase extends BaseTestCase
             ...$this->getCardsForJobs(),
             ...$this->getCardsForMinijobs(),
             ...$this->getCardsForEreignisse(),
+            ...$this->getCardsForWeiterbildung(),
         ];
         $allCardsWithIdsAsKey = [];
         foreach ($allCards as $card) {

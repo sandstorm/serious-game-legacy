@@ -44,7 +44,7 @@ class PlayerList extends Component
             }
         }
 
-        return view('components.gameboard.player-list', [
+        return view('components.gameboard.playerList.player-list', [
             'players' => $players,
             'emptySlots' => $emptySlots
         ]);

@@ -24,10 +24,13 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EndSpielzugAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterLebenshaltungskostenForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterSteuernUndAbgabenForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\MarkPlayerAsReadyForKonjunkturphaseChangeAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\QuitJobAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\RequestJobOffersAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellStocksForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SkipCardAktion as SkipCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\StartKonjunkturphaseForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\StartWeiterbildungAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SubmitAnswerForWeiterbildungAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\TakeOutALoanForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
@@ -41,6 +44,8 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellStocksForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartWeiterbildung;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SubmitAnswerForWeiterbildung;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
@@ -74,7 +79,9 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             || $command instanceof QuitJob
             || $command instanceof BuyStocksForPlayer
             || $command instanceof SellStocksForPlayer
-            || $command instanceof PutCardBackOnTopOfPile;
+            || $command instanceof PutCardBackOnTopOfPile
+            || $command instanceof StartWeiterbildung
+            || $command instanceof SubmitAnswerForWeiterbildung;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameEvents): GameEventsToPersist
@@ -108,6 +115,8 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             SellStocksForPlayer::class => $this->handleSellStocks($command, $gameEvents),
             ChangeLebenszielphase::class => $this->handleLebenszielphase($command, $gameEvents),
             PutCardBackOnTopOfPile::class => $this->handlePutCardBackOnTopOfPile($command, $gameEvents),
+            StartWeiterbildung::class => $this->handleStartWeiterbildung($command, $gameEvents),
+            SubmitAnswerForWeiterbildung::class => $this->handleSubmitAnswerWeiterbildung($command, $gameEvents),
         };
     }
 
@@ -119,7 +128,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
 
     private function handleQuitJob(QuitJob $command, GameEvents $gameEvents): GameEventsToPersist
     {
-        $aktion = new Aktion\QuitJobAktion();
+        $aktion = new QuitJobAktion();
         return $aktion->execute($command->playerId, $gameEvents);
     }
 
@@ -272,6 +281,18 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
     private function handlePutCardBackOnTopOfPile(PutCardBackOnTopOfPile $command, GameEvents $gameEvents): GameEventsToPersist
     {
         $aktion = new PutCardBackOnTopOfPileAktion($command->categoryId);
+        return $aktion->execute($command->playerId, $gameEvents);
+    }
+
+    private function handleSubmitAnswerWeiterbildung(SubmitAnswerForWeiterbildung $command, GameEvents $gameEvents):GameEventsToPersist
+    {
+        $aktion = new SubmitAnswerForWeiterbildungAktion($command->selectedAnswer);
+        return $aktion->execute($command->playerId, $gameEvents);
+    }
+
+    private function handleStartWeiterbildung(StartWeiterbildung $command, GameEvents $gameEvents): GameEventsToPersist
+    {
+        $aktion = new StartWeiterbildungAktion();
         return $aktion->execute($command->playerId, $gameEvents);
     }
 }

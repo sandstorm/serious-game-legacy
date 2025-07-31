@@ -22,15 +22,3 @@
     }
 }
 
-.game-board__instant-actions {
-    padding-inline: var(--spacing-200);
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--spacing-250);
-
-    .button {
-        width: 100%;
-        justify-content: space-between;
-    }
-}
-

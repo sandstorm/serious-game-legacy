@@ -67,23 +67,26 @@ class KompetenzenOverview extends Component
     }
 
     /**
-     * @param int $kompetenzen
+     * @param float $kompetenzen
      * @param int $requiredKompetenzen
      * @param string $iconComponentName
      * @return KompetenzWithColor[]
      */
-    private function getKompetenzen(int $kompetenzen, int $requiredKompetenzen, string $iconComponentName): array
+    private function getKompetenzen(float $kompetenzen, int $requiredKompetenzen, string $iconComponentName): array
     {
         $kompetenzenArray = [];
         for ($i = 0; $i < $kompetenzen; $i++) {
             $kompetenzenArray[] = new KompetenzWithColor(
                 drawEmpty: false,
+                // only possible for category bildung at the moment
+                drawHalfEmpty: abs($i + 0.5 - $kompetenzen) < 0.01,
                 colorClass: PlayerState::getPlayerColorClass($this->gameEvents, $this->playerId),
                 playerName: PlayerState::getNameForPlayer($this->gameEvents, $this->playerId),
                 iconComponentName: $iconComponentName,
             );
         }
 
+        // fill up the rest with empty ones
         for ($i = $kompetenzen; $i < $requiredKompetenzen - $kompetenzen; $i++) {
             $kompetenzenArray[] = new KompetenzWithColor(
                 drawEmpty: true,

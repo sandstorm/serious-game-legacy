@@ -11,7 +11,7 @@ class LebenszielPhase implements \JsonSerializable
 {
     public function __construct(
         public LebenszielPhaseDefinition $definition,
-        public int $placedKompetenzsteineBildung,
+        public float $placedKompetenzsteineBildung,
         public int $placedKompetenzsteineFreizeit,
     ) {
     }

@@ -12,7 +12,7 @@ final readonly class ResourceChanges implements JsonSerializable
     public function __construct(
         public MoneyAmount $guthabenChange = new MoneyAmount(0),
         public int $zeitsteineChange = 0,
-        public int $bildungKompetenzsteinChange = 0,
+        public float $bildungKompetenzsteinChange = 0,
         public int $freizeitKompetenzsteinChange = 0,
     )
     {
@@ -22,7 +22,7 @@ final readonly class ResourceChanges implements JsonSerializable
      * @param array{
      *     guthabenChange: int,
      *     zeitsteineChange: int,
-     *     bildungKompetenzsteinChange: int,
+     *     bildungKompetenzsteinChange: float,
      *     freizeitKompetenzsteinChange: int,
      * } $values
      */
@@ -53,7 +53,7 @@ final readonly class ResourceChanges implements JsonSerializable
 
 
     /**
-     * @return array<int|MoneyAmount>
+     * @return array<int|float|MoneyAmount>
      */
     public function jsonSerialize(): array
     {
