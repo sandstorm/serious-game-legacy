@@ -1,8 +1,9 @@
 .instant-actions {
-    padding-inline: var(--spacing-200);
+    padding-inline: var(--spacing-100);
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--spacing-250);
+    padding-bottom: var(--spacing-100);
 }
 
 .instant-action {

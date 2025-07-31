@@ -12,8 +12,9 @@
 
 /* NOTE: Components are included automatically via Vite, see app.js */
 
-body {
-    font-family: var(--font-family-sans);
+html, body {
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
     color: var(--color-primary-dark);
     text-wrap: pretty;
 

@@ -6,7 +6,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: var(--spacing-100);
+    padding-inline: var(--spacing-100);
     gap: var(--spacing-100);
 
     .button {
