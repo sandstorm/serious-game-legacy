@@ -18,4 +18,12 @@ enum StockType: string
         };
     }
 
+    public function toPrettyString(): string
+    {
+        return match ($this) {
+            self::LOW_RISK => 'Low Risk',
+            self::HIGH_RISK => 'High Risk',
+        };
+    }
+
 }

@@ -45,7 +45,7 @@
                     "button",
                     "button--type-primary",
                     "button--disabled" => !$this->canEndSpielzug()->canExecute,
-                    $this->getButtonPlayerClass()
+                    $this->getPlayerColorClass()
                 ])
                 wire:click="spielzugAbschliessen()">
                 Spielzug beenden

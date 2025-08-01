@@ -26,7 +26,7 @@
     </p>
 
     @if ($resourceChanges)
-        <x-gameboard.cardPile.card-effects :resource-changes="$resourceChanges" style-class="horizontal" />
+        <x-gameboard.resourceChanges.resource-changes :resource-changes="$resourceChanges" style-class="horizontal" />
     @endif
 @endsection
 
@@ -36,7 +36,7 @@
         @class([
            "button",
            "button--type-primary",
-           $this->getButtonPlayerClass(),
+           $this->getPlayerColorClass(),
         ])
         wire:click="closeMinijob()"
     >

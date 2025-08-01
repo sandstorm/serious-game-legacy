@@ -1,5 +1,8 @@
 <input
-    class="form__textfield"
+    @class([
+        "form__textfield",
+        $this->getPlayerColorClass(),
+    ])
     name="{{ $name }}"
     id="{{ $id }}"
     type="{{ $type ?? 'text' }}"

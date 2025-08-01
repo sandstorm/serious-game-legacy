@@ -139,7 +139,7 @@ class GameUi extends Component
         $this->eventDispatcher->dispatch(new GameStateUpdated($this->gameId));
     }
 
-    public function getButtonPlayerClass(): string
+    public function getPlayerColorClass(): string
     {
         return PlayerState::getPlayerColorClass($this->gameEvents, $this->myself);
     }

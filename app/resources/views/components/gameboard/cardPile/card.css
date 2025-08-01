@@ -7,6 +7,7 @@
     height: 100%;
     padding: var(--spacing-50);
 
+    border: 1px solid var(--color-cards-border);
     border-radius: 10px;
     background-color: var(--color-cards-bg);
     cursor: pointer;
@@ -94,44 +95,6 @@
     }
 }
 
-.card__effects {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-end;
-    gap: var(--spacing-50);
-
-    &.card__effects--horizontal {
-        flex-direction: row;
-        align-items: center;
-
-        .card__effect {
-            padding-right: var(--spacing-100);
-
-            border-right: 1px solid var(--color-grey);
-
-            &:last-child {
-                padding-right: 0;
-
-                border-right: none;
-            }
-        }
-    }
-}
-
-.card__effect {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-    gap: var(--spacing-50);
-
-    i.text--danger, i.text--success {
-        font-size: .8em;
-    }
-}
-
 .card__actions-header {
     display: flex;
     width: 100%;
@@ -144,6 +107,7 @@
     display: flex;
     align-items: center;
     gap: var(--spacing-50);
+    flex-wrap: nowrap;
 
     i {
         font-size: var(--font-size-xxl);

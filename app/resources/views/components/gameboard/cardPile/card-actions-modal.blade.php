@@ -44,7 +44,7 @@
 
 @section('footer')
     <div class="card__actions-footer">
-        <x-gameboard.cardPile.card-effects style-class="horizontal" :resource-changes="$card->getResourceChanges()" />
+        <x-gameboard.resourceChanges.resource-changes style-class="horizontal" :resource-changes="$card->getResourceChanges()" />
 
         @if (!$this->playerHasToPlayCard)
             <button
@@ -53,7 +53,7 @@
                     "button",
                     "button--type-outline-primary",
                     "button--disabled" => !$this->canSkipCard($category)->canExecute,
-                    $this->getButtonPlayerClass(),
+                    $this->getPlayerColorClass(),
                 ])
                 wire:click="skipCard('{{$category}}', '{{$pileId}}')"
             >
@@ -74,7 +74,7 @@
                "button",
                "button--type-primary",
                "button--disabled" => !$this->canActivateCard($category)->canExecute,
-               $this->getButtonPlayerClass(),
+               $this->getPlayerColorClass(),
             ])
             wire:click="activateCard('{{$category}}')"
         >
@@ -95,7 +95,7 @@
                 @class([
                    "button",
                    "button--type-primary",
-                   $this->getButtonPlayerClass(),
+                   $this->getPlayerColorClass(),
                 ])
                 wire:click="putCardBackOnTopOfPile('{{$category}}')"
             >

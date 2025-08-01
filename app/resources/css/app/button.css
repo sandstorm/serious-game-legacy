@@ -2,6 +2,10 @@
     --button-height: 40px;
 }
 
+button {
+    line-height: inherit;
+}
+
 .button {
     display: inline-flex;
     align-items: center;

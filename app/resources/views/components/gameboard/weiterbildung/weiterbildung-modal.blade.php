@@ -29,7 +29,7 @@
                        "weiterbildung__answer-option",
                        "weiterbildung__answer-option--correct" => $selectedAnswerId !== null && $option->id->value === $correctAnswerId->value,
                        "weiterbildung__answer-option--not-correct" => $isAnswerCorrect === false && $selectedAnswerId !== null && $option->id->value === $selectedAnswerId->value,
-                       $this->getButtonPlayerClass(),
+                       $this->getPlayerColorClass(),
                     ])>
                         <strong>
                             @if ($index === 0) A)
@@ -79,7 +79,7 @@
                             @class([
                                 "button",
                                 "button--type-primary",
-                                $this->getButtonPlayerClass(),
+                                $this->getPlayerColorClass(),
                             ])
                             wire:click="closeWeiterbildung()"
                     >

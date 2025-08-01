@@ -1,0 +1,21 @@
+.investitionen-overview {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: var(--spacing-100);
+    padding: var(--spacing-100);
+
+    .card__content {
+        align-items: center;
+        justify-content: center;
+        min-height: 100px;
+
+        i {
+            font-size: 3rem;
+        }
+    }
+
+    .card__title {
+        height: auto;
+    }
+}
