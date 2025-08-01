@@ -1,6 +1,11 @@
-@extends ('components.modal.modal', ['closeModal' => "closeMoneySheet()", 'size' => 'medium'])
+@extends ('components.modal.modal', ['closeModal' => "closeMoneySheet()", 'size' => 'large'])
+
+@section('icon')
+    <i class="icon-lupe-2" aria-hidden="true"></i>
+@endsection
+
 @section('title')
-    Money Sheet
+    Moneysheet Übersicht
 @endsection
 
 @section('content')

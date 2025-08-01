@@ -1,116 +1,105 @@
-@use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
 @use('\App\Livewire\ValueObject\ExpensesTabEnum')
 @use('\App\Livewire\ValueObject\IncomeTabEnum')
 
 <div class="moneysheet">
-    <div class="moneysheet__income">
-        <h2>Einnahmen</h2>
-        <button type="button" class="button button--type-primary button--size-small"
-                wire:click="toggleEditIncome()">Bearbeiten
-        </button>
+    <div @class(["moneysheet__income", $this->getPlayerColorClass()])>
         <table>
+            <thead>
+            <tr>
+                <th wire:click="toggleEditIncome()"><h2><i class="icon-plus text--success" aria-hidden="true"></i> Einnahmen</h2></th>
+                <th class="text-align--right font-size--xl"><i class="icon-euro" aria-hidden="true"></i></th>
+            </tr>
+            </thead>
             <tbody>
             <tr>
-                <td>Finanzanlagen und Vermögenswerte</td>
+                <td wire:click="showIncomeTab('{{ IncomeTabEnum::INVESTMENTS }}')">Finanzanlagen und Vermögenswerte</td>
                 <td class="text-align--right">{!! $moneySheet->sumOfAllStocks->format() !!}</td>
-                <td>
-                    <button type="button" class="button button--type-primary button--size-small"
-                            wire:click="showIncomeTab('{{ IncomeTabEnum::INVESTMENTS }}')">Bearbeiten
-                    </button>
-                </td>
             </tr>
             <tr>
-                <td>Gehalt</td>
+                <td wire:click="showIncomeTab('{{ IncomeTabEnum::SALARY }}')">Gehalt</td>
                 <td class="text-align--right">{!! $moneySheet->gehalt->format() !!}</td>
-                <td>
-                    <button type="button" class="button button--type-primary button--size-small"
-                            wire:click="showIncomeTab('{{ IncomeTabEnum::SALARY }}')">Bearbeiten
-                    </button>
-                </td>
             </tr>
             </tbody>
         </table>
     </div>
-    <div class="moneysheet__expenses">
-        <h2>Ausgaben</h2>
-        <button type="button" class="button button--type-primary button--size-small"
-                wire:click="toggleEditExpenses()">Bearbeiten
-        </button>
+    <div @class(["moneysheet__expenses", $this->getPlayerColorClass()])>
         <table>
+            <thead>
+            <tr>
+                <th wire:click="toggleEditExpenses()"><h2><i class="icon-minus text--danger" aria-hidden="true"></i> Ausgaben</h2></th>
+                <th class="text-align--right font-size--xl"><i class="icon-euro" aria-hidden="true"></i></th>
+            </tr>
+            </thead>
             <tbody>
             <tr>
-                <td>Kredite</td>
+                <td wire:click="showExpensesTab('{{ ExpensesTabEnum::LOANS }}')">Kredite</td>
                 <td class="text-align--right">
                     {!! $moneySheet->sumOfAllLoans->format() !!}
                 </td>
-                <td>
-                    <button type="button" class="button button--type-primary button--size-small"
-                            wire:click="showExpensesTab('{{ ExpensesTabEnum::LOANS }}')">Bearbeiten
-                    </button>
-                </td>
             </tr>
             <tr>
-                <td>Kinder</td>
+                <td wire:click="showExpensesTab('{{ ExpensesTabEnum::KIDS }}')">Kinder</td>
                 <td class="text-align--right">
                     0 €
                 </td>
-                <td>
-                    <button type="button" class="button button--type-primary button--size-small"
-                            wire:click="showExpensesTab('{{ ExpensesTabEnum::KIDS }}')">Bearbeiten
-                    </button>
-                </td>
             </tr>
             <tr>
-                <td>Versicherungen</td>
+                <td wire:click="showExpensesTab('{{ ExpensesTabEnum::INSURANCES }}')">Versicherungen</td>
                 <td class="text-align--right">
                     {!! $moneySheet->totalInsuranceCost->format() !!}
                 </td>
-                <td>
-                    <button type="button" class="button button--type-primary button--size-small"
-                            wire:click="showExpensesTab('{{ ExpensesTabEnum::INSURANCES }}')">Bearbeiten
-                    </button>
-                </td>
             </tr>
             <tr>
-                <td>Steuern und Abgaben
-                    @if($moneySheet->doesSteuernUndAbgabenRequirePlayerAction)
-                        <span><strong>(!!)</strong></span>
-                    @endif
-                </td>
+                <td wire:click="showExpensesTab('{{ ExpensesTabEnum::TAXES }}')">Steuern und Abgaben</td>
                 <td class="text-align--right">
                     {!! $moneySheet->steuernUndAbgaben->format() !!}
-                </td>
-                <td>
-                    <button type="button" class="button button--type-primary button--size-small"
-                            wire:click="showExpensesTab('{{ ExpensesTabEnum::TAXES }}')">Bearbeiten
-                    </button>
+                    @if($moneySheet->doesSteuernUndAbgabenRequirePlayerAction)
+                        <div class="moneysheet__action-required"><span class="sr-only">Berechnung erforderlich</span></div>
+                    @endif
                 </td>
             </tr>
             <tr>
-                <td>Lebenshaltungskosten
-                    @if($moneySheet->doesLebenshaltungskostenRequirePlayerAction)
-                        <span><strong>(!!)</strong></span>
-                    @endif
-                </td>
+                <td wire:click="showExpensesTab('{{ ExpensesTabEnum::LIVING_COSTS }}')">Lebenshaltungskosten</td>
                 <td class="text-align--right">
                     {!! $moneySheet->lebenshaltungskosten->format() !!}
-                </td>
-                <td>
-                    <button type="button" class="button button--type-primary button--size-small"
-                            wire:click="showExpensesTab('{{ ExpensesTabEnum::LIVING_COSTS }}')">Bearbeiten
-                    </button>
+                    @if($moneySheet->doesLebenshaltungskostenRequirePlayerAction)
+                        <div class="moneysheet__action-required"><span class="sr-only">Berechnung erforderlich</span></div>
+                    @endif
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
+
+    <div class="moneysheet__information">
+        <table>
+            <thead>
+            <tr>
+                <th class="font-size--xl">
+                    <i class="icon-fehler" aria-hidden="true"></i> <span class="sr-only">Information</span>
+                </th>
+            </tr>
+            </thead>
+            <tbod>
+                <tr>
+                    <td>
+                        <p>
+                            Bei allen Einnahmen und Ausgaben, die Du selbst berechnen musst, hast Du immer zwei Versuche. <br />
+                            <strong>Bei dem dritten Fehlversuch hilft Dir das Spiel. Dir werden jedoch 500 € abgezogen.</strong>
+                        </p>
+                    </td>
+                </tr>
+            </tbod>
+        </table>
+    </div>
+
     <div class="moneysheet__income-sum">
-        {!! $moneySheet->gehalt->format() !!}
+        {!! $moneySheet->annualIncome->formatWithIcon() !!}
     </div>
     <div class="moneysheet__expenses-sum">
-        - {{ number_format($moneySheet->lebenshaltungskosten->value + $moneySheet->steuernUndAbgaben->value, 2, ',', '.') }} €
+        {!! $moneySheet->annualExpenses->formatWithIcon() !!}
     </div>
     <div class="moneysheet__sum">
-        = {{ number_format($moneySheet->gehalt->value - $moneySheet->lebenshaltungskosten->value - $moneySheet->steuernUndAbgaben->value, 2, ',', '.') }} €
+        = {!! $moneySheet->total->formatWithIcon() !!}
     </div>
 </div>

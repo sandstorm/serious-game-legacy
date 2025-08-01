@@ -1,9 +1,18 @@
+@extends ('components.modal.modal', ['closeModal' => "closeMoneySheet()", 'size' => 'large'])
+
 @props([
-    '$gameEvents' => null,
-    '$playerId' => null,
+    'gameEvents' => null,
+    'playerId' => null,
+    'moneySheet' => null,
 ])
 
-@extends ('components.modal.modal', ['closeModal' => "toggleEditExpenses()", 'size' => 'large'])
+@section('icon')
+    <button type="button" class="button button--type-icon" wire:click="toggleEditExpenses()">
+        <i class="icon-lupe-2" aria-hidden="true"></i>
+        <span class="sr-only">Zurück zur Moneysheet Übersicht</span>
+    </button>
+@endsection
+
 @section('title')
     Money Sheet - Ausgaben
 @endsection
@@ -12,6 +21,3 @@
     <x-money-sheet.expenses.money-sheet-expenses :money-sheet="$moneySheet" :game-events="$gameEvents" :player-id="$playerId" />
 @endsection
 
-@section('footer')
-    <button type="button" class="button button--type-primary" wire:click="toggleEditExpenses()">Schließen</button>
-@endsection
