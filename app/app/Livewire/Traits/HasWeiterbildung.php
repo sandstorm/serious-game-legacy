@@ -6,6 +6,7 @@ namespace App\Livewire\Traits;
 
 use App\Livewire\Forms\WeiterbildungForm;
 use App\Livewire\ValueObject\NotificationTypeEnum;
+use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\StartWeiterbildungAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartWeiterbildung;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SubmitAnswerForWeiterbildung;
@@ -19,6 +20,10 @@ trait HasWeiterbildung
 
     public function mountHasWeiterbildung(): void
     {
+        if (PreGameState::isInPreGamePhase($this->gameEvents)) {
+            // do not mount the if we are in pre-game phase
+            return;
+        }
         $this->isWeiterbildungVisible = false;
 
         if ($this->hasPlayerStartedWeiterbildungWithoutAnswering()) {
