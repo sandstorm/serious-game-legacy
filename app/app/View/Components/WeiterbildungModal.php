@@ -30,14 +30,14 @@ class WeiterbildungModal extends Component
             $this->playerId
         );
 
-        $weiterbildungsOptions = PlayerState::getLastWeiterbildungsEventForPlayer(
+        $weiterbildungsOptions = PlayerState::getLastWeiterbildungsEventForPlayerThisTurn(
             $this->gameEvents,
             $this->playerId
         )?->shuffeldAnswerOptions;
 
         $submittedAnswerEvent = null;
         if ($weiterbildungCardDefinition !== null) {
-            $submittedAnswerEvent = PlayerState::getSubmittedAnswerForLatestWeiterbildung(
+            $submittedAnswerEvent = PlayerState::getSubmittedAnswerForLatestWeiterbildungThisTurn(
                 $this->gameEvents,
                 $this->playerId,
                 $weiterbildungCardDefinition->getId()

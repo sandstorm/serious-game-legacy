@@ -12,7 +12,7 @@
 @section('title')
     <div class="card__actions-header">
         <div>
-            {{ $minijob?->title }}
+            {{ $minijob?->getTitle() }}
         </div>
         <div class="card__actions-header-category">
             Minijob
@@ -22,7 +22,7 @@
 
 @section('content')
     <p>
-        {{ $minijob?->description }}
+        {{ $minijob?->getDescription() }}
     </p>
 
     @if ($resourceChanges)
