@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\View\Components;
 
-use App\Helper\KompetenzenHelper;
 use App\Livewire\Dto\PlayerListEmptySlotDto;
 use App\Livewire\Dto\PlayerListPlayerDto;
 use App\Livewire\Dto\ZeitsteinWithColor;
