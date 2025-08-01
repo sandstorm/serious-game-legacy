@@ -28,7 +28,7 @@
                 <button title="Moneysheet öffnen" @class([
                     'button',
                     'button--type-primary',
-                    PlayerState::getPlayerColorClass($gameEvents, $playerId)
+                    $this->getPlayerColorClass()
                 ]) wire:click="showMoneySheet()">
                     {!! PlayerState::getGuthabenForPlayer($gameEvents, $playerId)->format() !!}
                 </button>

@@ -37,17 +37,12 @@ class CompleteMoneySheetForPlayerAktion extends Aktion
             throw new \RuntimeException('Cannot complete money sheet: ' . $result->reason, 1751375431);
         }
 
-        $annualExpenses = MoneySheetState::getAnnualExpensesForPlayer($gameEvents, $playerId);
-        $annualIncome = MoneySheetState::getAnnualIncomeForPlayer($gameEvents, $playerId);
-
-        $guthabenChange = $annualIncome->subtract($annualExpenses);
-
         return GameEventsToPersist::with(
             new PlayerHasCompletedMoneysheetForCurrentKonjunkturphase(
                 $playerId,
                 KonjunkturphaseState::getCurrentYear($gameEvents),
                 new ResourceChanges(
-                    guthabenChange: $guthabenChange
+                    guthabenChange: MoneySheetState::calculateTotalForPlayer($gameEvents, $playerId)
                 )
             )
         );

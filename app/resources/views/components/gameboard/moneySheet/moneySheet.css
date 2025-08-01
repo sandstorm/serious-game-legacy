@@ -1,12 +1,30 @@
 .moneysheet {
     display: grid;
     grid-template-areas:
-        "income     expenses     .  "
-        "income-sum expenses-sum sum"
-    ;
-    grid-template-columns: 1fr 1fr 0.5fr;
+        "income     expenses     information  "
+        "income-sum expenses-sum sum";
+    grid-template-columns: 3fr 3fr 2fr;
     grid-template-rows: auto 50px;
-    gap: 10px;
+    gap: var(--spacing-100);
+
+    table {
+        thead {
+            height: 50px;
+
+            h2 {
+                display: flex;
+                align-items: center;
+                gap: var(--spacing-50);
+            }
+        }
+
+        td, th {
+            position: relative;
+            padding: var(--spacing-50);
+
+            border: none;
+        }
+    }
 }
 
 .moneysheet__income {
@@ -17,16 +35,67 @@
     grid-area: expenses;
 }
 
+.moneysheet__income, .moneysheet__expenses {
+    padding: var(--spacing-100);
+
+    border: 1px solid var(--color-grey);
+    border-radius: 20px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+
+    &.player-color-1 {
+        border-color: var(--color-player-1--dark);
+    }
+    &.player-color-2 {
+        border-color: var(--color-player-2--dark);
+    }
+    &.player-color-3 {
+        border-color: var(--color-player-3--dark);
+    }
+    &.player-color-4 {
+        border-color: var(--color-player-4--dark);
+    }
+}
+
+.moneysheet__information {
+    grid-area: information;
+    padding-top: var(--spacing-100);
+}
+
 .moneysheet__expenses-sum {
     grid-area: expenses-sum;
-    text-align: right;
 }
 
 .moneysheet__income-sum {
     grid-area: income-sum;
+}
+
+.moneysheet__expenses-sum, .moneysheet__income-sum {
+    padding-inline: var(--spacing-100);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
     text-align: right;
+    font-size: var(--font-size-xl);
 }
 
 .moneysheet__sum {
+    padding: var(--spacing-50);
     grid-area: sum;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-50);
+
+    font-size: var(--font-size-xl);
+}
+
+.moneysheet__action-required {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+
+    background-color: var(--color-error);
 }
