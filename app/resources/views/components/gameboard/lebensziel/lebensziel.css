@@ -28,15 +28,20 @@
     }
 
     .kompetenzen {
-        padding: 0;
-        justify-content: flex-start;
-
-        background-color: transparent;
+        margin-bottom: var(--spacing-50);
     }
 
     .lebensziel__phase-cost {
         padding-left: 50px;
         padding-right: 50px;
+    }
+
+    .lebensziel__phase-switch {
+        position: absolute;
+        z-index: 10;
+        right: -65px;
+        bottom: 20px;
+
     }
 
     &:first-of-type {
@@ -81,15 +86,10 @@
 }
 
 .lebensziel__phase-switch {
-    position: absolute;
-    z-index: 10;
-    right: -65px;
-    bottom: 20px;
-
     .button {
         display: block;
         width: 110px;
-        padding: var(--spacing-25);
+        padding: var(--spacing-25) var(--spacing-100);
         justify-content: center;
     }
 }

@@ -1,3 +1,7 @@
+:root {
+    --header-height: 40px;
+}
+
 .game {
     display: grid;
     grid-template-areas:
@@ -8,6 +12,8 @@
 
 .game__header {
     grid-area: header;
+    position: relative;
+    min-height: var(--header-height);
 }
 
 .game__content {

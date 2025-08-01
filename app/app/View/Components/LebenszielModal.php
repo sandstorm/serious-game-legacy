@@ -10,7 +10,7 @@ use Domain\CoreGameLogic\PlayerId;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
-class PlayerDetails extends Component
+class LebenszielModal extends Component
 {
     /**
      * Create the component instance.
@@ -25,7 +25,7 @@ class PlayerDetails extends Component
      */
     public function render(): View
     {
-        return view('components.gameboard.player-details-modal', [
+        return view('components.gameboard.lebensziel-modal', [
             'lebenszielDefinition' => PlayerState::getLebenszielDefinitionForPlayer($this->gameEvents, $this->playerId)
         ]);
     }

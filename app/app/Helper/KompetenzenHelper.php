@@ -12,14 +12,14 @@ use Domain\CoreGameLogic\PlayerId;
 class KompetenzenHelper
 {
     /**
-     * @param GameEvents $gameEvents
-     * @param PlayerId $playerId
+     * @param string $colorClass
+     * @param string $playerName
      * @param float $kompetenzen
      * @param int $requiredKompetenzen
      * @param string $iconComponentName
      * @return KompetenzWithColor[]
      */
-    public static function getKompetenzen(GameEvents $gameEvents, PlayerId $playerId, float $kompetenzen, int $requiredKompetenzen, string $iconComponentName): array
+    public static function getKompetenzen(string $colorClass, string $playerName, float $kompetenzen, int $requiredKompetenzen, string $iconComponentName): array
     {
         $kompetenzenArray = [];
         for ($i = 0; $i < $kompetenzen; $i++) {
@@ -27,14 +27,15 @@ class KompetenzenHelper
                 drawEmpty: false,
                 // only possible for category bildung at the moment
                 drawHalfEmpty: abs($i + 0.5 - $kompetenzen) < 0.01,
-                colorClass: PlayerState::getPlayerColorClass($gameEvents, $playerId),
-                playerName: PlayerState::getNameForPlayer($gameEvents, $playerId),
+                colorClass: $colorClass,
+                playerName: $playerName,
                 iconComponentName: $iconComponentName,
             );
         }
 
         // fill up the rest with empty ones
-        for ($i = 0; $i < $requiredKompetenzen - $kompetenzen; $i++) {
+        $slotsUsed = count($kompetenzenArray);
+        for ($i = 0; $i < $requiredKompetenzen - $slotsUsed; $i++) {
             $kompetenzenArray[] = new KompetenzWithColor(
                 drawEmpty: true,
                 colorClass: '',

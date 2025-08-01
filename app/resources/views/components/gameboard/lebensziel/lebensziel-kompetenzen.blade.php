@@ -9,6 +9,7 @@
              :player-name="$kompetenz->playerName"
              :player-color-class="$kompetenz->colorClass"
              :draw-empty="$kompetenz->drawEmpty"
+             :draw-half-empty="$kompetenz->drawHalfEmpty"
         />
     @endforeach
 </ul>
@@ -19,6 +20,7 @@
             :player-name="$kompetenz->playerName"
             :player-color-class="$kompetenz->colorClass"
             :draw-empty="$kompetenz->drawEmpty"
+            :draw-half-empty="$kompetenz->drawHalfEmpty"
         />
     @endforeach
 </ul>

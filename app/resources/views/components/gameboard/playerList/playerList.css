@@ -1,28 +1,49 @@
 .player-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+    position: relative;
+    z-index: 1000;
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 2px;
+    height: 100%;
+
+    background-color: var(--color-primary-fg);
+
+    transition: height 0.3s ease-in-out;
+}
+
+.player-list.player-list--show-details {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100dvh;
 }
 
 .player-list__player {
     background: var(--color-player-list-bg);
+    padding-top: var(--spacing-25);
+    display: flex;
+    flex-direction: column;
 
     .zeitsteine {
         margin-left: auto;
+        flex-wrap: nowrap;
+        flex-shrink: 0;
     }
 
-    .button {
+    > .button {
         padding: var(--spacing-50);
         width: 100%;
-        min-height: 100%;
         flex-direction: row;
+        min-height: unset;
         gap: var(--spacing-25);
 
         color: var(--color-primary-fg);
     }
+}
+
+.player-list__player.player-list__player--is-active {
+    border-top: var(--spacing-25) solid;
+    padding-top: 0;
 }
 
 .player-list__player.player-color-1 {
@@ -45,12 +66,48 @@
     background: linear-gradient(90deg, var(--color-player-list-bg) 0%, var(--color-player-4--super-dark) 100%);
 }
 
-.player-list__player--is-active {
-    border-top: var(--spacing-25) solid;
-    padding-top: var(--spacing-25);
-}
-
 .player-list__player-phase {
     font-size: var(--font-size-xxl);
 }
 
+.player-list__player-name {
+    flex-grow: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.player-list__player-details {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-100);
+    padding: var(--spacing-50);
+
+    color: var(--color-primary-fg);
+}
+
+.player-list__player-details-job {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-100);
+}
+
+.player-list__player-details-footer {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-50);
+
+    .button {
+        margin-bottom: var(--spacing-100);
+    }
+}
+
+.player-list__player-details-guthaben {
+    padding: var(--spacing-50) var(--spacing-100);
+
+    border: 1px solid var(--color-primary-fg);
+    border-radius: 999px;
+}
