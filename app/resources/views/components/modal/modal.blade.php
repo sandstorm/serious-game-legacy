@@ -3,10 +3,12 @@
     '$size' => 'medium',
 ])
 
-<div @class([
-    "modal",
-    "modal--size-$size",
-])>
+<div x-data="{ open: true }" x-trap="open"
+    @class([
+        "modal",
+        "modal--size-$size",
+    ])
+>
     <div class="modal__backdrop" wire:click={{$closeModal}}></div>
     <div class="modal__content">
         <div class="modal__icon">

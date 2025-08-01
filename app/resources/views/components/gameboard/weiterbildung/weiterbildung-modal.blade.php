@@ -55,7 +55,7 @@
                     </label>
                 @endforeach
             </div>
-
+            @error('weiterbildungForm.answer') <span class="form__error">{{ $message }}</span> @enderror
 
             <div class="weiterbildung__footer">
                 <div @class([
@@ -86,7 +86,7 @@
                         Weiter
                     </button>
                 @else
-                    <x-form.submit disabled wire:dirty.remove.attr="disabled">
+                    <x-form.submit>
                         Auswahl bestätigen
                     </x-form.submit>
                 @endif

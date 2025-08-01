@@ -84,6 +84,8 @@ trait HasWeiterbildung
 
     public function submitAnswerForWeiterbildung(): void
     {
+        $this->weiterbildungForm->validate();
+
         $selectedAnswerId = new AnswerId($this->weiterbildungForm->answer);
         $this->coreGameLogic->handle($this->gameId, SubmitAnswerForWeiterbildung::create(
             $this->myself,
