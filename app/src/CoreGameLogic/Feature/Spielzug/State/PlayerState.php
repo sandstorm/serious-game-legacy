@@ -222,7 +222,7 @@ class PlayerState
      */
     public static function getLastWeiterbildungCardDefinitionForPlayer(GameEvents $stream, PlayerId $playerId): ?WeiterbildungCardDefinition
     {
-        $weiterbildungEvent = self::getLastWeiterbildungsEventForPlayer($stream, $playerId);
+        $weiterbildungEvent = self::getLastWeiterbildungsEventForPlayerThisTurn($stream, $playerId);
         if ($weiterbildungEvent === null) {
             return null;
         }
@@ -235,10 +235,13 @@ class PlayerState
      * @param PlayerId $playerId
      * @return WeiterbildungWasStarted|null
      */
-    public static function getLastWeiterbildungsEventForPlayer(GameEvents $gameEvents, PlayerId $playerId): ?WeiterbildungWasStarted
+    public static function getLastWeiterbildungsEventForPlayerThisTurn(GameEvents $gameEvents, PlayerId $playerId): ?WeiterbildungWasStarted
     {
+        $eventsThisTurn = $gameEvents->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class)
+            ?? $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
+
         /** @var WeiterbildungWasStarted|null $weiterbildungEvent */
-        $weiterbildungEvent = $gameEvents->findLastOrNullWhere(
+        $weiterbildungEvent = $eventsThisTurn->findLastOrNullWhere(
             fn($e) => $e instanceof WeiterbildungWasStarted && $e->playerId->equals($playerId)
         );
         return $weiterbildungEvent;
@@ -250,10 +253,13 @@ class PlayerState
      * @param CardId $cardId
      * @return AnswerForWeiterbildungWasSubmitted|null
      */
-    public static function getSubmittedAnswerForLatestWeiterbildung(GameEvents $gameEvents, PlayerId $playerId, CardId $cardId): ?AnswerForWeiterbildungWasSubmitted
+    public static function getSubmittedAnswerForLatestWeiterbildungThisTurn(GameEvents $gameEvents, PlayerId $playerId, CardId $cardId): ?AnswerForWeiterbildungWasSubmitted
     {
+        $eventsThisTurn = $gameEvents->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class)
+            ?? $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
+
         /** @var AnswerForWeiterbildungWasSubmitted|null $submittedAnswerEvent */
-        $submittedAnswerEvent = $gameEvents->findLastOrNullWhere(
+        $submittedAnswerEvent = $eventsThisTurn->findLastOrNullWhere(
             fn($e) => $e instanceof AnswerForWeiterbildungWasSubmitted
                 && $e->playerId->equals($playerId)
                 && $e->cardId->equals($cardId)

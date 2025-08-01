@@ -1634,7 +1634,7 @@ describe('handleSubmitAnswerWeiterbildung', function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $cardDefinitionOfLastWeiterbildung = PlayerState::getLastWeiterbildungCardDefinitionForPlayer($gameEvents, $this->players[0]);
-        $answerEvent = PlayerState::getSubmittedAnswerForLatestWeiterbildung($gameEvents, $this->players[0], $cardDefinitionOfLastWeiterbildung->getId());
+        $answerEvent = PlayerState::getSubmittedAnswerForLatestWeiterbildungThisTurn($gameEvents, $this->players[0], $cardDefinitionOfLastWeiterbildung->getId());
 
         expect($answerEvent->playerId)->toEqual($this->players[0])
             ->and($answerEvent->cardId)->toEqual(new CardId('cardWeiterbildungTest'))
@@ -1667,7 +1667,7 @@ describe('handleSubmitAnswerWeiterbildung', function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $cardDefinitionOfLastWeiterbildung = PlayerState::getLastWeiterbildungCardDefinitionForPlayer($gameEvents, $this->players[0]);
-        $answerEvent = PlayerState::getSubmittedAnswerForLatestWeiterbildung($gameEvents, $this->players[0], $cardDefinitionOfLastWeiterbildung->getId());
+        $answerEvent = PlayerState::getSubmittedAnswerForLatestWeiterbildungThisTurn($gameEvents, $this->players[0], $cardDefinitionOfLastWeiterbildung->getId());
 
         expect($answerEvent->playerId)->toEqual($this->players[0])
             ->and($answerEvent->cardId)->toEqual(new CardId('cardWeiterbildungTest'))
