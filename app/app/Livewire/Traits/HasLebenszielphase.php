@@ -7,7 +7,6 @@ namespace App\Livewire\Traits;
 use App\Livewire\ValueObject\NotificationTypeEnum;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ChangeLebenszielphaseAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ChangeLebenszielphase;
-use Domain\CoreGameLogic\PlayerId;
 
 trait HasLebenszielphase
 {

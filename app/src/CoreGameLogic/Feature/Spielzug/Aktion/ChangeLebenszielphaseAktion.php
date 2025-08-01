@@ -41,7 +41,7 @@ class ChangeLebenszielphaseAktion extends Aktion
         }
         $currentPhaseDefinition = PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($gameEvents, $playerId);
         $resourceChanges = new ResourceChanges(
-            guthabenChange: new MoneyAmount($currentPhaseDefinition->investitionen * -1),
+            guthabenChange: new MoneyAmount($currentPhaseDefinition->investitionen->value * -1),
             bildungKompetenzsteinChange: -1 * PlayerState::getBildungsKompetenzsteine($gameEvents, $playerId),
             freizeitKompetenzsteinChange: -1 * PlayerState::getFreizeitKompetenzsteine($gameEvents, $playerId),
         );

@@ -1,0 +1,51 @@
+@use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
+
+@props([
+    'lebenszielPhase' => null,
+    'currentPhase' => null,
+])
+
+<div class="lebensziel__phase-switch">
+    @if ($currentPhase !== $lebenszielPhase)
+        <button
+            type="button"
+            @class([
+                "button",
+                "button--type-primary",
+                "button--disabled",
+                $this->getButtonPlayerClass(),
+            ])
+        >
+            <i class="icon-lock-closed"></i>
+            @if ($lebenszielPhase === 3)
+                Spiel <br /> beenden
+            @else
+                Phase <br /> wechseln
+            @endif
+        </button>
+    @else
+        <button
+            type="button"
+            @class([
+                "button",
+                "button--type-primary",
+                "button--disabled" => !$this->canChangeLebenszielphase(),
+                $this->getButtonPlayerClass(),
+            ])
+            wire:click="changeLebenszielphase()"
+        >
+            @if($this->canChangeLebenszielphase())
+                <i class="icon-lock-open"></i>
+            @else
+                <i class="icon-lock-closed"></i>
+            @endif
+
+            @if ($lebenszielPhase === 3)
+                Spiel <br /> beenden
+            @else
+                Phase <br /> wechseln
+            @endif
+        </button>
+    @endif
+
+</div>

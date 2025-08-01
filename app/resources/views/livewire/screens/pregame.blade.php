@@ -22,10 +22,10 @@
                         <ul class="lebensziele-selector">
                             @foreach($lebensziele as $lebensziel)
                                 <li @class([
-                                'lebensziel-to-select',
-                                'lebensziel-to-select--is-selected' => $nameLebenszielForm->lebensziel == $lebensziel->id->value
-                            ])>
-                                    <x-lebensziel :lebensziel="$lebensziel"/>
+                                    'lebensziel-to-select',
+                                    'lebensziel-to-select--is-selected' => $nameLebenszielForm->lebensziel == $lebensziel->id->value
+                                ])>
+                                    <x-lebensziel.lebensziel-preview :lebensziel="$lebensziel"/>
 
                                     @if($nameLebenszielForm->lebensziel != $lebensziel->id->value)
                                         <button type="button" class="button button--type-primary"

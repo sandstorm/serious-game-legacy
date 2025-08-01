@@ -1,4 +1,4 @@
-@use('\Domain\Definitions\Konjunkturphase\ValueObject\CategoryId')
+@use('Domain\Definitions\Konjunkturphase\ValueObject\CategoryId')
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
 
 @props([
