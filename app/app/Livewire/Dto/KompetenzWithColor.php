@@ -13,7 +13,7 @@ class KompetenzWithColor extends AbstractIconWithColor
         public string $playerName = '',
         public string $iconComponentName = '',
     ) {
-        parent::__construct($drawEmpty, $colorClass, $playerName, $iconComponentName);
+        parent::__construct($drawEmpty, $drawHalfEmpty, $colorClass, $playerName, $iconComponentName);
     }
 
 }

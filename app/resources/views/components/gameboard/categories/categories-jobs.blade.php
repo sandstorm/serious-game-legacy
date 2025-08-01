@@ -1,9 +1,5 @@
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
 
-@props([
-    'jobDefinition' => null,
-])
-
 <div class="card-pile">
     <div
         @class(["card", !$this->canRequestJobOffers()->canExecute ? "card--disabled" : ""])
@@ -21,17 +17,6 @@
     </div>
 </div>
 
-@if ($jobDefinition !== null)
-    <hr/>
-    <button class="button button--type-outline-primary"
-            wire:click="showIncomeTab('salary')">
-        <ul class="zeitsteine">
-            <li>-{{ $jobDefinition->getRequirements()->zeitsteine }}</li>
-            <x-gameboard.zeitsteine.zeitstein-icon :player-color-class="PlayerState::getPlayerColorClass($gameEvents, $playerId)" />
-        </ul>
-        <span>Mein Job. {!! PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId)->format() !!}</span>
-    </button>
-@endif
 @if ($this->jobOfferIsVisible)
     <x-job-offers-modal :player-id="$playerId" :game-events="$gameEvents"/>
 @endif
