@@ -1679,6 +1679,7 @@ describe('handleSubmitAnswerWeiterbildung', function () {
     });
 
     it('two players start and answer a weiterbildung', function () {
+        /** @var TestCase $this */
         $cardsForTesting = [
             "cardWeiterbildungTest1" => new WeiterbildungCardDefinition(
                 id: new CardId('cardWeiterbildungTest1'),
