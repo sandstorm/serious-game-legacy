@@ -250,10 +250,9 @@ class PlayerState
     /**
      * @param GameEvents $gameEvents
      * @param PlayerId $playerId
-     * @param CardId $cardId
      * @return AnswerForWeiterbildungWasSubmitted|null
      */
-    public static function getSubmittedAnswerForLatestWeiterbildungThisTurn(GameEvents $gameEvents, PlayerId $playerId, CardId $cardId): ?AnswerForWeiterbildungWasSubmitted
+    public static function getSubmittedAnswerForLatestWeiterbildungThisTurn(GameEvents $gameEvents, PlayerId $playerId): ?AnswerForWeiterbildungWasSubmitted
     {
         $eventsThisTurn = $gameEvents->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class)
             ?? $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
@@ -262,7 +261,6 @@ class PlayerState
         $submittedAnswerEvent = $eventsThisTurn->findLastOrNullWhere(
             fn($e) => $e instanceof AnswerForWeiterbildungWasSubmitted
                 && $e->playerId->equals($playerId)
-                && $e->cardId->equals($cardId)
         );
         return $submittedAnswerEvent;
     }

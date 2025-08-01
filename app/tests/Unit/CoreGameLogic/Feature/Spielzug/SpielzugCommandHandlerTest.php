@@ -1634,7 +1634,7 @@ describe('handleSubmitAnswerWeiterbildung', function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $cardDefinitionOfLastWeiterbildung = PlayerState::getLastWeiterbildungCardDefinitionForPlayer($gameEvents, $this->players[0]);
-        $answerEvent = PlayerState::getSubmittedAnswerForLatestWeiterbildungThisTurn($gameEvents, $this->players[0], $cardDefinitionOfLastWeiterbildung->getId());
+        $answerEvent = PlayerState::getSubmittedAnswerForLatestWeiterbildungThisTurn($gameEvents, $this->players[0]);
 
         expect($answerEvent->playerId)->toEqual($this->players[0])
             ->and($answerEvent->cardId)->toEqual(new CardId('cardWeiterbildungTest'))
@@ -1667,14 +1667,83 @@ describe('handleSubmitAnswerWeiterbildung', function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $cardDefinitionOfLastWeiterbildung = PlayerState::getLastWeiterbildungCardDefinitionForPlayer($gameEvents, $this->players[0]);
-        $answerEvent = PlayerState::getSubmittedAnswerForLatestWeiterbildungThisTurn($gameEvents, $this->players[0], $cardDefinitionOfLastWeiterbildung->getId());
+        $answerEvent = PlayerState::getSubmittedAnswerForLatestWeiterbildungThisTurn($gameEvents, $this->players[0]);
 
         expect($answerEvent->playerId)->toEqual($this->players[0])
+            ->and($cardDefinitionOfLastWeiterbildung->getId())->toEqual(new CardId('cardWeiterbildungTest'))
             ->and($answerEvent->cardId)->toEqual(new CardId('cardWeiterbildungTest'))
             ->and($answerEvent->wasCorrect)->toBeFalse()
             ->and(PlayerState::getBildungsKompetenzsteine($gameEvents, $this->players[0]))->toEqual(0)
             ->and(PlayerState::getFreizeitKompetenzsteine($gameEvents, $this->players[0]))->toEqual(0)
             ->and(PlayerState::getZeitsteineForPlayer($gameEvents, $this->players[0]))->toEqual($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
+    });
+
+    it('two players start and answer a weiterbildung', function () {
+        /** @var TestCase $this */
+        $cardsForTesting = [
+            "cardWeiterbildungTest1" => new WeiterbildungCardDefinition(
+                id: new CardId('cardWeiterbildungTest1'),
+                title: 'Weiterbildung 1',
+                description: '...',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("a"), "antwort 1", true),
+                    new AnswerOption(new AnswerId("b"), "antwort 2"),
+                    new AnswerOption(new AnswerId("c"), "antwort 3"),
+                    new AnswerOption(new AnswerId("d"), "antwort 4"),
+                ],
+            ),
+            "cardWeiterbildungTest2" => new WeiterbildungCardDefinition(
+                id: new CardId('cardWeiterbildungTest2'),
+                title: 'Weiterbildung 2',
+                description: '...',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("a"), "antwort 1", true),
+                    new AnswerOption(new AnswerId("b"), "antwort 2"),
+                    new AnswerOption(new AnswerId("c"), "antwort 3"),
+                    new AnswerOption(new AnswerId("d"), "antwort 4"),
+                ],
+            ),
+        ];
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+
+        // Player 1 starts Weiterbildung and answers correctly
+        $this->coreGameLogic->handle($this->gameId, StartWeiterbildung::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, SubmitAnswerForWeiterbildung::create($this->players[0], AnswerId::fromString('a')));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        $cardDefinitionOfLastWeiterbildung = PlayerState::getLastWeiterbildungCardDefinitionForPlayer($gameEvents, $this->players[0]);
+        expect($cardDefinitionOfLastWeiterbildung->getId())->toEqual(new CardId('cardWeiterbildungTest1'));
+
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[0])
+        );
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getLastWeiterbildungsEventForPlayerThisTurn($gameEvents, $this->players[0]))->toBeNull()
+            ->and(PlayerState::getLastWeiterbildungsEventForPlayerThisTurn($gameEvents, $this->players[1]))->toBeNull()
+            ->and(PlayerState::getSubmittedAnswerForLatestWeiterbildungThisTurn($gameEvents, $this->players[0]))->toBeNull()
+            ->and(PlayerState::getSubmittedAnswerForLatestWeiterbildungThisTurn($gameEvents, $this->players[1]))->toBeNull();
+
+        // player 2 starts a weiterbildung
+        $this->coreGameLogic->handle($this->gameId, StartWeiterbildung::create($this->players[1]));
+        $this->coreGameLogic->handle($this->gameId, SubmitAnswerForWeiterbildung::create($this->players[1], AnswerId::fromString('b')));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        $cardDefinitionOfLastWeiterbildung = PlayerState::getLastWeiterbildungCardDefinitionForPlayer($gameEvents, $this->players[1]);
+        $answerEvent = PlayerState::getSubmittedAnswerForLatestWeiterbildungThisTurn($gameEvents, $this->players[1]);
+
+        expect($answerEvent->playerId)->toEqual($this->players[1])
+            ->and($cardDefinitionOfLastWeiterbildung->getId())->toEqual(new CardId('cardWeiterbildungTest2'))
+            ->and(PlayerState::getLastWeiterbildungsEventForPlayerThisTurn($gameEvents, $this->players[0]))->toBeNull()
+            ->and(PlayerState::getLastWeiterbildungsEventForPlayerThisTurn($gameEvents, $this->players[1]))->not()->toBeNull()
+            ->and(PlayerState::getSubmittedAnswerForLatestWeiterbildungThisTurn($gameEvents, $this->players[0]))->toBeNull();
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[1])
+        );
     });
 });
 
