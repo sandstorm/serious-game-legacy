@@ -48,7 +48,7 @@ class Categories extends Component
                 cardPile: (string) new PileId(CategoryId::SOZIALES_UND_FREIZEIT, $currentLebenszielPhase),
             ),
             new GameboardInformationForCategory(
-                componentName: 'gameboard.categories-jobs',
+                componentName: 'gameboard.categories.categories-jobs',
                 title: CategoryId::JOBS,
                 zeitsteine: $this->getZeitsteineForCategory(CategoryId::JOBS),
             ),

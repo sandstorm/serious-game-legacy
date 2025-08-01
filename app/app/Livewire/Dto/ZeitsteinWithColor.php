@@ -11,7 +11,7 @@ class ZeitsteinWithColor extends AbstractIconWithColor
         public string $colorClass = '',
         public string $playerName = ''
     ) {
-        parent::__construct($drawEmpty, $colorClass, $playerName, 'gameboard.zeitsteine.zeitstein-icon');
+        parent::__construct($drawEmpty, false, $colorClass, $playerName, 'gameboard.zeitsteine.zeitstein-icon');
     }
 
 }

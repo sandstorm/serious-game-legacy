@@ -23,6 +23,12 @@
 
     @if ($this->currentPlayerIsMyself())
         <div class="sidebar__actions">
+            @if (PlayerState::getJobForPlayer($this->gameEvents, $playerId) !== null)
+                <button class="button button--type-primary" wire:click="showIncomeTab('salary')">
+                    Mein Job. {!! PlayerState::getCurrentGehaltForPlayer($this->gameEvents, $playerId)->format() !!}
+                </button>
+            @endif
+
             <button class="button button--type-primary" wire:click="showTakeOutALoan()">
                 Kredit aufnehmen <i class="icon-dots" aria-hidden="true"></i>
             </button>
