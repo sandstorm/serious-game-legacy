@@ -42,8 +42,7 @@ trait HasWeiterbildung
 
         $submittedAnswerEvent = PlayerState::getSubmittedAnswerForLatestWeiterbildungThisTurn(
             $gameEvents,
-            $this->myself,
-            $currentWeiterbildungsCard->getId()
+            $this->myself
         );
 
         return $submittedAnswerEvent === null;
