@@ -42,13 +42,13 @@
         @if ($currentPage === 3)
             <button wire:click="startKonjunkturphaseForPlayer()"
                     type="button"
-                    class="button button--type-text">
+                    class="button button--type-borderless">
                 Weiter
             </button>
         @else
             <button wire:click="nextKonjunkturphaseStartScreenPage()"
                     type="button"
-                    class="button button--type-text">
+                    class="button button--type-borderless">
                 Weiter
             </button>
         @endif

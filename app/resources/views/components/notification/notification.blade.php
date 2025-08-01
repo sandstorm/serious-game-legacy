@@ -12,7 +12,7 @@
                 <i class="icon-ereignis text--danger"></i>
             </div>
             <div class="notification__close-button">
-                <button type="button" class="button button--type-text" wire:click="closeNotification()">
+                <button type="button" class="button button--type-borderless" wire:click="closeNotification()">
                     <span class="sr-only">Mitteilung schließen</span>
                     <i class="icon-close" aria-hidden="true"></i>
                 </button>

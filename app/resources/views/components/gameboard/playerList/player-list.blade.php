@@ -26,7 +26,7 @@
                 $player->playerColorClass,
             ])
         >
-            <button type="button" title="Spielerübersicht öffnen/schließen" class="button button--type-text" wire:click="togglePlayerDetails()">
+            <button type="button" title="Spielerübersicht öffnen/schließen" class="button button--type-borderless" wire:click="togglePlayerDetails()">
                 <div class="player-list__player-name">
                     {{ $player->name }}
                 </div>

@@ -10,7 +10,7 @@
 
             <div class="game-board__konjukturphase">
                 <hr />
-                <button type="button" class="button button--type-text"
+                <button type="button" class="button button--type-borderless"
                         wire:click="showKonjunkturphaseDetails()">
                     Konjunktur: {{ $konjunkturphasenDefinition->type }} <i class="icon-info" aria-hidden="true"></i>
                 </button>

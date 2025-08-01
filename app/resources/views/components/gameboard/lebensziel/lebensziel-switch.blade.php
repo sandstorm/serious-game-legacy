@@ -7,8 +7,7 @@
 
 <div class="lebensziel__phase-switch">
     @if ($currentPhase !== $lebenszielPhase)
-        <button
-            type="button"
+        <div
             @class([
                 "button",
                 "button--type-primary",
@@ -22,7 +21,7 @@
             @else
                 Phase <br /> wechseln
             @endif
-        </button>
+        </div>
     @else
         <button
             type="button"
