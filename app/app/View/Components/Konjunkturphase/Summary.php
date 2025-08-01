@@ -39,6 +39,8 @@ class Summary extends Component
                 totalInsuranceCost: MoneySheetState::getCostOfAllInsurances($this->gameEvents, $this->playerId),
                 sumOfAllLoans: MoneySheetState::getSumOfAllLoansForPlayer($this->gameEvents, $this->playerId),
                 sumOfAllStocks: PlayerState::getTotalValueOfAllStocksForPlayer($this->gameEvents, $this->playerId),
+                annualIncome: MoneySheetState::getAnnualIncomeForPlayer($this->gameEvents,  $this->playerId),
+                annualExpenses: new MoneyAmount(-1 * MoneySheetState::getAnnualExpensesForPlayer($this->gameEvents, $this->playerId)->value),
             ),
         ]);
     }

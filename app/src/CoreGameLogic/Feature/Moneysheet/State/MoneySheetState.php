@@ -266,13 +266,6 @@ class MoneySheetState
             || self::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $playerId);
     }
 
-    public static function calculateTotalForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
-    {
-        return PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId)
-            ->subtract(self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId))
-            ->subtract(self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId));
-    }
-
     public static function doesPlayerHaveThisInsurance(GameEvents $gameEvents, PlayerId $playerId, InsuranceId $insuranceId): bool
     {
         // returns all events after the last insurance conclusion event for this player
@@ -429,5 +422,11 @@ class MoneySheetState
             ->add(PlayerState::getDividendForAllStocksForPlayer($gameEvents, $playerId));
 
         return $annualIncome;
+    }
+
+    public static function calculateTotalForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
+    {
+        return self::getAnnualIncomeForPlayer($gameEvents, $playerId)
+            ->subtract(self::getAnnualExpensesForPlayer($gameEvents, $playerId));
     }
 }

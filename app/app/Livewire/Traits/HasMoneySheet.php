@@ -151,6 +151,8 @@ trait HasMoneySheet
             totalInsuranceCost: MoneySheetState::getCostOfAllInsurances($this->gameEvents, $playerId),
             sumOfAllLoans: MoneySheetState::getSumOfAllLoansForPlayer($this->gameEvents, $playerId),
             sumOfAllStocks: PlayerState::getTotalValueOfAllStocksForPlayer($this->gameEvents, $playerId),
+            annualIncome: MoneySheetState::getAnnualIncomeForPlayer($this->gameEvents, $playerId),
+            annualExpenses: new MoneyAmount(-1 * MoneySheetState::getAnnualExpensesForPlayer($this->gameEvents, $playerId)->value),
         );
     }
 
