@@ -34,15 +34,15 @@ class LebenszielKompetenzen extends Component
 
         return view('components.gameboard.lebensziel.lebensziel-kompetenzen', [
             'bildungsKompetenzen' => KompetenzenHelper::getKompetenzen(
-                $this->gameEvents,
-                $this->playerId,
+                PlayerState::getPlayerColorClass($this->gameEvents, $this->playerId),
+                PlayerState::getNameForPlayer($this->gameEvents, $this->playerId),
                 $bildungsKompetenzen,
                 $this->lebenszielPhase->bildungsKompetenzSlots,
                 'gameboard.kompetenzen.kompetenz-icon-bildung'
             ),
             'freizeitKompetenzen' => KompetenzenHelper::getKompetenzen(
-                $this->gameEvents,
-                $this->playerId,
+                PlayerState::getPlayerColorClass($this->gameEvents, $this->playerId),
+                PlayerState::getNameForPlayer($this->gameEvents, $this->playerId),
                 $freizeitKompetenzen,
                 $this->lebenszielPhase->freizeitKompetenzSlots,
                 'gameboard.kompetenzen.kompetenz-icon-freizeit',

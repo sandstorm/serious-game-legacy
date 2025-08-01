@@ -32,7 +32,13 @@
     }
 
     .kompetenzen {
+        justify-content: center;
         margin-top: auto;
+        padding-inline: var(--spacing-100);
+        height: var(--button-height);
+
+        border-radius: 40px;
+        background-color: var(--color-primary-fg);
     }
 }
 

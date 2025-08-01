@@ -37,8 +37,8 @@ class KompetenzenOverview extends Component
             new GameboardInformationForKompetenzenOverview(
                 title: CategoryId::BILDUNG_UND_KARRIERE,
                 kompetenzen: KompetenzenHelper::getKompetenzen(
-                    $this->gameEvents,
-                    $this->playerId,
+                    PlayerState::getPlayerColorClass($this->gameEvents, $this->playerId),
+                    PlayerState::getNameForPlayer($this->gameEvents, $this->playerId),
                     PlayerState::getBildungsKompetenzsteine($this->gameEvents, $this->playerId),
                     $currentLebenszielPhaseDefinition->bildungsKompetenzSlots,
                     'gameboard.kompetenzen.kompetenz-icon-bildung'
@@ -47,8 +47,8 @@ class KompetenzenOverview extends Component
             new GameboardInformationForKompetenzenOverview(
                 title: CategoryId::SOZIALES_UND_FREIZEIT,
                 kompetenzen: KompetenzenHelper::getKompetenzen(
-                    $this->gameEvents,
-                    $this->playerId,
+                    PlayerState::getPlayerColorClass($this->gameEvents, $this->playerId),
+                    PlayerState::getNameForPlayer($this->gameEvents, $this->playerId),
                     PlayerState::getFreizeitKompetenzsteine($this->gameEvents, $this->playerId),
                     $currentLebenszielPhaseDefinition->freizeitKompetenzSlots,
                     'gameboard.kompetenzen.kompetenz-icon-freizeit',

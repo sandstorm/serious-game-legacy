@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\View\Components;
 
+use App\Helper\KompetenzenHelper;
 use App\Livewire\Dto\PlayerListEmptySlotDto;
 use App\Livewire\Dto\PlayerListPlayerDto;
 use App\Livewire\Dto\ZeitsteinWithColor;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
+use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
@@ -56,6 +59,7 @@ class PlayerList extends Component
     private function getPlayers(): array
     {
         $orderedPlayers = GamePhaseState::getOrderedPlayers($this->gameEvents);
+
         $playerList = [];
         foreach ($orderedPlayers as $playerId) {
             $playerDto = new PlayerListPlayerDto(
@@ -64,7 +68,13 @@ class PlayerList extends Component
                 playerColorClass: PlayerState::getPlayerColorClass($this->gameEvents, $playerId),
                 isPlayersTurn: $playerId->equals($this->activePlayer),
                 zeitsteine: $this->getZeitsteineForPlayer($playerId),
-                phase: PlayerState::getCurrentLebenszielphaseIdForPlayer($this->gameEvents, $playerId)->value,
+                phaseDefinition: PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($this->gameEvents, $playerId),
+                lebenszielDefinition: PlayerState::getLebenszielDefinitionForPlayer($this->gameEvents, $playerId),
+                sumOfInvestments: new MoneyAmount(1000),
+                sumOfLoans: MoneySheetState::getSumOfAllLoansForPlayer($this->gameEvents, $playerId),
+                job: PlayerState::getJobForPlayer($this->gameEvents, $playerId),
+                gehalt: PlayerState::getCurrentGehaltForPlayer($this->gameEvents, $playerId),
+                guthaben: PlayerState::getGuthabenForPlayer($this->gameEvents, $playerId),
             );
 
             $playerList[] = $playerDto;

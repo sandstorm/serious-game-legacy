@@ -7,7 +7,7 @@ use Livewire\Form;
 
 class PreGameNameLebenszielForm extends Form
 {
-    #[Validate('required|min:2')]
+    #[Validate('required|min:2|max:12')]
     public string $name = '';
 
     #[Validate('required', message: 'Bitte Lebensziel auswählen')]
