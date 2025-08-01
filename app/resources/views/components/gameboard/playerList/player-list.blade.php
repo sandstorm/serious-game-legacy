@@ -6,8 +6,9 @@
     'emptySlots' => [],
 ])
 
-<ul @class([
-    "player-list"
+<div @class([
+    "player-list",
+    'player-list--show-details' => $this->showPlayerDetails,
 ])>
     @foreach($emptySlots as $emptySlot)
         <li
@@ -19,15 +20,17 @@
     @endforeach
 
     @foreach($players as $player)
-        <li
+        <div
             @class([
                 'player-list__player',
                 'player-list__player--is-active' => $player->isPlayersTurn,
                 $player->playerColorClass,
             ])>
 
-            <button type="button" title="Zeige Lebensziel des Spielers" class="button button--type-text" wire:click="showPlayerDetails('{{ $player->playerId }}')">
-                {{ $player->name }}
+            <button type="button" title="Spielerübersicht öffnen/schließen" class="button button--type-text" wire:click="togglePlayerDetails()">
+                <div class="player-list__player-name">
+                    {{ $player->name }}
+                </div>
 
                 <ul class="zeitsteine">
                     @foreach($player->zeitsteine as $playerZeitstein)
@@ -39,6 +42,34 @@
                     <x-gameboard.phase-icon />
                 </div>
             </button>
-        </li>
+
+            @if ($this->showPlayerDetails)
+                <div class="player-list__player-details">
+                    TODO: Focustrap wenn offen
+                    <div>
+                        <strong>Lebensziel:</strong> {{ $player->lebensziel->name }}
+                    </div>
+                    <x-gameboard.lebensziel-kompetenzen :player-id="$player->playerId" :game-events="$gameEvents" :lebensziel-phase="$player->phase" />
+
+                    @if ($player->sumOfLoans->value > 0)
+                        <div>
+                            Kreditsumme: {!! $player->sumOfLoans->format() !!}
+                        </div>
+                    @endif
+                    @if ($player->sumOfInvestments->value > 0)
+                        <div>
+                            Summe Investitionen: {!! $player->sumOfInvestments->format() !!}
+                        </div>
+                    @endif
+
+                    <div class="text-align--center">
+                        <i class="icon-phasenwechsel" aria-hidden="true"></i> {!! $player->phase->investitionen->format() !!}
+                    </div>
+                    <div class="text-align--center">
+                        {!! $player->guthaben->format() !!}
+                    </div>
+                </div>
+            @endif
+        </div>
     @endforeach
-</ul>
+</div>

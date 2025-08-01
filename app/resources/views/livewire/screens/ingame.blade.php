@@ -26,7 +26,7 @@
     </div>
 
     <aside class="game__aside">
-        <x-sidebar.sidebar :player-id="$myself" />
+        <x-sidebar.sidebar :game-events="$this->gameEvents" :player-id="$myself" />
     </aside>
     <x-notification.notification/>
 
@@ -63,7 +63,7 @@
     @if ($this->isWeiterbildungVisible)
         <x-weiterbildung-modal :player-id="$myself" :game-events="$this->gameEvents"/>
     @endif
-    @if ($showDetailsForPlayer)
-        <x-player-details :player-id="$showDetailsForPlayer" :game-events="$this->gameEvents" />
+    @if ($showLebenszielForPlayer)
+        <x-lebensziel-modal :player-id="$showLebenszielForPlayer" :game-events="$this->gameEvents" />
     @endif
 </div>

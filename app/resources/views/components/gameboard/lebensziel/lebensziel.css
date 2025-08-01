@@ -28,10 +28,7 @@
     }
 
     .kompetenzen {
-        padding: 0;
-        justify-content: flex-start;
-
-        background-color: transparent;
+        margin-bottom: var(--spacing-50);
     }
 
     .lebensziel__phase-cost {

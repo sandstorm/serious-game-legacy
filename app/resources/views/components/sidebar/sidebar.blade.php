@@ -1,13 +1,17 @@
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
 @use('\App\Livewire\ValueObject\ExpensesTabEnum')
 
-@props(['playerId' => null])
+@props([
+    'gameEvents' => [],
+    'playerId' => null
+])
 
 <div class="sidebar">
     <div class="sidebar__header">
         <div class="sidebar__lebensziel">
             <strong>Lebensziel:</strong>
-            {{ PlayerState::getLebenszielDefinitionForPlayer($this->gameEvents, $playerId)->name }} <i class="icon-info" aria-hidden="true" wire:click="showPlayerDetails('{{ $playerId }}')"></i>
+            {{ PlayerState::getLebenszielDefinitionForPlayer($gameEvents, $playerId)->name }}
+            <i class="icon-info" aria-hidden="true" wire:click="showPlayerLebensziel('{{ $playerId }}')"></i>
         </div>
         <div class="sidebar__menu">
             <button class="button button--type-primary button--type-icon">

@@ -8,15 +8,21 @@ use Domain\CoreGameLogic\PlayerId;
 
 trait HasPlayerDetails
 {
-    public ?PlayerId $showDetailsForPlayer;
+    public ?PlayerId $showLebenszielForPlayer = null;
+    public bool $showPlayerDetails = false;
 
-    public function showPlayerDetails(string $playerId): void
+    public function togglePlayerDetails(): void
     {
-        $this->showDetailsForPlayer = PlayerId::fromString($playerId);
+        $this->showPlayerDetails = !$this->showPlayerDetails;
     }
 
-    public function closePlayerDetails(): void
+    public function showPlayerLebensziel(string $playerId): void
     {
-        $this->showDetailsForPlayer = null;
+        $this->showLebenszielForPlayer = PlayerId::fromString($playerId);
+    }
+
+    public function closePlayerLebensziel(): void
+    {
+        $this->showLebenszielForPlayer = null;
     }
 }

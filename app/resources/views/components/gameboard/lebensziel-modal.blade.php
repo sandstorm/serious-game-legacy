@@ -1,10 +1,6 @@
-@extends ('components.modal.modal', ['closeModal' => "closePlayerDetails()",  'size' => 'large'])
+@extends ('components.modal.modal', ['closeModal' => "closePlayerLebensziel()",  'size' => 'large'])
 
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
-
-@props([
-    'lebensziel' => null,
-])
 
 @props([
     'lebenszielDefinition' => null,
@@ -27,5 +23,5 @@
 @endsection
 
 @section('footer')
-    <button type="button" class="button button--type-primary" wire:click="closePlayerDetails()">Schließen</button>
+    <button type="button" class="button button--type-primary" wire:click="closePlayerLebensziel()">Schließen</button>
 @endsection

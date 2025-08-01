@@ -1,19 +1,15 @@
 .kompetenzen {
+    margin: 0;
+    padding: 0;
     flex-shrink: 0;
     display: flex;
-    justify-content: center;
     align-items: center;
     gap: var(--spacing-50);
-    padding-inline: var(--spacing-100);
-    height: var(--button-height);
-
-    border-radius: 40px;
-    background-color: var(--color-primary-fg);
 }
 
 .kompetenz-icon {
     display: inline-block;
-    width: 30px;
+    width: 25px;
 
     svg {
         height: 100%;
