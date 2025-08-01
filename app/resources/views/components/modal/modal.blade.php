@@ -15,7 +15,7 @@
             @yield('icon')
         </div>
         <div class="modal__close-button">
-            <button type="button" class="button button--type-text" wire:click={{$closeModal}}>
+            <button type="button" class="button button--type-borderless" wire:click={{$closeModal}}>
                 <span class="sr-only">Modal schließen</span>
                 <i class="icon-close" aria-hidden="true"></i>
             </button>
