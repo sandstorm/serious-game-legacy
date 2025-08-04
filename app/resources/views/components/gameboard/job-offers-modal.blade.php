@@ -7,7 +7,16 @@
 ])
 
 @section('title')
-    Jobbörse - Ein Job kostet Zeit. Pro Jahr bleibt dir ein Zeitstein weniger. - <i class="icon-bildung-und-karriere"></i> Beruf
+    <div class="job-offers__header">
+        <span>Jobbörse</span>
+        <div class="job-offers__header-info">
+            <x-gameboard.resourceChanges.resource-change sr-label="Zeitsteine" change="-1" iconClass="icon-zeitstein" />
+            Ein Job kostet Zeit. Pro Jahr bleibt dir ein Zeitstein weniger.
+        </div>
+        <div class="job-offers__header-category">
+            <i class="icon-bildung-und-karriere" aria-hidden="true"></i> Beruf
+        </div>
+    </div>
 @endsection
 
 @section('icon')
@@ -29,7 +38,7 @@
                             "button",
                             "button--type-primary",
                             "button--disabled" => !AktionsCalculator::forStream($gameEvents)->canPlayerAffordJobCard($playerId, $jobOffer),
-                            $this->getButtonPlayerClass()
+                            $this->getPlayerColorClass()
                         ])
                         wire:click="applyForJob('{{ $jobOffer->getId()->value }}')"
                     >

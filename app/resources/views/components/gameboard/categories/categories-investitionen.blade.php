@@ -1,15 +1,14 @@
 @props([
     'category' => null,
     'gameEvents' => null,
-    '$playerId' => null,
+    'playerId' => null,
 ])
 
 <div class="card-pile">
-    <div
-        @class(["card", !$this->canRequestJobOffers()->canExecute ? "card--disabled" : ""])
-        role="button"
+    <button
+        class="card"
         aria-label="Investitionen anschauen"
-        wire:click="toggleInvestitionen()"
+        wire:click="toggleInvestitionenSelectionModal()"
     >
         <div class="card__icon">
             <i class="icon-dots" aria-hidden="true"></i>
@@ -21,9 +20,14 @@
             <i class="icon-immobilien" aria-hidden="true"></i>
             <i class="icon-krypto" aria-hidden="true"></i>
         </div>
-    </div>
+    </button>
 </div>
 
-@if ($this->showInvestitionen)
-    <x-gameboard.investitionen.invenstitionen-modal :game-events="$gameEvents" :player-id="$playerId" />
+@if ($this->showInvestitionenSelelectionModal)
+    @if ($this->showStocksModal)
+        <x-gameboard.investitionen.invenstitionen-stocks-modal :game-events="$gameEvents" />
+    @else
+        <x-gameboard.investitionen.invenstitionen-selection-modal />
+    @endif
 @endif
+

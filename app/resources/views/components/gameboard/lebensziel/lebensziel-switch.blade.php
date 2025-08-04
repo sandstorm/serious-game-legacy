@@ -12,7 +12,7 @@
                 "button",
                 "button--type-primary",
                 "button--disabled",
-                $this->getButtonPlayerClass(),
+                $this->getPlayerColorClass(),
             ])
         >
             <i class="icon-lock-closed"></i>
@@ -29,7 +29,7 @@
                 "button",
                 "button--type-primary",
                 "button--disabled" => !$this->canChangeLebenszielphase(),
-                $this->getButtonPlayerClass(),
+                $this->getPlayerColorClass(),
             ])
             wire:click="changeLebenszielphase()"
         >
