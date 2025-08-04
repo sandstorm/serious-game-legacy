@@ -344,7 +344,6 @@
       <path value="$PROJECT_DIR$/app/vendor/react/event-loop" />
       <path value="$PROJECT_DIR$/app/vendor/evenement/evenement" />
       <path value="$PROJECT_DIR$/app/vendor/larastan/larastan" />
-      <path value="$PROJECT_DIR$/app/vendor/phpmyadmin/sql-parser" />
       <path value="$PROJECT_DIR$/app/vendor/beberlei/assert" />
       <path value="$PROJECT_DIR$/app/vendor/nikolaposa/version" />
       <path value="$PROJECT_DIR$/app/vendor/staabm/phpstan-todo-by" />
@@ -372,6 +371,10 @@
       <path value="$PROJECT_DIR$/app/vendor/neos/eventstore" />
       <path value="$PROJECT_DIR$/app/vendor/sandstorm/eventstore-laraveladapter" />
       <path value="$PROJECT_DIR$/app/vendor/_laravel_idea" />
+      <path value="$PROJECT_DIR$/app/vendor/jenssegers/agent" />
+      <path value="$PROJECT_DIR$/app/vendor/jaybizzle/crawler-detect" />
+      <path value="$PROJECT_DIR$/app/vendor/iamcal/sql-parser" />
+      <path value="$PROJECT_DIR$/app/vendor/mobiledetect/mobiledetectlib" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
