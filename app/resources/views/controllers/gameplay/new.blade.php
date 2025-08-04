@@ -4,9 +4,9 @@
     <form method="get" action={{ route('game-play.player-links', ['gameId' => GameId::random()->value]) }}>
         <div class="form__group">
             <label for="numberOfPlayers">Anzahl Spieler:</label>
-            <x-form.textfield id="numberOfPlayers" name="numberOfPlayers" type="number" required="true" min="1" max="4" />
+            <input class="form__textfield" type="number" id="numberOfPlayers" name="numberOfPlayers" required="required" min="1" max="4" />
         </div>
 
-        <x-form.submit>Spiel erstellen</x-form.submit>
+        <button type="submit" class="button button--type-primary">Spiel erstellen</button>
     </form>
 </x-layout>

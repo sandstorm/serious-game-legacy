@@ -26,13 +26,14 @@
                                     'lebensziel-to-select--is-selected' => $nameLebenszielForm->lebensziel == $lebensziel->id->value
                                 ])>
                                     <x-lebensziel.lebensziel-preview :lebensziel="$lebensziel"/>
-
-                                    @if($nameLebenszielForm->lebensziel != $lebensziel->id->value)
-                                        <button type="button" class="button button--type-primary"
-                                                wire:click="selectLebensZiel({{ $lebensziel->id->value }})">Dieses
-                                            Lebensziel auswählen
-                                        </button>
-                                    @endif
+                                    <button type="button" class="button button--type-primary"
+                                            wire:click="selectLebensZiel({{ $lebensziel->id->value }})">
+                                        @if($nameLebenszielForm->lebensziel != $lebensziel->id->value)
+                                        Dieses Lebensziel auswählen
+                                        @else
+                                            Lebensziel ausgewählt
+                                        @endif
+                                    </button>
                                 </li>
                             @endforeach
                         </ul>

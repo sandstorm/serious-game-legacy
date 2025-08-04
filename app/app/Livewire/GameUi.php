@@ -141,6 +141,10 @@ class GameUi extends Component
 
     public function getPlayerColorClass(): string
     {
+        if (PreGameState::isInPreGamePhase($this->gameEvents)) {
+            return "";
+        }
+
         return PlayerState::getPlayerColorClass($this->gameEvents, $this->myself);
     }
 
