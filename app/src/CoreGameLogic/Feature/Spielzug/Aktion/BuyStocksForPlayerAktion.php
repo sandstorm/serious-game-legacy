@@ -57,6 +57,11 @@ class BuyStocksForPlayerAktion extends Aktion
             throw new \RuntimeException('' . $result->reason, 1752066529);
         }
 
+        $resourceChanges = new ResourceChanges(
+            guthabenChange: new MoneyAmount(-1 * ($this->sharePrice->value * $this->amount)),
+            zeitsteineChange: -1,
+        );
+
         return GameEventsToPersist::with(
             new StocksWereBoughtForPlayer(
                 playerId: $playerId,
@@ -64,6 +69,7 @@ class BuyStocksForPlayerAktion extends Aktion
                 sharePrice: $this->sharePrice,
                 amount: $this->amount,
                 stockPrices: StockPriceState::calculateStockPrices($gameEvents),
+                resourceChanges: $resourceChanges,
             )
         );
     }

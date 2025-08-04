@@ -25,15 +25,16 @@ class StocksWereBoughtForPlayer implements GameEventInterface, ProvidesResourceC
      * @param MoneyAmount $sharePrice
      * @param int $amount
      * @param StockPrice[] $stockPrices
+     * @param ResourceChanges $resourceChanges
      */
     public function __construct(
-        public PlayerId    $playerId,
-        public StockType   $stockType,
+        public PlayerId $playerId,
+        public StockType $stockType,
         public MoneyAmount $sharePrice,
-        public int         $amount,
-        public array       $stockPrices
-    )
-    {
+        public int $amount,
+        public array $stockPrices,
+        public ResourceChanges $resourceChanges,
+    ) {
     }
 
     public static function fromArray(array $values): GameEventInterface
@@ -44,9 +45,10 @@ class StocksWereBoughtForPlayer implements GameEventInterface, ProvidesResourceC
             sharePrice: new MoneyAmount($values['sharePrice']),
             amount: $values['amount'],
             stockPrices: array_map(
-                static fn ($stockPrice) => StockPrice::fromArray($stockPrice),
+                static fn($stockPrice) => StockPrice::fromArray($stockPrice),
                 $values['stockPrices']
             ),
+            resourceChanges: ResourceChanges::fromArray($values['resourceChanges']),
         );
     }
 
@@ -58,15 +60,14 @@ class StocksWereBoughtForPlayer implements GameEventInterface, ProvidesResourceC
             'sharePrice' => $this->sharePrice->value,
             'amount' => $this->amount,
             'stockPrices' => $this->stockPrices,
+            'resourceChanges' => $this->resourceChanges,
         ];
     }
 
     public function getResourceChanges(PlayerId $playerId): ResourceChanges
     {
         if ($this->playerId->equals($playerId)) {
-            return new ResourceChanges(
-                guthabenChange: new MoneyAmount(-1 * ($this->sharePrice->value * $this->amount)),
-            );
+            return $this->resourceChanges;
         }
         return new ResourceChanges();
     }
@@ -83,7 +84,7 @@ class StocksWereBoughtForPlayer implements GameEventInterface, ProvidesResourceC
 
     public function getCategoryId(): CategoryId
     {
-        Return CategoryId::INVESTITIONEN;
+        return CategoryId::INVESTITIONEN;
     }
 
     public function getPlayerId(): PlayerId
