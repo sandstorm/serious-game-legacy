@@ -78,6 +78,7 @@ trait HasKonjunkturphase
         }
         $this->coreGameLogic->handle($this->gameId, StartKonjunkturphaseForPlayer::create($this->myself));
         $this->broadcastNotify();
+        $this->konjunkturphaseStartScreenPage = 0;
     }
 
     public function completeMoneysheetForPlayer(): void
@@ -93,6 +94,7 @@ trait HasKonjunkturphase
             return;
         }
         $this->coreGameLogic->handle($this->gameId, CompleteMoneysheetForPlayer::create($this->myself));
+        $this->moneySheetIsVisible = false;
         $this->broadcastNotify();
     }
 
