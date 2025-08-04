@@ -25,6 +25,7 @@
     gap: var(--spacing-100);
     flex-wrap: nowrap;
     align-items: flex-end;
+    justify-content: space-between;
 }
 
 .buy-stocks__form-price {
@@ -41,7 +42,7 @@
     text-align: center;
 
     label {
-        display: inline-block;
+        display: block;
         margin-bottom: var(--spacing-50);
 
         font-weight: var(--font-weight-bold);
@@ -53,7 +54,7 @@
     text-align: center;
 
     strong {
-        display: inline-block;
+        display: block;
         margin-bottom: var(--spacing-50);
     }
 
