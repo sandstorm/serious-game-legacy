@@ -18,6 +18,7 @@ use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\EreignisCardDefinition;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
+use Random\Randomizer;
 
 /**
  * @internal no public API, because commands are no extension points. ALWAYS USE {@see ForCoreGameLogic::handle()} to trigger commands.
@@ -67,7 +68,8 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
         if (count($filteredCards) === 0) {
             throw new \RuntimeException("No EreignisCard matches the current requirements", 1753874959); // We should always have cards
         }
-        return $filteredCards[array_rand($filteredCards)];
+        $randomizer = new Randomizer();
+        return $randomizer->shuffleArray($filteredCards)[0];
     }
 
     private function handleTriggerEreignis(MaybeTriggerEreignis $command, GameEvents $gameEvents): GameEventsToPersist

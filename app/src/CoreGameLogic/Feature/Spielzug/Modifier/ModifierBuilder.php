@@ -39,6 +39,20 @@ readonly final class ModifierBuilder
                 playerTurn: $playerTurn,
                 description: $description,
             ),
+            ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER => new LebenshaltungskostenMultiplierModifier(
+                playerId: $playerId,
+                playerTurn: $playerTurn,
+                description: $description,
+                activeYear: $year,
+                multiplier: $modifierParameters->modifyLebenshaltungskostenMultiplier ?? throw new \RuntimeException("missing parameter"),
+            ),
+            ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE => new LebenshaltungskostenMinValueModifier(
+                playerId: $playerId,
+                playerTurn: $playerTurn,
+                description: $description,
+                activeYear: $year,
+                minValueChange: $modifierParameters->modifyLebenshaltungskostenMinValue ?? throw new \RuntimeException("missing parameter"),
+            ),
         };
     }
 

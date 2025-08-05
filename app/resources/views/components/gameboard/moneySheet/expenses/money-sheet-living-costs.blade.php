@@ -6,7 +6,7 @@
     <div class="tabs__upper-content">
         <p>
             Dazu zählen Nahrung, Wohnen, Krankenversicherung, ... <br />
-            Pro Jahr gibst Du 35% Deines Gehaltes für Lebenshaltungskosten aus. Jedoch mindestens 5.000 €
+            Pro Jahr gibst Du {{$livingCostPercent}}% Deines Gehaltes für Lebenshaltungskosten aus. Jedoch mindestens {!! $livingCostMinValue->format() !!}
         </p>
 
         @if ($this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled)
@@ -24,9 +24,18 @@
             </div>
 
             <div class="form-group">
-                <label class="form-group__label" for="steuernUndAbgaben">35% Deines Gehalts</label>
+                <label class="form-group__label" for="steuernUndAbgaben">{{$livingCostPercent}}% Deines Gehalts</label>
                 <x-form.textfield wire:model="moneySheetLebenshaltungskostenForm.lebenshaltungskosten" id="lebenshaltungskosten" name="lebenshaltungskosten" type="number" step="0.01" :disabled="$this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled" />
             </div>
+            <table>
+                <tbody>
+                @foreach($modifiers as $modifier)
+                    <tr>
+                        <td>{{$modifier}}</td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 

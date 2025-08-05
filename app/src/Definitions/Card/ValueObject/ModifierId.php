@@ -9,4 +9,6 @@ enum ModifierId: string
     case AUSSETZEN = 'Aussetzen';
     case BIND_ZEITSTEIN_FOR_JOB = 'Bind Zeitstein';
     case GEHALT_CHANGE = 'Gehaltsänderung';
+    case LEBENSHALTUNGSKOSTEN_MULTIPLIER = 'Lebenshaltungskosten Multiplikator';
+    case LEBENSHALTUNGSKOSTEN_MIN_VALUE = 'Lebenshaltungskosten mindestwert';
 }

@@ -23,7 +23,9 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasTakenOutForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SteuernUndAbgabenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SteuernUndAbgabenForPlayerWereEntered;
+use Domain\CoreGameLogic\Feature\Spielzug\State\ModifierCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
@@ -36,19 +38,25 @@ class MoneySheetState
         GameEvents $gameEvents,
         PlayerId $playerId
     ): MoneyAmount {
-        // TODO use modifiedGehalt, once the input for Gehalt Tab exists:
-        // $gehalt = PlayerState::getModifiedGehaltForPlayer($gameEvents, $playerId);
         $gehalt = PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId);
         return new MoneyAmount(max([
-            $gehalt->value * Configuration::LEBENSHALTUNGSKOSTEN_MULTIPLIER,
-            Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE
+            $gehalt->value * self::getMultiplierForLebenshaltungskostenForPlayer($gameEvents, $playerId),
+            self::getMinimumValueForLebenshaltungskostenForPlayer($gameEvents, $playerId)->value
         ]));
+    }
+
+    public static function getMultiplierForLebenshaltungskostenForPlayer(GameEvents $gameEvents, PlayerId $playerId): float
+    {
+        return ModifierCalculator::forStream($gameEvents)->forPlayer($playerId)->modify($gameEvents, HookEnum::LEBENSHALTUNGSKOSTEN_MULTIPLIER, value: Configuration::LEBENSHALTUNGSKOSTEN_MULTIPLIER);
+    }
+
+    public static function getMinimumValueForLebenshaltungskostenForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
+    {
+        return ModifierCalculator::forStream($gameEvents)->forPlayer($playerId)->modify($gameEvents, HookEnum::LEBENSHALTUNGSKOSTEN_MIN_VALUE, value: new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE));
     }
 
     public static function calculateSteuernUndAbgabenForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
-        // TODO use modifiedGehalt, once the input for Gehalt Tab exists:
-        // $gehalt = PlayerState::getModifiedGehaltForPlayer($gameEvents, $playerId);
         $gehalt = PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId);
         return new MoneyAmount($gehalt->value * Configuration::STEUERN_UND_ABGABEN_MULTIPLIER);
     }
