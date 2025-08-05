@@ -498,8 +498,8 @@ final class CardFinder
                 modifierParameters: new ModifierParameters(),
                 ereignisRequirementIds: [EreignisPrerequisitesId::JOB]
             ),
-            "e6" => new EreignisCardDefinition(
-                id: new CardId('e6'),
+            "e4" => new EreignisCardDefinition(
+                id: new CardId('e4'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
                 title: 'Testereignis',
                 description: 'Es gibt Geld ;)',
@@ -511,8 +511,8 @@ final class CardFinder
                 modifierIds: [],
                 modifierParameters: new ModifierParameters(),
             ),
-            "e7" => new EreignisCardDefinition(
-                id: new CardId('e7'),
+            "e5" => new EreignisCardDefinition(
+                id: new CardId('e5'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
                 title: 'Kind',
                 description: 'Deine Tochter Alisa wird geboren. Glückwunsch! Du zahlst von nun an regelmäßig 10 % deines Einkommens (mind. 1.000 €) für alle anfallenden Kosten und einmalig 2.000 € für die Erstaustattung. Wegen des neu gewonnenen Netzwerks (Babyschwimmen usw.) erhälst du aber auch zwei Sozialpunkte.',
@@ -520,7 +520,7 @@ final class CardFinder
                 year: new Year(1),
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-2000),
-                    freizeitKompetenzsteinChange: +1,
+                    freizeitKompetenzsteinChange: +2,
                 ),
                 modifierIds: [ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER, ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE],
                 modifierParameters: new ModifierParameters(modifyLebenshaltungskostenMultiplier: 0.1, modifyLebenshaltungskostenMinValue: new MoneyAmount(+1000)),

@@ -1,4 +1,4 @@
-@extends ('components.modal.modal', ['closeModal' => "closeJobOffer()"])
+@extends ('components.modal.modal', ['closeModal' => "closeEreignisCard()"])
 
 @section('title')
     {{$title}}

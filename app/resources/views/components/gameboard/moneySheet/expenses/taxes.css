@@ -4,6 +4,7 @@
     flex-direction: row;
     gap: var(--spacing-200);
     justify-content: flex-end;
+    align-items: flex-end;
 
     .form-group {
         align-items: flex-end;
