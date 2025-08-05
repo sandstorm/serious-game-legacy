@@ -6,6 +6,7 @@ namespace Domain\CoreGameLogic\Feature\Konjunkturphase\State;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\DrawsCard;
+use Domain\Definitions\Card\Dto\Pile;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
@@ -50,5 +51,23 @@ class PileState
         }
 
         throw new \RuntimeException("Pile ($pileId) not found");
+    }
+
+    /**
+     * @param GameEvents $gameEvents
+     * @param PileId $pileId
+     * @return CardId[]
+     */
+    public static function getFirstThreeJobCardIds(GameEvents $gameEvents, PileId $pileId): array
+    {
+        /** @var Pile[] $cardPiles */
+        $cardPiles = $gameEvents->findLast(CardsWereShuffled::class)->piles;
+        // TODO use array_find after switching to PHP 8.4
+        /** @var Pile $jobCardPile */
+        $jobCardPile = array_values(array_filter($cardPiles, fn($pile) => $pile->getPileId()->equals($pileId)))[0];
+        // each time a job offer was accepted we discard the two other job offers as well -> after accepting a
+        // job three new cards get drawn from the job offer card pile
+        $startIndex = self::numberOfCardDrawsSinceLastShuffle($gameEvents, $pileId) * 3;
+        return array_slice($jobCardPile->getCardIds(), $startIndex, 3);
     }
 }

@@ -7,7 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\DoesPlayerMeetJobRequirementsValidator;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasJobBeenRequestedByPlayerValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsJobCurrentlyAvailableValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughZeitsteineValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
@@ -16,10 +16,13 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
+use Domain\Definitions\Card\Dto\Pile;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
-class AcceptJobOffersAktion extends Aktion
+class AcceptJobOfferAktion extends Aktion
 {
     public function __construct(public CardId $jobId)
     {
@@ -30,9 +33,9 @@ class AcceptJobOffersAktion extends Aktion
     {
         $validatorChain = new IsPlayersTurnValidator();
         $validatorChain
-            ->setNext(new HasJobBeenRequestedByPlayerValidator($this->jobId))
             ->setNext(new HasPlayerEnoughZeitsteineValidator(1))
-            ->setNext(new DoesPlayerMeetJobRequirementsValidator($this->jobId));
+            ->setNext(new DoesPlayerMeetJobRequirementsValidator($this->jobId))
+            ->setNext(new IsJobCurrentlyAvailableValidator($this->jobId));
 
         return $validatorChain->validate($gameEvents, $playerId);
     }
@@ -52,6 +55,7 @@ class AcceptJobOffersAktion extends Aktion
                 gehalt: $job->getGehalt(),
                 playerTurn: PlayerState::getCurrentTurnForPlayer($gameEvents, $playerId),
                 resourceChanges: new ResourceChanges(zeitsteineChange: -1),
+                pileId: new PileId(CategoryId::JOBS, PlayerState::getCurrentLebenszielphaseIdForPlayer($gameEvents, $playerId)),
             ),
         );
     }

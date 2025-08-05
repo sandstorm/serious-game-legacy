@@ -19,7 +19,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\WeiterbildungWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
@@ -77,7 +76,6 @@ final readonly class EventNormalizer
             CardWasSkipped::class,
             EreignisWasTriggered::class,
             GameWasStarted::class,
-            JobOffersWereRequested::class,
             JobOfferWasAccepted::class,
             KonjunkturphaseHasEnded::class,
             KonjunkturphaseWasChanged::class,
