@@ -7,12 +7,12 @@
   </component>
   <component name="MessDetector">
     <phpmd_settings>
-      <phpmd_by_interpreter asDefaultInterpreter="true" interpreter_id="8edbe9dd-3630-4d84-8e5c-636cd7e749fb" timeout="30000" />
+      <phpmd_by_interpreter interpreter_id="8edbe9dd-3630-4d84-8e5c-636cd7e749fb" timeout="30000" />
     </phpmd_settings>
   </component>
   <component name="PhpCodeSniffer">
     <phpcs_settings>
-      <phpcs_by_interpreter asDefaultInterpreter="true" interpreter_id="8edbe9dd-3630-4d84-8e5c-636cd7e749fb" />
+      <phpcs_by_interpreter interpreter_id="8edbe9dd-3630-4d84-8e5c-636cd7e749fb" />
     </phpcs_settings>
   </component>
   <component name="PhpIncludePathManager">
@@ -369,12 +369,12 @@
       <path value="$PROJECT_DIR$/app/vendor/clue/redis-react" />
       <path value="$PROJECT_DIR$/app/vendor/clue/redis-protocol" />
       <path value="$PROJECT_DIR$/app/vendor/neos/eventstore" />
-      <path value="$PROJECT_DIR$/app/vendor/sandstorm/eventstore-laraveladapter" />
       <path value="$PROJECT_DIR$/app/vendor/_laravel_idea" />
       <path value="$PROJECT_DIR$/app/vendor/jenssegers/agent" />
       <path value="$PROJECT_DIR$/app/vendor/jaybizzle/crawler-detect" />
       <path value="$PROJECT_DIR$/app/vendor/iamcal/sql-parser" />
       <path value="$PROJECT_DIR$/app/vendor/mobiledetect/mobiledetectlib" />
+      <path value="$PROJECT_DIR$/app/vendor/sandstorm/eventstore-laraveladapter" />
     </include_path>
   </component>
   <component name="PhpInterpreters">

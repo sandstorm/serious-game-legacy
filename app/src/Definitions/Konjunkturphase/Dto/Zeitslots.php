@@ -42,7 +42,7 @@ class Zeitslots implements \JsonSerializable
         ];
     }
 
-    public function getAmountOfZeitslotsForPlayer(int $amountOfPlayers): int
+    public function getAmountOfZeitslotsForPlayerCount(int $amountOfPlayers): int
     {
         foreach ($this->zeitslotsPerPlayers as $zeitsteinePerPlayer) {
             if ($zeitsteinePerPlayer->amountOfPlayers === $amountOfPlayers) {

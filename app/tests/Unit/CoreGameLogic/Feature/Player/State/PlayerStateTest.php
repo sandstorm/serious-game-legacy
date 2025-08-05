@@ -139,7 +139,7 @@ describe('getJobForPlayer', function () {
         $this->coreGameLogic->handle($this->gameId, QuitJob::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
 
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[1]));
+        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[1]));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
 
         $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
