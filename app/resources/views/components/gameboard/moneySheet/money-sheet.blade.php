@@ -37,12 +37,6 @@
                 </td>
             </tr>
             <tr>
-                <td>Kinder</td>
-                <td class="text-align--right">
-                    0 €
-                </td>
-            </tr>
-            <tr>
                 <td>Versicherungen</td>
                 <td class="text-align--right">
                     {!! $moneySheet->totalInsuranceCost->format() !!}

@@ -27,6 +27,9 @@
                 <label class="form-group__label" for="steuernUndAbgaben">{{$livingCostPercent}}% Deines Gehalts</label>
                 <x-form.textfield wire:model="moneySheetLebenshaltungskostenForm.lebenshaltungskosten" id="lebenshaltungskosten" name="lebenshaltungskosten" type="number" step="0.01" :disabled="$this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled" />
             </div>
+        </div>
+        @if ($modifiers)
+            <hr />
             <table>
                 <tbody>
                 @foreach($modifiers as $modifier)
@@ -36,7 +39,7 @@
                 @endforeach
                 </tbody>
             </table>
-        </div>
+        @endif
     </div>
 
     <div class="tabs__lower-content taxes__actions">

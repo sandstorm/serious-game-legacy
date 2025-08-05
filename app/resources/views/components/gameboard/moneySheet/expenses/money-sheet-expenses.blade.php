@@ -12,11 +12,6 @@
                 Kredite
             </button>
         </li>
-        <li @class(['tabs__list-item', 'tabs__list-item--active' => $this->activeTabForExpenses === ExpensesTabEnum::KIDS])>
-            <button id="kids" type="button" class="button button--type-borderless" role="tab" wire:click="showExpensesTab('{{ ExpensesTabEnum::KIDS }}')">
-                Kinder
-            </button>
-        </li>
         <li @class(['tabs__list-item', 'tabs__list-item--active' => $this->activeTabForExpenses === ExpensesTabEnum::INSURANCES])>
             <button id="insurances" type="button" class="button button--type-borderless" role="tab"
                     wire:click="showExpensesTab('{{ ExpensesTabEnum::INSURANCES }}')">
@@ -46,10 +41,6 @@
     @if ($this->activeTabForExpenses === ExpensesTabEnum::LOANS)
         <div aria-labelledby="investments" role="tabpanel" class="tabs__tab">
             <x-money-sheet.expenses.money-sheet-loans :gameEvents="$gameEvents" :playerId="$playerId"/>
-        </div>
-    @elseif ($this->activeTabForExpenses === ExpensesTabEnum::KIDS)
-        <div aria-labelledby="kids" role="tabpanel" class="tabs__tab">
-            <x-money-sheet.expenses.money-sheet-kids :game-events="$gameEvents" :player-id="$playerId"/>
         </div>
     @elseif ($this->activeTabForExpenses === ExpensesTabEnum::INSURANCES)
         <div aria-labelledby="insurances" role="tabpanel" class="tabs__tab">
