@@ -18,7 +18,7 @@
         @foreach($konjunkturphase->kompetenzbereiche as $kompetenzbereich)
             <li>
                 <strong>{{ $kompetenzbereich->name }}
-                    : </strong> {{ $kompetenzbereich->zeitslots->getAmountOfZeitslotsForPlayer(PreGameState::getAmountOfPlayers($gameEvents)) }}
+                    : </strong> {{ $kompetenzbereich->zeitslots->getAmountOfZeitslotsForPlayerCount(PreGameState::getAmountOfPlayers($gameEvents)) }}
             </li>
         @endforeach
     </ul>

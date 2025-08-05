@@ -16,6 +16,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
+use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 
 class AcceptJobOffersAktion extends Aktion
@@ -49,7 +50,8 @@ class AcceptJobOffersAktion extends Aktion
                 playerId: $playerId,
                 cardId: $job->getId(),
                 gehalt: $job->getGehalt(),
-                playerTurn: PlayerState::getCurrentTurnForPlayer($gameEvents, $playerId)
+                playerTurn: PlayerState::getCurrentTurnForPlayer($gameEvents, $playerId),
+                resourceChanges: new ResourceChanges(zeitsteineChange: -1),
             ),
         );
     }

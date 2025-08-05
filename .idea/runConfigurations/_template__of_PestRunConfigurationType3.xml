@@ -5,6 +5,12 @@
         <env name="DB_DATABASE" value="laravel_testing" />
       </envs>
     </CommandLine>
+    <option name="pestRunnerSettings">
+      <PestRunner method="" />
+    </option>
+    <option name="runnerSettings">
+      <PhpTestRunnerSettings method="" />
+    </option>
     <method v="2" />
   </configuration>
 </component>

@@ -12,7 +12,7 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
-final readonly class JobOffersWereRequested implements ZeitsteinAktion, GameEventInterface, ProvidesResourceChanges
+final readonly class JobOffersWereRequested implements GameEventInterface
 {
     /**
      * @param CardId[] $jobs
@@ -39,14 +39,6 @@ final readonly class JobOffersWereRequested implements ZeitsteinAktion, GameEven
         ];
     }
 
-    public function getResourceChanges(PlayerId $playerId): ResourceChanges
-    {
-        if ($playerId->equals($this->playerId)) {
-            return new ResourceChanges(zeitsteineChange: -1);
-        }
-        return new ResourceChanges();
-    }
-
     public function getCategoryId(): CategoryId
     {
         return CategoryId::JOBS;
@@ -57,8 +49,4 @@ final readonly class JobOffersWereRequested implements ZeitsteinAktion, GameEven
         return $this->playerId;
     }
 
-    public function getNumberOfZeitsteinslotsUsed(): int
-    {
-        return 1;
-    }
 }

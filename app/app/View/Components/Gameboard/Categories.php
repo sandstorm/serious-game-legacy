@@ -110,6 +110,6 @@ class Categories extends Component
         $kompetenzbereich = $konjunkturphasenDefinition->getKompetenzbereichByCategory($categoryId);
         $playerIds = $this->gameEvents->findFirst(GameWasStarted::class)->playerOrdering;
 
-        return $kompetenzbereich->zeitslots->getAmountOfZeitslotsForPlayer(count($playerIds));
+        return $kompetenzbereich->zeitslots->getAmountOfZeitslotsForPlayerCount(count($playerIds));
     }
 }
