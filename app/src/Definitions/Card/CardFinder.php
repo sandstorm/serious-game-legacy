@@ -511,6 +511,20 @@ final class CardFinder
                 modifierIds: [],
                 modifierParameters: new ModifierParameters(),
             ),
+            "e7" => new EreignisCardDefinition(
+                id: new CardId('e7'),
+                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+                title: 'Kind',
+                description: 'Deine Tochter Alisa wird geboren. Glückwunsch! Du zahlst von nun an regelmäßig 10 % deines Einkommens (mind. 1.000 €) für alle anfallenden Kosten und einmalig 2.000 € für die Erstaustattung. Wegen des neu gewonnenen Netzwerks (Babyschwimmen usw.) erhälst du aber auch zwei Sozialpunkte.',
+                phaseId: LebenszielPhaseId::PHASE_1,
+                year: new Year(1),
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(-2000),
+                    freizeitKompetenzsteinChange: +1,
+                ),
+                modifierIds: [ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER, ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE],
+                modifierParameters: new ModifierParameters(modifyLebenshaltungskostenMultiplier: 0.1, modifyLebenshaltungskostenMinValue: new MoneyAmount(+1000)),
+            ),
             "wb0" => new WeiterbildungCardDefinition(
                 id: new CardId('wb0'),
                 title: 'Quiz – Protektionismus',

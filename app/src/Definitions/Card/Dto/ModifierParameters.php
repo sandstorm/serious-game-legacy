@@ -4,15 +4,18 @@ declare(strict_types=1);
 namespace Domain\Definitions\Card\Dto;
 
 
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
+
 readonly final class ModifierParameters implements \JsonSerializable
 {
     public function __construct(
         public ?int $numberOfTurns = null,
         public ?int $modifyGehaltPercent = null,
         public ?int $modifySteuernUndAbgabenPercent = null,
-        public ?int $modifyLebenshaltungskostenPercent = null,
         public ?int $modifyKostenBildungUndKarrierePercent = null,
         public ?int $modifyKostenSozialesUndFreizeitPercent = null,
+        public ?float $modifyLebenshaltungskostenMultiplier = null,
+        public ?MoneyAmount $modifyLebenshaltungskostenMinValue = null,
     ) {
     }
 
@@ -21,9 +24,10 @@ readonly final class ModifierParameters implements \JsonSerializable
      *      numberOfTurns: int,
      *      modifyGehaltPercent: int,
      *      modifySteuernUndAbgabenPercent: int,
-     *      modifyLebenshaltungskostenPercent: int,
      *      modifyKostenBildungUndKarrierePercent: int,
      *      modifyKostenSozialesUndFreizeitPercent: int,
+     *      modifyLebenshaltungskostenMultiplier: float,
+     *      modifyLebenshaltungskostenMinValue: MoneyAmount,
      *     } $values
      * @return self
      */
@@ -33,9 +37,10 @@ readonly final class ModifierParameters implements \JsonSerializable
             numberOfTurns: $values['numberOfTurns'],
             modifyGehaltPercent: $values['modifyGehaltPercent'],
             modifySteuernUndAbgabenPercent: $values['modifySteuernUndAbgabenPercent'],
-            modifyLebenshaltungskostenPercent: $values['modifyLebenshaltungskostenPercent'],
             modifyKostenBildungUndKarrierePercent: $values['modifyKostenBildungUndKarrierePercent'],
             modifyKostenSozialesUndFreizeitPercent: $values['modifyKostenSozialesUndFreizeitPercent'],
+            modifyLebenshaltungskostenMultiplier: $values['modifyLebenshaltungskostenMultiplier'],
+            modifyLebenshaltungskostenMinValue: $values['modifyLebenshaltungskostenMinValue'],
         );
     }
 
@@ -45,9 +50,10 @@ readonly final class ModifierParameters implements \JsonSerializable
             'numberOfTurns' => $this->numberOfTurns,
             'modifyGehaltPercent' => $this->modifyGehaltPercent,
             'modifySteuernUndAbgabenPercent' => $this->modifySteuernUndAbgabenPercent,
-            'modifyLebenshaltungskostenPercent' => $this->modifyLebenshaltungskostenPercent,
             'modifyKostenBildungUndKarrierePercent' => $this->modifyKostenBildungUndKarrierePercent,
             'modifyKostenSozialesUndFreizeitPercent' => $this->modifyKostenSozialesUndFreizeitPercent,
+            'modifyLebenshaltungskostenMultiplier' => $this->modifyLebenshaltungskostenMultiplier,
+            'modifyLebenshaltungskostenMinValue' => $this->modifyLebenshaltungskostenMinValue,
         ];
     }
 }

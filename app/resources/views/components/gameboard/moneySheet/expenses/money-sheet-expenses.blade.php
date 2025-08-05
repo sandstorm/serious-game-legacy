@@ -61,7 +61,7 @@
         </div>
     @elseif ($this->activeTabForExpenses === ExpensesTabEnum::LIVING_COSTS)
         <div aria-labelledby="livingCosts" role="tabpanel" class="tabs__tab">
-            <x-money-sheet.expenses.money-sheet-living-costs :money-sheet="$moneySheet"/>
+            <x-money-sheet.expenses.money-sheet-living-costs :game-events="$gameEvents" :player-id="$playerId" :money-sheet="$moneySheet"/>
         </div>
     @endif
 </div>
