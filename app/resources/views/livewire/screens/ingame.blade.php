@@ -66,4 +66,10 @@
     @if ($showLebenszielForPlayer)
         <x-lebensziel-modal :player-id="$showLebenszielForPlayer" :game-events="$this->gameEvents" />
     @endif
+    @if ($takeOutALoanIsVisible)
+        <x-gameboard.moneySheet.take-out-loan-modal
+            :game-events="$this->gameEvents"
+            :player-id="$myself"
+        />
+    @endif
 </div>

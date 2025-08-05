@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace Tests\CoreGameLogic\Feature\Moneysheet\State;
 
 use App\Livewire\Forms\TakeOutALoanForm;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
@@ -20,17 +19,23 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
-use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
-use Domain\Definitions\Card\Dto\KategorieCardDefinition;
-use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
+use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
+use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
+use Domain\Definitions\Konjunkturphase\Dto\Zeitslots;
+use Domain\Definitions\Konjunkturphase\Dto\ZeitslotsPerPlayer;
+use Domain\Definitions\Konjunkturphase\Dto\Zeitsteine;
+use Domain\Definitions\Konjunkturphase\Dto\ZeitsteinePerPlayer;
+use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
+use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
+use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use Tests\ComponentWithForm;
 use Tests\TestCase;
 
@@ -678,47 +683,68 @@ describe('getOpenRatesForLoan', function () {
         /** @var TestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
-        expect(MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], new LoanId('test'))->value);
+        expect(MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], new LoanId('test')));
     })->throws(\RuntimeException::class, 'No loan found for player p1 with ID test');
 
     it('returns correct open rates for loans', function () {
-        /** @var TestCase $this */
-        $cardsForTesting = [];
-        for ($i = 0; $i < count($this->players); $i++) {
-            $cardID = new CardId('cardToRemoveZeitsteine' . $i);
-            $cardsForTesting[] = new KategorieCardDefinition(
-                id: $cardID,
-                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
-                title: 'for testing',
-                description: '...',
-                resourceChanges: new ResourceChanges(
-                // add the money per round the player loses
-                    guthabenChange: new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE),
-                    zeitsteineChange: -1 * ($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(count($this->players)) - 1)
+
+        $testPhase = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(1),
+            type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
+            name: 'Test',
+            description: '',
+            additionalEvents: '',
+            zeitsteine: new Zeitsteine(
+                [
+                    new ZeitsteinePerPlayer(2, 1),
+                ]
+            ),
+            kompetenzbereiche: [
+                new KompetenzbereichDefinition(
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                    ])
                 ),
-            );
-        }
-        $testCards = [
-            ...$cardsForTesting,
-            ...$this->getCardsForSozialesAndFreizeit(),
-            ...$this->getCardsForJobs(),
-            ...$this->getCardsForMinijobs(),
-            ...$this->getCardsForBildungAndKarriere(),
-            ...$this->getCardsForEreignisse(),
-            ...$this->getCardsForWeiterbildung(),
-        ];
-        CardFinder::getInstance()->overrideCardsForTesting($testCards);
+                new KompetenzbereichDefinition(
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::INVESTITIONEN,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::JOBS,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                    ])
+                ),
+            ],
+            auswirkungen: [
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    modifier: 1.40
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::STOCKS_BONUS,
+                    modifier: 0
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    modifier: 4
+                ),
+            ]
+        );
 
         // make sure we always use the same konjunkturphase definition for each round
         KonjunkturphaseFinder::getInstance()->overrideKonjunkturphaseDefinitionsForTesting([
-            $this->konjunkturphaseDefinition
+            $testPhase
         ]);
-
-        // start new konjunkturphase to use the new cards
-        $this->coreGameLogic->handle(
-            $this->gameId,
-            ChangeKonjunkturphase::create()->withFixedCardOrderForTesting()
-        );
 
         $initialGuthaben = Configuration::STARTKAPITAL_VALUE;
         $loanAmount = 10000;
@@ -745,47 +771,47 @@ describe('getOpenRatesForLoan', function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
-        $expectedYear = 2;
+        $expectedYear = 1;
+        $expectedGuthaben = $initialGuthaben + $loanAmount;
         $loans = MoneySheetState::getLoansForPlayer($gameEvents, $this->players[0]);
         $openRates = MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], $loans[0]->loanId);
         $year = KonjunkturphaseState::getCurrentYear($gameEvents);
         expect($loans)->toHaveCount(1)
             ->and($loans[0]->year->value)->toEqual($expectedYear)
-            ->and($openRates->value)->toEqual($repayment)
+            ->and($loans[0]->loanData->repaymentPerKonjunkturphase->value)->toEqual($rate)
+            ->and($openRates)->toEqual(Configuration::REPAYMENT_PERIOD)
             ->and($year->value)->toEqual($expectedYear)
             ->and(PlayerState::getGuthabenForPlayer($gameEvents,
-                $this->players[0])->value)->toEqual($initialGuthaben + $loanAmount);
+                $this->players[0])->value)->toEqual($expectedGuthaben);
 
-        $expectedGuthaben = $initialGuthaben + $loanAmount;
         for ($i = 1; $i <= 20; $i++) {
             $expectedYear++;
-            $expectedOpenRates = $repayment - ($rate * $i);
             $expectedGuthaben -= $rate;
-            $this->makeSpielzugForPlayersAndChangeKonjunkturphase();
+            $expectedGuthaben -= Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE;
+            $this->makeSpielzugForPlayersBySkippingACard();
 
             $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
             $openRates = MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], $loans[0]->loanId);
-            $year = KonjunkturphaseState::getCurrentYear($gameEvents);
             expect($loans)->toHaveCount(1)
-                ->and($openRates->value)->toEqual($expectedOpenRates)
-                ->and($year->value)->toEqual($expectedYear)
+                ->and($openRates)->toEqual(Configuration::REPAYMENT_PERIOD - $i)
+                ->and(KonjunkturphaseState::getCurrentYear($gameEvents)->value)->toEqual($expectedYear)
                 ->and(PlayerState::getGuthabenForPlayer($gameEvents,
                     $this->players[0])->value)->toEqual($expectedGuthaben);
         }
 
         // after 20 years, the loan should be fully repaid
-        expect(PlayerState::getGuthabenForPlayer($gameEvents,
-            $this->players[0])->value)->toEqual($initialGuthaben + $loanAmount - $repayment);
-        $openRates = MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], $loans[0]->loanId);
-        expect($openRates->value)->toEqual(0);
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        $expectedGuthaben = Configuration::STARTKAPITAL_VALUE + $loanAmount - (Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE * 20) - ($loans[0]->loanData->totalRepayment->value);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->value)->toEqual($expectedGuthaben)
+            ->and(MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], $loans[0]->loanId))->toEqual(0);
 
         // the loan rates should not be paid anymore the next year
-        $this->makeSpielzugForPlayersAndChangeKonjunkturphase();
-        expect(PlayerState::getGuthabenForPlayer($gameEvents,
-            $this->players[0])->value)->toEqual($initialGuthaben + $loanAmount - $repayment);
-        $openRates = MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], $loans[0]->loanId);
-        expect($openRates->value)->toEqual(0);
-    })->todo('fix this...good thing it\s only to million lines...');
+        $this->makeSpielzugForPlayersBySkippingACard();
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        $expectedGuthaben = Configuration::STARTKAPITAL_VALUE + $loanAmount - (Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE * 21) - ($loans[0]->loanData->totalRepayment->value);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->value)->toEqual($expectedGuthaben)
+            ->and(MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], $loans[0]->loanId))->toEqual(0);
+    });
 });
 
 describe("getAnnualExpensesForPlayer", function () {

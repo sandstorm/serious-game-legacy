@@ -1,19 +1,27 @@
-<h3>Versicherungen</h3>
-<form wire:submit="setInsurances">
-    <div class="form__group">
+@props([
+    'totalCost' => null,
+])
+
+<form class="insurances" wire:submit="setInsurances">
+    <div class="tabs__upper-content form__group">
         @foreach ($this->moneySheetInsurancesForm->insurances as $key => $insurance)
-            <label>
+            <label @class(["switch", $this->getPlayerColorClass()])>
                 <input type="checkbox" name="insurances[]" value="{{ $key }}" {{ $insurance['value'] ? 'checked' : '' }} wire:model="moneySheetInsurancesForm.insurances.{{ $key }}.value" />
-                {{ $insurance['label'] }}
+                <div class="slider"></div>
+                <div>
+                    <strong>{{ $insurance['label'] }}</strong> <br />
+                    {!! $insurance['annualCost'] !!} / Jahr
+                </div>
             </label>
         @endforeach
     </div>
 
-    <x-form.submit disabled wire:dirty.remove.attr="disabled">Änderungen Speichern</x-form.submit>
-
-    @if (session()->has('message'))
-        <div class="alert alert-success">
-            {{ session('message') }}
+    <div class="tabs__lower-content insurances__actions">
+        <div class="insurances__total-cost">
+            {!! $totalCost->formatWithIcon() !!}
+            <span>Summe Versicherungen</span>
         </div>
-    @endif
+        <x-form.submit disabled wire:dirty.remove.attr="disabled">Änderungen Speichern</x-form.submit>
+    </div>
 </form>
+

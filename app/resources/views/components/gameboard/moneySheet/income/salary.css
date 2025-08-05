@@ -1,0 +1,38 @@
+.salary {
+    table {
+        width: 100%;
+    }
+
+    i {
+        font-size: var(--font-size-xl);
+    }
+
+    .text--currency  {
+        margin-top: var(--spacing-50);
+
+        font-size: var(--font-size-xl);
+    }
+}
+
+.salary__job-title {
+    margin-top: var(--spacing-50);
+
+    font-size: var(--font-size-xl);
+}
+
+.salary__summary {
+    display: flex;
+    justify-content: flex-end;
+
+    .text--currency  {
+        min-width: 150px;
+        justify-content: center;
+        height: var(--button-height);
+        padding-inline: var(--spacing-100);
+
+        background: var(--color-semi-transparent);
+        border-radius: 999px;
+
+        font-size: var(--font-size-xl);
+    }
+}

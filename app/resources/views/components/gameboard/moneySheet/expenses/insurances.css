@@ -1,0 +1,36 @@
+.insurances {
+    .form__group {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--spacing-200);
+
+        label {
+            margin: 0;
+        }
+    }
+}
+
+.insurances__actions {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-200);
+    align-items: flex-start;
+    justify-content: flex-end;
+}
+
+.insurances__total-cost {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-50);
+
+    .text--currency {
+        min-width: 150px;
+        justify-content: center;
+        height: var(--button-height);
+        padding-inline: var(--spacing-100);
+
+        background: var(--color-semi-transparent);
+        border-radius: 999px;
+    }
+}

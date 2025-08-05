@@ -18,6 +18,8 @@ html, body {
     color: var(--color-primary-dark);
     text-wrap: pretty;
 
-    background-attachment: fixed;
     background-image: conic-gradient(from 0deg at 50% 50%, #fff6dc 20%, #eefbef 30%, #d5eff8 70%, #fff6dc 100%);
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
 }

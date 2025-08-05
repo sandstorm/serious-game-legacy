@@ -1,4 +1,4 @@
-@extends ('components.modal.modal', ['closeModal' => 'closeWeiterbildung()', 'size' => 'medium'])
+@extends ('components.modal.modal', ['closeModal' => 'closeWeiterbildung()'])
 
 @props([
     'weiterbildung' => null,

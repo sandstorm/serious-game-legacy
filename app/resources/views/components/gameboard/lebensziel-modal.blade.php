@@ -1,4 +1,4 @@
-@extends ('components.modal.modal', ['closeModal' => "closePlayerLebensziel()",  'size' => 'large'])
+@extends ('components.modal.modal', ['closeModal' => "closePlayerLebensziel()"])
 
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
 

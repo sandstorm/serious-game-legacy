@@ -1,4 +1,4 @@
-@extends ('components.modal.modal', ['closeModal' => "closeMoneySheet()", 'size' => 'large'])
+@extends ('components.modal.modal', ["closeModal" => "closeMoneySheet()", "type" => "borderless"])
 
 @props([
     'gameEvents' => null,
@@ -11,10 +11,6 @@
         <i class="icon-lupe-2" aria-hidden="true"></i>
         <span class="sr-only">Zurück zur Moneysheet Übersicht</span>
     </button>
-@endsection
-
-@section('title')
-    Money Sheet - Einnahmen
 @endsection
 
 @section('content')

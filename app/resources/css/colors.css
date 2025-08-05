@@ -8,6 +8,8 @@
     --color-player-list-bg: #47484A;
     --color-cards-bg: #ECF5F4;
     --color-cards-border: #d9e1df;
+    --color-focus: #247ef4;
+    --color-semi-transparent: rgba(255, 255, 255, 0.6);
 
     --color-error: #d9534f;
     --color-error--light: #fbe9e9;

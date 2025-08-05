@@ -6,17 +6,20 @@
     border-radius: 9999px;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
 
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease-in,
+        box-shadow 0.3s ease-in,
+        color 0.3s ease-in,
+        border-color 0.3s ease-in;
 
-    &:focus, &:hover {
-        outline: none;
+    &:disabled {
+        opacity: .7;
     }
 }
 
 .form__textfield.player-color-1 {
     border-color: var(--color-player-1--dark);
 
-    &:focus, &:hover {
+    &:focus:not(:disabled), &:hover:not(:disabled) {
         border-color: var(--color-player-1--dark);
         box-shadow: 0 0 4px var(--color-player-1--dark);
     }
@@ -25,7 +28,7 @@
 .form__textfield.player-color-2 {
     border-color: var(--color-player-2--dark);
 
-    &:focus, &:hover {
+    &:focus:not(:disabled), &:hover:not(:disabled) {
         border-color: var(--color-player-2--dark);
         box-shadow: 0 0 4px var(--color-player-2--dark);
     }
@@ -34,7 +37,7 @@
 .form__textfield.player-color-3 {
     border-color: var(--color-player-3--dark);
 
-    &:focus, &:hover {
+    &:focus:not(:disabled), &:hover:not(:disabled) {
         border-color: var(--color-player-3--dark);
         box-shadow: 0 0 4px var(--color-player-3--dark);
     }
@@ -43,7 +46,7 @@
 .form__textfield.player-color-4 {
     border-color: var(--color-player-4--dark);
 
-    &:focus, &:hover {
+    &:focus:not(:disabled), &:hover:not(:disabled) {
         border-color: var(--color-player-4--dark);
         box-shadow: 0 0 4px var(--color-player-4--dark);
     }

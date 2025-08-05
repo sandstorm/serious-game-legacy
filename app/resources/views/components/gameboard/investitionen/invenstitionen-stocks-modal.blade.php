@@ -1,4 +1,4 @@
-@extends ('components.modal.modal', ['closeModal' => "toggleStocksModal()", 'size' => 'medium'])
+@extends ('components.modal.modal', ['closeModal' => "toggleStocksModal()"])
 
 @use('Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType')
 @use('Domain\CoreGameLogic\Feature\Konjunkturphase\State\StockPriceState')

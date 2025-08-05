@@ -1081,7 +1081,7 @@ describe('handleAcceptJobOffer', function () {
             ->and(PlayerState::getZeitsteineForPlayer($stream,
                 $this->players[1]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
 
-        $this->makeSpielzugForPlayersAndChangeKonjunkturphase();
+        $this->makeSpielzugForPlayersByPlayingCard();
 
         // Start a new Konjunkturphase to see if the Zeitstein change persists
         $this->coreGameLogic->handle(

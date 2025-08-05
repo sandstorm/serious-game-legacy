@@ -1,4 +1,4 @@
-@extends ('components.modal.modal', ['closeModal' => "closeKonjunkturphaseDetails()",  'size' => 'medium'])
+@extends ('components.modal.modal', ['closeModal' => "closeKonjunkturphaseDetails()"])
 @use('Domain\CoreGameLogic\Feature\Initialization\State\PreGameState')
 
 @section('title')

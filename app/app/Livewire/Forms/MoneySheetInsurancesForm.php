@@ -13,12 +13,15 @@ class MoneySheetInsurancesForm extends Form
      */
     public array $insurances = [];
 
+    public float $totalCost = 100;
+
     public function addInsurance(int $currentPlayerPhase, InsuranceDefinition $insuranceDefinition, bool $checked = false): void
     {
         $this->insurances[$insuranceDefinition->id->value] = [
-            'label' => $insuranceDefinition->getLabelWithAnnualCost($currentPlayerPhase),
+            'label' => $insuranceDefinition->type->value,
             'id' => $insuranceDefinition->id->value,
             'value' => $checked,
+            'annualCost' => $insuranceDefinition->getAnnualCost($currentPlayerPhase)->format(),
         ];
     }
 }

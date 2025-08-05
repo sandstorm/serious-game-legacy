@@ -30,9 +30,4 @@ class InsuranceDefinition
     {
         return $this->annualCost[$currentPhase];
     }
-
-    public function getLabelWithAnnualCost(int $currentPhase = 1): string
-    {
-        return sprintf('%s (%s € / Jahr)', $this->type->value, self::getAnnualCost($currentPhase)->value);
-    }
 }

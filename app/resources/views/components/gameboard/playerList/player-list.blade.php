@@ -3,7 +3,7 @@
     'emptySlots' => [],
 ])
 
-<div x-data="{ open: @entangle('showPlayerDetails') }" x-trap="open"
+<div x-data="{ open: @entangle('showPlayerDetails') }" x-trap.noscroll="open"
     @class([
         'player-list',
         'player-list--show-details' => $this->showPlayerDetails,
@@ -42,50 +42,52 @@
                 </div>
             </button>
 
-            <div class="player-list__player-details" aria-hidden="{{ !$this->showPlayerDetails ? 'true' : 'false' }}">
-                <small>{{ $player->playerId }}</small>
-                <div>
-                    <strong>Lebensziel:</strong> {{ $player->lebenszielDefinition->name }}
-                </div>
-                <x-gameboard.lebensziel-kompetenzen :player-id="$player->playerId" :game-events="$gameEvents" :lebensziel-phase="$player->phaseDefinition" />
+            @if ($this->showPlayerDetails)
+                <div class="player-list__player-details">
+                    <small>{{ $player->playerId }}</small>
+                    <div>
+                        <strong>Lebensziel:</strong> {{ $player->lebenszielDefinition->name }}
+                    </div>
+                    <x-gameboard.lebensziel-kompetenzen :player-id="$player->playerId" :game-events="$gameEvents" :lebensziel-phase="$player->phaseDefinition" />
 
-                @if ($player->job)
-                    <div class="player-list__player-details-job">
-                        <x-gameboard.kompetenzen.kompetenz-icon-beruf
-                            :player-color-class="$player->playerColorClass"
-                            :player-name="$player->name"
-                            :draw-empty="false"
-                        />
+                    @if ($player->job)
+                        <div class="player-list__player-details-job">
+                            <x-gameboard.kompetenzen.kompetenz-icon-beruf
+                                :player-color-class="$player->playerColorClass"
+                                :player-name="$player->name"
+                                :draw-empty="false"
+                            />
+                            <div>
+                                {{ $player->job->getTitle() }} <br />
+                                {!! $player->gehalt->format() !!} p.a.
+                            </div>
+                        </div>
+                    @endif
+
+                    @if ($player->sumOfLoans->value > 0)
                         <div>
-                            {{ $player->job->getTitle() }} <br />
-                            {!! $player->gehalt->format() !!} p.a.
+                            Kreditsumme {!! $player->sumOfLoans->format() !!}
+                        </div>
+                    @endif
+                    @if ($player->sumOfInvestments->value > 0)
+                        <div>
+                            Summe Investitionen {!! $player->sumOfInvestments->format() !!}
+                        </div>
+                    @endif
+
+                    <div class="player-list__player-details-footer">
+                        @if($this->playerIsMyself($player->playerId))
+                            <x-gameboard.lebensziel.lebensziel-switch :lebensziel-phase="$player->phaseDefinition->lebenszielPhaseId->value" :current-phase="$player->phaseDefinition->lebenszielPhaseId->value" />
+                        @endif
+                        <div>
+                            <i class="icon-phasenwechsel" aria-hidden="true"></i> {!! $player->phaseDefinition->investitionen->format() !!}
+                        </div>
+                        <div class="player-list__player-details-guthaben">
+                            {!! $player->guthaben->format() !!}
                         </div>
                     </div>
-                @endif
-
-                @if ($player->sumOfLoans->value > 0)
-                    <div>
-                        Kreditsumme {!! $player->sumOfLoans->format() !!}
-                    </div>
-                @endif
-                @if ($player->sumOfInvestments->value > 0)
-                    <div>
-                        Summe Investitionen {!! $player->sumOfInvestments->format() !!}
-                    </div>
-                @endif
-
-                <div class="player-list__player-details-footer">
-                    @if($this->playerIsMyself($player->playerId))
-                        <x-gameboard.lebensziel.lebensziel-switch :lebensziel-phase="$player->phaseDefinition->lebenszielPhaseId->value" :current-phase="$player->phaseDefinition->lebenszielPhaseId->value" />
-                    @endif
-                    <div>
-                        <i class="icon-phasenwechsel" aria-hidden="true"></i> {!! $player->phaseDefinition->investitionen->format() !!}
-                    </div>
-                    <div class="player-list__player-details-guthaben">
-                        {!! $player->guthaben->format() !!}
-                    </div>
                 </div>
-            </div>
+            @endif
         </div>
     @endforeach
 </div>

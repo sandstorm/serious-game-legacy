@@ -30,6 +30,10 @@ class MoneySheetSalary extends Component
     public function render(): View
     {
         $modifiersForPlayer = ModifierCalculator::forStream($this->gameEvents)->forPlayer($this->playerId);
+
+        $zeitsteinModifiers = $modifiersForPlayer->getModifiersForHook(HookEnum::ZEITSTEINE);
+        $gehaltModifiers = $modifiersForPlayer->getModifiersForHook(HookEnum::GEHALT);
+
         $modifierDescriptions = array_map(
             fn(Modifier $modifier) => $modifier->description,
             $modifiersForPlayer
@@ -39,10 +43,9 @@ class MoneySheetSalary extends Component
         );
         return view('components.gameboard.moneySheet.income.money-sheet-salary', [
             'jobDefinition' => PlayerState::getJobForPlayer($this->gameEvents, $this->playerId),
-            'gehalt' => PlayerState::getCurrentGehaltForPlayer($this->gameEvents, $this->playerId),
-            'gameEvents' => $this->gameEvents,
-            'playerId' => $this->playerId,
-            'modifiers' => $modifierDescriptions,
+            'currentGehalt' => PlayerState::getCurrentGehaltForPlayer($this->gameEvents, $this->playerId),
+            'zeitsteinModifiers' => $zeitsteinModifiers,
+            'gehaltModifiers' => $gehaltModifiers,
         ]);
     }
 

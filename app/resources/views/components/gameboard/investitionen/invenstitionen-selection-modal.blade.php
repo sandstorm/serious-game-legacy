@@ -1,11 +1,7 @@
-@extends ('components.modal.modal', ['closeModal' => "toggleInvestitionenSelectionModal()", 'size' => 'medium'])
-
-@section('icon')
-    <x-gameboard.phase-icon />
-@endsection
+@extends ('components.modal.modal', ['closeModal' => "toggleInvestitionenSelectionModal()", 'type' => 'borderless'])
 
 @section('title')
-    Investitionen
+    <div><x-gameboard.phase-icon /> Investitionen</div>
 @endsection
 
 @section('content')

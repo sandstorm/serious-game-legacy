@@ -1,6 +1,5 @@
 .tabs {
-
-
+    width: 100%;
 }
 
 .tabs__list {
@@ -8,27 +7,36 @@
     flex-direction: row;
     width: 100%;
     padding: 0;
+    padding-left: 40px;
     margin: 0;
 
     list-style: none;
-    border-bottom: 1px solid var(--color-grey);
 }
 
 .tabs__list-item {
     position: relative;
 
-    border-top: 1px solid var(--color-primary-fg);
-    border-right: 1px solid var(--color-primary-fg);
-    border-left: 1px solid var(--color-primary-fg);
     border-radius: 10px 10px 0 0;
+
+    .button {
+        border-radius: 10px 10px 0 0;;
+    }
 }
 
 .tabs__list-item.tabs__list-item--active {
-    border-top: 1px solid var(--color-grey);
-    border-right: 1px solid var(--color-grey);
-    border-left: 1px solid var(--color-grey);
+    background-color: var(--color-primary-fg);
 }
 
 .tabs__tab {
-    padding: var(--spacing-100);
+}
+
+.tabs__upper-content {
+    padding: var(--spacing-200);
+
+    background-color: var(--color-primary-fg);
+    border-radius: 20px;
+}
+
+.tabs__lower-content {
+    padding: var(--spacing-200);
 }

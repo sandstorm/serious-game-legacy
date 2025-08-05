@@ -1,9 +1,9 @@
 @use('\App\Livewire\ValueObject\IncomeTabEnum')
 
 @props([
-    '$jobDefinition' => null,
-    '$gameEvents' => null,
-    '$playerId' => null,
+    'jobDefinition' => null,
+    'gameEvents' => null,
+    'playerId' => null,
 ])
 
 <div class="tabs">

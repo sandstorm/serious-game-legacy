@@ -1,6 +1,6 @@
 
 @if ($this->notificationIsVisible)
-    <div x-data="{ open: true }" x-trap="open"
+    <div x-data="{ open: true }" x-trap.noscroll="open"
         @class([
             'notification',
             'notification--type-'.$this->notificationType->value
