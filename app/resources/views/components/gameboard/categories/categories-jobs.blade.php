@@ -2,7 +2,7 @@
 
 <div class="card-pile">
     <button
-        @class(["card", !$this->canRequestJobOffers()->canExecute ? "card--disabled" : ""])
+        @class(["card"])
         aria-label="Jobangebote anschauen (kostet 1 Zeitstein)"
         wire:click="showJobOffers()"
     >

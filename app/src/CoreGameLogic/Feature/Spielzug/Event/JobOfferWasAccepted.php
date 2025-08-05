@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\DrawsCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Modifier\BindZeitsteinForJobModifier;
@@ -17,9 +18,10 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
 use Domain\CoreGameLogic\Feature\Spielzug\Modifier\ModifierCollection;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
-final readonly class JobOfferWasAccepted implements GameEventInterface, ProvidesModifiers, ProvidesResourceChanges, ZeitsteinAktion
+final readonly class JobOfferWasAccepted implements GameEventInterface, ProvidesModifiers, ProvidesResourceChanges, ZeitsteinAktion, DrawsCard
 {
     public function __construct(
         public PlayerId    $playerId,
@@ -27,6 +29,7 @@ final readonly class JobOfferWasAccepted implements GameEventInterface, Provides
         public MoneyAmount $gehalt,
         public PlayerTurn  $playerTurn,
         public ResourceChanges $resourceChanges,
+        public PileId $pileId,
     ) {
     }
 
@@ -38,6 +41,7 @@ final readonly class JobOfferWasAccepted implements GameEventInterface, Provides
             gehalt: new MoneyAmount($values['gehalt']),
             playerTurn: new PlayerTurn($values['playerTurn']),
             resourceChanges: ResourceChanges::fromArray($values['resourceChanges']),
+            pileId: PileId::fromArray($values['pileId']),
         );
     }
 
@@ -49,6 +53,7 @@ final readonly class JobOfferWasAccepted implements GameEventInterface, Provides
             'gehalt' => $this->gehalt,
             'playerTurn' => $this->playerTurn,
             'resourceChanges' => $this->resourceChanges,
+            'pileId' => $this->pileId,
         ];
     }
 
@@ -83,5 +88,10 @@ final readonly class JobOfferWasAccepted implements GameEventInterface, Provides
     public function getNumberOfZeitsteinslotsUsed(): int
     {
         return 1;
+    }
+
+    public function getPileId(): PileId
+    {
+        return $this->pileId;
     }
 }

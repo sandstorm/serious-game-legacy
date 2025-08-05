@@ -13,6 +13,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesStockPri
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\StockPriceState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
@@ -28,7 +29,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPl
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellStocksForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
@@ -38,7 +38,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\LoanData;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasPutBackOnTopOfPile;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOffersWereRequested;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereEntered;
@@ -58,11 +57,13 @@ use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\MinijobCardDefinition;
+use Domain\Definitions\Card\Dto\Pile;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\ValueObject\AnswerId;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
+use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
@@ -758,212 +759,12 @@ describe('handleActivateCard', function () {
 
 });
 
-describe('handleRequestJobOffers', function () {
-    it('throws an exception when no free slots are available for this konjunkturphase', function () {
-        /** @var TestCase $this */
-        $cardsToTest = [
-            new JobCardDefinition(
-                id: new CardId('tj0'),
-                title: 'Fachinformatikerin',
-                description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                gehalt: new MoneyAmount(34000),
-                requirements: new JobRequirements(
-                    zeitsteine: 1,
-                    bildungKompetenzsteine: 0,
-                ),
-            ),
-        ];
-        $this->startNewKonjunkturphaseWithCardsOnTop($cardsToTest);
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
-
-        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        /** @var JobOffersWereRequested $actualEvent */
-        $actualEvent = $stream->findLast(JobOffersWereRequested::class);
-        expect($actualEvent->playerId)->toEqual($this->players[0])
-            ->and($actualEvent->jobs)->toContainEqual(new CardId('tj0'));
-
-        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
-
-        // repeat asking for a job until there are no free slots left
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[1]));
-        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
-
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
-        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
-
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[1]));
-        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
-
-        // this request fails, no free slots available
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
-        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
-    })->throws(RuntimeException::class,
-        'Es gibt keine freien Zeitsteinslots mehr', 1749043606);
-
-
-    it('returns 3 jobs', function () {
-        /** @var TestCase $this */
-        $cardsToTest = [
-            new JobCardDefinition(
-                id: new CardId('j0'),
-                title: 'Fachinformatikerin',
-                description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                gehalt: new MoneyAmount(34000),
-                requirements: new JobRequirements(
-                    zeitsteine: 1,
-                ),
-            ),
-            new JobCardDefinition(
-                id: new CardId('j1'),
-                title: 'Pflegefachkraft (not eligible)',
-                description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                gehalt: new MoneyAmount(25000),
-                requirements: new JobRequirements(
-                    zeitsteine: 1,
-                    bildungKompetenzsteine: 2,
-                ),
-            ),
-        ];
-        $this->startNewKonjunkturphaseWithCardsOnTop($cardsToTest);
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
-
-        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-
-        /** @var JobOffersWereRequested $actualEvent */
-        $actualEvent = $stream->findLast(JobOffersWereRequested::class);
-        expect($actualEvent->playerId)->toEqual($this->players[0])
-            ->and(count($actualEvent->jobs))->toBe(3)
-            ->and($actualEvent->jobs)->toContainEqual(new CardId('j0'))
-            ->and($actualEvent->jobs)->toContainEqual(new CardId('j1'));
-    });
-
-    it('returns 2 jobs if that is all that is available', function () {
-        /** @var TestCase $this */
-        CardFinder::getInstance()->overrideCardsForTesting([
-            "tj0" => new JobCardDefinition(
-                id: new CardId('tj0'),
-                title: 'Fachinformatikerin',
-                description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                gehalt: new MoneyAmount(34000),
-                requirements: new JobRequirements(
-                    zeitsteine: 1,
-                ),
-            ),
-            "tj3" => new JobCardDefinition(
-                id: new CardId('tj3'),
-                title: 'Testjob444',
-                description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                gehalt: new MoneyAmount(18000),
-                requirements: new JobRequirements(
-                    bildungKompetenzsteine: 3
-                ),
-            ),
-        ]);
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
-
-        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-
-        /** @var JobOffersWereRequested $actualEvent */
-        $actualEvent = $stream->findLast(JobOffersWereRequested::class);
-        expect($actualEvent->playerId)->toEqual($this->players[0])
-            ->and(count($actualEvent->jobs))->toBe(2)
-            ->and($actualEvent->jobs)->toContainEqual(new CardId('tj0'))
-            ->and($actualEvent->jobs)->toContainEqual(new CardId('tj3'));
-    });
-
-    it('does not return more than 3 jobs', function () {
-        /** @var TestCase $this */
-        $cardsToTest = [
-            "j0" => new JobCardDefinition(
-                id: new CardId('j0'),
-                title: 'Fachinformatikerin',
-                description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                gehalt: new MoneyAmount(34000),
-                requirements: new JobRequirements(
-                    zeitsteine: 1,
-                ),
-            ),
-            "j1" => new JobCardDefinition(
-                id: new CardId('j1'),
-                title: 'Pflegefachkraft',
-                description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                gehalt: new MoneyAmount(25000),
-                requirements: new JobRequirements(
-                    zeitsteine: 1,
-                ),
-            ),
-            "j2" => new JobCardDefinition(
-                id: new CardId('j2'),
-                title: 'Taxifahrer:in',
-                description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                gehalt: new MoneyAmount(18000),
-                requirements: new JobRequirements(
-                    zeitsteine: 1,
-                ),
-            ),
-            "j3" => new JobCardDefinition(
-                id: new CardId('j3'),
-                title: 'Testjob444',
-                description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                gehalt: new MoneyAmount(18000),
-                requirements: new JobRequirements(),
-            ),
-        ];
-        $this->startNewKonjunkturphaseWithCardsOnTop($cardsToTest);
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
-
-        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-
-        /** @var JobOffersWereRequested $actualEvent */
-        $actualEvent = $stream->findLast(JobOffersWereRequested::class);
-        expect($actualEvent->playerId)->toEqual($this->players[0])
-            ->and(count($actualEvent->jobs))->toBe(3);
-    });
-
-    it('does not cost a Zeitstein', function () {
-        /** @var TestCase $this */
-        $jobs = [
-            "testjob" => new JobCardDefinition(
-                id: new CardId('testjob'),
-                title: 'Fachinformatikerin',
-                description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                gehalt: new MoneyAmount(34000),
-                requirements: new JobRequirements(),
-            ),
-        ];
-        $this->startNewKonjunkturphaseWithCardsOnTop($jobs);
-        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream,
-            $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
-        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream,
-            $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
-    });
-})->todo("remove");
-
 describe('handleAcceptJobOffer', function () {
-    it('throws an exception if player did not request job offers this turn', function () {
-        /** @var TestCase $this */
-        $cardsToTest = [
-            "j3" => new JobCardDefinition(
-                id: new CardId('j3'),
-                title: 'not offered',
-                description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
-                gehalt: new MoneyAmount(18000),
-                requirements: new JobRequirements(),
-            ),
-        ];
-        $this->startNewKonjunkturphaseWithCardsOnTop($cardsToTest);
-
-        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j3')));
-    })->throws(RuntimeException::class, 'Cannot Accept Job Offer: Dieser Job wurde dir noch nicht vorgeschlagen',
-        1749043636);
 
     it('throws an exception if job was not previously offered to player', function () {
         /** @var TestCase $this */
         $cardsToTest = [
-            "j0" => new JobCardDefinition(
+            new JobCardDefinition(
                 id: new CardId('j0'),
                 title: 'offered 1',
                 description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
@@ -972,7 +773,7 @@ describe('handleAcceptJobOffer', function () {
                     zeitsteine: 1,
                 ),
             ),
-            "j1" => new JobCardDefinition(
+            new JobCardDefinition(
                 id: new CardId('j1'),
                 title: 'offered 2',
                 description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
@@ -981,7 +782,7 @@ describe('handleAcceptJobOffer', function () {
                     zeitsteine: 1,
                 ),
             ),
-            "j2" => new JobCardDefinition(
+            new JobCardDefinition(
                 id: new CardId('j2'),
                 title: 'offered 3',
                 description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
@@ -990,7 +791,7 @@ describe('handleAcceptJobOffer', function () {
                     zeitsteine: 1,
                 ),
             ),
-            "j3" => new JobCardDefinition(
+            new JobCardDefinition(
                 id: new CardId('j3'),
                 title: 'not offered',
                 description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
@@ -1000,16 +801,8 @@ describe('handleAcceptJobOffer', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsToTest);
 
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
-
-        /** @var GameEvents $stream */
-        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        $offeredJobs = array_map(fn($job) => $job->value, $stream->findLast(JobOffersWereRequested::class)->jobs);
-        $jobThatWasNotOffered = array_values(array_filter(['j0', 'j1', 'j2', 'j3'],
-            fn($id) => !in_array($id, $offeredJobs)))[0];
-
         $this->coreGameLogic->handle($this->gameId,
-            AcceptJobOffer::create($this->players[0], new CardId($jobThatWasNotOffered)));
+            AcceptJobOffer::create($this->players[0], new CardId("j3")));
     })->throws(RuntimeException::class,
         'Cannot Accept Job Offer: Dieser Job wurde dir noch nicht vorgeschlagen', 1749043636);
 
@@ -1067,7 +860,6 @@ describe('handleAcceptJobOffer', function () {
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
         // Request and accept the job
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('tj0')));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -1079,7 +871,7 @@ describe('handleAcceptJobOffer', function () {
             new EndSpielzug($this->players[1])
         );
 
-        // Expect two fewer Zeitsteine (-1 for the RequestJobOffers and one should now be permanently unavailable)
+        // Expect two fewer Zeitsteine (-1 for AcceptJobOffers and one should now be permanently unavailable)
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream,
@@ -1137,6 +929,24 @@ describe('handleAcceptJobOffer', function () {
             ),
             new JobCardDefinition(
                 id: new CardId('tj1'),
+                title: 'dummy job',
+                description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                gehalt: new MoneyAmount(44000),
+                requirements: new JobRequirements(
+                    zeitsteine: 1,
+                ),
+            ),
+            new JobCardDefinition(
+                id: new CardId('tj2'),
+                title: 'dummy job',
+                description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                gehalt: new MoneyAmount(44000),
+                requirements: new JobRequirements(
+                    zeitsteine: 1,
+                ),
+            ),
+            new JobCardDefinition(
+                id: new CardId('tj3'),
                 title: 'offered 2',
                 description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
                 gehalt: new MoneyAmount(44000),
@@ -1154,17 +964,15 @@ describe('handleAcceptJobOffer', function () {
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
         // Request and accept the job
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('tj0')));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
 
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[1]));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
 
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
-        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('tj1')));
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('tj3')));
 
-        // Expect three fewer Zeitsteine (-2 for the RequestJobOffers and one should now be permanently unavailable)
+        // Expect three fewer Zeitsteine (-2 for AcceptJobOffers and one should now be permanently unavailable)
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream,
@@ -1200,7 +1008,6 @@ describe('handleAcceptJobOffer', function () {
         ]);
 
         // Request and accept the job
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('t0')));
     })->throws(
         RuntimeException::class,
@@ -1223,7 +1030,6 @@ describe('handleAcceptJobOffer', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($jobsForTesting);
 
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('tj0')));
 
         /** @var GameEvents $stream */
@@ -1247,7 +1053,6 @@ describe('handleAcceptJobOffer', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($testJobs);
 
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('testJob')));
         $eventsBeforeQuit = $this->coreGameLogic->getGameEvents($this->gameId);
         $zeitsteineBeforeQuit = PlayerState::getZeitsteineForPlayer($eventsBeforeQuit, $this->players[0]);
@@ -1279,12 +1084,37 @@ describe('handleAcceptJobOffer', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $initialZeitsteinslotsUsedByPlayer = PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($gameEvents, $this->players[0], CategoryId::JOBS);
 
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('testJob')));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $zeitsteinslotsUsedByPlayerAfterJob = PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($gameEvents, $this->players[0], CategoryId::JOBS);
         expect($zeitsteinslotsUsedByPlayerAfterJob)->toBe($initialZeitsteinslotsUsedByPlayer + 1);
+    });
+
+    it('costs one Zeitstein', function() {
+        /** @var TestCase $this */
+        $testJobs = [
+            "testJob" => new JobCardDefinition(
+                id: new CardId('testJob'),
+                title: 'testtestetest',
+                description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                gehalt: new MoneyAmount(34000),
+                requirements: new JobRequirements(
+                    zeitsteine: 1,
+                ),
+            ),
+        ];
+        $this->startNewKonjunkturphaseWithCardsOnTop($testJobs);
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        $initialZeitsteineForPlayer = PlayerState::getZeitsteineForPlayer($gameEvents, $this->players[0]);
+
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('testJob')));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        $zeitsteineForPlayerAfterJob = PlayerState::getZeitsteineForPlayer($gameEvents, $this->players[0]);
+        // accepting a job costs one Zeitstein and also permanently binds one Zeitstein -> player should have two fewer Zeitsteine
+        expect($zeitsteineForPlayerAfterJob)->toBe($initialZeitsteineForPlayer - 2);
     });
 });
 
@@ -2141,7 +1971,6 @@ describe('handleEnterSteuernUndAbgabenForPlayer', function () {
             ),
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsToTest);
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('tj0')));
 
         $playerInput = new MoneyAmount(8500);
@@ -2185,7 +2014,6 @@ describe('handleEnterSteuernUndAbgabenForPlayer', function () {
             ),
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsToTest);
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('tj0')));
 
         $playerInput = new MoneyAmount(7500);
@@ -2260,7 +2088,6 @@ describe('handleEnterLebenshaltungskostenForPlayer', function () {
             ),
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsToTest);
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('tj0')));
 
         $playerInput = new MoneyAmount(11900);
@@ -2304,7 +2131,6 @@ describe('handleEnterLebenshaltungskostenForPlayer', function () {
             ),
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsToTest);
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('tj0')));
 
         $playerInput = new MoneyAmount(7500);

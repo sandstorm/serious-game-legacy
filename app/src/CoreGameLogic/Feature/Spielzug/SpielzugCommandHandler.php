@@ -11,7 +11,7 @@ use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\StockPriceState;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\AcceptJobOffersAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\AcceptJobOfferAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ActivateCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\BuyStocksForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CancelInsuranceForPlayerAktion;
@@ -25,7 +25,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterLebenshaltungskostenForPla
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterSteuernUndAbgabenForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\MarkPlayerAsReadyForKonjunkturphaseChangeAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\QuitJobAktion;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\RequestJobOffersAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellStocksForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SkipCardAktion as SkipCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\StartKonjunkturphaseForPlayerAktion;
@@ -50,7 +49,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
 
@@ -66,7 +64,6 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             || $command instanceof CompleteMoneysheetForPlayer
             || $command instanceof EndSpielzug
             || $command instanceof MarkPlayerAsReadyForKonjunkturphaseChange
-            || $command instanceof RequestJobOffers
             || $command instanceof DoMiniJob
             || $command instanceof SkipCard
             || $command instanceof StartKonjunkturphaseForPlayer
@@ -90,7 +87,6 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
         return match ($command::class) {
             SkipCard::class => $this->handleSkipCard($command, $gameEvents),
             ActivateCard::class => $this->handleActivateCard($command, $gameEvents),
-            RequestJobOffers::class => $this->handleRequestJobOffers($command, $gameEvents),
             AcceptJobOffer::class => $this->handleAcceptJobOffer($command, $gameEvents),
             EndSpielzug::class => $this->handleEndSpielzug($command, $gameEvents),
             CompleteMoneysheetForPlayer::class => $this->handleCompleteMoneysheetForPlayer($command, $gameEvents),
@@ -150,15 +146,9 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
         return $eventsToPersist;
     }
 
-    private function handleRequestJobOffers(RequestJobOffers $command, GameEvents $gameEvents): GameEventsToPersist
-    {
-        $aktion = new RequestJobOffersAktion;
-        return $aktion->execute($command->playerId, $gameEvents);
-    }
-
     private function handleAcceptJobOffer(AcceptJobOffer $command, GameEvents $gameEvents): GameEventsToPersist
     {
-        $aktion = new AcceptJobOffersAktion($command->jobId);
+        $aktion = new AcceptJobOfferAktion($command->jobId);
         return $aktion->execute($command->playerId, $gameEvents);
     }
 

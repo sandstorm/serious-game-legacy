@@ -14,7 +14,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
@@ -68,7 +67,6 @@ describe('calculateLebenshaltungskostenForPlayer', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('tj0')));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -92,7 +90,6 @@ describe('calculateLebenshaltungskostenForPlayer', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('tj0')));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -125,7 +122,6 @@ describe('calculateSteuernUndAbgabenForPlayer', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('tj0')));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -173,7 +169,6 @@ describe('getNumberOfTriesForSteuernUndAbgabenInput', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(MoneySheetState::getNumberOfTriesForSteuernUndAbgabenInput($gameEvents, $this->players[0]))->toBe(1);
 
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j0')));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -309,7 +304,6 @@ describe('getLastInputForSteuernUndAbgaben', function () {
         $actual = MoneySheetState::getLastInputForSteuernUndAbgaben($gameEvents, $this->players[0]);
         expect($actual)->toEqual(new MoneyAmount(0));
 
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j0')));
         $this->coreGameLogic->handle($this->gameId,
             EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(8500)));
@@ -373,7 +367,6 @@ describe('getLastInputLebenshaltungskosten', function () {
         $actual = MoneySheetState::getLastInputForLebenshaltungskosten($gameEvents, $this->players[0]);
         expect($actual)->toEqual(new MoneyAmount(5000));
 
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j0')));
         $this->coreGameLogic->handle($this->gameId,
             EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(11900)));
@@ -436,7 +429,6 @@ describe('doesSteuernUndAbgabenRequirePlayerAction', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeFalse();
 
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId("j0")));
         $this->coreGameLogic->handle($this->gameId,
             EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(8500)));
@@ -467,7 +459,6 @@ describe('doesSteuernUndAbgabenRequirePlayerAction', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeTrue();
 
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId("j0")));
         $this->coreGameLogic->handle($this->gameId,
             EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(400)));
@@ -523,7 +514,6 @@ describe('doesSteuernUndAbgabenRequirePlayerAction', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeFalse();
 
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId("j0")));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -889,7 +879,6 @@ describe("getAnnualExpensesForPlayer", function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId("tj0")));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -923,7 +912,6 @@ describe("getAnnualIncomeForPlayer", function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId("j0")));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);

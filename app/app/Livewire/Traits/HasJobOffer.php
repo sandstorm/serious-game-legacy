@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace App\Livewire\Traits;
 
 use App\Livewire\ValueObject\NotificationTypeEnum;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\AcceptJobOffersAktion;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\RequestJobOffersAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\AcceptJobOfferAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\RequestJobOffers;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\Definitions\Card\ValueObject\CardId;
 
@@ -27,24 +25,8 @@ trait HasJobOffer
         // open job offer modal again if that was the last action
     }
 
-    public function canRequestJobOffers(): AktionValidationResult
-    {
-        $aktion = new RequestJobOffersAktion();
-        return $aktion->validate($this->myself, $this->gameEvents);
-    }
-
     public function showJobOffers(): void
     {
-        $validationResult = self::canRequestJobOffers();
-        if (!$validationResult->canExecute) {
-            $this->showNotification(
-                $validationResult->reason,
-                NotificationTypeEnum::ERROR
-            );
-            return;
-        }
-
-        $this->coreGameLogic->handle($this->gameId, RequestJobOffers::create($this->myself));
         $this->jobOfferIsVisible = true;
         $this->broadcastNotify();
     }
@@ -56,7 +38,7 @@ trait HasJobOffer
 
     public function canAcceptJobOffer(CardId $cardId): AktionValidationResult
     {
-        $aktion = new AcceptJobOffersAktion($cardId);
+        $aktion = new AcceptJobOfferAktion($cardId);
         return $aktion->validate($this->myself, $this->gameEvents);
     }
 
