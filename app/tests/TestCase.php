@@ -10,7 +10,6 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
@@ -18,6 +17,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
@@ -45,6 +45,7 @@ use Domain\Definitions\Konjunkturphase\Dto\ZeitslotsPerPlayer;
 use Domain\Definitions\Konjunkturphase\Dto\Zeitsteine;
 use Domain\Definitions\Konjunkturphase\Dto\ZeitsteinePerPlayer;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
+use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
@@ -251,6 +252,9 @@ abstract class TestCase extends BaseTestCase
                 ),
             ]
         );
+        KonjunkturphaseFinder::getInstance()->overrideKonjunkturphaseDefinitionsForTesting([
+            $this->konjunkturphaseDefinition
+        ]);
         $this->coreGameLogic->handle(
             $this->gameId,
             ChangeKonjunkturphase::create()
@@ -265,21 +269,48 @@ abstract class TestCase extends BaseTestCase
      *
      * @return void
      */
-    public function makeSpielzugForPlayersAndChangeKonjunkturphase(): void
+    public function makeSpielzugForPlayersByPlayingCard(): void
     {
         foreach ($this->players as $player) {
-            $this->coreGameLogic->handle(
-                $this->gameId,
-                ActivateCard::create($player, CategoryId::BILDUNG_UND_KARRIERE)
-            );
-            $this->coreGameLogic->handle(
-                $this->gameId,
-                new EndSpielzug($player)
-            );
+            $this->coreGameLogic->handle($this->gameId, ActivateCard::create($player, CategoryId::BILDUNG_UND_KARRIERE));
+            $this->coreGameLogic->handle($this->gameId, new EndSpielzug($player));
         }
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect($gameEvents->findLast(KonjunkturphaseHasEnded::class) instanceof KonjunkturphaseHasEnded)->toBeTrue();
+
+        foreach ($this->players as $player) {
+            $this->coreGameLogic->handle(
+                $this->gameId,
+                EnterLebenshaltungskostenForPlayer::create($player,
+                    MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $player))
+            );
+            $this->coreGameLogic->handle(
+                $this->gameId,
+                EnterSteuernUndAbgabenForPlayer::create($player,
+                    MoneySheetState::calculateSteuernUndAbgabenForPlayer($gameEvents, $player))
+            );
+            $this->coreGameLogic->handle(
+                $this->gameId,
+                CompleteMoneysheetForPlayer::create($player)
+            );
+            $this->coreGameLogic->handle(
+                $this->gameId,
+                MarkPlayerAsReadyForKonjunkturphaseChange::create($player)
+            );
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function makeSpielzugForPlayersBySkippingACard(): void
+    {
+        foreach ($this->players as $player) {
+            $this->coreGameLogic->handle($this->gameId, new SkipCard($player, CategoryId::BILDUNG_UND_KARRIERE));
+            $this->coreGameLogic->handle($this->gameId, new EndSpielzug($player));
+        }
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
         foreach ($this->players as $player) {
             $this->coreGameLogic->handle(

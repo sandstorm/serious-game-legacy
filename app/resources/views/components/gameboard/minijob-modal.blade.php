@@ -1,4 +1,4 @@
-@extends ('components.modal.modal', ['closeModal' => "closeMinijob()", 'size' => 'medium'])
+@extends ('components.modal.modal', ['closeModal' => "closeMinijob()"])
 
 @props([
     'minijob' => null,

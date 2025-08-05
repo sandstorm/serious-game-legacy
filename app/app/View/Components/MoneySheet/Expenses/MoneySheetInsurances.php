@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\View\Components\MoneySheet\Expenses;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
@@ -25,6 +27,7 @@ class MoneySheetInsurances extends Component
     public function render(): View
     {
         return view('components.gameboard.moneySheet.expenses.money-sheet-insurances', [
+            'totalCost' => new MoneyAmount(MoneySheetState::getCostOfAllInsurances($this->gameEvents, $this->playerId)->value * -1)
         ]);
     }
 

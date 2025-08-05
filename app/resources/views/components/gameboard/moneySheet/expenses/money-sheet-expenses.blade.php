@@ -1,9 +1,8 @@
 @use('\App\Livewire\ValueObject\ExpensesTabEnum')
 
 @props([
-    '$moneySheet' => null,
+    'moneySheet' => null,
 ])
-
 
 <div class="tabs">
     <ul role="tablist" class="tabs__list">

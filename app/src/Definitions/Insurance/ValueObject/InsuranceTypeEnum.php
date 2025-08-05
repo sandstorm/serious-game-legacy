@@ -6,15 +6,15 @@ namespace Domain\Definitions\Insurance\ValueObject;
 
 enum InsuranceTypeEnum: string
 {
-    case HAFTPFLICHT = 'Haftpflicht';
-    case UNFALLVERSICHERUNG = 'Unfallversicherung';
+    case HAFTPFLICHT = 'Haftpflichtversicherung';
+    case UNFALLVERSICHERUNG = 'Private Unfallversicherung';
     case BERUFSUNFAEHIGKEITSVERSICHERUNG = 'Berufsunfähigkeitsversicherung';
 
     public static function fromString(string $value): self
     {
         return match ($value) {
-            'Haftpflicht' => self::HAFTPFLICHT,
-            'Unfallversicherung' => self::UNFALLVERSICHERUNG,
+            'Haftpflichtversicherung' => self::HAFTPFLICHT,
+            'Private Unfallversicherung' => self::UNFALLVERSICHERUNG,
             'Berufsunfähigkeitsversicherung' => self::BERUFSUNFAEHIGKEITSVERSICHERUNG,
             default => throw new \InvalidArgumentException('Invalid InsuranceType: '.$value),
         };

@@ -2,7 +2,7 @@
 @use('\App\Livewire\ValueObject\ExpensesTabEnum')
 @use('\App\Livewire\ValueObject\IncomeTabEnum')
 
-@extends ('components.modal.modal', ['closeModal' => "closeMoneySheet()", 'size' => 'medium'])
+@extends ('components.modal.modal', ['closeModal' => "closeMoneySheet()"])
 @section('title')
     Money Sheet
 @endsection

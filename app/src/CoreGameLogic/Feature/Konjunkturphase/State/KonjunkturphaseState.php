@@ -30,8 +30,7 @@ class KonjunkturphaseState
         $playerIds = $gameEvents->findFirst(GameWasStarted::class)->playerOrdering;
         $totalNumberOfZeitsteine = 0;
         foreach ($playerIds as $playerId) {
-            $totalNumberOfZeitsteine = $totalNumberOfZeitsteine + PlayerState::getZeitsteineForPlayer($gameEvents,
-                    $playerId);
+            $totalNumberOfZeitsteine = $totalNumberOfZeitsteine + PlayerState::getZeitsteineForPlayer($gameEvents, $playerId);
         }
         // TODO we may need to safeguard against negative values at some point (probably not here though)
         assert($totalNumberOfZeitsteine >= 0);

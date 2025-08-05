@@ -35,6 +35,7 @@
 
     .kompetenzen {
         padding: 0;
+        justify-content: center;
 
         background-color: transparent;
     }

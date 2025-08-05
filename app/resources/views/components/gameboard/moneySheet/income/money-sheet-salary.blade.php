@@ -1,41 +1,68 @@
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
 
 @props([
-    '$jobDefinition' => null,
-    '$gameEvents' => null,
-    '$playerId' => null,
-    '$modifiers' => null,
-    '$gehalt' => null,
+    'jobDefinition' => null,
+    'zeitsteinModifiers' => null,
+    'gehaltModifiers' => null,
+    'currentGehalt' => null,
 ])
 
-<h3>Gehalt</h3>
-@if ($jobDefinition)
-    <table>
-        <tbody>
-        <tr>
-            <td><small>Mein Job</small> <br/> {{ $jobDefinition->getTitle() }}</td>
-            <td>
-                <small>Mein Gehalt</small> <br/>
-                {!! $gehalt->format() !!}
-                @if(!$gehalt->equals($jobDefinition->getGehalt()))
-                    (Basisgehalt: {!! $jobDefinition->getGehalt()->format() !!})
-                @endif
-            </td>
-            <td>
-                <button type="button" class="button button--type-primary" wire:click="quitJob()">Job kündigen</button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <table>
-        <tbody>
-        @foreach($modifiers as $modifier)
-            <tr>
-                <td>{{$modifier}}</td>
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
-@else
-    <p>Du hast gerade keinen Job.</p>
-@endif
+<div class="tabs__upper-content">
+    <div class="salary">
+        @if ($jobDefinition)
+            <table>
+                <tbody>
+                <tr>
+                    <td><i class="icon-erwerbseinkommen" aria-hidden="true"></i></td>
+                    <td>
+                        <small>Dein aktueller Job</small> <br/>
+                        <div class="salary__job-title">{{ $jobDefinition->getTitle() }}</div>
+                    </td>
+                    <td>
+                        <button
+                            type="button"
+                            wire:click="quitJob()"
+                            @class([
+                                'button',
+                                'button--type-primary',
+                                $this->getPlayerColorClass(),
+                            ])
+                        >
+                            Job kündigen
+                        </button>
+                    </td>
+                    <td class="text-align--right">
+                        <small>Dein Jahreseinkommen brutto</small> <br/>
+                        {!! $jobDefinition->getGehalt()->formatWithIcon() !!}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4"><hr /></td>
+                </tr>
+                @foreach($zeitsteinModifiers as $modifier)
+                    <tr>
+                        <td>
+                            <x-gameboard.zeitsteine.zeitstein-icon :player-color-class="$this->getPlayerColorClass()" />
+                        </td>
+                        <td colspan="3">{{$modifier->description}}</td>
+                    </tr>
+                @endforeach
+                @foreach($gehaltModifiers as $modifier)
+                    <tr>
+                        <td><i class="icon-ereignis" aria-hidden="true"></i></td>
+                        <td colspan="3">{{$modifier->description}}</td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        @else
+            <h4><i class="icon-erwerbseinkommen" aria-hidden="true"></i> Du hast momentan kein regelmäßiges Einkommen. </h4>
+        @endif
+    </div>
+</div>
+
+<div class="tabs__lower-content">
+    <div class="salary__summary">
+        {!! $currentGehalt->formatWithIcon() !!}
+    </div>
+</div>

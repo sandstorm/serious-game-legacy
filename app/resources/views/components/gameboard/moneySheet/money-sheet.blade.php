@@ -2,55 +2,55 @@
 @use('\App\Livewire\ValueObject\IncomeTabEnum')
 
 <div class="moneysheet">
-    <div @class(["moneysheet__income", $this->getPlayerColorClass()])>
+    <button wire:click="toggleEditIncome()" @class(["moneysheet__income", $this->getPlayerColorClass()])>
         <table>
             <thead>
             <tr>
-                <th wire:click="toggleEditIncome()"><h2><i class="icon-plus text--success" aria-hidden="true"></i> Einnahmen</h2></th>
+                <th><h2><i class="icon-plus text--success" aria-hidden="true"></i> Einnahmen</h2></th>
                 <th class="text-align--right font-size--xl"><i class="icon-euro" aria-hidden="true"></i></th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td wire:click="showIncomeTab('{{ IncomeTabEnum::INVESTMENTS }}')">Finanzanlagen und Vermögenswerte</td>
+                <td>Finanzanlagen und Vermögenswerte</td>
                 <td class="text-align--right">{!! $moneySheet->sumOfAllStocks->format() !!}</td>
             </tr>
             <tr>
-                <td wire:click="showIncomeTab('{{ IncomeTabEnum::SALARY }}')">Gehalt</td>
+                <td>Gehalt</td>
                 <td class="text-align--right">{!! $moneySheet->gehalt->format() !!}</td>
             </tr>
             </tbody>
         </table>
-    </div>
-    <div @class(["moneysheet__expenses", $this->getPlayerColorClass()])>
+    </button>
+    <button wire:click="toggleEditExpenses()" @class(["moneysheet__expenses", $this->getPlayerColorClass()])>
         <table>
             <thead>
             <tr>
-                <th wire:click="toggleEditExpenses()"><h2><i class="icon-minus text--danger" aria-hidden="true"></i> Ausgaben</h2></th>
+                <th><h2><i class="icon-minus text--danger" aria-hidden="true"></i> Ausgaben</h2></th>
                 <th class="text-align--right font-size--xl"><i class="icon-euro" aria-hidden="true"></i></th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td wire:click="showExpensesTab('{{ ExpensesTabEnum::LOANS }}')">Kredite</td>
+                <td>Kredite</td>
                 <td class="text-align--right">
                     {!! $moneySheet->sumOfAllLoans->format() !!}
                 </td>
             </tr>
             <tr>
-                <td wire:click="showExpensesTab('{{ ExpensesTabEnum::KIDS }}')">Kinder</td>
+                <td>Kinder</td>
                 <td class="text-align--right">
                     0 €
                 </td>
             </tr>
             <tr>
-                <td wire:click="showExpensesTab('{{ ExpensesTabEnum::INSURANCES }}')">Versicherungen</td>
+                <td>Versicherungen</td>
                 <td class="text-align--right">
                     {!! $moneySheet->totalInsuranceCost->format() !!}
                 </td>
             </tr>
             <tr>
-                <td wire:click="showExpensesTab('{{ ExpensesTabEnum::TAXES }}')">Steuern und Abgaben</td>
+                <td>Steuern und Abgaben</td>
                 <td class="text-align--right">
                     {!! $moneySheet->steuernUndAbgaben->format() !!}
                     @if($moneySheet->doesSteuernUndAbgabenRequirePlayerAction)
@@ -59,7 +59,7 @@
                 </td>
             </tr>
             <tr>
-                <td wire:click="showExpensesTab('{{ ExpensesTabEnum::LIVING_COSTS }}')">Lebenshaltungskosten</td>
+                <td>Lebenshaltungskosten</td>
                 <td class="text-align--right">
                     {!! $moneySheet->lebenshaltungskosten->format() !!}
                     @if($moneySheet->doesLebenshaltungskostenRequirePlayerAction)
@@ -69,7 +69,7 @@
             </tr>
             </tbody>
         </table>
-    </div>
+    </button>
 
     <div class="moneysheet__information">
         <table>

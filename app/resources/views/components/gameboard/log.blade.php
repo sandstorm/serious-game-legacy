@@ -1,4 +1,4 @@
-@extends ('components.modal.modal', ['closeModal' => "closeLog()", 'size' => 'large'])
+@extends ('components.modal.modal', ['closeModal' => "closeLog()"])
 
 @section('title')
     Log

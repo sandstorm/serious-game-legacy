@@ -1,0 +1,65 @@
+.switch {
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    gap: var(--spacing-100);
+}
+
+.switch input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch .slider {
+    position: relative;
+    width: 50px;
+    height: 24px;
+    background-color: var(--color-primary-dark);
+    border-radius: 50px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.switch .slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
+    background-color: var(--color-primary-fg);
+    border-radius: 50%;
+    transition: transform 0.2s ease-in-out;
+}
+
+.switch input:checked + .slider {
+    background-color: var(--color-primary);
+}
+
+.switch input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.switch input:focus-visible + .slider {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+}
+
+.switch.player-color-1 input:checked + .slider {
+    background-color: var(--color-player-1--dark);
+}
+
+.switch.player-color-2 input:checked + .slider {
+    background-color: var(--color-player-2--dark);
+}
+
+.switch.player-color-3 input:checked + .slider {
+    background-color: var(--color-player-3--dark);
+}
+
+.switch.player-color-4 input:checked + .slider {
+    background-color: var(--color-player-4--dark);
+}
+

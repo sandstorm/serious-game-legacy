@@ -134,9 +134,16 @@ trait HasMoneySheet
 
     public function showTakeOutALoan(): void
     {
-        $this->showExpensesTab(ExpensesTabEnum::LOANS->value);
+        $this->moneySheetIsVisible = false;
+        $this->editIncomeIsVisible = false;
+        $this->editExpensesIsVisible = false;
         $this->takeOutALoanIsVisible = true;
         $this->resetTakeOutALoanForm();
+    }
+
+    public function closeTakeOutALoan(): void
+    {
+        $this->showExpensesTab(ExpensesTabEnum::LOANS->value);
     }
 
     public function getMoneysheetForPlayerId(PlayerId $playerId): MoneySheetDto
@@ -223,12 +230,6 @@ trait HasMoneySheet
         $this->broadcastNotify();
     }
 
-    public function toggleTakeOutALoan(): void
-    {
-        $this->takeOutALoanIsVisible = !$this->takeOutALoanIsVisible;
-        $this->resetTakeOutALoanForm();
-    }
-
     private function resetTakeOutALoanForm(): void
     {
         $this->takeOutALoanForm->reset();
@@ -265,7 +266,7 @@ trait HasMoneySheet
             $this->takeOutALoanForm->generalError = "Du hast falsche Werte für den Kredit eingegeben.";
         } else {
             $this->takeOutALoanForm->resetValidation();
-            $this->toggleTakeOutALoan();
+            $this->closeTakeOutALoan();
         }
 
         $this->broadcastNotify();

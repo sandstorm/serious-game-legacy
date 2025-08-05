@@ -1,4 +1,4 @@
-@extends ('components.modal.modal', ['closeModal' => "closeJobOffer()", 'size' => 'medium'])
+@extends ('components.modal.modal', ['closeModal' => "closeJobOffer()", 'type' => "borderless"])
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator')
 
 @props([

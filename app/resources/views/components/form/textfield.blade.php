@@ -1,6 +1,6 @@
 <input
     @class([
-        "form__textfield",
+        "form__textfield form-group__input",
         $this->getPlayerColorClass(),
     ])
     name="{{ $name }}"

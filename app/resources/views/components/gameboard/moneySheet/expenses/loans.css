@@ -1,0 +1,29 @@
+.loans {
+
+}
+
+.loans__summary {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-200);
+}
+
+.loans__summary-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-50);
+    justify-content: center;
+
+    .text--currency {
+        display: flex;
+        align-items: center;
+        height: var(--button-height);
+        padding-inline: var(--spacing-100);
+
+        background-color: var(--color-semi-transparent);
+        border-radius: 999px;
+
+        text-align: center;
+    }
+}

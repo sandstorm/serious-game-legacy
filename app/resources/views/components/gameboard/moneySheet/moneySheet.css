@@ -17,13 +17,6 @@
                 gap: var(--spacing-50);
             }
         }
-
-        td, th {
-            position: relative;
-            padding: var(--spacing-50);
-
-            border: none;
-        }
     }
 }
 
@@ -37,10 +30,13 @@
 
 .moneysheet__income, .moneysheet__expenses {
     padding: var(--spacing-100);
+    display: flex;
+    align-items: flex-start;
 
     border: 1px solid var(--color-grey);
     border-radius: 20px;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+    background-color: var(--color-primary-fg);
 
     &.player-color-1 {
         border-color: var(--color-player-1--dark);
