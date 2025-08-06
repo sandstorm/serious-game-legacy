@@ -1800,26 +1800,399 @@ final class CardFinder
                 modifierIds: [ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER, ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE],
                 modifierParameters: new ModifierParameters(modifyLebenshaltungskostenMultiplier: 0.1, modifyLebenshaltungskostenMinValue: new MoneyAmount(+1000)),
             ),
-            "wb0" => new WeiterbildungCardDefinition(
-                id: new CardId('wb0'),
-                title: 'Quiz – Protektionismus',
-                description: 'Nicht immer stimmen die Interessen von Arbeitgeberinnen und Arbeitnehmerinnnen überein. Welches der folgenden Interessen ist KEIN typisches Interesse von Arbeitnehmerinnen?',
-                answerOptions: [
-                    new AnswerOption(new AnswerId("a"), "Tarifliche Entlohnung und Arbeitsplatzsicherheit", true),
-                    new AnswerOption(new AnswerId("b"), "Angemessene Vergütung und soziale Absicherung"),
-                    new AnswerOption(new AnswerId("c"), "Maximale Kosteneffizienz und unternehmerische Flexibilität"),
-                    new AnswerOption(new AnswerId("d"), "Karriereförderung und Mitbestimmungsmöglichkeiten"),
-                ],
-            ),
             "wb1" => new WeiterbildungCardDefinition(
                 id: new CardId('wb1'),
-                title: 'Quiz – Arbeitnehmerinteressen',
-                description: 'Nicht immer stimmen die Interessen von Arbeitgeberinnen und Arbeitnehmerinnnen überein. Welches der folgenden Interessen ist KEIN typisches Interesse von Arbeitnehmerinnen?',
+                description: 'Welche handlungspolitische Maßnahme dient dem Schutz der heimischen Wirtschauft vor ausländischer Konkurrenz? ',
                 answerOptions: [
-                    new AnswerOption(new AnswerId("a"), "Tarifliche Entlohnung und Arbeitsplatzsicherheit", true),
-                    new AnswerOption(new AnswerId("b"), "Angemessene Vergütung und soziale Absicherung"),
-                    new AnswerOption(new AnswerId("c"), "Maximale Kosteneffizienz und unternehmerische Flexibilität"),
-                    new AnswerOption(new AnswerId("d"), "Karriereförderung und Mitbestimmungsmöglichkeiten"),
+                    new AnswerOption(new AnswerId("c"), "Einführung von Zöllen auf ausländische Waren", true),
+                    new AnswerOption(new AnswerId("b"), "Abschaffung von Zöllen"),
+                    new AnswerOption(new AnswerId("d"), "Freier Zugang für alle ausländischen Anbieter"),
+                ],
+            ),
+            "wb2" => new WeiterbildungCardDefinition(
+                id: new CardId('wb2'),
+                description: 'Ein Unternehmen verkauft 120 Fahrräder für jeweils 230 € das Stück. Für Löhne, Miete, Einkauf etc. fallen Gesamtkosten in Höhe von 26.000 € an. Der Umsatz beträgt 1600€. ',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("c"), "Falsch", true),
+                    new AnswerOption(new AnswerId("b"), "Wahr"),
+                ],
+            ),
+            "wb3" => new WeiterbildungCardDefinition(
+                id: new CardId('wb3'),
+                description: 'Welche der folgenden Optionen ist KEIN typisches Motiv für die Gründung eines Unternehmens? ',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("d"), "Langfristige Arbeitsplatzgarantie", true),
+                    new AnswerOption(new AnswerId("b"), "Unabhängigkeit"),
+                    new AnswerOption(new AnswerId("c"), "Selbstverwirklichung"),
+                    new AnswerOption(new AnswerId("a"), "Nutzung von Marktchancen"),
+                ],
+            ),
+            "wb4" => new WeiterbildungCardDefinition(
+                id: new CardId('wb4'),
+                description: 'Welches der folgenden Interessen ist KEIN typisches Interesse von Arbeitnehmerinnen?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("d"), "Maximale Kosteneffizienz und unternehmerische Flexibilität", true),
+                    new AnswerOption(new AnswerId("a"), "Angemessene Vergütung und soziale Absicherung"),
+                    new AnswerOption(new AnswerId("b"), "Tarifliche Entlohnung und Arbeitsplatzsicherheit"),
+                ],
+            ),
+            "wb5" => new WeiterbildungCardDefinition(
+                id: new CardId('wb5'),
+                description: 'Welche der folgenden Prinzipien beschreiben das ökonomische Prinzip?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("c"), "Minimalprinzip und Maximalprinzip", true),
+                    new AnswerOption(new AnswerId("b"), "Rentabilitätsprinzip und Effizienzprinzip"),
+                    new AnswerOption(new AnswerId("d"), "Opportunitätsprinzip und Investitionsprinzip"),
+                    new AnswerOption(new AnswerId("a"), "Gewinnprinzip und Sparprinzip"),
+                ],
+            ),
+            "wb6" => new WeiterbildungCardDefinition(
+                id: new CardId('wb6'),
+                description: 'Ein Unternehmen verkauft 120 Fahrräder zu je 230 €. Die Gesamtkosten betragen 26.000 €. Der Gewinn beträgt 1.600 €.',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("a"), "Wahr", true),
+                    new AnswerOption(new AnswerId("b"), "Falsch"),
+                ],
+            ),
+            "wb7" => new WeiterbildungCardDefinition(
+                id: new CardId('wb7'),
+                description: 'Welche der folgenden Optionen sind mögliche Ursachen für Überschuldung?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("c"), "Übermäßige Verschuldung und negative Geschäftsentwicklung", true),
+                    new AnswerOption(new AnswerId("a"), "Hohe laufende Einnahmen und starke Liquidität"),
+                    new AnswerOption(new AnswerId("d"), "Hohe Rücklagenbildung und starke Kapitalreserven"),
+                ],
+            ),
+            "wb8" => new WeiterbildungCardDefinition(
+                id: new CardId('wb8'),
+                description: 'Welche Wirtschaftsordnung strebt die Bundesrepublik Deutschland an?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("d"), "Soziale Marktwirtschaft", true),
+                    new AnswerOption(new AnswerId("b"), "Zentralverwaltungswirtschaft"),
+                    new AnswerOption(new AnswerId("a"), "Marktwirtschaft"),
+                    new AnswerOption(new AnswerId("c"), "Zentrale Planwirtschaft"),
+                ],
+            ),
+            "wb9" => new WeiterbildungCardDefinition(
+                id: new CardId('wb9'),
+                description: 'Wer einen Kredit in kleineren Raten über eine längere Zeit zurückzahlt, zahlt insgesamt mehr Zinsen als bei schnellerer Rückzahlung.',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("d"), "wahr", true),
+                    new AnswerOption(new AnswerId("c"), "falsch"),
+                ],
+            ),
+            "wb10" => new WeiterbildungCardDefinition(
+                id: new CardId('wb10'),
+                description: 'Wie hoch sind die Jahreszinsen für ein Darlehen über 2.000 €, wenn ein Zinssatz von 5 % vereinbart wurde? ',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("a"), "100 €", true),
+                    new AnswerOption(new AnswerId("b"), "150 €"),
+                    new AnswerOption(new AnswerId("d"), "200 €"),
+                ],
+            ),
+            "wb11" => new WeiterbildungCardDefinition(
+                id: new CardId('wb11'),
+                description: 'Welche Aussage ist richtig?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("c"), "Die Krankenversicherungsbeiträge sind je nach Krankenkasse unterschiedlich hoch. ", true),
+                    new AnswerOption(new AnswerId("b"), "In der Regel werden die Sozialversicherungsbeiträge fast ausschließlich von Arbeitnehmerinnen aufgebracht. "),
+                    new AnswerOption(new AnswerId("d"), "Der Nettolohn ist häufig höher als der Bruttolohn."),
+                ],
+            ),
+            "wb12" => new WeiterbildungCardDefinition(
+                id: new CardId('wb12'),
+                description: 'Welche Interessen teilen Arbeitgeberinnen und Arbeitnehmerinnen häufig?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("b"), "Arbeitsplatzsicherheit und langfristiger Erfolg", true),
+                    new AnswerOption(new AnswerId("c"), "Mehr Arbeitszeit und weniger Lohn"),
+                    new AnswerOption(new AnswerId("a"), "Weniger Belastung und niedrigere Kosten"),
+                    new AnswerOption(new AnswerId("d"), "Bessere Bedingungen und hohe Produktivität"),
+                ],
+            ),
+            "wb13" => new WeiterbildungCardDefinition(
+                id: new CardId('wb13'),
+                description: 'Angebot und Nachfrage - Welche Aussage ist richtig?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("d"), "Mit steigendem Preis eines Gutes, sinkt laut Nachfragegesetz die Nachfrage eines Gutes.", true),
+                    new AnswerOption(new AnswerId("a"), "Bei Nachfrageüberhang wird von einem Gut weniger nachgefragt, als verfügbar.  "),
+                ],
+            ),
+            "wb14" => new WeiterbildungCardDefinition(
+                id: new CardId('wb14'),
+                description: 'Welche Faktoren beeinflussen die Nachfrage?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("a"), "Einkommen der Konsumenten und Preisvorstellungen", true),
+                    new AnswerOption(new AnswerId("c"), "Marktgröße und Wettbewerbsverhältnisse"),
+                    new AnswerOption(new AnswerId("b"), "Technologie und Innovationskraft"),
+                    new AnswerOption(new AnswerId("d"), "Produktionskosten und Ressourcenverfügbarkeit"),
+                ],
+            ),
+            "wb15" => new WeiterbildungCardDefinition(
+                id: new CardId('wb15'),
+                description: 'Wie heißt der Preis, bei dem Angebot und Nachfrage genau übereinstimmen?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("a"), "Gleichgewichtspreis", true),
+                    new AnswerOption(new AnswerId("c"), "Höchstpreis"),
+                    new AnswerOption(new AnswerId("b"), "Mindestpreis"),
+                ],
+            ),
+            "wb16" => new WeiterbildungCardDefinition(
+                id: new CardId('wb16'),
+                description: 'Welche Aussage trifft NICHT zu?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("d"), "Variable Kosten sind unabhängig von der Produktionsmenge, wenn der Fixkostenanteil hoch ist.", true),
+                    new AnswerOption(new AnswerId("b"), "Variable Kosten können mit der Produktionsmenge steigen."),
+                    new AnswerOption(new AnswerId("c"), "Variable Kosten sind abhängig von der produzierten Stückzahl."),
+                    new AnswerOption(new AnswerId("a"), "Variable Kosten verändern sich bei steigender Produktionsmenge."),
+                ],
+            ),
+            "wb17" => new WeiterbildungCardDefinition(
+                id: new CardId('wb17'),
+                description: 'Welche Formel entspricht dem wirtschaftlichen Begriff “Umsatz”?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("b"), "Umsatz = Menge × Preis ", true),
+                    new AnswerOption(new AnswerId("d"), "Umsatz = Gewinn – Steuern"),
+                    new AnswerOption(new AnswerId("c"), "Umsatz = Kosten × Preis"),
+                    new AnswerOption(new AnswerId("a"), "Umsatz = Menge + Kosten"),
+                ],
+            ),
+            "wb18" => new WeiterbildungCardDefinition(
+                id: new CardId('wb18'),
+                description: 'Ein Annuitätenkredit wird mit konstanten Zahlungen aus Zins und Tilgung zurückgezahlt. Nach der Hälfte der Laufzeit ist die Restschuld meist geringer als die Hälfte des ursprünglichen Kredits.',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("d"), "wahr", true),
+                    new AnswerOption(new AnswerId("a"), "Falsch"),
+                ],
+            ),
+            "wb19" => new WeiterbildungCardDefinition(
+                id: new CardId('wb19'),
+                description: 'Welche der folgenden Indikatorenmisst den Wohlstand alternativ zum BIP (Bruttoinlandsprodukt)?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("d"), "Pro-Kopf Einkommen", true),
+                    new AnswerOption(new AnswerId("b"), "Inflationsrate"),
+                    new AnswerOption(new AnswerId("a"), "Unternehmensgewinne"),
+                    new AnswerOption(new AnswerId("c"), "Arbeitslosenquote"),
+                ],
+            ),
+            "wb20" => new WeiterbildungCardDefinition(
+                id: new CardId('wb20'),
+                description: 'Welcher Unterschied beschreibt den Unterschied zwischen nominalem und realem BIP?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("d"), "Nominales BIP nutzt aktuelle Preise, reales berücksichtigt Preisänderungen.", true),
+                    new AnswerOption(new AnswerId("c"), "Nominales BIP nutzt konstante Preise, reales aktuelle."),
+                ],
+            ),
+            "wb21" => new WeiterbildungCardDefinition(
+                id: new CardId('wb21'),
+                description: 'Welche Interessen vertreten Arbeitgeberinnen typischerweise?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("d"), "Kostensenkung und flexible Personalplanung", true),
+                    new AnswerOption(new AnswerId("c"), "Hohe Löhne und maximale Sicherheit"),
+                    new AnswerOption(new AnswerId("b"), "Mehr Urlaub und kürzere Arbeitszeit"),
+                    new AnswerOption(new AnswerId("a"), "Mitbestimmung und Arbeitsplatzgarantie"),
+                ],
+            ),
+            "wb22" => new WeiterbildungCardDefinition(
+                id: new CardId('wb22'),
+                description: 'Was versteht man unter dem Gewinn in der Betriebswirtschaft?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("a"), "Die Differenz zwischen Umsatz und Kosten ", true),
+                    new AnswerOption(new AnswerId("c"), "Die Summe aus Umsatz und Kosten"),
+                    new AnswerOption(new AnswerId("b"), "Der Umsatz ohne Abzüge"),
+                    new AnswerOption(new AnswerId("d"), "Die Menge verkaufter Produkte"),
+                ],
+            ),
+            "wb23" => new WeiterbildungCardDefinition(
+                id: new CardId('wb23'),
+                description: 'Was kann ein Nachteil der sozialen Marktwirtschaft sein?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("b"), "Hohe Staatsausgaben und mögliche Bürokratie", true),
+                    new AnswerOption(new AnswerId("c"), "Kein Sozialsystem, völlig freier Markt"),
+                    new AnswerOption(new AnswerId("a"), "Kein sozialer Ausgleich, kein Staatseingriff"),
+                ],
+            ),
+            "wb24" => new WeiterbildungCardDefinition(
+                id: new CardId('wb24'),
+                description: 'Welche Faktoren bestimmen die Höhe von Löhnen?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("b"), "Qualifikation der Arbeitnehmenden und Branchenentwicklung", true),
+                    new AnswerOption(new AnswerId("a"), "Individuelle Sparziele und betriebliche Sozialangebote"),
+                    new AnswerOption(new AnswerId("d"), "Subjektive Zufriedenheit der Arbeitgebenden und Anzahl der Urlaubstage"),
+                ],
+            ),
+            "wb25" => new WeiterbildungCardDefinition(
+                id: new CardId('wb25'),
+                description: 'Welche Aussage trifft auf ein Sparbuch zu?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("c"), "Ein- und Auszahlung sind grundsätzlich kostenfrei. ", true),
+                    new AnswerOption(new AnswerId("d"), "Hoher Zins, aber Kursrisiko. "),
+                    new AnswerOption(new AnswerId("b"), "Niedriger Zins, aber für den zahlungsverkehr nutzbar. "),
+                ],
+            ),
+            "wb26" => new WeiterbildungCardDefinition(
+                id: new CardId('wb26'),
+                description: 'Was passiert, wenn der Leitzins der Europäischen Zentralbank steigt?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("b"), "Kredite werden teurer, Sparzinsen steigen", true),
+                    new AnswerOption(new AnswerId("c"), "Kredite werden günstiger, Sparzinsen sinken"),
+                    new AnswerOption(new AnswerId("a"), "Der Euro verliert automatisch an Wert"),
+                ],
+            ),
+            "wb27" => new WeiterbildungCardDefinition(
+                id: new CardId('wb27'),
+                description: '"Welche Anlageform gilt als besonders sicher, aber mit niedrigerer Rendite?"',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("b"), "Tagesgeldkonto", true),
+                    new AnswerOption(new AnswerId("a"), "Kryptowährungen"),
+                    new AnswerOption(new AnswerId("d"), "Aktienfonds"),
+                ],
+            ),
+            "wb28" => new WeiterbildungCardDefinition(
+                id: new CardId('wb28'),
+                description: 'Welche Strategie dient zur Risikominimierung bei Investitonen?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("b"), "Diversifikation des Portfolios", true),
+                    new AnswerOption(new AnswerId("d"), "Kredite aufnehmen, um mehr investieren zu können"),
+                    new AnswerOption(new AnswerId("a"), "Alle Investitionen in eine einzige Aktie stecken."),
+                ],
+            ),
+            "wb29" => new WeiterbildungCardDefinition(
+                id: new CardId('wb29'),
+                description: '"Was bedeutet ""progressive Besteuerung"" ?"',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("b"), "Der Steuersatz steigt mit zunehmendem Einkommen. ", true),
+                    new AnswerOption(new AnswerId("c"), "Alle zahlen denselben Prozentsatz ihres Einkommens."),
+                    new AnswerOption(new AnswerId("a"), "Der Staat erhebt nur Steuern auf hohe Erbschaften."),
+                ],
+            ),
+            "wb30" => new WeiterbildungCardDefinition(
+                id: new CardId('wb30'),
+                description: 'Was beeinflusst typischerweise eine Investitionsentscheidung einer Privatperson?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("d"), "Risiko der Investition und erwartete Rendite", true),
+                    new AnswerOption(new AnswerId("a"), "Steuern und Arbeitsstunden"),
+                    new AnswerOption(new AnswerId("b"), "Politische Stabilität und Unternehmensgröße"),
+                    new AnswerOption(new AnswerId("c"), "Gehalt und Urlaubsanspruch"),
+                ],
+            ),
+            "wb31" => new WeiterbildungCardDefinition(
+                id: new CardId('wb31'),
+                description: 'Wie unterscheidet sich eine Aktie von einer Anleihe?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("a"), "Eine Aktie ist ein Unternehmensantiel, während eine Anleihe ein Darlehen an ein Unternehmen ist.", true),
+                    new AnswerOption(new AnswerId("d"), "Aktie garantiert feste Zinsen."),
+                    new AnswerOption(new AnswerId("c"), "Aktie nur zu Unternehmensgründung."),
+                    new AnswerOption(new AnswerId("b"), "Aktie bringt immer höhere Rendite."),
+                ],
+            ),
+            "wb32" => new WeiterbildungCardDefinition(
+                id: new CardId('wb32'),
+                description: 'Welche der folgenden Optionen beschreibt ein Risiko bei Geldanlagen?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("c"), "Inflation und mögliche Wertverluste", true),
+                    new AnswerOption(new AnswerId("b"), "Langfristige Sicherheit"),
+                    new AnswerOption(new AnswerId("a"), "Steuerersparnisse"),
+                    new AnswerOption(new AnswerId("d"), "Hohe Renditen ohne Unsicherheit"),
+                ],
+            ),
+            "wb33" => new WeiterbildungCardDefinition(
+                id: new CardId('wb33'),
+                description: 'Was unterscheidet kurzfristige von langfristigen Investitionen?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("b"), "Kurzfr. Investitionen haben geringere Laufzeit und bieten schnelle Rückflüsse.", true),
+                    new AnswerOption(new AnswerId("c"), "Kurzfr. Investitionen werden nur in Aktien getätigt, langfr. nur in Immobilien."),
+                    new AnswerOption(new AnswerId("a"), "Kurzfr. Investitionen sind für Unternehmen und langfr. nur für Privatpersonen sinnvoll."),
+                ],
+            ),
+            "wb34" => new WeiterbildungCardDefinition(
+                id: new CardId('wb34'),
+                description: 'Was ist der Zinseszinseffekt?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("d"), "Zinsen werden auf bereits erhaltene Zinsen berechnet.", true),
+                    new AnswerOption(new AnswerId("a"), "Zinsen steigen immer jährlich."),
+                    new AnswerOption(new AnswerId("c"), "Zinsen werden nur auf das ursprüngliche Kapital berechnet."),
+                ],
+            ),
+            "wb35" => new WeiterbildungCardDefinition(
+                id: new CardId('wb35'),
+                description: '"Was bedeutet ""Liquidität"" in Bezug auf Investitionen?"',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("b"), "Die Geschwindigkeit, mit der eine Investition verkauft werden kann.", true),
+                    new AnswerOption(new AnswerId("c"), "Der Gewinn aus einer Investition."),
+                    new AnswerOption(new AnswerId("a"), "Der langfristige Wert einer Investition."),
+                ],
+            ),
+            "wb36" => new WeiterbildungCardDefinition(
+                id: new CardId('wb36'),
+                description: 'Welche Aussage beschreibt am besten eine Anleihe?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("b"), "Festverzinsliches Wertpapier, mit dem ein Anleger einem Unternehmen oder Staat Geld leiht", true),
+                    new AnswerOption(new AnswerId("a"), "Unternehmensanteil mit Anspruch auf Gewinnbeteiligung"),
+                    new AnswerOption(new AnswerId("c"), "Eine kurzfristige Investition in Aktien"),
+                ],
+            ),
+            "wb37" => new WeiterbildungCardDefinition(
+                id: new CardId('wb37'),
+                description: 'Wie unterscheiden sich ETFs von traditionellen Investmentfonds?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("b"), "ETFs sind meist passiv und bilden einen Index ab", true),
+                    new AnswerOption(new AnswerId("a"), "ETFs werden nicht börslich gehandelt"),
+                    new AnswerOption(new AnswerId("d"), "ETFs haben höhere Verwaltungskosten"),
+                ],
+            ),
+            "wb38" => new WeiterbildungCardDefinition(
+                id: new CardId('wb38'),
+                description: 'Welche der folgenden Aussagen beschreibt am besten einen ETF?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("b"), "Ein passiv verwalteter Fonds, der einen Index nachbildet.", true),
+                    new AnswerOption(new AnswerId("a"), "Ein aktiver Fonds, der nur in einzelen Aktien investiert."),
+                    new AnswerOption(new AnswerId("c"), "Ein Investment in Immobilien."),
+                ],
+            ),
+            "wb39" => new WeiterbildungCardDefinition(
+                id: new CardId('wb39'),
+                description: 'Was ist ein wesentlicher Vorteil von Immobilieninvestitionen im Vergleich zu Aktien?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("b"), "Potenzielle steuerliche Vorteile", true),
+                    new AnswerOption(new AnswerId("a"), "Geringeres Risiko"),
+                    new AnswerOption(new AnswerId("c"), "Höhere Liquidität"),
+                ],
+            ),
+            "wb40" => new WeiterbildungCardDefinition(
+                id: new CardId('wb40'),
+                description: '"Was passiert in einem Markt mit hoher Nachfrage und geringem Angebot?"',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("b"), "Der Preis steigt", true),
+                    new AnswerOption(new AnswerId("c"), "Der Preis bleibt konstant"),
+                    new AnswerOption(new AnswerId("a"), "Der Preis sinkt"),
+                ],
+            ),
+            "wb41" => new WeiterbildungCardDefinition(
+                id: new CardId('wb41'),
+                description: 'Was passiert typischerweise, wenn der Preis eines Guts steigt und das Angebot zunimmt?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("c"), "Die Nachfrage sinkt", true),
+                    new AnswerOption(new AnswerId("b"), "Die Nachfrage bleibt unverändert"),
+                    new AnswerOption(new AnswerId("d"), "Die Nachfrage steigt"),
+                ],
+            ),
+            "wb42" => new WeiterbildungCardDefinition(
+                id: new CardId('wb42'),
+                description: 'Welche Faktoren bestimmen das Angebot?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("b"), "Produktionskosten und Ressorcenverfügbarkeit ", true),
+                    new AnswerOption(new AnswerId("c"), "Verbraucherpräferenzen und saisonale Trends"),
+                    new AnswerOption(new AnswerId("d"), "Preispolitik und staatliche Eingriffe"),
+                    new AnswerOption(new AnswerId("a"), "Einkommen der Konsumentinnen"),
+                ],
+            ),
+            "wb43" => new WeiterbildungCardDefinition(
+                id: new CardId('wb43'),
+                description: 'Welche Aussage beschreibt eine Einschränkung des einfachen Wirtschaftskreislaufs am treffendsten?',
+                answerOptions: [
+                    new AnswerOption(new AnswerId("b"), "Er ignoriert institutionelle Sektoren wie Staat, Finanzsystem und Ausland.", true),
+                    new AnswerOption(new AnswerId("d"), "Er bildet nur den realen Güterstrom, nicht aber monetäre Transaktionen ab."),
+                    new AnswerOption(new AnswerId("a"), "Er berücksichtigt lediglich die Rolle von Konsumenten, nicht aber von Produzenten."),
                 ],
             ),
         ]);

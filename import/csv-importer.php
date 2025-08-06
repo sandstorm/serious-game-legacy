@@ -32,7 +32,6 @@ function importJobCards() {
     foreach ($fileContent as $item) {
         $itemArray = explode(";", trim($item));
         $itemArrayWithKeys = array_combine($keys, $itemArray);
-        //print_r($itemArrayWithKeys);
 
         echo "\"" . $itemArrayWithKeys["id"] . "\" => new JobCardDefinition(\n";
         echo "\t" . "id: new CardId('" . $itemArrayWithKeys["id"] . "'),\n";
@@ -49,9 +48,43 @@ function importJobCards() {
     }
 }
 
+function importWeiterbildungCards() {
+    echo "\n\n--WEITERBILDUNG CARDS--\n\n";
+    $file = file(__DIR__ . "/Weiterbildung-Table 1.csv");
+    $fileContent = array_slice($file, 2); //removes the first two elements (table name and table header)
+    $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
+    $keys = array_slice(explode(";", trim($tableHeaderItems[0])), 0, 3); // first three table header items
+    $answerIds = ["a", "b", "c", "d"];
+
+    foreach ($fileContent as $item) {
+        //first answer Id is used for the correct answer -> randomized through the shuffle
+        shuffle($answerIds);
+        $itemArray = explode(";", trim($item));
+        $itemArrayUpdated = array_slice($itemArray, 0, 3); //remove all wrong answers
+        $itemArrayWithKeys = array_combine($keys, $itemArrayUpdated);
+
+        $wrongAnswersArray = array_filter(array_slice($itemArray, 3));
+        $itemArrayWithKeys["wrongAnswers"] = $wrongAnswersArray; //add wrong answers stored in an array
+
+        echo "\"" . $itemArrayWithKeys["id"] . "\" => new WeiterbildungCardDefinition(\n";
+        echo "\t" . "id: new CardId('" . $itemArrayWithKeys["id"] . "'),\n";
+        echo "\t" . "description: '" . $itemArrayWithKeys["description"] . "',\n";
+        echo "\t" . "answerOptions: [\n";
+        echo "\t\t" . "new AnswerOption(new AnswerId(\"" . $answerIds[0] . "\"), \"" . $itemArrayWithKeys["correctAnswer"] . "\", true),\n";
+
+        foreach($itemArrayWithKeys["wrongAnswers"] as $wrongAnswer) {
+            $key = array_search($wrongAnswer, $itemArrayWithKeys["wrongAnswers"]);
+            echo "\t\t" . "new AnswerOption(new AnswerId(\"" . $answerIds[$key + 1] . "\"), \"" . $wrongAnswer . "\"),\n";
+        }
+
+        echo "\t],\n),\n";
+    }
+}
+
 
 //importMiniJobCards();
-importJobCards();
+//importJobCards();
+importWeiterbildungCards();
 
 
 

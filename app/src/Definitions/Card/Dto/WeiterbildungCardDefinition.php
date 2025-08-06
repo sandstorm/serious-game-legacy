@@ -14,13 +14,11 @@ class WeiterbildungCardDefinition implements CardDefinition
 
     /**
      * @param CardId $id
-     * @param string $title
      * @param string $description
      * @param AnswerOption[] $answerOptions
      */
     public function __construct(
         protected CardId     $id,
-        protected string     $title,
         protected string     $description,
         protected array      $answerOptions,
     )
@@ -34,7 +32,7 @@ class WeiterbildungCardDefinition implements CardDefinition
 
     public function getTitle(): string
     {
-        return $this->title;
+        return "Quiz";
     }
 
     public function description(): string
