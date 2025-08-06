@@ -13,16 +13,45 @@ function importMiniJobCards() {
         $itemArrayWithKeys = array_combine($keys, $itemArray);
 
         echo "\"" . $itemArrayWithKeys["id"] . "\" => new MinijobCardDefinition(\n";
-        echo "\tid: new CardId('" . $itemArrayWithKeys["id"] . "'),\n";
-        echo "\ttitle: '" . $itemArrayWithKeys["title"] . "',\n";
-        echo "\tdescription: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',\n";
-        echo "\tresourceChanges: new ResourceChanges(\n";
-        echo "\t\tguthabenChange: new MoneyAmount(+" . $itemArrayWithKeys["moneyChange"] . "),\n";
+        echo "\t" . "id: new CardId('" . $itemArrayWithKeys["id"] . "'),\n";
+        echo "\t" . "title: '" . $itemArrayWithKeys["title"] . "',\n";
+        echo "\t" . "description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',\n";
+        echo "\t" . "resourceChanges: new ResourceChanges(\n";
+        echo "\t\t" . "guthabenChange: new MoneyAmount(+" . $itemArrayWithKeys["moneyChange"] . "),\n";
         echo "\t),\n),\n";
     }
 }
 
-importMiniJobCards();
+function importJobCards() {
+    echo "\n\n--JOB CARDS--\n\n";
+    $file = file(__DIR__ . "/Jobs-Table 1.csv");
+    $fileContent = array_slice($file, 2); //removes the first two elements (table name and table header)
+    $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
+    $keys = array_slice(explode(";", trim($tableHeaderItems[0])), 0, 8); //eight table header items
+
+    foreach ($fileContent as $item) {
+        $itemArray = explode(";", trim($item));
+        $itemArrayWithKeys = array_combine($keys, $itemArray);
+        //print_r($itemArrayWithKeys);
+
+        echo "\"" . $itemArrayWithKeys["id"] . "\" => new JobCardDefinition(\n";
+        echo "\t" . "id: new CardId('" . $itemArrayWithKeys["id"] . "'),\n";
+        echo "\t" . "title: '" . $itemArrayWithKeys["title"] . "',\n";
+        echo "\t" . "description: '" . $itemArrayWithKeys["description"] . "',\n";
+        echo "\t" . "phaseId: LebenszielPhaseId::PHASE_" . $itemArrayWithKeys["phase"] . ",\n";
+        echo "\t" . "year: new Year(" . $itemArrayWithKeys["year"] . "),\n";
+        echo "\t" . "gehalt: new MoneyAmount(+" . $itemArrayWithKeys["gehalt"] . "),\n";
+        echo "\t" . "requirements: new JobRequirements(\n";
+        echo "\t\t" . "zeitsteine: 1,\n";
+        echo "\t\t" . "bildungKompetenzsteine: " . $itemArrayWithKeys["minBildungUndKarriere"] . ",\n";
+        echo "\t\t" . "freizeitKompetenzsteine: " . $itemArrayWithKeys["minSozialesUndFreizeit"] . ",\n";
+        echo "\t),\n),\n";
+    }
+}
+
+
+//importMiniJobCards();
+importJobCards();
 
 
 
