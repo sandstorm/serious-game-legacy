@@ -32,7 +32,7 @@
                         @endif
                     </td>
                     <td>
-                        {{ $stock->amount * $stock->price->value }} €
+                        {!! $stock->totalValue->format() !!}
                     </td>
                 </tr>
             @endforeach

@@ -10,6 +10,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Dto\StockData;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
@@ -36,7 +37,8 @@ class MoneySheetInvestments extends Component
             $stocks[$stockType->value] = new StockData(
                 stockType: $stockType,
                 price: $currentPrice,
-                amount: $amount
+                amount: $amount,
+                totalValue: new MoneyAmount($currentPrice->value * $amount)
             );
         }
         return view('components.gameboard.moneySheet.income.money-sheet-investments', [

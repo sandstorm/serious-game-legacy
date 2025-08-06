@@ -337,7 +337,6 @@ class PlayerState
         $currentDividend = $currentKonjunkturphase->getAuswirkungByScope(AuswirkungScopeEnum::DIVIDEND)->modifier;
         $amountOfLowRiskStocksForPlayer = self::getAmountOfAllStocksOfTypeForPlayer($stream, $playerId, StockType::LOW_RISK);
 
-
         return new MoneyAmount($currentDividend * $amountOfLowRiskStocksForPlayer);
     }
 
@@ -414,5 +413,13 @@ class PlayerState
     {
         // @phpstan-ignore property.notFound
         return $gameEvents->findLastOrNullWhere(fn($e) => $e instanceof LebenszielWasSelected && $e->playerId->equals($playerId))?->lebenszielDefinition;
+    }
+
+    public static function getTotalValueOfAllAssetsForPlayer(GameEvents $stream, PlayerId $playerId): MoneyAmount
+    {
+        $stocksValue = self::getTotalValueOfAllStocksForPlayer($stream, $playerId);
+        // TODO immobilien, etc
+
+        return $stocksValue;
     }
 }

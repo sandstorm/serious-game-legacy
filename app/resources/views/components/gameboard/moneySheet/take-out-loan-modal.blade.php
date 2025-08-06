@@ -24,7 +24,7 @@
             </div>
             <div class="take-out-loan__info-section">
                 <small>Deine Vermögenswerte</small>
-                {!! PlayerState::getGuthabenForPlayer($gameEvents, $playerId)->format() !!}
+                {!! PlayerState::getTotalValueOfAllAssetsForPlayer($gameEvents, $playerId)->format() !!}
             </div>
         </div>
         <div class="form__group take-out-loan__amount">
