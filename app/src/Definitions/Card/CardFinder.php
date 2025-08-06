@@ -422,28 +422,188 @@ final class CardFinder
                     bildungKompetenzsteine: 1,
                 ),
             ),
-            "mj0" => new MinijobCardDefinition(
-                id: new CardId('mj0'),
-                title: 'Kellnerin',
+            "mj1" => new MinijobCardDefinition(
+                id: new CardId('mj1'),
+                title: 'Aushilfe Gastronomie',
                 description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(+5000),
                 ),
             ),
-            "mj1" => new MinijobCardDefinition(
-                id: new CardId('mj1'),
-                title: 'Nachhilfelehrerin',
+            "mj2" => new MinijobCardDefinition(
+                id: new CardId('mj2'),
+                title: 'Reinigungskraft',
+                description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+4000),
+                ),
+            ),
+            "mj3" => new MinijobCardDefinition(
+                id: new CardId('mj3'),
+                title: 'Jugendbetreuung',
+                description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+1000),
+                ),
+            ),
+            "mj4" => new MinijobCardDefinition(
+                id: new CardId('mj4'),
+                title: 'Aushilfe Bäckerei',
+                description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+3000),
+                ),
+            ),
+            "mj5" => new MinijobCardDefinition(
+                id: new CardId('mj5'),
+                title: 'Stadtführungen ',
+                description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+3500),
+                ),
+            ),
+            "mj6" => new MinijobCardDefinition(
+                id: new CardId('mj6'),
+                title: 'Aushilfe Fitnesstudio',
+                description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+5000),
+                ),
+            ),
+            "mj7" => new MinijobCardDefinition(
+                id: new CardId('mj7'),
+                title: 'Ferienjob bei Automobilhersteller',
+                description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+4000),
+                ),
+            ),
+            "mj8" => new MinijobCardDefinition(
+                id: new CardId('mj8'),
+                title: 'Studentische Hilfskraft',
+                description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+3500),
+                ),
+            ),
+            "mj9" => new MinijobCardDefinition(
+                id: new CardId('mj9'),
+                title: 'Nachhilfe ',
                 description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(+2000),
                 ),
             ),
-            "mj2" => new MinijobCardDefinition(
-                id: new CardId('mj2'),
-                title: 'Babysitterin',
+            "mj10" => new MinijobCardDefinition(
+                id: new CardId('mj10'),
+                title: 'Hausaufgabenbetreuung',
+                description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+2100),
+                ),
+            ),
+            "mj11" => new MinijobCardDefinition(
+                id: new CardId('mj11'),
+                title: 'Aushilfe Supermarkt',
+                description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+5500),
+                ),
+            ),
+            "mj12" => new MinijobCardDefinition(
+                id: new CardId('mj12'),
+                title: 'Haushaltshilfe ',
+                description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+2800),
+                ),
+            ),
+            "mj13" => new MinijobCardDefinition(
+                id: new CardId('mj13'),
+                title: 'Babysitten',
                 description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(+1000),
+                ),
+            ),
+            "mj14" => new MinijobCardDefinition(
+                id: new CardId('mj14'),
+                title: 'Aushilfe Wochenmarkt',
+                description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+3000),
+                ),
+            ),
+            "mj15" => new MinijobCardDefinition(
+                id: new CardId('mj15'),
+                title: 'Aushilfe Ernte',
+                description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+2900),
+                ),
+            ),
+            "mj16" => new MinijobCardDefinition(
+                id: new CardId('mj16'),
+                title: 'Aushilfe Messestand',
+                description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+5000),
+                ),
+            ),
+            "mj17" => new MinijobCardDefinition(
+                id: new CardId('mj17'),
+                title: 'Pflegen von Gemeinschaftsgärten',
+                description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+2500),
+                ),
+            ),
+            "mj18" => new MinijobCardDefinition(
+                id: new CardId('mj18'),
+                title: 'Aushilfe Unverpacktladen',
+                description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+3100),
+                ),
+            ),
+            "mj19" => new MinijobCardDefinition(
+                id: new CardId('mj19'),
+                title: 'Reparieren von Fahrrädern in einer Werkstatt',
+                description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+1500),
+                ),
+            ),
+            "mj20" => new MinijobCardDefinition(
+                id: new CardId('mj20'),
+                title: 'Auslieferung von Zeitung',
+                description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+2200),
+                ),
+            ),
+            "mj21" => new MinijobCardDefinition(
+                id: new CardId('mj21'),
+                title: 'Aushilfe Second-Hand-Laden',
+                description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+3500),
+                ),
+            ),
+            "mj22" => new MinijobCardDefinition(
+                id: new CardId('mj22'),
+                title: 'Verkauf von selbstgemachten Produkten',
+                description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+800),
+                ),
+            ),
+            "mj23" => new MinijobCardDefinition(
+                id: new CardId('mj23'),
+                title: 'Aushilfe Paketversand',
+                description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+5100),
                 ),
             ),
             "e0" => new EreignisCardDefinition(
