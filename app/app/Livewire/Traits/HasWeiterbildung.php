@@ -18,6 +18,13 @@ trait HasWeiterbildung
     public bool $isWeiterbildungVisible = false;
     public WeiterbildungForm $weiterbildungForm;
 
+    /**
+     * Prefixed with "mount" to avoid conflicts with Livewire's mount method.
+     * Is automatically called by Livewire.
+     * See https://livewire.laravel.com/docs/lifecycle-hooks#using-hooks-inside-a-trait
+     *
+     * @return void
+     */
     public function mountHasWeiterbildung(): void
     {
         if (PreGameState::isInPreGamePhase($this->gameEvents)) {

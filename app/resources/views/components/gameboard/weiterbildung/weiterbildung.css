@@ -68,12 +68,12 @@
 
     &.weiterbildung__answer-option--correct {
         border-color: var(--color-success) !important;
-        background-color: var(--color-success--light);
+        background-color: var(--color-success--light) !important;
     }
 
     &.weiterbildung__answer-option--not-correct {
         border-color: var(--color-error) !important;
-        background-color: var(--color-error--light);
+        background-color: var(--color-error--light) !important;
     }
 }
 
@@ -84,6 +84,7 @@
 
     &:has(input[type=radio]:checked) {
         border-color: var(--color-player-1--dark);
+        background-color: var(--color-player-1--light);
     }
 }
 
@@ -94,6 +95,7 @@
 
     &:has(input[type=radio]:checked) {
         border-color: var(--color-player-2--dark);
+        background-color: var(--color-player-2--light);
     }
 }
 
@@ -104,6 +106,7 @@
 
     &:has(input[type=radio]:checked) {
         border-color: var(--color-player-3--dark);
+        background-color: var(--color-player-3--light);
     }
 }
 
@@ -114,5 +117,6 @@
 
     &:has(input[type=radio]:checked) {
         border-color: var(--color-player-4--dark);
+        background-color: var(--color-player-4--light);
     }
 }

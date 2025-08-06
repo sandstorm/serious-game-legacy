@@ -13,7 +13,7 @@ use Domain\CoreGameLogic\PlayerId;
 /**
  * Succeeds if the player's has enough stocks to sell.
  */
-final class HasPlayerEnoughStocksToSell extends AbstractValidator
+final class HasPlayerEnoughStocksToSellValidator extends AbstractValidator
 {
     private StockType $stockType;
     private int $amountToSell;
@@ -34,7 +34,7 @@ final class HasPlayerEnoughStocksToSell extends AbstractValidator
         if ($stocksToSell < $this->amountToSell) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Du hast nicht genug Aktien vom Typ ' . $this->stockType->value . ' zum Verkaufen.',
+                reason: 'Du hast nicht genug Aktien vom Typ ' . $this->stockType->toPrettyString() . ' zum Verkaufen.',
             );
         }
 

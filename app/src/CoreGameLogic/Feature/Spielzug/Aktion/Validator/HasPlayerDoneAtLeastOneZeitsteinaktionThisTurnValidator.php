@@ -19,10 +19,9 @@ final class HasPlayerDoneAtLeastOneZeitsteinaktionThisTurnValidator extends Abst
 
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
-        $eventsThisTurn = $gameEvents->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class);
-        if ($eventsThisTurn === null) {
-            $eventsThisTurn = $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
-        }
+        $eventsThisTurn = $gameEvents->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class)
+            ?? $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
+
         if (
             $eventsThisTurn->findLastOrNull(ZeitsteinAktion::class) === null
             && PlayerState::getZeitsteineForPlayer($gameEvents, $playerId) !== 0

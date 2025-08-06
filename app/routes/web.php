@@ -13,7 +13,7 @@ Route::get('/quick-start/{players}', [GamePlayController::class, 'quickStart'])-
 
 Route::get('/play', [GamePlayController::class, 'newGame'])->name('game-play.new-game');
 Route::get('/play/{gameId}', [GamePlayController::class, 'playerLinks'])->name('game-play.player-links');
-Route::get('/play/{gameId}/{myselfId}', [GamePlayController::class, 'game'])->name('game-play.game');
+Route::get('/play/{gameId}/{playerId}', [GamePlayController::class, 'game'])->name('game-play.game');
 
 if (app()->isLocal()) {
     Route::get('/preview-application-unavailable', function () {

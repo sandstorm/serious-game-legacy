@@ -4,7 +4,7 @@
 
     <ul>
         @foreach($playerIds as $k => $playerId)
-            <li><a href={{route('game-play.game', ['gameId' => $gameId, 'myselfId' => $playerId])}}>Spieler {{$k+1}} {{$playerId->value}}</a></li>
+            <li><a href={{route('game-play.game', ['gameId' => $gameId, 'playerId' => $playerId])}}>Spieler {{$k+1}} {{$playerId->value}}</a></li>
         @endforeach
     </ul>
 </x-layout>

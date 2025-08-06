@@ -6,13 +6,11 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
-use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerDoneAtLeastOneZeitsteinaktionThisTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\NoPlayerNeedsToSellStocksValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
-use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 
@@ -26,7 +24,9 @@ class EndSpielzugAktion extends Aktion
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
         $validatorChain = new IsPlayersTurnValidator();
-        $validatorChain->setNext(new HasPlayerDoneAtLeastOneZeitsteinaktionThisTurnValidator());
+        $validatorChain
+            ->setNext(new HasPlayerDoneAtLeastOneZeitsteinaktionThisTurnValidator())
+            ->setNext(new NoPlayerNeedsToSellStocksValidator());
 
         return $validatorChain->validate($gameEvents, $playerId);
     }

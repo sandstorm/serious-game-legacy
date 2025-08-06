@@ -15,11 +15,8 @@
     gap: var(--spacing-200);
 }
 
-.buy-stocks {
-    padding: var(--spacing-100);
-}
 
-.buy-stocks__form {
+.stocks__form {
     display: flex;
     flex-direction: row;
     gap: var(--spacing-100);
@@ -28,7 +25,7 @@
     justify-content: space-between;
 }
 
-.buy-stocks__form-price {
+.stocks__form-price {
     display: flex;
     gap: var(--spacing-25);
     align-items: center;
@@ -38,7 +35,7 @@
     white-space: nowrap;
 }
 
-.buy-stocks__form-amount {
+.stocks__form-amount {
     text-align: center;
 
     label {
@@ -50,7 +47,7 @@
     }
 }
 
-.buy-stocks__form-sum {
+.stocks__form-sum {
     text-align: center;
 
     strong {

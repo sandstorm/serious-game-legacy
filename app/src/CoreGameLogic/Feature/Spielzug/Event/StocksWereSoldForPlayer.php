@@ -67,7 +67,7 @@ class StocksWereSoldForPlayer implements GameEventInterface, ProvidesResourceCha
 
     public function getStockAmountChanges(PlayerId $playerId, StockType $stockType): StockAmountChanges
     {
-        if ($this->playerId->equals($playerId)) {
+        if ($this->playerId->equals($playerId) && $this->stockType === $stockType) {
             return new StockAmountChanges(
                 amountChange: $this->amount * -1
             );

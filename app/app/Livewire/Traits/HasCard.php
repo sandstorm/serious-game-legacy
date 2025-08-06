@@ -82,7 +82,7 @@ trait HasCard
      */
     public function cardActionsVisible(string $cardId): bool
     {
-        return $this->showCardActionsForCard === $cardId && $this->currentPlayerIsMyself();
+        return $this->showCardActionsForCard === $cardId;
     }
 
     public function closeEreignisCard(): void

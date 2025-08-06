@@ -1,4 +1,6 @@
 :root {
-    --z-index-modal: 9998;
-    --z-index-notification: 9999;
+    --z-index-modal: 9000;
+    --z-index-mandatory-modal: 9400;
+    --z-index-notification: 9500;
+
 }

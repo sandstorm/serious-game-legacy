@@ -10,6 +10,10 @@
     align-items: center;
     justify-content: center;
 
+    &.modal--type-mandatory {
+        z-index: var(--z-index-mandatory-modal);
+    }
+
     &.modal--type-borderless {
         padding: 0;
 

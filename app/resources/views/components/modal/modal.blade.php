@@ -9,7 +9,11 @@
         "modal--type-" . $type,
     ])
 >
-    <div class="modal__backdrop" wire:click={{$closeModal}}></div>
+    @if ($closeModal)
+        <div class="modal__backdrop" wire:click={{$closeModal}}></div>
+    @else
+        <div class="modal__backdrop"></div>
+    @endif
     <div class="modal__content">
         @hasSection('icon')
             <div class="modal__icon">
@@ -17,12 +21,14 @@
             </div>
         @endif
 
-        <div class="modal__close-button">
-            <button type="button" class="button button--type-borderless" wire:click={{$closeModal}}>
-                <span class="sr-only">Modal schließen</span>
-                <i class="icon-close" aria-hidden="true"></i>
-            </button>
-        </div>
+        @if ($closeModal)
+            <div class="modal__close-button">
+                <button type="button" class="button button--type-borderless" wire:click={{$closeModal}}>
+                    <span class="sr-only">Modal schließen</span>
+                    <i class="icon-close" aria-hidden="true"></i>
+                </button>
+            </div>
+        @endif
 
         @hasSection('title')
             <div class="modal__header">

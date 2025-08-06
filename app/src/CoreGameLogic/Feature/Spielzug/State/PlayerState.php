@@ -14,6 +14,8 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\StockPriceState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\StockAmountChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\AnswerForWeiterbildungWasSubmitted;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereNotSoldForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\WeiterbildungWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
@@ -415,11 +417,33 @@ class PlayerState
         return $gameEvents->findLastOrNullWhere(fn($e) => $e instanceof LebenszielWasSelected && $e->playerId->equals($playerId))?->lebenszielDefinition;
     }
 
+    /**
+     * @param GameEvents $stream
+     * @param PlayerId $playerId
+     * @return MoneyAmount
+     */
     public static function getTotalValueOfAllAssetsForPlayer(GameEvents $stream, PlayerId $playerId): MoneyAmount
     {
         $stocksValue = self::getTotalValueOfAllStocksForPlayer($stream, $playerId);
         // TODO immobilien, etc
 
         return $stocksValue;
+    }
+
+    /**
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return bool
+     */
+    public static function hasPlayerInteractedWithStocksModalThisTurn(GameEvents $gameEvents, PlayerId $playerId): bool
+    {
+        $eventsThisTurn = $gameEvents->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class)
+            ?? $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
+
+        // Check if the player has sold stocks this turn or decided not to sell stocks this turn.
+        $stocksWereSold = $eventsThisTurn->findLastOrNullWhere(fn ($event) => $event instanceof StocksWereSoldForPlayer && $event->playerId->equals($playerId));
+        $stocksWereNotSold = $eventsThisTurn->findLastOrNullWhere(fn ($event) => $event instanceof StocksWereNotSoldForPlayer && $event->playerId->equals($playerId));
+
+        return $stocksWereSold !== null || $stocksWereNotSold !== null;
     }
 }

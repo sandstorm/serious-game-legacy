@@ -10,7 +10,8 @@
     }
 
     .card__content {
-        align-items: flex-start;
+        flex-direction: column;
+        align-items: center;
         justify-content: center;
         flex-shrink: 0;
         height: auto;
@@ -42,6 +43,7 @@
 }
 
 .job-offers__header {
+    width: 100%;
     display: flex;
     flex-wrap: nowrap;
     align-items: center;
