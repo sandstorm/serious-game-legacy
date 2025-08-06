@@ -5,8 +5,6 @@
 ])
 
 <div class="lebensziel">
-    <strong>Lebensziel:</strong> {{ $lebensziel->name }}
-
     <div class="lebensziel__phasen">
         @foreach($lebensziel->phaseDefinitions as $phase)
             <div @class([
