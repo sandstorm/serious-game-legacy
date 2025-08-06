@@ -12,7 +12,8 @@ readonly final class StockData
     public function __construct(
         public StockType $stockType,
         public MoneyAmount $price,
-        public int $amount
+        public int $amount,
+        public MoneyAmount $totalValue
     ) {
     }
 

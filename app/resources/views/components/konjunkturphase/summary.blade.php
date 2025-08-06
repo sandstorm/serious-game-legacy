@@ -9,12 +9,12 @@
         <tr>
             <td class="konjunkturphase-summary-table__empty-column"></td>
             <td class="konjunkturphase-summary-table__name-column">Finanzanlagen und Vermögenswerte</td>
-            <td class="konjunkturphase-summary-table__value-column">0 €</td>
+            <td class="konjunkturphase-summary-table__value-column">{!!$moneySheet->sumOfAllAssets->format()!!}</td>
         </tr>
         <tr class="konjunkturphase-summary-table__bottom-row">
             <td class="konjunkturphase-summary-table__empty-column"></td>
             <td class="konjunkturphase-summary-table__name-column">Gehalt (TODO Jobtitel)</td>
-            <td class="konjunkturphase-summary-table__value-column">{!!$moneySheet->gehalt->format()!!}</td>
+            <td class="konjunkturphase-summary-table__value-column">{!! $moneySheet->gehalt->format() !!}</td>
         </tr>
 
         <tr>
@@ -26,27 +26,27 @@
         <tr>
             <td class="konjunkturphase-summary-table__empty-column"></td>
             <td class="konjunkturphase-summary-table__name-column">Kredite</td>
-            <td class="konjunkturphase-summary-table__value-column">0 €</td>
+            <td class="konjunkturphase-summary-table__value-column">{!! $moneySheet->sumOfAllLoans->format() !!}</td>
         </tr>
         <tr>
             <td class="konjunkturphase-summary-table__empty-column"></td>
             <td class="konjunkturphase-summary-table__name-column">Lebenshaltungskosten</td>
-            <td class="konjunkturphase-summary-table__value-column">{!!$moneySheet->lebenshaltungskosten->format()!!}</td>
+            <td class="konjunkturphase-summary-table__value-column">{!! $moneySheet->lebenshaltungskosten->format() !!}</td>
         </tr>
         <tr>
             <td class="konjunkturphase-summary-table__empty-column"></td>
             <td class="konjunkturphase-summary-table__name-column">Steuern und Abgaben</td>
-            <td class="konjunkturphase-summary-table__value-column">{!!$moneySheet->steuernUndAbgaben->format()!!}</td>
+            <td class="konjunkturphase-summary-table__value-column">{!! $moneySheet->steuernUndAbgaben->format() !!}</td>
         </tr>
         <tr class="konjunkturphase-summary-table__bottom-row">
             <td class="konjunkturphase-summary-table__empty-column"></td>
             <td class="konjunkturphase-summary-table__name-column">Versicherungen</td>
-            <td class="konjunkturphase-summary-table__value-column">0 €</td>
+            <td class="konjunkturphase-summary-table__value-column">{!! $moneySheet->totalInsuranceCost->format() !!}</td>
         </tr>
         <tr class="konjunkturphase-summary-tabe__total-row">
             <th class="konjunkturphase-summary-table__icon-column">=</th>
             <th class="konjunkturphase-summary-table__heading-column">Gesamt</th>
-            <td class="konjunkturphase-summary-table__value-column">{!!$moneySheet->total->format()!!}</td>
+            <td class="konjunkturphase-summary-table__value-column">{!! $moneySheet->total->format() !!}</td>
         </tr>
     </table>
 </div>

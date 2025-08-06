@@ -1,5 +1,4 @@
-@use('\App\Livewire\ValueObject\ExpensesTabEnum')
-@use('\App\Livewire\ValueObject\IncomeTabEnum')
+@props(['moneySheet' => null])
 
 <div class="moneysheet">
     <button wire:click="toggleEditIncome()" @class(["moneysheet__income", $this->getPlayerColorClass()])>
@@ -13,7 +12,7 @@
             <tbody>
             <tr>
                 <td>Finanzanlagen und Vermögenswerte</td>
-                <td class="text-align--right">{!! $moneySheet->sumOfAllStocks->format() !!}</td>
+                <td class="text-align--right">{!! $moneySheet->sumOfAllAssets->format() !!}</td>
             </tr>
             <tr>
                 <td>Gehalt</td>

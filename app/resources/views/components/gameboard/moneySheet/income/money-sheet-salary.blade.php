@@ -61,8 +61,10 @@
     </div>
 </div>
 
-<div class="tabs__lower-content">
-    <div class="salary__summary">
-        {!! $currentGehalt->formatWithIcon() !!}
+@if ($currentGehalt->value > 0)
+    <div class="tabs__lower-content">
+        <div class="salary__summary">
+            {!! $currentGehalt->formatWithIcon() !!}
+        </div>
     </div>
-</div>
+@endif

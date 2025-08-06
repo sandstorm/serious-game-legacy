@@ -13,8 +13,6 @@ class MoneySheetInsurancesForm extends Form
      */
     public array $insurances = [];
 
-    public float $totalCost = 100;
-
     public function addInsurance(int $currentPlayerPhase, InsuranceDefinition $insuranceDefinition, bool $checked = false): void
     {
         $this->insurances[$insuranceDefinition->id->value] = [
