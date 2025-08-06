@@ -16,6 +16,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasPutBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereNotSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\WeiterbildungWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
@@ -101,6 +102,7 @@ final readonly class EventNormalizer
             WeiterbildungWasStarted::class,
             StocksWereBoughtForPlayer::class,
             StocksWereSoldForPlayer::class,
+            StocksWereNotSoldForPlayer::class,
             CardWasPutBackOnTopOfPile::class,
         ];
 

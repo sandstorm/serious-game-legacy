@@ -63,7 +63,7 @@ class GamePlayController extends Controller
         // redirect to the game page
         return redirect()->route('game-play.game', [
             'gameId' => $gameId->value,
-            'myselfId' => $playerIds[0]->value,
+            'playerId' => $playerIds[0]->value,
         ]);
     }
 
@@ -87,10 +87,10 @@ class GamePlayController extends Controller
         ]);
     }
 
-    public function game(Request $request, string $gameId, string $myselfId): View|RedirectResponse
+    public function game(Request $request, string $gameId, string $playerId): View|RedirectResponse
     {
         $gameId = GameId::fromString($gameId);
-        $myselfId = PlayerId::fromString($myselfId);
+        $playerId = PlayerId::fromString($playerId);
 
         if (!$this->coreGameLogic->hasGame($gameId)) {
             return redirect()->route('game-play.new');
@@ -98,7 +98,7 @@ class GamePlayController extends Controller
 
         return view('controllers.gameplay.game-play', [
             'gameId' => $gameId,
-            'myself' => $myselfId,
+            'myself' => $playerId,
         ]);
     }
 }

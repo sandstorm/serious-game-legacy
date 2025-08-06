@@ -6,7 +6,9 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughStocksToSell;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasAnotherPlayerBoughtStocksThisTurnValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughStocksToSellValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerInteractedWithStocksModalThisTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereSoldForPlayer;
@@ -34,9 +36,10 @@ class SellStocksForPlayerAktion extends Aktion
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
-        $validationChain = (new IsPlayersTurnValidator())
-            ->setNext(new HasPlayerEnoughStocksToSell($this->stockType, $this->amount));
-        // TODO discuss what other requirements should be here
+        $validationChain = new HasAnotherPlayerBoughtStocksThisTurnValidator($this->stockType);
+        $validationChain
+            ->setNext(new HasPlayerEnoughStocksToSellValidator($this->stockType, $this->amount))
+            ->setNext(new HasPlayerInteractedWithStocksModalThisTurnValidator());
         return $validationChain->validate($gameEvents, $playerId);
     }
 

@@ -29,40 +29,38 @@
 
 @section('content')
     @if ($this->buyStocksOfType)
-        <div class="buy-stocks">
-            <form class="buy-stocks__form" wire:submit="buyStocks('{{ $this->buyStocksOfType }}')">
-                <div class="buy-stocks__form-price">
-                    {!! StockPriceState::getCurrentStockPrice($gameEvents, $this->buyStocksOfType)->format() !!} / Aktie
-                </div>
-                <div class="buy-stocks__form-amount">
-                    <label for="buystocks.amount">Stückzahl Aktien</label>
-                    <x-form.textfield wire:model="buyStocksForm.amount" id="buystocks.amount" name="buystocks.amount" type="number" step="1" />
-                </div>
-                <div class="buy-stocks__form-sum">
-                    <strong>Summe Kauf</strong>
-                    <span x-text="new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format($wire.buyStocksForm.amount * $wire.buyStocksForm.sharePrice)"></span>
-                </div>
-                <x-form.submit disabled wire:dirty.remove.attr="disabled">Aktien kaufen</x-form.submit>
-            </form>
-            @error('buyStocksForm.amount') <span class="form__error">{{ $message }}</span> @enderror
-
-            <div class="buy-stocks__hints">
-                @if ($this->buyStocksOfType === StockType::LOW_RISK)
-                    <ul>
-                        <li>Langfristige Tendenz: <strong>7%</strong></li>
-                        <li>Kursschwankungen: <strong>15%</strong></li>
-                        <li>Erwartungswert: <strong>-8% bis 22%</strong></li>
-                        <li>Dividende pro Aktie: <strong>{!! KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->getDividend()->format() !!}</strong></li>
-                    </ul>
-                @else
-                    <ul>
-                        <li>Langfristige Tendenz: <strong>9%</strong></li>
-                        <li>Kursschwankungen: <strong>40%</strong> </li>
-                        <li>Erwartungswert: <strong>-31% bis 49%</strong></li>
-                        <li>Dividende pro Aktie: <strong>keine</strong></li>
-                    </ul>
-                @endif
+        <form class="stocks__form" wire:submit="buyStocks('{{ $this->buyStocksOfType }}')">
+            <div class="stocks__form-price">
+                {!! StockPriceState::getCurrentStockPrice($gameEvents, $this->buyStocksOfType)->format() !!} / Aktie
             </div>
+            <div class="stocks__form-amount">
+                <label for="buystocks.amount">Stückzahl Aktien</label>
+                <x-form.textfield wire:model="buyStocksForm.amount" id="buystocks.amount" name="buystocks.amount" type="number" step="1" />
+            </div>
+            <div class="stocks__form-sum">
+                <strong>Summe Kauf</strong>
+                <span x-text="new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format($wire.buyStocksForm.amount * $wire.buyStocksForm.sharePrice)"></span>
+            </div>
+            <x-form.submit disabled wire:dirty.remove.attr="disabled">Aktien kaufen</x-form.submit>
+        </form>
+        @error('buyStocksForm.amount') <span class="form__error">{{ $message }}</span> @enderror
+
+        <div class="buy-stocks__hints">
+            @if ($this->buyStocksOfType === StockType::LOW_RISK)
+                <ul>
+                    <li>Langfristige Tendenz: <strong>7%</strong></li>
+                    <li>Kursschwankungen: <strong>15%</strong></li>
+                    <li>Erwartungswert: <strong>-8% bis 22%</strong></li>
+                    <li>Dividende pro Aktie: <strong>{!! KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->getDividend()->format() !!}</strong></li>
+                </ul>
+            @else
+                <ul>
+                    <li>Langfristige Tendenz: <strong>9%</strong></li>
+                    <li>Kursschwankungen: <strong>40%</strong> </li>
+                    <li>Erwartungswert: <strong>-31% bis 49%</strong></li>
+                    <li>Dividende pro Aktie: <strong>keine</strong></li>
+                </ul>
+            @endif
         </div>
     @else
         <p>

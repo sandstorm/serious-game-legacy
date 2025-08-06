@@ -60,7 +60,7 @@
     @if ($isMinijobVisible)
         <x-minijob-modal :player-id="$myself" :game-events="$this->gameEvents"/>
     @endif
-    @if ($this->isWeiterbildungVisible)
+    @if ($isWeiterbildungVisible)
         <x-weiterbildung-modal :player-id="$myself" :game-events="$this->gameEvents"/>
     @endif
     @if ($showLebenszielForPlayer)
@@ -68,6 +68,12 @@
     @endif
     @if ($takeOutALoanIsVisible)
         <x-gameboard.moneySheet.take-out-loan-modal
+            :game-events="$this->gameEvents"
+            :player-id="$myself"
+        />
+    @endif
+    @if ($this->sellStocksModalIsVisible)
+        <x-gameboard.sell-stocks-modal
             :game-events="$this->gameEvents"
             :player-id="$myself"
         />

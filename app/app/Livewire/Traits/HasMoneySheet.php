@@ -46,6 +46,13 @@ trait HasMoneySheet
     // set in the view money-sheet-expenses.blade.php
     public ExpensesTabEnum $activeTabForExpenses = ExpensesTabEnum::LOANS;
 
+    /**
+     * Prefixed with "mount" to avoid conflicts with Livewire's mount method.
+     * Is automatically called by Livewire.
+     * See https://livewire.laravel.com/docs/lifecycle-hooks#using-hooks-inside-a-trait
+     *
+     * @return void
+     */
     public function mountHasMoneySheet(): void
     {
         if (PreGameState::isInPreGamePhase($this->gameEvents)) {

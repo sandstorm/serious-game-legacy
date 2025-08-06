@@ -29,8 +29,8 @@
             <div @class(["card", "card--disabled" => !AktionsCalculator::forStream($gameEvents)->canPlayerAffordJobCard($playerId, $jobOffer)])>
                 <h4 class="card__title">{{ $jobOffer->getTitle() }}</h4>
                 <div class="card__content">
-                    <div class="card__effect">
-                        {!! $jobOffer->getGehalt()->formatWithIcon() !!} <br />
+                    <div class="resource-change">
+                        {!! $jobOffer->getGehalt()->formatWithIcon() !!}
                     </div>
                     <span class="font-size--sm">Jahresgehalt brutto</span>
                     <button type="button"

@@ -44,7 +44,7 @@
 
             @if ($this->showPlayerDetails)
                 <div class="player-list__player-details">
-                    <small>{{ $player->playerId }}</small>
+                    <small><a href={{ @route("game-play.game", ['gameId' => $this->gameId, 'playerId' => $player->playerId]) }}>{{ $player->playerId }}</a></small>
                     <div>
                         <strong>Lebensziel:</strong> {{ $player->lebenszielDefinition->name }}
                     </div>

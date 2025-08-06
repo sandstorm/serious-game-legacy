@@ -7,6 +7,8 @@ namespace Domain\CoreGameLogic\Feature\Initialization\State;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereBoughtForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
@@ -69,5 +71,21 @@ class GamePhaseState
     {
         $gameWasStarted = $gameEvents->findLast(GameWasStarted::class);
         return $gameWasStarted->playerOrdering;
+    }
+
+    /**
+     * Returns true if another player has bought stocks this turn.
+     *
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return bool
+     */
+    public static function anotherPlayerHasBoughtStocksThisTurn(GameEvents $gameEvents, PlayerId $playerId): bool
+    {
+        $eventsThisTurn = $gameEvents->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class)
+            ?? $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
+
+        $stocksWereBought = $eventsThisTurn->findLastOrNull(StocksWereBoughtForPlayer::class);
+        return $stocksWereBought !== null && !$stocksWereBought->playerId->equals($playerId);
     }
 }

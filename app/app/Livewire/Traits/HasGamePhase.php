@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\Traits;
 
 use App\Livewire\ValueObject\NotificationTypeEnum;
-use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EndSpielzugAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
