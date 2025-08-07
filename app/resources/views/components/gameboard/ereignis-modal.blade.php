@@ -1,28 +1,41 @@
-@extends ('components.modal.modal', ['closeModal' => "closeEreignisCard()"])
+@extends ('components.modal.modal')
+
+@use('\Domain\Definitions\Konjunkturphase\ValueObject\CategoryId')
+
+@props([
+    'ereignisCard' => null,
+])
+
+@section('icon')
+    <i class="icon-ereignis text--danger" aria-hidden="true"></i>
+@endsection
 
 @section('title')
-    {{$title}}
+    <div class="card__actions-header">
+        <div>
+            {{ $ereignisCard->getTitle() }}
+        </div>
+        <div class="card__actions-header-category">
+            @if ($ereignisCard->getCategory() === CategoryId::SOZIALES_UND_FREIZEIT->value)
+                <i class="icon-freizeit-und-soziales"></i>
+            @endif
+            @if ($ereignisCard->getCategory() === CategoryId::BILDUNG_UND_KARRIERE->value)
+                <i class="icon-bildung-und-karriere"></i>
+            @endif
+            {{ $ereignisCard->getCategory() }}
+        </div>
+    </div>
 @endsection
 
 @section('content')
-    <p>{{$description}}</p>
-    <hr/>
-    <ul>
-        @if ($resourceChanges->guthabenChange->value > 0)
-            <li>Guthaben: {!! $resourceChanges->guthabenChange->format() !!}</li>
-        @endif
-        @if ($resourceChanges->zeitsteineChange)
-            <li>Zeitstein: {{ $resourceChanges->zeitsteineChange}}</li>
-        @endif
-        @if ($resourceChanges->bildungKompetenzsteinChange)
-            <li>Bildung: {{ $resourceChanges->bildungKompetenzsteinChange}}</li>
-        @endif
-        @if ($resourceChanges->freizeitKompetenzsteinChange)
-            <li>Freizeit: {{ $resourceChanges->freizeitKompetenzsteinChange}}</li>
-        @endif
-    </ul>
+    <p>
+        {{ $ereignisCard->getDescription() }}
+    </p>
 @endsection
 
 @section('footer')
-    <button type="button" class="button button--type-primary" wire:click="closeEreignisCard()">Schließen</button>
+    <div class="card__actions-footer">
+        <x-gameboard.resourceChanges.resource-changes style-class="horizontal" :resource-changes="$ereignisCard->getResourceChanges()" />
+        <button type="button" class="button button--type-primary" wire:click="closeEreignisCard()">Akzeptieren</button>
+    </div>
 @endsection

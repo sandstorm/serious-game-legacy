@@ -1,5 +1,5 @@
 .log {
-    background-color: #333;
+    background-color: var(--color-primary-fg);
     overflow: scroll;
 
     & > ul {
@@ -11,11 +11,9 @@
 .log__event {
     list-style: none;
     padding: 5px 20px;
-    background-color: #888888;
     margin-top: 5px;
 }
 
 .log__event-item {
     list-style: none;
-    background-color: #888888;
 }
