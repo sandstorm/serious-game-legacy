@@ -156,13 +156,13 @@ trait HasMoneySheet
     public function getMoneysheetForPlayerId(PlayerId $playerId): MoneySheetDto
     {
         return new MoneySheetDto(
-            lebenshaltungskosten: MoneySheetState::getLastInputForLebenshaltungskosten($this->gameEvents, $playerId),
+            lebenshaltungskosten: new MoneyAmount(-1 * MoneySheetState::getLastInputForLebenshaltungskosten($this->gameEvents, $playerId)->value),
             doesLebenshaltungskostenRequirePlayerAction: MoneySheetState::doesLebenshaltungskostenRequirePlayerAction($this->gameEvents, $playerId),
-            steuernUndAbgaben: MoneySheetState::getLastInputForSteuernUndAbgaben($this->gameEvents, $playerId),
+            steuernUndAbgaben: new MoneyAmount(-1 * MoneySheetState::getLastInputForSteuernUndAbgaben($this->gameEvents, $playerId)->value),
             doesSteuernUndAbgabenRequirePlayerAction: MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($this->gameEvents, $playerId),
             gehalt: PlayerState::getCurrentGehaltForPlayer($this->gameEvents, $playerId),
             total: MoneySheetState::calculateTotalForPlayer($this->gameEvents, $playerId),
-            totalInsuranceCost: MoneySheetState::getCostOfAllInsurances($this->gameEvents, $playerId),
+            totalInsuranceCost: new MoneyAmount(-1 * MoneySheetState::getCostOfAllInsurances($this->gameEvents, $playerId)->value),
             sumOfAllLoans: MoneySheetState::getSumOfAllLoansForPlayer($this->gameEvents, $playerId),
             sumOfAllAssets: PlayerState::getDividendForAllStocksForPlayer($this->gameEvents, $playerId), // TODO is it correct to use dividend here?
             annualIncome: MoneySheetState::getAnnualIncomeForPlayer($this->gameEvents, $playerId),

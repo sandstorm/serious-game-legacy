@@ -47,6 +47,8 @@ trait HasInvestitionen
             !PlayerState::hasPlayerInteractedWithStocksModalThisTurn($this->gameEvents, $this->myself)) {
 
             $stocksBoughtEvent = $this->gameEvents->findLast(StocksWereBoughtForPlayer::class);
+            $this->sellStocksForm->reset();
+            $this->sellStocksForm->resetValidation();
             $this->sellStocksForm->stockType = $stocksBoughtEvent->stockType;
             $this->sellStocksForm->sharePrice = StockPriceState::getCurrentStockPrice($this->gameEvents, $stocksBoughtEvent->stockType)->value;
             $this->sellStocksForm->amountOwned = PlayerState::getAmountOfAllStocksOfTypeForPlayer(
@@ -86,6 +88,9 @@ trait HasInvestitionen
 
     public function showBuyStocksOfType(string $stockType): void
     {
+        $this->buyStocksForm->reset();
+        $this->buyStocksForm->resetValidation();
+
         $validationResult = self::canBuyStocks(StockType::from($stockType));
         if (!$validationResult->canExecute) {
             $this->showNotification(

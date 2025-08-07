@@ -35,5 +35,6 @@
     .button {
         width: 100%;
         justify-content: center;
+        white-space: wrap;
     }
 }

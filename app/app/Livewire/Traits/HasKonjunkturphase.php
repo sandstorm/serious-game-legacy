@@ -30,6 +30,16 @@ trait HasKonjunkturphase
         ]);
     }
 
+    public function renderKonjunkturphaseEndScreen(): View
+    {
+        if (MoneySheetState::hasPlayerCompletedMoneysheet($this->gameEvents, $this->myself)) {
+            if ($this->summaryActiveTabId === null) {
+                $this->summaryActiveTabId = $this->myself->value;
+            }
+        }
+        return view('livewire.screens.konjunkturphase-over');
+    }
+
     public function showKonjunkturphaseDetails(): void
     {
         $this->konjunkturphaseDetailsVisible = true;
@@ -42,20 +52,6 @@ trait HasKonjunkturphase
     public function nextKonjunkturphaseStartScreenPage(): void
     {
         $this->konjunkturphaseStartScreenPage++;
-    }
-
-    public function renderKonjunkturphaseEndScreen(): View
-    {
-        if (MoneySheetState::hasPlayerCompletedMoneysheet($this->gameEvents, $this->myself)) {
-            if ($this->summaryActiveTabId === null) {
-                $this->summaryActiveTabId = $this->myself->value;
-            }
-            return view('livewire.screens.konjunkturphase-summary', [
-                'summaryActiveTabId' => $this->summaryActiveTabId,
-            ]);
-        }
-        return view('livewire.screens.konjunkturphase-ending', [
-        ]);
     }
 
     public function showMoneysheetSummaryForPlayer(string $playerId): void
@@ -73,7 +69,6 @@ trait HasKonjunkturphase
                 $validationResult->reason,
                 NotificationTypeEnum::ERROR
             );
-            $this->broadcastNotify();
             return;
         }
         $this->coreGameLogic->handle($this->gameId, StartKonjunkturphaseForPlayer::create($this->myself));
@@ -90,7 +85,6 @@ trait HasKonjunkturphase
                 $validationResult->reason,
                 NotificationTypeEnum::ERROR
             );
-            $this->broadcastNotify();
             return;
         }
         $this->coreGameLogic->handle($this->gameId, CompleteMoneysheetForPlayer::create($this->myself));
@@ -114,7 +108,6 @@ trait HasKonjunkturphase
                 $validationResult->reason,
                 NotificationTypeEnum::ERROR
             );
-            $this->broadcastNotify();
             return;
         }
         $this->coreGameLogic->handle($this->gameId, MarkPlayerAsReadyForKonjunkturphaseChange::create($this->myself));

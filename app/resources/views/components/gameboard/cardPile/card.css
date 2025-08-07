@@ -72,6 +72,14 @@
 
     background-color: var(--color-primary-fg);
     border-radius: 10px;
+
+    .resource-change {
+        font-size: var(--font-size-lg);
+
+        i.text--danger, i.text--success {
+            font-size: var(--font-size-sm);
+        }
+    }
 }
 
 .card__content--jobs {

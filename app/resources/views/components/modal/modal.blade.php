@@ -7,6 +7,7 @@
     @class([
         "modal",
         "modal--type-" . $type,
+        "modal--has-footer" => view()->hasSection('footer')
     ])
 >
     @if ($closeModal)

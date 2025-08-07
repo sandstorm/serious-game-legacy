@@ -2,17 +2,12 @@
     'moneySheet' => null,
 ])
 
-
 <form wire:submit="setSteuernUndAbgaben">
-    <div class="tabs__upper-content ">
+    <div class="tabs__upper-content">
         <p>
-            Zu den Steuern zählen Einkommensteuern, Sozialversicherung und Solidaritätszuschlag. Pro Jahr gibst Du 25% Deines Jahreseinkommens brutto für Steuern und Abgaben aus.
+            Zu den Steuern zählen Einkommensteuern, Sozialversicherung und Solidaritätszuschlag. <br />
+            Pro Jahr gibst Du 25% Deines Jahreseinkommens brutto für Steuern und Abgaben aus.
         </p>
-
-        @if ($this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled)
-            <br />
-            <p><i class="icon-info" aria-hidden="true"></i> Du hast deine Steuern und Abgaben erfolgreich eingetragen. Das Formular ist so lange deaktiviert bis sich an deinem Gehalt etwas ändert.</p>
-        @endif
 
         <div class="taxes">
             <div class="form-group">
@@ -31,6 +26,11 @@
     </div>
     <div class="tabs__lower-content taxes__actions">
         @error('moneySheetSteuernUndAbgabenForm.steuernUndAbgaben') <span class="form__error">{{ $message }}</span> @enderror
+        @if ($this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled)
+            <span class="text--success">
+                <i class="icon-info" aria-hidden="true"></i> Du hast deine Steuern und Abgaben erfolgreich eingetragen. Das Formular ist so lange deaktiviert bis sich an deinem Gehalt etwas ändert.
+            </span>
+        @endif
         <x-form.submit :disabled="$this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled">Änderungen Speichern</x-form.submit>
     </div>
 </form>

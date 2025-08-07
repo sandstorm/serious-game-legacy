@@ -1,0 +1,16 @@
+.konjunkturphase-over {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    gap: var(--spacing-200);
+    padding-inline: var(--spacing-200);
+
+    text-align: center;
+
+    .button {
+        align-self: flex-end;
+    }
+}

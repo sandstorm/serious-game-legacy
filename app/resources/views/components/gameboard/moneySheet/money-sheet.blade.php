@@ -12,11 +12,11 @@
             <tbody>
             <tr>
                 <td>Finanzanlagen und Vermögenswerte</td>
-                <td class="text-align--right">{!! $moneySheet->sumOfAllAssets->format() !!}</td>
+                <td class="text-align--right">{!! $moneySheet->sumOfAllAssets->formatWithIcon() !!}</td>
             </tr>
             <tr>
                 <td>Gehalt</td>
-                <td class="text-align--right">{!! $moneySheet->gehalt->format() !!}</td>
+                <td class="text-align--right">{!! $moneySheet->gehalt->formatWithIcon() !!}</td>
             </tr>
             </tbody>
         </table>
@@ -33,19 +33,19 @@
             <tr>
                 <td>Kredite</td>
                 <td class="text-align--right">
-                    {!! $moneySheet->sumOfAllLoans->format() !!}
+                    {!! $moneySheet->sumOfAllLoans->formatWithIcon() !!}
                 </td>
             </tr>
             <tr>
                 <td>Versicherungen</td>
                 <td class="text-align--right">
-                    {!! $moneySheet->totalInsuranceCost->format() !!}
+                    {!! $moneySheet->totalInsuranceCost->formatWithIcon() !!}
                 </td>
             </tr>
             <tr>
                 <td>Steuern und Abgaben</td>
                 <td class="text-align--right">
-                    {!! $moneySheet->steuernUndAbgaben->format() !!}
+                    {!! $moneySheet->steuernUndAbgaben->formatWithIcon() !!}
                     @if($moneySheet->doesSteuernUndAbgabenRequirePlayerAction)
                         <div class="moneysheet__action-required"><span class="sr-only">Berechnung erforderlich</span></div>
                     @endif
@@ -54,7 +54,7 @@
             <tr>
                 <td>Lebenshaltungskosten</td>
                 <td class="text-align--right">
-                    {!! $moneySheet->lebenshaltungskosten->format() !!}
+                    {!! $moneySheet->lebenshaltungskosten->formatWithIcon() !!}
                     @if($moneySheet->doesLebenshaltungskostenRequirePlayerAction)
                         <div class="moneysheet__action-required"><span class="sr-only">Berechnung erforderlich</span></div>
                     @endif
