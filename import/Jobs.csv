@@ -1,7 +1,7 @@
 Jobs;;;;;;;
 id;title;description;phase;year;gehalt;minBildungUndKarriere;minSozialesUndFreizeit
 j1;freiwilliges Praktikum;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;12000;0;0
-j2;Studium;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;14000;0;0
+j2;Duales Studium;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;14000;0;0
 j3;Duale Ausbildung;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;15000;0;0
 j4;Fachkraft für Fischerei;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;16000;1;0
 j5;Küchenhilfspersonal;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;16500;1;0
