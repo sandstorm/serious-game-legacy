@@ -2,6 +2,7 @@
 
 @props(['konjunkturphase' => null, 'currentPage' => 1])
 
+{{-- !!! Livewire components MUST have a single root element !!! --}}
 <div class="konjunkturphase-start">
     <div class="konjunkturphase-start__content">
         @if ($currentPage === 0)

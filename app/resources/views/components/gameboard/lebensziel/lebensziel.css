@@ -5,7 +5,6 @@
 .lebensziel__phasen {
     padding: var(--spacing-100);
     padding-right: 50px;
-    margin-top: var(--spacing-100);
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--spacing-100);

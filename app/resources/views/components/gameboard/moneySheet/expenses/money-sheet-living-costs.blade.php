@@ -9,11 +9,6 @@
             Pro Jahr gibst Du {{$livingCostPercent}}% Deines Gehaltes für Lebenshaltungskosten aus. Jedoch mindestens {!! $livingCostMinValue->format() !!}
         </p>
 
-        @if ($this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled)
-            <br />
-            <p><i class="icon-info" aria-hidden="true"></i> Du hast deine Lebenshaltungskosten erfolgreich eingetragen. Das Formular ist so lange deaktiviert bis sich an deinem Gehalt etwas ändert.</p>
-        @endif
-
         <div class="taxes">
             <div class="form-group">
                 <span class="form-group__label">Dein Jahreseinkommen brutto</span>
@@ -44,6 +39,9 @@
 
     <div class="tabs__lower-content taxes__actions">
         @error('moneySheetLebenshaltungskostenForm.lebenshaltungskosten') <span class="form__error">{{ $message }}</span> @enderror
+        @if ($this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled)
+            <span class="text--success"><i class="icon-info" aria-hidden="true"></i> Du hast deine Lebenshaltungskosten erfolgreich eingetragen. Das Formular ist so lange deaktiviert bis sich an deinem Gehalt etwas ändert.</span>
+        @endif
         <x-form.submit :disabled="$this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled">Änderungen Speichern</x-form.submit>
     </div>
 </form>
