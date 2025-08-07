@@ -1479,7 +1479,6 @@ describe('handleSubmitAnswerWeiterbildung', function () {
         $cardsForTesting = [
             "cardWeiterbildungTest" => new WeiterbildungCardDefinition(
                 id: new CardId('cardWeiterbildungTest'),
-                title: 'for testing weiterbildung',
                 description: '...',
                 answerOptions: [
                     new AnswerOption(new AnswerId("a"), "antwort 1", true),
@@ -1512,7 +1511,6 @@ describe('handleSubmitAnswerWeiterbildung', function () {
         $cardsForTesting = [
             "cardWeiterbildungTest" => new WeiterbildungCardDefinition(
                 id: new CardId('cardWeiterbildungTest'),
-                title: 'for testing weiterbildung',
                 description: '...',
                 answerOptions: [
                     new AnswerOption(new AnswerId("a"), "antwort 1", true),
@@ -1547,7 +1545,6 @@ describe('handleSubmitAnswerWeiterbildung', function () {
         $cardsForTesting = [
             "cardWeiterbildungTest1" => new WeiterbildungCardDefinition(
                 id: new CardId('cardWeiterbildungTest1'),
-                title: 'Weiterbildung 1',
                 description: '...',
                 answerOptions: [
                     new AnswerOption(new AnswerId("a"), "antwort 1", true),
@@ -1558,7 +1555,6 @@ describe('handleSubmitAnswerWeiterbildung', function () {
             ),
             "cardWeiterbildungTest2" => new WeiterbildungCardDefinition(
                 id: new CardId('cardWeiterbildungTest2'),
-                title: 'Weiterbildung 2',
                 description: '...',
                 answerOptions: [
                     new AnswerOption(new AnswerId("a"), "antwort 1", true),

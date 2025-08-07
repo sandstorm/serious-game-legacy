@@ -8,8 +8,8 @@ function importMiniJobCards() {
     $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
     $keys = array_slice(explode(";", $tableHeaderItems[0]), 0, 3); //three table header items
 
-    foreach ($fileContent as $item) {
-        $itemArray = explode(";", substr(trim($item), 0, -2));
+    foreach ($fileContent as $line) {
+        $itemArray = explode(";", substr(trim($line), 0, -2));
         $itemArrayWithKeys = array_combine($keys, $itemArray);
 
         echo "\"" . $itemArrayWithKeys["id"] . "\" => new MinijobCardDefinition(\n";
@@ -29,8 +29,8 @@ function importJobCards() {
     $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
     $keys = array_slice(explode(";", trim($tableHeaderItems[0])), 0, 8); //eight table header items
 
-    foreach ($fileContent as $item) {
-        $itemArray = explode(";", trim($item));
+    foreach ($fileContent as $line) {
+        $itemArray = explode(";", trim($line));
         $itemArrayWithKeys = array_combine($keys, $itemArray);
 
         echo "\"" . $itemArrayWithKeys["id"] . "\" => new JobCardDefinition(\n";
@@ -53,16 +53,16 @@ function importWeiterbildungCards() {
     $file = file(__DIR__ . "/Weiterbildung-Table 1.csv");
     $fileContent = array_slice($file, 2); //removes the first two elements (table name and table header)
     $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
-    $keys = array_slice(explode(";", trim($tableHeaderItems[0])), 0, 3); // first three table header items
+    $keys = array_slice(explode(";", trim($tableHeaderItems[0])), 0, 3); //first three table header items
     $answerIds = ["a", "b", "c", "d"];
 
-    foreach ($fileContent as $item) {
+    foreach ($fileContent as $line) {
         //first answer Id is used for the correct answer -> randomized through the shuffle
         shuffle($answerIds);
-        $itemArray = explode(";", trim($item));
-        $itemArrayUpdated = array_slice($itemArray, 0, 3); //remove all wrong answers
-        $itemArrayWithKeys = array_combine($keys, $itemArrayUpdated);
-
+        $itemArray = explode(";", trim($line));
+        $itemArrayWithoutWrongAnswers = array_slice($itemArray, 0, 3); //remove all wrong answers
+        $itemArrayWithKeys = array_combine($keys, $itemArrayWithoutWrongAnswers);
+        //array_filter removes empty entries as not all questions have all three wrong answers
         $wrongAnswersArray = array_filter(array_slice($itemArray, 3));
         $itemArrayWithKeys["wrongAnswers"] = $wrongAnswersArray; //add wrong answers stored in an array
 
@@ -72,11 +72,9 @@ function importWeiterbildungCards() {
         echo "\t" . "answerOptions: [\n";
         echo "\t\t" . "new AnswerOption(new AnswerId(\"" . $answerIds[0] . "\"), \"" . $itemArrayWithKeys["correctAnswer"] . "\", true),\n";
 
-        foreach($itemArrayWithKeys["wrongAnswers"] as $wrongAnswer) {
-            $key = array_search($wrongAnswer, $itemArrayWithKeys["wrongAnswers"]);
+        foreach($itemArrayWithKeys["wrongAnswers"] as $key => $wrongAnswer) {
             echo "\t\t" . "new AnswerOption(new AnswerId(\"" . $answerIds[$key + 1] . "\"), \"" . $wrongAnswer . "\"),\n";
         }
-
         echo "\t],\n),\n";
     }
 }
