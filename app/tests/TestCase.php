@@ -494,7 +494,6 @@ abstract class TestCase extends BaseTestCase
         return [
             "wb0" => new WeiterbildungCardDefinition(
                 id: new CardId('wb0'),
-                title: 'Weiterbildung',
                 description: 'Ich mache eine Weiterbildung. Warum machst du die Weiterbildung?',
                 answerOptions: [
                     new AnswerOption(new AnswerId("a"), "Tarifliche Entlohnung und Arbeitsplatzsicherheit", true),
@@ -505,7 +504,6 @@ abstract class TestCase extends BaseTestCase
             ),
             "wb1" => new WeiterbildungCardDefinition(
                 id: new CardId('wb1'),
-                title: 'Weiterbildung',
                 description: 'Ich mache eine Weiterbildung. Warum machst du die Weiterbildung?',
                 answerOptions: [
                     new AnswerOption(new AnswerId("a"), "sygyrsgsfgydrg", true),

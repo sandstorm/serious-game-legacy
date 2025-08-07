@@ -246,7 +246,6 @@ describe('getLastWeiterbildungForPlayer', function () {
         $weiterbildung = [
             "testWB" => new WeiterbildungCardDefinition(
                 id: new CardId('testWB'),
-                title: 'testtest...',
                 description: 'Test für Weiterbildungen. Warum machst du die Weiterbildung?',
                 answerOptions: [
                     new AnswerOption(new AnswerId("a"), "Tarifliche Entlohnung und Arbeitsplatzsicherheit", true),
