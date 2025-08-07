@@ -43,7 +43,7 @@
 
 .weiterbildung__answer-options {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
     gap: var(--spacing-100);
     padding: var(--spacing-100);
     margin-top: var(--spacing-200);

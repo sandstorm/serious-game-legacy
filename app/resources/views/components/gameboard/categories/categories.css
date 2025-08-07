@@ -29,3 +29,9 @@
     height: 100%;
     padding-inline: var(--spacing-50);
 }
+
+.card__content--jobs {
+    i {
+        font-size: 4rem;
+    }
+}
