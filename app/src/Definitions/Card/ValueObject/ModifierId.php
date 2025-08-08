@@ -11,4 +11,9 @@ enum ModifierId: string
     case GEHALT_CHANGE = 'Gehaltsänderung';
     case LEBENSHALTUNGSKOSTEN_MULTIPLIER = 'Lebenshaltungskosten Multiplikator';
     case LEBENSHALTUNGSKOSTEN_MIN_VALUE = 'Lebenshaltungskosten mindestwert';
+    case BERUFSUNFAEHIGKEITSVERSICHERUNG = 'Berufsunfähigkeitsversicherung';
+    case HAFTPFLICHTVERSICHERUNG = 'Haftpflichtversicherung';
+    case INVESTITIONSSPERRE = 'Investitionssperre';
+    case JOBVERLUST = 'Jobverlust';
+    case PRIVATE_UNFALLVERSICHERUNG = 'private Unfallversicherung';
 }
