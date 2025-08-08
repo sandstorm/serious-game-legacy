@@ -32,6 +32,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellStocksForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartWeiterbildung;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SubmitAnswerForWeiterbildung;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
@@ -47,7 +48,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerWasMarkedAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SteuernUndAbgabenForPlayerWereEntered;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereNotSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
@@ -1758,6 +1758,102 @@ describe('handleEndSpielzug', function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect($gameEvents->findLast(KonjunkturphaseHasEnded::class) instanceof KonjunkturphaseHasEnded)->toBeTrue();
+    });
+});
+
+describe('handleStartSpielzug', function () {
+    it('throws an exception when it\'s not the players turn', function () {
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(CurrentPlayerAccessor::forStream($stream))->toEqual($this->players[0]);
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new StartSpielzug($this->players[1])
+        );
+    })->throws(
+        RuntimeException::class,
+        'Du bist gerade nicht dran',
+        1754645425
+    );
+
+    it('throws an exception when player has already started his/her turn', function () {
+        // player 0 ends his turn
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new SkipCard($this->players[0], CategoryId::SOZIALES_UND_FREIZEIT)
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[0])
+        );
+
+        // player 1 starts his turn
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new StartSpielzug($this->players[1])
+        );
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new StartSpielzug($this->players[1])
+        );
+    })->throws(
+        RuntimeException::class,
+        ' Du hast bereits deinen Spielzug gestartet',
+        1754645425
+    );
+
+    it('player can start his/her turn', function () {
+        // player 0 ends her turn
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new SkipCard($this->players[0], CategoryId::SOZIALES_UND_FREIZEIT)
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[0])
+        );
+
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        // player 1 is the current player but has not started his turn yet
+        expect(CurrentPlayerAccessor::forStream($stream))->toEqual($this->players[1])
+            ->and(GamePhaseState::hasPlayerStartedTurn($stream, $this->players[1]))->toBeFalse();
+
+        // player 1 starts his turn
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new StartSpielzug($this->players[1])
+        );
+
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        // player 1 is the current player and has started his turn
+        expect(CurrentPlayerAccessor::forStream($stream))->toEqual($this->players[1])
+            ->and(GamePhaseState::hasPlayerStartedTurn($stream, $this->players[1]))->toBeTrue();
+
+        // player 1 ends his turn
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new SkipCard($this->players[1], CategoryId::SOZIALES_UND_FREIZEIT)
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[1])
+        );
+
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        // no player has started his turn yet
+        expect(GamePhaseState::hasPlayerStartedTurn($stream, $this->players[0]))->toBeFalse()
+            ->and(GamePhaseState::hasPlayerStartedTurn($stream, $this->players[1]))->toBeFalse();
+
+        // player 0 starts her turn
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new StartSpielzug($this->players[0])
+        );
+
+        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(GamePhaseState::hasPlayerStartedTurn($stream, $this->players[0]))->toBeTrue()
+            ->and(GamePhaseState::hasPlayerStartedTurn($stream, $this->players[1]))->toBeFalse();
     });
 });
 

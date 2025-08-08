@@ -8,6 +8,7 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereBoughtForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
@@ -87,5 +88,17 @@ class GamePhaseState
 
         $stocksWereBought = $eventsThisTurn->findLastOrNull(StocksWereBoughtForPlayer::class);
         return $stocksWereBought !== null && !$stocksWereBought->playerId->equals($playerId);
+    }
+
+    public static function hasPlayerStartedTurn(GameEvents $gameEvents, PlayerId $playerId): bool
+    {
+        $eventsThisTurn = $gameEvents->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class);
+        if ($eventsThisTurn === null) {
+            // no other player has ended their turn yet, so we are still in the first turn
+            return true;
+        }
+
+        $spielzugStartedEvent = $eventsThisTurn->findLastOrNull(SpielzugWasStarted::class);
+        return $spielzugStartedEvent !== null && $spielzugStartedEvent->playerId->equals($playerId);
     }
 }

@@ -6,14 +6,33 @@ namespace App\Livewire\Traits;
 
 use App\Livewire\ValueObject\NotificationTypeEnum;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
+use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EndSpielzugAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Illuminate\View\View;
 
 trait HasGamePhase
 {
+
+    public bool $showItsYourTurnNotification = false;
+
+    public function renderingHasGamePhase(): void
+    {
+        if (PreGameState::isInPreGamePhase($this->gameEvents)) {
+            return;
+        }
+
+        $this->showItsYourTurnNotification = false;
+
+        // show notification if you are next active player
+        if ($this->currentPlayerIsMyself() && !GamePhaseState::hasPlayerStartedTurn($this->gameEvents, $this->myself)) {
+            $this->showItsYourTurnNotification = true;
+        }
+    }
+
     public function renderGamePhase(): View
     {
         $konjunkturphasenId = GamePhaseState::currentKonjunkturphasenId($this->gameEvents);
@@ -34,9 +53,6 @@ trait HasGamePhase
         return $aktion->validate($this->myself, $this->gameEvents);
     }
 
-    /**
-     * @return void
-     */
     public function spielzugAbschliessen(): void
     {
         $validationResult = self::canEndSpielzug();
@@ -48,6 +64,12 @@ trait HasGamePhase
             return;
         }
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->myself));
+        $this->broadcastNotify();
+    }
+
+    public function startSpielzug(): void
+    {
+        $this->coreGameLogic->handle($this->gameId, new StartSpielzug($this->myself));
         $this->broadcastNotify();
     }
 }

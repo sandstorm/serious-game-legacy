@@ -14,7 +14,6 @@ class CurrentPlayerAccessor
     public static function forStream(GameEvents $stream): PlayerId
     {
         $currentPlayerOrdering = $stream->findLast(GameWasStarted::class)->playerOrdering;
-
         $previousPlayer = $stream->findLastOrNull(SpielzugWasEnded::class)?->playerId;
 
         if ($previousPlayer === null) {
@@ -36,7 +35,7 @@ class CurrentPlayerAccessor
             throw new \RuntimeException('Previous player "' . $previousPlayer . '" not found in ordering');
         }
 
-        $nextIndex = ((int) $index + 1) % count($currentPlayerOrdering);
+        $nextIndex = ($index + 1) % count($currentPlayerOrdering);
         return $currentPlayerOrdering[$nextIndex];
     }
 }

@@ -39,7 +39,6 @@ trait HasCard
     public function renderingHasCard(): void
     {
         if (PreGameState::isInPreGamePhase($this->gameEvents)) {
-            // do not mount the money sheet if we are in pre-game phase
             return;
         }
 

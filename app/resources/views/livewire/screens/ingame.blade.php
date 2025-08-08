@@ -78,4 +78,7 @@
             :player-id="$myself"
         />
     @endif
+    @if ($this->showItsYourTurnNotification)
+        <x-gameboard.its-your-turn-notification />
+    @endif
 </div>
