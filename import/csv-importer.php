@@ -229,16 +229,31 @@ function importEreignisCards(): void
     }
 }
 
-function importImmobilienCards(): void
+function importInvestitionenCards(): void
 {
-    echo "\n\n--IMMOBILIEN/INVESTITIONEN CARDS--\n\n";
+    echo "\n\n--INVESTITIONEN CARDS--\n\n";
     $file = file(__DIR__ . "/Investitionen_Immobilien.csv");
     $fileContent = array_slice($file, 2); //removes the first two elements (table name and table header)
     $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
     $keys = array_slice(explode(";", trim($tableHeaderItems[0])), 0, 8); //eight table header items
-    print_r($fileContent);
-    print_r($keys);
+    //print_r($fileContent);
+    //print_r($keys);
 
+    foreach ($fileContent as $line) {
+        $lineArray = explode(";", trim($line));
+        $lineArrayWithKeys = array_combine($keys, $lineArray);
+        //print_r($lineArrayWithKeys);
+
+        echo "\"" . $lineArrayWithKeys["id"] . "\" => new InvestitionenCardDefinition(\n";
+        echo "\t" . "id: new CardId('" . $lineArrayWithKeys["id"] . "'),\n";
+        echo "\t" . "title: '" . $lineArrayWithKeys["title"] . "',\n";
+        echo "\t" . "description: '" . $lineArrayWithKeys["description"] . "',\n";
+        echo "\t" . "phaseId: LebenszielPhaseId::PHASE_" . $lineArrayWithKeys["phase"] . ",\n";
+        printResourceChanges($lineArrayWithKeys);
+        echo "\t" . "annualRent: new MoneyAmount(" . $lineArrayWithKeys["moneyChange"] . "),\n";
+        echo "\t" . "immobilienTyp: ImmobilienType::" . $lineArrayWithKeys["type"] . ",\n";
+        echo "),\n";
+    }
 }
 
 
@@ -247,7 +262,7 @@ function importImmobilienCards(): void
 //importWeiterbildungCards();
 //importKategorieCards();
 //importEreignisCards();
-importImmobilienCards();
+importInvestitionenCards();
 
 
 
