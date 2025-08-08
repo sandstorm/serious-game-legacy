@@ -16,6 +16,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasPutBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereNotSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\WeiterbildungWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
@@ -91,6 +92,7 @@ final readonly class EventNormalizer
             PlayerWasMarkedAsReadyForKonjunkturphaseChange::class,
             PreGameStarted::class,
             SpielzugWasEnded::class,
+            SpielzugWasStarted::class,
             SteuernUndAbgabenForPlayerWereCorrected::class,
             SteuernUndAbgabenForPlayerWereEntered::class,
             InsuranceForPlayerWasConcluded::class,

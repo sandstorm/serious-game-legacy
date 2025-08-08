@@ -29,6 +29,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\QuitJobAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellStocksForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SkipCardAktion as SkipCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\StartKonjunkturphaseForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\StartSpielzugAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\StartWeiterbildungAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SubmitAnswerForWeiterbildungAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\TakeOutALoanForPlayerAktion;
@@ -45,6 +46,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellStocksForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartWeiterbildung;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SubmitAnswerForWeiterbildung;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
@@ -65,6 +67,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             || $command instanceof ActivateCard
             || $command instanceof CompleteMoneysheetForPlayer
             || $command instanceof EndSpielzug
+            || $command instanceof StartSpielzug
             || $command instanceof MarkPlayerAsReadyForKonjunkturphaseChange
             || $command instanceof DoMiniJob
             || $command instanceof SkipCard
@@ -92,6 +95,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             ActivateCard::class => $this->handleActivateCard($command, $gameEvents),
             AcceptJobOffer::class => $this->handleAcceptJobOffer($command, $gameEvents),
             EndSpielzug::class => $this->handleEndSpielzug($command, $gameEvents),
+            StartSpielzug::class => $this->handleStartSpielzug($command, $gameEvents),
             CompleteMoneysheetForPlayer::class => $this->handleCompleteMoneysheetForPlayer($command, $gameEvents),
             MarkPlayerAsReadyForKonjunkturphaseChange::class => $this->handleMarkPlayerAsReadyForKonjunkturphaseChange($command,
                 $gameEvents),
@@ -148,6 +152,12 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             );
         }
         return $eventsToPersist;
+    }
+
+    private function handleStartSpielzug(StartSpielzug $command, GameEvents $gameEvents): GameEventsToPersist
+    {
+        $startSpielzugAktion = new StartSpielzugAktion();
+        return $startSpielzugAktion->execute($command->player, $gameEvents);
     }
 
     private function handleAcceptJobOffer(AcceptJobOffer $command, GameEvents $gameEvents): GameEventsToPersist
