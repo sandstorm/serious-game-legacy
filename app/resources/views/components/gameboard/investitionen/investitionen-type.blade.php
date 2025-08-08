@@ -40,5 +40,4 @@
             verkaufen
         </button>
     </div>
-
 </div>

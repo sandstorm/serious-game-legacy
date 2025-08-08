@@ -186,8 +186,17 @@ button {
 
 .button--size-small {
     padding: var(--spacing-25) var(--spacing-50);
-    min-height: 30px;
+    min-height: var(--button-height--small);
     font-size: 0.875rem;
+
+    .button__suffix {
+        min-height: var(--button-height--small);
+
+        > div {
+            min-height: var(--button-height--small);
+            padding-right: var(--spacing-25);
+        }
+    }
 }
 
 .button--type-icon {

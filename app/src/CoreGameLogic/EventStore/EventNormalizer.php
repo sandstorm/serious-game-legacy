@@ -18,12 +18,14 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasPutBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisProfitWasReducedBecauseOfInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldToAvoidInsolvenzForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldToAvoidInsolvenzForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasRepaidForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerGotAChild;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasBoughtImmobilie;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasFiledForInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasFinishedLebensziel;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasSoldImmobilie;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereNotSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\WeiterbildungWasStarted;
@@ -111,9 +113,11 @@ final readonly class EventNormalizer
             MinijobWasDone::class,
             NameForPlayerWasSet::class,
             PlayerGotAChild::class,
+            PlayerHasBoughtImmobilie::class,
             PlayerHasCompletedMoneysheetForCurrentKonjunkturphase::class,
             PlayerHasFiledForInsolvenz::class,
             PlayerHasFinishedLebensziel::class,
+            PlayerHasSoldImmobilie::class,
             PlayerHasStartedKonjunkturphase::class,
             PlayerWasMarkedAsReadyForKonjunkturphaseChange::class,
             PreGameStarted::class,

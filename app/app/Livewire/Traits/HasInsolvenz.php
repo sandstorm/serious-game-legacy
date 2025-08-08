@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Traits;
 
-
 use App\Livewire\Forms\SellInvestmentsForm;
 use App\Livewire\ValueObject\NotificationTypeEnum;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
@@ -123,9 +122,13 @@ trait HasInsolvenz
         $this->closeInvestmentModals();
         $this->broadcastNotify();
 
-        /** @var InvestmentsWereSoldToAvoidInsolvenzForPlayer $event */
-        $event = $this->getGameEvents()->findLast(InvestmentsWereSoldToAvoidInsolvenzForPlayer::class);
-        $this->showBanner($event->getAmount() . ' Anteile von ' . $investmentId->value . ' wurden erfolgreich verkauft.', $event->getResourceChanges($this->myself));
+        /** @var InvestmentsWereSoldToAvoidInsolvenzForPlayer|null $event */
+        $event = $this->getGameEvents()->findLastOrNullWhere(
+            fn($e) => $e instanceof InvestmentsWereSoldToAvoidInsolvenzForPlayer && $e->getPlayerId()->equals($this->myself)
+        );
+        if ($event !== null) {
+            $this->showBanner($event->getAmount() . ' Anteile von ' . $investmentId->value . ' wurden erfolgreich verkauft.', $event->getResourceChanges($this->myself));
+        }
     }
 
     public function canFileInsolvenzForPlayer(): AktionValidationResult

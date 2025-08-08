@@ -6,9 +6,8 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\CanPlayerNotAffordTopCardOnPileValidator;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerPlayedACardThisTurnOrPutOneBackValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerNotPlayedACardThisTurnOrPutOneBackValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerSkippedACardThisTurn;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
@@ -38,8 +37,9 @@ class PutCardBackOnTopOfPileAktion extends Aktion
         $validatorChain = new IsPlayersTurnValidator();
         $validatorChain
             ->setNext(new HasPlayerSkippedACardThisTurn())
-            ->setNext(new HasPlayerPlayedACardThisTurnOrPutOneBackValidator())
+            ->setNext(new HasPlayerNotPlayedACardThisTurnOrPutOneBackValidator())
             ->setNext(new CanPlayerNotAffordTopCardOnPileValidator($pileId));
+
         return $validatorChain->validate($gameEvents, $playerId);
     }
 

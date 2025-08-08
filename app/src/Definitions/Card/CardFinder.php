@@ -6,10 +6,9 @@ namespace Domain\Definitions\Card;
 
 use Domain\Definitions\Card\Dto\AnswerOption;
 use Domain\Definitions\Card\Dto\CardDefinition;
-use Domain\Definitions\Card\Dto\CardWithGewichtung;
 use Domain\Definitions\Card\Dto\CardWithYear;
 use Domain\Definitions\Card\Dto\EreignisCardDefinition;
-use Domain\Definitions\Card\Dto\InvestitionenCardDefinition;
+use Domain\Definitions\Card\Dto\ImmobilienCardDefinition;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
@@ -75,7 +74,7 @@ final class CardFinder
     private static function initialize(): self
     {
         self::$instance = new self([
-            "inv1" => new InvestitionenCardDefinition(
+            "inv1" => new ImmobilienCardDefinition(
                 id: new CardId('inv1'),
                 title: 'Kauf Wohnung',
                 description: 'Eine Wohnung in einem neuen Sudierendenwohnheim steht zum Verkauf.',
@@ -86,7 +85,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(4125),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv2" => new InvestitionenCardDefinition(
+            "inv2" => new ImmobilienCardDefinition(
                 id: new CardId('inv2'),
                 title: 'Kauf Wohnung',
                 description: 'Eine Wohnung in einem neuen Studierendenwohnheim steht zum Verkauf.',
@@ -97,7 +96,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(2750),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv3" => new InvestitionenCardDefinition(
+            "inv3" => new ImmobilienCardDefinition(
                 id: new CardId('inv3'),
                 title: 'Kauf Wohnung',
                 description: 'Ein renoviertes Loft  mit DINKs (Double Income, No Kids) –Mieterinnen steht zum Verkauf.',
@@ -108,7 +107,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(11000),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv4" => new InvestitionenCardDefinition(
+            "inv4" => new ImmobilienCardDefinition(
                 id: new CardId('inv4'),
                 title: 'Kauf Wohnung',
                 description: 'Eine Wohnung in hervorragender Lage steht zum Verkauf. ',
@@ -119,7 +118,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(5500),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv5" => new InvestitionenCardDefinition(
+            "inv5" => new ImmobilienCardDefinition(
                 id: new CardId('inv5'),
                 title: 'Kauf Wohnung',
                 description: 'Eine Wohnung in einer Seniorinnenanlage steht zum Verkauf.',
@@ -130,7 +129,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(8250),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv6" => new InvestitionenCardDefinition(
+            "inv6" => new ImmobilienCardDefinition(
                 id: new CardId('inv6'),
                 title: 'Kauf Wohnung',
                 description: 'Eine frisch renovierte Wohnung mit solventen Mieterinnen steht zum Verkauf.',
@@ -141,7 +140,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(5500),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv7" => new InvestitionenCardDefinition(
+            "inv7" => new ImmobilienCardDefinition(
                 id: new CardId('inv7'),
                 title: 'Kauf Haus',
                 description: 'Ein Haus in einem Brennpunktviertel steht zum Verkauf. ',
@@ -152,7 +151,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(9625),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv8" => new InvestitionenCardDefinition(
+            "inv8" => new ImmobilienCardDefinition(
                 id: new CardId('inv8'),
                 title: 'Kauf Haus',
                 description: 'Ein sanierungsbedürftiges Haus steht zum Verkauf.',
@@ -163,7 +162,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(11000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv9" => new InvestitionenCardDefinition(
+            "inv9" => new ImmobilienCardDefinition(
                 id: new CardId('inv9'),
                 title: 'Kauf Haus',
                 description: 'Ein renovierungsbedürftiges Haus steht zum Verkauf. ',
@@ -174,7 +173,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(11000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv10" => new InvestitionenCardDefinition(
+            "inv10" => new ImmobilienCardDefinition(
                 id: new CardId('inv10'),
                 title: 'Kauf Haus',
                 description: 'Ein Haus steht zum Verkauf. ',
@@ -185,7 +184,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(16500),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv11" => new InvestitionenCardDefinition(
+            "inv11" => new ImmobilienCardDefinition(
                 id: new CardId('inv11'),
                 title: 'Kauf Haus',
                 description: 'Ein Haus in hervorragender Lage steht zum Verkauf.',
@@ -196,7 +195,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(19250),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv12" => new InvestitionenCardDefinition(
+            "inv12" => new ImmobilienCardDefinition(
                 id: new CardId('inv12'),
                 title: 'Kauf Haus',
                 description: 'Ein neu renoviertes Haus steht zum Verkauf. ',
@@ -207,7 +206,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(22000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv13" => new InvestitionenCardDefinition(
+            "inv13" => new ImmobilienCardDefinition(
                 id: new CardId('inv13'),
                 title: 'Kauf Wohnung',
                 description: 'Eine Wohnung in einem neuen Sudierendenwohnheim steht zum Verkauf.',
@@ -218,7 +217,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(9000),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv14" => new InvestitionenCardDefinition(
+            "inv14" => new ImmobilienCardDefinition(
                 id: new CardId('inv14'),
                 title: 'Kauf Wohnung',
                 description: 'Eine frisch renovierte Wohnung mit solventen Mieterinnen steht zum Verkauf.',
@@ -229,7 +228,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(16200),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv15" => new InvestitionenCardDefinition(
+            "inv15" => new ImmobilienCardDefinition(
                 id: new CardId('inv15'),
                 title: 'Kauf Wohnung',
                 description: 'Eine Wohnung in einer SeniorInnenanlage steht zum Verkauf.',
@@ -240,7 +239,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(16800),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv16" => new InvestitionenCardDefinition(
+            "inv16" => new ImmobilienCardDefinition(
                 id: new CardId('inv16'),
                 title: 'Kauf Wohnung',
                 description: 'Eine Wohnung in hervorragender Lage steht zum Verkauf. ',
@@ -251,7 +250,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(17400),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv17" => new InvestitionenCardDefinition(
+            "inv17" => new ImmobilienCardDefinition(
                 id: new CardId('inv17'),
                 title: 'Kauf Wohnung',
                 description: 'Ein renoviertes Loft  mit DINKs (Double Income, No Kids) –Mieterinnen steht zum Verkauf.',
@@ -262,7 +261,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(18000),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv18" => new InvestitionenCardDefinition(
+            "inv18" => new ImmobilienCardDefinition(
                 id: new CardId('inv18'),
                 title: 'Kauf Haus',
                 description: 'Ein sanierungsbedürftiges Haus steht zum Verkauf.',
@@ -273,7 +272,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(7200),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv19" => new InvestitionenCardDefinition(
+            "inv19" => new ImmobilienCardDefinition(
                 id: new CardId('inv19'),
                 title: 'Kauf Haus',
                 description: 'Ein renovierungsbedürftiges Haus steht zum Verkauf. ',
@@ -284,7 +283,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(12000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv20" => new InvestitionenCardDefinition(
+            "inv20" => new ImmobilienCardDefinition(
                 id: new CardId('inv20'),
                 title: 'Kauf Haus',
                 description: 'Ein Haus in einem Brennpunktviertel steht zum Verkauf. ',
@@ -295,7 +294,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(12000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv21" => new InvestitionenCardDefinition(
+            "inv21" => new ImmobilienCardDefinition(
                 id: new CardId('inv21'),
                 title: 'Kauf Haus',
                 description: 'Ein neu renoviertes Haus steht zum Verkauf. ',
@@ -306,7 +305,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(15000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv22" => new InvestitionenCardDefinition(
+            "inv22" => new ImmobilienCardDefinition(
                 id: new CardId('inv22'),
                 title: 'Kauf Haus',
                 description: 'Ein Haus in hervorragender Lage steht zum Verkauf.',
@@ -317,7 +316,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(16800),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv23" => new InvestitionenCardDefinition(
+            "inv23" => new ImmobilienCardDefinition(
                 id: new CardId('inv23'),
                 title: 'Kauf Haus',
                 description: 'Ein Haus im Grünen soll verkauft werden. ',
@@ -328,7 +327,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(18000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv24" => new InvestitionenCardDefinition(
+            "inv24" => new ImmobilienCardDefinition(
                 id: new CardId('inv24'),
                 title: 'Kauf Wohnung',
                 description: 'Eine Wohnung in einem neuen Studierendenwohnheim steht zum Verkauf.',
@@ -339,7 +338,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(10000),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv25" => new InvestitionenCardDefinition(
+            "inv25" => new ImmobilienCardDefinition(
                 id: new CardId('inv25'),
                 title: 'Kauf Wohnung',
                 description: 'Eine Wohnung in einer Senior:innenanlage steht zum Verkauf.',
@@ -350,7 +349,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(18850),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv26" => new InvestitionenCardDefinition(
+            "inv26" => new ImmobilienCardDefinition(
                 id: new CardId('inv26'),
                 title: 'Kauf Wohnung',
                 description: 'Eine frisch renovierte Wohnung mit solventen Mieterinnen steht zum Verkauf.',
@@ -361,7 +360,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(18850),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv27" => new InvestitionenCardDefinition(
+            "inv27" => new ImmobilienCardDefinition(
                 id: new CardId('inv27'),
                 title: 'Kauf Wohnung',
                 description: 'Eine Wohnung in hervorragender Lage steht zum Verkauf. ',
@@ -372,7 +371,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(20150),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv28" => new InvestitionenCardDefinition(
+            "inv28" => new ImmobilienCardDefinition(
                 id: new CardId('inv28'),
                 title: 'Kauf Wohnung',
                 description: 'Ein renoviertes Loft  mit DINKs (Double Income, No Kids) –Mieterinnen steht zum Verkauf.',
@@ -383,7 +382,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(22750),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv29" => new InvestitionenCardDefinition(
+            "inv29" => new ImmobilienCardDefinition(
                 id: new CardId('inv29'),
                 title: 'Kauf Haus',
                 description: 'Ein sanierungsbedürftiges Haus steht zum Verkauf.',
@@ -394,7 +393,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(10400),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv30" => new InvestitionenCardDefinition(
+            "inv30" => new ImmobilienCardDefinition(
                 id: new CardId('inv30'),
                 title: 'Kauf Haus',
                 description: 'Ein neu renoviertesHaus steht zum Verkauf. ',
@@ -405,7 +404,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(16575),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv31" => new InvestitionenCardDefinition(
+            "inv31" => new ImmobilienCardDefinition(
                 id: new CardId('inv31'),
                 title: 'Kauf Haus',
                 description: 'Eine Haus in renovierungsbedürftigem Zustand steht zum Verkauf. ',
@@ -416,7 +415,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(18200),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv32" => new InvestitionenCardDefinition(
+            "inv32" => new ImmobilienCardDefinition(
                 id: new CardId('inv32'),
                 title: 'Kauf Haus',
                 description: 'Ein Haus in einem Brennpunktviertel steht zum Verkauf. ',
@@ -427,7 +426,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(19500),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv33" => new InvestitionenCardDefinition(
+            "inv33" => new ImmobilienCardDefinition(
                 id: new CardId('inv33'),
                 title: 'Kauf Haus',
                 description: 'Ein Haus wird zum Verkauf angeboten.',
@@ -438,7 +437,7 @@ final class CardFinder
                 annualRent: new MoneyAmount(21450),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv34" => new InvestitionenCardDefinition(
+            "inv34" => new ImmobilienCardDefinition(
                 id: new CardId('inv34'),
                 title: 'Kauf Haus',
                 description: 'Ein Haus in hervorragender Lage steht zum Verkauf.',

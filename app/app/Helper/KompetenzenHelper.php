@@ -16,6 +16,7 @@ class KompetenzenHelper
      * @param float $numberOfkompetenzSteine
      * @param int $requiredNumberOfKompetenzSteine
      * @param string $iconComponentName
+     * @param CategoryId $categoryId
      * @return KompetenzSteineForCategory
      */
     public static function getKompetenzSteineForCategory(

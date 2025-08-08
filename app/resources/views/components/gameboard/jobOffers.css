@@ -5,14 +5,11 @@
     padding: var(--spacing-100);
     align-items: stretch;
 
-    .card__title {
-        margin-top: var(--spacing-100);
+    .card {
+        cursor: default;
     }
 
     .card__content {
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
         flex-shrink: 0;
         height: auto;
 

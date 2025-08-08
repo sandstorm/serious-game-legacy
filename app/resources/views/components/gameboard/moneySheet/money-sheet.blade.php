@@ -19,7 +19,7 @@
             <tbody>
             <tr>
                 <td>Finanzanlagen und Vermögenswerte</td>
-                <td class="text-align--right">{!! $moneySheet->sumOfAllAssets->formatWithIcon() !!}</td>
+                <td class="text-align--right">{!! $moneySheet->annualIncomeForAllAssets->formatWithIcon() !!}</td>
             </tr>
             <tr>
                 <td>Gehalt</td>

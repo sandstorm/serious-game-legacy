@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\View\Components\MoneySheet\Income;
 
+use App\Livewire\Dto\ImmoblienDto;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\InvestmentData;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\CardFinder;
+use Domain\Definitions\Card\Dto\ImmobilienCardDefinition;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Illuminate\View\Component;
@@ -50,8 +53,21 @@ class MoneySheetInvestments extends Component
                 ),
             );
         }
+
+        $immobilienOwnedByPlayer = [];
+        foreach(PlayerState::getImmoblienOwnedByPlayer($this->gameEvents, $this->playerId) as $immobilie) {
+            $immoblienDefinition = CardFinder::getInstance()->getCardById($immobilie->getCardId(), ImmobilienCardDefinition::class);
+            $immobilienOwnedByPlayer[] = new ImmoblienDto(
+                title: $immoblienDefinition->getTitle(),
+                immobilieId: $immobilie->getImmobilieId(),
+                purchasePrice: $immoblienDefinition->getPurchasePrice(),
+                annualRent: $immoblienDefinition->getAnnualRent(),
+            );
+        }
+
         return view('components.gameboard.moneySheet.income.money-sheet-investments', [
-            'investments' => $investments
+            'investments' => $investments,
+            'immobilienOwnedByPlayer' => $immobilienOwnedByPlayer
         ]);
     }
 

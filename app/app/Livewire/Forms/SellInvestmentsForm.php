@@ -17,6 +17,7 @@ class SellInvestmentsForm extends Form
     public ?InvestmentId $investmentId;
     public float $sharePrice = 0;
     public int $amountOwned = 0;
+    // used to show others who bought the investment
     public string $playerName = '';
 
     /**

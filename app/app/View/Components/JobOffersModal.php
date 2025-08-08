@@ -33,7 +33,7 @@ class JobOffersModal extends Component
      */
     public function render(): View|Closure|string
     {
-        $jobCardIds = PileState::getFirstThreeJobCardIds(
+        $jobCardIds = PileState::getFirstXCardsFromPile(
             $this->gameEvents,
             new PileId(
                 CategoryId::JOBS,

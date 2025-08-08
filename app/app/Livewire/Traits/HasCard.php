@@ -67,6 +67,7 @@ trait HasCard
 
     /**
      * @param string $cardId
+     * @param string $categoryId
      * @return void
      */
     public function showCardActions(string $cardId, string $categoryId): void

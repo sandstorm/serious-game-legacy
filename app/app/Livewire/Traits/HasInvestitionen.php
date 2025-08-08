@@ -10,19 +10,27 @@ use App\Livewire\ValueObject\NotificationTypeEnum;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\BuyImmobilieAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\BuyInvestmentsForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellImmobilieAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellInvestmentsForPlayerAfterInvestmentByAnotherPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellInvestmentsForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyImmobilieForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellInvestmentsForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SellImmobilieForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasBoughtImmobilie;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereBoughtForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayerAfterInvestmentByAnotherPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasSoldImmobilie;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\ImmobilieId;
+use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 
 trait HasInvestitionen
 {
@@ -30,7 +38,10 @@ trait HasInvestitionen
     public bool $showStocksModal = false;
     public bool $showETFModal = false;
     public bool $showCryptoModal = false;
+    public bool $showImmobilienModal = false;
     public ?InvestmentId $buyInvestmentOfType = null;
+    public bool $isBuyImmobilieVisible = false;
+    public bool $isSellImmobilieVisible = false;
     public ?InvestmentId $sellInvestmentOfType = null;
     public BuyInvestmentsForm $buyInvestmentsForm;
     public SellInvestmentsForm $sellInvestmentsForm;
@@ -106,6 +117,18 @@ trait HasInvestitionen
         $this->showCryptoModal = !$this->showCryptoModal;
     }
 
+    public function toggleImmobilienModal(): void
+    {
+        $this->showInvestitionenSelelectionModal = false;
+        if ($this->isBuyImmobilieVisible || $this->isSellImmobilieVisible) {
+            $this->isBuyImmobilieVisible = false;
+            $this->isSellImmobilieVisible = false;
+            return;
+        }
+
+        $this->showImmobilienModal = !$this->showImmobilienModal;
+    }
+
     public function closeInvestmentModals(): void
     {
         $this->showStocksModal = false;
@@ -133,7 +156,7 @@ trait HasInvestitionen
         $validationResult = self::canBuyInvestments(InvestmentId::from($investmentId));
         if (!$validationResult->canExecute) {
             $this->showNotification(
-                $validationResult->reason,
+                "Investieren nicht möglich: " . $validationResult->reason,
                 NotificationTypeEnum::ERROR
             );
             return;
@@ -151,7 +174,7 @@ trait HasInvestitionen
         $validationResult = self::canBuyInvestments($investmentId);
         if (!$validationResult->canExecute) {
             $this->showNotification(
-                $validationResult->reason,
+                "Investieren nicht möglich: " . $validationResult->reason,
                 NotificationTypeEnum::ERROR
             );
             return;
@@ -205,7 +228,7 @@ trait HasInvestitionen
         $validationResult = self::canSellInvestmentsAfterPurchase($investmentId);
         if (!$validationResult->canExecute) {
             $this->showNotification(
-                $validationResult->reason,
+                "Investition verkaufen nicht möglich: " . $validationResult->reason,
                 NotificationTypeEnum::ERROR
             );
             return;
@@ -227,9 +250,13 @@ trait HasInvestitionen
         $this->sellInvestmentsForm->resetValidation();
         $this->broadcastNotify();
 
-        /** @var InvestmentsWereSoldForPlayerAfterInvestmentByAnotherPlayer $event */
-        $event = $this->getGameEvents()->findLast(InvestmentsWereSoldForPlayerAfterInvestmentByAnotherPlayer::class);
-        $this->showBanner($event->amount . ' Anteile von ' . $investmentId->value . ' wurden erfolgreich verkauft.', $event->getResourceChanges($this->myself));
+        /** @var InvestmentsWereSoldForPlayerAfterInvestmentByAnotherPlayer|null $event */
+        $event = $this->getGameEvents()->findLastOrNullWhere(
+            fn($e) => $e instanceof InvestmentsWereSoldForPlayerAfterInvestmentByAnotherPlayer && $e->playerId->equals($this->myself)
+        );
+        if ($event !== null) {
+            $this->showBanner($event->amount . ' Anteile von ' . $investmentId->value . ' wurden erfolgreich verkauft.', $event->getResourceChanges($this->myself));
+        }
     }
 
     public function canSellInvestments(InvestmentId $investmentId): AktionValidationResult
@@ -252,7 +279,7 @@ trait HasInvestitionen
         $validationResult = self::canSellInvestments($investmentId);
         if (!$validationResult->canExecute) {
             $this->showNotification(
-                $validationResult->reason,
+                "Investition verkaufen nicht möglich: " . $validationResult->reason,
                 NotificationTypeEnum::ERROR
             );
             return;
@@ -276,7 +303,7 @@ trait HasInvestitionen
         $validationResult = self::canSellInvestments($investmentId);
         if (!$validationResult->canExecute) {
             $this->showNotification(
-                $validationResult->reason,
+                "Investition verkaufen nicht möglich: " . $validationResult->reason,
                 NotificationTypeEnum::ERROR
             );
             return;
@@ -299,5 +326,77 @@ trait HasInvestitionen
         /** @var InvestmentsWereSoldForPlayer $event */
         $event = $this->getGameEvents()->findLast(InvestmentsWereSoldForPlayer::class);
         $this->showBanner($event->amount . ' Anteile von ' . $investmentId->value . ' wurden erfolgreich verkauft. Alle anderen Spieler:innen haben jetzt die Möglichkeit ihre Anteile zu verkaufen', $event->getResourceChanges($this->myself));
+    }
+
+    public function showBuyImmobilie(): void
+    {
+        $this->isBuyImmobilieVisible = true;
+    }
+
+    public function canBuyImmobilie(CardId $cardId): AktionValidationResult
+    {
+        return new BuyImmobilieAktion($cardId)
+            ->validate($this->myself, $this->getGameEvents());
+    }
+
+    public function buyImmobilie(string $cardIdString): void
+    {
+        $cardId = new CardId($cardIdString);
+        $validationResult = $this->canBuyImmobilie($cardId);
+        if (!$validationResult->canExecute) {
+            $this->showNotification(
+                "Immobilie kaufen nicht möglich: " . $validationResult->reason,
+                NotificationTypeEnum::ERROR
+            );
+            return;
+        }
+        $this->handleCommand(
+            BuyImmobilieForPlayer::create($this->myself, $cardId)
+        );
+
+        $event = $this->getGameEvents()->findLast(PlayerHasBoughtImmobilie::class);
+
+        $this->toggleImmobilienModal();
+        $this->showBanner(
+            'Immoblie wurde erfolgreich gekauft.', $event->getResourceChanges($this->myself),
+        );
+        $this->broadcastNotify();
+    }
+
+    public function showSellImmobilie(): void
+    {
+        $this->isSellImmobilieVisible = true;
+    }
+
+    public function canSellImmobilie(ImmobilieId $immobilieId): AktionValidationResult
+    {
+        return new SellImmobilieAktion($immobilieId)
+            ->validate($this->myself, $this->getGameEvents());
+    }
+
+    public function sellImmobilie(string $immobilieIdString): void
+    {
+        $immobilieId = ImmobilieId::fromString($immobilieIdString);
+        $validationResult = $this->canSellImmobilie($immobilieId);
+        if (!$validationResult->canExecute) {
+            $this->showNotification(
+                "Immobilie verkaufen nicht möglich: " . $validationResult->reason,
+                NotificationTypeEnum::ERROR
+            );
+            return;
+        }
+
+        $this->handleCommand(
+            SellImmobilieForPlayer::create($this->myself, $immobilieId)
+        );
+
+        $event = $this->getGameEvents()->findLast(PlayerHasSoldImmobilie::class);
+
+        $this->toggleImmobilienModal();
+        $this->showBanner(
+            'Immoblie wurde erfolgreich verkauft.',
+            $event->getResourceChanges($this->myself),
+        );
+        $this->broadcastNotify();
     }
 }
