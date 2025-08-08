@@ -20,12 +20,14 @@ class StocksWereSoldForPlayer implements GameEventInterface, ProvidesResourceCha
      * @param StockType $stockType
      * @param MoneyAmount $sharePrice
      * @param int $amount
+     * @param ResourceChanges $resourceChanges
      */
     public function __construct(
-        public PlayerId    $playerId,
-        public StockType   $stockType,
-        public MoneyAmount $sharePrice,
-        public int         $amount,
+        public PlayerId        $playerId,
+        public StockType       $stockType,
+        public MoneyAmount     $sharePrice,
+        public int             $amount,
+        public ResourceChanges $resourceChanges,
     )
     {
     }
@@ -33,29 +35,29 @@ class StocksWereSoldForPlayer implements GameEventInterface, ProvidesResourceCha
     public static function fromArray(array $values): GameEventInterface
     {
         return new self(
-            playerId: PlayerId::fromString($values['player']),
+            playerId: PlayerId::fromString($values['playerId']),
             stockType: StockType::fromString($values['stockType']),
             sharePrice: new MoneyAmount($values['sharePrice']),
             amount: $values['amount'],
+            resourceChanges: ResourceChanges::fromArray($values['resourceChanges']),
         );
     }
 
     public function jsonSerialize(): array
     {
         return [
-            'player' => $this->playerId,
+            'playerId' => $this->playerId,
             'stockType' => $this->stockType->value,
             'sharePrice' => $this->sharePrice->value,
             'amount' => $this->amount,
+            'resourceChanges' => $this->resourceChanges->jsonSerialize(),
         ];
     }
 
     public function getResourceChanges(PlayerId $playerId): ResourceChanges
     {
         if ($this->playerId->equals($playerId)) {
-            return new ResourceChanges(
-                guthabenChange: new MoneyAmount($this->sharePrice->value * $this->amount),
-            );
+            return $this->resourceChanges;
         }
         return new ResourceChanges();
     }

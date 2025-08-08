@@ -14,6 +14,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\StockPriceState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\StockAmountChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\AnswerForWeiterbildungWasSubmitted;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\ImmobilieWasBoughtForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereNotSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\WeiterbildungWasStarted;
@@ -22,6 +23,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
+use Domain\Definitions\Card\Dto\InvestitionenCardDefinition;
 use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
@@ -445,5 +447,43 @@ class PlayerState
         $stocksWereNotSold = $eventsThisTurn->findLastOrNullWhere(fn ($event) => $event instanceof StocksWereNotSoldForPlayer && $event->playerId->equals($playerId));
 
         return $stocksWereSold !== null || $stocksWereNotSold !== null;
+    }
+
+
+    /**
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return InvestitionenCardDefinition[]
+     */
+    public static function getImmoblienOwnedByPlayer(GameEvents $gameEvents, PlayerId $playerId): array
+    {
+
+        $immobilienBoughtEvents = $gameEvents->findAllOfType(ImmobilieWasBoughtForPlayer::class)
+            ->filter(fn($event) => $event instanceof ImmobilieWasBoughtForPlayer && $event->playerId->equals($playerId));
+
+        $immobilienDefinitions = [];
+        foreach ($immobilienBoughtEvents as $event) {
+            $immobilienDefinition = CardFinder::getInstance()->getCardById($event->cardId, InvestitionenCardDefinition::class);
+            if ($immobilienDefinition !== null) {
+                $immobilienDefinitions[] = $immobilienDefinition;
+            }
+        }
+
+        return $immobilienDefinitions;
+    }
+
+    /**
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return MoneyAmount
+     */
+    public static function getAnnualRentIncomeForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
+    {
+        $immoblienBought = self::getImmoblienOwnedByPlayer($gameEvents, $playerId);
+        $annualRentIncome = 0;
+        foreach ($immoblienBought as $immobilie) {
+            $annualRentIncome += $immobilie->getAnnualRent()->value;
+        }
+        return new MoneyAmount($annualRentIncome);
     }
 }

@@ -52,4 +52,14 @@ final readonly class InvestitionenCardDefinition implements CardDefinition, Card
     {
         return $this->resourceChanges;
     }
+
+    public function getAnnualRent(): MoneyAmount
+    {
+        return $this->annualRent;
+    }
+
+    public function getPurchasePrice(): MoneyAmount
+    {
+        return new MoneyAmount($this->getResourceChanges()->guthabenChange->value * -1);
+    }
 }
