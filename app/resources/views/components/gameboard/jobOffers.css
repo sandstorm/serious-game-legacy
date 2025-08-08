@@ -6,7 +6,6 @@
     align-items: stretch;
 
     .card__title {
-        margin-top: var(--spacing-100);
     }
 
     .card__content {
@@ -19,6 +18,10 @@
         .button {
             margin-top: var(--spacing-100);
         }
+
+        .resource-changes {
+            align-items: center;
+        }
     }
 }
 
@@ -26,8 +29,7 @@
     text-align: center;
 
     h5 {
-        margin-top: var(--spacing-100);
-        margin-bottom: 0;
+        margin: 0;
 
         font-weight: var(--font-weight-medium);
         text-align: center;

@@ -40,7 +40,7 @@ class StocksWereBoughtForPlayer implements GameEventInterface, ProvidesResourceC
     public static function fromArray(array $values): GameEventInterface
     {
         return new self(
-            playerId: PlayerId::fromString($values['player']),
+            playerId: PlayerId::fromString($values['playerId']),
             stockType: StockType::fromString($values['stockType']),
             sharePrice: new MoneyAmount($values['sharePrice']),
             amount: $values['amount'],
@@ -55,7 +55,7 @@ class StocksWereBoughtForPlayer implements GameEventInterface, ProvidesResourceC
     public function jsonSerialize(): array
     {
         return [
-            'player' => $this->playerId,
+            'playerId' => $this->playerId,
             'stockType' => $this->stockType->value,
             'sharePrice' => $this->sharePrice->value,
             'amount' => $this->amount,

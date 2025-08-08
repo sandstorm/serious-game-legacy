@@ -24,7 +24,7 @@
                 <i class="icon-krypto" aria-hidden="true"></i>
             </div>
         </button>
-        <button class="card card--disabled">
+        <button class="card" wire:click="toggleImmobilienModal()">
             <h4 class="card__title">Immobilien</h4>
             <div class="card__content">
                 <i class="icon-immobilien" aria-hidden="true"></i>

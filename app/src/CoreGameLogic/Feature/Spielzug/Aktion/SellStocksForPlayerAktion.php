@@ -9,11 +9,11 @@ use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasAnotherPlayerBoughtStocksThisTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughStocksToSellValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerInteractedWithStocksModalThisTurnValidator;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
 class SellStocksForPlayerAktion extends Aktion
@@ -50,12 +50,17 @@ class SellStocksForPlayerAktion extends Aktion
             throw new \RuntimeException('' . $result->reason, 1752753850);
         }
 
+        $resourceChanges = new ResourceChanges(
+            guthabenChange: new MoneyAmount($this->sharePrice->value * $this->amount),
+        );
+
         return GameEventsToPersist::with(
             new StocksWereSoldForPlayer(
                 playerId: $playerId,
                 stockType: $this->stockType,
                 sharePrice: $this->sharePrice,
                 amount: $this->amount,
+                resourceChanges: $resourceChanges
             )
         );
     }

@@ -10,14 +10,14 @@ class MoneySheet
 {
     public function __construct(
         public MoneyAmount $lebenshaltungskosten,
-        public bool  $doesLebenshaltungskostenRequirePlayerAction,
+        public bool        $doesLebenshaltungskostenRequirePlayerAction,
         public MoneyAmount $steuernUndAbgaben,
-        public bool  $doesSteuernUndAbgabenRequirePlayerAction,
+        public bool        $doesSteuernUndAbgabenRequirePlayerAction,
         public MoneyAmount $gehalt,
         public MoneyAmount $total,
         public MoneyAmount $totalInsuranceCost,
         public MoneyAmount $sumOfAllLoans,
-        public MoneyAmount $sumOfAllAssets,
+        public MoneyAmount $sumOfAllInvestments,
         public MoneyAmount $annualIncome,
         public MoneyAmount $annualExpenses,
     ) {}
