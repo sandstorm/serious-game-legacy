@@ -154,7 +154,7 @@ function importEreignisCards(): void
 {
     $modifierMappings = [
         "AUSSETZEN" => new ModifierMapping("AUSSETZEN", ""),
-        "BERUFSUNFÄHIGKEITSVERSICHERUNG" => new ModifierMapping("BERUFSUNFÄHIGKEITSVERSICHERUNG", ""),
+        "BERUFSUNFÄHIGKEITSVERSICHERUNG" => new ModifierMapping("BERUFSUNFAEHIGKEITSVERSICHERUNG", ""),
         "GEHALT" => new ModifierMapping("GEHALT_CHANGE", "modifyGehaltPercent"),
         "HAFTPFLICHTVERSICHERUNG" => new ModifierMapping("HAFTPFLICHTVERSICHERUNG", ""),
         "INVESTITIONSSPERRE" => new ModifierMapping("INVESTITIONSSPERRE", ""),
@@ -236,13 +236,10 @@ function importInvestitionenCards(): void
     $fileContent = array_slice($file, 2); //removes the first two elements (table name and table header)
     $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
     $keys = array_slice(explode(";", trim($tableHeaderItems[0])), 0, 8); //eight table header items
-    //print_r($fileContent);
-    //print_r($keys);
 
     foreach ($fileContent as $line) {
         $lineArray = explode(";", trim($line));
         $lineArrayWithKeys = array_combine($keys, $lineArray);
-        //print_r($lineArrayWithKeys);
 
         echo "\"" . $lineArrayWithKeys["id"] . "\" => new InvestitionenCardDefinition(\n";
         echo "\t" . "id: new CardId('" . $lineArrayWithKeys["id"] . "'),\n";

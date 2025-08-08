@@ -23,7 +23,9 @@ final readonly class EreignisPrerequisiteChecker
     public function hasPlayerPrerequisites(PlayerId $playerId, EreignisPrerequisitesId $ereignisPrerequisitesId): bool
     {
         return match ($ereignisPrerequisitesId) {
-            EreignisPrerequisitesId::JOB => $this->hasPlayerAJob($playerId),
+            EreignisPrerequisitesId::HAS_JOB => $this->hasPlayerAJob($playerId),
+            EreignisPrerequisitesId::HAS_CHILD => $this->hasPlayerAChild($playerId),
+            EreignisPrerequisitesId::HAS_NO_CHILD => !($this->hasPlayerAChild($playerId)),
         };
     }
 
@@ -32,4 +34,8 @@ final readonly class EreignisPrerequisiteChecker
         return PlayerState::getJobForPlayer($this->gameEvents, $playerId) !== null;
     }
 
+    private function hasPlayerAChild(PlayerId $playerId): bool
+    {
+        return false; //TODO implement
+    }
 }
