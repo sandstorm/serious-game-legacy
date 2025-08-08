@@ -45,15 +45,17 @@ class SellInvestmentsForPlayerAfterInvestmentByAnotherPlayerAktion extends Aktio
             throw new \RuntimeException('' . $result->reason, 1752753850);
         }
 
+        $resourceChanges = new ResourceChanges(
+            guthabenChange: new MoneyAmount($this->price->value * $this->amount),
+        );
+
         return GameEventsToPersist::with(
             new InvestmentsWereSoldForPlayerAfterInvestmentByAnotherPlayer(
                 playerId: $playerId,
                 investmentId: $this->investmentId,
                 price: $this->price,
                 amount: $this->amount,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount($this->price->value * $this->amount),
-                )
+                resourceChanges: $resourceChanges
             )
         );
     }

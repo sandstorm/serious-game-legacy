@@ -31,4 +31,6 @@
     <x-gameboard.investitionen.investitionen-etf-modal :game-events="$gameEvents" />
 @elseif ($this->showCryptoModal)
     <x-gameboard.investitionen.investitionen-crypto-modal :game-events="$gameEvents" />
+@elseif ($this->showImmobilienModal)
+    <x-investitionen.immobilien-modal :game-events="$gameEvents" :player-id="$playerId" />
 @endif
