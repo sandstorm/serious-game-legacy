@@ -11,4 +11,9 @@ enum HookEnum: string
     case AUSSETZEN = 'Aussetzen';
     case LEBENSHALTUNGSKOSTEN_MULTIPLIER = 'Lebenshaltungskosten Multiplikator';
     case LEBENSHALTUNGSKOSTEN_MIN_VALUE = 'Lebenshaltungskosten Mindestwert';
+    case BERUFSUNFAEHIGKEITSVERSICHERUNG = 'Berufsunfähigkeitsversicherung';
+    case HAFTPFLICHTVERSICHERUNG = 'Haftpflichtversicherung';
+    case INVESTITIONSSPERRE = 'Investitionssperre';
+    case JOBVERLUST = 'Jobverlust';
+    case PRIVATE_UNFALLVERSICHERUNG = 'private Unfallversicherung';
 }

@@ -1,0 +1,241 @@
+Kategorie Karten (Bildung und Karriere/Soziales und Freizeit);;;;;;;;;
+id;category;title;description;phase;year;moneyChange;zeitsteinChange;bildungUndKarriereChange;sozialesUndFreizeitChange
+buk1;BILDUNG_UND_KARRIERE;Kulturabo;Schließe ein Kulturabo deiner Stadt ab und besuche regelmäßig interessante Premieren.;1;1;-750;;1;
+buk2;BILDUNG_UND_KARRIERE;Nachhilfe;Du willst deine Noten verbessern und gehst deshalb zur Nachhilfe.;1;1;-300;;1;
+buk3;BILDUNG_UND_KARRIERE;Bücher lesen;Mach es wie ein erfolgreicher CEO und lies dieses Jahr jede Woche ein neues Buch.;1;1;-500;;1;
+buk4;BILDUNG_UND_KARRIERE;Erste-Hilfe-Kurs;Du absolvierst einen Erste-Hilfe-Kurs, um im Notfall richtig handeln zu können.;1;1;-300;;1;
+buk5;BILDUNG_UND_KARRIERE;Online-Seminar;Um deine Computerkenntnisse zu verbessern, besuchst du ein Online-Seminar.;1;1;-200;;1;
+buk6;BILDUNG_UND_KARRIERE;Bibliotheksausweis;Du meldest dich in der Bibliothek an und nutzt die Möglichkeit, regelmäßig Bücher auszuleihen, um dich weiterzubilden.;1;1;-150;;1;
+buk7;BILDUNG_UND_KARRIERE;VHS-Kurs;Du besuchst einen Kurs an der Volkshochschule.;1;1;-110;;1;
+buk8;BILDUNG_UND_KARRIERE;Gedächtnistraining;Trainiere dein Gedächtnis täglich 20 Minuten, um deine geistige Fitness zu erhalten.;1;1;;-1;1;
+buk9;BILDUNG_UND_KARRIERE;Podcast;Um dich im Bereich Finanzen fortzubilden, hörst du regelmäßig einen Podcast. Das nimmt viel Zeit in Anspruch.;1;1;;-1;1;
+buk10;BILDUNG_UND_KARRIERE;Sprach-Lern-App;Mithilfe einer Sprachlern-App versuchst du, dir erste Grundkenntnisse in einer dir unbekannten Sprache anzueignen.;1;1;-250;;1;
+buk11;BILDUNG_UND_KARRIERE;Startup-Wettbewerb;Du machst bei einem Startup-Wettbewerb mit und steckst eigenes Kapital in die Entwicklung eines Prototyps.;1;2;-2000;;1;
+buk12;BILDUNG_UND_KARRIERE;Sprachreise nach England;Reise nach England, um deine Sprachkenntnisse zu verbessern.;1;2;-2000;;1;
+buk13;BILDUNG_UND_KARRIERE;Qualifizierungsmaßnahme;Du absolvierst eine Qualifizierungsmaßnahme an einer Abendschule.;1;2;-800;;1;
+buk14;BILDUNG_UND_KARRIERE;Persöhnlichkeitscoaching;Um dein Auftreten zu stärken, entscheidest du dich für ein Persönlichkeitscoaching. ;1;2;-800;;1;
+buk15;BILDUNG_UND_KARRIERE;Nachrichten lesen;Informiere dich jeden Morgen ausführlich über aktuelle Ereignisse und Nachrichten in der Welt.;1;2;;-1;1;
+buk16;BILDUNG_UND_KARRIERE;Mehr Erfolg durch Fitness;Wer regelmäßig Sport treibt, ist im Beruf erfolgreicher und hat größere Chancen aufzusteigen!;1;2;;-1;1;
+buk17;BILDUNG_UND_KARRIERE;Blogbeitrag;Verbessere deine Außendarstellung, indem du über deine beruflichen Erfahrungen bloggst.;1;2;;-1;1;
+buk18;BILDUNG_UND_KARRIERE;Sprachkurs;Belege einen dreimonatigen Sprachkurs in England.;1;3;-11000;;1;
+buk19;BILDUNG_UND_KARRIERE;Ausbildung Segellehkraft;Verwirkliche deinen Traum und absolviere eine Ausbildung zur Segellehrkraft. Dabei lernst du nicht nur technisches Wissen, sondern auch viel über gruppendynamische Prozesse.;1;3;-9000;;1;
+buk20;BILDUNG_UND_KARRIERE;Networking;Knüpfe wertvolle berufliche Kontakte und erweitere deinen Horizont durch die Teilnahme an internationalen Konferenzen.;1;3;-8500;;2;
+buk21;BILDUNG_UND_KARRIERE;Ausbildung zur Skilehrkraft;Erfülle dir deinen Traum und absolviere eine Ausbildung zur Skilehrkraft. Neben technischem Wissen eignest du dir dabei auch geografische und pädagogische Kenntnisse an.;1;3;-8800;;1;
+buk22;BILDUNG_UND_KARRIERE;Bergtourleitung;Verwirkliche deinen Traum und absolviere die Ausbildung zur Bergtourleitung. Dabei erwirbst du nicht nur technisches, sondern auch geografisches und pädagogisches Wissen.;1;3;-7200;;1;
+buk23;BILDUNG_UND_KARRIERE;Jagdverein;Werde Mitglied im Jagdverein und triff dich mit anderen engagierten Nachwuchstalenten in der freien Natur.;1;3;-5700;;1;
+buk24;BILDUNG_UND_KARRIERE;Karriere Booster: Chinesisch;Stell dich der Herausforderung der anspruchsvollsten Sprache der Welt: Bei deinem Aufenthalt in China kannst du dein Chinesisch deutlich verbessern.;1;3;-5500;;1;
+buk25;BILDUNG_UND_KARRIERE;Übungsleiterschein im Kinderturnen;Erfülle dir deinen Traum und mache deinen Übungsleiterschein im Kinderturnen. Neben technischem und pädagogischem Wissen eignest du dir dabei auch Kenntnisse über gruppendynamische Prozesse an.;1;3;-2800;;1;
+buk26;BILDUNG_UND_KARRIERE;Reise;Reise in ein fremdes Land, um deinen kulturellen Horizont zu erweitern.;1;3;-6000;;1;
+buk27;BILDUNG_UND_KARRIERE;Ortswechsel;Zieh für einen Neustart in eine neue Stadt – auch wenn der Umzug Geld kostet.;1;3;-3500;;1;
+buk28;BILDUNG_UND_KARRIERE;Auslandsaufenthalt;Für deine Karriere ziehst du für sechs Monate nach Singapur.;1;3;-1800;-1;1;
+buk29;BILDUNG_UND_KARRIERE;Feierabendgetränk;Mit deiner Kollegschaft ziehst du regelmäßig nach dem Feierabend um die Häuser.;1;3;-1000;;1;
+buk30;BILDUNG_UND_KARRIERE;Weiterbildung;Du absolvierst eine Weiterbildung an der Abendschule. Mit jeder abgeschlossenen Weiterbildung wächst nicht nur dein Wissen, sondern auch deine beruflichen Perspektiven erweitern sich.;1;3;-3200;;1;
+buk31;BILDUNG_UND_KARRIERE;Seminarwochenende;Du nimmst an einem Seminarwochenende der Börse Frankfurt teil, um verschiedene Investmentstrategien kennenzulernen.;1;3;-1100;;1;
+buk33;BILDUNG_UND_KARRIERE;Ortswechsel;Du ziehst in ein anderes Bundesland und hast so die Chance, dein Privatleben neu zu gestalten.;1;3;;-1;1;
+buk34;BILDUNG_UND_KARRIERE;Kongresseinladung;Du wirst eingeladen, auf einem wichtigen Kongress über deine beruflichen Erfahrungen zu sprechen. Die Vorbereitung der Rede nimmt viel Zeit in Anspruch, macht dich aber sehr bekannt.;1;3;;-1;1;
+buk35;BILDUNG_UND_KARRIERE;Networking;Baue deine Geschäftsbeziehungen sorgfältig aus, um deine berufliche Laufbahn zu fördern.;1;3;;-1;1;
+buk36;BILDUNG_UND_KARRIERE;Trainerschein als Fluglehrkraft;Verwirkliche deinen Traum und werde Fluglehrkraft. Neben technischem Wissen baust du dir fundierte Kenntnisse über aerodynamische Prozesse auf.;2;;-35000;;1;
+buk38;BILDUNG_UND_KARRIERE;Sprachreise;"Absolviere eine Sprachreise, um deine Kommunikationsfähigkeiten zu verbessern. Du wirst dabei von einer kompetenten Sprachlehrkraft optimal und individuell betreut. ";2;;-22000;;1;
+buk39;BILDUNG_UND_KARRIERE;Sprachkurs;Absolviere einen drei Monate langen Sprachkurs im Ausland.;2;;-18000;;1;
+buk40;BILDUNG_UND_KARRIERE;Jagdschein;Verwirkliche deinen Traum und erwirb deinen Jagdschein. Dabei eignest du dir nicht nur umfassendes Wissen über Flora und Fauna an, sondern auch wertvolle geografische Kenntnisse.;2;;-17000;;1;
+buk41;BILDUNG_UND_KARRIERE;längere Reise;"Nutze die Gelegenheit, eine ausgedehnte Reise in ein fremdes Land zu unternehmen, um deinen kulturellen Horizont nachhaltig zu erweitern.";2;;-16000;;1;
+buk42;BILDUNG_UND_KARRIERE;Mitgliedschaft Kulturverein;Werde Mitglied im Kulturverein und genieße Treffen mit Gleichgesinnten in Opernhäusern rund um die Welt.;2;;-13500;;1;
+buk43;BILDUNG_UND_KARRIERE;Kulturmäzen;Engagiere dich als Kulturmäzen deiner Stadt und besuche regelmäßig interessante Premieren, die durch dein Sponsoring ermöglicht werden.;2;;-12000;;1;
+buk44;BILDUNG_UND_KARRIERE;Weiterbildung;Du wolltest schon immer dein kreatives Talent fördern und belegst deshalb eine Weiterbildung in Kunstgeschichte.;2;;-11000;;1;
+buk45;BILDUNG_UND_KARRIERE;Organisation Technik-Camps;Unterstütze eine Schule, indem du ein Technik-Camp für Jugendliche organisierst. Dieses Engagement kannst du dir im Lebenslauf anrechnen lassen.;2;;-10000;;1;
+buk46;BILDUNG_UND_KARRIERE;Verkaufscoaching;Verkaufen ist eine Schlüsselkompetenz – wer sich und seine Ideen überzeugend präsentiert, kommt schneller ans Ziel. Du entscheidest dich deshalb für ein professionelles Verkaufscoaching.;2;;9500;;1;
+buk47;BILDUNG_UND_KARRIERE;Auslandsaufenthalt;Für deine Karriere ziehst du für sechs Monate nach New York.;2;;-12400;-1;1;
+buk48;BILDUNG_UND_KARRIERE;Karriere Booster: Französisch;Nutze die schönste Sprache der Welt: Ein längerer Aufenthalt in Paris gibt dir die Chance, dein Schulfranzösisch aufzufrischen und zu verbessern.;2;;-7800;;1;
+buk49;BILDUNG_UND_KARRIERE;Sommerfest;Du lädst deine Kollegschaft zu einem Sommerfest in dein Ferienhaus am See ein.;2;;-5600;;1;
+buk50;BILDUNG_UND_KARRIERE;Onlinekurs Universität;Immer mehr Universitäten stellen ihre Vorlesungen online zur Verfügung. Profitiere davon und besuche einen Kurs an einer amerikanischen Eliteuniversität.;2;;-6000;;1;
+buk51;BILDUNG_UND_KARRIERE;Außendarstellung;Optimiere deinen Auftritt: Lass deine Bewerbungsunterlagen und deine Online-Präsenz professionell überarbeiten.;2;;-4800;;1;
+buk52;BILDUNG_UND_KARRIERE;Netzwerk;Vernetze dich beruflich und entwickle dich auf internationalen Konferenzen fachlich sowie persönlich weiter.;2;;-3800;;1;
+buk53;BILDUNG_UND_KARRIERE;Wertekongress;Du nimmst an einem Wertekongress für Führungskräfte teil und investierst dafür Zeit und finanzielle  Ressourcen.;2;;-2700;-1;1;
+buk54;BILDUNG_UND_KARRIERE;Weiterbildung;Du absolvierst eine Weiterbildung an der Abendschule. Mit jeder abgeschlossenen Weiterbildung wächst nicht nur dein Wissen, sondern auch deine beruflichen Perspektiven erweitern sich.;2;;-1200;;1;
+buk55;BILDUNG_UND_KARRIERE;Zeitungsabonnement;Informiere dich jeden Morgen über aktuelle Ereignisse in der Welt.;2;;;-1;1;
+buk56;BILDUNG_UND_KARRIERE;Programmierkurs;Mache dich mit einem Programmierkurs an der Abendschule fit für die Herausforderungen der digitalen Welt.;2;;-1300;-1;1;
+buk57;BILDUNG_UND_KARRIERE;Politik-News;Um dich politisch und wirtschaftlich auf dem Laufenden zu halten, abonnierst du eine individuell zusammengestellte Auswahl wichtiger Berichte und Reportagen.;2;;-1250;;1;
+buk58;BILDUNG_UND_KARRIERE;Networking ;Baue deine Geschäftsbeziehungen sorgfältig aus, um deine berufliche Laufbahn zu fördern.;2;;-700;;1;
+buk59;BILDUNG_UND_KARRIERE;wöchentlicher Podcast;Mach es wie erfolgreiche CEOs: Höre wöchentlich einen neuen Podcast und halte die zentralen Erkenntnisse fest – so entwickelst du dein Wissen stetig weiter.;2;;-200;-1;1;
+buk61;BILDUNG_UND_KARRIERE;Kongresseinladung;Du wirst eingeladen, auf einem wichtigen Kongress über deine beruflichen Erfahrungen zu sprechen. Die Vorbereitung der Rede nimmt viel Zeit in Anspruch, macht dich aber sehr bekannt.;2;;;-1;1;
+buk62;BILDUNG_UND_KARRIERE;Austauschprogramm;Du nimmst an einem Austauschprogramm teil und arbeitest zwei Monate in einem fremden Unternehmen. Die Vorbereitung für den Auslandsaufenthalt kostet dich Zeit. ;2;;;-1;1;
+buk63;BILDUNG_UND_KARRIERE;Mehr Erfolg durch Fitness ;Wer regelmäßig Sport treibt, ist im Beruf erfolgreicher und hat größere Chancen aufzusteigen!;2;;;-1;1;
+buk64;BILDUNG_UND_KARRIERE;Zeitmanagement;Die neue Lebensphase stellt dich vor Herausforderungen und erfordert besseres Zeitmanagement – sonst bleiben deine Weiterbildungsziele unerreicht.;2;;;-1;1;
+buk65;BILDUNG_UND_KARRIERE;Gedächtnistraining;Nimm dir jeden Tag 10 Minuten für Gedächtnistraining, um deine geistige Leistungsfähigkeit zu bewahren.;2;;;-1;1;
+buk68;BILDUNG_UND_KARRIERE;Mentorenprogramm;Bewirb dich für ein Mentorenprogramm und triff deinen Mentor, einen renommierten CEO, wöchentlich zum Mittagessen. Die Kosten übernimmst du als Zeichen deiner Dankbarkeit.;3;;-47000;;1;
+buk69;BILDUNG_UND_KARRIERE;Kulturmäzen;Engagiere dich als Kulturmäzen deiner Stadt und besuche regelmäßig interessante Premieren, die durch dein Sponsoring ermöglicht werden.;3;;-40500;;1;
+buk70;BILDUNG_UND_KARRIERE;TED-Talks;Reise zu den großen TED-Talks, um stets über die neuesten Innovationen informiert zu sein.;3;;-22000;;1;
+buk71;BILDUNG_UND_KARRIERE;bekannte Persönlichkeiten;Lade regelmäßig inspirierende Persönlichkeiten ein und lerne direkt von deren Erfahrungen und Werdegang.;3;;-17000;;1;
+buk72;BILDUNG_UND_KARRIERE;Coach Strategieentwicklung;Engagiere einen Coach, der dich in deiner Strategieentwicklung unterstützt. ;3;;-16800;;1;
+buk73;BILDUNG_UND_KARRIERE;Organisation KI-Camp;Unterstütze eine Schule, indem du ein KI-Camp für Jugendliche organisierst. Dieses Engagement kannst du dir im Lebenslauf anrechnen lassen.;3;;-15800;;1;
+buk74;BILDUNG_UND_KARRIERE;Teambuildingworkshop;Du lädst dein Team zu einem Teambuilding-Workshop in ein modernes Strandhaus ein und übernimmst sämtliche Kosten. Das Ergebnis: ein gestärktes Wir-Gefühl und spürbar steigende Umsätze.;3;;-15000;;1;
+buk75;BILDUNG_UND_KARRIERE;archäologische Expedition;Erfülle deine Abenteuerlust mit einer archäologischen Expedition – betreut von einem erfahrenen Guide, der individuell auf dich eingeht.;3;;-15000;;1;
+buk76;BILDUNG_UND_KARRIERE;Sprachbgeleitung;Profitiere von professioneller Sprachbegleitung für verhandlungssichere Kommunikation im internationalen Kontext.;3;;-13200;;1;
+buk77;BILDUNG_UND_KARRIERE;Weiterbildung;Du absolvierst eine Weiterbildung an der Abendschule. Mit jeder abgeschlossenen Weiterbildung wächst nicht nur dein Wissen, sondern auch deine beruflichen Perspektiven erweitern sich.;3;;-11100;;1;
+buk78;BILDUNG_UND_KARRIERE;Auslandsaufenthalt;"Für deinen nächsten Karriereschritt ziehst du für zwei Jahre nach Hongkong und tauchst dort in neue berufliche Herausforderungen ein.";3;;-10400;-1;1;
+buk79;BILDUNG_UND_KARRIERE;Kurs Töpferei;Du wolltest dein kreatives Talent schon immer fördern und belegst deshalb einen Anfänger- sowie einen Aufbaukurs in Töpferei.;3;;-8200;-1;1;
+buk80;BILDUNG_UND_KARRIERE;Briefing;Lass dir individuelle Briefings zum aktuellen Weltgeschehen zuschicken – exakt auf deine Bedürfnisse zugeschnitten und mit allen für dich relevanten Informationen.;3;;-9200;;1;
+buk81;BILDUNG_UND_KARRIERE;internationaler Kongress;Du wirst eingeladen, auf einem internationalen Kongress zu sprechen, musst jedoch die Reisekosten selbst tragen.;3;;-8800;;1;
+buk82;BILDUNG_UND_KARRIERE;Ernährungsumstellung;Mit der Unterstützung eines Ernährungs- und Fitnesscoachs bringst du dich in Topform, um mit neuer Power und Energie den nächsten Karriereschritt zu meistern.;3;;-7000;;1;
+buk83;BILDUNG_UND_KARRIERE;Wertekongress;Du nimmst an einem Wertekongress für Führungskräfte teil und investierst dafür Zeit und finanzielle  Ressourcen.;3;;-6500;-1;1;
+buk84;BILDUNG_UND_KARRIERE;Weiterbildung;Du absolvierst eine Weiterbildung an der Abendschule. Mit jeder abgeschlossenen Weiterbildung wächst nicht nur dein Wissen, sondern auch deine beruflichen Perspektiven erweitern sich.;3;;-9500;;1;
+buk85;BILDUNG_UND_KARRIERE;Onlinekurs Universität;Immer mehr Universitäten stellen ihre Vorlesungen online zur Verfügung. Profitiere davon und besuche einen Kurs an einer amerikanischen Eliteuniversität.;3;;-7500;-1;1;
+buk86;BILDUNG_UND_KARRIERE;Tagesseminar;Positionierung ist das A und O. Deshalb besuchst du ein Tagesseminar, in dem du lernst, dich gezielt in deiner Branche zu positionieren.;3;;-4200;;1;
+buk88;BILDUNG_UND_KARRIERE;Austauschprogramm;Du nimmst an einem Austauschprogramm teil und arbeitest zwei Monate in einem fremden Unternehmen. Die Vorbereitung für den Auslandsaufenthalt kostet dich Zeit. ;3;;;-1;1;
+buk89;BILDUNG_UND_KARRIERE;Kongresseinladung;Du wirst eingeladen, auf einem wichtigen Kongress über deine beruflichen Erfahrungen zu sprechen. Die Vorbereitung der Rede nimmt viel Zeit in Anspruch, macht dich aber sehr bekannt.;3;;;-1;1;
+buk90;BILDUNG_UND_KARRIERE;Gedächtnistraining;Trainiere dein Gedächtnis täglich 10 Minuten, um geistig fit zu bleiben.;3;;;-1;1;
+buk92;BILDUNG_UND_KARRIERE;Mentoringnetzwerk;Gründe ein Mentoringnetzwerk für die jüngere Generation deiner Branche und sammle dabei wertvolles Wissen.;3;;;-1;1;
+buk93;BILDUNG_UND_KARRIERE;Bergtourleitung;Erfülle dir deinen Traum und bilde dich zur Bergtourleitung aus. Dabei erwirbst du nicht nur technisches Wissen, sondern auch geografische und pädagogische Kompetenzen.;3;;-13200;;1;
+suf1;SOZIALES_UND_FREIZEIT;Ehrenamtliches Engagement;Du engagierst dich ehrenamtlich für eine Organisation, die Menschen mit Beeinträchtigung einen unvergesslichen Urlaub ermöglicht. Die anfallenden Kosten für dich trägst du dabei selbst.;1;1;-1200;;;1
+suf2;SOZIALES_UND_FREIZEIT;Musikverein;Du meldest dich im Musikverein an. Dafür musst du ein hochwertiges Instrument kaufen. ;1;1;-1000;;;1
+suf3;SOZIALES_UND_FREIZEIT;Volleyballverein;Du meldest dich im Volleyballverein an und bist fortan Teil einer engagierten Mannschaft.;1;1;-500;;;1
+suf4;SOZIALES_UND_FREIZEIT;Kantine;Du hast aufgehört zu kochen und nutzt stattdessen nur noch die Angebote der Cafeteria. ;1;1;-300;;;1
+suf5;SOZIALES_UND_FREIZEIT;Spende Tierheim;Regelmäßig spendest du bei deinen Einkäufen Tiernahrung an die umliegenden Tierheime.;1;1;-200;;;1
+suf6;SOZIALES_UND_FREIZEIT;Nachbarschaftsgarten;Du engagierst dich für einen gemeinschaftlich betriebenen Nachbarschaftsgarten, in dem Ernte, Kosten und Risiken gemeinsam getragen werden.;1;1;-200;;;1
+suf7;SOZIALES_UND_FREIZEIT;Valentinstag;Obwohl du am Valentinstag Single bist, beschließt du, jedem glücklichen Paar, das dir heute begegnet, eine Rose zu schenken.;1;1;-80;;;1
+suf8;SOZIALES_UND_FREIZEIT;Besuch Pflegeheim;Du besuchst regelmäßig eine Pflegeeinrichtung und veranstaltest dort einen geselligen Brettspielabend für die Bewohnenden.;1;1;;-1;;1
+suf9;SOZIALES_UND_FREIZEIT;Sprachtandem;Du triffst dich regelmäßig mit einem Erasmus-Studierenden zum Sprachtandem und lernst so viel über andere Sprachen und Kulturen.;1;1;;-1;;1
+suf10;SOZIALES_UND_FREIZEIT;kostenlose Nachhilfe;Du gibst sozial benachteiligten Kindern Nachhilfe, um ihre schulischen Chancen zu verbessern.;1;1;;-1;;1
+suf11;SOZIALES_UND_FREIZEIT;Spazieren mit Hunden;Du hilfst dem örtlichen Tierheim ehrenamtlich und übernimmst dreimal pro Woche die Gassirunden mit den Hunden.;1;1;;-1;;1
+suf12;SOZIALES_UND_FREIZEIT;Kleidertauschparty;Du bringst Ordnung in deinen Kleiderschrank und nimmst an einer Kleidertauschparty teil.;1;1;;;;1
+suf13;SOZIALES_UND_FREIZEIT;Einkaufsgemeinschaft;"Du organisierst eine Einkaufsgemeinschaft in deiner Nachbarschaft – ihr bestellt gesammelt und lasst umweltschonend liefern.";1;2;-2000;;;1
+suf14;SOZIALES_UND_FREIZEIT;Plattform Mitfahrgelegenheit;Du startest eine Mitfahrplattform für den ländlichen Raum – für weniger Emissionen und mehr Miteinander.;1;2;-1500;;;1
+suf15;SOZIALES_UND_FREIZEIT;Staubsauger-Roboter;Du legst dir einen Saugroboter zu und genießt ein staubfreies Zuhause ganz ohne Aufwand.;1;2;-1000;;;1
+suf16;SOZIALES_UND_FREIZEIT;Fußballverein;Um fit zu bleiben, trittst du einem Fußballverein bei und stattest dich mit hochwertiger Sportkleidung aus.;1;2;-1000;;;1
+suf17;SOZIALES_UND_FREIZEIT;Flüchtlingspatenschaft;Du übernimmst eine Patenschaft für eine geflüchtete Person.;1;2;-500;;;1
+suf18;SOZIALES_UND_FREIZEIT;Einsatz für Demokratie;Du setzt einen Flyer auf, der über demokratische Werte informiert, und investierst eigenes Geld in den Druck.;1;2;-500;;;1
+suf19;SOZIALES_UND_FREIZEIT;Brief an Regierung;"Regieren ist kein einfacher Job. Die Presse schießt zunehmend gegen das Kanzleramt. Du nimmst dir Zeit, einen ermutigenden Brief an unser Regierungsoberhaupt  zu schreiben und schickst ihn mit einigen Köstlichkeiten zur Stärkung nach Berlin. ";1;2;-150;;;1
+suf20;SOZIALES_UND_FREIZEIT;SteuerberaterIn;Du verlierst langsam den Überblick über deine Unterlagen der letzten Jahre – Zeit, eine Steuerberaterin zu engagieren.;1;2;-2000;;;1
+suf21;SOZIALES_UND_FREIZEIT;Food-Sharing;Durch deine Food-Sharing-Aktivitäten lernst du viele neue Leute kennen und gibst weniger Geld für Essen aus. Der Zeitaufwand ist allerdings nicht ohne.;1;2;1000;-1;;1
+suf22;SOZIALES_UND_FREIZEIT;Teilnahme Spendenmarathon;Du engagierst dich bei einem Spendenmarathon für krebskranke Kinder und musst viel Zeit in die Suche nach Sponsoren investieren.;1;2;;-1;;1
+suf23;SOZIALES_UND_FREIZEIT;Ehrenamtliches Engagement;Der örtliche Turnverein sucht händeringend nach Unterstützung. Du erklärst dich bereit, ehrenamtlich als Betreuungsperson beim Mutter-Kind-Turnen auszuhelfen. ;1;2;;-1;;1
+suf24;SOZIALES_UND_FREIZEIT;CleanUp Aktion;Du setzt dich ehrenamtlich für eine saubere Umwelt ein und hilfst bei einer Clean-up-Aktion in deiner Stadt mit.;1;2;;;;1
+suf25;SOZIALES_UND_FREIZEIT;Sozialhilfe;Du stellst eine Pflegeperson ein, die sich um deine Großeltern kümmert, damit du mehr Freiraum für dich hast.;1;3;-30000;;;2
+suf26;SOZIALES_UND_FREIZEIT;Haushaltshilfe;Du stellst eine Haushaltshilfe ein, damit du mehr Zeit für dich selbst hast.;1;3;-10000;;;2
+suf27;SOZIALES_UND_FREIZEIT;Schlaftracking;Du richtest dein Schlafzimmer nach den neuesten Erkenntnissen der Schlafforschung ein. Dein Schlaf wird dadurch deutlich tiefer, und tagsüber fühlst du dich viel erholter.;1;3;-7000;;;1
+suf28;SOZIALES_UND_FREIZEIT;Patenschaft;Du übernimmst die Patenschaft für drei Kinder in Moldawien und bleibst durch regelmäßige Nachrichten mit ihnen verbunden.;1;3;-6000;;;1
+suf29;SOZIALES_UND_FREIZEIT;Reinigungskraft;Du möchtest mehr Zeit mit deinen Liebsten verbringen und entscheidest dich daher, eine Reinigungskraft zu engagieren, die deine Wohnung künftig sauber hält.;1;3;-5000;;;1
+suf30;SOZIALES_UND_FREIZEIT;"Stipendium in Indonesien";Du übernimmst die Stipendiumskosten für zwei Geschwister in Indonesien.;1;3;-4000;;;1
+suf31;SOZIALES_UND_FREIZEIT;Finanz- & SteuerberaterIn;Auf Empfehlung engagierst du eine kompetente Finanz- und Steuerberaterin.;1;3;-3500;;;1
+suf32;SOZIALES_UND_FREIZEIT;Interventionsprogramm ;Du planst ein Interventionsprogramm gegen häusliche Gewalt und trägst dabei die Kosten für den Veranstaltungsraum und den Moderationskoffer selbst.;1;3;-3000;;;1
+suf33;SOZIALES_UND_FREIZEIT;Lieferung Bio-Essen;Da du keine Lust mehr aufs Kochen hast, bestellst du dir lieber hochwertiges Bio-Essen nach Hause.;1;3;-3000;;;1
+suf34;SOZIALES_UND_FREIZEIT;Fitness;Du meldest dich im Fitnessstudio an und nimmst dir vor, dreimal pro Woche mit einem Personaltrainer zu trainieren. Im kommenden Jahr wirst du deutlich seltener krank sein.;1;3;-3000;;;1
+suf35;SOZIALES_UND_FREIZEIT;Hausverwaltung;Um mehr Freiraum zu haben, beauftragst du eine Hausverwaltung mit der Betreuung deiner Mietwohnung.;1;3;-1200;;;1
+suf36;SOZIALES_UND_FREIZEIT;Aufklärung Menschenhandel;Du gehst auf die Straße und klärst Menschen über moderne Sklaverei auf. Menschenhandel ist leider nicht Vergangenheit, sondern traurige Gegenwart. Dafür kaufst du Plakate und Flyer.;1;3;-1000;;;1
+suf37;SOZIALES_UND_FREIZEIT;Webseite zur Nachbarschaftshilfe;Du entwickelst eine Webseite, die Menschen aus deiner Nachbarschaft unkompliziert miteinander vernetzt. Die regelmäßigen Kosten für das Hosting trägst du selbst.;1;3;-400;;;1
+suf38;SOZIALES_UND_FREIZEIT;Geschenke Obdachlose;Du verteilst Nikolausgeschenke an Obdachlose in deiner Stadt.;1;3;-150;;;1
+suf39;SOZIALES_UND_FREIZEIT;Spende wohltätiger Zweck;Du unterstützt mit einer einmaligen Spende ein gemeinnütziges Projekt.;1;3;-300;;;1
+suf40;SOZIALES_UND_FREIZEIT;Spende wohltätiger Zweck;Du unterstützt mit einer einmaligen Spende ein gemeinnütziges Projekt.;1;3;-500;;;1
+suf41;SOZIALES_UND_FREIZEIT;Up-Cycling;Indem du alte Geräte im Repair-Café upcyclest, sparst du dir die Kosten für neue Anschaffungen und lernst gleichzeitig neue Leute kennen. Allerdings ist das Reparieren zeitaufwendig.;1;3;1000;-1;;1
+suf42;SOZIALES_UND_FREIZEIT;Ehrenamtliches Engagement;Du engagierst dich wöchentlich in einem örtlichen Jugendzentrum. ;1;3;;-1;;1
+suf43;SOZIALES_UND_FREIZEIT;Projektteilnahme;Du machst bei einem 500-Euro-Projekt mit. Ziel ist es, 500 € kreativ zu erwirtschaften und an ein Projekt deiner Wahl zu spenden. #füreinebessereWelt;1;3;;;;1
+suf44;SOZIALES_UND_FREIZEIT;Pause Investititonen;Du möchtest dich nicht länger vom Auf und Ab der Finanzmärkte stressen lassen und legst deshalb eine Investitionspause ein.;1;3;;;;1
+suf45;SOZIALES_UND_FREIZEIT;Fundraisingaktion;Du organisierst eine Fundraisingaktion für die Nothilfe nach Naturkatastrophen, was viel Zeit in Anspruch nimmt.;1;3;;-1;;1
+suf46;SOZIALES_UND_FREIZEIT;Petition aufsetzen;Du setzt eine Petition für das Bleiberecht von Geflüchteten in Deutschland auf, was viel Zeit erfordert.;1;3;;-1;;1
+suf47;SOZIALES_UND_FREIZEIT;Vorstandsarbeit in einem Verein;Du übernimmst einen Vorstandsposten im Tennisverein, was viel Zeit in Anspruch nimmt.;1;3;;-1;;1
+suf48;SOZIALES_UND_FREIZEIT;Sterbebegleitung;Du beschließt, einen ehrenamtlichen Kurs zur Sterbebegleitung zu machen, um dich in diesem Bereich zu engagieren.;1;3;;-1;;1
+suf49;SOZIALES_UND_FREIZEIT;Arbeit EineWeltLaden;Du beschließt, dich wöchentlich im Eine-Welt-Laden zu engagieren, der fair gehandelte Produkte anbietet.;1;3;;-1;;1
+suf50;SOZIALES_UND_FREIZEIT;Baumpflanzaktion;Du machst bei einer ehrenamtlichen Baumpflanzaktion in deiner Stadt mit.;1;3;;;;1
+suf51;SOZIALES_UND_FREIZEIT;Insektenhotel;Du engagierst dich ehrenamtlich beim Bau von Insektenhotels, um Lebensraum für Insekten zu schaffen und die Artenvielfalt zu fördern.;1;3;;;;1
+suf52;SOZIALES_UND_FREIZEIT;Charity-Event;Du richtest ein Charity-Event aus, um benachteiligte Frauen in einer matriarchalen Gemeinschaft in Niger zu unterstützen.;2;;-50000;;;2
+suf53;SOZIALES_UND_FREIZEIT;Privatsauna;Um dem Alltagsstress zu entfliehen, lässt du dir eine Privatsauna bauen – gemeinsame Entspannungsmomente mit deinen Freunden werden dir neue Energie schenken.;2;;-50000;;;2
+suf54;SOZIALES_UND_FREIZEIT;Privatköchin;Deine Kochkünste lassen zu wünschen übrig und die Küche sieht danach oft wie ein Schlachtfeld aus – deshalb engagierst du eine Privatköchin für dich und deine Liebsten.;2;;-43000;;;1
+suf55;SOZIALES_UND_FREIZEIT;Haushaltshilfe;Um mehr Zeit für dich und deine Familie zu haben, engagierst du eine Haushaltshilfe.;2;;-40000;;;1
+suf56;SOZIALES_UND_FREIZEIT;Familienreise;Du erfüllst dir und deiner Familie einen Traum und buchst eine Reise nach Irland – dort könnt ihr die Ruhe und Schönheit der Natur in vollen Zügen genießen.;2;;-34000;;;2
+suf57;SOZIALES_UND_FREIZEIT;Schule Fidji;"Statt Strandurlaub entscheidest du dich, deinen Jahresurlaub dafür zu nutzen, auf den Fidschi-Inseln eine Schule aufzubauen.";2;;-30000;;;2
+suf58;SOZIALES_UND_FREIZEIT;Pflegedienst;Du sorgst mit einem Pflegedienst für die notwendige Betreuung deiner Großeltern und nutzt die gemeinsame Zeit bewusst für Spaziergänge und entspannte Gespräche bei Kaffee und Kuchen.;2;;-30000;;;2
+suf59;SOZIALES_UND_FREIZEIT;Sponsoring;"Du übernimmst Verantwortung und wirst Sponsor eines Charity-Events, das krebskranken Kindern Hoffnung und Unterstützung schenkt.";2;;-20000;;;2
+suf60;SOZIALES_UND_FREIZEIT;Ehrenamtliches Engagement;"Für sechs Monate reist du nach Bangladesch, um an einer neu eröffneten Schule Englisch zu unterrichten und wertvolle Bildungschancen zu schaffen.";2;;-20000;;;1
+suf61;SOZIALES_UND_FREIZEIT;Whirlpool;Du lässt dir einen Whirlpool in den Garten bauen, um nach der Arbeit gemütlich entspannen zu können. Überraschenderweise erhältst du nun deutlich mehr Besuch aus der Nachbarschaft.;2;;-20000;;;1
+suf62;SOZIALES_UND_FREIZEIT;persönliche Stylistin;"Mit einer persönlichen Stylistin setzt du auf zeitlosen Stil statt Fast Fashion – und vermeidest unnötige Shoppingtouren.";2;;-15000;;;1
+suf63;SOZIALES_UND_FREIZEIT;Jahresabo Bio-Essen;Du setzt auf Genuss ohne Aufwand: Ein Bio-Jahresabo versorgt dich täglich mit frischen, gesunden Mahlzeiten – ins Büro und nach Hause geliefert.;2;;-14500;;;1
+suf64;SOZIALES_UND_FREIZEIT;Patenschaft;Du engagierst dich als Pate für drei Kinder in Moldawien und trägst aktiv zu ihrer Schulbildung und Entwicklung bei.;2;;-14000;;;1
+suf65;SOZIALES_UND_FREIZEIT;Putzdienst;"Du beauftragst einen Reinigungsdienst für dein Chaos, der professionell reinigt und dabei konsequent auf Nachhaltigkeit und Umweltfreundlichkeit achtet.";2;;-14000;;;1
+suf66;SOZIALES_UND_FREIZEIT;Au-Pair;"Du engagierst eine Au-pair-Betreuung, die dir nicht nur neue Freizeit schenkt, sondern auch einen wertvollen kulturellen Austausch in dein Zuhause bringt.";2;;-12000;;;1
+suf67;SOZIALES_UND_FREIZEIT;plastikfreier Haushalt;Du stellst deinen Haushalt komplett auf plastikfreie Produkte um. Seit du konsequent auf nachhaltige Alternativen setzt, lebst du bewusster und schläfst mit einem ruhigeren Gewissen.;2;;-11000;;;1
+suf68;SOZIALES_UND_FREIZEIT;Permakultur;Mit deinem Permakultur-Projekt förderst du nachhaltige Anbaumethoden und regenerierst den Boden. Du öffnest die Türen für alle, die mehr über nachhaltige Landwirtschaft lernen möchten.;2;;-10000;;;1
+suf69;SOZIALES_UND_FREIZEIT;Schlaftracking;Mithilfe neuester Schlafforschung gestaltest du dein Schlafzimmer optimal – dein Schlaf ist tiefer und du startest tagsüber voller Energie.;2;;-9800;;;1
+suf70;SOZIALES_UND_FREIZEIT;Fitness;Du meldest dich im Fitnessstudio mit Personaltrainer an und nimmst dir fest vor, dreimal pro Woche zu trainieren. Dadurch bist du im kommenden Jahr seltener krank.;2;;-9000;;;1
+suf71;SOZIALES_UND_FREIZEIT;Finanz- & SteuerberaterIn;"Dank einer Empfehlung findest du eine erfahrene Finanz- und Steuerberaterin, die dich kompetent unterstützt.";2;;-8700;;;1
+suf72;SOZIALES_UND_FREIZEIT;Spende ;Aus deiner Liebe zu Tieren heraus entscheidest du dich, die lokalen Tierheime zu unterstützen.;2;;-8000;;;1
+suf73;SOZIALES_UND_FREIZEIT;Markt;Du kaufst ausschließlich auf dem Markt ein, um dich gesünder und nachhaltiger zu ernähren. So unterstützt du lokale Produzenten und schonst die Umwelt – und fühlst dich dabei rundum fit.;2;;-8000;;;1
+suf74;SOZIALES_UND_FREIZEIT;digitale Tauschbörse;Mit deiner digitalen Tauschbörse förderst du den gemeinschaftlichen Gebrauch von Gartengeräten und Maschinen – nachhaltig und praktisch.;2;;-8000;;;1
+suf75;SOZIALES_UND_FREIZEIT;Musikkurs;Du meldest dich für einen Musikkurs an, um deine Fähigkeiten zu verbessern und neue Kontakte zu knüpfen.;2;;-7600;;;1
+suf76;SOZIALES_UND_FREIZEIT;Dauerkarte 1.Liga;Mit einer Dauerkarte für deinen Lieblingsverein verpasst du kein Spiel mehr und erlebst die Atmosphäre live im Stadion.;2;;-7000;;;1
+suf77;SOZIALES_UND_FREIZEIT;Interventionsprogramm;"Du initiierst ein Interventionsprogramm, das Betroffenen häuslicher Gewalt hilft und Prävention fördert.";2;;-5000;;;1
+suf78;SOZIALES_UND_FREIZEIT;persönliche Stylistin;"Mit einer persönlichen Stylistin setzt du auf zeitlosen Stil statt Fast Fashion – und vermeidest unnötige Shoppingtouren.";2;;-5000;;;1
+suf79;SOZIALES_UND_FREIZEIT;Gründung Gemeinschaftsgarten;Du gründest einen Gemeinschaftsgarten und pachtest eine Fläche, um gemeinsam Blumen, Gemüse und Kräuter nachhaltig anzubauen.;2;;-5000;;;1
+suf80;SOZIALES_UND_FREIZEIT;Lieferung Einkäufe;Statt selbst einkaufen zu gehen, nutzt du eine Drohnenlieferung mit nachhaltigen Verpackungen und kurzen Transportwegen. So schonst du die Umwelt und hast mehr Zeit für dich und deine Freunde.;2;;-4000;;;1
+suf81;SOZIALES_UND_FREIZEIT;Up-Cycling;Mit deiner Upcycling-Initiative gestaltest du zusammen mit einer Gruppe engagierter Freiwilliger alte Kleidung zu stylischen, nachhaltigen Outfits um.;2;;-4000;;;1
+suf82;SOZIALES_UND_FREIZEIT;Geschenke Obdachlose;Mit Nikolausgeschenken bringst du Freude zu den obdachlosen Menschen in deiner Stadt.;2;;-2000;;;1
+suf83;SOZIALES_UND_FREIZEIT;Spende wohltätiger Zweck;Du unterstützt mit einer einmaligen Spende ein gemeinnütziges Projekt.;2;;-2000;;;1
+suf84;SOZIALES_UND_FREIZEIT;SteuerberaterIn;Weil dir die Unterlagen vom letzten Jahr über den Kopf wachsen, holst du dir Unterstützung durch eine Steuerberaterin.;2;;-5000;;;1
+suf85;SOZIALES_UND_FREIZEIT;Betreuung Buchhaltung;Du beauftragst ein Unternehmen mit der Betreuung deiner Buchhaltung und Terminorganisation – so gewinnst du mehr Zeit für die wirklich wichtigen Dinge.;2;;-5000;;;1
+suf86;SOZIALES_UND_FREIZEIT;Spende wohltätiger Zweck;Du unterstützt mit einer einmaligen Spende ein gemeinnütziges Projekt.;2;;-3000;;;1
+suf87;SOZIALES_UND_FREIZEIT;Besuch Pflegeheim;Als Teil deines sozialen Engagements besuchst du eine Pflegeeinrichtung und gestaltest mit den Bewohnenden einen Brettspielabend.;2;;;-1;;1
+suf88;SOZIALES_UND_FREIZEIT;Mentoring Universität;Du engagierst dich an der Universität, um junge Absolventinnen nachhaltig beim Berufseinstieg zu unterstützen und ihre Chancen auf dem Arbeitsmarkt zu stärken.;2;;;-1;;1
+suf89;SOZIALES_UND_FREIZEIT;Mathenachhilfe;"Du gibst kostenlose Mathenachhilfe für Kinder in deinem Viertel – dafür nimmst du dir bewusst Zeit.";2;;;-1;;1
+suf90;SOZIALES_UND_FREIZEIT;Training Jugendmannschaft;Du trainierst jetzt die Jugendmannschaft deines Fußballvereins. Seitdem steckst du deine ganze Energie in den Nachwuchs – und nicht mehr in Investitionen.;2;;;;;1
+suf91;SOZIALES_UND_FREIZEIT;Spazieren mit Hunden;Du hilfst im örtlichen Tierheim mit und gehst regelmäßig dreimal pro Woche mit den Hunden Gassi – ein Gewinn für Mensch und Tier.;2;;;-1;;1
+suf92;SOZIALES_UND_FREIZEIT;Ehrenamtliches Engagement;Du engagierst dich regelmäßig in einem Jugendzentrum in einem sozial herausgeforderten Viertel. Die Arbeit ist erfüllend, aber auch zeitintensiv.;2;;;-1;;1
+suf93;SOZIALES_UND_FREIZEIT;Teilnahme Spendemarathon;Du nimmst an einem Spendemarathon für krebskranke Kinder teil. Die Suche nach Sponsoren ist zeitaufwendig, aber lohnenswert.;2;;;-1;;1
+suf94;SOZIALES_UND_FREIZEIT;Sprachtandem;Mit deiner neuen Nachbarin aus Spanien triffst du dich regelmäßig zum Sprachtandem und entdeckst dabei viel über Sprache und fremde Kultur.;2;;;-1;;1
+suf95;SOZIALES_UND_FREIZEIT;Ehrenamtliches Engagement;Du engagierst dich wöchentlich in einem örtlichen Seniorenzentrum. ;2;;;-1;;1
+suf96;SOZIALES_UND_FREIZEIT;Pause Investititonen;Das ständige Auf und Ab an den Finanzmärkten stresst dich – deshalb gönnst du dir eine Auszeit von deinen Investitionen.;2;;;;;1
+suf97;SOZIALES_UND_FREIZEIT;Abbestellung Börsenbericht;a du den Börsenbericht nicht mehr liest und die Zeitung mit dem Wirtschaftsressort abbestellt hast, genießt du nun mehr Freizeit.;2;;;;;1
+suf98;SOZIALES_UND_FREIZEIT;Arbeit EineWeltLaden;Wöchentlich unterstützt du ehrenamtlich den EineWeltLaden, der fair gehandelte Produkte verkauft und so nachhaltigen Konsum fördert.;2;;;-1;;1
+suf99;SOZIALES_UND_FREIZEIT;Fundraisingaktion;Du setzt dich mit einer Fundraising-Aktion für die Nothilfe nach Naturkatastrophen ein – ein zeitintensives, aber wichtiges Engagement.;2;;;-1;;1
+suf100;SOZIALES_UND_FREIZEIT;Vorstandsarbeit in einem Verein;Du übernimmst einen Vorstandsposten im Tennisverein – eine verantwortungsvolle Aufgabe, die viel Zeit in Anspruch nimmt.;2;;;-1;;1
+suf101;SOZIALES_UND_FREIZEIT;Ferienhaus in Italien;Du erwirbst ein wunderschönes, kleines Ferienhaus in Italien. Von nun an genießt du regelmäßig die italienische Natur, trinkst Espresso und isst viel Pasta.;3;;-97000;;;1
+suf102;SOZIALES_UND_FREIZEIT;Schwimmbad;Du baust dir einen privaten Whirlpool als Ausgleich zum stressigen Alltag. Der Bau des Pools kostet zwar Zeit, doch die Auszeiten mit deinen Freunden werden dir guttun.;3;;-78000;-1;;2
+suf103;SOZIALES_UND_FREIZEIT;Charity-Event;"Du planst ein gemeinnütziges Event, das gezielt Projekte fördert, die benachteiligte Männer in einer matriarchal geprägten Gesellschaft in Niger stärken.";3;;-70000;;;1
+suf104;SOZIALES_UND_FREIZEIT;Haushaltshilfe;Du beschäftigst eine Haushaltshilfe, die dich im Alltag unterstützt.;3;;-40000;;;2
+suf105;SOZIALES_UND_FREIZEIT;Zweitwohnung Südsee;Du genießt die graue Jahreszeit in deiner Zweitwohnung auf den Südseeinseln. Die Wärme der Sonne gibt dir neue Energie, sodass dir deine Aufgaben leichter von der Hand gehen.;3;;-66000;;;1
+suf106;SOZIALES_UND_FREIZEIT;Privatköchin;Du engagierst eine Privatköchin, die mit regionalen, saisonalen Zutaten schmackhafte und gesunde Mahlzeiten zubereitet, um bewussten Genuss und Nachhaltigkeit in euren Alltag zu bringen.;3;;-52000;;;1
+suf107;SOZIALES_UND_FREIZEIT;Ergänzung Weinsammlung;Du erweiterst deine Weinsammlung durch erlesene Weine aus Napa Valley in Kalifornien. Die stetig wachsende Vielfalt in deinem Weinkeller bereitet dir große Freude und belebt deinen Alltag.;3;;-47000;;;1
+suf108;SOZIALES_UND_FREIZEIT;Pflegedienst;Du sorgst mit einem Pflegedienst für die notwendige Betreuung deiner Großeltern und nutzt die gemeinsame Zeit bewusst für Spaziergänge und entspannte Gespräche bei Kaffee und Kuchen.;3;;-45000;;;2
+suf109;SOZIALES_UND_FREIZEIT;Aufbau Solarpark;Du errichtest am Stadtrand einen großen Solarpark, der dazu beiträgt, den CO2-Ausstoß deiner Stadt deutlich zu reduzieren und eine saubere Energieversorgung zu fördern.;3;;-45000;;;1
+suf110;SOZIALES_UND_FREIZEIT;Analyse Biorythmus;Du beauftragst eine detaillierte Analyse deines Biorhythmus und steigerst dadurch deine Arbeits;3;;-34500;;;1
+suf111;SOZIALES_UND_FREIZEIT;Naturteich;Du lässt dir einen Naturteich in den Garten bauen, um nach der Arbeit gemütlich entspannen zu können. Jetzt erhältst du überraschenderweise viel mehr Besuch von deiner Nachbarschaft.;3;;-52000;;;1
+suf112;SOZIALES_UND_FREIZEIT;Fitness;Du richtest dir ein individuell ausgestattetes Fitnesszimmer ein, das perfekt auf deine Bedürfnisse zugeschnitten ist und dir hilft, deine Ziele fit und motiviert zu verfolgen.;3;;-43000;;;1
+suf113;SOZIALES_UND_FREIZEIT;Jahresurlaub;"Du verbringst deinen Jahresurlaub damit, beim Wiederaufbau einer Schule nach einem Erdbeben tatkräftig zu helfen.";3;;-20000;-1;;2
+suf114;SOZIALES_UND_FREIZEIT;"Unterstützung nachhaltigeForschung";Du unterstützt ein Forschungsprojekt, das Technologien entwickelt, um Kohlendioxid aus der Luft zu entfernen und in Sauerstoff umzuwandeln.;3;;-40000;;;1
+suf115;SOZIALES_UND_FREIZEIT;Umzug;Du beziehst eine ruhig gelegene Wohnung in der Nähe, die dank verbesserter Dämmung für mehr Ruhe sorgt. So schläfst du besser und fühlst dich tagsüber ausgeruhter.;3;;-10000;-1;;1
+suf116;SOZIALES_UND_FREIZEIT;Umzug;Du ziehst in eine zentrale, gut angebundene Wohnung, wodurch du auf lange Pendelstrecken verzichten kannst. ;3;;-10000;-1;;1
+suf117;SOZIALES_UND_FREIZEIT;Garten- und Landschaftspflege;Du engagierst eine nachhaltige Garten- und Landschaftspflege, die deinen Garten naturnah pflegt. So kannst du deine Freizeit entspannter genießen und gleichzeitig die Umwelt schonen.;3;;-32000;;;1
+suf118;SOZIALES_UND_FREIZEIT;"abgestimmte Nahrungs-ergänungsmittel";Du schließt ein Abo für individuell auf deine Bedürfnisse abgestimmte Nahrungsergänzungsmittel ab, um deine Fitness optimal zu unterstützen.;3;;-27000;;;1
+suf119;SOZIALES_UND_FREIZEIT;Sponsoring;"Du unterstützt als Sponsor eine Freizeit, die speziell für Kinder im Hospiz organisiert wird, um ihnen unvergessliche Erlebnisse zu ermöglichen.";3;;-30000;;;2
+suf120;SOZIALES_UND_FREIZEIT;Dauerkarte 1.Liga;Du sicherst dir eine VIP-Dauerkarte für deinen Lieblingsverein in der ersten Liga und bist dadurch bei jedem Heim- und Auswärtsspiel live dabei.;3;;-30000;;;1
+suf121;SOZIALES_UND_FREIZEIT;Zero-Waste-Modell;Du führst ein Zero-Waste-Modell für deine Stadt ein. Dafür musst du viele Expertinnen und finanzielle Mittel für den Aufbau des Modells beschaffen.;3;;-30000;;;1
+suf122;SOZIALES_UND_FREIZEIT;"ökologisches Wirtschaftsnetzwerk";Du gründest ein Netzwerk, in dem Unternehmen, Landwirte und Verbraucher eng zusammenarbeiten, um gemeinsam ökologische und nachhaltige Wirtschaftsweisen zu etablieren.;3;;-25000;;;1
+suf123;SOZIALES_UND_FREIZEIT;Patenschaft;Du engagierst dich als Pate für drei Kinder in Moldawien und trägst aktiv zu ihrer Schulbildung und Entwicklung bei.;3;;-20000;;;1
+suf124;SOZIALES_UND_FREIZEIT;Finanz- & Steuerberaterin;"Dank einer Empfehlung findest du eine erfahrene Finanz- und Steuerberaterin, die dich kompetent unterstützt.";3;;-15000;;;1
+suf125;SOZIALES_UND_FREIZEIT;Spende Tierheim;Regelmäßig spendest du bei deinen Einkäufen Tiernahrung an die umliegenden Tierheime.;3;;-10000;;;1
+suf126;SOZIALES_UND_FREIZEIT;Unterricht Waisenheim;"Du verbringst sechs Monate in Afrika, um Kindern in einem Waisenheim Englischunterricht zu geben und ihnen damit Bildungschancen zu eröffnen.";3;;-10000;;;1
+suf127;SOZIALES_UND_FREIZEIT;Geschenke Obdachlose;"Du bringst zu Ostern Geschenke zu den Obdachlosen in deiner Stadt, um ihnen eine kleine Freude zu bereiten.";3;;-5000;;;1
+suf128;SOZIALES_UND_FREIZEIT;Lieferung Einkäufe;Statt selbst einkaufen zu gehen, nutzt du eine Drohnenlieferung mit nachhaltigen Verpackungen und kurzen Transportwegen. So schonst du die Umwelt und hast mehr Zeit für dich und deine Freunde.;3;;-12000;;;1
+suf129;SOZIALES_UND_FREIZEIT;Finanz- & Steuerberaterin;Du verlierst langsam den Überblick über deine Unterlagen der letzten Jahre – Zeit, eine Steuerberaterin zu engagieren.;3;;-10000;;;1
+suf130;SOZIALES_UND_FREIZEIT;Spende wohltätiger Zweck;Du unterstützt mit einer einmaligen Spende ein gemeinnütziges Projekt.;3;;-4000;;;1
+suf131;SOZIALES_UND_FREIZEIT;Betreuung Buchhaltung;Du beauftragst ein Unternehmen mit der Betreuung deiner Buchhaltung und Terminorganisation – so gewinnst du mehr Zeit für die wirklich wichtigen Dinge.;3;;-11000;;;1
+suf132;SOZIALES_UND_FREIZEIT;Spende wohltätiger Zweck;Du unterstützt mit einer einmaligen Spende ein gemeinnütziges Projekt.;3;;-5000;;;1
+suf133;SOZIALES_UND_FREIZEIT;Spende wohltätiger Zweck;Du unterstützt mit einer einmaligen Spende ein gemeinnütziges Projekt.;3;;-8000;;;1
+suf134;SOZIALES_UND_FREIZEIT;Vermögensberatung;Du engagierst eine Vermögensberaterin, die sich professionell um deine Investitionsanlagen kümmert und deine Finanzen optimal betreut.;3;;-16000;;;1
+suf135;SOZIALES_UND_FREIZEIT;persönliche Assistentin;Du engagierst eine persönliche Assistentin, die dich bei deinen beruflichen Tätigkeiten unterstützt und dir den Arbeitsalltag erleichtert.;3;;-12000;;;1
+suf136;SOZIALES_UND_FREIZEIT;Spazieren mit Hunden;Du hilfst im örtlichen Tierheim mit und gehst regelmäßig dreimal pro Woche mit den Hunden Gassi – ein Gewinn für Mensch und Tier.;3;;;-1;;1
+suf137;SOZIALES_UND_FREIZEIT;Teilnahme Spendenmarathon;Du engagierst dich bei einem Spendenmarathon für krebskranke Kinder und musst viel Zeit in die Suche nach Sponsoren investieren.;3;;;-1;;1
+suf138;SOZIALES_UND_FREIZEIT;Besuch Pflegeheim;Du gehst in eine Pflegeeinrichtung und organisierst für die Bewohnenden einen geselligen Brettspielabend, um gemeinsam Freude zu teilen und Abwechslung in den Alltag zu bringen.;3;;;-1;;1
+suf139;SOZIALES_UND_FREIZEIT;Ehrenamtliches Engagement;Du engagierst dich in einem Haus für Menschen mit geistiger Behinderung. ;3;;;-1;;1
+suf140;SOZIALES_UND_FREIZEIT;Betreuung Gymnasium;Du setzt dich in einer Einrichtung für Menschen mit geistiger Behinderung ein und unterstützt die Bewohnenden aktiv im Alltag sowie bei Freizeitaktivitäten.;3;;;-1;;1
+suf141;SOZIALES_UND_FREIZEIT;Ehrenamtliches Engagement;Du engagierst dich wöchentlich in einem örtlichen Jugendzentrum. ;3;;;-1;;1
+suf142;SOZIALES_UND_FREIZEIT;Training Jugendmannschaft;Du trainierst jetzt die Jugendmannschaft deines Fußballvereins. Seitdem steckst du deine ganze Energie in den Nachwuchs – und nicht mehr in Investitionen.;3;;;;;1
+suf143;SOZIALES_UND_FREIZEIT;Treffen Mitbewohnenden;Du verbringst regelmäßig gesellige Abende mit deinen neuen Mitbewohnenden aus dem Iran, genießt gemeinsam landestypische Speisen und lernst viel über dir bisher unbekannten Kultur.;3;;;-1;;1
+suf144;SOZIALES_UND_FREIZEIT;Teilnahme Spendenmarathon;Du engagierst dich bei einem Spendenmarathon für krebskranke Kinder und musst viel Zeit in die Suche nach Sponsoren investieren.;3;;;-1;;1
+suf145;SOZIALES_UND_FREIZEIT;Bergwelt;Du verbringst einige Wochen in der abgelegenen und bezaubernden Bergwelt, um Abstand vom Alltag zu gewinnen und wieder neue Kraft zu schöpfen.;3;;;-1;;1
+suf146;SOZIALES_UND_FREIZEIT;Abbestellung Börsenbericht;Du gewinnst mehr freie Zeit, da du den Börsenbericht nicht mehr verfolgst und dein Abonnement der Zeitung mit dem exzellenten Wirtschaftsressort gekündigt hast.;3;;;;;1
+suf147;SOZIALES_UND_FREIZEIT;Pause Investititonen;Du entscheidest dich, eine Auszeit von deinen Investitionen zu nehmen, um dich nicht länger von den Schwankungen der Finanzmärkte stressen zu lassen.;3;;;;;1
+suf148;SOZIALES_UND_FREIZEIT;Party;Du organisierst eine große Party für all deine Freunde und Unterstützer, um dich gebührend zu bedanken. Die Vorbereitung nimmt viel Zeit in Anspruch.;3;;;-1;;1
+suf149;SOZIALES_UND_FREIZEIT;Arbeit EineWeltLaden;Wöchentlich unterstützt du ehrenamtlich den EineWeltLaden, der fair gehandelte Produkte verkauft und so nachhaltigen Konsum fördert.;3;;;-1;;1
+suf150;SOZIALES_UND_FREIZEIT;Fundraisingaktion;Du setzt dich für die Nothilfe nach Naturkatastrophen ein, indem du eine Fundraisingaktion organisierst, die viel Zeit beansprucht.;3;;;-1;;1
+suf151;SOZIALES_UND_FREIZEIT;Vorstandsarbeit in einem Verein;Du übernimmst einen Vorstandsposten im Tennisverein – eine verantwortungsvolle Aufgabe, die viel Zeit in Anspruch nimmt.;3;;;-1;;1
+suf152;SOZIALES_UND_FREIZEIT;Einsatz für Demokratie;Du setzt einen Flyer auf, der über demokratische Werte informiert, und investierst eigenes Geld in den Druck.;2;;-1000;;;1
+suf153;SOZIALES_UND_FREIZEIT;Einsatz für Demokratie;Du setzt einen Flyer auf, der über demokratische Werte informiert, und investierst eigenes Geld in den Druck.;3;;-1300;;;1

@@ -3,8 +3,8 @@
   <component name="PHPUnit">
     <option name="directories">
       <list>
-        <option value="$PROJECT_DIR$/app/DistributionPackages/eventstore-laraveladapter/tests" />
         <option value="$PROJECT_DIR$/app/tests" />
+        <option value="$PROJECT_DIR$/app/DistributionPackages/eventstore-laraveladapter/tests" />
       </list>
     </option>
   </component>

@@ -6,5 +6,7 @@ namespace Domain\Definitions\Card\ValueObject;
 
 enum EreignisPrerequisitesId: string
 {
-    case JOB = 'Spieler hat einen Job';
+    case HAS_JOB = 'Spieler hat einen Job';
+    case HAS_CHILD = 'Spieler hat ein Kind';
+    case HAS_NO_CHILD = 'Spieler hat kein Kind';
 }
