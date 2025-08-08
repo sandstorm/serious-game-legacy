@@ -398,6 +398,15 @@ class MoneySheetState
         return $annualExpenses;
     }
 
+    public static function getAnnualIncomeForAllInvestments(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
+    {
+        $annualIncome = (new MoneyAmount(0))
+            ->add(PlayerState::getDividendForAllStocksForPlayer($gameEvents, $playerId))
+            ->add(PlayerState::getAnnualRentIncomeForPlayer($gameEvents, $playerId));
+
+        return $annualIncome;
+    }
+
     /**
      * @param GameEvents $gameEvents
      * @param PlayerId $playerId
@@ -422,8 +431,8 @@ class MoneySheetState
     public static function getAnnualIncomeForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
         $annualIncome = (new MoneyAmount(0))
-            ->add(PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId))
-            ->add(PlayerState::getDividendForAllStocksForPlayer($gameEvents, $playerId));
+            ->add(self::getAnnualIncomeForAllInvestments($gameEvents, $playerId))
+            ->add(PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId));
 
         return $annualIncome;
     }

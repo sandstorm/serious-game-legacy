@@ -2,28 +2,27 @@
 
 declare(strict_types=1);
 
-namespace App\View\Components;
+namespace App\View\Components\Investitionen;
 
-use Closure;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
-use Domain\Definitions\Card\Dto\JobCardDefinition;
+use Domain\Definitions\Card\Dto\InvestitionenCardDefinition;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class JobOffersModal extends Component
+class ImmobilienModal extends Component
 {
     /**
      * Create the component instance.
      */
     public function __construct(
-        public PlayerId   $playerId,
         public GameEvents $gameEvents,
+        public PlayerId $playerId,
     )
     {
     }
@@ -31,23 +30,20 @@ class JobOffersModal extends Component
     /**
      * Get the view / contents that represent the component.
      */
-    public function render(): View|Closure|string
+    public function render(): View
     {
-        $jobCardIds = PileState::getFirstThreeCardsFromPile(
+        $topCardIdForInvestitionen = PileState::topCardIdForPile(
             $this->gameEvents,
             new PileId(
-                CategoryId::JOBS,
+                CategoryId::INVESTITIONEN,
                 PlayerState::getCurrentLebenszielphaseIdForPlayer($this->gameEvents, $this->playerId)
             )
         );
-        /** @var JobCardDefinition[] $jobs */
-        $jobs = [];
-        foreach ($jobCardIds as $jobId) {
-            $jobs[] = CardFinder::getInstance()->getCardById($jobId, JobCardDefinition::class);
-        }
+        /** @var InvestitionenCardDefinition $investitionCard */
+        $investitionCard = CardFinder::getInstance()->getCardById($topCardIdForInvestitionen);
 
-        return view('components.gameboard.job-offers-modal', [
-            'jobOffers' => $jobs,
+        return view('components.gameboard.investitionen.invenstitionen-immobilien-modal', [
+            'investitionCard' => $investitionCard,
             'playerId' => $this->playerId,
         ]);
     }

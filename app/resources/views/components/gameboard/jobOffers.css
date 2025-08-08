@@ -6,13 +6,9 @@
     align-items: stretch;
 
     .card__title {
-        margin-top: var(--spacing-100);
     }
 
     .card__content {
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
         flex-shrink: 0;
         height: auto;
 
@@ -26,8 +22,7 @@
     text-align: center;
 
     h5 {
-        margin-top: var(--spacing-100);
-        margin-bottom: 0;
+        margin: 0;
 
         font-weight: var(--font-weight-medium);
         text-align: center;
