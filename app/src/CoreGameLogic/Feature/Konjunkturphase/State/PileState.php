@@ -9,12 +9,12 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\DrawsCard;
 use Domain\Definitions\Card\Dto\Pile;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
-use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 class PileState
 {
     /**
      * Counts and returns the DrawsCard events for a pile since the last shuffle.
+     *
      * @param GameEvents $stream
      * @param PileId $pileId
      * @return int
@@ -54,19 +54,25 @@ class PileState
     }
 
     /**
+     * Returns the first $amount card from the pile. Default is 3.
+     *
+     * Make sure that the amount **does not change** between calls to the same pile
+     * or you may get the wrong cards.
+     *
      * @param GameEvents $gameEvents
      * @param PileId $pileId
+     * @param int $amount
      * @return CardId[]
      */
-    public static function getFirstThreeJobCardIds(GameEvents $gameEvents, PileId $pileId): array
+    public static function getFirstXCardsFromPile(GameEvents $gameEvents, PileId $pileId, int $amount = 3): array
     {
         /** @var Pile[] $cardPiles */
         $cardPiles = $gameEvents->findLast(CardsWereShuffled::class)->piles;
-        /** @var Pile $jobCardPile */
-        $jobCardPile = array_find($cardPiles, fn($pile) => $pile->getPileId()->equals($pileId));
+        /** @var Pile $pile */
+        $pile = array_find($cardPiles, fn($pile) => $pile->getPileId()->equals($pileId));
         // each time a job offer was accepted we discard the two other job offers as well -> after accepting a
         // job three new cards get drawn from the job offer card pile
-        $startIndex = self::numberOfCardDrawsSinceLastShuffle($gameEvents, $pileId) * 3;
-        return array_slice($jobCardPile->getCardIds(), $startIndex, 3);
+        $startIndex = self::numberOfCardDrawsSinceLastShuffle($gameEvents, $pileId) * $amount;
+        return array_slice($pile->getCardIds(), $startIndex, $amount);
     }
 }

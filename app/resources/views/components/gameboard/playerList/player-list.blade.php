@@ -69,14 +69,14 @@
                     </div>
                 @endif
 
-                @if ($player->sumOfLoans->value > 0)
+                @if ($player->sumOfAllLoans->value > 0)
                     <div>
-                        Kreditsumme {!! $player->sumOfLoans->format() !!}
+                        Kreditsumme {!! $player->sumOfAllLoans->format() !!}
                     </div>
                 @endif
-                @if ($player->sumOfInvestments->value > 0)
+                @if ($player->sumOfAllAssets->value > 0)
                     <div>
-                        Summe Investitionen {!! $player->sumOfInvestments->format() !!}
+                        Summe Investitionen {!! $player->sumOfAllAssets->format() !!}
                     </div>
                 @endif
 

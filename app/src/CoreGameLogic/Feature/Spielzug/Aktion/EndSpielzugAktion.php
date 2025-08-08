@@ -7,6 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Helper\InvestmentPriceHelper;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerActivatedACardOrPutACardBackOnPileValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerDoneAtLeastOneZeitsteinaktionThisTurnValidator;
@@ -41,7 +42,7 @@ class EndSpielzugAktion extends Aktion
         $playerSoldOrBoughtInvestmentsThisTurn = GamePhaseState::playerBoughtOrSoldInvestmentsThisTurn($gameEvents, $playerId);
         $investmentPrices = InvestmentPriceState::getCurrentInvestmentPrices($gameEvents);
         if ($playerSoldOrBoughtInvestmentsThisTurn) {
-            $investmentPrices = InvestmentPriceState::calculateInvestmentPrices($gameEvents);
+            $investmentPrices = InvestmentPriceHelper::calculateInvestmentPrices($gameEvents);
         }
 
         return GameEventsToPersist::with(

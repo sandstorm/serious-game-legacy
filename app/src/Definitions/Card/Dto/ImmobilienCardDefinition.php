@@ -10,7 +10,7 @@ use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
-final readonly class InvestitionenCardDefinition implements CardDefinition, CardWithResourceChanges
+final readonly class ImmobilienCardDefinition implements CardDefinition, CardWithResourceChanges
 {
     public function __construct(
         protected CardId $id,
@@ -51,5 +51,20 @@ final readonly class InvestitionenCardDefinition implements CardDefinition, Card
     public function getResourceChanges(): ResourceChanges
     {
         return $this->resourceChanges;
+    }
+
+    public function getAnnualRent(): MoneyAmount
+    {
+        return $this->annualRent;
+    }
+
+    public function getPurchasePrice(): MoneyAmount
+    {
+        return new MoneyAmount($this->getResourceChanges()->guthabenChange->value)->negate();
+    }
+
+    public function getImmobilienTyp(): ImmobilienType
+    {
+        return $this->immobilienTyp;
     }
 }

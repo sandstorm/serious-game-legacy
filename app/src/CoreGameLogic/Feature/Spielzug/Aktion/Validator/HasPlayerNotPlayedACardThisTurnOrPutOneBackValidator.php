@@ -11,12 +11,11 @@ use Domain\CoreGameLogic\PlayerId;
 /**
  * Succeeds if the player has not played a card or put one back this turn.
  */
-final class HasPlayerPlayedACardThisTurnOrPutOneBackValidator extends AbstractValidator
+final class HasPlayerNotPlayedACardThisTurnOrPutOneBackValidator extends AbstractValidator
 {
     public function __construct()
     {
     }
-
 
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {

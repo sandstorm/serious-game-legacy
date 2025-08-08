@@ -11,6 +11,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesInvestmentAmountChanges;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\ImmobilienPriceState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\InvestmentAmountChanges;
@@ -25,7 +26,9 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerGotAChild;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasBoughtImmobilie;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasFiledForInsolvenz;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasSoldImmobilie;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereNotSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayerAfterInvestmentByAnotherPlayer;
@@ -34,6 +37,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
+use Domain\Definitions\Card\Dto\ImmobilienCardDefinition;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
@@ -481,10 +485,9 @@ class PlayerState
      */
     public static function getTotalValueOfAllAssetsForPlayer(GameEvents $stream, PlayerId $playerId): MoneyAmount
     {
-        $investmentsValue = self::getTotalValueOfAllInvestmentsForPlayer($stream, $playerId);
-        // TODO immobilien, etc
-
-        return $investmentsValue;
+        return new MoneyAmount(0)
+            ->add(self::getTotalValueOfAllInvestmentsForPlayer($stream, $playerId))
+            ->add(self::getTotalValueOfAllImmobilienForPlayer($stream, $playerId));
     }
 
     /**
@@ -557,5 +560,64 @@ class PlayerState
                 $playerId->equals($event->getPlayerId()));
 
         return $playerHasFiledForInsolvenzEventOrNull !== null;
+    }
+
+    /**
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return PlayerHasBoughtImmobilie[]
+     */
+    public static function getImmoblienOwnedByPlayer(GameEvents $gameEvents, PlayerId $playerId): array
+    {
+        /** @var PlayerHasBoughtImmobilie[] $immobilienBoughtEvents */
+        $immobilienBoughtEvents = $gameEvents->findAllOfType(PlayerHasBoughtImmobilie::class)
+            ->filter(fn($event) => $event instanceof PlayerHasBoughtImmobilie && $event->getPlayerId()->equals($playerId));
+
+        $immobilien = [];
+        foreach ($immobilienBoughtEvents as $immobilienBoughtEvent) {
+            // check if immobilie was sold
+            $immobilieWasSold = $gameEvents->findLastOrNullWhere(
+                fn ($immobilieSoldEvent) => $immobilieSoldEvent instanceof PlayerHasSoldImmobilie &&
+                    $immobilieSoldEvent->getImmobilieId()->equals($immobilienBoughtEvent->getImmobilieId()) &&
+                    $immobilieSoldEvent->getPlayerId()->equals($playerId)
+            );
+
+            if ($immobilieWasSold === null) {
+                $immobilien[] = $immobilienBoughtEvent;
+            }
+        }
+
+        return $immobilien;
+    }
+
+    /**
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return MoneyAmount
+     */
+    public static function getAnnualRentIncomeForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
+    {
+        $immoblienBought = self::getImmoblienOwnedByPlayer($gameEvents, $playerId);
+        $annualRentIncome = 0;
+        foreach ($immoblienBought as $immobilie) {
+            $immobilienDefinition = CardFinder::getInstance()->getCardById($immobilie->getCardId(), ImmobilienCardDefinition::class);
+            $annualRentIncome += $immobilienDefinition->getAnnualRent()->value;
+        }
+        return new MoneyAmount($annualRentIncome);
+    }
+
+    /**
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return MoneyAmount
+     */
+    public static function getTotalValueOfAllImmobilienForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
+    {
+        $immoblienBought = self::getImmoblienOwnedByPlayer($gameEvents, $playerId);
+        $totalValue = new MoneyAmount(0);
+        foreach ($immoblienBought as $immobilie) {
+            $totalValue = $totalValue->add(ImmobilienPriceState::getCurrentPriceForImmobilie($gameEvents, $immobilie->getImmobilieId()));
+        }
+        return $totalValue;
     }
 }

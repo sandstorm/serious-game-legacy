@@ -332,10 +332,10 @@ function importEreignisCards(): void
 }
 
 /**
- * Function imports InvestitionenCards from csv file and echoes them in the console.
+ * Function imports ImmobilienCards from csv file and echoes them in the console.
  * @return void
  */
-function importInvestitionenCards(): void
+function importImmobilienCards(): void
 {
     $file = file(__DIR__ . "/Investitionen_Immobilien.csv");
     $tableContent = array_slice($file, 2); //removes the first two elements (table name and table header)
@@ -346,7 +346,7 @@ function importInvestitionenCards(): void
         $lineArray = array_slice(explode(";", trim($line)), 0, 7); //array slice to remove empty "cells" at the end
         $lineArrayWithKeys = array_combine($keys, $lineArray);
 
-        echo "\"" . $lineArrayWithKeys["id"] . "\" => new InvestitionenCardDefinition(\n";
+        echo "\"" . $lineArrayWithKeys["id"] . "\" => new ImmobilienCardDefinition(\n";
         echo "\t" . "id: new CardId('" . $lineArrayWithKeys["id"] . "'),\n";
         echo "\t" . "title: '" . $lineArrayWithKeys["title"] . "',\n";
         echo "\t" . "description: '" . $lineArrayWithKeys["description"] . "',\n";
@@ -451,7 +451,7 @@ function importKonjunkturphasen(): void
 //importWeiterbildungCards();
 //importKategorieCards();
 //importEreignisCards();
-importInvestitionenCards();
+importImmobilienCards();
 //importKonjunkturphasen();
 
 

@@ -13,24 +13,28 @@ use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 /**
- * Succeeds if the given job is currently in the first three cards of the job pile (for the player's phase).
+ * Succeeds if the given Immobilie is currently in the first two cards of the Immobilien pile (for the player's phase).
  */
-final class IsJobCurrentlyAvailableValidator extends AbstractValidator
+final class IsImmobilieCurrentlyAvailableValidator extends AbstractValidator
 {
-    private CardId $jobId;
+    private CardId $cardId;
 
-    public function __construct(CardId $jobId)
+    public function __construct(CardId $cardId)
     {
-        $this->jobId = $jobId;
+        $this->cardId = $cardId;
     }
 
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
-        $currentJobOffers = PileState::getFirstXCardsFromPile($gameEvents, new PileId(CategoryId::JOBS, PlayerState::getCurrentLebenszielphaseIdForPlayer($gameEvents, $playerId)));
-        if (!in_array($this->jobId->value, array_map(fn ($jobId) => $jobId->value, $currentJobOffers), true)) {
+        $currentlyAvailableImmobilien = PileState::getFirstXCardsFromPile(
+            gameEvents: $gameEvents,
+            pileId: new PileId(CategoryId::INVESTITIONEN, PlayerState::getCurrentLebenszielphaseIdForPlayer($gameEvents, $playerId)),
+            amount: 2
+        );
+        if (!in_array($this->cardId->value, array_map(fn ($jobId) => $jobId->value, $currentlyAvailableImmobilien), true)) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Dieser Job wurde dir noch nicht vorgeschlagen'
+                reason: 'Diese Immobilie steht aktuell nicht zum Verkauf'
             );
         }
 

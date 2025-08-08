@@ -12,9 +12,6 @@
     @vite(['resources/js/app.js'])
 </head>
 <body>
-<header>
-
-</header>
 <main class="container">
     {{ $slot }}
 </main>

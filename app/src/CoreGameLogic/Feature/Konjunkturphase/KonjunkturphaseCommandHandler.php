@@ -12,7 +12,8 @@ use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Helper\ImmobilienPriceHelper;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Helper\InvestmentPriceHelper;
 use Domain\CoreGameLogic\Feature\Spielzug\State\ModifierCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Domain\Definitions\Card\CardFinder;
@@ -78,7 +79,8 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
                 id: $nextKonjunkturphase->id,
                 year: new Year($year),
                 type: $nextKonjunkturphase->type,
-                investmentPrices: InvestmentPriceState::calculateInvestmentPrices($gameEvents),
+                investmentPrices: InvestmentPriceHelper::calculateInvestmentPrices($gameEvents),
+                immobilienPrices: ImmobilienPriceHelper::calculateNewPricesForImmobilienOwnedByPlayers($gameEvents, $nextKonjunkturphase->type)
             ),
 
             // We ALSO SHUFFLE cards during Konjunkturphasenwechsel
