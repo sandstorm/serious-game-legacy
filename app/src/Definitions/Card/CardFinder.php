@@ -8,6 +8,7 @@ use Domain\Definitions\Card\Dto\AnswerOption;
 use Domain\Definitions\Card\Dto\CardDefinition;
 use Domain\Definitions\Card\Dto\CardWithYear;
 use Domain\Definitions\Card\Dto\EreignisCardDefinition;
+use Domain\Definitions\Card\Dto\InvestitionenCardDefinition;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
@@ -19,6 +20,7 @@ use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\ValueObject\AnswerId;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
+use Domain\Definitions\Card\ValueObject\ImmobilienType;
 use Domain\Definitions\Card\ValueObject\ModifierId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
@@ -72,6 +74,39 @@ final class CardFinder
     private static function initialize(): self
     {
         self::$instance = new self([
+            "inv1" => new InvestitionenCardDefinition(
+                id: new CardId('inv1'),
+                title: 'Kauf Wohnung',
+                description: 'Eine Wohnung in einem neuen Sudierendenwohnheim steht zum Verkauf.',
+                phaseId: LebenszielPhaseId::PHASE_1,
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(-75000),
+                ),
+                annualRent: new MoneyAmount(1500),
+                immobilienTyp: ImmobilienType::WOHNUNG
+            ),
+            "inv2" => new InvestitionenCardDefinition(
+                id: new CardId('inv2'),
+                title: 'Kauf Wohnung',
+                description: 'Eine Wohnung in einem neuen Sudierendenwohnheim steht zum Verkauf.',
+                phaseId: LebenszielPhaseId::PHASE_1,
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(-50000),
+                ),
+                annualRent: new MoneyAmount(1000),
+                immobilienTyp: ImmobilienType::WOHNUNG
+            ),
+            "inv3" => new InvestitionenCardDefinition(
+                id: new CardId('inv3'),
+                title: 'Kauf Wohnung',
+                description: 'Ein renoviertes Loft  mit DINKs (Double Income, No Kids) –Mieterinnen steht zum Verkauf.',
+                phaseId: LebenszielPhaseId::PHASE_1,
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(-200000),
+                ),
+                annualRent: new MoneyAmount(5000),
+                immobilienTyp: ImmobilienType::WOHNUNG
+            ),
             "buk0" => new KategorieCardDefinition(
                 id: new CardId('buk0'),
                 categoryId: CategoryId::BILDUNG_UND_KARRIERE,
