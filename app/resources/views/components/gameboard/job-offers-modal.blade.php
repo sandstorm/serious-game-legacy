@@ -31,9 +31,11 @@
         @foreach($jobOffers as $jobOffer)
             <div @class(["card", "card--disabled" => !$this->canAcceptJobOffer($jobOffer->getId()->value)->canExecute])>
                 <h4 class="card__title">{{ $jobOffer->getTitle() }}</h4>
-                <div class="card__content">
-                    <div class="resource-change">
-                        {!! $jobOffer->getGehalt()->formatWithIcon() !!}
+                <div class="card__content card__content--center">
+                    <div class="resource-changes">
+                        <div class="resource-change">
+                            {!! $jobOffer->getGehalt()->formatWithIcon() !!}
+                        </div>
                     </div>
                     <span class="font-size--sm">Jahresgehalt brutto</span>
                     <button type="button"

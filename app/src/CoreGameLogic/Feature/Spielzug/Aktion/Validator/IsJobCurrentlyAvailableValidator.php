@@ -26,7 +26,7 @@ final class IsJobCurrentlyAvailableValidator extends AbstractValidator
 
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
-        $currentJobOffers = PileState::getFirstThreeJobCardIds($gameEvents, new PileId(CategoryId::JOBS, PlayerState::getCurrentLebenszielphaseIdForPlayer($gameEvents, $playerId)));
+        $currentJobOffers = PileState::getFirstXCardsFromPile($gameEvents, new PileId(CategoryId::JOBS, PlayerState::getCurrentLebenszielphaseIdForPlayer($gameEvents, $playerId)));
         if (!in_array($this->jobId->value, array_map(fn ($jobId) => $jobId->value, $currentJobOffers), true)) {
             return new AktionValidationResult(
                 canExecute: false,

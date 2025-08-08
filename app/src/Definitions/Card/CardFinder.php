@@ -6,7 +6,6 @@ namespace Domain\Definitions\Card;
 
 use Domain\Definitions\Card\Dto\AnswerOption;
 use Domain\Definitions\Card\Dto\CardDefinition;
-use Domain\Definitions\Card\Dto\CardWithGewichtung;
 use Domain\Definitions\Card\Dto\CardWithYear;
 use Domain\Definitions\Card\Dto\EreignisCardDefinition;
 use Domain\Definitions\Card\Dto\InvestitionenCardDefinition;

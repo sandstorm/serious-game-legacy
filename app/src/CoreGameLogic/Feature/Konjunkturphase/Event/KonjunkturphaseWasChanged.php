@@ -5,30 +5,32 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\ImmobilienPrice;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\InvestmentPrice;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesImmobilienPriceChanges;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesInvestmentPriceChanges;
-use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
 use Domain\CoreGameLogic\Feature\Spielzug\Modifier\ModifierBuilder;
 use Domain\CoreGameLogic\Feature\Spielzug\Modifier\ModifierCollection;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
 use Domain\CoreGameLogic\PlayerId;
-use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 
-final readonly class KonjunkturphaseWasChanged implements GameEventInterface, ProvidesInvestmentPriceChanges, ProvidesModifiers
+final readonly class KonjunkturphaseWasChanged implements GameEventInterface, ProvidesInvestmentPriceChanges, ProvidesModifiers, ProvidesImmobilienPriceChanges
 {
     /**
      * @param InvestmentPrice[] $investmentPrices
+     * @param ImmobilienPrice[] $immobilienPrices
      */
     public function __construct(
         public KonjunkturphasenId $id,
         public Year $year,
         public KonjunkturphaseTypeEnum $type,
-        public array $investmentPrices
+        public array $investmentPrices,
+        public array $immobilienPrices
     ) {
     }
 
@@ -41,6 +43,10 @@ final readonly class KonjunkturphaseWasChanged implements GameEventInterface, Pr
             investmentPrices: array_map(
                 static fn($investmentPrice) => InvestmentPrice::fromArray($investmentPrice),
                 $values['investmentPrices']
+            ),
+            immobilienPrices: array_map(
+                static fn($immobilienPrice) => ImmobilienPrice::fromArray($immobilienPrice),
+                $values['immobilienPrices']
             ),
         );
     }
@@ -55,6 +61,7 @@ final readonly class KonjunkturphaseWasChanged implements GameEventInterface, Pr
             'year' => $this->year->jsonSerialize(),
             'type' => $this->type,
             'investmentPrices' => $this->investmentPrices,
+            'immobilienPrices' => $this->immobilienPrices,
         ];
     }
 
@@ -90,5 +97,13 @@ final readonly class KonjunkturphaseWasChanged implements GameEventInterface, Pr
             ];
         }
         return new ModifierCollection($modifiers);
+    }
+
+    /**
+     * @return ImmobilienPrice[]
+     */
+    public function getImmobilienPrices(): array
+    {
+        return $this->immobilienPrices;
     }
 }

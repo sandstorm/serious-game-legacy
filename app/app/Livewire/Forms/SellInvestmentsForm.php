@@ -17,7 +17,6 @@ class SellInvestmentsForm extends Form
     public ?InvestmentId $investmentId;
     public float $sharePrice = 0;
     public int $amountOwned = 0;
-    public string $playerName = '';
 
     /**
      * Set of custom validation rules for the form.

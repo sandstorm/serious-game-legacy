@@ -1,20 +1,21 @@
 @use('Domain\Definitions\Investments\ValueObject\InvestmentId')
 @use('Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState')
-@use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
+@use('Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState')
 
 @props([
+    'immobilien' => [],
     'investments' => []
 ])
 
 <div class="tabs__upper-content">
-    @if ($investments)
+    @if ($investments || $immobilien)
         <table>
             <thead>
             <tr>
                 <th></th>
                 <th>Anlageart</th>
                 <th>Menge</th>
-                <th>Aktueller Preis</th>
+                <th>Aktueller Preis/ Kaufpreis</th>
                 <th>Dividende/Stück oder Mietertrag</th>
                 <th>Einnahmen</th>
             </tr>
@@ -40,9 +41,21 @@
                 </tr>
                 @endif
             @endforeach
+            @foreach($immobilien as $immobilie)
+                <tr>
+                    <td><i class="icon-immobilien" aria-hidden="true"></i></td>
+                    <td>{{ $immobilie->getTitle() }}</td>
+                    <td>1</td>
+                    <td>{!! $immobilie->getPurchasePrice()->format() !!}</td>
+                    <td>{!! $immobilie->getAnnualRent()->format() !!}</td>
+                    <td>
+                        {!! $immobilie->getAnnualRent()->formatWithIcon() !!}
+                    </td>
+                </tr>
+            @endforeach
             <tr>
-                <td colspan="5" class="text-align--right">Einnahmen Aktien gesamt</td>
-                <td>{!! PlayerState::getDividendForAllStocksForPlayer($gameEvents, $playerId)->formatWithIcon() !!}</td>
+                <td colspan="5" class="text-align--right">Einnahmen gesamt</td>
+                <td>{!! MoneySheetState::getAnnualIncomeForAllInvestments($gameEvents, $playerId)->formatWithIcon() !!}</td>
             </tr>
             </tbody>
         </table>

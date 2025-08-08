@@ -179,7 +179,7 @@ trait HasMoneySheet
             totalFromPlayerInput: MoneySheetState::calculateTotalFromPlayerInput($this->getGameEvents(), $playerId),
             totalInsuranceCost: new MoneyAmount(-1 * MoneySheetState::getCostOfAllInsurances($this->getGameEvents(), $playerId)->value),
             annualExpensesForAllLoans: new MoneyAmount(-1 * MoneySheetState::getAnnualExpensesForAllLoans($this->getGameEvents(), $playerId)->value),
-            sumOfAllAssets: PlayerState::getDividendForAllStocksForPlayer($this->getGameEvents(), $playerId),
+            sumOfAllAssets: MoneySheetState::getAnnualIncomeForAllInvestments($this->getGameEvents(), $playerId),
             annualIncome: MoneySheetState::getAnnualIncomeForPlayer($this->getGameEvents(), $playerId),
             annualExpenses: new MoneyAmount(-1 * MoneySheetState::getAnnualExpensesForPlayer($this->getGameEvents(), $playerId)->value),
             annualExpensesFromPlayerInput: new MoneyAmount (-1 * MoneySheetState::calculateAnnualExpensesFromPlayerInput($this->getGameEvents(), $playerId)->value),
