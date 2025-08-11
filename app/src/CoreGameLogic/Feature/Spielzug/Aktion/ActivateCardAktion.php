@@ -53,11 +53,12 @@ class ActivateCardAktion extends Aktion
     }
 
     private function getTotalCosts(
+        PlayerId $playerId,
         GameEvents $gameEvents,
         CardDefinition $cardDefinition
     ): ResourceChanges {
         $costToActivate = new ResourceChanges(
-            zeitsteineChange: AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound() ? 0 : -1
+            zeitsteineChange: AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound($playerId) ? 0 : -1
         );
         return $cardDefinition instanceof KategorieCardDefinition ? $costToActivate->accumulate($cardDefinition->getResourceChanges()) : $costToActivate;
     }
@@ -75,8 +76,8 @@ class ActivateCardAktion extends Aktion
                 $playerId,
                 $this->pileId,
                 $cardDefinition->getId(),
-                $this->getTotalCosts($gameEvents, $cardDefinition),
-                AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound() ? 0 : 1,
+                $this->getTotalCosts($playerId, $gameEvents, $cardDefinition),
+                AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound($playerId) ? 0 : 1,
             )
         );
 

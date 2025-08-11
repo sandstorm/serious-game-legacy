@@ -26,10 +26,10 @@ final class CanPlayerNotAffordTopCardOnPileValidator extends AbstractValidator
         $this->pileId = $pileId;
     }
 
-    private function getTotalCosts(GameEvents $gameEvents, CardDefinition $cardDefinition): ResourceChanges
+    private function getTotalCosts(PlayerId $playerId, GameEvents $gameEvents, CardDefinition $cardDefinition): ResourceChanges
     {
         $costToActivate = new ResourceChanges(
-            zeitsteineChange: AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound() ? 0 : -1
+            zeitsteineChange: AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound($playerId) ? 0 : -1
         );
         return $cardDefinition instanceof KategorieCardDefinition ? $costToActivate->accumulate($cardDefinition->getResourceChanges()) : $costToActivate;
     }
@@ -40,7 +40,7 @@ final class CanPlayerNotAffordTopCardOnPileValidator extends AbstractValidator
         $cardDefinition = CardFinder::getInstance()->getCardById($topCardOnPile);
 
         if (AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($playerId,
-            $this->getTotalCosts($gameEvents, $cardDefinition))) {
+            $this->getTotalCosts($playerId, $gameEvents, $cardDefinition))) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: 'Du hast genug Ressourcen um die Karte zu spielen, du darfs sie nicht ablegen.',
