@@ -29,12 +29,14 @@ final readonly class EreignisWasTriggered implements ProvidesModifiers, Provides
      * @param CardId $ereignisCardId
      * @param PlayerTurn $playerTurn
      * @param Year $year
+     * @param ResourceChanges $resourceChanges
      */
     public function __construct(
         public PlayerId $playerId,
         public CardId $ereignisCardId,
         public PlayerTurn $playerTurn,
         public Year $year,
+        public ResourceChanges $resourceChanges,
     ) {
         $this->ereignisCardDefinition = CardFinder::getInstance()->getCardById($this->ereignisCardId,
             EreignisCardDefinition::class);
@@ -66,10 +68,10 @@ final readonly class EreignisWasTriggered implements ProvidesModifiers, Provides
 
     public function getResourceChanges(PlayerId $playerId): ResourceChanges
     {
-        if ($playerId->equals($this->playerId)) {
-            return $this->ereignisCardDefinition->getResourceChanges();
+        if (!$playerId->equals($this->playerId)) {
+            return new ResourceChanges();
         }
-        return new ResourceChanges();
+        return $this->resourceChanges;
     }
 
 
@@ -80,6 +82,7 @@ final readonly class EreignisWasTriggered implements ProvidesModifiers, Provides
             ereignisCardId: new CardId($values['ereignisCardId']),
             playerTurn: new PlayerTurn($values['playerTurn']),
             year: new Year($values['year']),
+            resourceChanges: ResourceChanges::fromArray($values['resourceChanges']),
         );
     }
 
@@ -90,6 +93,7 @@ final readonly class EreignisWasTriggered implements ProvidesModifiers, Provides
             'ereignisCardId' => $this->ereignisCardId,
             'playerTurn' => $this->playerTurn,
             'year' => $this->year,
+            'resourceChanges' => $this->resourceChanges,
         ];
     }
 }

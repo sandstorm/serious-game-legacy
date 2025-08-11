@@ -16,4 +16,5 @@ enum ModifierId: string
     case INVESTITIONSSPERRE = 'Investitionssperre';
     case JOBVERLUST = 'Jobverlust';
     case PRIVATE_UNFALLVERSICHERUNG = 'private Unfallversicherung';
+    case EMPTY = 'Leerer Modifier (TODO remove)';
 }
