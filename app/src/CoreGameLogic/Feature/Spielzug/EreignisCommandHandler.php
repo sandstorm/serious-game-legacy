@@ -14,6 +14,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\MaybeTriggerEreignis;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\BerufsunfaehigkeitsversicherungWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerGotAChild;
 use Domain\CoreGameLogic\Feature\Spielzug\State\EreignisPrerequisiteChecker;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\CardFinder;
@@ -122,13 +123,21 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
 
         if (in_array(ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG->value, $modifierIdsAsString, true)
             && MoneySheetState::doesPlayerHaveThisInsurance($gameEvents, $command->playerId, InsuranceId::create(3))) {
-            return $additionalEvents
+            $additionalEvents = $additionalEvents
                 ->withAppendedEvents(new BerufsunfaehigkeitsversicherungWasActivated(
                     playerId: $command->playerId,
                     year: KonjunkturphaseState::getCurrentYear($gameEvents),
                     gehalt: PlayerState::getCurrentGehaltForPlayer($gameEvents, $command->playerId),
                 ));
         }
+
+        // TODO don't use title -> use ModifierId
+        if($ereignisCardDefinition->getTitle() === "Geburt") {
+            return $additionalEvents->withAppendedEvents(new PlayerGotAChild(
+                playerId: $command->playerId,
+            ));
+        }
+
         return $additionalEvents;
     }
 

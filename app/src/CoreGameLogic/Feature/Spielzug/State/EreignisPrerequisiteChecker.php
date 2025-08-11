@@ -36,6 +36,6 @@ final readonly class EreignisPrerequisiteChecker
 
     private function hasPlayerAChild(PlayerId $playerId): bool
     {
-        return false; //TODO implement
+        return PlayerState::hasChild($this->gameEvents, $playerId);
     }
 }
