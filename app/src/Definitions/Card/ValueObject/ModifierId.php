@@ -17,4 +17,6 @@ enum ModifierId: string
     case JOBVERLUST = 'Jobverlust';
     case PRIVATE_UNFALLVERSICHERUNG = 'private Unfallversicherung';
     case EMPTY = 'Leerer Modifier (TODO remove)';
+    case BERUFSUNFAEHIGKEIT_JOBSPERRE = 'Berufsunfähigkeit Jobsperre';
+    case BERUFSUNFAEHIGKEIT_GEHALT = 'Berufsunfähigkeit Gehaltsfortzahlung';
 }

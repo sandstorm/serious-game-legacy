@@ -11,6 +11,8 @@ use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\MaybeTriggerEreignis;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\BerufsunfaehigkeitsversicherungWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\Feature\Spielzug\State\EreignisPrerequisiteChecker;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
@@ -47,8 +49,10 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
         return rand(1, 4) === 1;
     }
 
-    private function getRandomEreignisForCategory(GameEvents $gameEvents, MaybeTriggerEreignis $command): EreignisCardDefinition
-    {
+    private function getRandomEreignisForCategory(
+        GameEvents $gameEvents,
+        MaybeTriggerEreignis $command
+    ): EreignisCardDefinition {
         $ereignisCardCategory = match ($command->categoryId) {
             CategoryId::BILDUNG_UND_KARRIERE => CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
             CategoryId::SOZIALES_UND_FREIZEIT => CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
@@ -69,17 +73,21 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
             return $hasPlayerAllPrerequisites;
         });
         if (count($filteredCards) === 0) {
-            throw new \RuntimeException("No EreignisCard matches the current requirements", 1753874959); // We should always have cards
+            throw new \RuntimeException("No EreignisCard matches the current requirements",
+                1753874959); // We should always have cards
         }
         $randomizer = new Randomizer();
         return $randomizer->shuffleArray($filteredCards)[0];
     }
 
-    private function getGuthabenChangesBasedOnPlayersInsurances(GameEvents $gameEvents, MaybeTriggerEreignis $command, EreignisCardDefinition $ereignisCardDefinition): ResourceChanges
-    {
+    private function getGuthabenChangesBasedOnPlayersInsurances(
+        GameEvents $gameEvents,
+        MaybeTriggerEreignis $command,
+        EreignisCardDefinition $ereignisCardDefinition
+    ): ResourceChanges {
         $resourceChanges = $ereignisCardDefinition->getResourceChanges();
 
-        $modifierIdsAsString = array_map(fn ($id) => $id->value, $ereignisCardDefinition->getModifierIds());
+        $modifierIdsAsString = array_map(fn($id) => $id->value, $ereignisCardDefinition->getModifierIds());
         // Check if Ereignis is insurable and player has the specific insurance -> if so: modify guthabenChange
         if (
             in_array(ModifierId::PRIVATE_UNFALLVERSICHERUNG->value, $modifierIdsAsString, true)
@@ -99,15 +107,40 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
         return $resourceChanges;
     }
 
+    private function triggerAdditionalEvents(
+        GameEvents $gameEvents,
+        MaybeTriggerEreignis $command,
+        EreignisCardDefinition $ereignisCardDefinition
+    ): GameEventsToPersist {
+        $additionalEvents = GameEventsToPersist::empty();
+        $modifierIdsAsString = array_map(fn($id) => $id->value, $ereignisCardDefinition->getModifierIds());
+        if (in_array(ModifierId::JOBVERLUST->value, $modifierIdsAsString, true) ||
+            in_array(ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG->value, $modifierIdsAsString, true)) {
+            $additionalEvents = (new SpielzugCommandHandler())->handle(QuitJob::create($command->playerId),
+                $gameEvents);
+        }
+
+        if (in_array(ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG->value, $modifierIdsAsString, true)
+            && MoneySheetState::doesPlayerHaveThisInsurance($gameEvents, $command->playerId, InsuranceId::create(3))) {
+            return $additionalEvents
+                ->withAppendedEvents(new BerufsunfaehigkeitsversicherungWasActivated(
+                    playerId: $command->playerId,
+                    year: KonjunkturphaseState::getCurrentYear($gameEvents),
+                    gehalt: PlayerState::getCurrentGehaltForPlayer($gameEvents, $command->playerId),
+                ));
+        }
+        return $additionalEvents;
+    }
+
     private function handleTriggerEreignis(MaybeTriggerEreignis $command, GameEvents $gameEvents): GameEventsToPersist
     {
         if (!$this->doesTrigger()) {
             return GameEventsToPersist::empty();
         }
         $ereignisDefinition = $this->getRandomEreignisForCategory($gameEvents, $command);
-        $resourceChanges = $this->getGuthabenChangesBasedOnPlayersInsurances($gameEvents, $command, $ereignisDefinition);
+        $resourceChanges = $this->getGuthabenChangesBasedOnPlayersInsurances($gameEvents, $command,
+            $ereignisDefinition);
 
-        // TODO trigger additional events (e.g. Jobverlust)
         return GameEventsToPersist::with(
             new EreignisWasTriggered(
                 playerId: $command->playerId,
@@ -115,7 +148,8 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
                 playerTurn: PlayerState::getCurrentTurnForPlayer($gameEvents, $command->playerId),
                 year: KonjunkturphaseState::getCurrentYear($gameEvents),
                 resourceChanges: $resourceChanges,
-            )
+            ),
+            ...$this->triggerAdditionalEvents($gameEvents, $command, $ereignisDefinition)->events,
         );
     }
 }

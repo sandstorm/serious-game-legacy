@@ -16,4 +16,6 @@ enum HookEnum: string
     case INVESTITIONSSPERRE = 'Investitionssperre';
     case JOBVERLUST = 'Jobverlust';
     case PRIVATE_UNFALLVERSICHERUNG = 'private Unfallversicherung';
+    case BERUFSUNFAEHIGKEIT_JOBSPERRE = 'Jobsperre';
+    case BERUFSUNFAEHIGKEIT_GEHALT = 'bu gehalt';
 }

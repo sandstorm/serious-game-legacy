@@ -9,6 +9,7 @@ use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\DoesPlayerMeetJobRequirementsValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsJobCurrentlyAvailableValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughZeitsteineValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerAllowedToTakeAJobValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
@@ -16,7 +17,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
-use Domain\Definitions\Card\Dto\Pile;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
@@ -33,6 +33,7 @@ class AcceptJobOfferAktion extends Aktion
     {
         $validatorChain = new IsPlayersTurnValidator();
         $validatorChain
+            ->setNext(new IsPlayerAllowedToTakeAJobValidator())
             ->setNext(new HasPlayerEnoughZeitsteineValidator(1))
             ->setNext(new DoesPlayerMeetJobRequirementsValidator($this->jobId))
             ->setNext(new IsJobCurrentlyAvailableValidator($this->jobId));
