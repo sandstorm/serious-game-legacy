@@ -66,18 +66,18 @@ class PlayerState
         throw new RuntimeException('Player ' . $playerId . ' not found in player ordering', 1752835827);
     }
 
-    public static function getResourcesForPlayer(GameEvents $stream, PlayerId $playerId): ResourceChanges
+    public static function getResourcesForPlayer(GameEvents $gameEvents, PlayerId $playerId): ResourceChanges
     {
-        $accumulatedResources = $stream->findAllOfType(ProvidesResourceChanges::class)
+        $accumulatedResources = $gameEvents->findAllOfType(ProvidesResourceChanges::class)
             ->reduce(fn(
                 ResourceChanges $accumulator,
                 ProvidesResourceChanges $event
             ) => $accumulator->accumulate($event->getResourceChanges($playerId)), new ResourceChanges());
         return new ResourceChanges(
             guthabenChange: $accumulatedResources->guthabenChange,
-            zeitsteineChange: self::getZeitsteineForPlayer($stream, $playerId),
-            bildungKompetenzsteinChange: $accumulatedResources->bildungKompetenzsteinChange,
-            freizeitKompetenzsteinChange: $accumulatedResources->freizeitKompetenzsteinChange,
+            zeitsteineChange: self::getZeitsteineForPlayer($gameEvents, $playerId),
+            bildungKompetenzsteinChange: self::getBildungsKompetenzsteine($gameEvents, $playerId),
+            freizeitKompetenzsteinChange: self::getFreizeitKompetenzsteine($gameEvents, $playerId),
         );
     }
 
@@ -119,19 +119,18 @@ class PlayerState
     /**
      * Returns the accumulated amount of Bildungskompetenzsteine of the player for current Lebenszielphase.
      *
-     * @param GameEvents $stream
+     * @param GameEvents $gameEvents
      * @param PlayerId $playerId
      * @return float
      */
-    public static function getBildungsKompetenzsteine(GameEvents $stream, PlayerId $playerId): float
+    public static function getBildungsKompetenzsteine(GameEvents $gameEvents, PlayerId $playerId): float
     {
-        $lebenszielPhaseWasChanged = $stream->findLastOrNull(LebenszielphaseWasChanged::class);
-        $findAfterEvent = LebenszielphaseWasChanged::class;
-        if ($lebenszielPhaseWasChanged === null) {
-            $findAfterEvent = GameWasStarted::class;
-        }
+        $eventsAfterLastLebenszielphaseWasChangedEvent = $gameEvents
+            ->findAllAfterLastOrNullWhere(fn ($event) => $event instanceof LebenszielphaseWasChanged
+                && $event->getPlayerId()->equals($playerId))
+            ?? $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
 
-        $accumulatedResourceChangesForPlayer = $stream->findAllAfterLastOfType($findAfterEvent)->findAllOfType(ProvidesResourceChanges::class)
+        $accumulatedResourceChangesForPlayer = $eventsAfterLastLebenszielphaseWasChangedEvent->findAllOfType(ProvidesResourceChanges::class)
             ->reduce(fn(
                 ResourceChanges $accumulator,
                 ProvidesResourceChanges $event
@@ -143,19 +142,18 @@ class PlayerState
     /**
      * Returns the accumulated amount of Freizeitkompetenzsteine of the player for current Lebenszielphase.
      *
-     * @param GameEvents $stream
+     * @param GameEvents $gameEvents
      * @param PlayerId $playerId
      * @return int
      */
-    public static function getFreizeitKompetenzsteine(GameEvents $stream, PlayerId $playerId): int
+    public static function getFreizeitKompetenzsteine(GameEvents $gameEvents, PlayerId $playerId): int
     {
-        $lebenszielPhaseWasChanged = $stream->findLastOrNull(LebenszielphaseWasChanged::class);
-        $findAfterEvent = LebenszielphaseWasChanged::class;
-        if ($lebenszielPhaseWasChanged === null) {
-            $findAfterEvent = GameWasStarted::class;
-        }
+        $eventsAfterLastLebenszielphaseWasChangedEvent = $gameEvents
+            ->findAllAfterLastOrNullWhere(fn ($event) => $event instanceof LebenszielphaseWasChanged
+                && $event->getPlayerId()->equals($playerId))
+            ?? $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
 
-        $accumulatedResourceChangesForPlayer = $stream->findAllAfterLastOfType($findAfterEvent)->findAllOfType(ProvidesResourceChanges::class)
+        $accumulatedResourceChangesForPlayer = $eventsAfterLastLebenszielphaseWasChangedEvent->findAllOfType(ProvidesResourceChanges::class)
             ->reduce(fn(
                 ResourceChanges $accumulator,
                 ProvidesResourceChanges $event
