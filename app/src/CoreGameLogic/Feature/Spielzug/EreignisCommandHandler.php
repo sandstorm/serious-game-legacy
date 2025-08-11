@@ -9,12 +9,17 @@ use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
+use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\MaybeTriggerEreignis;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\Feature\Spielzug\State\EreignisPrerequisiteChecker;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\EreignisCardDefinition;
+use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\ModifierId;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
+use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Random\Randomizer;
 
@@ -70,18 +75,46 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
         return $randomizer->shuffleArray($filteredCards)[0];
     }
 
+    private function getGuthabenChangesBasedOnPlayersInsurances(GameEvents $gameEvents, MaybeTriggerEreignis $command, EreignisCardDefinition $ereignisCardDefinition): ResourceChanges
+    {
+        $resourceChanges = $ereignisCardDefinition->getResourceChanges();
+
+        $modifierIdsAsString = array_map(fn ($id) => $id->value, $ereignisCardDefinition->getModifierIds());
+        // Check if Ereignis is insurable and player has the specific insurance -> if so: modify guthabenChange
+        if (
+            in_array(ModifierId::PRIVATE_UNFALLVERSICHERUNG->value, $modifierIdsAsString, true)
+                // InsuranceId::create(2) creates an Unfallversicherung-Id
+                && !MoneySheetState::doesPlayerHaveThisInsurance($gameEvents, $command->playerId, InsuranceId::create(2))
+            || in_array(ModifierId::HAFTPFLICHTVERSICHERUNG->value, $modifierIdsAsString, true)
+                // InsuranceId::create(2) creates a Haftpflichtversicherung-Id
+                && MoneySheetState::doesPlayerHaveThisInsurance($gameEvents, $command->playerId, InsuranceId::create(1))) {
+            $resourceChanges = new ResourceChanges(
+                guthabenChange: new MoneyAmount(0),
+                zeitsteineChange: $resourceChanges->zeitsteineChange,
+                bildungKompetenzsteinChange: $resourceChanges->bildungKompetenzsteinChange,
+                freizeitKompetenzsteinChange: $resourceChanges->freizeitKompetenzsteinChange,
+            );
+        }
+
+        return $resourceChanges;
+    }
+
     private function handleTriggerEreignis(MaybeTriggerEreignis $command, GameEvents $gameEvents): GameEventsToPersist
     {
         if (!$this->doesTrigger()) {
             return GameEventsToPersist::empty();
         }
         $ereignisDefinition = $this->getRandomEreignisForCategory($gameEvents, $command);
+        $resourceChanges = $this->getGuthabenChangesBasedOnPlayersInsurances($gameEvents, $command, $ereignisDefinition);
+
+        // TODO trigger additional events (e.g. Jobverlust)
         return GameEventsToPersist::with(
             new EreignisWasTriggered(
                 playerId: $command->playerId,
                 ereignisCardId: $ereignisDefinition->getId(),
                 playerTurn: PlayerState::getCurrentTurnForPlayer($gameEvents, $command->playerId),
                 year: KonjunkturphaseState::getCurrentYear($gameEvents),
+                resourceChanges: $resourceChanges,
             )
         );
     }

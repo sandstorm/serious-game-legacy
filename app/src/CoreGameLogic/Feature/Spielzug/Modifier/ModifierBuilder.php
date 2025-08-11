@@ -53,6 +53,12 @@ readonly final class ModifierBuilder
                 activeYear: $year,
                 minValueChange: $modifierParameters->modifyLebenshaltungskostenMinValue ?? throw new \RuntimeException("missing parameter"),
             ),
+            ModifierId::INVESTITIONSSPERRE => new InvestitionssperreModifier(
+                playerId: $playerId,
+                playerTurn: $playerTurn,
+                description: $description,
+            ),
+            default => new EmptyModifier(),
         };
     }
 

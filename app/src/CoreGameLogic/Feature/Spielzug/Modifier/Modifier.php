@@ -25,6 +25,11 @@ readonly abstract class Modifier
         return '[ModifierId: ' . $this->id->value . ']';
     }
 
+    /**
+     * By default modifiers will stay active until the end of the current Konjunkturphase.
+     * @param GameEvents $gameEvents
+     * @return bool
+     */
     public function isActive(GameEvents $gameEvents): bool
     {
         $eventsAfterModifierBecameActive = $gameEvents->findAllAfterLastOrNullWhere(

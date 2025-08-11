@@ -11,6 +11,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasCategoryFreeZeitst
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerDoneNoZeitsteinaktionThisTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughResourcesValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughZeitsteineValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerAllowedToInvestValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereBoughtForPlayer;
@@ -42,6 +43,7 @@ class BuyStocksForPlayerAktion extends Aktion
     {
         $validationChain = new IsPlayersTurnValidator();
         $validationChain
+            ->setNext(new IsPlayerAllowedToInvestValidator())
             ->setNext(new HasPlayerEnoughZeitsteineValidator(1))
             ->setNext(new HasPlayerDoneNoZeitsteinaktionThisTurnValidator(CategoryId::INVESTITIONEN))
             ->setNext(new HasCategoryFreeZeitsteinslotsValidator(CategoryId::INVESTITIONEN))

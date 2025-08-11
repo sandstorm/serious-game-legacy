@@ -46,6 +46,7 @@ class InsuranceFinder
     {
         self::$instance = new self([
             new InsuranceDefinition(
+                // TODO refactor -> use type enum as id?
                 id: InsuranceId::create(1),
                 type: InsuranceTypeEnum::HAFTPFLICHT,
                 description: 'Haftpflichtversicherung',

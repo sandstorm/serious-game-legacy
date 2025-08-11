@@ -9,7 +9,7 @@ use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasAnotherPlayerBoughtStocksThisTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughStocksToSellValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerInteractedWithStocksModalThisTurnValidator;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerAllowedToInvestValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
@@ -38,6 +38,7 @@ class SellStocksForPlayerAktion extends Aktion
     {
         $validationChain = new HasAnotherPlayerBoughtStocksThisTurnValidator($this->stockType);
         $validationChain
+            ->setNext(new IsPlayerAllowedToInvestValidator())
             ->setNext(new HasPlayerEnoughStocksToSellValidator($this->stockType, $this->amount))
             ->setNext(new HasPlayerInteractedWithStocksModalThisTurnValidator());
         return $validationChain->validate($gameEvents, $playerId);
