@@ -14,7 +14,7 @@ class SellStocksForm extends Form
     public int $amount = 0;
 
     // public properties needed for validation
-    public StockType $stockType;
+    public ?StockType $stockType;
     public float $sharePrice = 0;
     public int $amountOwned = 0;
 
