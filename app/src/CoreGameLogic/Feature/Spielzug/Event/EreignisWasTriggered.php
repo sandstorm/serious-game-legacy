@@ -51,14 +51,17 @@ final readonly class EreignisWasTriggered implements ProvidesModifiers, Provides
         if ($playerId->equals($this->playerId)) {
             $modifiers = [];
             foreach ($this->ereignisCardDefinition->getModifierIds() as $modifierId) {
-                $modifiers[] = ModifierBuilder::build(
-                    modifierId: $modifierId,
-                    playerId: $playerId,
-                    playerTurn: $this->playerTurn,
-                    year: $this->year,
-                    modifierParameters: $this->ereignisCardDefinition->getModifierParameters(),
-                    description: $this->ereignisCardDefinition->getDescription(),
-                );
+                $modifiers = [
+                    ...$modifiers,
+                    ...ModifierBuilder::build(
+                        modifierId: $modifierId,
+                        playerId: $playerId,
+                        playerTurn: $this->playerTurn,
+                        year: $this->year,
+                        modifierParameters: $this->ereignisCardDefinition->getModifierParameters(),
+                        description: $this->ereignisCardDefinition->getDescription(),
+                    )
+                ];
             }
             return new ModifierCollection($modifiers);
         }
