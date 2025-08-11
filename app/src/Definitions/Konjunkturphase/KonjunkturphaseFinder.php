@@ -14,6 +14,7 @@ use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
+use Random\Randomizer;
 
 class KonjunkturphaseFinder
 {
@@ -143,7 +144,7 @@ class KonjunkturphaseFinder
         );
 
         $year2 = new KonjunkturphaseDefinition(
-            id: KonjunkturphasenId::create(1),
+            id: KonjunkturphasenId::create(2),
             type: KonjunkturphaseTypeEnum::BOOM,
             name: 'Frühe Expansion',
             description: 'Niedrige Zinssätze der letzten Jahre führen dazu, dass Unternehmen und Verbraucher weiterhin großzügig investieren und konsumieren. Die Wirtschaft wächst stabil, die Stimmung bleibt optimistisch, und Arbeitsplätze sind sicher. Die Zentralbank erkennt die gute Lage und stabilisiert den Leitzins bei 2 %, sodass der Kreditzins weiterhin attraktiv bleibt.',
@@ -234,7 +235,7 @@ class KonjunkturphaseFinder
         );
 
         $year3 = new KonjunkturphaseDefinition(
-            id: KonjunkturphasenId::create(1),
+            id: KonjunkturphasenId::create(3),
             type: KonjunkturphaseTypeEnum::REZESSION,
             name: 'Sanfte Abkühlung',
             description: 'Die Wirtschaft verliert leicht an Schwung, da internationale Handelskonflikte und leichte Nachfragerückgänge erste Spuren hinterlassen. Unternehmen investieren vorsichtiger und verschieben größere Projekte. Die Zentralbank erkennt die schwache Entwicklung und senkt den Leitzins auf moderate 1  %, wodurch Kredite günstig bleiben und ein stärkerer Abschwung verhindert werden soll. Der Staat reagiert mit einem Bildungsgutschein, um die Qualifikation der Arbeitnehmer zu verbessern.',
@@ -325,7 +326,7 @@ class KonjunkturphaseFinder
         );
 
         $year4 = new KonjunkturphaseDefinition(
-            id: KonjunkturphasenId::create(1),
+            id: KonjunkturphasenId::create(4),
             type: KonjunkturphaseTypeEnum::DEPRESSION,
             name: 'Einsetzen der Deflation',
             description: 'Die Wirtschaftskrise verschärft sich deutlich. Unternehmen finden kaum noch Abnehmer für ihre Produkte und Geschäfte reduzieren zunehmend ihre Preise, um damit Käufer anzulocken. Da immer weniger Menschen ihr Geld ausgeben, sinken die Preise weiter und es droht eine gefährliche Spirale. Die Zentralbank senkt die Zinsen nahezu auf null, doch die Zinssenkung zeigt kaum Wirkung. Die Verunsicherung am Markt lässt Immobilienpreise sinken.',
@@ -443,7 +444,9 @@ class KonjunkturphaseFinder
     {
         $possibleNextPhaseTypes = self::getListOfPossibleNextPhaseTypes($lastType);
         $konjunkturphasen = self::getAllKonjunkturphasenByTypes($possibleNextPhaseTypes);
-        return $konjunkturphasen[array_rand($konjunkturphasen)];
+
+        $randomizer = new Randomizer();
+        return $randomizer->shuffleArray($konjunkturphasen)[0];
     }
 
     /**
