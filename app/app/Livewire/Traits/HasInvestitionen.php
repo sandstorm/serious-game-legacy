@@ -47,8 +47,6 @@ trait HasInvestitionen
             !PlayerState::hasPlayerInteractedWithStocksModalThisTurn($this->gameEvents, $this->myself)) {
 
             $stocksBoughtEvent = $this->gameEvents->findLast(StocksWereBoughtForPlayer::class);
-            $this->sellStocksForm->reset();
-            $this->sellStocksForm->resetValidation();
             $this->sellStocksForm->stockType = $stocksBoughtEvent->stockType;
             $this->sellStocksForm->sharePrice = StockPriceState::getCurrentStockPrice($this->gameEvents, $stocksBoughtEvent->stockType)->value;
             $this->sellStocksForm->amountOwned = PlayerState::getAmountOfAllStocksOfTypeForPlayer(
@@ -129,9 +127,10 @@ trait HasInvestitionen
 
     public function closeSellStocksModal(): void
     {
+        $stocksBoughtEvent = $this->gameEvents->findLast(StocksWereBoughtForPlayer::class);
         $this->coreGameLogic->handle($this->gameId, DontSellStocksForPlayer::create(
             $this->myself,
-            $this->sellStocksForm->stockType
+            $stocksBoughtEvent->stockType
         ));
         $this->broadcastNotify();
         $this->sellStocksModalIsVisible = false;
@@ -168,6 +167,8 @@ trait HasInvestitionen
         ));
 
         $this->sellStocksModalIsVisible = false;
+        $this->sellStocksForm->reset();
+        $this->sellStocksForm->resetValidation();
         $this->showNotification(
             'Aktien wurden erfolgreich verkauft.',
             NotificationTypeEnum::INFO
