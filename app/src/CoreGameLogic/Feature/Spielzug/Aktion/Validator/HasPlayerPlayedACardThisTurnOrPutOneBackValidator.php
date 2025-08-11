@@ -20,7 +20,7 @@ final class HasPlayerPlayedACardThisTurnOrPutOneBackValidator extends AbstractVa
 
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
-        if (AktionsCalculator::forStream($gameEvents)->hasPlayerPlayedACardOrPutOneBack()) {
+        if (AktionsCalculator::forStream($gameEvents)->hasPlayerPlayedACardOrPutOneBack($playerId)) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: 'Karte ablegen nur möglich, wenn noch keine Karte gespielt oder zurückgelegt wurde',

@@ -46,7 +46,7 @@ trait HasCard
 
         // if player skipped a card, we show the next card from the top of the pile
         $aktionsCalculator = AktionsCalculator::forStream($this->gameEvents);
-        if ($aktionsCalculator->hasPlayerSkippedACardThisRound() && !$aktionsCalculator->hasPlayerPlayedACardOrPutOneBack()) {
+        if ($aktionsCalculator->hasPlayerSkippedACardThisRound($this->myself) && !$aktionsCalculator->hasPlayerPlayedACardOrPutOneBack($this->myself)) {
             /** @var CardWasSkipped $cardWasSkipped */
             $cardWasSkipped = $this->gameEvents->findLast(CardWasSkipped::class);
             $pileId = new PileId($cardWasSkipped->getCategoryId(), PlayerState::getCurrentLebenszielphaseIdForPlayer($this->gameEvents, $this->myself));

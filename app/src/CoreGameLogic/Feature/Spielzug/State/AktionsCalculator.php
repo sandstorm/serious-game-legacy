@@ -47,17 +47,18 @@ final readonly class AktionsCalculator
             ?? $this->stream->findAllAfterLastOfType(GameWasStarted::class);
     }
 
-    public function hasPlayerSkippedACardThisRound(): bool
+    public function hasPlayerSkippedACardThisRound(PlayerId $playerId): bool
     {
         $eventsThisTurn = $this->getEventsThisTurn();
-        return count($eventsThisTurn->findAllOfType(CardWasSkipped::class)) > 0;
+        $cardWasSkipped = $eventsThisTurn->findLastOrNullWhere( fn($event) => $event instanceof CardWasSkipped && $event->getPlayerId()->equals($playerId));
+        return $cardWasSkipped !== null;
     }
 
-    public function hasPlayerPlayedACardOrPutOneBack(): bool
+    public function hasPlayerPlayedACardOrPutOneBack(PlayerId $playerId): bool
     {
         $eventsThisTurn = $this->getEventsThisTurn();
-        $cardWasDiscarded = $eventsThisTurn->findLastOrNull(CardWasPutBackOnTopOfPile::class);
-        $cardWasPlayed = $eventsThisTurn->findLastOrNull(CardWasActivated::class);
+        $cardWasDiscarded = $eventsThisTurn->findLastOrNullWhere( fn($event) => $event instanceof CardWasPutBackOnTopOfPile && $event->getPlayerId()->equals($playerId));
+        $cardWasPlayed = $eventsThisTurn->findLastOrNullWhere( fn($event) => $event instanceof CardWasActivated && $event->getPlayerId()->equals($playerId));
 
         if ($cardWasDiscarded !== null || $cardWasPlayed !== null) {
             return true;

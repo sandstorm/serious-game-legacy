@@ -20,7 +20,7 @@ final class HasPlayerSkippedACardThisTurn extends AbstractValidator
 
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
-        if (!AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound()) {
+        if (!AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound($playerId)) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: 'Karte ablegen nur möglich, wenn vorher eine Karte übersprungen wurde',
