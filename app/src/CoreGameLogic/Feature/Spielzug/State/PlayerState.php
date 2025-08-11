@@ -15,6 +15,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\State\StockPriceState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\StockAmountChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\AnswerForWeiterbildungWasSubmitted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\BerufsunfaehigkeitsversicherungWasActivated;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerGotAChild;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereNotSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\WeiterbildungWasStarted;
@@ -523,5 +524,10 @@ class PlayerState
         ) => $event instanceof StocksWereNotSoldForPlayer && $event->playerId->equals($playerId));
 
         return $stocksWereSold !== null || $stocksWereNotSold !== null;
+    }
+
+    public static function hasChild(GameEvents $gameEvents, PlayerId $playerId): bool
+    {
+        return $gameEvents->findLastOrNullWhere(fn ($event) => $event instanceof PlayerGotAChild && $playerId->equals($event->playerId)) !== null;
     }
 }

@@ -58,7 +58,7 @@ readonly final class LebenshaltungskostenMultiplierModifier extends Modifier
     {
         assert(is_float($value));
 
-        return $value + $this->multiplier;
+        return $value + $this->multiplier/100;
     }
 
 }
