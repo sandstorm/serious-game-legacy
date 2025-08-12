@@ -247,7 +247,7 @@ function importInvestitionenCards(): void
         echo "\t" . "description: '" . $lineArrayWithKeys["description"] . "',\n";
         echo "\t" . "phaseId: LebenszielPhaseId::PHASE_" . $lineArrayWithKeys["phase"] . ",\n";
         printResourceChanges($lineArrayWithKeys);
-        echo "\t" . "annualRent: new MoneyAmount(" . $lineArrayWithKeys["moneyChange"] . "),\n";
+        echo "\t" . "annualRent: new MoneyAmount(" . $lineArrayWithKeys["annualRent"] . "),\n";
         echo "\t" . "immobilienTyp: ImmobilienType::" . $lineArrayWithKeys["type"] . ",\n";
         echo "),\n";
     }

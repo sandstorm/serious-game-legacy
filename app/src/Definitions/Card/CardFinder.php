@@ -82,7 +82,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-75000),
                 ),
-                annualRent: new MoneyAmount(-75000),
+                annualRent: new MoneyAmount(1500),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv2" => new InvestitionenCardDefinition(
@@ -93,7 +93,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-50000),
                 ),
-                annualRent: new MoneyAmount(-50000),
+                annualRent: new MoneyAmount(1000),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv3" => new InvestitionenCardDefinition(
@@ -104,7 +104,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-200000),
                 ),
-                annualRent: new MoneyAmount(-200000),
+                annualRent: new MoneyAmount(5000),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv4" => new InvestitionenCardDefinition(
@@ -115,7 +115,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-100000),
                 ),
-                annualRent: new MoneyAmount(-100000),
+                annualRent: new MoneyAmount(2000),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv5" => new InvestitionenCardDefinition(
@@ -126,7 +126,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-150000),
                 ),
-                annualRent: new MoneyAmount(-150000),
+                annualRent: new MoneyAmount(2000),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv6" => new InvestitionenCardDefinition(
@@ -137,7 +137,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-100000),
                 ),
-                annualRent: new MoneyAmount(-100000),
+                annualRent: new MoneyAmount(2500),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv7" => new InvestitionenCardDefinition(
@@ -148,7 +148,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(75000),
                 ),
-                annualRent: new MoneyAmount(75000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv8" => new InvestitionenCardDefinition(
@@ -159,7 +159,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(50000),
                 ),
-                annualRent: new MoneyAmount(50000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv9" => new InvestitionenCardDefinition(
@@ -170,7 +170,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(200000),
                 ),
-                annualRent: new MoneyAmount(200000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv10" => new InvestitionenCardDefinition(
@@ -181,7 +181,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(150000),
                 ),
-                annualRent: new MoneyAmount(150000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv11" => new InvestitionenCardDefinition(
@@ -192,7 +192,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(120000),
                 ),
-                annualRent: new MoneyAmount(120000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv12" => new InvestitionenCardDefinition(
@@ -203,7 +203,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(100000),
                 ),
-                annualRent: new MoneyAmount(100000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv13" => new InvestitionenCardDefinition(
@@ -214,7 +214,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-175000),
                 ),
-                annualRent: new MoneyAmount(-175000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv14" => new InvestitionenCardDefinition(
@@ -225,7 +225,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-200000),
                 ),
-                annualRent: new MoneyAmount(-200000),
+                annualRent: new MoneyAmount(4000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv15" => new InvestitionenCardDefinition(
@@ -236,7 +236,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-200000),
                 ),
-                annualRent: new MoneyAmount(-200000),
+                annualRent: new MoneyAmount(5000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv16" => new InvestitionenCardDefinition(
@@ -247,7 +247,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-300000),
                 ),
-                annualRent: new MoneyAmount(-300000),
+                annualRent: new MoneyAmount(7000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv17" => new InvestitionenCardDefinition(
@@ -258,7 +258,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-350000),
                 ),
-                annualRent: new MoneyAmount(-350000),
+                annualRent: new MoneyAmount(8000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv18" => new InvestitionenCardDefinition(
@@ -269,7 +269,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-400000),
                 ),
-                annualRent: new MoneyAmount(-400000),
+                annualRent: new MoneyAmount(8500),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv19" => new InvestitionenCardDefinition(
@@ -280,7 +280,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(250000),
                 ),
-                annualRent: new MoneyAmount(250000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv20" => new InvestitionenCardDefinition(
@@ -291,7 +291,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(280000),
                 ),
-                annualRent: new MoneyAmount(280000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv21" => new InvestitionenCardDefinition(
@@ -302,7 +302,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(300000),
                 ),
-                annualRent: new MoneyAmount(300000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv22" => new InvestitionenCardDefinition(
@@ -313,7 +313,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(350000),
                 ),
-                annualRent: new MoneyAmount(350000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv23" => new InvestitionenCardDefinition(
@@ -324,7 +324,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(400000),
                 ),
-                annualRent: new MoneyAmount(400000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv24" => new InvestitionenCardDefinition(
@@ -335,7 +335,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-150000),
                 ),
-                annualRent: new MoneyAmount(-150000),
+                annualRent: new MoneyAmount(3000),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv25" => new InvestitionenCardDefinition(
@@ -346,7 +346,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-270000),
                 ),
-                annualRent: new MoneyAmount(-270000),
+                annualRent: new MoneyAmount(6000),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv26" => new InvestitionenCardDefinition(
@@ -357,7 +357,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-280000),
                 ),
-                annualRent: new MoneyAmount(-280000),
+                annualRent: new MoneyAmount(7000),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv27" => new InvestitionenCardDefinition(
@@ -368,7 +368,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-290000),
                 ),
-                annualRent: new MoneyAmount(-290000),
+                annualRent: new MoneyAmount(7000),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv28" => new InvestitionenCardDefinition(
@@ -379,7 +379,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-300000),
                 ),
-                annualRent: new MoneyAmount(-300000),
+                annualRent: new MoneyAmount(7500),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv29" => new InvestitionenCardDefinition(
@@ -390,7 +390,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(160000),
                 ),
-                annualRent: new MoneyAmount(160000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv30" => new InvestitionenCardDefinition(
@@ -401,7 +401,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(180000),
                 ),
-                annualRent: new MoneyAmount(180000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv31" => new InvestitionenCardDefinition(
@@ -412,7 +412,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(200000),
                 ),
-                annualRent: new MoneyAmount(200000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv32" => new InvestitionenCardDefinition(
@@ -423,7 +423,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(250000),
                 ),
-                annualRent: new MoneyAmount(250000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv33" => new InvestitionenCardDefinition(
@@ -434,7 +434,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(400000),
                 ),
-                annualRent: new MoneyAmount(400000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv34" => new InvestitionenCardDefinition(
@@ -445,7 +445,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(450000),
                 ),
-                annualRent: new MoneyAmount(450000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv35" => new InvestitionenCardDefinition(
@@ -456,7 +456,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-120000),
                 ),
-                annualRent: new MoneyAmount(-120000),
+                annualRent: new MoneyAmount(3000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv36" => new InvestitionenCardDefinition(
@@ -467,7 +467,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-200000),
                 ),
-                annualRent: new MoneyAmount(-200000),
+                annualRent: new MoneyAmount(4500),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv37" => new InvestitionenCardDefinition(
@@ -478,7 +478,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-200000),
                 ),
-                annualRent: new MoneyAmount(-200000),
+                annualRent: new MoneyAmount(3000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv38" => new InvestitionenCardDefinition(
@@ -489,7 +489,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-250000),
                 ),
-                annualRent: new MoneyAmount(-250000),
+                annualRent: new MoneyAmount(6000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv39" => new InvestitionenCardDefinition(
@@ -500,7 +500,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-280000),
                 ),
-                annualRent: new MoneyAmount(-280000),
+                annualRent: new MoneyAmount(6500),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv40" => new InvestitionenCardDefinition(
@@ -511,7 +511,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-300000),
                 ),
-                annualRent: new MoneyAmount(-300000),
+                annualRent: new MoneyAmount(7000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv41" => new InvestitionenCardDefinition(
@@ -522,7 +522,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(180000),
                 ),
-                annualRent: new MoneyAmount(180000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv42" => new InvestitionenCardDefinition(
@@ -533,7 +533,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(200000),
                 ),
-                annualRent: new MoneyAmount(200000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv43" => new InvestitionenCardDefinition(
@@ -544,7 +544,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(240000),
                 ),
-                annualRent: new MoneyAmount(240000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv44" => new InvestitionenCardDefinition(
@@ -555,7 +555,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(270000),
                 ),
-                annualRent: new MoneyAmount(270000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv45" => new InvestitionenCardDefinition(
@@ -566,7 +566,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(370000),
                 ),
-                annualRent: new MoneyAmount(370000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv46" => new InvestitionenCardDefinition(
@@ -577,7 +577,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(450000),
                 ),
-                annualRent: new MoneyAmount(450000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv47" => new InvestitionenCardDefinition(
@@ -588,7 +588,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-155000),
                 ),
-                annualRent: new MoneyAmount(-155000),
+                annualRent: new MoneyAmount(1000),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv48" => new InvestitionenCardDefinition(
@@ -599,7 +599,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-290000),
                 ),
-                annualRent: new MoneyAmount(-290000),
+                annualRent: new MoneyAmount(7200),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv49" => new InvestitionenCardDefinition(
@@ -610,7 +610,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-290000),
                 ),
-                annualRent: new MoneyAmount(-290000),
+                annualRent: new MoneyAmount(7000),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv50" => new InvestitionenCardDefinition(
@@ -621,7 +621,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-310000),
                 ),
-                annualRent: new MoneyAmount(-310000),
+                annualRent: new MoneyAmount(7000),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv51" => new InvestitionenCardDefinition(
@@ -632,7 +632,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-350000),
                 ),
-                annualRent: new MoneyAmount(-350000),
+                annualRent: new MoneyAmount(8500),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv52" => new InvestitionenCardDefinition(
@@ -643,7 +643,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(220000),
                 ),
-                annualRent: new MoneyAmount(220000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv53" => new InvestitionenCardDefinition(
@@ -654,7 +654,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(300000),
                 ),
-                annualRent: new MoneyAmount(300000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv54" => new InvestitionenCardDefinition(
@@ -665,7 +665,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(320000),
                 ),
-                annualRent: new MoneyAmount(320000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv55" => new InvestitionenCardDefinition(
@@ -676,7 +676,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(480000),
                 ),
-                annualRent: new MoneyAmount(480000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv56" => new InvestitionenCardDefinition(
@@ -687,7 +687,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-160000),
                 ),
-                annualRent: new MoneyAmount(-160000),
+                annualRent: new MoneyAmount(1200),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv57" => new InvestitionenCardDefinition(
@@ -698,7 +698,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-255000),
                 ),
-                annualRent: new MoneyAmount(-255000),
+                annualRent: new MoneyAmount(6300),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv58" => new InvestitionenCardDefinition(
@@ -709,7 +709,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-280000),
                 ),
-                annualRent: new MoneyAmount(-280000),
+                annualRent: new MoneyAmount(5000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv59" => new InvestitionenCardDefinition(
@@ -720,7 +720,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-300000),
                 ),
-                annualRent: new MoneyAmount(-300000),
+                annualRent: new MoneyAmount(6000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv60" => new InvestitionenCardDefinition(
@@ -731,7 +731,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-330000),
                 ),
-                annualRent: new MoneyAmount(-330000),
+                annualRent: new MoneyAmount(8400),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv61" => new InvestitionenCardDefinition(
@@ -742,7 +742,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-380000),
                 ),
-                annualRent: new MoneyAmount(-380000),
+                annualRent: new MoneyAmount(9500),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv62" => new InvestitionenCardDefinition(
@@ -753,7 +753,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(310000),
                 ),
-                annualRent: new MoneyAmount(310000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv63" => new InvestitionenCardDefinition(
@@ -764,7 +764,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(330000),
                 ),
-                annualRent: new MoneyAmount(330000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv64" => new InvestitionenCardDefinition(
@@ -775,7 +775,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(410000),
                 ),
-                annualRent: new MoneyAmount(410000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv65" => new InvestitionenCardDefinition(
@@ -786,7 +786,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(460000),
                 ),
-                annualRent: new MoneyAmount(460000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "inv66" => new InvestitionenCardDefinition(
@@ -797,7 +797,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(500000),
                 ),
-                annualRent: new MoneyAmount(500000),
+                annualRent: new MoneyAmount(0),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "buk0" => new KategorieCardDefinition(
