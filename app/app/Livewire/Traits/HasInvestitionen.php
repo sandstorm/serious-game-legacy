@@ -37,6 +37,7 @@ trait HasInvestitionen
     public bool $showCryptoModal = false;
     public bool $showImmobilienModal = false;
     public ?InvestmentId $buyInvestmentOfType = null;
+    public bool $buyImmobilieIsVisible = false;
     public ?InvestmentId $sellInvestmentOfType = null;
     public BuyInvestmentsForm $buyInvestmentsForm;
     public SellInvestmentsForm $sellInvestmentsForm;
@@ -60,7 +61,6 @@ trait HasInvestitionen
             !PlayerState::hasPlayerInteractedWithInvestmentsModalThisTurn($this->getGameEvents(), $this->myself)) {
 
             $investmentsBoughtEvent = $this->getGameEvents()->findLast(InvestmentsWereBoughtForPlayer::class);
-            $this->sellInvestmentsForm->playerName = PlayerState::getNameForPlayer($this->getGameEvents(), $investmentsBoughtEvent->playerId);
             $this->sellInvestmentsForm->investmentId = $investmentsBoughtEvent->investmentId;
             $this->sellInvestmentsForm->sharePrice = InvestmentPriceState::getCurrentInvestmentPrice($this->getGameEvents(), $investmentsBoughtEvent->investmentId)->value;
             $this->sellInvestmentsForm->amountOwned = PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer(
@@ -114,6 +114,17 @@ trait HasInvestitionen
 
     public function toggleImmobilienModal(): void
     {
+        // functionality from HasCard Trait
+        if ($this->playerHasToPlayCard) {
+            return;
+        }
+
+        if ($this->buyImmobilieIsVisible) {
+            $this->buyImmobilieIsVisible = false;
+            return;
+        }
+
+        $this->showInvestitionenSelelectionModal = false;
         $this->showImmobilienModal = !$this->showImmobilienModal;
     }
 
@@ -312,6 +323,11 @@ trait HasInvestitionen
         $this->showBanner($event->amount . ' Anteile von ' . $investmentId->value . ' wurden erfolgreich verkauft. Alle anderen Spieler:innen haben jetzt die Möglichkeit ihre Anteile zu verkaufen', $event->getResourceChanges($this->myself));
     }
 
+    public function showBuyImmobilie(): void
+    {
+        $this->buyImmobilieIsVisible = true;
+    }
+
     public function canBuyImmobilie(CardId $cardId): AktionValidationResult
     {
         $aktion = new BuyImmobilieAktion($cardId);
@@ -324,7 +340,7 @@ trait HasInvestitionen
         $validationResult = $this->canBuyImmobilie($cardId);
         if (!$validationResult->canExecute) {
             $this->showNotification(
-                $validationResult->reason,
+                "Immobilie kaufen nicht möglich: " . $validationResult->reason,
                 NotificationTypeEnum::ERROR
             );
             return;
@@ -335,7 +351,6 @@ trait HasInvestitionen
         );
 
         $this->toggleImmobilienModal();
-        $this->toggleInvestitionenSelectionModal();
         $this->showNotification(
             'Immoblie wurde erfolgreich gekauft.',
             NotificationTypeEnum::INFO
@@ -367,7 +382,6 @@ trait HasInvestitionen
         );
 
         $this->toggleImmobilienModal();
-        $this->toggleInvestitionenSelectionModal();
         $this->showNotification(
             'Immoblie wurde erfolgreich verkauft.',
             NotificationTypeEnum::INFO

@@ -32,19 +32,22 @@ class ImmobilienModal extends Component
      */
     public function render(): View
     {
+        $pileId = new PileId(
+            CategoryId::INVESTITIONEN,
+            PlayerState::getCurrentLebenszielphaseIdForPlayer($this->gameEvents, $this->playerId)
+        );
         $topCardIdForInvestitionen = PileState::topCardIdForPile(
             $this->gameEvents,
-            new PileId(
-                CategoryId::INVESTITIONEN,
-                PlayerState::getCurrentLebenszielphaseIdForPlayer($this->gameEvents, $this->playerId)
-            )
+            $pileId
         );
         /** @var InvestitionenCardDefinition $investitionCard */
         $investitionCard = CardFinder::getInstance()->getCardById($topCardIdForInvestitionen);
 
-        return view('components.gameboard.investitionen.invenstitionen-immobilien-modal', [
+        return view('components.gameboard.investitionen.investitionen-immobilien-modal', [
             'investitionCard' => $investitionCard,
             'playerId' => $this->playerId,
+            'pileId' => $pileId,
+            'category' => CategoryId::INVESTITIONEN->value,
         ]);
     }
 }

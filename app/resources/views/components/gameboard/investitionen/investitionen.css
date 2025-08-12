@@ -23,6 +23,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: var(--spacing-100);
 
     .card-pile {
         max-width: 300px;

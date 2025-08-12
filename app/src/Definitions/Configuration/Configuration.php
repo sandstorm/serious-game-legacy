@@ -10,7 +10,7 @@ final readonly class Configuration
      * The initial capital for each player
      * @var int
      */
-    public final const STARTKAPITAL_VALUE = 30000;
+    public final const STARTKAPITAL_VALUE = 500000;
 
     /**
      * minimum value for the Lebenshaltungskosten

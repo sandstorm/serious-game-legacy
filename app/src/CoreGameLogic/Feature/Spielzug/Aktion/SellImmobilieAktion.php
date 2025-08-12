@@ -24,9 +24,9 @@ use Random\Randomizer;
 
 class SellImmobilieAktion extends Aktion
 {
-    public function __construct(public CardId $cardId)
-    {
-        parent::__construct('sell-immobilie', 'Immobilie verkaufen');
+    public function __construct(
+        public CardId $cardId
+    ) {
     }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult

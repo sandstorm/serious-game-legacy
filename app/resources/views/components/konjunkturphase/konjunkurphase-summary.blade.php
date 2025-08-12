@@ -13,7 +13,7 @@
         <tr>
             <td class="konjunkturphase-summary-table__empty-column"></td>
             <td class="konjunkturphase-summary-table__name-column">Finanzanlagen und Vermögenswerte</td>
-            <td class="konjunkturphase-summary-table__value-column">{!!$moneySheet->sumOfAllInvestments->formatWithIcon()!!}</td>
+            <td class="konjunkturphase-summary-table__value-column">{!!$moneySheet->sumOfAllAssets->formatWithIcon()!!}</td>
         </tr>
         <tr class="konjunkturphase-summary-table__bottom-row">
             <td class="konjunkturphase-summary-table__empty-column"></td>

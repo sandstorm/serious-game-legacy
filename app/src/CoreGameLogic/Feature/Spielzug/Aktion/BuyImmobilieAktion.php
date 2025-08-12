@@ -23,9 +23,9 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 class BuyImmobilieAktion extends Aktion
 {
-    public function __construct(public CardId $cardId)
-    {
-        parent::__construct('buy-immobilie', 'Immobilie kaufen');
+    public function __construct(
+        public CardId $cardId
+    ) {
     }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult

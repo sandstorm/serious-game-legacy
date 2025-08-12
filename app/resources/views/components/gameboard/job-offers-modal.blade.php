@@ -29,7 +29,7 @@
 @section('content')
     <div class="job-offers">
         @foreach($jobOffers as $jobOffer)
-            <div @class(["card", "card--disabled" => !$this->canAcceptJobOffer($jobOffer->getId())->canExecute])>
+            <div @class(["card", "card--disabled" => !$this->canAcceptJobOffer($jobOffer->getId()->value)->canExecute])>
                 <h4 class="card__title">{{ $jobOffer->getTitle() }}</h4>
                 <div class="card__content card__content--center">
                     <div class="resource-changes">
@@ -42,7 +42,7 @@
                         @class([
                             "button",
                             "button--type-primary",
-                            "button--disabled" => !$this->canAcceptJobOffer($jobOffer->getId())->canExecute,
+                            "button--disabled" => !$this->canAcceptJobOffer($jobOffer->getId()->value)->canExecute,
                             $this->getPlayerColorClass()
                         ])
                         wire:click="applyForJob('{{ $jobOffer->getId()->value }}')"
