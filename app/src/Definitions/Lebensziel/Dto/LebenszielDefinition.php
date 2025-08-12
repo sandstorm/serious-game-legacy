@@ -15,6 +15,7 @@ readonly class LebenszielDefinition implements JsonSerializable
     public function __construct(
         public LebenszielId $id,
         public string $name,
+        public string $description,
         public array $phaseDefinitions,
     ) {
     }
@@ -32,6 +33,7 @@ readonly class LebenszielDefinition implements JsonSerializable
         return new self(
             id: LebenszielId::create($values['id']),
             name: $values['name'],
+            description: $values['description'],
             phaseDefinitions: $phases,
         );
     }
@@ -49,6 +51,7 @@ readonly class LebenszielDefinition implements JsonSerializable
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'description' => $this->description,
             'phases' => $this->phaseDefinitions
         ];
     }
