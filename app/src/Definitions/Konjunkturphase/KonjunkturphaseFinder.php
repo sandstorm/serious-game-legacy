@@ -56,11 +56,14 @@ class KonjunkturphaseFinder
 
     private static function initialize(): self
     {
-        $year1 = new KonjunkturphaseDefinition(
+        $konjunkturphase1 = new KonjunkturphaseDefinition(
             id: KonjunkturphasenId::create(1),
             type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
-            name: 'Erste Erholung',
-            description: 'Nachdem eine globale Krise die internationalen Lieferketten stark gestört hatte, ist der Konsum jedoch noch verhalten, da Haushalte und Unternehmen vorsichtig agieren. Unternehmen beginnen, ihre Lager aufzufüllen und Neueinstellungen zu tätigen. Die Zentralbank hält den Leitzins daher mit 1 % niedrig, um günstige Kredite zu ermöglichen und Investitionen sowie Konsumausgaben zu begünstigen. Dadurch bleiben Kredite günstig und die Unternehmen sowie Haushalte können leichter investieren und konsumieren.',
+            name: 'Aufschwung I – Erste Erholung',
+            description: 'Nachdem eine globale Krise die internationalen Lieferketten stark gestört hatte, ist der Konsum jedoch noch verhalten,
+            da Haushalte und Unternehmen vorsichtig agieren. Unternehmen beginnen, ihre Lager aufzufüllen und Neueinstellungen zu tätigen. Die Zentralbank
+            hält den Leitzins daher mit 1 % niedrig, um günstige Kredite zu ermöglichen und Investitionen sowie Konsumausgaben zu begünstigen. Dadurch
+            bleiben Kredite günstig und die Unternehmen sowie Haushalte können leichter investieren und konsumieren.',
             additionalEvents: '',
             zeitsteine: new Zeitsteine(
                 [
@@ -105,22 +108,6 @@ class KonjunkturphaseFinder
             ],
             auswirkungen: [
                 new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::ZEITSTEINE,
-                    modifier: 1,
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::LEBENSERHALTUNGSKOSTEN,
-                    modifier: 100
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::BILDUNG,
-                    modifier: 100
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::FREIZEIT,
-                    modifier: 100
-                ),
-                new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
                     modifier: 4
                 ),
@@ -132,26 +119,226 @@ class KonjunkturphaseFinder
                     scope: AuswirkungScopeEnum::DIVIDEND,
                     modifier: 1.40
                 ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::REAL_ESTATE,
-                    modifier: 0
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::CRYPTO,
-                    modifier: 4
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::BONUS_INCOME,
-                    modifier: 0
-                ),
             ],
         );
 
-        $year2 = new KonjunkturphaseDefinition(
+        $konjunkturphase2 = new KonjunkturphaseDefinition(
             id: KonjunkturphasenId::create(2),
+            type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
+            name: 'Aufschwung II – Stabile Expansion',
+            description: 'Ein staatliches Infrastrukturpaket sorgt für  wirtschaftlichen Schwung. Straßen, Bahnlinien und digitale
+            Netze werden ausgebaut und es entstehen neue Jobs. Die Konjunktur festigt sich zunehmend und die Zentralbank reagiert
+            vorsichtig. Sie erhöht den Leitzins auf 1,5 %, um zukünftigen Inflationsrisiken vorzubeugen. Kredite bleiben jedoch
+            weiterhin attraktiv, sodass der Aufschwung nachhaltig unterstützt wird.',
+            additionalEvents: '"Infrastrukturprogramm: Immobilienkauf und -verkauf +10 %"',
+            zeitsteine: new Zeitsteine(
+                [
+                    new ZeitsteinePerPlayer(2, 5),
+                    new ZeitsteinePerPlayer(3, 4),
+                    new ZeitsteinePerPlayer(4, 4),
+                ]
+            ),
+            kompetenzbereiche: [
+                new KompetenzbereichDefinition(
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 2),
+                        new ZeitslotsPerPlayer(3, 3),
+                        new ZeitslotsPerPlayer(4, 3),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::INVESTITIONEN,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::JOBS,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
+                ),
+            ],
+            auswirkungen: [
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    modifier: 4.5
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::STOCKS_BONUS,
+                    modifier: 5
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    modifier: 1.50
+                ),
+            ]
+        );
+
+        $konjunkturphase3 = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(3),
+            type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
+            name: 'Aufschwung III – Kräftiges Wachstum',
+            description: 'Neue technologische Innovationen führen zu deutlich höherer Produktivität und neuen Wachstumsimpulsen. Unternehmen investieren
+            in Zukunftstechnologien und schaffen viele Arbeitsplätze. Weil die Wirtschaft nun robust wächst, hebt die Zentralbank den Leitzins auf 2 % an,
+            um das Wachstum  zu begleiten und einer möglichen Überhitzung entgegenzuwirken. Kredite bleiben moderat teuer, trotz steigender Zinsen
+            investieren jedoch Unternehmen weiter, da die Renditeerwartungen bei Investitionen in Zukunftstechnologien hoch sind.',
+            additionalEvents: 'Einmalige Gehaltssonderzahlung i.H.v. 1000 €',
+            zeitsteine: new Zeitsteine(
+                [
+                    new ZeitsteinePerPlayer(2, 5),
+                    new ZeitsteinePerPlayer(3, 4),
+                    new ZeitsteinePerPlayer(4, 4),
+                ]
+            ),
+            kompetenzbereiche: [
+                new KompetenzbereichDefinition(
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 2),
+                        new ZeitslotsPerPlayer(3, 3),
+                        new ZeitslotsPerPlayer(4, 3),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::INVESTITIONEN,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::JOBS,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
+                ),
+            ],
+            auswirkungen: [
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    modifier: 5
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::STOCKS_BONUS,
+                    modifier: 0
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    modifier: 1.50
+                ),
+            ],
+            conditionalResourceChanges: [
+                new ConditionalResourceChange(
+                    prerequisite: EreignisPrerequisitesId::HAS_JOB,
+                    resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(+1000)),
+                )
+            ],
+        );
+
+        $konjunkturphase4 = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(4),
+            type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
+            name: 'Aufschwung IV – Späte Phase',
+            description: 'Die Nachfrage nach Exportprodukten ist hoch, aber Fachkräfte und Rohstoffe werden zunehmend knapp. Unternehmen stoßen an ihre
+            Kapazitätsgrenzen, was steigende Löhne und erste Inflationssignale zur Folge hat. Die Zentralbank greift nun entschiedener ein und hebt den
+            Leitzins auf 2,5 % an, um die Wirtschaft sanft auszubremsen und eine Überhitzung zu verhindern. Dies führt zu höheren Kreditkosten, was die
+            Investitionen erstmals etwas erschwert.',
+            additionalEvents: 'Einmalig 500 € für steigende Lebensmittelpreise',
+            zeitsteine: new Zeitsteine(
+                [
+                    new ZeitsteinePerPlayer(2, 4),
+                    new ZeitsteinePerPlayer(3, 3),
+                    new ZeitsteinePerPlayer(4, 3),
+                ]
+            ),
+            kompetenzbereiche: [
+                new KompetenzbereichDefinition(
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 2),
+                        new ZeitslotsPerPlayer(3, 3),
+                        new ZeitslotsPerPlayer(4, 3),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::INVESTITIONEN,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 2),
+                        new ZeitslotsPerPlayer(3, 3),
+                        new ZeitslotsPerPlayer(4, 3),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::JOBS,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 2),
+                        new ZeitslotsPerPlayer(3, 3),
+                        new ZeitslotsPerPlayer(4, 3),
+                    ])
+                ),
+            ],
+            auswirkungen: [
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    modifier: 5.5
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::STOCKS_BONUS,
+                    modifier: 5
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    modifier: 1.6
+                ),
+            ],
+            conditionalResourceChanges: [
+                new ConditionalResourceChange(
+                    prerequisite: EreignisPrerequisitesId::NO_PREREQUISITES,
+                    resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(+500)),
+                )
+            ],
+        );
+
+        $konjunkturphase5 = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(5),
             type: KonjunkturphaseTypeEnum::BOOM,
-            name: 'Frühe Expansion',
-            description: 'Niedrige Zinssätze der letzten Jahre führen dazu, dass Unternehmen und Verbraucher weiterhin großzügig investieren und konsumieren. Die Wirtschaft wächst stabil, die Stimmung bleibt optimistisch, und Arbeitsplätze sind sicher. Die Zentralbank erkennt die gute Lage und stabilisiert den Leitzins bei 2 %, sodass der Kreditzins weiterhin attraktiv bleibt.',
+            name: 'Boom I - Frühe Expansion',
+            description: 'Niedrige Zinssätze der letzten Jahre führen dazu, dass Unternehmen und Verbraucher weiterhin großzügig investieren und konsumieren.
+            Die Wirtschaft wächst stabil, die Stimmung bleibt optimistisch, und Arbeitsplätze sind sicher. Die Zentralbank erkennt die gute Lage und
+            stabilisiert den Leitzins bei 2 %, sodass der Kreditzins weiterhin attraktiv bleibt.',
             additionalEvents: '',
             zeitsteine: new Zeitsteine(
                 [
@@ -196,22 +383,6 @@ class KonjunkturphaseFinder
             ],
             auswirkungen: [
                 new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::ZEITSTEINE,
-                    modifier: 1,
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::LEBENSERHALTUNGSKOSTEN,
-                    modifier: 100
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::BILDUNG,
-                    modifier: 100
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::FREIZEIT,
-                    modifier: 100
-                ),
-                new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
                     modifier: 5
                 ),
@@ -221,28 +392,84 @@ class KonjunkturphaseFinder
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::DIVIDEND,
-                    modifier: 1.60
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::REAL_ESTATE,
-                    modifier: 0
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::CRYPTO,
-                    modifier: 13
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::BONUS_INCOME,
-                    modifier: 0
+                    modifier: 1.6
                 ),
             ]
         );
 
-        $year3 = new KonjunkturphaseDefinition(
-            id: KonjunkturphasenId::create(3),
+        $konjunkturphase6 = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(6),
+            type: KonjunkturphaseTypeEnum::BOOM,
+            name: 'Boom II - Mittlere Expansion',
+            description: 'Ein globaler Handelsboom sorgt für Rekordgewinne in Unternehmen und spürbar steigende Löhne. Die Kaufkraft der Haushalte
+            wächst stark und viele Märkte expandieren. Da die Wirtschaft nun auf Hochtouren läuft und Inflationsrisiken steigen, hebt die Zentralbank
+            den Leitzins auf 3 % an. Die höheren Kreditkosten bremsen Investitionen bisher jedoch kaum, da die Gewinne weiterhin hoch sind.',
+            additionalEvents: 'Einmalige Lohnsonderzahlung i.H.v. 10 % des Einkommens.',
+            zeitsteine: new Zeitsteine(
+                [
+                    new ZeitsteinePerPlayer(2, 5),
+                    new ZeitsteinePerPlayer(3, 4),
+                    new ZeitsteinePerPlayer(4, 4),
+                ]
+            ),
+            kompetenzbereiche: [
+                new KompetenzbereichDefinition(
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 2),
+                        new ZeitslotsPerPlayer(3, 3),
+                        new ZeitslotsPerPlayer(4, 3),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::INVESTITIONEN,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::JOBS,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
+                ),
+            ],
+            auswirkungen: [
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    modifier: 6
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::STOCKS_BONUS,
+                    modifier: 0
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    modifier: 1.8
+                ),
+            ]
+        );
+
+        $konjunkturphase9 = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(9),
             type: KonjunkturphaseTypeEnum::REZESSION,
-            name: 'Sanfte Abkühlung',
-            description: 'Die Wirtschaft verliert leicht an Schwung, da internationale Handelskonflikte und leichte Nachfragerückgänge erste Spuren hinterlassen. Unternehmen investieren vorsichtiger und verschieben größere Projekte. Die Zentralbank erkennt die schwache Entwicklung und senkt den Leitzins auf moderate 1  %, wodurch Kredite günstig bleiben und ein stärkerer Abschwung verhindert werden soll. Der Staat reagiert mit einem Bildungsgutschein, um die Qualifikation der Arbeitnehmer zu verbessern.',
+            name: 'Rezession I – Sanfte Abkühlung',
+            description: 'Die Wirtschaft verliert leicht an Schwung, da internationale Handelskonflikte und leichte Nachfragerückgänge erste Spuren hinterlassen.
+            Unternehmen investieren vorsichtiger und verschieben größere Projekte. Die Zentralbank erkennt die schwache Entwicklung und senkt den Leitzins auf
+            moderate 1  %, wodurch Kredite günstig bleiben und ein stärkerer Abschwung verhindert werden soll. Der Staat reagiert mit einem Bildungsgutschein,
+            um die Qualifikation der Arbeitnehmer zu verbessern.',
             additionalEvents: 'Bildungs-Bonus: 1 Bildungs- & Karrierepunkt',
             zeitsteine: new Zeitsteine(
                 [
@@ -287,22 +514,6 @@ class KonjunkturphaseFinder
             ],
             auswirkungen: [
                 new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::ZEITSTEINE,
-                    modifier: 0,
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::LEBENSERHALTUNGSKOSTEN,
-                    modifier: 100
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::BILDUNG,
-                    modifier: 100
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::FREIZEIT,
-                    modifier: 100
-                ),
-                new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
                     modifier: 4
                 ),
@@ -312,28 +523,85 @@ class KonjunkturphaseFinder
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::DIVIDEND,
-                    modifier: 1.40
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::REAL_ESTATE,
-                    modifier: 0
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::CRYPTO,
-                    modifier: -6
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::BONUS_INCOME,
-                    modifier: 0
+                    modifier: 1.4
                 ),
             ]
         );
 
-        $year4 = new KonjunkturphaseDefinition(
-            id: KonjunkturphasenId::create(4),
+        $konjunkturphase10 = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(10),
+            type: KonjunkturphaseTypeEnum::REZESSION,
+            name: 'Rezession II – Nachfragerückgang',
+            description: 'Ein stärkerer Rückgang der Nachfrage belastet zunehmend die Wirtschaft. Immer mehr Unternehmen müssen Kurzarbeit anmelden,
+            wodurch Arbeitszeit und Einkommen sinken. Die Zentralbank hält den Leitzins stabil niedrig bei 1  %, um weitere Schäden zu verhindern,
+            doch die erhoffte Belebung bleibt vorerst aus. Die Unternehmen setzen aufgrund der schwierigen Lage Lohnsonderzahlungen aus, wodurch
+            private Konsumausgaben zusätzlich belastet werden.',
+            additionalEvents: 'Kurzarbeit, -1 Zeitstein wenn Erwerbseinkommen, Einkommen -5 % diese Runde',
+            zeitsteine: new Zeitsteine(
+                [
+                    new ZeitsteinePerPlayer(2, 4),
+                    new ZeitsteinePerPlayer(3, 3),
+                    new ZeitsteinePerPlayer(4, 3),
+                ]
+            ),
+            kompetenzbereiche: [
+                new KompetenzbereichDefinition(
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 2),
+                        new ZeitslotsPerPlayer(3, 3),
+                        new ZeitslotsPerPlayer(4, 3),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 5),
+                        new ZeitslotsPerPlayer(3, 6),
+                        new ZeitslotsPerPlayer(4, 6),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::INVESTITIONEN,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 2),
+                        new ZeitslotsPerPlayer(3, 3),
+                        new ZeitslotsPerPlayer(4, 3),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::JOBS,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 1),
+                        new ZeitslotsPerPlayer(3, 2),
+                        new ZeitslotsPerPlayer(4, 2),
+                    ])
+                ),
+            ],
+            auswirkungen: [
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    modifier: 4
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::STOCKS_BONUS,
+                    modifier: -5
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    modifier: 1.3
+                ),
+            ]
+        );
+
+        $konjunkturphase13 = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(13),
             type: KonjunkturphaseTypeEnum::DEPRESSION,
-            name: 'Einsetzen der Deflation',
-            description: 'Die Wirtschaftskrise verschärft sich deutlich. Unternehmen finden kaum noch Abnehmer für ihre Produkte und Geschäfte reduzieren zunehmend ihre Preise, um damit Käufer anzulocken. Da immer weniger Menschen ihr Geld ausgeben, sinken die Preise weiter und es droht eine gefährliche Spirale. Die Zentralbank senkt die Zinsen nahezu auf null, doch die Zinssenkung zeigt kaum Wirkung. Die Verunsicherung am Markt lässt Immobilienpreise sinken.',
+            name: 'Depression I – Einsetzen der Deflation',
+            description: 'Die Wirtschaftskrise verschärft sich deutlich. Unternehmen finden kaum noch Abnehmer für ihre Produkte und Geschäfte reduzieren
+            zunehmend ihre Preise, um damit Käufer anzulocken. Da immer weniger Menschen ihr Geld ausgeben, sinken die Preise weiter und es droht eine
+            gefährliche Spirale. Die Zentralbank senkt die Zinsen nahezu auf null, doch die Zinssenkung zeigt kaum Wirkung. Die Verunsicherung am Markt
+            lässt Immobilienpreise sinken.',
             additionalEvents: 'Immobilienkauf und -verkauf -10 %',
             zeitsteine: new Zeitsteine(
                 [
@@ -378,22 +646,6 @@ class KonjunkturphaseFinder
             ],
             auswirkungen: [
                 new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::ZEITSTEINE,
-                    modifier: -1,
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::LEBENSERHALTUNGSKOSTEN,
-                    modifier: 95
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::BILDUNG,
-                    modifier: 95
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::FREIZEIT,
-                    modifier: 95
-                ),
-                new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
                     modifier: 3.25
                 ),
@@ -405,26 +657,86 @@ class KonjunkturphaseFinder
                     scope: AuswirkungScopeEnum::DIVIDEND,
                     modifier: 0.95
                 ),
+            ]
+        );
+
+        $konjunkturphase14 = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(14),
+            type: KonjunkturphaseTypeEnum::DEPRESSION,
+            name: 'Depression II – Bankenzusammenbruch',
+            description: 'Es eskaliert eine Krise, als mehrere große Banken plötzlich kurz vor der Insolvenz stehen. Um das gesamte Finanzsystem vor dem
+            Kollaps zu retten, stellt die Regierung die Banken unter Schutz und lässt Kredite vorübergehend einfrieren. Daraus resultiert eine Panik an
+            den Märkten und Immobilienpreise und Aktienkurse brechen ein. Dies geschieht trotz des radikalen Eingriffs der Zentralbank, die den Leitzins
+            vollständig auf null senkt.',
+            additionalEvents: '"Es können keine Kredite aufgenommen werden, Immobilienkauf und verkauf -15 %, Einkommen -10 % diese Runde"',
+            zeitsteine: new Zeitsteine(
+                [
+                    new ZeitsteinePerPlayer(2, 4),
+                    new ZeitsteinePerPlayer(3, 3),
+                    new ZeitsteinePerPlayer(4, 3),
+                ]
+            ),
+            kompetenzbereiche: [
+                new KompetenzbereichDefinition(
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 2),
+                        new ZeitslotsPerPlayer(3, 3),
+                        new ZeitslotsPerPlayer(4, 3),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 5),
+                        new ZeitslotsPerPlayer(3, 6),
+                        new ZeitslotsPerPlayer(4, 6),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::INVESTITIONEN,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 2),
+                        new ZeitslotsPerPlayer(3, 3),
+                        new ZeitslotsPerPlayer(4, 3),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::JOBS,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 1),
+                        new ZeitslotsPerPlayer(3, 2),
+                        new ZeitslotsPerPlayer(4, 2),
+                    ])
+                ),
+            ],
+            auswirkungen: [
                 new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::REAL_ESTATE,
-                    modifier: -10
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    modifier: 3
                 ),
                 new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::CRYPTO,
-                    modifier: -22
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::BONUS_INCOME,
+                    scope: AuswirkungScopeEnum::STOCKS_BONUS,
                     modifier: 0
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    modifier: 0.9
                 ),
             ]
         );
 
         self::$instance = new self([
-            $year1,
-            $year2,
-            $year3,
-            $year4,
+            $konjunkturphase1,
+            $konjunkturphase2,
+            $konjunkturphase3,
+            $konjunkturphase4,
+            $konjunkturphase5,
+            $konjunkturphase6,
+            $konjunkturphase9,
+            $konjunkturphase10,
+            $konjunkturphase13,
+            $konjunkturphase14,
         ]);
 
         return self::$instance;
