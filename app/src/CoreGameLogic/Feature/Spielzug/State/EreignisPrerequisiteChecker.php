@@ -26,6 +26,7 @@ final readonly class EreignisPrerequisiteChecker
             EreignisPrerequisitesId::HAS_JOB => $this->hasPlayerAJob($playerId),
             EreignisPrerequisitesId::HAS_CHILD => $this->hasPlayerAChild($playerId),
             EreignisPrerequisitesId::HAS_NO_CHILD => !($this->hasPlayerAChild($playerId)),
+            EreignisPrerequisitesId::NO_PREREQUISITES => true,
         };
     }
 
