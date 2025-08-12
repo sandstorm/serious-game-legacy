@@ -6,12 +6,16 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasKonjunkturphaseNotStartedValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasStartedKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
+use Domain\CoreGameLogic\Feature\Spielzug\State\EreignisPrerequisiteChecker;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 
 /**
  * This event is fired when the player has handled the dialogue at the start of each Konjunkturphase.
@@ -21,7 +25,7 @@ class StartKonjunkturphaseForPlayerAktion extends Aktion
 {
     public function __construct()
     {
-        parent::__construct('end-spielzug', 'Spielzug beenden');
+        parent::__construct('start-konjunkturphase-for-player', 'Konjunkturphase starten');
     }
 
     /**
@@ -35,6 +39,23 @@ class StartKonjunkturphaseForPlayerAktion extends Aktion
     {
         $validatorChain = new HasKonjunkturphaseNotStartedValidator();
         return $validatorChain->validate($gameEvents, $playerId);
+    }
+
+    private function getResourceChangesForPlayer(GameEvents $gameEvents, PlayerId $playerId): ResourceChanges
+    {
+        $conditionalResourceChangesForCurrentKonjunkturphase = KonjunkturphaseFinder::findKonjunkturphaseById(
+            $gameEvents->findLast(KonjunkturphaseWasChanged::class)->id)->getConditionalResourceChanges();
+
+        $resourceChanges = new ResourceChanges();
+        foreach ($conditionalResourceChangesForCurrentKonjunkturphase as $conditionalResourceChange) {
+            $isConditionMet = EreignisPrerequisiteChecker::forStream($gameEvents)
+                ->hasPlayerPrerequisites($playerId, $conditionalResourceChange->prerequisite);
+
+            if ($isConditionMet) {
+                $resourceChanges = $resourceChanges->accumulate($conditionalResourceChange->resourceChanges);
+            }
+        }
+        return $resourceChanges;
     }
 
     /**
@@ -60,8 +81,13 @@ class StartKonjunkturphaseForPlayerAktion extends Aktion
         if (!$result->canExecute) {
             throw new \RuntimeException('Cannot start Konjunkturphase: ' . $result->reason, 1751373528);
         }
+
         return GameEventsToPersist::with(
-            new PlayerHasStartedKonjunkturphase($playerId, KonjunkturphaseState::getCurrentYear($gameEvents))
+            new PlayerHasStartedKonjunkturphase(
+                playerId: $playerId,
+                year: KonjunkturphaseState::getCurrentYear($gameEvents),
+                resourceChanges: $this->getResourceChangesForPlayer($gameEvents, $playerId),
+            ),
         );
     }
 }

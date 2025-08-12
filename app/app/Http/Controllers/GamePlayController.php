@@ -53,12 +53,14 @@ class GamePlayController extends Controller
                 playerId: $playerIds[$index],
                 lebenszielId: LebenszielId::create($index % 2 + 1),
             ));
-
-            $this->coreGameLogic->handle($gameId, StartKonjunkturphaseForPlayer::create($playerIds[$index]));
         }
 
         $this->coreGameLogic->handle($gameId, StartGame::create());
         $this->coreGameLogic->handle($gameId, ChangeKonjunkturphase::create());
+
+        for ($index = 0; $index < $amountOfPlayers; $index++) {
+            $this->coreGameLogic->handle($gameId, StartKonjunkturphaseForPlayer::create($playerIds[$index]));
+        }
 
         // redirect to the game page
         return redirect()->route('game-play.game', [
