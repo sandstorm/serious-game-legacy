@@ -53,6 +53,7 @@ trait HasCard
 
             // get next card from top and show it
             $topCardIdForPile = PileState::topCardIdForPile($this->gameEvents, $pileId);
+            // TODO show immobilien modal if the top card is an Immobilie
             $this->showCardActionsForCard = $topCardIdForPile->value;
             $this->playerHasToPlayCard = true;
         }

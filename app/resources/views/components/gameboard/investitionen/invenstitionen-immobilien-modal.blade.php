@@ -3,6 +3,8 @@
 @props([
     'playerId' => null,
     'investitionCard' => null,
+    'category' => null,
+    'pileId' => null,
 ])
 
 @section('icon')
@@ -10,59 +12,129 @@
 @endsection
 
 @section('title')
-    <span>
-        Kauf - Immobilien <i class="icon-immobilien" aria-hidden="true"></i>
-    </span>
-    <span class="font-size--base">
-        Investitionen
-    </span>
+    <div class="card__actions-header">
+        <div>
+            {{ $investitionCard->getTitle() }}
+        </div>
+        <div class="card__actions-header-category">
+            <i class="icon-immobilien" aria-hidden="true"></i>
+            Investitionen
+        </div>
+    </div>
 @endsection
 
 @section('content')
-    <div class="investitionen__buy-sell-immobilien">
-        <div class="card-pile">
-            <div class="shadow-card-1"></div>
-            <div class="shadow-card-2"></div>
-            <div @class(["card"])>
-                <h4 class="card__title">{{ $investitionCard->getTitle() }}</h4>
-                <small>{{ $investitionCard->getDescription() }}</small>
-                <div class="card__content card__content--center">
-                    <x-gameboard.resourceChanges.resource-changes :resource-changes="$investitionCard->getResourceChanges()" />
+    <p>
+        {{ $investitionCard->getDescription() }}
+    </p>
 
-                    @if ($investitionCard->getResourceChanges()->guthabenChange->value > 0)
-                        <button type="button"
-                            @class([
-                                "button",
-                                "button--type-primary",
-                                "button--disabled" => !$this->canSellImmobilie($investitionCard->getId())->canExecute,
-                                $this->getPlayerColorClass()
-                            ])
-                            wire:click="sellImmobilie('{{ $investitionCard->getId()->value }}')"
-                        >
-                            Immobilie verkaufen
-                        </button>
-                    @else
-                        <button type="button"
-                            @class([
-                                "button",
-                                "button--type-primary",
-                                "button--disabled" => !$this->canBuyImmobilie($investitionCard->getId())->canExecute,
-                                $this->getPlayerColorClass()
-                            ])
-                            wire:click="buyImmobilie('{{ $investitionCard->getId()->value }}')"
-                        >
-                            Immobilie kaufen
-                        </button>
-                    @endif
-                </div>
+    @if ($investitionCard->getAnnualRent()->value > 0)
+        <h5>Jährliche Miete:</h5>
+        {!! $investitionCard->getAnnualRent()->formatWithIcon() !!}
+    @endif
 
-                <div class="job-offer__requirements">
-                    @if ($investitionCard->getAnnualRent()->value > 0)
-                        <h5>Jährliche Miete:</h5>
-                        {!! $investitionCard->getAnnualRent()->formatWithIcon() !!}
-                    @endif
+    @if ($this->playerHasToPlayCard)
+        <p class="text--danger">
+            Du hast eine Karte geskippt und musst diese Karte jetzt spielen.
+            Wenn du die Karte nicht spielen kannst, musst du sie zurück legen.
+        </p>
+    @endif
+@endsection
+
+@section('footer')
+    <div class="card__actions-footer">
+        <x-gameboard.resourceChanges.resource-changes style-class="horizontal" :resource-changes="$investitionCard->getResourceChanges()" />
+
+        @if (!$this->playerHasToPlayCard)
+            <button
+                type="button"
+                @class([
+                    "button",
+                    "button--type-outline-primary",
+                    "button--disabled" => !$this->canSkipCard($category)->canExecute,
+                    $this->getPlayerColorClass(),
+                ])
+                wire:click="skipCard('{{$category}}', '{{$pileId}}')"
+            >
+                <i class="icon-skippen" aria-hidden="true"></i>
+                Karte skippen
+                <div class="button__suffix">
+                    <div>
+                        <i class="icon-minus text--danger" aria-hidden="true"></i><i class="icon-zeitstein" aria-hidden="true"></i>
+                        <span class="sr-only">, kostet einen Zeitstein</span>
+                    </div>
                 </div>
-            </div>
-        </div>
+            </button>
+        @endif
+
+        @if ($investitionCard->getResourceChanges()->guthabenChange->value > 0)
+            <button type="button"
+                    @class([
+                        "button",
+                        "button--type-primary",
+                        "button--disabled" => !$this->canSellImmobilie($investitionCard->getId())->canExecute,
+                        $this->getPlayerColorClass()
+                    ])
+                    wire:click="sellImmobilie('{{ $investitionCard->getId()->value }}')"
+            >
+                Immobilie verkaufen
+                @if (!$this->playerHasToPlayCard)
+                    <div class="button__suffix">
+                        <div>
+                            <i class="icon-minus text--danger" aria-hidden="true"></i><i class="icon-zeitstein" aria-hidden="true"></i>
+                            <span class="sr-only">, kostet einen Zeitstein</span>
+                        </div>
+                    </div>
+                @endif
+            </button>
+            @if ($this->playerHasToPlayCard && !$this->canSellImmobilie($investitionCard->getId())->canExecute)
+                <button
+                    type="button"
+                    @class([
+                       "button",
+                       "button--type-primary",
+                       $this->getPlayerColorClass(),
+                    ])
+                    wire:click="putCardBackOnTopOfPile('{{$category}}')"
+                >
+                    Karte zurück legen
+                </button>
+            @endif
+        @else
+            <button type="button"
+                    @class([
+                        "button",
+                        "button--type-primary",
+                        "button--disabled" => !$this->canBuyImmobilie($investitionCard->getId())->canExecute,
+                        $this->getPlayerColorClass()
+                    ])
+                    wire:click="buyImmobilie('{{ $investitionCard->getId()->value }}')"
+            >
+                Immobilie kaufen
+                @if (!$this->playerHasToPlayCard)
+                    <div class="button__suffix">
+                        <div>
+                            <i class="icon-minus text--danger" aria-hidden="true"></i><i class="icon-zeitstein" aria-hidden="true"></i>
+                            <span class="sr-only">, kostet einen Zeitstein</span>
+                        </div>
+                    </div>
+                @endif
+            </button>
+            @if ($this->playerHasToPlayCard && !$this->canBuyImmobilie($investitionCard->getId())->canExecute)
+                <button
+                    type="button"
+                    @class([
+                       "button",
+                       "button--type-primary",
+                       $this->getPlayerColorClass(),
+                    ])
+                    wire:click="putCardBackOnTopOfPile('{{$category}}')"
+                >
+                    Karte zurück legen
+                </button>
+            @endif
+        @endif
+
+
     </div>
 @endsection
