@@ -41,8 +41,10 @@ class MoneySheetInvestments extends Component
                 totalValue: new MoneyAmount($currentPrice->value * $amount)
             );
         }
+
         return view('components.gameboard.moneySheet.income.money-sheet-investments', [
-            'stocks' => $stocks
+            'stocks' => $stocks,
+            'immobilien' => PlayerState::getImmoblienOwnedByPlayer($this->gameEvents, $this->playerId),
         ]);
     }
 

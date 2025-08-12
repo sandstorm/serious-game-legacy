@@ -17,6 +17,8 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasPutBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\ImmobilieWasBoughtForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\ImmobilieWasSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerGotAChild;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereNotSoldForPlayer;
@@ -110,6 +112,8 @@ final readonly class EventNormalizer
             CardWasPutBackOnTopOfPile::class,
             BerufsunfaehigkeitsversicherungWasActivated::class,
             PlayerGotAChild::class,
+            ImmobilieWasBoughtForPlayer::class,
+            ImmobilieWasSoldForPlayer::class,
         ];
 
         $fullClassNameToShortEventType = [];

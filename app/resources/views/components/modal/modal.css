@@ -74,7 +74,7 @@
     height: auto;
     padding: var(--spacing-250);
     max-width: 1200px;
-    max-height: 800px;
+    max-height: 100%;
     gap: var(--spacing-100);
 
     background-color: var(--color-primary-fg);
