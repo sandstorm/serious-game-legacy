@@ -10,6 +10,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\CardDefinition;
+use Domain\Definitions\Card\Dto\InvestitionenCardDefinition;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\PileId;
@@ -38,9 +39,9 @@ final class CanPlayerNotAffordTopCardOnPileValidator extends AbstractValidator
     {
         $topCardOnPile = PileState::topCardIdForPile($gameEvents, $this->pileId);
         $cardDefinition = CardFinder::getInstance()->getCardById($topCardOnPile);
+        $costs = $this->getTotalCosts($playerId, $gameEvents, $cardDefinition);
 
-        if (AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($playerId,
-            $this->getTotalCosts($playerId, $gameEvents, $cardDefinition))) {
+        if (AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($playerId, $costs)) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: 'Du hast genug Ressourcen um die Karte zu spielen, du darfs sie nicht ablegen.',

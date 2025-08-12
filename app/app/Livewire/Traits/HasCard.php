@@ -51,10 +51,16 @@ trait HasCard
             $cardWasSkipped = $this->gameEvents->findLast(CardWasSkipped::class);
             $pileId = new PileId($cardWasSkipped->getCategoryId(), PlayerState::getCurrentLebenszielphaseIdForPlayer($this->gameEvents, $this->myself));
 
+            $this->playerHasToPlayCard = true;
+
             // get next card from top and show it
             $topCardIdForPile = PileState::topCardIdForPile($this->gameEvents, $pileId);
-            $this->showCardActionsForCard = $topCardIdForPile->value;
-            $this->playerHasToPlayCard = true;
+            if ($cardWasSkipped->getCategoryId() === CategoryId::INVESTITIONEN) {
+                // we also use this for investitionen modal (see HasInvestitionen trait)
+                $this->showImmobilienModal = true;
+            } else {
+                $this->showCardActionsForCard = $topCardIdForPile->value;
+            }
         }
     }
 

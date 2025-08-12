@@ -6,7 +6,6 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\CanPlayerNotAffordTopCardOnPileValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerPlayedACardThisTurnOrPutOneBackValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerSkippedACardThisTurn;
@@ -39,8 +38,15 @@ class PutCardBackOnTopOfPileAktion extends Aktion
         $validatorChain = new IsPlayersTurnValidator();
         $validatorChain
             ->setNext(new HasPlayerSkippedACardThisTurn())
-            ->setNext(new HasPlayerPlayedACardThisTurnOrPutOneBackValidator())
-            ->setNext(new CanPlayerNotAffordTopCardOnPileValidator($pileId));
+            ->setNext(new HasPlayerPlayedACardThisTurnOrPutOneBackValidator());
+
+        // If the category is not INVESTITIONEN, we check if the player can afford the top card on the pile.
+        // Cards from category INVESTITIONEN work a little different and we dont need to check if the player can afford the top card.
+        // We trust the validation process leading to this action.
+        if ($this->category !== CategoryId::INVESTITIONEN) {
+            $validatorChain->setNext(new CanPlayerNotAffordTopCardOnPileValidator($pileId));
+        }
+
         return $validatorChain->validate($gameEvents, $playerId);
     }
 

@@ -23,13 +23,13 @@
     </button>
 </div>
 
+@if ($this->showImmobilienModal)
+    <x-investitionen.immobilien-modal :game-events="$gameEvents" :player-id="$playerId" />
+@endif
+@if ($this->showStocksModal)
+    <x-gameboard.investitionen.invenstitionen-stocks-modal :game-events="$gameEvents" />
+@endif
 @if ($this->showInvestitionenSelelectionModal)
-    @if ($this->showImmobilienModal)
-        <x-investitionen.immobilien-modal :game-events="$gameEvents" :player-id="$playerId" />
-    @elseif ($this->showStocksModal)
-        <x-gameboard.investitionen.invenstitionen-stocks-modal :game-events="$gameEvents" />
-    @else
-        <x-gameboard.investitionen.invenstitionen-selection-modal />
-    @endif
+    <x-gameboard.investitionen.invenstitionen-selection-modal />
 @endif
 

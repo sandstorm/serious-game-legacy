@@ -14,7 +14,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\BuyImmobilieAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\BuyStocksForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellImmobilieAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellStocksForPlayerAktion;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyImmobilieForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyStocksForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellStocksForPlayer;
@@ -73,6 +72,7 @@ trait HasInvestitionen
 
     public function toggleStocksModal(): void
     {
+        $this->showInvestitionenSelelectionModal = false;
         if ($this->buyStocksOfType !== null) {
             $this->buyStocksOfType = null;
             return;
@@ -83,6 +83,12 @@ trait HasInvestitionen
 
     public function toggleImmobilienModal(): void
     {
+        // functionality from HasCard Trait
+        if ($this->playerHasToPlayCard) {
+            return;
+        }
+
+        $this->showInvestitionenSelelectionModal = false;
         $this->showImmobilienModal = !$this->showImmobilienModal;
     }
 
@@ -180,7 +186,6 @@ trait HasInvestitionen
         ));
 
         $this->toggleStocksModal();
-        $this->toggleInvestitionenSelectionModal();
         $this->sellStocksForm->reset();
         $this->sellStocksForm->resetValidation();
         $this->showNotification(
@@ -213,7 +218,6 @@ trait HasInvestitionen
         );
 
         $this->toggleImmobilienModal();
-        $this->toggleInvestitionenSelectionModal();
         $this->showNotification(
             'Immoblie wurde erfolgreich gekauft.',
             NotificationTypeEnum::INFO
@@ -245,7 +249,6 @@ trait HasInvestitionen
         );
 
         $this->toggleImmobilienModal();
-        $this->toggleInvestitionenSelectionModal();
         $this->showNotification(
             'Immoblie wurde erfolgreich verkauft.',
             NotificationTypeEnum::INFO
