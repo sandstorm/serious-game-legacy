@@ -34,13 +34,13 @@
                         @endif
                     </td>
                     <td>
-                        {!! $stock->totalValue->formatWithIcon() !!}
+                        {!! $stock->totalDividend->formatWithIcon() !!}
                     </td>
                 </tr>
             @endforeach
             <tr>
                 <td colspan="5" class="text-align--right">Einnahmen Aktien gesamt</td>
-                <td>{!! PlayerState::getTotalValueOfAllStocksForPlayer($gameEvents, $playerId)->formatWithIcon() !!}</td>
+                <td>{!! PlayerState::getDividendForAllStocksForPlayer($gameEvents, $playerId)->formatWithIcon() !!}</td>
             </tr>
             </tbody>
         </table>
