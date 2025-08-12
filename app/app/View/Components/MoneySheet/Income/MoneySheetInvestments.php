@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\View\Components\MoneySheet\Income;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\StockPriceState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\StockData;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
@@ -38,7 +39,10 @@ class MoneySheetInvestments extends Component
                 stockType: $stockType,
                 price: $currentPrice,
                 amount: $amount,
-                totalValue: new MoneyAmount($currentPrice->value * $amount)
+                totalValue: new MoneyAmount($currentPrice->value * $amount),
+                totalDividend: new MoneyAmount(
+                    $amount * KonjunkturphaseState::getCurrentKonjunkturphase($this->gameEvents)->getDividend()->value
+                ),
             );
         }
         return view('components.gameboard.moneySheet.income.money-sheet-investments', [

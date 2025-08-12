@@ -13,7 +13,8 @@ readonly final class StockData
         public StockType $stockType,
         public MoneyAmount $price,
         public int $amount,
-        public MoneyAmount $totalValue
+        public MoneyAmount $totalValue,
+        public MoneyAmount $totalDividend,
     ) {
     }
 
