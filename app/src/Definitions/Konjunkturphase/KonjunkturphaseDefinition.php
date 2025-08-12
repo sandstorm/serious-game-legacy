@@ -6,6 +6,7 @@ namespace Domain\Definitions\Konjunkturphase;
 
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
+use Domain\Definitions\Konjunkturphase\Dto\ConditionalResourceChange;
 use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
 use Domain\Definitions\Konjunkturphase\Dto\Zeitsteine;
 use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
@@ -27,6 +28,7 @@ class KonjunkturphaseDefinition
      * @param Zeitsteine $zeitsteine
      * @param KompetenzbereichDefinition[] $kompetenzbereiche
      * @param AuswirkungDefinition[] $auswirkungen
+     * @param ConditionalResourceChange[] $conditionalResourceChanges
      */
     public function __construct(
         public KonjunkturphasenId      $id,
@@ -37,8 +39,17 @@ class KonjunkturphaseDefinition
         public Zeitsteine              $zeitsteine,
         public array                   $kompetenzbereiche,
         public array                   $auswirkungen = [],
+        protected array                $conditionalResourceChanges = [],
     )
     {
+    }
+
+    /**
+     * @return ConditionalResourceChange[]
+     */
+    public function getConditionalResourceChanges(): array
+    {
+        return $this->conditionalResourceChanges;
     }
 
     public function getAuswirkungByScope(AuswirkungScopeEnum $scope): AuswirkungDefinition

@@ -61,10 +61,22 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\ValueObject\AnswerId;
 use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
+use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
+use Domain\Definitions\Konjunkturphase\Dto\ConditionalResourceChange;
+use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
+use Domain\Definitions\Konjunkturphase\Dto\Zeitslots;
+use Domain\Definitions\Konjunkturphase\Dto\ZeitslotsPerPlayer;
+use Domain\Definitions\Konjunkturphase\Dto\Zeitsteine;
+use Domain\Definitions\Konjunkturphase\Dto\ZeitsteinePerPlayer;
+use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
+use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
+use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
+use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use RuntimeException;
 use Tests\ComponentWithForm;
 use Tests\TestCase;
@@ -1918,6 +1930,106 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
             $this->players[0]))->toBeFalse()
             ->and(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents,
                 $this->players[1]))->toBeTrue();
+    });
+
+    it('applies conditional ResourceChanges correctly', function () {
+        /** @var TestCase $this */
+        $this->setupBasicGameWithoutKonjunkturphase();
+        $konjunkturphase = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(1),
+            type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
+            name: 'Erste Erholung',
+            description: 'Nachdem eine globale Krise die internationalen Lieferketten stark gestört hatte, ist der Konsum jedoch noch verhalten, da Haushalte und Unternehmen vorsichtig agieren. Unternehmen beginnen, ihre Lager aufzufüllen und Neueinstellungen zu tätigen. Die Zentralbank hält den Leitzins daher mit 1 % niedrig, um günstige Kredite zu ermöglichen und Investitionen sowie Konsumausgaben zu begünstigen. Dadurch bleiben Kredite günstig und die Unternehmen sowie Haushalte können leichter investieren und konsumieren.',
+            additionalEvents: '',
+            zeitsteine: new Zeitsteine(
+                [
+                    new ZeitsteinePerPlayer(2, 6),
+                    new ZeitsteinePerPlayer(3, 5),
+                    new ZeitsteinePerPlayer(4, 5),
+                ]
+            ),
+            kompetenzbereiche: [
+                new KompetenzbereichDefinition(
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 2),
+                        new ZeitslotsPerPlayer(4, 2),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::INVESTITIONEN,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::JOBS,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
+                ),
+            ],
+            auswirkungen: [
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::ZEITSTEINE,
+                    modifier: 1,
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    modifier: 4
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    modifier: 1.40
+                ),
+            ],
+            conditionalResourceChanges: [
+                new ConditionalResourceChange( // This should be applied
+                    prerequisite: EreignisPrerequisitesId::HAS_NO_CHILD,
+                    resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(+2000)),
+                ),
+                new ConditionalResourceChange( // This should be applied
+                    prerequisite: EreignisPrerequisitesId::HAS_NO_CHILD,
+                    resourceChanges: new ResourceChanges(zeitsteineChange: -1, bildungKompetenzsteinChange: +2),
+                ),
+                new ConditionalResourceChange( // This should **not** be applied
+                    prerequisite: EreignisPrerequisitesId::HAS_CHILD,
+                    resourceChanges: new ResourceChanges(freizeitKompetenzsteinChange: +2),
+                ),
+            ]
+        );
+        KonjunkturphaseFinder::getInstance()->overrideKonjunkturphaseDefinitionsForTesting([
+            $konjunkturphase
+        ]);
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ChangeKonjunkturphase::create()
+                ->withFixedKonjunkturphaseForTesting($konjunkturphase)
+                ->withFixedCardOrderForTesting()
+        );
+
+        $this->coreGameLogic->handle($this->gameId, StartKonjunkturPhaseForPlayer::create($this->players[0]));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        $initialZeitsteineForPlayer = KonjunkturphaseState::getInitialZeitsteineForCurrentKonjunkturphase($gameEvents);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->equals(52000.0))
+            ->toBeTrue("Guthaben should be 52000")
+            ->and(PlayerState::getBildungsKompetenzsteine($gameEvents, $this->players[0]))->toEqual(2)
+            ->and(PlayerState::getZeitsteineForPlayer($gameEvents, $this->players[0]))->toBe($initialZeitsteineForPlayer - 1)
+            ->and(PlayerState::getFreizeitKompetenzsteine($gameEvents, $this->players[0]))->toBe(0);
     });
 });
 

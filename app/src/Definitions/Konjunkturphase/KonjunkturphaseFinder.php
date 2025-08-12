@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace Domain\Definitions\Konjunkturphase;
 
+use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
+use Domain\Definitions\Konjunkturphase\Dto\ConditionalResourceChange;
 use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
 use Domain\Definitions\Konjunkturphase\Dto\Zeitslots;
 use Domain\Definitions\Konjunkturphase\Dto\ZeitslotsPerPlayer;
@@ -140,7 +144,7 @@ class KonjunkturphaseFinder
                     scope: AuswirkungScopeEnum::BONUS_INCOME,
                     modifier: 0
                 ),
-            ]
+            ],
         );
 
         $year2 = new KonjunkturphaseDefinition(
