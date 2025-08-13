@@ -1,13 +1,13 @@
-@use('Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType')
+@use('Domain\Definitions\Investments\ValueObject\InvestmentId')
 @use('Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState')
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
 
 @props([
-    'stocks' => []
+    'investments' => []
 ])
 
 <div class="tabs__upper-content">
-    @if ($stocks)
+    @if ($investments)
         <table>
             <thead>
             <tr>
@@ -20,22 +20,22 @@
             </tr>
             </thead>
             <tbody>
-            @foreach($stocks as $stock)
-                @if ($stock->amount > 0)
+            @foreach($investments as $investment)
+                @if ($investment->amount > 0)
                 <tr>
                     <td><i class="icon-aktien" aria-hidden="true"></i></td>
-                    <td>{{ $stock->stockType->toPrettyString() }}</td>
-                    <td>{{ $stock->amount }}</td>
-                    <td>{!! $stock->price->format() !!}</td>
+                    <td>{{ $investment->investmentId }}</td>
+                    <td>{{ $investment->amount }}</td>
+                    <td>{!! $investment->price->format() !!}</td>
                     <td>
-                        @if ($stock->stockType === StockType::LOW_RISK)
+                        @if ($investment->investmentId === InvestmentId::MERFEDES_PENZ)
                             {!! KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->getDividend()->format() !!}
                         @else
                             keine
                         @endif
                     </td>
                     <td>
-                        {!! $stock->totalDividend->formatWithIcon() !!}
+                        {!! $investment->totalDividend->formatWithIcon() !!}
                     </td>
                 </tr>
                 @endif
@@ -49,5 +49,4 @@
     @else
         <h4>Keine Aktien oder Immobilien vorhanden.</h4>
     @endif
-
 </div>

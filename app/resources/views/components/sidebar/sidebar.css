@@ -72,6 +72,10 @@
         border-radius: 5px;
         border-right: none;
         height: var(--font-size-xl);
+
+        i {
+            color: var(--color-primary-fg);
+        }
     }
     .resource-changes .resource-change:last-child {
         padding-right: 5px;

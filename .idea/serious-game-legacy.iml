@@ -220,6 +220,7 @@
       <excludeFolder url="file://$MODULE_DIR$/app/bootstrap" />
       <excludeFolder url="file://$MODULE_DIR$/app/vendor" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
+      <excludeFolder url="file://$MODULE_DIR$/app/src/CoreGameLogic/Feature/Konjunkturphase/State/SimulationInvestitionenLegacy" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

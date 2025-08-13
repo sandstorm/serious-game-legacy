@@ -1,21 +1,20 @@
 @extends ('components.modal.modal', ['closeModal' => "toggleStocksModal()"])
 
-@use('Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType')
-@use('Domain\CoreGameLogic\Feature\Konjunkturphase\State\StockPriceState')
-@use('Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState')
+@use('Domain\Definitions\Investments\ValueObject\InvestmentId')
+@use('Domain\Definitions\Investments\InvestmentFinder')
 
 @props([
     'gameEvents' => null,
 ])
 
 @section('icon')
-    <x-gameboard.phase-icon />
+    <x-gameboard.phase-icon/>
 @endsection
 
 @section('title')
-    @if ($this->buyStocksOfType)
+    @if ($this->buyInvestmentOfType)
         <span>
-            Kauf - {{ $this->buyStocksOfType->toPrettyString() }} Aktie <i class="icon-aktien" aria-hidden="true"></i>
+            Kauf - {{ $this->buyInvestmentOfType }} Aktie <i class="icon-aktien" aria-hidden="true"></i>
         </span>
     @else
         <span>
@@ -28,52 +27,22 @@
 @endsection
 
 @section('content')
-    @if ($this->buyStocksOfType)
-        <form class="stocks__form" wire:submit="buyStocks('{{ $this->buyStocksOfType }}')">
-            <div class="stocks__form-price">
-                {!! StockPriceState::getCurrentStockPrice($gameEvents, $this->buyStocksOfType)->format() !!} / Aktie
-            </div>
-            <div class="stocks__form-amount">
-                <label for="buystocks.amount">Stückzahl Aktien</label>
-                <x-form.textfield wire:model="buyStocksForm.amount" id="buystocks.amount" name="buystocks.amount" type="number" step="1" />
-            </div>
-            <div class="stocks__form-sum">
-                <strong>Summe Kauf</strong>
-                <span x-text="new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format($wire.buyStocksForm.amount * $wire.buyStocksForm.sharePrice)"></span>
-            </div>
-            <x-form.submit disabled wire:dirty.remove.attr="disabled">Aktien kaufen</x-form.submit>
-        </form>
-        @error('buyStocksForm.amount') <span class="form__error">{{ $message }}</span> @enderror
-
-        <div class="buy-stocks__hints">
-            @if ($this->buyStocksOfType === StockType::LOW_RISK)
-                <ul>
-                    <li>Langfristige Tendenz: <strong>7%</strong></li>
-                    <li>Kursschwankungen: <strong>15%</strong></li>
-                    <li>Erwartungswert: <strong>-8% bis 22%</strong></li>
-                    <li>Dividende pro Aktie: <strong>{!! KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->getDividend()->format() !!}</strong></li>
-                </ul>
-            @else
-                <ul>
-                    <li>Langfristige Tendenz: <strong>9%</strong></li>
-                    <li>Kursschwankungen: <strong>40%</strong> </li>
-                    <li>Erwartungswert: <strong>-31% bis 49%</strong></li>
-                    <li>Dividende pro Aktie: <strong>keine</strong></li>
-                </ul>
-            @endif
-        </div>
+    @if ($this->buyInvestmentOfType)
+        <x-gameboard.investitionen.invenstitionen-buy-form :game-events="$gameEvents" :investment="InvestmentFinder::findInvestmentById($this->buyInvestmentOfType)" />
     @else
         <p>
-            Hier kannst du Aktien kaufen. Es gibt zwei Arten von Aktien: Low Risk und High Risk.
+            Aktien sind Anteilsscheine an einzelnen Unternehmen. Ihr Wert schwankt abhängig von
+            Gewinnen, Management-Entscheidungen und aktuellen Nachrichten. Sie bieten Chancen auf
+            Dividenden und Kursgewinne, bergen jedoch auch das Risiko unternehmensspezifischer Rückschläge.
         </p>
-        <div class="stock-types">
-            <x-gameboard.investitionen.stock-type
-                :stock-type="StockType::LOW_RISK"
-                :game-Events="$gameEvents" />
+        <div class="investment-types">
+            <x-gameboard.investitionen.investment-type
+                :investment-type="InvestmentId::MERFEDES_PENZ"
+                :game-Events="$gameEvents"/>
 
-            <x-gameboard.investitionen.stock-type
-                :stock-type="StockType::HIGH_RISK"
-                :game-Events="$gameEvents" />
+            <x-gameboard.investitionen.investment-type
+                :investmentType="InvestmentId::BETA_PEAR"
+                :game-Events="$gameEvents"/>
         </div>
     @endif
 @endsection

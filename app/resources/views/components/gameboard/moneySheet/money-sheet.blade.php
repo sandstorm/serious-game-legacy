@@ -7,7 +7,7 @@
         <table>
             <thead>
             <tr>
-                <th><h2><i class="icon-plus text--success" aria-hidden="true"></i> Einnahmen</h2></th>
+                <th><h2><i class="icon-plus text--success" aria-hidden="true"></i> Einnahmen p.a.</h2></th>
                 <th class="text-align--right font-size--xl"><i class="icon-euro" aria-hidden="true"></i></th>
             </tr>
             </thead>
@@ -27,7 +27,7 @@
         <table>
             <thead>
             <tr>
-                <th><h2><i class="icon-minus text--danger" aria-hidden="true"></i> Ausgaben</h2></th>
+                <th><h2><i class="icon-minus text--danger" aria-hidden="true"></i> Ausgaben p.a.</h2></th>
                 <th class="text-align--right font-size--xl"><i class="icon-euro" aria-hidden="true"></i></th>
             </tr>
             </thead>

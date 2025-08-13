@@ -72,8 +72,8 @@
             :player-id="$myself"
         />
     @endif
-    @if ($this->sellStocksModalIsVisible)
-        <x-gameboard.sell-stocks-modal
+    @if ($this->sellInvestmentsModalIsVisible)
+        <x-gameboard.sell-investments-modal
             :game-events="$this->gameEvents"
             :player-id="$myself"
         />

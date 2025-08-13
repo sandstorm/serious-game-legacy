@@ -9,35 +9,35 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesStockAmountChanges;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesInvestmentAmountChanges;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\State\StockPriceState;
-use Domain\CoreGameLogic\Feature\Spielzug\Dto\StockAmountChanges;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\AnswerForWeiterbildungWasSubmitted;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\BerufsunfaehigkeitsversicherungWasActivated;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerGotAChild;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereNotSoldForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereSoldForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\WeiterbildungWasStarted;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
-use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
-use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
-use Domain\Definitions\Card\Dto\MinijobCardDefinition;
-use Domain\Definitions\Card\ValueObject\MoneyAmount;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\InvestmentAmountChanges;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\AnswerForWeiterbildungWasSubmitted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\BerufsunfaehigkeitsversicherungWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerGotAChild;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereNotSoldForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\WeiterbildungWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
+use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
+use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Lebensziel\Dto\LebenszielDefinition;
@@ -329,22 +329,22 @@ class PlayerState
     /**
      * @param GameEvents $stream
      * @param PlayerId $playerId
-     * @param StockType $stockType
+     * @param InvestmentId $investmentId
      * @return int
      */
-    public static function getAmountOfAllStocksOfTypeForPlayer(
+    public static function getAmountOfAllInvestmentsOfTypeForPlayer(
         GameEvents $stream,
         PlayerId $playerId,
-        StockType $stockType
+        InvestmentId $investmentId
     ): int {
-        $accumulatedStockAmountChangesForPlayer = $stream->findAllOfType(ProvidesStockAmountChanges::class)
+        $accumulatedInvestmentAmountChangesForPlayer = $stream->findAllOfType(ProvidesInvestmentAmountChanges::class)
             ->reduce(fn(
-                StockAmountChanges $accumulator,
-                ProvidesStockAmountChanges $event
-            ) => $accumulator->accumulate($event->getStockAmountChanges($playerId, $stockType)),
-                new StockAmountChanges());
+                InvestmentAmountChanges         $accumulator,
+                ProvidesInvestmentAmountChanges $event
+            ) => $accumulator->accumulate($event->getInvestmentAmountChanges($playerId, $investmentId)),
+                new InvestmentAmountChanges());
 
-        return $accumulatedStockAmountChangesForPlayer->amountChange;
+        return $accumulatedInvestmentAmountChangesForPlayer->amountChange;
     }
 
     /**
@@ -354,20 +354,20 @@ class PlayerState
      * @param PlayerId $playerId
      * @return MoneyAmount
      */
-    public static function getTotalValueOfAllStocksForPlayer(GameEvents $stream, PlayerId $playerId): MoneyAmount
+    public static function getTotalValueOfAllInvestmentsForPlayer(GameEvents $stream, PlayerId $playerId): MoneyAmount
     {
         $sum = new MoneyAmount(0);
-        foreach (StockType::cases() as $stockType) {
-            $amountOfStocks = self::getAmountOfAllStocksOfTypeForPlayer($stream, $playerId, $stockType);
-            $currentPrice = StockPriceState::getCurrentStockPrice($stream, $stockType);
+        foreach (InvestmentId::cases() as $investmentId) {
+            $amount = self::getAmountOfAllInvestmentsOfTypeForPlayer($stream, $playerId, $investmentId);
+            $currentPrice = InvestmentPriceState::getCurrentInvestmentPrice($stream, $investmentId);
 
-            $sum = $sum->add(new MoneyAmount($amountOfStocks * $currentPrice->value));
+            $sum = $sum->add(new MoneyAmount($amount * $currentPrice->value));
         }
         return $sum;
     }
 
     /**
-     * Returns the total of all dividends for all stocks of type LOW_RISK for the specified player.
+     * Returns the total of all dividends for all stocks of type MERFEDES_PENZ for the specified player.
      *
      * @param GameEvents $stream
      * @param PlayerId $playerId
@@ -377,8 +377,7 @@ class PlayerState
     {
         $currentKonjunkturphase = KonjunkturphaseState::getCurrentKonjunkturphase($stream);
         $currentDividend = $currentKonjunkturphase->getAuswirkungByScope(AuswirkungScopeEnum::DIVIDEND)->modifier;
-        $amountOfLowRiskStocksForPlayer = self::getAmountOfAllStocksOfTypeForPlayer($stream, $playerId,
-            StockType::LOW_RISK);
+        $amountOfLowRiskStocksForPlayer = self::getAmountOfAllInvestmentsOfTypeForPlayer($stream, $playerId, InvestmentId::MERFEDES_PENZ);
 
         return new MoneyAmount($currentDividend * $amountOfLowRiskStocksForPlayer);
     }
@@ -477,10 +476,10 @@ class PlayerState
      */
     public static function getTotalValueOfAllAssetsForPlayer(GameEvents $stream, PlayerId $playerId): MoneyAmount
     {
-        $stocksValue = self::getTotalValueOfAllStocksForPlayer($stream, $playerId);
+        $investmentsValue = self::getTotalValueOfAllInvestmentsForPlayer($stream, $playerId);
         // TODO immobilien, etc
 
-        return $stocksValue;
+        return $investmentsValue;
     }
 
     /**
@@ -488,18 +487,18 @@ class PlayerState
      * @param PlayerId $playerId
      * @return bool
      */
-    public static function hasPlayerInteractedWithStocksModalThisTurn(GameEvents $gameEvents, PlayerId $playerId): bool
+    public static function hasPlayerInteractedWithInvestmentsModalThisTurn(GameEvents $gameEvents, PlayerId $playerId): bool
     {
         $eventsThisTurn = $gameEvents->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class)
             ?? $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
 
-        // Check if the player has sold stocks this turn or decided not to sell stocks this turn.
-        $stocksWereSold = $eventsThisTurn->findLastOrNullWhere(fn($event
-        ) => $event instanceof StocksWereSoldForPlayer && $event->playerId->equals($playerId));
-        $stocksWereNotSold = $eventsThisTurn->findLastOrNullWhere(fn($event
-        ) => $event instanceof StocksWereNotSoldForPlayer && $event->playerId->equals($playerId));
+        // Check if the player has sold investments this turn or decided not to sell investments this turn.
+        $investmentsWereSold = $eventsThisTurn->findLastOrNullWhere(fn($event
+        ) => $event instanceof InvestmentsWereSoldForPlayer && $event->playerId->equals($playerId));
+        $investmentsWereNotSold = $eventsThisTurn->findLastOrNullWhere(fn($event
+        ) => $event instanceof InvestmentsWereNotSoldForPlayer && $event->playerId->equals($playerId));
 
-        return $stocksWereSold !== null || $stocksWereNotSold !== null;
+        return $investmentsWereSold !== null || $investmentsWereNotSold !== null;
     }
 
     public static function hasChild(GameEvents $gameEvents, PlayerId $playerId): bool

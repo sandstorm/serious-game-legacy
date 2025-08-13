@@ -19,7 +19,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerGotAChild;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasStarted;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereNotSoldForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereNotSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\WeiterbildungWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
@@ -38,8 +38,8 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerWasMarkedAsReadyForKonjunk
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SteuernUndAbgabenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SteuernUndAbgabenForPlayerWereEntered;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereBoughtForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereSoldForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereBoughtForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayer;
 use Neos\EventStore\Model\Event;
 use Neos\EventStore\Model\Event\EventData;
 use Neos\EventStore\Model\Event\EventId;
@@ -104,9 +104,9 @@ final readonly class EventNormalizer
             LoanForPlayerWasCorrected::class,
             JobWasQuit::class,
             WeiterbildungWasStarted::class,
-            StocksWereBoughtForPlayer::class,
-            StocksWereSoldForPlayer::class,
-            StocksWereNotSoldForPlayer::class,
+            InvestmentsWereBoughtForPlayer::class,
+            InvestmentsWereSoldForPlayer::class,
+            InvestmentsWereNotSoldForPlayer::class,
             CardWasPutBackOnTopOfPile::class,
             BerufsunfaehigkeitsversicherungWasActivated::class,
             PlayerGotAChild::class,

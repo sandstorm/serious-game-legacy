@@ -10,15 +10,15 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\State\StockPriceState;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\AcceptJobOfferAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ActivateCardAktion;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\BuyStocksForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\BuyInvestmentsForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CancelInsuranceForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ChangeLebenszielphaseAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CompleteMoneySheetForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ConcludeInsuranceForPlayerAktion;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\DontSellStocksForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\DontSellInvestmentsForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\PutCardBackOnTopOfPileAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\DoMinijobAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EndSpielzugAktion;
@@ -26,7 +26,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterLebenshaltungskostenForPla
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterSteuernUndAbgabenForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\MarkPlayerAsReadyForKonjunkturphaseChangeAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\QuitJobAktion;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellStocksForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellInvestmentsForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SkipCardAktion as SkipCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\StartKonjunkturphaseForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\StartSpielzugAktion;
@@ -35,9 +35,9 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SubmitAnswerForWeiterbildungAkt
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\TakeOutALoanForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyStocksForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ChangeLebenszielphase;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellStocksForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\PutCardBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelInsuranceForPlayer;
@@ -45,7 +45,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\SellStocksForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartWeiterbildung;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SubmitAnswerForWeiterbildung;
@@ -79,9 +79,9 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             || $command instanceof TakeOutALoanForPlayer
             || $command instanceof ChangeLebenszielphase
             || $command instanceof QuitJob
-            || $command instanceof BuyStocksForPlayer
-            || $command instanceof SellStocksForPlayer
-            || $command instanceof DontSellStocksForPlayer
+            || $command instanceof BuyInvestmentsForPlayer
+            || $command instanceof SellInvestmentsForPlayer
+            || $command instanceof DontSellInvestmentsForPlayer
             || $command instanceof PutCardBackOnTopOfPile
             || $command instanceof StartWeiterbildung
             || $command instanceof SubmitAnswerForWeiterbildung;
@@ -114,9 +114,9 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
                 ($command, $gameEvents),
             QuitJob::class => $this->handleQuitJob
                 ($command, $gameEvents),
-            BuyStocksForPlayer::class => $this->handleBuyStocks($command, $gameEvents),
-            SellStocksForPlayer::class => $this->handleSellStocks($command, $gameEvents),
-            DontSellStocksForPlayer::class => $this->handleDontSellStocks($command, $gameEvents),
+            BuyInvestmentsForPlayer::class => $this->handleBuyInvestments($command, $gameEvents),
+            SellInvestmentsForPlayer::class => $this->handleSellInvestments($command, $gameEvents),
+            DontSellInvestmentsForPlayer::class => $this->handleDontSellStocks($command, $gameEvents),
             ChangeLebenszielphase::class => $this->handleLebenszielphase($command, $gameEvents),
             PutCardBackOnTopOfPile::class => $this->handlePutCardBackOnTopOfPile($command, $gameEvents),
             StartWeiterbildung::class => $this->handleStartWeiterbildung($command, $gameEvents),
@@ -248,43 +248,43 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
     }
 
     /**
-     * @param BuyStocksForPlayer $command
+     * @param BuyInvestmentsForPlayer $command
      * @param GameEvents $gameEvents
      * @return GameEventsToPersist
      */
-    private function handleBuyStocks(BuyStocksForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
+    private function handleBuyInvestments(BuyInvestmentsForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
     {
-        $aktion = new BuyStocksForPlayerAktion(
-            $command->stockType,
-            StockPriceState::getCurrentStockPrice($gameEvents, $command->stockType),
+        $aktion = new BuyInvestmentsForPlayerAktion(
+            $command->investmentId,
+            InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, $command->investmentId),
             $command->amount,
         );
         return $aktion->execute($command->playerId, $gameEvents);
     }
 
     /**
-     * @param SellStocksForPlayer $command
+     * @param SellInvestmentsForPlayer $command
      * @param GameEvents $gameEvents
      * @return GameEventsToPersist
      */
-    private function handleSellStocks(SellStocksForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
+    private function handleSellInvestments(SellInvestmentsForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
     {
-        $aktion = new SellStocksForPlayerAktion(
-            $command->stockType,
-            StockPriceState::getCurrentStockPrice($gameEvents, $command->stockType),
+        $aktion = new SellInvestmentsForPlayerAktion(
+            $command->investmentId,
+            InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, $command->investmentId),
             $command->amount,
         );
         return $aktion->execute($command->playerId, $gameEvents);
     }
 
     /**
-     * @param DontSellStocksForPlayer $command
+     * @param DontSellInvestmentsForPlayer $command
      * @param GameEvents $gameEvents
      * @return GameEventsToPersist
      */
-    private function handleDontSellStocks(DontSellStocksForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
+    private function handleDontSellStocks(DontSellInvestmentsForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
     {
-        $aktion = new DontSellStocksForPlayerAktion($command->stockType);
+        $aktion = new DontSellInvestmentsForPlayerAktion($command->investmentId);
         return $aktion->execute($command->playerId, $gameEvents);
     }
 
