@@ -770,6 +770,26 @@ describe('handleActivateCard', function () {
 });
 
 describe('handleAcceptJobOffer', function () {
+    it('throws an exception if the player tries to accept multiple jobs in one turn', function () {
+        /** @var TestCase $this */
+        $cardsToTest = [];
+        for ($i = 0; $i < 6; $i++) {
+            $cardsToTest[] = new JobCardDefinition(
+                id: new CardId("j$i"),
+                title: "offered $i",
+                description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                gehalt: new MoneyAmount(34000),
+                requirements: new JobRequirements(
+                    zeitsteine: 1,
+                ),
+            );
+        }
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsToTest);
+        $this->coreGameLogic->handle($this->gameId,
+            AcceptJobOffer::create($this->players[0], new CardId("j1")));
+        $this->coreGameLogic->handle($this->gameId,
+            AcceptJobOffer::create($this->players[0], new CardId("j5")));
+    })->throws(\RuntimeException::class, "Cannot Accept Job Offer: Du kannst nur eine Zeitsteinaktion pro Runde ausführen",  1749043636);
 
     it('throws an exception if job was not previously offered to player', function () {
         /** @var TestCase $this */
