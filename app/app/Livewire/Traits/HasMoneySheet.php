@@ -161,12 +161,13 @@ trait HasMoneySheet
             steuernUndAbgaben: new MoneyAmount(-1 * MoneySheetState::getLastInputForSteuernUndAbgaben($this->gameEvents, $playerId)->value),
             doesSteuernUndAbgabenRequirePlayerAction: MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($this->gameEvents, $playerId),
             gehalt: PlayerState::getCurrentGehaltForPlayer($this->gameEvents, $playerId),
-            total: MoneySheetState::calculateTotalForPlayer($this->gameEvents, $playerId),
+            totalFilledOutByPlayer: MoneySheetState::calculateTotalFilledOutByPlayer($this->gameEvents, $playerId),
             totalInsuranceCost: new MoneyAmount(-1 * MoneySheetState::getCostOfAllInsurances($this->gameEvents, $playerId)->value),
             sumOfAllLoans: MoneySheetState::getSumOfAllLoansForPlayer($this->gameEvents, $playerId),
             sumOfAllAssets: PlayerState::getDividendForAllStocksForPlayer($this->gameEvents, $playerId), // TODO is it correct to use dividend here?
             annualIncome: MoneySheetState::getAnnualIncomeForPlayer($this->gameEvents, $playerId),
             annualExpenses: new MoneyAmount(-1 * MoneySheetState::getAnnualExpensesForPlayer($this->gameEvents, $playerId)->value),
+            annualExpensesFilledOutByPlayer: new MoneyAmount (-1 * MoneySheetState::getAnnualExpensesFilledOutByPlayer($this->gameEvents, $playerId)->value),
         );
     }
 

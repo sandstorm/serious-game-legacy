@@ -14,11 +14,12 @@ class MoneySheet
         public MoneyAmount $steuernUndAbgaben,
         public bool  $doesSteuernUndAbgabenRequirePlayerAction,
         public MoneyAmount $gehalt,
-        public MoneyAmount $total,
+        public MoneyAMount $totalFilledOutByPlayer,
         public MoneyAmount $totalInsuranceCost,
         public MoneyAmount $sumOfAllLoans,
         public MoneyAmount $sumOfAllAssets,
         public MoneyAmount $annualIncome,
         public MoneyAmount $annualExpenses,
+        public MoneyAMount $annualExpensesFilledOutByPlayer,
     ) {}
 }

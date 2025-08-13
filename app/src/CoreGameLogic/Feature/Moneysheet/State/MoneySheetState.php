@@ -419,6 +419,22 @@ class MoneySheetState
      * @param PlayerId $playerId
      * @return MoneyAmount
      */
+    public static function getAnnualExpensesFilledOutByPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
+    {
+        $annualExpensesFilledOutByPlayer = (new MoneyAmount(0))
+            ->add(self::getAnnualExpensesForAllLoans($gameEvents, $playerId))
+            ->add(self::getCostOfAllInsurances($gameEvents, $playerId))
+            ->add(self::getLastInputForLebenshaltungskosten($gameEvents, $playerId))
+            ->add(self::getLastInputForSteuernUndAbgaben($gameEvents, $playerId));
+
+        return $annualExpensesFilledOutByPlayer;
+    }
+
+    /**
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return MoneyAmount
+     */
     public static function getAnnualIncomeForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
         $annualIncome = (new MoneyAmount(0))
@@ -432,5 +448,11 @@ class MoneySheetState
     {
         return self::getAnnualIncomeForPlayer($gameEvents, $playerId)
             ->subtract(self::getAnnualExpensesForPlayer($gameEvents, $playerId));
+    }
+
+    public static function calculateTotalFilledOutByPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
+    {
+        return self::getAnnualIncomeForPlayer($gameEvents, $playerId)
+            ->subtract(self::getAnnualExpensesFilledOutByPlayer($gameEvents, $playerId));
     }
 }
