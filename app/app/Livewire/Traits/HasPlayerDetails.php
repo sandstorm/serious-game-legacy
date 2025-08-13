@@ -9,12 +9,6 @@ use Domain\CoreGameLogic\PlayerId;
 trait HasPlayerDetails
 {
     public ?PlayerId $showLebenszielForPlayer = null;
-    public bool $showPlayerDetails = false;
-
-    public function togglePlayerDetails(): void
-    {
-        $this->showPlayerDetails = !$this->showPlayerDetails;
-    }
 
     public function showPlayerLebensziel(string $playerId): void
     {
