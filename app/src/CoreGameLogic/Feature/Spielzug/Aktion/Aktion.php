@@ -11,11 +11,6 @@ use Domain\CoreGameLogic\PlayerId;
 
 abstract class Aktion
 {
-    // TODO remove id and label
-    public function __construct(protected string $id, protected string $label)
-    {
-    }
-
     /**
      * Preconditions - kann Aktion aktuell ausgeführt werden?
      */

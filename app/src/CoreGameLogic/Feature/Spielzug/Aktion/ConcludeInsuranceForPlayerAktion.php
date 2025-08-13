@@ -14,12 +14,9 @@ use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 
 class ConcludeInsuranceForPlayerAktion extends Aktion
 {
-    private InsuranceId $insuranceId;
 
-    public function __construct(InsuranceId $insuranceId)
+    public function __construct(private readonly InsuranceId $insuranceId)
     {
-        parent::__construct('conclude-insurance', 'Versicherung abschließen');
-        $this->insuranceId = $insuranceId;
     }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult

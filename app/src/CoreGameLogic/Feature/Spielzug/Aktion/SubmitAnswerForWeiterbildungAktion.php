@@ -21,9 +21,8 @@ use RuntimeException;
 
 class SubmitAnswerForWeiterbildungAktion extends Aktion
 {
-    public function __construct(public AnswerId $selectedAnswer)
+    public function __construct(private readonly AnswerId $selectedAnswer)
     {
-        parent::__construct('submit-answer-weiterbildung', 'Antwort weiterbildung abgeben');
     }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult

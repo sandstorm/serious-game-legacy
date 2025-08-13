@@ -22,12 +22,6 @@ use RuntimeException;
 
 class StartWeiterbildungAktion extends Aktion
 {
-
-    public function __construct()
-    {
-        parent::__construct('start-weiterbildung', 'Weiterbildung starten');
-    }
-
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
         $validatorChain = new IsPlayersTurnValidator();

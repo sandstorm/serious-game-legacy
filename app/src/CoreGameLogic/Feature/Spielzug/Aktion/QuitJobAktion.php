@@ -15,12 +15,6 @@ use RuntimeException;
 
 class QuitJobAktion extends Aktion
 {
-
-    public function __construct()
-    {
-        parent::__construct('quit-job','Job kündigen');
-    }
-
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
         $validatorChain = new IsPlayersTurnValidator();

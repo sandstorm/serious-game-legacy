@@ -18,10 +18,6 @@ use Domain\CoreGameLogic\PlayerId;
 
 class MarkPlayerAsReadyForKonjunkturphaseChangeAktion extends Aktion
 {
-    public function __construct()
-    {
-        parent::__construct('todo', 'todo');
-    }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {

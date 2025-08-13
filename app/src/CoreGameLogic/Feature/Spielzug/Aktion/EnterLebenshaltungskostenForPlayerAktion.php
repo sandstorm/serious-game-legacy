@@ -16,12 +16,8 @@ use Domain\Definitions\Configuration\Configuration;
 
 class EnterLebenshaltungskostenForPlayerAktion extends Aktion
 {
-    private MoneyAmount $input;
-
-    public function __construct(MoneyAmount $input)
+    public function __construct(private readonly MoneyAmount $input)
     {
-        parent::__construct('todo', 'todo');
-        $this->input = $input;
     }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult

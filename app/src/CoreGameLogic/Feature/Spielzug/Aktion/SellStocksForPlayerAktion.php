@@ -18,20 +18,12 @@ use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
 class SellStocksForPlayerAktion extends Aktion
 {
-    private StockType $stockType;
-    private MoneyAmount $sharePrice;
-    private int $amount;
 
     public function __construct(
-        StockType   $stockType,
-        MoneyAmount $sharePrice,
-        int         $amount
+        private readonly StockType   $stockType,
+        private readonly MoneyAmount $sharePrice,
+        private readonly int         $amount
     ) {
-        parent::__construct('sell-stocks', 'Aktien verkaufen');
-
-        $this->stockType = $stockType;
-        $this->sharePrice = $sharePrice;
-        $this->amount = $amount;
     }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult

@@ -17,11 +17,6 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 
 class CompleteMoneySheetForPlayerAktion extends Aktion
 {
-    public function __construct()
-    {
-        parent::__construct('complete-money-sheet', 'Money Sheet vervollständigen');
-    }
-
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
         $validationChain = new HasKonjunkturphaseEndedValidator();

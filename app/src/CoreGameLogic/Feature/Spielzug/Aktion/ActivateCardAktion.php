@@ -32,7 +32,6 @@ class ActivateCardAktion extends Aktion
 
     public function __construct(public CategoryId $category)
     {
-        parent::__construct('activate-card', 'Karte Spielen');
     }
 
 

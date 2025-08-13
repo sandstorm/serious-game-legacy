@@ -23,11 +23,6 @@ use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
  */
 class StartKonjunkturphaseForPlayerAktion extends Aktion
 {
-    public function __construct()
-    {
-        parent::__construct('start-konjunkturphase-for-player', 'Konjunkturphase starten');
-    }
-
     /**
      * Use this to check if this Aktion can be executed.
      * `execute()` will also use this function to check before actually creating any events.

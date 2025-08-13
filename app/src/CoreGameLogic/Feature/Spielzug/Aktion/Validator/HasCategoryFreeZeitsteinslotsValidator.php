@@ -6,6 +6,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
+use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
@@ -15,16 +16,26 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 final class HasCategoryFreeZeitsteinslotsValidator extends AbstractValidator
 {
 
-    private CategoryId $categoryId;
-
-    public function __construct(CategoryId $categoryId)
+    public function __construct(private readonly CategoryId $categoryId, private readonly bool $hasSpecialRulesForActivateCard = false)
     {
-        $this->categoryId = $categoryId;
     }
 
+    public static function withSpecialRulesForActivateCard(CategoryId $categoryId): self
+    {
+        return new self($categoryId, true);
+    }
 
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
+        /**
+         * If the player skipped a card we don't need another Zeitsteinslot and can skip this validator.
+         * we don't check if the player skipped a card in the same pile here, that is done in @see HasPlayerDoneNoZeitsteinaktionThisTurnValidator
+         */
+        if ($this->hasSpecialRulesForActivateCard
+            && AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound($playerId)) {
+            return parent::validate($gameEvents, $playerId);
+        }
+
         $hasFreeTimeSlots = GamePhaseState::hasFreeTimeSlotsForCategory($gameEvents, $this->categoryId);
         if (!$hasFreeTimeSlots) {
             return new AktionValidationResult(
