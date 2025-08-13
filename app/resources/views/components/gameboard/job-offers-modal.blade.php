@@ -1,5 +1,4 @@
 @extends ('components.modal.modal', ['closeModal' => "closeJobOffer()", 'type' => "borderless"])
-@use('Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator')
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor')
 
 @props([
@@ -27,7 +26,7 @@
 @section('content')
     <div class="job-offers">
         @foreach($jobOffers as $jobOffer)
-            <div @class(["card", "card--disabled" => !AktionsCalculator::forStream($gameEvents)->canPlayerAffordJobCard($playerId, $jobOffer)])>
+            <div @class(["card", "card--disabled" => !$this->canAcceptJobOffer($jobOffer->getId()->value)->canExecute])>
                 <h4 class="card__title">{{ $jobOffer->getTitle() }}</h4>
                 <div class="card__content">
                     <div class="resource-change">
@@ -38,7 +37,7 @@
                         @class([
                             "button",
                             "button--type-primary",
-                            "button--disabled" => !AktionsCalculator::forStream($gameEvents)->canPlayerAffordJobCard($playerId, $jobOffer) || !CurrentPlayerAccessor::forStream($gameEvents)->equals($playerId),
+                            "button--disabled" => !$this->canAcceptJobOffer($jobOffer->getId()->value)->canExecute,
                             $this->getPlayerColorClass()
                         ])
                         wire:click="applyForJob('{{ $jobOffer->getId()->value }}')"
