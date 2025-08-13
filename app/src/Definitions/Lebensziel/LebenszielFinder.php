@@ -113,9 +113,9 @@ class LebenszielFinder
                 ),
                 new LebenszielPhaseDefinition(
                     lebenszielPhaseId: LebenszielPhaseId::PHASE_3,
-                    description: 'Die Plattform geht online. Du planst Promotion-Aktionen bei Hostels und auf Reisemessen zu organisieren, eigene Video-Features zu
-                    produzieren und erste Mitarbeitende für Entwicklung und Community-Support einzustellen. So können Kooperationen mit Reise-Marken entstehen.
-                    Zusätzlich belegst du Kurse zu Vertrags- und Steuerfragen, um die geschäftliche Seite zu meistern.',
+                    description: 'Deine Plattform erreicht mehrere Millionen aktive Konten. Ein interdisziplinäres Team betreut Technik, Content-Moderation und
+                    Partner-Management. Währenddessen  priorisiert du neue Funktionen, wie etwa Live-Routen oder Gruppen-Challenges. Jetzt gilt es, den frischen
+                    Ideenfluss hochzuhalten und die Plattform stabil weiterzuentwickeln.',
                     investitionen: new MoneyAmount(500000),
                     bildungsKompetenzSlots: 1,
                     freizeitKompetenzSlots: 2,
@@ -186,9 +186,10 @@ class LebenszielFinder
                 ),
                 new LebenszielPhaseDefinition(
                     lebenszielPhaseId: LebenszielPhaseId::PHASE_3,
-                    description: 'Nach dem Abschluss arbeitest du in einer gemeinnützigen Organisation und leitest kleinere Projekte, in denen du Fundraising-Methoden
-                    kennenlernst. Du möchtest nun die Satzung deiner künftigen Stiftung entwerfen, rechtliche Rahmenbedingungen klären, einen Beirat zusammenstellen
-                    und wirbst Startkapital bei Förderinstituten ein.',
+                    description: 'Deine Stiftung wird offiziell anerkannt. Du richtest Förderprogramme für politische Bildung ein, vergibst Forschungsstipendien und
+                    unterstützt lokale Demokratie-Projekte. Mit einem wachsenden Team etablierst du transparente Prozesse, misst Wirkung und präsentierst Erfolge
+                    in der Öffentlichkeit. Kannst du Reichweite und finanzielle Basis so ausbauen, dass die Stiftung langfristig einen spürbaren Beitrag zur
+                    demokratischen Kultur leistet?',
                     investitionen: new MoneyAmount(500000),
                     bildungsKompetenzSlots: 1,
                     freizeitKompetenzSlots: 2,
