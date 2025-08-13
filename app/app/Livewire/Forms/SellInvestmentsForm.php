@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace App\Livewire\Forms;
 
+use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Livewire\Attributes\Validate;
 use Livewire\Form;
 
-class BuyStocksForm extends Form
+class SellInvestmentsForm extends Form
 {
     #[Validate]
     public int $amount = 0;
 
     // public properties needed for validation
+    public ?InvestmentId $stockType;
     public float $sharePrice = 0;
-    public float $guthaben = 0;
+    public int $amountOwned = 0;
 
     /**
      * Set of custom validation rules for the form.
@@ -26,8 +28,8 @@ class BuyStocksForm extends Form
         return [
             'amount' => [
                 'required', 'numeric', 'min:1', function ($attribute, $value, $fail) {
-                    if ($this->amount * $this->sharePrice > $this->guthaben) {
-                        $fail("Du kannst nicht mehr Aktien kaufen, als du dir leisten kannst.");
+                    if ($this->amount > $this->amountOwned) {
+                        $fail("Du kannst nicht mehr Aktien verkaufen, als du besitzt.");
                     }
                 }
             ],

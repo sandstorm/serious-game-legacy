@@ -1,4 +1,4 @@
-@extends ('components.modal.modal', ['closeModal' => "toggleStocksModal()"])
+@extends ('components.modal.modal', ['closeModal' => "toggleCryptoModal()"])
 
 @use('Domain\Definitions\Investments\ValueObject\InvestmentId')
 @use('Domain\Definitions\Investments\InvestmentFinder')
@@ -8,17 +8,17 @@
 ])
 
 @section('icon')
-    <x-gameboard.phase-icon/>
+    <x-gameboard.phase-icon />
 @endsection
 
 @section('title')
     @if ($this->buyInvestmentOfType)
         <span>
-            Kauf - {{ $this->buyInvestmentOfType }} Aktie <i class="icon-aktien" aria-hidden="true"></i>
+            Kauf - {{ $this->buyInvestmentOfType }} Kryptowährung <i class="icon-krypto" aria-hidden="true"></i>
         </span>
     @else
         <span>
-            Aktien <i class="icon-aktien" aria-hidden="true"></i>
+            Kryptowährungen <i class="icon-krypto" aria-hidden="true"></i>
         </span>
         <span class="font-size--base">
             Investitionen
@@ -31,17 +31,16 @@
         <x-gameboard.investitionen.invenstitionen-buy-form :game-events="$gameEvents" :investment="InvestmentFinder::findInvestmentById($this->buyInvestmentOfType)" />
     @else
         <p>
-            Aktien sind Anteilsscheine an einzelnen Unternehmen. Ihr Wert schwankt abhängig von
-            Gewinnen, Management-Entscheidungen und aktuellen Nachrichten. Sie bieten Chancen auf
-            Dividenden und Kursgewinne, bergen jedoch auch das Risiko unternehmensspezifischer Rückschläge.
+            Kryptowährungen sind digitale, dezentral gehandelte Coins oder Tokens, deren Kurs allein durch Angebot und Nachfrage an Online-Börsen bestimmt wird.
+            Sie versprechen hohe Renditechancen, gehen jedoch auch mit extremer Volatilität, regulatorischer Unsicherheit und technologischem Risiko einher.
         </p>
         <div class="investment-types">
             <x-gameboard.investitionen.investment-type
-                :investment-type="InvestmentId::MERFEDES_PENZ"
+                :investment-type="InvestmentId::BAT_COIN"
                 :game-Events="$gameEvents"/>
 
             <x-gameboard.investitionen.investment-type
-                :investmentType="InvestmentId::BETA_PEAR"
+                :investmentType="InvestmentId::MEME_COIN"
                 :game-Events="$gameEvents"/>
         </div>
     @endif

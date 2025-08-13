@@ -6,27 +6,27 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasAnotherPlayerBoughtStocksThisTurnValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasAnotherPlayerBoughtInvestmentsThisTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereNotSoldForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereNotSoldForPlayer;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Investments\ValueObject\InvestmentId;
 
 class DontSellStocksForPlayerAktion extends Aktion
 {
-    private StockType $stockType;
+    private InvestmentId $stockType;
 
 
     public function __construct(
-        StockType $stockType,
+        InvestmentId $investmentId,
     ) {
         parent::__construct('dont-sell-stocks', 'Aktien nicht verkaufen');
-        $this->stockType = $stockType;
+        $this->stockType = $investmentId;
     }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
-        $validationChain = new HasAnotherPlayerBoughtStocksThisTurnValidator($this->stockType);
+        $validationChain = new HasAnotherPlayerBoughtInvestmentsThisTurnValidator($this->stockType);
         return $validationChain->validate($gameEvents, $playerId);
     }
 
@@ -38,7 +38,7 @@ class DontSellStocksForPlayerAktion extends Aktion
         }
 
         return GameEventsToPersist::with(
-            new StocksWereNotSoldForPlayer(
+            new InvestmentsWereNotSoldForPlayer(
                 playerId: $playerId,
             )
         );

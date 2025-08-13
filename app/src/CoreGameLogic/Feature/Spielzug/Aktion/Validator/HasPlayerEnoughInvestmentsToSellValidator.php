@@ -5,36 +5,35 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
-use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
-use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
+use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\CoreGameLogic\PlayerId;
 
 /**
- * Succeeds if the player's has enough stocks to sell.
+ * Succeeds if the player's has enough investments to sell.
  */
-final class HasPlayerEnoughStocksToSellValidator extends AbstractValidator
+final class HasPlayerEnoughInvestmentsToSellValidator extends AbstractValidator
 {
-    private StockType $stockType;
+    private InvestmentId $investmentId;
     private int $amountToSell;
 
     public function __construct(
-        StockType $stockType,
-        int $amountToSell
+        InvestmentId $stockType,
+        int          $amountToSell
     ) {
-        $this->stockType = $stockType;
+        $this->investmentId = $stockType;
         $this->amountToSell = $amountToSell;
     }
 
 
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
-        $stocksToSell = PlayerState::getAmountOfAllStocksOfTypeForPlayer($gameEvents, $playerId, $this->stockType);
+        $investmentsToSell = PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEvents, $playerId, $this->investmentId);
 
-        if ($stocksToSell < $this->amountToSell) {
+        if ($investmentsToSell < $this->amountToSell) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Du hast nicht genug Aktien vom Typ ' . $this->stockType->toPrettyString() . ' zum Verkaufen.',
+                reason: 'Du hast nicht genug Investitionen vom Typ ' . $this->investmentId->value . ' zum Verkaufen.',
             );
         }
 

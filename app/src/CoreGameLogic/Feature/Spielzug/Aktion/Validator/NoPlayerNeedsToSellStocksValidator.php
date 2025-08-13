@@ -8,7 +8,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereBoughtForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereBoughtForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 
@@ -22,7 +22,7 @@ final class NoPlayerNeedsToSellStocksValidator extends AbstractValidator
         $eventsThisTurn = $gameEvents->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class)
             ?? $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
 
-        $stocksWereBought = $eventsThisTurn->findLastOrNull(StocksWereBoughtForPlayer::class);
+        $stocksWereBought = $eventsThisTurn->findLastOrNull(InvestmentsWereBoughtForPlayer::class);
 
         // if no stocks were bought, we can skip this validation
         if ($stocksWereBought === null) {
@@ -36,7 +36,7 @@ final class NoPlayerNeedsToSellStocksValidator extends AbstractValidator
                 continue; // skip the current player
             }
 
-            if (!PlayerState::hasPlayerInteractedWithStocksModalThisTurn($gameEvents, $otherPlayer)) {
+            if (!PlayerState::hasPlayerInteractedWithInvestmentsModalThisTurn($gameEvents, $otherPlayer)) {
                 $allOtherPlayersInteractedWithStocksModal = false;
                 break; // at least one player has not sold their stocks
             }

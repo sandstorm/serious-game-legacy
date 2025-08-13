@@ -9,18 +9,18 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 
 /**
- * Succeeds if the player if player has not interacted with the stocks modal this turn,
+ * Succeeds if the player if player has not interacted with the investments modal this turn,
  */
-final class HasPlayerInteractedWithStocksModalThisTurnValidator extends AbstractValidator
+final class HasPlayerInteractedWithInvestmentsModalThisTurnValidator extends AbstractValidator
 {
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
         if (
-            PlayerState::hasPlayerInteractedWithStocksModalThisTurn($gameEvents, $playerId)
+            PlayerState::hasPlayerInteractedWithInvestmentsModalThisTurn($gameEvents, $playerId)
         ) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Du hast diesen Spielzug schon Aktien verkauft. Du kannst nicht erneut Aktien verkaufen.'
+                reason: 'Du hast diesen Spielzug schon Investitionen verkauft. Du kannst nicht erneut welche verkaufen.'
             );
         }
 

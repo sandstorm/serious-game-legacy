@@ -8,7 +8,7 @@ use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\PlayerId;
 
-class StocksWereNotSoldForPlayer implements GameEventInterface, CommandInterface
+class InvestmentsWereNotSoldForPlayer implements GameEventInterface, CommandInterface
 {
     /**
      * @param PlayerId $playerId

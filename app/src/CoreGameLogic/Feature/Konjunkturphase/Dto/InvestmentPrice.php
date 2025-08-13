@@ -2,12 +2,12 @@
 declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Dto;
 
-use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
+use Domain\Definitions\Investments\ValueObject\InvestmentId;
 
-readonly final class StockPrice implements \JsonSerializable
+readonly final class InvestmentPrice implements \JsonSerializable
 {
-    public function __construct(public StockType $stockType, public MoneyAmount $sharePrice)
+    public function __construct(public InvestmentId $investmentId, public MoneyAmount $price)
     {
     }
 
@@ -18,8 +18,8 @@ readonly final class StockPrice implements \JsonSerializable
     public static function fromArray(array $values): self
     {
         return new self(
-            stockType: StockType::from($values['stockType']),
-            sharePrice: new MoneyAmount($values['sharePrice'])
+            investmentId: InvestmentId::from($values['investmentId']),
+            price: new MoneyAmount($values['price'])
         );
     }
 
@@ -29,8 +29,8 @@ readonly final class StockPrice implements \JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'stockType' => $this->stockType->value,
-            'sharePrice' => $this->sharePrice->value
+            'investmentId' => $this->investmentId->value,
+            'price' => $this->price->value
         ];
     }
 }

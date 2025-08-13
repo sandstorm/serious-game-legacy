@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire;
 
-use App\Livewire\Forms\BuyStocksForm;
+use App\Livewire\Forms\BuyInvestmentsForm;
 use Livewire\Livewire;
 use Tests\ComponentWithForm;
 
 describe('BuyStocksForm', function () {
     it('generates errors if required fields omitted', function () {
         Livewire::test(ComponentWithForm::class, [
-            'formClass' => BuyStocksForm::class,
+            'formClass' => BuyInvestmentsForm::class,
         ])
             ->call('validate')
             ->assertHasErrors(['form.amount' => 'min:1']);
@@ -19,7 +19,7 @@ describe('BuyStocksForm', function () {
 
     it('generates errors if player tries to buy to much stocks', function () {
         Livewire::test(ComponentWithForm::class, [
-            'formClass' => BuyStocksForm::class,
+            'formClass' => BuyInvestmentsForm::class,
         ])
             ->set('form.amount', 10)
             ->set('form.sharePrice', 100)
@@ -30,7 +30,7 @@ describe('BuyStocksForm', function () {
 
     it('does not generate errors if player can buy stocks', function () {
         Livewire::test(ComponentWithForm::class, [
-            'formClass' => BuyStocksForm::class,
+            'formClass' => BuyInvestmentsForm::class,
         ])
             ->set('form.amount', 5)
             ->set('form.sharePrice', 100)

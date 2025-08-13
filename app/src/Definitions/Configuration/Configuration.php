@@ -70,8 +70,8 @@ final readonly class Configuration
     public final const REPAYMENT_PERIOD = 20;
 
     /**
-     * The initial stock price for the stock market.
+     * The initial investment price for the stock/etf/crypto market.
      * @var float
      */
-    public final const INITIAL_STOCK_PRICE = 50.0;
+    public final const INITIAL_INVESTMENT_PRICE = 50.0;
 }

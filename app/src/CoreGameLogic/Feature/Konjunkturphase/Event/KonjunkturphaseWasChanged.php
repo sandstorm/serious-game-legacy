@@ -5,24 +5,24 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\StockPrice;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesStockPriceChanges;
-use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\InvestmentPrice;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesInvestmentPriceChanges;
+use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 
-final readonly class KonjunkturphaseWasChanged implements GameEventInterface, ProvidesStockPriceChanges
+final readonly class KonjunkturphaseWasChanged implements GameEventInterface, ProvidesInvestmentPriceChanges
 {
     /**
-     * @param StockPrice[] $stockPrices
+     * @param InvestmentPrice[] $investmentPrices
      */
     public function __construct(
         public KonjunkturphasenId      $id,
         public Year                    $year,
         public KonjunkturphaseTypeEnum $type,
-        public array                   $stockPrices
+        public array                   $investmentPrices
     )
     {
     }
@@ -33,9 +33,9 @@ final readonly class KonjunkturphaseWasChanged implements GameEventInterface, Pr
             id: KonjunkturphasenId::create($values['id']),
             year: new Year($values['year']),
             type: KonjunkturphaseTypeEnum::fromString($values['type']),
-            stockPrices: array_map(
-                static fn($stockPrice) => StockPrice::fromArray($stockPrice),
-                $values['stockPrices']
+            investmentPrices: array_map(
+                static fn($investmentPrice) => InvestmentPrice::fromArray($investmentPrice),
+                $values['investmentPrices']
             ),
         );
     }
@@ -49,17 +49,17 @@ final readonly class KonjunkturphaseWasChanged implements GameEventInterface, Pr
             'id' => $this->id->jsonSerialize(),
             'year' => $this->year->jsonSerialize(),
             'type' => $this->type,
-            'stockPrices' => $this->stockPrices,
+            'investmentPrices' => $this->investmentPrices,
         ];
     }
 
-    public function getStockPrice(StockType $stockType): MoneyAmount
+    public function getInvestmentPrice(InvestmentId $investmentId): MoneyAmount
     {
-        foreach ($this->stockPrices as $stockPrice) {
-            if ($stockPrice->stockType === $stockType) {
-                return $stockPrice->sharePrice;
+        foreach ($this->investmentPrices as $investmentPrice) {
+            if ($investmentPrice->investmentId === $investmentId) {
+                return $investmentPrice->price;
             }
         }
-        throw new \DomainException('Stock price not found for stock type: ' . $stockType->value, 1752584032);
+        throw new \DomainException('Investment price not found for: ' . $investmentId->value, 1752584032);
     }
 }

@@ -12,13 +12,13 @@
                 <i class="icon-aktien" aria-hidden="true"></i>
             </div>
         </button>
-        <button class="card card--disabled">
+        <button class="card" wire:click="toggleETFModal()">
             <h4 class="card__title">ETF</h4>
             <div class="card__content">
                 <i class="icon-ETF" aria-hidden="true"></i>
             </div>
         </button>
-        <button class="card card--disabled">
+        <button class="card" wire:click="toggleCryptoModal()">
             <h4 class="card__title">Krypto</h4>
             <div class="card__content">
                 <i class="icon-krypto" aria-hidden="true"></i>

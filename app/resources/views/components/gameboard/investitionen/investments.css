@@ -1,4 +1,4 @@
-.stock-types {
+.investment-types {
     padding: var(--spacing-100);
     margin-top: var(--spacing-100);
     display: grid;
@@ -7,7 +7,7 @@
     align-items: center;
 }
 
-.stock-type {
+.investment-type {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -20,7 +20,7 @@
 }
 
 
-.stocks__form {
+.investments__form {
     display: flex;
     flex-direction: row;
     gap: var(--spacing-100);
@@ -29,7 +29,7 @@
     justify-content: space-between;
 }
 
-.stocks__form-price {
+.investments__form-price {
     display: flex;
     gap: var(--spacing-25);
     align-items: center;
@@ -39,7 +39,7 @@
     white-space: nowrap;
 }
 
-.stocks__form-amount {
+.investments__form-amount {
     text-align: center;
 
     label {
@@ -51,7 +51,7 @@
     }
 }
 
-.stocks__form-sum {
+.investments__form-sum {
     text-align: center;
 
     strong {
@@ -68,7 +68,7 @@
     }
 }
 
-.buy-stocks__hints {
+.buy-investments__hints {
     margin-top: var(--spacing-200);
     padding-top: var(--spacing-200);
 

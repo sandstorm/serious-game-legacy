@@ -6,7 +6,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\State\StockPriceState;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasCategoryFreeZeitsteinslotsValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerDoneNoZeitsteinaktionThisTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughResourcesValidator;
@@ -14,28 +14,28 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughZeitst
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerAllowedToInvestValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereBoughtForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereBoughtForPlayer;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
+use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
-class BuyStocksForPlayerAktion extends Aktion
+class BuyInvestmentsForPlayerAktion extends Aktion
 {
-    private StockType $stockType;
-    private MoneyAmount $sharePrice;
+    private InvestmentId $investmentId;
+    private MoneyAmount $price;
     private int $amount;
 
     public function __construct(
-        StockType   $stockType,
-        MoneyAmount $sharePrice,
-        int         $amount
+        InvestmentId $investmentId,
+        MoneyAmount  $price,
+        int          $amount
     ) {
-        parent::__construct('buy-stocks', 'Aktien kaufen');
+        parent::__construct('buy-investments', 'Investitionen kaufen');
 
-        $this->stockType = $stockType;
-        $this->sharePrice = $sharePrice;
+        $this->investmentId = $investmentId;
+        $this->price = $price;
         $this->amount = $amount;
     }
 
@@ -47,7 +47,7 @@ class BuyStocksForPlayerAktion extends Aktion
             ->setNext(new HasPlayerEnoughZeitsteineValidator(1))
             ->setNext(new HasPlayerDoneNoZeitsteinaktionThisTurnValidator(CategoryId::INVESTITIONEN))
             ->setNext(new HasCategoryFreeZeitsteinslotsValidator(CategoryId::INVESTITIONEN))
-            ->setNext(new HasPlayerEnoughResourcesValidator(new ResourceChanges(guthabenChange: new MoneyAmount(-1 * $this->amount * $this->sharePrice->value))));
+            ->setNext(new HasPlayerEnoughResourcesValidator(new ResourceChanges(guthabenChange: new MoneyAmount(-1 * $this->amount * $this->price->value))));
 
         return $validationChain->validate($gameEvents, $playerId);
     }
@@ -60,17 +60,17 @@ class BuyStocksForPlayerAktion extends Aktion
         }
 
         $resourceChanges = new ResourceChanges(
-            guthabenChange: new MoneyAmount(-1 * ($this->sharePrice->value * $this->amount)),
+            guthabenChange: new MoneyAmount(-1 * ($this->price->value * $this->amount)),
             zeitsteineChange: -1,
         );
 
         return GameEventsToPersist::with(
-            new StocksWereBoughtForPlayer(
+            new InvestmentsWereBoughtForPlayer(
                 playerId: $playerId,
-                stockType: $this->stockType,
-                sharePrice: $this->sharePrice,
+                investmentId: $this->investmentId,
+                price: $this->price,
                 amount: $this->amount,
-                stockPrices: StockPriceState::calculateStockPrices($gameEvents),
+                investmentPrices: InvestmentPriceState::calculateInvestmentPrices($gameEvents),
                 resourceChanges: $resourceChanges,
             )
         );

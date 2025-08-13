@@ -5,27 +5,27 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesStockAmountChanges;
-use Domain\CoreGameLogic\Feature\Spielzug\Dto\StockAmountChanges;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesInvestmentAmountChanges;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\InvestmentAmountChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
-use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
+use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
-class StocksWereSoldForPlayer implements GameEventInterface, ProvidesResourceChanges, ProvidesStockAmountChanges
+class InvestmentsWereSoldForPlayer implements GameEventInterface, ProvidesResourceChanges, ProvidesInvestmentAmountChanges
 {
     /**
      * @param PlayerId $playerId
-     * @param StockType $stockType
-     * @param MoneyAmount $sharePrice
+     * @param InvestmentId $investmentId
+     * @param MoneyAmount $price
      * @param int $amount
      */
     public function __construct(
-        public PlayerId    $playerId,
-        public StockType   $stockType,
-        public MoneyAmount $sharePrice,
-        public int         $amount,
+        public PlayerId     $playerId,
+        public InvestmentId $investmentId,
+        public MoneyAmount  $price,
+        public int          $amount,
     )
     {
     }
@@ -34,8 +34,8 @@ class StocksWereSoldForPlayer implements GameEventInterface, ProvidesResourceCha
     {
         return new self(
             playerId: PlayerId::fromString($values['player']),
-            stockType: StockType::from($values['stockType']),
-            sharePrice: new MoneyAmount($values['sharePrice']),
+            investmentId: InvestmentId::from($values['investmentId']),
+            price: new MoneyAmount($values['price']),
             amount: $values['amount'],
         );
     }
@@ -44,8 +44,8 @@ class StocksWereSoldForPlayer implements GameEventInterface, ProvidesResourceCha
     {
         return [
             'player' => $this->playerId,
-            'stockType' => $this->stockType->value,
-            'sharePrice' => $this->sharePrice->value,
+            'investmentId' => $this->investmentId->value,
+            'price' => $this->price->value,
             'amount' => $this->amount,
         ];
     }
@@ -54,7 +54,7 @@ class StocksWereSoldForPlayer implements GameEventInterface, ProvidesResourceCha
     {
         if ($this->playerId->equals($playerId)) {
             return new ResourceChanges(
-                guthabenChange: new MoneyAmount($this->sharePrice->value * $this->amount),
+                guthabenChange: new MoneyAmount($this->price->value * $this->amount),
             );
         }
         return new ResourceChanges();
@@ -65,13 +65,13 @@ class StocksWereSoldForPlayer implements GameEventInterface, ProvidesResourceCha
         return $this->playerId;
     }
 
-    public function getStockAmountChanges(PlayerId $playerId, StockType $stockType): StockAmountChanges
+    public function getInvestmentAmountChanges(PlayerId $playerId, InvestmentId $investmentId): InvestmentAmountChanges
     {
-        if ($this->playerId->equals($playerId) && $this->stockType === $stockType) {
-            return new StockAmountChanges(
+        if ($this->playerId->equals($playerId) && $this->investmentId === $investmentId) {
+            return new InvestmentAmountChanges(
                 amountChange: $this->amount * -1
             );
         }
-        return new StockAmountChanges();
+        return new InvestmentAmountChanges();
     }
 }

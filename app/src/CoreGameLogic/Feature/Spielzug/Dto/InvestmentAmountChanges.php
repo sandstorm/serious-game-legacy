@@ -7,7 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Dto;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use JsonSerializable;
 
-final readonly class StockAmountChanges implements JsonSerializable
+final readonly class InvestmentAmountChanges implements JsonSerializable
 {
     /**
      * @param int $amountChange

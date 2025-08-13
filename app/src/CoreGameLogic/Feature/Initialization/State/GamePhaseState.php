@@ -9,7 +9,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasStarted;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereBoughtForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereBoughtForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
@@ -81,13 +81,13 @@ class GamePhaseState
      * @param PlayerId $playerId
      * @return bool
      */
-    public static function anotherPlayerHasBoughtStocksThisTurn(GameEvents $gameEvents, PlayerId $playerId): bool
+    public static function anotherPlayerHasBoughtInvestmentsThisTurn(GameEvents $gameEvents, PlayerId $playerId): bool
     {
         $eventsThisTurn = $gameEvents->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class)
             ?? $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
 
-        $stocksWereBought = $eventsThisTurn->findLastOrNull(StocksWereBoughtForPlayer::class);
-        return $stocksWereBought !== null && !$stocksWereBought->playerId->equals($playerId);
+        $investmentsWereBought = $eventsThisTurn->findLastOrNull(InvestmentsWereBoughtForPlayer::class);
+        return $investmentsWereBought !== null && !$investmentsWereBought->playerId->equals($playerId);
     }
 
     public static function hasPlayerStartedTurn(GameEvents $gameEvents, PlayerId $playerId): bool
