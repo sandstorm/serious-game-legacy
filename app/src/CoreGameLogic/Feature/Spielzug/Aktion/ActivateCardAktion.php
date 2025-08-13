@@ -46,7 +46,7 @@ class ActivateCardAktion extends Aktion
         $validationChain
             ->setNext(new CanPlayerAffordTopCardOnPileValidator($this->pileId))
             ->setNext(HasPlayerDoneNoZeitsteinaktionThisTurnValidator::withSpecialRulesForActivateCard($this->category))
-            ->setNext(new HasCategoryFreeZeitsteinslotsValidator($this->category));
+            ->setNext(HasCategoryFreeZeitsteinslotsValidator::withSpecialRulesForActivateCard($this->category));
 
         return $validationChain->validate($gameEvents, $playerId);
     }

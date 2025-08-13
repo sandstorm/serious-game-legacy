@@ -767,6 +767,48 @@ describe('handleActivateCard', function () {
         'Cannot activate Card: Es gibt keine freien Zeitsteinslots mehr',
         1748951140);
 
+    /**
+     * This is a special case. When there is only one Zeitsteinslot left in a category and the player skips a
+     * card, then the last slot gets used. That means that now no free Zeitsteinslot is left, but we still want
+     * to allow the player to activate the next card, since it will not consume a Zeitsteinslot after a SkipAction.
+     */
+    it('can activate a card after skipping another card, even when no Zeitsteinslot is available', function () {
+        /** @var TestCase $this */
+
+        $cardsToPlay = [];
+
+        for ($i = 0; $i < 10; $i++) {
+            $cardsToPlay[] = new KategorieCardDefinition(
+                id: new CardId('testcard' . $i),
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: +1,
+                ),
+            );
+        }
+
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsToPlay);
+        $gameEventsAfterSetup = $this->coreGameLogic->getGameEvents($this->gameId);
+        $freeZeitsteinslotsForBildungUndKarriere = KonjunkturphaseState::getCurrentKonjunkturphase($gameEventsAfterSetup)
+            ->getKompetenzbereichByCategory(CategoryId::BILDUNG_UND_KARRIERE)->zeitslots->getAmountOfZeitslotsForPlayerCount(2);
+
+        for ($i = 0; $i < $freeZeitsteinslotsForBildungUndKarriere - 1; $i++) {
+            $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[$i % 2], CategoryId::BILDUNG_UND_KARRIERE));
+            $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[$i % 2]));
+        }
+
+        $gameEventsBeforeTest = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(GamePhaseState::hasFreeTimeSlotsForCategory($gameEventsBeforeTest, CategoryId::BILDUNG_UND_KARRIERE))->toBeTrue();
+
+        $this->coreGameLogic->handle($this->gameId, new SkipCard($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+
+        $gameEventsAfterTest = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(GamePhaseState::hasFreeTimeSlotsForCategory($gameEventsAfterTest, CategoryId::BILDUNG_UND_KARRIERE))->toBeFalse("There should not be any free Zeitsteinslots");
+    });
+
 });
 
 describe('handleAcceptJobOffer', function () {
