@@ -90,9 +90,9 @@
         {!! $moneySheet->annualIncome->formatWithIcon() !!}
     </div>
     <div class="moneysheet__expenses-sum">
-        {!! $moneySheet->annualExpensesFilledOutByPlayer->formatWithIcon() !!}
+        {!! $moneySheet->annualExpensesFromPlayerInput->formatWithIcon() !!}
     </div>
     <div class="moneysheet__sum">
-        = {!! $moneySheet->totalFilledOutByPlayer->formatWithIcon() !!}
+        = {!! $moneySheet->totalFromPlayerInput->formatWithIcon() !!}
     </div>
 </div>
