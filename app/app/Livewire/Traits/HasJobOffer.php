@@ -36,8 +36,9 @@ trait HasJobOffer
         $this->jobOfferIsVisible = false;
     }
 
-    public function canAcceptJobOffer(CardId $cardId): AktionValidationResult
+    public function canAcceptJobOffer(string $cardIdString): AktionValidationResult
     {
+        $cardId = new CardId($cardIdString);
         $aktion = new AcceptJobOfferAktion($cardId);
         return $aktion->validate($this->myself, $this->gameEvents);
     }
@@ -49,7 +50,7 @@ trait HasJobOffer
     public function applyForJob(string $cardIdString): void
     {
         $cardId = new CardId($cardIdString);
-        $validationResult = self::canAcceptJobOffer($cardId);
+        $validationResult = self::canAcceptJobOffer($cardIdString);
         if (!$validationResult->canExecute) {
             $this->showNotification(
                 $validationResult->reason,
