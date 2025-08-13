@@ -1,5 +1,6 @@
 @extends ('components.modal.modal', ['closeModal' => "closeJobOffer()", 'type' => "borderless"])
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator')
+@use('Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor')
 
 @props([
     'jobOffers' => [],
@@ -37,7 +38,7 @@
                         @class([
                             "button",
                             "button--type-primary",
-                            "button--disabled" => !AktionsCalculator::forStream($gameEvents)->canPlayerAffordJobCard($playerId, $jobOffer),
+                            "button--disabled" => !AktionsCalculator::forStream($gameEvents)->canPlayerAffordJobCard($playerId, $jobOffer) || !CurrentPlayerAccessor::forStream($gameEvents)->equals($playerId),
                             $this->getPlayerColorClass()
                         ])
                         wire:click="applyForJob('{{ $jobOffer->getId()->value }}')"
