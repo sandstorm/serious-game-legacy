@@ -61,7 +61,7 @@ class StockPriceState
         }
 
         $konjunkturphaseDefinition = KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents);
-        $schock = self::getSchock($konjunkturphaseDefinition);
+        $schock = self::getSchock($konjunkturphaseDefinition) / 100;
         $annualVolatility = self::getAnnualVolatility($stockType);
         $annualReturn = self::getAnnualReturn($stockType);
         $z = random_int(-1000, 1000) / 1000.0; // Random number from N(0,1), here simplified as a uniform distribution
