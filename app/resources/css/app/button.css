@@ -6,6 +6,10 @@ button {
         outline: 2px solid var(--color-focus);
         outline-offset: 2px;
     }
+
+    i {
+        color: var(--color-primary-dark);
+    }
 }
 
 .button {
@@ -165,8 +169,6 @@ button {
     background: transparent;
     border: none;
     box-shadow: none;
-
-    color: var(--color-primary-dark);
 }
 
 .button--type-text {
@@ -179,7 +181,6 @@ button {
     border-radius: 0;
 
     text-align: left;
-    color: var(--color-primary-dark);
     white-space: normal;
 }
 

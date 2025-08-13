@@ -10,12 +10,12 @@
 
 @section('footer_mandatory')
     <button type="button"
-            @class([
-                "button",
-                "button--type-primary",
-                $this->getPlayerColorClass()
-            ])
-            wire:click="startSpielzug()"
+        @class([
+            "button",
+            "button--type-primary",
+            $this->getPlayerColorClass()
+        ])
+        wire:click="startSpielzug()"
     >
         Ok
     </button>

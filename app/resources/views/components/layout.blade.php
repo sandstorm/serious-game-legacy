@@ -18,5 +18,7 @@
 <main class="container">
     {{ $slot }}
 </main>
+
+@livewireScriptConfig
 </body>
 </html>

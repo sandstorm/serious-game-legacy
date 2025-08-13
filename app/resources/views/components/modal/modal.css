@@ -31,7 +31,7 @@
     }
 
     .modal__body {
-        overflow-y: visible;
+        overflow: visible;
         width: 100%;
         height: 100%;
     }
