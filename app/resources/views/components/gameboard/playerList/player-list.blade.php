@@ -3,11 +3,11 @@
     'emptySlots' => [],
 ])
 
-<div x-data="{ open: @entangle('showPlayerDetails') }" x-trap.noscroll="open"
+<div x-data="playerList()" x-trap.noscroll="playerListOpen" @touchstart="touchStart($event)" @touchend="touchEnd()"
     @class([
         'player-list',
-        'player-list--show-details' => $this->showPlayerDetails,
     ])
+    :class="playerListOpen ? 'player-list--show-details' : ''"
 >
     @foreach($emptySlots as $emptySlot)
         <li
@@ -26,7 +26,7 @@
                 $player->playerColorClass,
             ])
         >
-            <button type="button" title="Spielerübersicht öffnen/schließen" class="button button--type-borderless" wire:click="togglePlayerDetails()">
+            <button type="button" title="Spielerübersicht öffnen/schließen" class="button button--type-borderless" x-on:click="playerListOpen = !playerListOpen">
                 <div class="player-list__player-name">
                     {{ $player->name }}
                 </div>
@@ -42,52 +42,63 @@
                 </div>
             </button>
 
-            @if ($this->showPlayerDetails)
-                <div class="player-list__player-details">
-                    <small><a href={{ @route("game-play.game", ['gameId' => $this->gameId, 'playerId' => $player->playerId]) }}>{{ $player->playerId }}</a></small>
-                    <div>
-                        <strong>Lebensziel:</strong> {{ $player->lebenszielDefinition->name }}
+            <div class="player-list__player-details" x-cloak x-show="playerListOpen">
+                <small><a href={{ @route("game-play.game", ['gameId' => $this->gameId, 'playerId' => $player->playerId]) }}>{{ $player->playerId }}</a></small>
+                <div>
+                    <strong>Lebensziel:</strong> {{ $player->lebenszielDefinition->name }}
+                </div>
+                <x-gameboard.lebensziel-kompetenzen :player-id="$player->playerId" :game-events="$gameEvents" :lebensziel-phase="$player->phaseDefinition" />
+
+                @if ($player->job)
+                    <div class="player-list__player-details-job">
+                        <x-gameboard.kompetenzen.kompetenz-icon-beruf
+                            :player-color-class="$player->playerColorClass"
+                            :player-name="$player->name"
+                            :draw-empty="false"
+                        />
+                        <div>
+                            {{ $player->job->getTitle() }} <br />
+                            {!! $player->gehalt->format() !!} p.a.
+                        </div>
                     </div>
-                    <x-gameboard.lebensziel-kompetenzen :player-id="$player->playerId" :game-events="$gameEvents" :lebensziel-phase="$player->phaseDefinition" />
+                @endif
 
-                    @if ($player->job)
-                        <div class="player-list__player-details-job">
-                            <x-gameboard.kompetenzen.kompetenz-icon-beruf
-                                :player-color-class="$player->playerColorClass"
-                                :player-name="$player->name"
-                                :draw-empty="false"
-                            />
-                            <div>
-                                {{ $player->job->getTitle() }} <br />
-                                {!! $player->gehalt->format() !!} p.a.
-                            </div>
-                        </div>
-                    @endif
+                @if ($player->sumOfLoans->value > 0)
+                    <div>
+                        Kreditsumme {!! $player->sumOfLoans->format() !!}
+                    </div>
+                @endif
+                @if ($player->sumOfInvestments->value > 0)
+                    <div>
+                        Summe Investitionen {!! $player->sumOfInvestments->format() !!}
+                    </div>
+                @endif
 
-                    @if ($player->sumOfLoans->value > 0)
-                        <div>
-                            Kreditsumme {!! $player->sumOfLoans->format() !!}
-                        </div>
+                <div class="player-list__player-details-footer">
+                    @if($this->playerIsMyself($player->playerId))
+                        <x-gameboard.lebensziel.lebensziel-switch :lebensziel-phase="$player->phaseDefinition->lebenszielPhaseId->value" :current-phase="$player->phaseDefinition->lebenszielPhaseId->value" />
                     @endif
-                    @if ($player->sumOfInvestments->value > 0)
-                        <div>
-                            Summe Investitionen {!! $player->sumOfInvestments->format() !!}
-                        </div>
-                    @endif
-
-                    <div class="player-list__player-details-footer">
-                        @if($this->playerIsMyself($player->playerId))
-                            <x-gameboard.lebensziel.lebensziel-switch :lebensziel-phase="$player->phaseDefinition->lebenszielPhaseId->value" :current-phase="$player->phaseDefinition->lebenszielPhaseId->value" />
-                        @endif
-                        <div>
-                            <i class="icon-phasenwechsel" aria-hidden="true"></i> {!! $player->phaseDefinition->investitionen->format() !!}
-                        </div>
-                        <div class="player-list__player-details-guthaben">
-                            {!! $player->guthaben->format() !!}
-                        </div>
+                    <div>
+                        <i class="icon-phasenwechsel" aria-hidden="true"></i> {!! $player->phaseDefinition->investitionen->format() !!}
+                    </div>
+                    <div class="player-list__player-details-guthaben">
+                        {!! $player->guthaben->format() !!}
                     </div>
                 </div>
-            @endif
+
+                <button type="button"
+                    @class([
+                        'button',
+                        'button--type-primary',
+                        'player-list__close-button',
+                        $player->playerColorClass,
+                    ])
+                    x-on:click="playerListOpen = false"
+                >
+                    <i class="icon-arrow-up" aria-hidden="true"></i>
+                    <span class="sr-only">Spielerübersicht schließen</span>
+                </button>
+            </div>
         </div>
     @endforeach
 </div>

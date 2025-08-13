@@ -109,6 +109,10 @@
     .button {
         margin-bottom: var(--spacing-100);
     }
+
+    i.icon-phasenwechsel {
+        color: var(--color-primary-fg);
+    }
 }
 
 .player-list__player-details-guthaben {
@@ -116,4 +120,13 @@
 
     border: 1px solid var(--color-primary-fg);
     border-radius: 999px;
+}
+
+.button.player-list__close-button {
+    position: absolute;
+    right: 0;
+    bottom: var(--spacing-50);
+    z-index: 10;
+
+    border-radius: 999px 0 0 999px;
 }
