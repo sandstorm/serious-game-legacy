@@ -34,7 +34,7 @@ class StocksWereSoldForPlayer implements GameEventInterface, ProvidesResourceCha
     {
         return new self(
             playerId: PlayerId::fromString($values['player']),
-            stockType: StockType::fromString($values['stockType']),
+            stockType: StockType::from($values['stockType']),
             sharePrice: new MoneyAmount($values['sharePrice']),
             amount: $values['amount'],
         );

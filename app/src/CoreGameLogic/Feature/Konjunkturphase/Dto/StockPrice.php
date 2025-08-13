@@ -18,7 +18,7 @@ readonly final class StockPrice implements \JsonSerializable
     public static function fromArray(array $values): self
     {
         return new self(
-            stockType: StockType::fromString($values['stockType']),
+            stockType: StockType::from($values['stockType']),
             sharePrice: new MoneyAmount($values['sharePrice'])
         );
     }

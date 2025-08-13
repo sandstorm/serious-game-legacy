@@ -23,7 +23,8 @@ class MoneySheetInvestments extends Component
     public function __construct(
         public PlayerId $playerId,
         public GameEvents $gameEvents,
-    ) {}
+    ) {
+    }
 
     /**
      * Get the view / contents that represent the component.
@@ -41,7 +42,9 @@ class MoneySheetInvestments extends Component
                 amount: $amount,
                 totalValue: new MoneyAmount($currentPrice->value * $amount),
                 totalDividend: new MoneyAmount(
-                    $amount * KonjunkturphaseState::getCurrentKonjunkturphase($this->gameEvents)->getDividend()->value
+                    $stockType->value === StockType::LOW_RISK->value
+                        ? $amount * KonjunkturphaseState::getCurrentKonjunkturphase($this->gameEvents)->getDividend()->value
+                        : 0
                 ),
             );
         }
