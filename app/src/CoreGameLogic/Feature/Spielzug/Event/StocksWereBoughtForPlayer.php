@@ -41,7 +41,7 @@ class StocksWereBoughtForPlayer implements GameEventInterface, ProvidesResourceC
     {
         return new self(
             playerId: PlayerId::fromString($values['player']),
-            stockType: StockType::fromString($values['stockType']),
+            stockType: StockType::from($values['stockType']),
             sharePrice: new MoneyAmount($values['sharePrice']),
             amount: $values['amount'],
             stockPrices: array_map(
