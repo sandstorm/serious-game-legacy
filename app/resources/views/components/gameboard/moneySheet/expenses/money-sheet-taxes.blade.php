@@ -28,7 +28,7 @@
         @error('moneySheetSteuernUndAbgabenForm.steuernUndAbgaben') <span class="form__error">{{ $message }}</span> @enderror
         @if ($this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled)
             <span class="text--success">
-                <i class="icon-info" aria-hidden="true"></i> Du hast deine Steuern und Abgaben erfolgreich eingetragen. Das Formular ist so lange deaktiviert bis sich an deinem Gehalt etwas ändert.
+                <i class="icon-info" aria-hidden="true"></i> Deine Steuern und Abgaben sind erfolgreich eingetragen. Das Formular ist so lange deaktiviert bis sich an deinem Gehalt etwas ändert.
             </span>
         @endif
         <x-form.submit :disabled="$this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled">Änderungen Speichern</x-form.submit>
