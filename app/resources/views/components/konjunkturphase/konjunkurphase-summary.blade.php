@@ -50,7 +50,7 @@
         <tr class="konjunkturphase-summary-tabe__total-row">
             <th class="konjunkturphase-summary-table__icon-column">=</th>
             <th class="konjunkturphase-summary-table__heading-column">Gesamt</th>
-            <td class="konjunkturphase-summary-table__value-column">{!! $moneySheet->total->formatWithIcon() !!}</td>
+            <td class="konjunkturphase-summary-table__value-column">{!! $moneySheet->totalFilledOutByPlayer->formatWithIcon() !!}</td>
         </tr>
     </table>
 </div>
