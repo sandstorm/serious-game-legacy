@@ -8,7 +8,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyStocksForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
@@ -17,7 +17,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlaye
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
-use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
+use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\ValueObject\CardId;
@@ -728,6 +728,10 @@ describe('getOpenRatesForLoan', function () {
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
                     modifier: 4
                 ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::CRYPTO,
+                    modifier: 0
+                ),
             ]
         );
 
@@ -925,9 +929,9 @@ describe("getAnnualIncomeForPlayer", function () {
         /** @var TestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
-            BuyStocksForPlayer::create(
+            BuyInvestmentsForPlayer::create(
                 $this->players[0],
-                StockType::LOW_RISK,
+                InvestmentId::MERFEDES_PENZ,
                 $amountOfStocks
             )
         );

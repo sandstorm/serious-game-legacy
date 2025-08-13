@@ -60,9 +60,10 @@ class KonjunkturphaseDefinition
             }
         }
 
-        throw new \RuntimeException(
-            'Auswirkung not found for scope: ' . $scope->value,
-            1747148685
+        // if none found, return a default AuswirkungDefinition with modifier 0.0
+        return new AuswirkungDefinition(
+            scope: $scope,
+            modifier: 0.0
         );
     }
 

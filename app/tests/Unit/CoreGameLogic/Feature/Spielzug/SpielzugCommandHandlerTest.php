@@ -9,18 +9,18 @@ use App\Livewire\Forms\TakeOutALoanForm;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesStockPriceChanges;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesInvestmentPriceChanges;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\State\StockPriceState;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ChangeLebenszielphase;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyStocksForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellStocksForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\PutCardBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
@@ -29,7 +29,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPl
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\SellStocksForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
@@ -51,7 +51,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\SteuernUndAbgabenForPlayerWereEn
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
-use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
+use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Card\Dto\AnswerOption;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
@@ -2629,38 +2629,38 @@ describe('handleTakeOutALoanForPlayer', function () {
     });
 });
 
-describe('handleBuyStocksForPlayer', function () {
-    it('works as expected when buying stocks', function () {
+describe('handleBuyInvestmentsForPlayer', function () {
+    it('works as expected when buying investments', function () {
         // buy low risk stocks
         $amountOfStocks = 100;
 
         /** @var TestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
-            BuyStocksForPlayer::create(
+            BuyInvestmentsForPlayer::create(
                 $this->players[0],
-                StockType::LOW_RISK,
+                InvestmentId::MERFEDES_PENZ,
                 $amountOfStocks
             )
         );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        $currentPrice = StockPriceState::getCurrentStockPrice($gameEvents, StockType::LOW_RISK);
+        $currentPrice = InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MERFEDES_PENZ);
         $expectedSumOfAllStocks = new MoneyAmount($currentPrice->value * $amountOfStocks);
-        $expectedGuthaben = new MoneyAmount(Configuration::STARTKAPITAL_VALUE - Configuration::INITIAL_STOCK_PRICE * $amountOfStocks);
-        expect(PlayerState::getTotalValueOfAllStocksForPlayer($gameEvents,
+        $expectedGuthaben = new MoneyAmount(Configuration::STARTKAPITAL_VALUE - Configuration::INITIAL_INVESTMENT_PRICE * $amountOfStocks);
+        expect(PlayerState::getTotalValueOfAllInvestmentsForPlayer($gameEvents,
             $this->players[0]))->toEqual($expectedSumOfAllStocks)
-            ->and(PlayerState::getAmountOfAllStocksOfTypeForPlayer($gameEvents, $this->players[0],
-                StockType::LOW_RISK))->toEqual($amountOfStocks)
+            ->and(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEvents, $this->players[0],
+                InvestmentId::MERFEDES_PENZ))->toEqual($amountOfStocks)
             ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual($expectedGuthaben)
-            ->and(count($gameEvents->findAllOfType(ProvidesStockPriceChanges::class)))->toEqual(2);
+            ->and(count($gameEvents->findAllOfType(ProvidesInvestmentPriceChanges::class)))->toEqual(2);
 
-        $highRiskPriceAfterFirstBuy = StockPriceState::getCurrentStockPrice($gameEvents, StockType::HIGH_RISK);
+        $highRiskPriceAfterFirstBuy = InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::BETA_PEAR);
 
         // other player does not sell any stocks
         $this->coreGameLogic->handle(
             $this->gameId,
-            DontSellStocksForPlayer::create($this->players[1], StockType::LOW_RISK)
+            DontSellInvestmentsForPlayer::create($this->players[1], InvestmentId::MERFEDES_PENZ)
         );
 
         // end zug for player 0
@@ -2685,71 +2685,71 @@ describe('handleBuyStocksForPlayer', function () {
         $amountOfStocksHighRisk = 50;
         $this->coreGameLogic->handle(
             $this->gameId,
-            BuyStocksForPlayer::create(
+            BuyInvestmentsForPlayer::create(
                 $this->players[0],
-                StockType::HIGH_RISK,
+                InvestmentId::BETA_PEAR,
                 $amountOfStocksHighRisk
             )
         );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        $currentPriceLowRisk = StockPriceState::getCurrentStockPrice($gameEvents, StockType::LOW_RISK);
-        $currentPriceHighRisk = StockPriceState::getCurrentStockPrice($gameEvents, StockType::HIGH_RISK);
+        $currentPriceLowRisk = InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MERFEDES_PENZ);
+        $currentPriceHighRisk = InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::BETA_PEAR);
         $expectedSumOfAllStocks = new MoneyAmount($currentPriceLowRisk->value * $amountOfStocks + $currentPriceHighRisk->value * $amountOfStocksHighRisk);
         $expectedGuthaben = $expectedGuthaben->add(
             new MoneyAmount($highRiskPriceAfterFirstBuy->value * $amountOfStocksHighRisk * -1)
         );
 
-        expect(PlayerState::getTotalValueOfAllStocksForPlayer($gameEvents,
+        expect(PlayerState::getTotalValueOfAllInvestmentsForPlayer($gameEvents,
             $this->players[0]))->toEqual($expectedSumOfAllStocks)
-            ->and(PlayerState::getAmountOfAllStocksOfTypeForPlayer($gameEvents, $this->players[0],
-                StockType::LOW_RISK))->toEqual($amountOfStocks)
-            ->and(PlayerState::getAmountOfAllStocksOfTypeForPlayer($gameEvents, $this->players[0],
-                StockType::HIGH_RISK))->toEqual($amountOfStocksHighRisk)
+            ->and(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEvents, $this->players[0],
+                InvestmentId::MERFEDES_PENZ))->toEqual($amountOfStocks)
+            ->and(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEvents, $this->players[0],
+                InvestmentId::BETA_PEAR))->toEqual($amountOfStocksHighRisk)
             ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual($expectedGuthaben)
-            ->and(count($gameEvents->findAllOfType(ProvidesStockPriceChanges::class)))->toEqual(3);
+            ->and(count($gameEvents->findAllOfType(ProvidesInvestmentPriceChanges::class)))->toEqual(3);
     });
 
-    it('throws exception if player tries to buy more stocks than he can afford', function () {
-        $amountOfStocks = intval(Configuration::STARTKAPITAL_VALUE / Configuration::INITIAL_STOCK_PRICE + 1);
+    it('throws exception if player tries to buy more investments than he can afford', function () {
+        $amountOfStocks = intval(Configuration::STARTKAPITAL_VALUE / Configuration::INITIAL_INVESTMENT_PRICE + 1);
 
         /** @var TestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
-            BuyStocksForPlayer::create(
+            BuyInvestmentsForPlayer::create(
                 $this->players[0],
-                StockType::LOW_RISK,
+                InvestmentId::MERFEDES_PENZ,
                 $amountOfStocks
             )
         );
     })->throws(\RuntimeException::class, 'Du hast nicht genug Ressourcen', 1752066529);
 });
 
-describe('handleSellStocksForPlayer', function () {
-    it('selling stocks works as expected', function () {
+describe('handleSellInvestmentsForPlayer', function () {
+    it('selling investments works as expected', function () {
         $amountOfStocks = 100;
         // player 0 buys low risk stocks
         /** @var TestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
-            BuyStocksForPlayer::create(
+            BuyInvestmentsForPlayer::create(
                 $this->players[0],
-                StockType::LOW_RISK,
+                InvestmentId::MERFEDES_PENZ,
                 $amountOfStocks
             )
         );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::hasPlayerInteractedWithStocksModalThisTurn($gameEvents, $this->players[1]))->toBeFalse();
+        expect(PlayerState::hasPlayerInteractedWithInvestmentsModalThisTurn($gameEvents, $this->players[1]))->toBeFalse();
 
         // player 1 does not sell any stocks
         $this->coreGameLogic->handle(
             $this->gameId,
-            DontSellStocksForPlayer::create($this->players[1], StockType::LOW_RISK)
+            DontSellInvestmentsForPlayer::create($this->players[1], InvestmentId::MERFEDES_PENZ)
         );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::hasPlayerInteractedWithStocksModalThisTurn($gameEvents, $this->players[1]))->toBeTrue();
+        expect(PlayerState::hasPlayerInteractedWithInvestmentsModalThisTurn($gameEvents, $this->players[1]))->toBeTrue();
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -2760,59 +2760,59 @@ describe('handleSellStocksForPlayer', function () {
         /** @var TestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
-            BuyStocksForPlayer::create(
+            BuyInvestmentsForPlayer::create(
                 $this->players[1],
-                StockType::LOW_RISK,
+                InvestmentId::MERFEDES_PENZ,
                 $amountOfStocks
             )
         );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getAmountOfAllStocksOfTypeForPlayer($gameEvents, $this->players[0], StockType::LOW_RISK))->toEqual($amountOfStocks)
-            ->and(PlayerState::getAmountOfAllStocksOfTypeForPlayer($gameEvents, $this->players[0], StockType::HIGH_RISK))->toEqual(0);
+        expect(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEvents, $this->players[0], InvestmentId::MERFEDES_PENZ))->toEqual($amountOfStocks)
+            ->and(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEvents, $this->players[0], InvestmentId::BETA_PEAR))->toEqual(0);
 
         // player 0 sells half of their stocks
         $this->coreGameLogic->handle(
             $this->gameId,
-            SellStocksForPlayer::create(
+            SellInvestmentsForPlayer::create(
                 $this->players[0],
-                StockType::LOW_RISK,
+                InvestmentId::MERFEDES_PENZ,
                 $amountOfStocks / 2
             )
         );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getAmountOfAllStocksOfTypeForPlayer($gameEvents, $this->players[0], StockType::LOW_RISK))->toEqual($amountOfStocks / 2)
-            ->and(PlayerState::getAmountOfAllStocksOfTypeForPlayer($gameEvents, $this->players[0], StockType::HIGH_RISK))->toEqual(0)
-            ->and(PlayerState::getAmountOfAllStocksOfTypeForPlayer($gameEvents, $this->players[1], StockType::LOW_RISK))->toEqual($amountOfStocks)
-            ->and(PlayerState::getAmountOfAllStocksOfTypeForPlayer($gameEvents, $this->players[1], StockType::HIGH_RISK))->toEqual(0);
+        expect(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEvents, $this->players[0], InvestmentId::MERFEDES_PENZ))->toEqual($amountOfStocks / 2)
+            ->and(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEvents, $this->players[0], InvestmentId::BETA_PEAR))->toEqual(0)
+            ->and(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEvents, $this->players[1], InvestmentId::MERFEDES_PENZ))->toEqual($amountOfStocks)
+            ->and(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEvents, $this->players[1], InvestmentId::BETA_PEAR))->toEqual(0);
     });
 
 
-    it('throws exception if player tries sell more stocks than they have', function () {
+    it('throws exception if player tries sell more investments than they have', function () {
         $amountOfStocks = 100;
         // player 0 buys low risk stocks
         /** @var TestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
-            BuyStocksForPlayer::create(
+            BuyInvestmentsForPlayer::create(
                 $this->players[0],
-                StockType::LOW_RISK,
+                InvestmentId::MERFEDES_PENZ,
                 $amountOfStocks
             )
         );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::hasPlayerInteractedWithStocksModalThisTurn($gameEvents, $this->players[1]))->toBeFalse();
+        expect(PlayerState::hasPlayerInteractedWithInvestmentsModalThisTurn($gameEvents, $this->players[1]))->toBeFalse();
 
         // player 1 does not sell any stocks
         $this->coreGameLogic->handle(
             $this->gameId,
-            DontSellStocksForPlayer::create($this->players[1], StockType::LOW_RISK)
+            DontSellInvestmentsForPlayer::create($this->players[1], InvestmentId::MERFEDES_PENZ)
         );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::hasPlayerInteractedWithStocksModalThisTurn($gameEvents, $this->players[1]))->toBeTrue();
+        expect(PlayerState::hasPlayerInteractedWithInvestmentsModalThisTurn($gameEvents, $this->players[1]))->toBeTrue();
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -2823,39 +2823,39 @@ describe('handleSellStocksForPlayer', function () {
         /** @var TestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
-            BuyStocksForPlayer::create(
+            BuyInvestmentsForPlayer::create(
                 $this->players[1],
-                StockType::LOW_RISK,
+                InvestmentId::MERFEDES_PENZ,
                 $amountOfStocks
             )
         );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getAmountOfAllStocksOfTypeForPlayer($gameEvents, $this->players[0], StockType::LOW_RISK))->toEqual($amountOfStocks)
-            ->and(PlayerState::getAmountOfAllStocksOfTypeForPlayer($gameEvents, $this->players[0], StockType::HIGH_RISK))->toEqual(0)
-            ->and(GamePhaseState::anotherPlayerHasBoughtStocksThisTurn($gameEvents, $this->players[0]))->toBeTrue();
+        expect(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEvents, $this->players[0], InvestmentId::MERFEDES_PENZ))->toEqual($amountOfStocks)
+            ->and(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEvents, $this->players[0], InvestmentId::BETA_PEAR))->toEqual(0)
+            ->and(GamePhaseState::anotherPlayerHasBoughtInvestmentsThisTurn($gameEvents, $this->players[0]))->toBeTrue();
 
         // player 0 tries to sell more stocks than they have
         $this->coreGameLogic->handle(
             $this->gameId,
-            SellStocksForPlayer::create(
+            SellInvestmentsForPlayer::create(
                 $this->players[0],
-                StockType::LOW_RISK,
+                InvestmentId::MERFEDES_PENZ,
                 $amountOfStocks + 50
             )
         );
 
-    })->throws(\RuntimeException::class, 'Du hast nicht genug Aktien vom Typ Low Risk zum Verkaufen.', 1752753850);
+    })->throws(\RuntimeException::class, 'Du hast nicht genug Investitionen vom Typ Merfedes-Penz zum Verkaufen.', 1752753850);
 
-    it('throws exception if player tries end their turn and another player did not sell their stocks', function () {
+    it('throws exception if player tries end their turn and another player did not sell their investments', function () {
         $amountOfStocks = 100;
         // player 0 buys low risk stocks
         /** @var TestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
-            BuyStocksForPlayer::create(
+            BuyInvestmentsForPlayer::create(
                 $this->players[0],
-                StockType::LOW_RISK,
+                InvestmentId::MERFEDES_PENZ,
                 $amountOfStocks
             )
         );
@@ -2865,46 +2865,46 @@ describe('handleSellStocksForPlayer', function () {
             new EndSpielzug($this->players[0])
         );
 
-    })->throws(\RuntimeException::class, 'Du kannst deinen Spielzug nicht beenden. Andere Spieler können noch Aktien verkaufen.', 1748946243);
+    })->throws(\RuntimeException::class, 'Du kannst deinen Spielzug nicht beenden. Andere Spieler können noch Investitionen verkaufen.', 1748946243);
 
-    it('throws exception if player tries to sell wrong type of stocks another player bought', function () {
+    it('throws exception if player tries to sell wrong type of investments another player bought', function () {
         $amountOfStocks = 100;
 
         // player 0 buys low risk stocks
         /** @var TestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
-            BuyStocksForPlayer::create(
+            BuyInvestmentsForPlayer::create(
                 $this->players[0],
-                StockType::LOW_RISK,
+                InvestmentId::MERFEDES_PENZ,
                 $amountOfStocks
             )
         );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getAmountOfAllStocksOfTypeForPlayer($gameEvents, $this->players[0], StockType::LOW_RISK))->toEqual($amountOfStocks)
-            ->and(PlayerState::getAmountOfAllStocksOfTypeForPlayer($gameEvents, $this->players[0], StockType::HIGH_RISK))->toEqual(0)
-            ->and(GamePhaseState::anotherPlayerHasBoughtStocksThisTurn($gameEvents, $this->players[0]))->toBeFalse()
-            ->and(GamePhaseState::anotherPlayerHasBoughtStocksThisTurn($gameEvents, $this->players[1]))->toBeTrue();
+        expect(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEvents, $this->players[0], InvestmentId::MERFEDES_PENZ))->toEqual($amountOfStocks)
+            ->and(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEvents, $this->players[0], InvestmentId::BETA_PEAR))->toEqual(0)
+            ->and(GamePhaseState::anotherPlayerHasBoughtInvestmentsThisTurn($gameEvents, $this->players[0]))->toBeFalse()
+            ->and(GamePhaseState::anotherPlayerHasBoughtInvestmentsThisTurn($gameEvents, $this->players[1]))->toBeTrue();
 
         $this->coreGameLogic->handle(
             $this->gameId,
-            SellStocksForPlayer::create(
+            SellInvestmentsForPlayer::create(
                 $this->players[1],
-                StockType::HIGH_RISK,
+                InvestmentId::BETA_PEAR,
                 50
             )
         );
-    })->throws(\RuntimeException::class, 'Ein anderer Spieler muss Aktien der gleichen Art gekauft haben, bevor du welche verkaufen kannst.', 1752753850);
+    })->throws(\RuntimeException::class, 'Ein anderer Spieler muss Investitionen der gleichen Art gekauft haben, bevor du welche verkaufen kannst.', 1752753850);
 
-    it('throws exception if player tries to sell stocks when no other player bought some', function () {
+    it('throws exception if player tries to sell investments when no other player bought some', function () {
         $this->coreGameLogic->handle(
             $this->gameId,
-            SellStocksForPlayer::create(
+            SellInvestmentsForPlayer::create(
                 $this->players[0],
-                StockType::LOW_RISK,
+                InvestmentId::MERFEDES_PENZ,
                 100
             )
         );
-    })->throws(\RuntimeException::class, 'Ein anderer Spieler muss Aktien der gleichen Art gekauft haben, bevor du welche verkaufen kannst.', 1752753850);
+    })->throws(\RuntimeException::class, 'Ein anderer Spieler muss Investitionen der gleichen Art gekauft haben, bevor du welche verkaufen kannst.', 1752753850);
 });

@@ -4,30 +4,32 @@ declare(strict_types=1);
 
 namespace App\Livewire\Traits;
 
-use App\Livewire\Forms\BuyStocksForm;
-use App\Livewire\Forms\SellStocksForm;
+use App\Livewire\Forms\BuyInvestmentsForm;
+use App\Livewire\Forms\SellInvestmentsForm;
 use App\Livewire\ValueObject\NotificationTypeEnum;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\State\StockPriceState;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\BuyStocksForPlayerAktion;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellStocksForPlayerAktion;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyStocksForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellStocksForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\SellStocksForPlayer;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\BuyInvestmentsForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellInvestmentsForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellInvestmentsForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\StocksWereBoughtForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereBoughtForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
-use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
+use Domain\Definitions\Investments\ValueObject\InvestmentId;
 
 trait HasInvestitionen
 {
     public bool $showInvestitionenSelelectionModal = false;
     public bool $showStocksModal = false;
-    public ?StockType $buyStocksOfType = null;
-    public BuyStocksForm $buyStocksForm;
-    public SellStocksForm $sellStocksForm;
-    public bool $sellStocksModalIsVisible = false;
+    public bool $showETFModal = false;
+    public bool $showCryptoModal = false;
+    public ?InvestmentId $buyInvestmentOfType = null;
+    public BuyInvestmentsForm $buyInvestmentsForm;
+    public SellInvestmentsForm $sellInvestmentsForm;
+    public bool $sellInvestmentsModalIsVisible = false;
 
     /**
      * Update the form state on a rendering. Can happen for example when user changes their job.
@@ -42,20 +44,21 @@ trait HasInvestitionen
             return;
         }
 
-        $this->sellStocksModalIsVisible = false;
-        if (GamePhaseState::anotherPlayerHasBoughtStocksThisTurn($this->gameEvents, $this->myself) &&
-            !PlayerState::hasPlayerInteractedWithStocksModalThisTurn($this->gameEvents, $this->myself)) {
+        $this->sellInvestmentsModalIsVisible = false;
+        if (GamePhaseState::anotherPlayerHasBoughtInvestmentsThisTurn($this->gameEvents, $this->myself) &&
+            !PlayerState::hasPlayerInteractedWithInvestmentsModalThisTurn($this->gameEvents, $this->myself)) {
 
-            $stocksBoughtEvent = $this->gameEvents->findLast(StocksWereBoughtForPlayer::class);
-            $this->sellStocksForm->stockType = $stocksBoughtEvent->stockType;
-            $this->sellStocksForm->sharePrice = StockPriceState::getCurrentStockPrice($this->gameEvents, $stocksBoughtEvent->stockType)->value;
-            $this->sellStocksForm->amountOwned = PlayerState::getAmountOfAllStocksOfTypeForPlayer(
+            $investmentsBoughtEvent = $this->gameEvents->findLast(InvestmentsWereBoughtForPlayer::class);
+            $this->sellInvestmentsForm->playerName = PlayerState::getNameForPlayer($this->gameEvents, $investmentsBoughtEvent->playerId);
+            $this->sellInvestmentsForm->investmentId = $investmentsBoughtEvent->investmentId;
+            $this->sellInvestmentsForm->sharePrice = InvestmentPriceState::getCurrentInvestmentPrice($this->gameEvents, $investmentsBoughtEvent->investmentId)->value;
+            $this->sellInvestmentsForm->amountOwned = PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer(
                 $this->gameEvents,
                 $this->myself,
-                $stocksBoughtEvent->stockType
+                $investmentsBoughtEvent->investmentId
             );
 
-            $this->sellStocksModalIsVisible = true;
+            $this->sellInvestmentsModalIsVisible = true;
         }
     }
 
@@ -66,30 +69,51 @@ trait HasInvestitionen
 
     public function toggleStocksModal(): void
     {
-        if ($this->buyStocksOfType !== null) {
-            $this->buyStocksOfType = null;
+        $this->showInvestitionenSelelectionModal = false;
+        if ($this->buyInvestmentOfType !== null) {
+            $this->buyInvestmentOfType = null;
             return;
         }
 
         $this->showStocksModal = !$this->showStocksModal;
     }
 
-    public function canBuyStocks(StockType $stockType): AktionValidationResult
+    public function toggleETFModal(): void
     {
-        $aktion = new BuyStocksForPlayerAktion(
-            $stockType,
-            StockPriceState::getCurrentStockPrice($this->gameEvents, $stockType),
-            $this->buyStocksForm->amount
+        $this->showInvestitionenSelelectionModal = false;
+        if ($this->buyInvestmentOfType !== null) {
+            $this->buyInvestmentOfType = null;
+            return;
+        }
+        $this->showETFModal = !$this->showETFModal;
+    }
+
+    public function toggleCryptoModal(): void
+    {
+        $this->showInvestitionenSelelectionModal = false;
+        if ($this->buyInvestmentOfType !== null) {
+            $this->buyInvestmentOfType = null;
+            return;
+        }
+        $this->showCryptoModal = !$this->showCryptoModal;
+    }
+
+    public function canBuyInvestments(InvestmentId $investmentId): AktionValidationResult
+    {
+        $aktion = new BuyInvestmentsForPlayerAktion(
+            $investmentId,
+            InvestmentPriceState::getCurrentInvestmentPrice($this->gameEvents, $investmentId),
+            $this->buyInvestmentsForm->amount
         );
         return $aktion->validate($this->myself, $this->gameEvents);
     }
 
-    public function showBuyStocksOfType(string $stockType): void
+    public function showbuyInvestmentOfType(string $investmentId): void
     {
-        $this->buyStocksForm->reset();
-        $this->buyStocksForm->resetValidation();
+        $this->buyInvestmentsForm->reset();
+        $this->buyInvestmentsForm->resetValidation();
 
-        $validationResult = self::canBuyStocks(StockType::from($stockType));
+        $validationResult = self::canBuyInvestments(InvestmentId::from($investmentId));
         if (!$validationResult->canExecute) {
             $this->showNotification(
                 $validationResult->reason,
@@ -98,60 +122,63 @@ trait HasInvestitionen
             return;
         }
 
-        $this->buyStocksOfType = StockType::from($stockType);
-        $this->buyStocksForm->guthaben = PlayerState::getGuthabenForPlayer($this->gameEvents, $this->myself)->value;
-        $this->buyStocksForm->sharePrice = StockPriceState::getCurrentStockPrice($this->gameEvents, StockType::from($stockType))->value;
+        $this->buyInvestmentOfType = InvestmentId::from($investmentId);
+        $this->buyInvestmentsForm->guthaben = PlayerState::getGuthabenForPlayer($this->gameEvents, $this->myself)->value;
+        $this->buyInvestmentsForm->sharePrice = InvestmentPriceState::getCurrentInvestmentPrice($this->gameEvents, InvestmentId::from($investmentId))->value;
     }
 
-    public function buyStocks(string $stockType): void
+    public function buyInvestments(string $investmentId): void
     {
-        $this->buyStocksForm->validate();
-        $stockType = StockType::from($stockType);
-        if (!$this->canBuyStocks($stockType)->canExecute) {
+        $this->buyInvestmentsForm->validate();
+        $investmentId = InvestmentId::from($investmentId);
+        if (!$this->canBuyInvestments($investmentId)->canExecute) {
             return;
         }
 
-        $this->coreGameLogic->handle($this->gameId, BuyStocksForPlayer::create(
+        $this->coreGameLogic->handle($this->gameId, BuyInvestmentsForPlayer::create(
             $this->myself,
-            $stockType,
-            $this->buyStocksForm->amount
+            $investmentId,
+            $this->buyInvestmentsForm->amount
         ));
 
-        $this->toggleStocksModal();
+        $this->showStocksModal = false;
+        $this->showCryptoModal = false;
+        $this->showETFModal = false;
+
         $this->showNotification(
-            'Aktien wurden erfolgreich gekauft. Alle anderen Spieler:innen haben jetzt die Möglichkeit ihre Aktien verkaufen.',
+            $this->buyInvestmentsForm->amount . ' x ' . $investmentId->value . ' wurde erfolgreich gekauft. Alle anderen Spieler:innen haben jetzt die Möglichkeit ihre Anteile zu verkaufen.',
             NotificationTypeEnum::INFO
         );
         $this->broadcastNotify();
     }
 
-    public function closeSellStocksModal(): void
+    public function closeSellInvestmentsModal(): void
     {
-        $stocksBoughtEvent = $this->gameEvents->findLast(StocksWereBoughtForPlayer::class);
-        $this->coreGameLogic->handle($this->gameId, DontSellStocksForPlayer::create(
+        $stocksBoughtEvent = $this->gameEvents->findLast(InvestmentsWereBoughtForPlayer::class);
+        $this->coreGameLogic->handle($this->gameId, DontSellInvestmentsForPlayer::create(
             $this->myself,
-            $stocksBoughtEvent->stockType
+            $stocksBoughtEvent->investmentId
         ));
         $this->broadcastNotify();
-        $this->sellStocksModalIsVisible = false;
+        $this->sellInvestmentsModalIsVisible = false;
     }
 
-    public function canSellStocks(StockType $stockType): AktionValidationResult
+    public function canSellInvestments(InvestmentId $investmentId): AktionValidationResult
     {
-        $aktion = new SellStocksForPlayerAktion(
-            $stockType,
-            StockPriceState::getCurrentStockPrice($this->gameEvents, $stockType),
-            $this->sellStocksForm->amount
+        $aktion = new SellInvestmentsForPlayerAktion(
+            $investmentId,
+            InvestmentPriceState::getCurrentInvestmentPrice($this->gameEvents, $investmentId),
+            $this->sellInvestmentsForm->amount
         );
         return $aktion->validate($this->myself, $this->gameEvents);
     }
 
-    public function sellStocks(string $stockType): void
+    public function sellInvestments(string $investmentId): void
     {
-        $this->sellStocksForm->validate();
-        $stockType = StockType::from($stockType);
+        $this->sellInvestmentsForm->validate();
+        $investmentId = InvestmentId::from($investmentId);
 
-        $validationResult = self::canSellStocks($stockType);
+        $validationResult = self::canSellInvestments($investmentId);
         if (!$validationResult->canExecute) {
             $this->showNotification(
                 $validationResult->reason,
@@ -160,19 +187,20 @@ trait HasInvestitionen
             return;
         }
 
-        $this->coreGameLogic->handle($this->gameId, SellStocksForPlayer::create(
+        $this->coreGameLogic->handle($this->gameId, SellInvestmentsForPlayer::create(
             $this->myself,
-            $stockType,
-            $this->sellStocksForm->amount
+            $investmentId,
+            $this->sellInvestmentsForm->amount
         ));
 
-        $this->sellStocksModalIsVisible = false;
-        $this->sellStocksForm->reset();
-        $this->sellStocksForm->resetValidation();
         $this->showNotification(
-            'Aktien wurden erfolgreich verkauft.',
+            $this->sellInvestmentsForm->amount . ' x ' . $investmentId->value . ' wurde erfolgreich verkauft.',
             NotificationTypeEnum::INFO
         );
+
+        $this->sellInvestmentsModalIsVisible = false;
+        $this->sellInvestmentsForm->reset();
+        $this->sellInvestmentsForm->resetValidation();
         $this->broadcastNotify();
     }
 }

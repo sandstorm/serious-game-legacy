@@ -24,10 +24,11 @@
 </div>
 
 @if ($this->showInvestitionenSelelectionModal)
-    @if ($this->showStocksModal)
-        <x-gameboard.investitionen.invenstitionen-stocks-modal :game-events="$gameEvents" />
-    @else
-        <x-gameboard.investitionen.invenstitionen-selection-modal />
-    @endif
+    <x-gameboard.investitionen.invenstitionen-selection-modal />
+@elseif ($this->showStocksModal)
+    <x-gameboard.investitionen.invenstitionen-stocks-modal :game-events="$gameEvents" />
+@elseif ($this->showETFModal)
+    <x-gameboard.investitionen.invenstitionen-etf-modal :game-events="$gameEvents" />
+@elseif ($this->showCryptoModal)
+    <x-gameboard.investitionen.invenstitionen-crypto-modal :game-events="$gameEvents" />
 @endif
-

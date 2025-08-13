@@ -8,7 +8,7 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerDoneAtLeastOneZeitsteinaktionThisTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\NoPlayerNeedsToSellStocksValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\NoPlayerNeedsToSellInvestmentsValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
@@ -21,7 +21,7 @@ class EndSpielzugAktion extends Aktion
         $validatorChain = new IsPlayersTurnValidator();
         $validatorChain
             ->setNext(new HasPlayerDoneAtLeastOneZeitsteinaktionThisTurnValidator())
-            ->setNext(new NoPlayerNeedsToSellStocksValidator());
+            ->setNext(new NoPlayerNeedsToSellInvestmentsValidator());
 
         return $validatorChain->validate($gameEvents, $playerId);
     }

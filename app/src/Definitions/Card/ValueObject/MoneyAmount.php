@@ -62,6 +62,12 @@ readonly class MoneyAmount implements JsonSerializable
         return "<span class='text--currency'>" . $value . " €" . "</span>";
     }
 
+    public function formatWithoutHtml(): string
+    {
+        $value = number_format($this->value, 2, ',', '.');
+        return $value . " €";
+    }
+
     public function formatWithIcon(): string
     {
         match (true) {
