@@ -21,6 +21,7 @@
             </thead>
             <tbody>
             @foreach($stocks as $stock)
+                @if ($stock->amount > 0)
                 <tr>
                     <td><i class="icon-aktien" aria-hidden="true"></i></td>
                     <td>{{ $stock->stockType->toPrettyString() }}</td>
@@ -37,6 +38,7 @@
                         {!! $stock->totalDividend->formatWithIcon() !!}
                     </td>
                 </tr>
+                @endif
             @endforeach
             <tr>
                 <td colspan="5" class="text-align--right">Einnahmen Aktien gesamt</td>
