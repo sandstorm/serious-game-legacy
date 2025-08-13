@@ -26,7 +26,6 @@ class SkipCardAktion extends Aktion
     public function __construct(
         public CategoryId $category,
     ) {
-        parent::__construct('skip-card', 'Karte überspringen');
     }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult

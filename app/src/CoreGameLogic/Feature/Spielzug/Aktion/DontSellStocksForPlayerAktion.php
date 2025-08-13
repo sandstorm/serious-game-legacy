@@ -14,14 +14,9 @@ use Domain\CoreGameLogic\PlayerId;
 
 class DontSellStocksForPlayerAktion extends Aktion
 {
-    private StockType $stockType;
-
-
     public function __construct(
-        StockType $stockType,
+        private readonly StockType $stockType,
     ) {
-        parent::__construct('dont-sell-stocks', 'Aktien nicht verkaufen');
-        $this->stockType = $stockType;
     }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult

@@ -26,7 +26,6 @@ class PutCardBackOnTopOfPileAktion extends Aktion
 {
     public function __construct(public CategoryId $category)
     {
-        parent::__construct('put-card-back-on-top-of-pile', 'Karte Ablegen');
     }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult

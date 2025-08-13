@@ -22,13 +22,9 @@ use Domain\Definitions\Configuration\Configuration;
 
 class TakeOutALoanForPlayerAktion extends Aktion
 {
-    private TakeOutALoanForm $takeOutALoanForm;
-
     public function __construct(
-        TakeOutALoanForm $takeOutALoanForm
+        private readonly TakeOutALoanForm $takeOutALoanForm
     ) {
-        parent::__construct('take-out-a-loan', 'Kredit aufnehmen');
-        $this->takeOutALoanForm = $takeOutALoanForm;
     }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult

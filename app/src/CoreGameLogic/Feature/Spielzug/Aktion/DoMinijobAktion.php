@@ -20,11 +20,6 @@ use RuntimeException;
 
 class DoMinijobAktion extends Aktion
 {
-    public function __construct()
-    {
-        parent::__construct('do-minijiob','Minijob machen');
-    }
-
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
         $validatorChain = new IsPlayersTurnValidator();

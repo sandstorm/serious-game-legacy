@@ -16,11 +16,6 @@ use Domain\CoreGameLogic\PlayerId;
 
 class EndSpielzugAktion extends Aktion
 {
-    public function __construct()
-    {
-        parent::__construct('end-spielzug', 'Spielzug beenden');
-    }
-
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
         $validatorChain = new IsPlayersTurnValidator();

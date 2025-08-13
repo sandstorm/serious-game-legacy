@@ -14,12 +14,8 @@ use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 
 class CancelInsuranceForPlayerAktion extends Aktion
 {
-    private InsuranceId $insuranceId;
-
-    public function __construct(InsuranceId $insuranceId)
+    public function __construct(private readonly InsuranceId $insuranceId)
     {
-        parent::__construct('cancel-insurance', 'Versicherung kündigen');
-        $this->insuranceId = $insuranceId;
     }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult

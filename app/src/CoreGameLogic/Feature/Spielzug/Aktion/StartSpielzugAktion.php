@@ -15,11 +15,6 @@ use Domain\CoreGameLogic\PlayerId;
 
 class StartSpielzugAktion extends Aktion
 {
-    public function __construct()
-    {
-        parent::__construct('start-spielzug', 'Spielzug starten');
-    }
-
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
         $validatorChain = new IsPlayersTurnValidator();

@@ -27,7 +27,6 @@ class AcceptJobOfferAktion extends Aktion
 {
     public function __construct(public CardId $jobId)
     {
-        parent::__construct('request-job-offers', 'Jobs anzeigen');
     }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult

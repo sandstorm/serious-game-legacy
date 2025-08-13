@@ -23,20 +23,12 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 class BuyStocksForPlayerAktion extends Aktion
 {
-    private StockType $stockType;
-    private MoneyAmount $sharePrice;
-    private int $amount;
 
     public function __construct(
-        StockType   $stockType,
-        MoneyAmount $sharePrice,
-        int         $amount
+        private readonly StockType   $stockType,
+        private readonly MoneyAmount $sharePrice,
+        private readonly int         $amount
     ) {
-        parent::__construct('buy-stocks', 'Aktien kaufen');
-
-        $this->stockType = $stockType;
-        $this->sharePrice = $sharePrice;
-        $this->amount = $amount;
     }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
