@@ -221,7 +221,7 @@ describe('getResultOfLastSteuernUndAbgabenInput', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getResultOfLastSteuernUndAbgabenInput($gameEvents, $this->players[0]);
         expect($actual->wasSuccessful)->toBeFalse()
-            ->and($actual->fine)->toEqual(new MoneyAmount(250));
+            ->and($actual->fine)->toEqual(new MoneyAmount(Configuration::FINE_VALUE));
     });
 });
 
@@ -269,7 +269,7 @@ describe('getResultOfLastLebenshaltungskostenInput', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getResultOfLastLebenshaltungskostenInput($gameEvents, $this->players[0]);
         expect($actual->wasSuccessful)->toBeFalse()
-            ->and($actual->fine)->toEqual(new MoneyAmount(250));
+            ->and($actual->fine)->toEqual(new MoneyAmount(Configuration::FINE_VALUE));
     });
 });
 

@@ -1282,7 +1282,7 @@ describe('handleChangeLebenszielphase', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-50000),
+                    guthabenChange: new MoneyAmount(-Configuration::STARTKAPITAL_VALUE),
                     zeitsteineChange: +4,
                     bildungKompetenzsteinChange: +5,
                     freizeitKompetenzsteinChange: +5,
@@ -1365,7 +1365,7 @@ describe('handleChangeLebenszielphase', function () {
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         $resources = PlayerState::getResourcesForPlayer($stream, $this->players[0]);
 
-        expect($resources->guthabenChange->value)->toBe(100000.0)
+        expect($resources->guthabenChange->value)->toEqual(Configuration::STARTKAPITAL_VALUE + 50000)
             ->and($resources->bildungKompetenzsteinChange)->toEqual(2)
             ->and($resources->freizeitKompetenzsteinChange)->toEqual(3);
     });
@@ -2087,8 +2087,9 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $initialZeitsteineForPlayer = KonjunkturphaseState::getInitialZeitsteineForCurrentKonjunkturphase($gameEvents);
-        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->equals(52000.0))
-            ->toBeTrue("Guthaben should be 52000")
+        $expectedGuthaben = Configuration::STARTKAPITAL_VALUE + 2000.0;
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->equals($expectedGuthaben))
+            ->toBeTrue("Guthaben should be $expectedGuthaben")
             ->and(PlayerState::getBildungsKompetenzsteine($gameEvents, $this->players[0]))->toEqual(2)
             ->and(PlayerState::getZeitsteineForPlayer($gameEvents, $this->players[0]))->toBe($initialZeitsteineForPlayer - 1)
             ->and(PlayerState::getFreizeitKompetenzsteine($gameEvents, $this->players[0]))->toBe(0);
@@ -2297,7 +2298,7 @@ describe('handleEnterSteuernUndAbgabenForPlayer', function () {
         /** @var TestCase $this */
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(50000));
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE));
 
         $this->coreGameLogic->handle($this->gameId,
             EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(200)));
@@ -2305,20 +2306,20 @@ describe('handleEnterSteuernUndAbgabenForPlayer', function () {
             EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(300)));
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
-        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(49750));
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE - Configuration::FINE_VALUE));
     });
 
     it('charges no fee after one incorrect entries', function () {
         /** @var TestCase $this */
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(50000));
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE));
 
         $this->coreGameLogic->handle($this->gameId,
             EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(200)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(50000));
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE));
     });
 });
 
@@ -2414,7 +2415,7 @@ describe('handleEnterLebenshaltungskostenForPlayer', function () {
         /** @var TestCase $this */
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(50000));
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE));
 
         $this->coreGameLogic->handle($this->gameId,
             EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(200)));
@@ -2422,20 +2423,20 @@ describe('handleEnterLebenshaltungskostenForPlayer', function () {
             EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(300)));
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
-        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(49750));
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE - Configuration::FINE_VALUE));
     });
 
     it('charges no fee after one incorrect entries', function () {
         /** @var TestCase $this */
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(50000));
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE));
 
         $this->coreGameLogic->handle($this->gameId,
             EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(200)));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(50000));
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE));
     });
 });
 
