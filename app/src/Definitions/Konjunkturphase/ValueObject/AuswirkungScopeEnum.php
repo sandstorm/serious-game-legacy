@@ -9,7 +9,7 @@ enum AuswirkungScopeEnum: string
     case ZEITSTEINE = 'Zeitsteine';
     case LEBENSERHALTUNGSKOSTEN = 'Lebenshaltungskosten';
     case BILDUNG = 'Bildung & Karriere';
-    case FREIZEIT = 'Freizeit & Sozial';
+    case FREIZEIT = 'Freizeit & Soziales';
     case INVESTITIONEN = 'Investitionen';
     case ERWEBSEINKOMMEN = 'Erwerbseinkommen';
     case LOANS_INTEREST_RATE = 'Kreditzins';
@@ -25,7 +25,7 @@ enum AuswirkungScopeEnum: string
             'Zeitsteine' => self::ZEITSTEINE,
             'Lebenshaltungskosten' => self::LEBENSERHALTUNGSKOSTEN,
             'Bildung & Karriere' => self::BILDUNG,
-            'Freizeit & Sozial' => self::FREIZEIT,
+            'Freizeit & Soziales' => self::FREIZEIT,
             'Investitionen' => self::INVESTITIONEN,
             'Erwerbseinkommen' => self::ERWEBSEINKOMMEN,
             'Kreditzins' => self::LOANS_INTEREST_RATE,
