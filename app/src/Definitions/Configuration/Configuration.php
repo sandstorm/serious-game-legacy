@@ -61,7 +61,7 @@ final readonly class Configuration
      * MAX_NUMBER_OF_TRIES_PER_INPUT times.
      * @var int
      */
-    public final const FINE_VALUE = 250;
+    public final const FINE_VALUE = 500;
 
     /**
      * the number of Konjunkturphasen an loan will be repaid over.
