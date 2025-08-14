@@ -78,7 +78,7 @@
                     <td>
                         <p>
                             Bei allen Einnahmen und Ausgaben, die Du selbst berechnen musst, hast Du immer zwei Versuche. <br />
-                            <strong>Bei dem dritten Fehlversuch hilft Dir das Spiel. Dir werden jedoch 500 € abgezogen.</strong>
+                            <strong>Bei dem dritten Fehlversuch hilft Dir das Spiel. Dir werden jedoch {{\Domain\Definitions\Configuration\Configuration::FINE_VALUE}} € abgezogen.</strong>
                         </p>
                     </td>
                 </tr>

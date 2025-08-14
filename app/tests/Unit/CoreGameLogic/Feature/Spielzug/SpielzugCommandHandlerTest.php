@@ -2569,7 +2569,7 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
 });
 
 describe('handleTakeOutALoanForPlayer', function () {
-    it('player gets 250 € fine for entering loan data wrong', function () {
+    it('player gets fine for entering loan data wrong', function () {
         $takeoutLoanFormComponent = new ComponentWithForm();
         $takeoutLoanFormComponent->mount(TakeOutALoanForm::class);
 
@@ -2623,9 +2623,9 @@ describe('handleTakeOutALoanForPlayer', function () {
                 totalRepayment: new MoneyAmount(12500),
                 repaymentPerKonjunkturphase: new MoneyAmount(625),
             ))
-            ->and($loanWasCorrectedEvent->getResourceChanges($this->players[0])->guthabenChange)->toEqual(new MoneyAmount(-250))
+            ->and($loanWasCorrectedEvent->getResourceChanges($this->players[0])->guthabenChange)->toEqual(new MoneyAmount(-Configuration::FINE_VALUE))
             ->and(PlayerState::getGuthabenForPlayer($gameEvents,
-                $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE - 250));
+                $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE - Configuration::FINE_VALUE));
     });
 });
 
