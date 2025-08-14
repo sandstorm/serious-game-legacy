@@ -8,6 +8,7 @@ use App\Livewire\ValueObject\NotificationTypeEnum;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EndSpielzugAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\StartSpielzugAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
@@ -28,7 +29,7 @@ trait HasGamePhase
         $this->showItsYourTurnNotification = false;
 
         // show notification if you are next active player
-        if ($this->currentPlayerIsMyself() && !GamePhaseState::hasPlayerStartedTurn($this->gameEvents, $this->myself)) {
+        if ($this->currentPlayerIsMyself() && (new StartSpielzugAktion())->validate($this->myself, $this->gameEvents)->canExecute) {
             $this->showItsYourTurnNotification = true;
         }
     }

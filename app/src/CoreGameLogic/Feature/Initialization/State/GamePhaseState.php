@@ -92,11 +92,7 @@ class GamePhaseState
 
     public static function hasPlayerStartedTurn(GameEvents $gameEvents, PlayerId $playerId): bool
     {
-        $eventsThisTurn = $gameEvents->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class);
-        if ($eventsThisTurn === null) {
-            // no other player has ended their turn yet, so we are still in the first turn
-            return true;
-        }
+        $eventsThisTurn = $gameEvents->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class) ?? $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
 
         $spielzugStartedEvent = $eventsThisTurn->findLastOrNull(SpielzugWasStarted::class);
         return $spielzugStartedEvent !== null && $spielzugStartedEvent->playerId->equals($playerId);
