@@ -38,7 +38,7 @@
                 </ul>
 
                 <div class="player-list__player-phase">
-                    <x-gameboard.phase-icon />
+                    <x-gameboard.phase-icon :lebensziel-phase="$player->phaseDefinition->lebenszielPhaseId->value"/>
                 </div>
             </button>
 
