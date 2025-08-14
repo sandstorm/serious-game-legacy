@@ -1269,7 +1269,7 @@ describe('handleChangeLebenszielphase', function () {
             );
         })->throws(
         RuntimeException::class,
-        'Cannot Change Lebensphase: Du hast nicht genug Kompetenzsteine in Freizeit & Sozial',
+        'Cannot Change Lebensphase: Du hast nicht genug Kompetenzsteine in Freizeit & Soziales',
         1751619852
     );
 
