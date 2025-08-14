@@ -54,6 +54,6 @@
             Ich bin fertig
         </button>
     @else
-        <span>Du musst warten bis alle Spieler:innen fertig sind</span>
+        <span>Warte, bis alle fertig sind</span>
     @endif
 @endsection
