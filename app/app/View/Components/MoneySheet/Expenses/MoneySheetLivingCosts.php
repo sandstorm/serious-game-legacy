@@ -35,7 +35,7 @@ class MoneySheetLivingCosts extends Component
         $modifierDescriptions = array_map(
             fn(Modifier $modifier) => $modifier->description,
             $modifiersForPlayer
-                ->getModifiersForHook(HookEnum::LEBENSHALTUNGSKOSTEN_MULTIPLIER)
+                ->getActiveModifiersForHook(HookEnum::LEBENSHALTUNGSKOSTEN_MULTIPLIER, $this->gameEvents)
                 ->getModifiers()
         );
         $livingCostMultiplier = MoneySheetState::getMultiplierForLebenshaltungskostenForPlayer($this->gameEvents, $this->playerId);
