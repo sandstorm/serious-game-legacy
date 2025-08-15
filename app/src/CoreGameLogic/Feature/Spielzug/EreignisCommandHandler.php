@@ -20,6 +20,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\EreignisCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
 use Domain\Definitions\Card\ValueObject\ModifierId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
@@ -70,6 +71,18 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
                 $hasPlayerAllPrerequisites = $hasPlayerAllPrerequisites &&
                     EreignisPrerequisiteChecker::forStream($gameEvents)
                         ->hasPlayerPrerequisites($command->playerId, $requirementId);
+            }
+
+            /**
+             * Just in case an EreignisCard is not maintained correctly and has a JOBVERLUST modifier without a HAS_JOB
+             * prerequisite we want to avoid running into an error and assume that HAS_JOB should be checked.
+             * The same is true for BERUFSUNFAEHIGKEITSVERSICHERUNG
+             */
+            $modifierIdsAsString = array_map(fn ($modifierId) => $modifierId->value ,$cardDefinition->getModifierIds());
+            if (in_array(ModifierId::JOBVERLUST->value, $modifierIdsAsString)
+                || in_array(ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG->value, $modifierIdsAsString)) {
+                $hasPlayerAllPrerequisites = EreignisPrerequisiteChecker::forStream($gameEvents)
+                    ->hasPlayerPrerequisites($command->playerId, EreignisPrerequisitesId::HAS_JOB);
             }
             return $hasPlayerAllPrerequisites;
         });
