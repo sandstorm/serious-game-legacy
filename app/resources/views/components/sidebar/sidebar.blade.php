@@ -21,9 +21,7 @@
         </div>
     </div>
 
-    <div class="sidebar__protocol">
-        <strong>Ereignisprotokoll:</strong>
-    </div>
+    <x-sidebar.event-log :is-players-turn="$this->currentPlayerIsMyself()"/>
 
     @if ($this->currentPlayerIsMyself())
         <div class="sidebar__actions">

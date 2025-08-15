@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Livewire\Traits;
 
 
+use App\Livewire\Dto\EventLogEntry;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
+use Domain\CoreGameLogic\Feature\Spielzug\State\LogState;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 
 trait HasLog
 {
@@ -37,5 +40,20 @@ trait HasLog
             }
             return $items;
         }, $this->gameEvents->events);
+    }
+
+    /**
+     * @return EventLogEntry[]
+     */
+    private function getLogEntriesForPlayerLog(): array
+    {
+        return array_map(function ($logEntry) {
+            return new EventLogEntry(
+                playerName: PlayerState::getNameForPlayer($this->gameEvents, $logEntry->getPlayerId()),
+                text: $logEntry->getText(),
+                colorClass: PlayerState::getPlayerColorClass($this->gameEvents, $logEntry->getPlayerId()),
+                resourceChanges: $logEntry->getResourceChanges(),
+            );
+        }, LogState::getLogEntries($this->gameEvents));
     }
 }

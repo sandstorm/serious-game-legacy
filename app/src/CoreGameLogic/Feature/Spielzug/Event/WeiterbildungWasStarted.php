@@ -5,6 +5,8 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\DrawsCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\LogEntry;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\Loggable;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\PlayerId;
@@ -15,7 +17,7 @@ use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
-final readonly class WeiterbildungWasStarted implements GameEventInterface, ProvidesResourceChanges, ZeitsteinAktion, DrawsCard
+final readonly class WeiterbildungWasStarted implements GameEventInterface, ProvidesResourceChanges, ZeitsteinAktion, DrawsCard, Loggable
 {
     /**
      * @param PlayerId $playerId
@@ -78,5 +80,14 @@ final readonly class WeiterbildungWasStarted implements GameEventInterface, Prov
     public function getPileId(): PileId
     {
         return new PileId(CategoryId::WEITERBILDUNG, LebenszielPhaseId::ANY_PHASE);
+    }
+
+    public function getLogEntry(): LogEntry
+    {
+        return new LogEntry(
+            playerId: $this->playerId,
+            text: "macht eine Weiterbildung",
+            resourceChanges: $this->resourceChanges,
+        );
     }
 }

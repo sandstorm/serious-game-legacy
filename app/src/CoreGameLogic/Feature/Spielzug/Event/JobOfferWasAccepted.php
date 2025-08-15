@@ -6,6 +6,8 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\DrawsCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\LogEntry;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\Loggable;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Modifier\BindZeitsteinForJobModifier;
@@ -21,7 +23,7 @@ use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
-final readonly class JobOfferWasAccepted implements GameEventInterface, ProvidesModifiers, ProvidesResourceChanges, ZeitsteinAktion, DrawsCard
+final readonly class JobOfferWasAccepted implements GameEventInterface, ProvidesModifiers, ProvidesResourceChanges, ZeitsteinAktion, DrawsCard, Loggable
 {
     public function __construct(
         public PlayerId    $playerId,
@@ -93,5 +95,15 @@ final readonly class JobOfferWasAccepted implements GameEventInterface, Provides
     public function getPileId(): PileId
     {
         return $this->pileId;
+    }
+
+    public function getLogEntry(): LogEntry
+    {
+        $cardDefinition = CardFinder::getInstance()->getCardById($this->cardId);
+        return new LogEntry(
+            playerId: $this->playerId,
+            text: "nimmt Job '" . $cardDefinition->getTitle() . "' an",
+            resourceChanges: $this->resourceChanges,
+        );
     }
 }

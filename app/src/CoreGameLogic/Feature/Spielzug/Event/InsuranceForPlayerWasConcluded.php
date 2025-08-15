@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\LogEntry;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\Loggable;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Insurance\InsuranceFinder;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 
-final readonly class InsuranceForPlayerWasConcluded implements GameEventInterface
+final readonly class InsuranceForPlayerWasConcluded implements GameEventInterface, Loggable
 {
     public function __construct(
         public PlayerId     $playerId,
@@ -32,4 +35,11 @@ final readonly class InsuranceForPlayerWasConcluded implements GameEventInterfac
         ];
     }
 
+    public function getLogEntry(): LogEntry
+    {
+        return new LogEntry(
+            playerId: $this->playerId,
+            text: "schließt '" . InsuranceFinder::getInstance()->findInsuranceById($this->insuranceId)->description . "' ab",
+        );
+    }
 }

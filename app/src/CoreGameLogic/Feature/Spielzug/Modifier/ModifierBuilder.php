@@ -41,7 +41,7 @@ readonly final class ModifierBuilder
                 playerId: $playerId,
                 playerTurn: $playerTurn,
                 description: $description,
-                numberOfSkippedTurns: $modifierParameters->numberOfTurns ?? throw new \RuntimeException("missing parameter"),
+                numberOfSkippedTurns: $modifierParameters->numberOfTurns ?? 1,
             )],
             ModifierId::BIND_ZEITSTEIN_FOR_JOB => [new BindZeitsteinForJobModifier(
                 playerId: $playerId,
