@@ -15,6 +15,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\BerufsunfaehigkeitsversicherungWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerGotAChild;
+use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\EreignisPrerequisiteChecker;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\CardFinder;
@@ -84,7 +85,7 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
                 $hasPlayerAllPrerequisites = EreignisPrerequisiteChecker::forStream($gameEvents)
                     ->hasPlayerPrerequisites($command->playerId, EreignisPrerequisitesId::HAS_JOB);
             }
-            return $hasPlayerAllPrerequisites;
+            return $hasPlayerAllPrerequisites && AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($command->playerId, $cardDefinition->getResourceChanges());
         });
         if (count($filteredCards) === 0) {
             throw new \RuntimeException("No EreignisCard matches the current requirements",
