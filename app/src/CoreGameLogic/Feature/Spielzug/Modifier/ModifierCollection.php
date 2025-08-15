@@ -80,8 +80,8 @@ readonly class ModifierCollection implements \IteratorAggregate
         return array_reduce($this->modifiers, $callback, $initial);
     }
 
-    public function getModifiersForHook(HookEnum $hookEnum): self
+    public function getActiveModifiersForHook(HookEnum $hookEnum, GameEvents $gameEvents): self
     {
-        return $this->filter(fn (Modifier $modifier) => $modifier->canModify($hookEnum));
+        return $this->filter(fn (Modifier $modifier) => $modifier->canModify($hookEnum) && $modifier->isActive($gameEvents));
     }
 }
