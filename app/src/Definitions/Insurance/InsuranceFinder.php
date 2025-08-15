@@ -103,4 +103,10 @@ class InsuranceFinder
         throw new \InvalidArgumentException('Insurance not found');
     }
 
+    public function findInsuranceById(InsuranceId $insuranceId): InsuranceDefinition
+    {
+        $insuranceArray = array_filter($this->insurances, fn ($insurance) => $insurance->id->value === $insuranceId->value);
+        return count($insuranceArray) > 0 ? $insuranceArray[0] : throw new \RuntimeException("No Insurance found with id ". $insuranceId);
+    }
+
 }

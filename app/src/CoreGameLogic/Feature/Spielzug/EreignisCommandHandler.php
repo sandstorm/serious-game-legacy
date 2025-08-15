@@ -79,8 +79,8 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
              * The same is true for BERUFSUNFAEHIGKEITSVERSICHERUNG
              */
             $modifierIdsAsString = array_map(fn ($modifierId) => $modifierId->value ,$cardDefinition->getModifierIds());
-            if (in_array(ModifierId::JOBVERLUST->value, $modifierIdsAsString)
-                || in_array(ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG->value, $modifierIdsAsString)) {
+            if (in_array(ModifierId::JOBVERLUST->value, $modifierIdsAsString, true)
+                || in_array(ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG->value, $modifierIdsAsString, true)) {
                 $hasPlayerAllPrerequisites = EreignisPrerequisiteChecker::forStream($gameEvents)
                     ->hasPlayerPrerequisites($command->playerId, EreignisPrerequisitesId::HAS_JOB);
             }

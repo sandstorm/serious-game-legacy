@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\LogEntry;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\Loggable;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Modifier\ModifierBuilder;
@@ -17,7 +19,7 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 
-final readonly class EreignisWasTriggered implements ProvidesModifiers, ProvidesResourceChanges, GameEventInterface
+final readonly class EreignisWasTriggered implements ProvidesModifiers, ProvidesResourceChanges, GameEventInterface, Loggable
 {
     /**
      * @var EreignisCardDefinition
@@ -98,5 +100,15 @@ final readonly class EreignisWasTriggered implements ProvidesModifiers, Provides
             'year' => $this->year,
             'resourceChanges' => $this->resourceChanges,
         ];
+    }
+
+    public function getLogEntry(): LogEntry
+    {
+        $cardDefinition = CardFinder::getInstance()->getCardById($this->ereignisCardId, EreignisCardDefinition::class);
+        return new LogEntry(
+            playerId: $this->playerId,
+            text: "zieht Ereignis '" . $cardDefinition->getTitle() . "'",
+            resourceChanges: $this->resourceChanges,
+        );
     }
 }

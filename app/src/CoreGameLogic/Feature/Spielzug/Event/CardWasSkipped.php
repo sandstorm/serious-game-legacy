@@ -6,15 +6,19 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\DrawsCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\LogEntry;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\Loggable;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\CardFinder;
+use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
-final readonly class CardWasSkipped implements ZeitsteinAktion, DrawsCard, GameEventInterface, ProvidesResourceChanges
+final readonly class CardWasSkipped implements ZeitsteinAktion, DrawsCard, GameEventInterface, ProvidesResourceChanges, Loggable
 {
     public function __construct(
         public PlayerId   $playerId,
@@ -70,5 +74,16 @@ final readonly class CardWasSkipped implements ZeitsteinAktion, DrawsCard, GameE
     public function getPileId(): PileId
     {
         return $this->pileId;
+    }
+
+    public function getLogEntry(): LogEntry
+    {
+        /** @var KategorieCardDefinition $cardDefinition */
+        $cardDefinition = CardFinder::getInstance()->getCardById($this->cardId);
+        return new LogEntry(
+            playerId: $this->playerId,
+            text: "skippt Karte '" . $cardDefinition->getTitle() . "'",
+            resourceChanges: $this->resourceChanges,
+        );
     }
 }
