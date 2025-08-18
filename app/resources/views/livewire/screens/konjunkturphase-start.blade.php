@@ -6,11 +6,11 @@
 <div class="konjunkturphase-start">
     <div class="konjunkturphase-start__content">
         @if ($currentPage === 0)
-        <div class="konjunkturphase-start__info">
-            <h1>Eine neue Konjunkturphase beginnt.</h1>
-            <h2>Das nächste Szenario ist:</h2>
-            <h2><strong>{{$konjunkturphase->type->value}}</strong></h2>
-        </div>
+            <div class="konjunkturphase-start__info">
+                <h1>Eine neue Konjunkturphase beginnt.</h1>
+                <h2>Das nächste Szenario ist:</h2>
+                <h2><strong>{{$konjunkturphase->type->value}}</strong></h2>
+            </div>
         @elseif ($currentPage === 1)
             <h2><strong>{{$konjunkturphase->type->value}}</strong></h2>
             <p class="font-size--xl">
@@ -36,10 +36,17 @@
     </div>
 
     <footer class="konjunkturphase-start__actions">
-        <div></div>
         @if ($currentPage > 0)
+            <button wire:click="prevKonjunkturphaseStartScreenPage()"
+                    type="button"
+                    class="button button--type-borderless">
+                Zurück
+            </button>
             <span>{{$currentPage}}/3</span>
+        @else
+            <div></div>
         @endif
+
         @if ($currentPage === 3)
             <button wire:click="startKonjunkturphaseForPlayer()"
                     type="button"

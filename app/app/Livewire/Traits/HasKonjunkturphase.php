@@ -49,6 +49,12 @@ trait HasKonjunkturphase
     {
         $this->konjunkturphaseDetailsVisible = false;
     }
+
+    public function prevKonjunkturphaseStartScreenPage(): void
+    {
+        $this->konjunkturphaseStartScreenPage--;
+    }
+
     public function nextKonjunkturphaseStartScreenPage(): void
     {
         $this->konjunkturphaseStartScreenPage++;
