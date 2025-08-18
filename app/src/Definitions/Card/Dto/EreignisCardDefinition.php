@@ -11,19 +11,20 @@ use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 
-final readonly class EreignisCardDefinition implements CardDefinition, CardWithYear, CardWithResourceChanges, CardWithModifiers
+final readonly class EreignisCardDefinition implements CardDefinition, CardWithYear, CardWithResourceChanges, CardWithModifiers, CardWithGewichtung
 {
     /**
      * @param CardId $id
+     * @param CategoryId $categoryId
      * @param string $title
      * @param string $description
-     * @param CategoryId $categoryId
      * @param LebenszielPhaseId $phaseId
      * @param Year $year
      * @param ResourceChanges $resourceChanges
      * @param ModifierId[] $modifierIds
      * @param ModifierParameters $modifierParameters
      * @param EreignisPrerequisitesId[] $ereignisRequirementIds
+     * @param int $gewichtung
      */
     public function __construct(
         protected CardId $id,
@@ -36,6 +37,7 @@ final readonly class EreignisCardDefinition implements CardDefinition, CardWithY
         protected array $modifierIds = [],
         protected ModifierParameters $modifierParameters = new ModifierParameters(),
         protected array $ereignisRequirementIds = [],
+        protected int $gewichtung = 1,
     ) {
     }
 
@@ -90,5 +92,10 @@ final readonly class EreignisCardDefinition implements CardDefinition, CardWithY
     public function getEreignisRequirementIds(): array
     {
         return $this->ereignisRequirementIds;
+    }
+
+    public function getGewichtung(): int
+    {
+        return $this->gewichtung;
     }
 }

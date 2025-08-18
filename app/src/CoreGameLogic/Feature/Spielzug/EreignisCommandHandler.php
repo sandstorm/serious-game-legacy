@@ -62,7 +62,7 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
             default => throw new \RuntimeException("Cannot map category " . $command->categoryId->value . " to ereignis category"),
         };
         /** @var EreignisCardDefinition[] $allCards */
-        $allCards = CardFinder::getInstance()->getCardDefinitionsByCategoryAndPhase(
+        $allCards = CardFinder::getInstance()->getEreignisCardDefinitionsByCategoryAndPhase(
             $ereignisCardCategory,
             PlayerState::getCurrentLebenszielphaseIdForPlayer($gameEvents, $command->playerId),
         );

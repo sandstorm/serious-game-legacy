@@ -225,7 +225,13 @@ function importEreignisCards(): void
                 echo "\t\t" . "EreignisPrerequisitesId::" . $prerequisiteArray[$i] . ",\n";
             }
         }
-        echo "\t],\n),\n";
+        echo "\t" . "],\n";
+        if ($lineArrayWithKeys["gewichtung"] === "") {
+            echo "\t" . "gewichtung: 1,\n";
+        } else {
+            echo "\t" . "gewichtung: " . $lineArrayWithKeys["gewichtung"] . ",\n";
+        }
+        echo "),\n";
     }
 }
 
@@ -258,8 +264,8 @@ function importInvestitionenCards(): void
 //importJobCards();
 //importWeiterbildungCards();
 //importKategorieCards();
-//importEreignisCards();
-importInvestitionenCards();
+importEreignisCards();
+//importInvestitionenCards();
 
 
 
