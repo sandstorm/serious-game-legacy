@@ -105,7 +105,8 @@ class InsuranceFinder
 
     public function findInsuranceById(InsuranceId $insuranceId): InsuranceDefinition
     {
-        $insuranceArray = array_filter($this->insurances, fn ($insurance) => $insurance->id->value === $insuranceId->value);
+        // TODO replace with array_find after upgrade to php 8.4
+        $insuranceArray = array_values(array_filter($this->insurances, fn ($insurance) => $insurance->id->value === $insuranceId->value));
         return count($insuranceArray) > 0 ? $insuranceArray[0] : throw new \RuntimeException("No Insurance found with id ". $insuranceId);
     }
 
