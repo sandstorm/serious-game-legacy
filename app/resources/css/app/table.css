@@ -1,6 +1,7 @@
 table {
     width: 100%;
     border-collapse: collapse;
+    font-size: var(--font-size-lg);
 
     th {
         font-weight: var(--font-weight-medium);

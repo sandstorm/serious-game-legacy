@@ -56,6 +56,10 @@ i {
     font-size: var(--font-size-base);
 }
 
+.font-size--lg {
+    font-size: var(--font-size-lg);
+}
+
 .font-size--xl {
     font-size: var(--font-size-xl);
 }
@@ -87,7 +91,9 @@ p {
 
 .badge-with-background {
     display: flex;
+    width: 100%;
     align-items: center;
+    justify-content: center;
     height: var(--button-height);
     padding-inline: var(--spacing-100);
     gap: var(--spacing-50);

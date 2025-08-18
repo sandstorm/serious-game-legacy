@@ -35,6 +35,9 @@ class MoneySheetInvestments extends Component
         // loop over StockType enum values and get sum and amount
         foreach (StockType::cases() as $stockType) {
             $amount = PlayerState::getAmountOfAllStocksOfTypeForPlayer($this->gameEvents, $this->playerId, $stockType);
+            if ($amount === 0) {
+                continue; // skip if no stocks of this type
+            }
             $currentPrice = StockPriceState::getCurrentStockPrice($this->gameEvents, $stockType);
             $stocks[$stockType->value] = new StockData(
                 stockType: $stockType,
