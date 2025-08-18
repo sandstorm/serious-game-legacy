@@ -130,7 +130,7 @@ class KonjunkturphaseFinder
             Netze werden ausgebaut und es entstehen neue Jobs. Die Konjunktur festigt sich zunehmend und die Zentralbank reagiert
             vorsichtig. Sie erhöht den Leitzins auf 1,5 %, um zukünftigen Inflationsrisiken vorzubeugen. Kredite bleiben jedoch
             weiterhin attraktiv, sodass der Aufschwung nachhaltig unterstützt wird.',
-            additionalEvents: '"Infrastrukturprogramm: Immobilienkauf und -verkauf +10 %"',
+            additionalEvents: 'Infrastrukturprogramm: Immobilienkauf und -verkauf +10 %', //TODO implement
             zeitsteine: new Zeitsteine(
                 [
                     new ZeitsteinePerPlayer(2, 5),
@@ -404,7 +404,7 @@ class KonjunkturphaseFinder
             description: 'Ein globaler Handelsboom sorgt für Rekordgewinne in Unternehmen und spürbar steigende Löhne. Die Kaufkraft der Haushalte
             wächst stark und viele Märkte expandieren. Da die Wirtschaft nun auf Hochtouren läuft und Inflationsrisiken steigen, hebt die Zentralbank
             den Leitzins auf 3 % an. Die höheren Kreditkosten bremsen Investitionen bisher jedoch kaum, da die Gewinne weiterhin hoch sind.',
-            additionalEvents: 'Einmalige Lohnsonderzahlung i.H.v. 10 % des Einkommens.',
+            additionalEvents: 'Einmalige Lohnsonderzahlung i.H.v. 10 % des Einkommens', //TODO implement
             zeitsteine: new Zeitsteine(
                 [
                     new ZeitsteinePerPlayer(2, 5),
@@ -462,13 +462,145 @@ class KonjunkturphaseFinder
             ]
         );
 
+        $konjunkturphase7 = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(7),
+            type: KonjunkturphaseTypeEnum::BOOM,
+            name: 'Boom III - Überhitzung',
+            description: 'Eine globale Rohstoffknappheit treibt die Preise weltweit in die Höhe. Unternehmen haben Mühe, die steigenden Kosten weiterzugeben und
+            erste Anzeichen einer Blasenbildung sind sichtbar. Spekulationen haben dazu geführt, dass Immobilienpreise zunehmend den Bezug zu den wirtschaftlichen
+            Kennzahlen verloren haben und eine Immobilienblase ist entstanden. Die Zentralbank reagiert mit einer deutlichen Anhebung des Leitzinses auf 4 %, um
+            die Inflation zu bekämpfen. Die merklich gestiegenen Kreditkosten führen bereits zu ersten negativen Auswirkungen auf neue Investitionen.',
+            additionalEvents: 'Immobilienblase, für jede Immobilie fallen Steuern i.H.v. 1000 € pro Objekt an', //TODO implement
+            zeitsteine: new Zeitsteine(
+                [
+                    new ZeitsteinePerPlayer(2, 4),
+                    new ZeitsteinePerPlayer(3, 3),
+                    new ZeitsteinePerPlayer(4, 3),
+                ]
+            ),
+            kompetenzbereiche: [
+                new KompetenzbereichDefinition(
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 1),
+                        new ZeitslotsPerPlayer(3, 2),
+                        new ZeitslotsPerPlayer(4, 2),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::INVESTITIONEN,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::JOBS,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
+                ),
+            ],
+            auswirkungen: [
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    modifier: 7
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::STOCKS_BONUS,
+                    modifier: 0
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    modifier: 1.8
+                ),
+            ]
+        );
+
+        $konjunkturphase8 = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(8),
+            type: KonjunkturphaseTypeEnum::BOOM,
+            name: 'Boom IV - Asset-Blasé',
+            description: 'Langjährig niedrige Zinsen haben spekulative Investitionen in Aktien, Immobilien und Kryptowährungen massiv ansteigen lassen.
+            Die Preise sind stark überbewertet und weit von ihren fundamentalen Werten entfernt. Die Zentralbank zieht nun deutlich die geldpolitische
+            Bremse und hebt den Leitzins auf 5  % an, was Kredite deutlich teurer macht. Experten warnen, dass die Wirtschaft sich am Rand einer Korrektur
+            befindet und eine Rezession droht, falls ein unerwarteter Schock eintritt.',
+            additionalEvents: 'Immobilienkauf und -verkauf +10 %, Einmalige Grundsteuer pro Immobilien i.H.v. 1000 € pro Objekt, 50 % Chance, das Rezession folgt', //TODO implement
+            zeitsteine: new Zeitsteine(
+                [
+                    new ZeitsteinePerPlayer(2, 5),
+                    new ZeitsteinePerPlayer(3, 4),
+                    new ZeitsteinePerPlayer(4, 4),
+                ]
+            ),
+            kompetenzbereiche: [
+                new KompetenzbereichDefinition(
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 1),
+                        new ZeitslotsPerPlayer(3, 2),
+                        new ZeitslotsPerPlayer(4, 2),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::INVESTITIONEN,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 5),
+                        new ZeitslotsPerPlayer(3, 6),
+                        new ZeitslotsPerPlayer(4, 6),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::JOBS,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
+                ),
+            ],
+            auswirkungen: [
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    modifier: 8
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::STOCKS_BONUS,
+                    modifier: 10
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    modifier: 2.1
+                ),
+            ]
+        );
+
         $konjunkturphase9 = new KonjunkturphaseDefinition(
             id: KonjunkturphasenId::create(9),
             type: KonjunkturphaseTypeEnum::REZESSION,
             name: 'Rezession I – Sanfte Abkühlung',
             description: 'Die Wirtschaft verliert leicht an Schwung, da internationale Handelskonflikte und leichte Nachfragerückgänge erste Spuren hinterlassen.
             Unternehmen investieren vorsichtiger und verschieben größere Projekte. Die Zentralbank erkennt die schwache Entwicklung und senkt den Leitzins auf
-            moderate 1  %, wodurch Kredite günstig bleiben und ein stärkerer Abschwung verhindert werden soll. Der Staat reagiert mit einem Bildungsgutschein,
+            moderate 1 %, wodurch Kredite günstig bleiben und ein stärkerer Abschwung verhindert werden soll. Der Staat reagiert mit einem Bildungsgutschein,
             um die Qualifikation der Arbeitnehmer zu verbessern.',
             additionalEvents: 'Bildungs-Bonus: 1 Bildungs- & Karrierepunkt',
             zeitsteine: new Zeitsteine(
@@ -525,7 +657,13 @@ class KonjunkturphaseFinder
                     scope: AuswirkungScopeEnum::DIVIDEND,
                     modifier: 1.4
                 ),
-            ]
+            ],
+            conditionalResourceChanges: [
+                new ConditionalResourceChange(
+                    prerequisite: EreignisPrerequisitesId::NO_PREREQUISITES,
+                    resourceChanges: new ResourceChanges(bildungKompetenzsteinChange: +1),
+                )
+            ],
         );
 
         $konjunkturphase10 = new KonjunkturphaseDefinition(
@@ -533,10 +671,10 @@ class KonjunkturphaseFinder
             type: KonjunkturphaseTypeEnum::REZESSION,
             name: 'Rezession II – Nachfragerückgang',
             description: 'Ein stärkerer Rückgang der Nachfrage belastet zunehmend die Wirtschaft. Immer mehr Unternehmen müssen Kurzarbeit anmelden,
-            wodurch Arbeitszeit und Einkommen sinken. Die Zentralbank hält den Leitzins stabil niedrig bei 1  %, um weitere Schäden zu verhindern,
+            wodurch Arbeitszeit und Einkommen sinken. Die Zentralbank hält den Leitzins stabil niedrig bei 1 %, um weitere Schäden zu verhindern,
             doch die erhoffte Belebung bleibt vorerst aus. Die Unternehmen setzen aufgrund der schwierigen Lage Lohnsonderzahlungen aus, wodurch
             private Konsumausgaben zusätzlich belastet werden.',
-            additionalEvents: 'Kurzarbeit, -1 Zeitstein wenn Erwerbseinkommen, Einkommen -5 % diese Runde',
+            additionalEvents: 'Kurzarbeit, -1 Zeitstein wenn Erwerbseinkommen, Einkommen -5 % diese Runde', //TODO implement
             zeitsteine: new Zeitsteine(
                 [
                     new ZeitsteinePerPlayer(2, 4),
@@ -594,6 +732,143 @@ class KonjunkturphaseFinder
             ]
         );
 
+        $konjunkturphase11 = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(11),
+            type: KonjunkturphaseTypeEnum::REZESSION,
+            name: 'Rezession III – Nachfrageschwäche',
+            description: 'Aufgrund eines anhaltenden Abschwungs bleibt die Stimmung in der Wirtschaft gedrückt. Unternehmen zeigen sich vorsichtig bei
+            Neueinstellungen und Investitionen. Um die anhaltende Nachfrageschwäche abzumildern, senkt die Zentralbank den Leitzins auf 0,75 %, was zu
+            historisch niedrigen Kreditkosten führt. Zusätzlich versucht die Regierung, die Konsumenten mit einem einmaligen Konjunkturbonus von 500 €
+            pro Person zu unterstützen. Dafür trifft Immobilienbesitzer eine zusätzliche Grundsteuer.',
+            additionalEvents: 'Konjunkturbonus i.H.v. 500 €, Grundsteuer pro Immobilie i.H.v. 500 €', //TODO implement (Grundsteuer)
+            zeitsteine: new Zeitsteine(
+                [
+                    new ZeitsteinePerPlayer(2, 5),
+                    new ZeitsteinePerPlayer(3, 4),
+                    new ZeitsteinePerPlayer(4, 4),
+                ]
+            ),
+            kompetenzbereiche: [
+                new KompetenzbereichDefinition(
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 5),
+                        new ZeitslotsPerPlayer(3, 6),
+                        new ZeitslotsPerPlayer(4, 6),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::INVESTITIONEN,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 2),
+                        new ZeitslotsPerPlayer(3, 3),
+                        new ZeitslotsPerPlayer(4, 3),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::JOBS,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 2),
+                        new ZeitslotsPerPlayer(3, 3),
+                        new ZeitslotsPerPlayer(4, 3),
+                    ])
+                ),
+            ],
+            auswirkungen: [
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    modifier: 3.75
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::STOCKS_BONUS,
+                    modifier: 0
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    modifier: 1.2
+                ),
+            ],
+            conditionalResourceChanges: [
+                new ConditionalResourceChange(
+                    prerequisite: EreignisPrerequisitesId::NO_PREREQUISITES,
+                    resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(+500)),
+                )
+            ],
+        );
+
+        $konjunkturphase12 = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(12),
+            type: KonjunkturphaseTypeEnum::REZESSION,
+            name: 'Rezession IV – Kreditklemme',
+            description: 'Banken werden aufgrund von Kreditausfällen zunehmend zurückhaltender werden. Unternehmen haben Schwierigkeiten, an frisches Geld zu
+            kommen, wodurch viele Projekte vorerst gestoppt werden. Trotz einer Zinssenkung der Zentralbank auf 0,5 %, bleibt der Kreditmarkt angespannt.
+            Darlehensnehmer spüren zusätzlich die Krise durch eine einmalige Extra-Zinszahlung, während Immobilienwerte unter Druck geraten.',
+            additionalEvents: 'Einmaliger Extrazins für alle mit Darlehen i.H.v. 200 €, Immobilienkauf und -verkauf -5 %', //TODO implement
+            zeitsteine: new Zeitsteine(
+                [
+                    new ZeitsteinePerPlayer(2, 4),
+                    new ZeitsteinePerPlayer(3, 3),
+                    new ZeitsteinePerPlayer(4, 3),
+                ]
+            ),
+            kompetenzbereiche: [
+                new KompetenzbereichDefinition(
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 2),
+                        new ZeitslotsPerPlayer(3, 3),
+                        new ZeitslotsPerPlayer(4, 3),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::INVESTITIONEN,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 2),
+                        new ZeitslotsPerPlayer(3, 3),
+                        new ZeitslotsPerPlayer(4, 3),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::JOBS,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 1),
+                        new ZeitslotsPerPlayer(3, 2),
+                        new ZeitslotsPerPlayer(4, 2),
+                    ])
+                ),
+            ],
+            auswirkungen: [
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    modifier: 3.5
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::STOCKS_BONUS,
+                    modifier: -10
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    modifier: 1.1
+                ),
+            ]
+        );
+
         $konjunkturphase13 = new KonjunkturphaseDefinition(
             id: KonjunkturphasenId::create(13),
             type: KonjunkturphaseTypeEnum::DEPRESSION,
@@ -602,7 +877,7 @@ class KonjunkturphaseFinder
             zunehmend ihre Preise, um damit Käufer anzulocken. Da immer weniger Menschen ihr Geld ausgeben, sinken die Preise weiter und es droht eine
             gefährliche Spirale. Die Zentralbank senkt die Zinsen nahezu auf null, doch die Zinssenkung zeigt kaum Wirkung. Die Verunsicherung am Markt
             lässt Immobilienpreise sinken.',
-            additionalEvents: 'Immobilienkauf und -verkauf -10 %',
+            additionalEvents: 'Immobilienkauf und -verkauf -10 %', //TODO implement
             zeitsteine: new Zeitsteine(
                 [
                     new ZeitsteinePerPlayer(2, 4),
@@ -668,7 +943,7 @@ class KonjunkturphaseFinder
             Kollaps zu retten, stellt die Regierung die Banken unter Schutz und lässt Kredite vorübergehend einfrieren. Daraus resultiert eine Panik an
             den Märkten und Immobilienpreise und Aktienkurse brechen ein. Dies geschieht trotz des radikalen Eingriffs der Zentralbank, die den Leitzins
             vollständig auf null senkt.',
-            additionalEvents: '"Es können keine Kredite aufgenommen werden, Immobilienkauf und verkauf -15 %, Einkommen -10 % diese Runde"',
+            additionalEvents: 'Es können keine Kredite aufgenommen werden, Immobilienkauf und verkauf -15 %, Einkommen -10 % diese Runde', //TODO implement
             zeitsteine: new Zeitsteine(
                 [
                     new ZeitsteinePerPlayer(2, 4),
@@ -726,6 +1001,143 @@ class KonjunkturphaseFinder
             ]
         );
 
+        $konjunkturphase15 = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(15),
+            type: KonjunkturphaseTypeEnum::DEPRESSION,
+            name: 'Depression III – Stagnationstal',
+            description: 'Die Wirtschaft scheint am tiefsten Punkt einer Krise angekommen zu sein. Unternehmen zögern mit Investitionen und die Menschen
+            sparen, statt ihr Geld auszugeben. Trotz massiver geldpolitischer Maßnahmen der Zentralbank und der Senkung des Leitzins auf 0 % bleibt die
+            Stimmung gedrückt. Um die Nachfrage kurzfristig anzukurbeln, verteilt der Staat eine einmalige finanzielle Unterstützung an alle Bürger.',
+            additionalEvents: 'Konjunkturbonus i.H.v. 500 € p.P.',
+            zeitsteine: new Zeitsteine(
+                [
+                    new ZeitsteinePerPlayer(2, 5),
+                    new ZeitsteinePerPlayer(3, 4),
+                    new ZeitsteinePerPlayer(4, 4),
+                ]
+            ),
+            kompetenzbereiche: [
+                new KompetenzbereichDefinition(
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 6),
+                        new ZeitslotsPerPlayer(3, 7),
+                        new ZeitslotsPerPlayer(4, 7),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::INVESTITIONEN,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 2),
+                        new ZeitslotsPerPlayer(3, 3),
+                        new ZeitslotsPerPlayer(4, 3),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::JOBS,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 1),
+                        new ZeitslotsPerPlayer(3, 2),
+                        new ZeitslotsPerPlayer(4, 2),
+                    ])
+                ),
+            ],
+            auswirkungen: [
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    modifier: 3
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::STOCKS_BONUS,
+                    modifier: 0
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    modifier: 0.9
+                ),
+            ],
+            conditionalResourceChanges: [
+                new ConditionalResourceChange(
+                    prerequisite: EreignisPrerequisitesId::NO_PREREQUISITES,
+                    resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(+500)),
+                )
+            ],
+        );
+
+        $konjunkturphase16 = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(16),
+            type: KonjunkturphaseTypeEnum::DEPRESSION,
+            name: 'Depression IV – Zäher Boden',
+            description: 'Eine lange Krise hat tiefe Spuren hinterlassen. Viele Haushalte sind überschuldet und Unternehmen kämpfen weiterhin
+            ums Überleben. Die Zentralbank hält den Leitzins auf null Prozent und sorgt dafür, dass Kredite billig bleiben. Politik und Banken
+            einigen sich auf einen Schuldenerlass, um die finanziellen Belastungen zu mildern. Infolge dieser Maßnahmen kehrt allmählich
+            Vertrauen in die Wirtschaft zurück und zuvor fallende Kurse beginnen sich zu stabilisieren.',
+            additionalEvents: 'Einmalig für offene Darlehen -1000 €, Immobilienkauf und -verkauf -5 %', //TODO implement
+            zeitsteine: new Zeitsteine(
+                [
+                    new ZeitsteinePerPlayer(2, 5),
+                    new ZeitsteinePerPlayer(3, 4),
+                    new ZeitsteinePerPlayer(4, 4),
+                ]
+            ),
+            kompetenzbereiche: [
+                new KompetenzbereichDefinition(
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 6),
+                        new ZeitslotsPerPlayer(3, 7),
+                        new ZeitslotsPerPlayer(4, 7),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::INVESTITIONEN,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 2),
+                        new ZeitslotsPerPlayer(3, 3),
+                        new ZeitslotsPerPlayer(4, 3),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::JOBS,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 1),
+                        new ZeitslotsPerPlayer(3, 2),
+                        new ZeitslotsPerPlayer(4, 2),
+                    ])
+                ),
+            ],
+            auswirkungen: [
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    modifier: 3
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::STOCKS_BONUS,
+                    modifier: -5
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    modifier: 0.9
+                ),
+            ]
+        );
+
         self::$instance = new self([
             $konjunkturphase1,
             $konjunkturphase2,
@@ -733,10 +1145,16 @@ class KonjunkturphaseFinder
             $konjunkturphase4,
             $konjunkturphase5,
             $konjunkturphase6,
+            $konjunkturphase7,
+            $konjunkturphase8,
             $konjunkturphase9,
             $konjunkturphase10,
+            $konjunkturphase11,
+            $konjunkturphase12,
             $konjunkturphase13,
             $konjunkturphase14,
+            $konjunkturphase15,
+            $konjunkturphase16,
         ]);
 
         return self::$instance;
