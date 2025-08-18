@@ -7,17 +7,17 @@
     'game-events' => null,
 ])
 
-@section('title')
+@section('title_mandatory')
     <span>
         Verkauf - {{ $this->sellStocksForm->stockType->toPrettyString() }} Aktie <i class="icon-aktien" aria-hidden="true"></i>
     </span>
 @endsection
 
-@section('icon')
+@section('icon_mandatory')
     <i class="icon-ereignis" aria-hidden="true"></i>
 @endsection
 
-@section('content')
+@section('content_mandatory')
     <h4>Ein anderer Spieler hat Aktien vom Typ {{ $this->sellStocksForm->stockType->toPrettyString() }} gekauft!</h4>
     @if ($this->sellStocksForm->amountOwned > 0)
         <p>
@@ -47,7 +47,7 @@
     @endif
 @endsection
 
-@section('footer')
+@section('footer_mandatory')
     <button type="button"
             @class([
                 "button",
