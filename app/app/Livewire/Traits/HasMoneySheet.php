@@ -61,16 +61,7 @@ trait HasMoneySheet
         }
 
         // init insurances form
-        $insurances = InsuranceFinder::getInstance()->getAllInsurances();
-        $currentPlayerPhase = PlayerState::getCurrentLebenszielphaseIdForPlayer($this->gameEvents, $this->myself)->value;
-        foreach ($insurances as $insurance) {
-            $isActive = MoneySheetState::doesPlayerHaveThisInsurance($this->gameEvents, $this->myself, $insurance->id);
-            $this->moneySheetInsurancesForm->addInsurance(
-                $currentPlayerPhase,
-                $insurance,
-                $isActive
-            );
-        }
+        $this->initializeInsurancesForm();
     }
 
     /**
@@ -90,6 +81,8 @@ trait HasMoneySheet
         $calculatedLebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameEvents, $this->myself);
         $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten = $latestInputForLebenshaltungskosten->value;
         $this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled = $latestInputForLebenshaltungskosten->equals($calculatedLebenshaltungskosten);
+
+        $this->initializeInsurancesForm();
     }
 
     public function showMoneySheet(): void
@@ -278,5 +271,19 @@ trait HasMoneySheet
         }
 
         $this->broadcastNotify();
+    }
+
+    private function initializeInsurancesForm(): void
+    {
+        $insurances = InsuranceFinder::getInstance()->getAllInsurances();
+        $currentPlayerPhase = PlayerState::getCurrentLebenszielphaseIdForPlayer($this->gameEvents, $this->myself)->value;
+        foreach ($insurances as $insurance) {
+            $isActive = MoneySheetState::doesPlayerHaveThisInsurance($this->gameEvents, $this->myself, $insurance->id);
+            $this->moneySheetInsurancesForm->addInsurance(
+                $currentPlayerPhase,
+                $insurance,
+                $isActive
+            );
+        }
     }
 }
