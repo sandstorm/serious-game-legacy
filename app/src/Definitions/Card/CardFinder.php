@@ -6,6 +6,7 @@ namespace Domain\Definitions\Card;
 
 use Domain\Definitions\Card\Dto\AnswerOption;
 use Domain\Definitions\Card\Dto\CardDefinition;
+use Domain\Definitions\Card\Dto\CardWithGewichtung;
 use Domain\Definitions\Card\Dto\CardWithYear;
 use Domain\Definitions\Card\Dto\EreignisCardDefinition;
 use Domain\Definitions\Card\Dto\InvestitionenCardDefinition;
@@ -5157,6 +5158,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e2" => new EreignisCardDefinition(
                 id: new CardId('e2'),
@@ -5174,6 +5176,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e3" => new EreignisCardDefinition(
                 id: new CardId('e3'),
@@ -5191,6 +5194,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e4" => new EreignisCardDefinition(
                 id: new CardId('e4'),
@@ -5208,6 +5212,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e5" => new EreignisCardDefinition(
                 id: new CardId('e5'),
@@ -5227,6 +5232,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e6" => new EreignisCardDefinition(
                 id: new CardId('e6'),
@@ -5248,6 +5254,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e7" => new EreignisCardDefinition(
                 id: new CardId('e7'),
@@ -5267,6 +5274,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e8" => new EreignisCardDefinition(
                 id: new CardId('e8'),
@@ -5284,6 +5292,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 4,
             ),
             "e9" => new EreignisCardDefinition(
                 id: new CardId('e9'),
@@ -5301,6 +5310,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e10" => new EreignisCardDefinition(
                 id: new CardId('e10'),
@@ -5318,6 +5328,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e11" => new EreignisCardDefinition(
                 id: new CardId('e11'),
@@ -5337,6 +5348,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e12" => new EreignisCardDefinition(
                 id: new CardId('e12'),
@@ -5356,6 +5368,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e13" => new EreignisCardDefinition(
                 id: new CardId('e13'),
@@ -5374,6 +5387,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e14" => new EreignisCardDefinition(
                 id: new CardId('e14'),
@@ -5392,6 +5406,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e15" => new EreignisCardDefinition(
                 id: new CardId('e15'),
@@ -5410,6 +5425,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e16" => new EreignisCardDefinition(
                 id: new CardId('e16'),
@@ -5428,6 +5444,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e17" => new EreignisCardDefinition(
                 id: new CardId('e17'),
@@ -5447,6 +5464,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e18" => new EreignisCardDefinition(
                 id: new CardId('e18'),
@@ -5465,6 +5483,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e19" => new EreignisCardDefinition(
                 id: new CardId('e19'),
@@ -5483,6 +5502,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e20" => new EreignisCardDefinition(
                 id: new CardId('e20'),
@@ -5502,6 +5522,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e21" => new EreignisCardDefinition(
                 id: new CardId('e21'),
@@ -5522,6 +5543,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e22" => new EreignisCardDefinition(
                 id: new CardId('e22'),
@@ -5542,6 +5564,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e23" => new EreignisCardDefinition(
                 id: new CardId('e23'),
@@ -5560,6 +5583,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e24" => new EreignisCardDefinition(
                 id: new CardId('e24'),
@@ -5578,6 +5602,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e25" => new EreignisCardDefinition(
                 id: new CardId('e25'),
@@ -5598,6 +5623,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e26" => new EreignisCardDefinition(
                 id: new CardId('e26'),
@@ -5616,6 +5642,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e27" => new EreignisCardDefinition(
                 id: new CardId('e27'),
@@ -5634,6 +5661,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e28" => new EreignisCardDefinition(
                 id: new CardId('e28'),
@@ -5651,6 +5679,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e29" => new EreignisCardDefinition(
                 id: new CardId('e29'),
@@ -5670,6 +5699,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e30" => new EreignisCardDefinition(
                 id: new CardId('e30'),
@@ -5688,6 +5718,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e31" => new EreignisCardDefinition(
                 id: new CardId('e31'),
@@ -5706,6 +5737,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e32" => new EreignisCardDefinition(
                 id: new CardId('e32'),
@@ -5724,6 +5756,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e33" => new EreignisCardDefinition(
                 id: new CardId('e33'),
@@ -5742,6 +5775,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e34" => new EreignisCardDefinition(
                 id: new CardId('e34'),
@@ -5760,6 +5794,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e35" => new EreignisCardDefinition(
                 id: new CardId('e35'),
@@ -5778,6 +5813,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e36" => new EreignisCardDefinition(
                 id: new CardId('e36'),
@@ -5796,6 +5832,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e37" => new EreignisCardDefinition(
                 id: new CardId('e37'),
@@ -5815,6 +5852,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_CHILD,
                 ],
+                gewichtung: 4,
             ),
             "e38" => new EreignisCardDefinition(
                 id: new CardId('e38'),
@@ -5834,6 +5872,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 4,
             ),
             "e39" => new EreignisCardDefinition(
                 id: new CardId('e39'),
@@ -5852,6 +5891,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e40" => new EreignisCardDefinition(
                 id: new CardId('e40'),
@@ -5870,6 +5910,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e41" => new EreignisCardDefinition(
                 id: new CardId('e41'),
@@ -5889,6 +5930,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e42" => new EreignisCardDefinition(
                 id: new CardId('e42'),
@@ -5907,6 +5949,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e43" => new EreignisCardDefinition(
                 id: new CardId('e43'),
@@ -5925,6 +5968,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e44" => new EreignisCardDefinition(
                 id: new CardId('e44'),
@@ -5944,6 +5988,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e45" => new EreignisCardDefinition(
                 id: new CardId('e45'),
@@ -5961,6 +6006,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e46" => new EreignisCardDefinition(
                 id: new CardId('e46'),
@@ -5981,6 +6027,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e47" => new EreignisCardDefinition(
                 id: new CardId('e47'),
@@ -6000,6 +6047,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e48" => new EreignisCardDefinition(
                 id: new CardId('e48'),
@@ -6020,6 +6068,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e49" => new EreignisCardDefinition(
                 id: new CardId('e49'),
@@ -6039,6 +6088,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e50" => new EreignisCardDefinition(
                 id: new CardId('e50'),
@@ -6060,6 +6110,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e51" => new EreignisCardDefinition(
                 id: new CardId('e51'),
@@ -6080,6 +6131,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e52" => new EreignisCardDefinition(
                 id: new CardId('e52'),
@@ -6099,6 +6151,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e53" => new EreignisCardDefinition(
                 id: new CardId('e53'),
@@ -6116,6 +6169,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e54" => new EreignisCardDefinition(
                 id: new CardId('e54'),
@@ -6137,6 +6191,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e55" => new EreignisCardDefinition(
                 id: new CardId('e55'),
@@ -6157,6 +6212,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e56" => new EreignisCardDefinition(
                 id: new CardId('e56'),
@@ -6176,6 +6232,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e57" => new EreignisCardDefinition(
                 id: new CardId('e57'),
@@ -6193,6 +6250,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e58" => new EreignisCardDefinition(
                 id: new CardId('e58'),
@@ -6210,6 +6268,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e59" => new EreignisCardDefinition(
                 id: new CardId('e59'),
@@ -6228,6 +6287,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e60" => new EreignisCardDefinition(
                 id: new CardId('e60'),
@@ -6245,6 +6305,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 4,
             ),
             "e61" => new EreignisCardDefinition(
                 id: new CardId('e61'),
@@ -6262,6 +6323,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e62" => new EreignisCardDefinition(
                 id: new CardId('e62'),
@@ -6280,6 +6342,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e63" => new EreignisCardDefinition(
                 id: new CardId('e63'),
@@ -6298,6 +6361,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e64" => new EreignisCardDefinition(
                 id: new CardId('e64'),
@@ -6317,6 +6381,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e65" => new EreignisCardDefinition(
                 id: new CardId('e65'),
@@ -6335,6 +6400,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e66" => new EreignisCardDefinition(
                 id: new CardId('e66'),
@@ -6353,6 +6419,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e67" => new EreignisCardDefinition(
                 id: new CardId('e67'),
@@ -6371,6 +6438,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e68" => new EreignisCardDefinition(
                 id: new CardId('e68'),
@@ -6389,6 +6457,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e69" => new EreignisCardDefinition(
                 id: new CardId('e69'),
@@ -6408,6 +6477,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_CHILD,
                 ],
+                gewichtung: 4,
             ),
             "e70" => new EreignisCardDefinition(
                 id: new CardId('e70'),
@@ -6426,6 +6496,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e71" => new EreignisCardDefinition(
                 id: new CardId('e71'),
@@ -6445,6 +6516,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e72" => new EreignisCardDefinition(
                 id: new CardId('e72'),
@@ -6463,6 +6535,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e73" => new EreignisCardDefinition(
                 id: new CardId('e73'),
@@ -6481,6 +6554,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e74" => new EreignisCardDefinition(
                 id: new CardId('e74'),
@@ -6499,6 +6573,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e75" => new EreignisCardDefinition(
                 id: new CardId('e75'),
@@ -6518,6 +6593,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e76" => new EreignisCardDefinition(
                 id: new CardId('e76'),
@@ -6538,6 +6614,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e77" => new EreignisCardDefinition(
                 id: new CardId('e77'),
@@ -6557,6 +6634,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e78" => new EreignisCardDefinition(
                 id: new CardId('e78'),
@@ -6578,6 +6656,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e79" => new EreignisCardDefinition(
                 id: new CardId('e79'),
@@ -6595,6 +6674,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e80" => new EreignisCardDefinition(
                 id: new CardId('e80'),
@@ -6613,6 +6693,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e81" => new EreignisCardDefinition(
                 id: new CardId('e81'),
@@ -6632,6 +6713,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e82" => new EreignisCardDefinition(
                 id: new CardId('e82'),
@@ -6649,6 +6731,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e83" => new EreignisCardDefinition(
                 id: new CardId('e83'),
@@ -6668,6 +6751,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e84" => new EreignisCardDefinition(
                 id: new CardId('e84'),
@@ -6686,6 +6770,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e85" => new EreignisCardDefinition(
                 id: new CardId('e85'),
@@ -6704,6 +6789,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 4,
             ),
             "e86" => new EreignisCardDefinition(
                 id: new CardId('e86'),
@@ -6721,6 +6807,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e87" => new EreignisCardDefinition(
                 id: new CardId('e87'),
@@ -6739,6 +6826,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e88" => new EreignisCardDefinition(
                 id: new CardId('e88'),
@@ -6758,6 +6846,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e89" => new EreignisCardDefinition(
                 id: new CardId('e89'),
@@ -6776,6 +6865,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e90" => new EreignisCardDefinition(
                 id: new CardId('e90'),
@@ -6795,6 +6885,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e91" => new EreignisCardDefinition(
                 id: new CardId('e91'),
@@ -6813,6 +6904,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 4,
             ),
             "e92" => new EreignisCardDefinition(
                 id: new CardId('e92'),
@@ -6832,6 +6924,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e93" => new EreignisCardDefinition(
                 id: new CardId('e93'),
@@ -6851,6 +6944,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e94" => new EreignisCardDefinition(
                 id: new CardId('e94'),
@@ -6870,6 +6964,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e95" => new EreignisCardDefinition(
                 id: new CardId('e95'),
@@ -6889,6 +6984,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e96" => new EreignisCardDefinition(
                 id: new CardId('e96'),
@@ -6908,6 +7004,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e97" => new EreignisCardDefinition(
                 id: new CardId('e97'),
@@ -6927,6 +7024,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e98" => new EreignisCardDefinition(
                 id: new CardId('e98'),
@@ -6946,6 +7044,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e99" => new EreignisCardDefinition(
                 id: new CardId('e99'),
@@ -6965,6 +7064,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e100" => new EreignisCardDefinition(
                 id: new CardId('e100'),
@@ -6984,6 +7084,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e101" => new EreignisCardDefinition(
                 id: new CardId('e101'),
@@ -7003,6 +7104,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e102" => new EreignisCardDefinition(
                 id: new CardId('e102'),
@@ -7022,6 +7124,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e103" => new EreignisCardDefinition(
                 id: new CardId('e103'),
@@ -7041,6 +7144,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e104" => new EreignisCardDefinition(
                 id: new CardId('e104'),
@@ -7060,6 +7164,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e105" => new EreignisCardDefinition(
                 id: new CardId('e105'),
@@ -7079,6 +7184,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e106" => new EreignisCardDefinition(
                 id: new CardId('e106'),
@@ -7098,6 +7204,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e107" => new EreignisCardDefinition(
                 id: new CardId('e107'),
@@ -7116,6 +7223,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e108" => new EreignisCardDefinition(
                 id: new CardId('e108'),
@@ -7134,6 +7242,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e109" => new EreignisCardDefinition(
                 id: new CardId('e109'),
@@ -7152,6 +7261,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e110" => new EreignisCardDefinition(
                 id: new CardId('e110'),
@@ -7170,6 +7280,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e111" => new EreignisCardDefinition(
                 id: new CardId('e111'),
@@ -7188,6 +7299,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 4,
             ),
             "e112" => new EreignisCardDefinition(
                 id: new CardId('e112'),
@@ -7206,6 +7318,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e113" => new EreignisCardDefinition(
                 id: new CardId('e113'),
@@ -7223,6 +7336,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e114" => new EreignisCardDefinition(
                 id: new CardId('e114'),
@@ -7241,6 +7355,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e115" => new EreignisCardDefinition(
                 id: new CardId('e115'),
@@ -7259,6 +7374,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e116" => new EreignisCardDefinition(
                 id: new CardId('e116'),
@@ -7277,6 +7393,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e117" => new EreignisCardDefinition(
                 id: new CardId('e117'),
@@ -7295,6 +7412,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e118" => new EreignisCardDefinition(
                 id: new CardId('e118'),
@@ -7313,6 +7431,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e119" => new EreignisCardDefinition(
                 id: new CardId('e119'),
@@ -7331,6 +7450,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e120" => new EreignisCardDefinition(
                 id: new CardId('e120'),
@@ -7349,6 +7469,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e121" => new EreignisCardDefinition(
                 id: new CardId('e121'),
@@ -7367,6 +7488,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e122" => new EreignisCardDefinition(
                 id: new CardId('e122'),
@@ -7386,6 +7508,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_CHILD,
                 ],
+                gewichtung: 4,
             ),
             "e123" => new EreignisCardDefinition(
                 id: new CardId('e123'),
@@ -7404,6 +7527,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e124" => new EreignisCardDefinition(
                 id: new CardId('e124'),
@@ -7423,6 +7547,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_CHILD,
                 ],
+                gewichtung: 4,
             ),
             "e125" => new EreignisCardDefinition(
                 id: new CardId('e125'),
@@ -7441,6 +7566,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e126" => new EreignisCardDefinition(
                 id: new CardId('e126'),
@@ -7459,6 +7585,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e127" => new EreignisCardDefinition(
                 id: new CardId('e127'),
@@ -7477,6 +7604,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e128" => new EreignisCardDefinition(
                 id: new CardId('e128'),
@@ -7495,6 +7623,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e129" => new EreignisCardDefinition(
                 id: new CardId('e129'),
@@ -7513,6 +7642,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e130" => new EreignisCardDefinition(
                 id: new CardId('e130'),
@@ -7531,6 +7661,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 4,
             ),
             "e131" => new EreignisCardDefinition(
                 id: new CardId('e131'),
@@ -7549,6 +7680,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e132" => new EreignisCardDefinition(
                 id: new CardId('e132'),
@@ -7567,6 +7699,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e133" => new EreignisCardDefinition(
                 id: new CardId('e133'),
@@ -7585,6 +7718,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e134" => new EreignisCardDefinition(
                 id: new CardId('e134'),
@@ -7603,6 +7737,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e135" => new EreignisCardDefinition(
                 id: new CardId('e135'),
@@ -7622,6 +7757,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_CHILD,
                 ],
+                gewichtung: 4,
             ),
             "e136" => new EreignisCardDefinition(
                 id: new CardId('e136'),
@@ -7641,6 +7777,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_CHILD,
                 ],
+                gewichtung: 4,
             ),
             "e137" => new EreignisCardDefinition(
                 id: new CardId('e137'),
@@ -7661,6 +7798,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e138" => new EreignisCardDefinition(
                 id: new CardId('e138'),
@@ -7679,6 +7817,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e139" => new EreignisCardDefinition(
                 id: new CardId('e139'),
@@ -7698,6 +7837,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e140" => new EreignisCardDefinition(
                 id: new CardId('e140'),
@@ -7716,6 +7856,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e141" => new EreignisCardDefinition(
                 id: new CardId('e141'),
@@ -7734,6 +7875,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e142" => new EreignisCardDefinition(
                 id: new CardId('e142'),
@@ -7753,6 +7895,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_NO_CHILD,
                 ],
+                gewichtung: 10,
             ),
             "e143" => new EreignisCardDefinition(
                 id: new CardId('e143'),
@@ -7771,6 +7914,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 4,
             ),
             "e144" => new EreignisCardDefinition(
                 id: new CardId('e144'),
@@ -7788,6 +7932,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e145" => new EreignisCardDefinition(
                 id: new CardId('e145'),
@@ -7806,6 +7951,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 4,
             ),
             "e146" => new EreignisCardDefinition(
                 id: new CardId('e146'),
@@ -7826,6 +7972,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e147" => new EreignisCardDefinition(
                 id: new CardId('e147'),
@@ -7843,6 +7990,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e148" => new EreignisCardDefinition(
                 id: new CardId('e148'),
@@ -7861,6 +8009,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e149" => new EreignisCardDefinition(
                 id: new CardId('e149'),
@@ -7880,6 +8029,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e150" => new EreignisCardDefinition(
                 id: new CardId('e150'),
@@ -7902,6 +8052,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e151" => new EreignisCardDefinition(
                 id: new CardId('e151'),
@@ -7924,6 +8075,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e152" => new EreignisCardDefinition(
                 id: new CardId('e152'),
@@ -7944,6 +8096,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e153" => new EreignisCardDefinition(
                 id: new CardId('e153'),
@@ -7961,6 +8114,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e154" => new EreignisCardDefinition(
                 id: new CardId('e154'),
@@ -7978,6 +8132,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e155" => new EreignisCardDefinition(
                 id: new CardId('e155'),
@@ -7995,6 +8150,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e156" => new EreignisCardDefinition(
                 id: new CardId('e156'),
@@ -8013,6 +8169,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e157" => new EreignisCardDefinition(
                 id: new CardId('e157'),
@@ -8030,6 +8187,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e158" => new EreignisCardDefinition(
                 id: new CardId('e158'),
@@ -8048,6 +8206,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e159" => new EreignisCardDefinition(
                 id: new CardId('e159'),
@@ -8067,6 +8226,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e160" => new EreignisCardDefinition(
                 id: new CardId('e160'),
@@ -8084,6 +8244,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e161" => new EreignisCardDefinition(
                 id: new CardId('e161'),
@@ -8103,6 +8264,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e162" => new EreignisCardDefinition(
                 id: new CardId('e162'),
@@ -8120,6 +8282,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e163" => new EreignisCardDefinition(
                 id: new CardId('e163'),
@@ -8137,6 +8300,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e164" => new EreignisCardDefinition(
                 id: new CardId('e164'),
@@ -8154,6 +8318,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 4,
             ),
             "e165" => new EreignisCardDefinition(
                 id: new CardId('e165'),
@@ -8172,6 +8337,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e166" => new EreignisCardDefinition(
                 id: new CardId('e166'),
@@ -8190,6 +8356,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e167" => new EreignisCardDefinition(
                 id: new CardId('e167'),
@@ -8209,6 +8376,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_CHILD,
                 ],
+                gewichtung: 4,
             ),
             "e168" => new EreignisCardDefinition(
                 id: new CardId('e168'),
@@ -8228,6 +8396,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_CHILD,
                 ],
+                gewichtung: 4,
             ),
             "e169" => new EreignisCardDefinition(
                 id: new CardId('e169'),
@@ -8247,6 +8416,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_NO_CHILD,
                 ],
+                gewichtung: 10,
             ),
             "e170" => new EreignisCardDefinition(
                 id: new CardId('e170'),
@@ -8265,6 +8435,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e171" => new EreignisCardDefinition(
                 id: new CardId('e171'),
@@ -8282,6 +8453,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e172" => new EreignisCardDefinition(
                 id: new CardId('e172'),
@@ -8300,6 +8472,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 4,
             ),
             "e173" => new EreignisCardDefinition(
                 id: new CardId('e173'),
@@ -8318,6 +8491,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e174" => new EreignisCardDefinition(
                 id: new CardId('e174'),
@@ -8336,6 +8510,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e175" => new EreignisCardDefinition(
                 id: new CardId('e175'),
@@ -8356,6 +8531,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e176" => new EreignisCardDefinition(
                 id: new CardId('e176'),
@@ -8376,6 +8552,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e177" => new EreignisCardDefinition(
                 id: new CardId('e177'),
@@ -8396,6 +8573,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e178" => new EreignisCardDefinition(
                 id: new CardId('e178'),
@@ -8417,6 +8595,7 @@ final class CardFinder
                     EreignisPrerequisitesId::HAS_JOB,
                     EreignisPrerequisitesId::HAS_CHILD,
                 ],
+                gewichtung: 4,
             ),
             "e179" => new EreignisCardDefinition(
                 id: new CardId('e179'),
@@ -8438,6 +8617,7 @@ final class CardFinder
                     EreignisPrerequisitesId::HAS_JOB,
                     EreignisPrerequisitesId::HAS_CHILD,
                 ],
+                gewichtung: 4,
             ),
             "e180" => new EreignisCardDefinition(
                 id: new CardId('e180'),
@@ -8458,6 +8638,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e181" => new EreignisCardDefinition(
                 id: new CardId('e181'),
@@ -8478,6 +8659,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e182" => new EreignisCardDefinition(
                 id: new CardId('e182'),
@@ -8495,6 +8677,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e183" => new EreignisCardDefinition(
                 id: new CardId('e183'),
@@ -8512,6 +8695,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e184" => new EreignisCardDefinition(
                 id: new CardId('e184'),
@@ -8534,6 +8718,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e185" => new EreignisCardDefinition(
                 id: new CardId('e185'),
@@ -8556,6 +8741,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e186" => new EreignisCardDefinition(
                 id: new CardId('e186'),
@@ -8573,6 +8759,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 4,
             ),
             "e187" => new EreignisCardDefinition(
                 id: new CardId('e187'),
@@ -8590,6 +8777,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e188" => new EreignisCardDefinition(
                 id: new CardId('e188'),
@@ -8607,6 +8795,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e189" => new EreignisCardDefinition(
                 id: new CardId('e189'),
@@ -8625,6 +8814,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e190" => new EreignisCardDefinition(
                 id: new CardId('e190'),
@@ -8645,6 +8835,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e191" => new EreignisCardDefinition(
                 id: new CardId('e191'),
@@ -8662,6 +8853,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e192" => new EreignisCardDefinition(
                 id: new CardId('e192'),
@@ -8679,6 +8871,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e193" => new EreignisCardDefinition(
                 id: new CardId('e193'),
@@ -8696,6 +8889,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e194" => new EreignisCardDefinition(
                 id: new CardId('e194'),
@@ -8713,6 +8907,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e195" => new EreignisCardDefinition(
                 id: new CardId('e195'),
@@ -8730,6 +8925,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e196" => new EreignisCardDefinition(
                 id: new CardId('e196'),
@@ -8747,6 +8943,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e197" => new EreignisCardDefinition(
                 id: new CardId('e197'),
@@ -8766,6 +8963,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e198" => new EreignisCardDefinition(
                 id: new CardId('e198'),
@@ -8783,6 +8981,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e199" => new EreignisCardDefinition(
                 id: new CardId('e199'),
@@ -8802,6 +9001,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e200" => new EreignisCardDefinition(
                 id: new CardId('e200'),
@@ -8821,6 +9021,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e201" => new EreignisCardDefinition(
                 id: new CardId('e201'),
@@ -8838,6 +9039,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e202" => new EreignisCardDefinition(
                 id: new CardId('e202'),
@@ -8855,6 +9057,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e203" => new EreignisCardDefinition(
                 id: new CardId('e203'),
@@ -8872,6 +9075,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e204" => new EreignisCardDefinition(
                 id: new CardId('e204'),
@@ -8889,6 +9093,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e205" => new EreignisCardDefinition(
                 id: new CardId('e205'),
@@ -8906,6 +9111,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e206" => new EreignisCardDefinition(
                 id: new CardId('e206'),
@@ -8923,6 +9129,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 5,
             ),
             "e207" => new EreignisCardDefinition(
                 id: new CardId('e207'),
@@ -8941,6 +9148,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e208" => new EreignisCardDefinition(
                 id: new CardId('e208'),
@@ -8960,6 +9168,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_CHILD,
                 ],
+                gewichtung: 4,
             ),
             "e209" => new EreignisCardDefinition(
                 id: new CardId('e209'),
@@ -8979,6 +9188,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_NO_CHILD,
                 ],
+                gewichtung: 10,
             ),
             "e210" => new EreignisCardDefinition(
                 id: new CardId('e210'),
@@ -8997,6 +9207,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e211" => new EreignisCardDefinition(
                 id: new CardId('e211'),
@@ -9016,6 +9227,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_CHILD,
                 ],
+                gewichtung: 4,
             ),
             "e212" => new EreignisCardDefinition(
                 id: new CardId('e212'),
@@ -9034,6 +9246,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e213" => new EreignisCardDefinition(
                 id: new CardId('e213'),
@@ -9052,6 +9265,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 4,
             ),
             "e214" => new EreignisCardDefinition(
                 id: new CardId('e214'),
@@ -9069,6 +9283,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e215" => new EreignisCardDefinition(
                 id: new CardId('e215'),
@@ -9087,6 +9302,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 4,
             ),
             "e216" => new EreignisCardDefinition(
                 id: new CardId('e216'),
@@ -9105,6 +9321,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e217" => new EreignisCardDefinition(
                 id: new CardId('e217'),
@@ -9123,6 +9340,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e218" => new EreignisCardDefinition(
                 id: new CardId('e218'),
@@ -9140,6 +9358,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e219" => new EreignisCardDefinition(
                 id: new CardId('e219'),
@@ -9161,6 +9380,7 @@ final class CardFinder
                     EreignisPrerequisitesId::HAS_JOB,
                     EreignisPrerequisitesId::HAS_CHILD,
                 ],
+                gewichtung: 4,
             ),
             "e220" => new EreignisCardDefinition(
                 id: new CardId('e220'),
@@ -9181,6 +9401,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e221" => new EreignisCardDefinition(
                 id: new CardId('e221'),
@@ -9201,6 +9422,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_CHILD,
                 ],
+                gewichtung: 4,
             ),
             "e222" => new EreignisCardDefinition(
                 id: new CardId('e222'),
@@ -9221,6 +9443,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e223" => new EreignisCardDefinition(
                 id: new CardId('e223'),
@@ -9241,6 +9464,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e224" => new EreignisCardDefinition(
                 id: new CardId('e224'),
@@ -9261,6 +9485,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e225" => new EreignisCardDefinition(
                 id: new CardId('e225'),
@@ -9278,6 +9503,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e226" => new EreignisCardDefinition(
                 id: new CardId('e226'),
@@ -9300,6 +9526,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e227" => new EreignisCardDefinition(
                 id: new CardId('e227'),
@@ -9322,6 +9549,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e228" => new EreignisCardDefinition(
                 id: new CardId('e228'),
@@ -9339,6 +9567,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e229" => new EreignisCardDefinition(
                 id: new CardId('e229'),
@@ -9356,6 +9585,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e230" => new EreignisCardDefinition(
                 id: new CardId('e230'),
@@ -9376,6 +9606,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e231" => new EreignisCardDefinition(
                 id: new CardId('e231'),
@@ -9393,6 +9624,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e232" => new EreignisCardDefinition(
                 id: new CardId('e232'),
@@ -9410,6 +9642,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e233" => new EreignisCardDefinition(
                 id: new CardId('e233'),
@@ -9427,6 +9660,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e234" => new EreignisCardDefinition(
                 id: new CardId('e234'),
@@ -9444,6 +9678,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e235" => new EreignisCardDefinition(
                 id: new CardId('e235'),
@@ -9461,6 +9696,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e236" => new EreignisCardDefinition(
                 id: new CardId('e236'),
@@ -9478,6 +9714,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e237" => new EreignisCardDefinition(
                 id: new CardId('e237'),
@@ -9496,6 +9733,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e238" => new EreignisCardDefinition(
                 id: new CardId('e238'),
@@ -9513,6 +9751,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e239" => new EreignisCardDefinition(
                 id: new CardId('e239'),
@@ -9532,6 +9771,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
+                gewichtung: 1,
             ),
             "e240" => new EreignisCardDefinition(
                 id: new CardId('e240'),
@@ -9549,6 +9789,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e241" => new EreignisCardDefinition(
                 id: new CardId('e241'),
@@ -9567,6 +9808,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e242" => new EreignisCardDefinition(
                 id: new CardId('e242'),
@@ -9585,6 +9827,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e243" => new EreignisCardDefinition(
                 id: new CardId('e243'),
@@ -9602,6 +9845,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e244" => new EreignisCardDefinition(
                 id: new CardId('e244'),
@@ -9619,6 +9863,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e245" => new EreignisCardDefinition(
                 id: new CardId('e245'),
@@ -9636,6 +9881,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 4,
             ),
             "e246" => new EreignisCardDefinition(
                 id: new CardId('e246'),
@@ -9653,6 +9899,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "e247" => new EreignisCardDefinition(
                 id: new CardId('e247'),
@@ -9670,6 +9917,7 @@ final class CardFinder
                 ),
                 ereignisRequirementIds: [
                 ],
+                gewichtung: 1,
             ),
             "wb1" => new WeiterbildungCardDefinition(
                 id: new CardId('wb1'),
@@ -10122,6 +10370,30 @@ final class CardFinder
     {
         return array_filter($this->cards, fn($card) => $card->getCategory()->value === $categoryId->value &&
             $card->getPhase()->looselyEquals($phaseId));
+    }
+
+    /**
+     * Returns all cards that match the Category and Lebenszielphase. LebenszielPhaseId::ANY_PHASE is a special case
+     * and matches all other phases. @see LebenszielPhaseId::looselyEquals()
+     * Also increases the amount of cards with Gewichtung > 1 (as they should have a higher probability)
+     * @param CategoryId $categoryId
+     * @param LebenszielPhaseId $phaseId
+     * @return EreignisCardDefinition[]
+     */
+    public function getEreignisCardDefinitionsByCategoryAndPhase(CategoryId $categoryId, LebenszielPhaseId $phaseId): array
+    {
+        $filteredCards = array_filter($this->cards, fn($card) =>
+            $card->getCategory()->value === $categoryId->value &&
+            $card->getPhase()->looselyEquals($phaseId) &&
+            $card instanceof EreignisCardDefinition
+        );
+        $cardsWithGewichtung = array_filter($filteredCards, fn($card) => $card->getGewichtung() !== 1);
+        foreach ($cardsWithGewichtung as $card) {
+            for ($gewichtung = $card->getGewichtung(); $gewichtung > 1; $gewichtung--) {
+                $filteredCards[] = $card;
+            }
+        }
+        return $filteredCards;
     }
 
     /**
