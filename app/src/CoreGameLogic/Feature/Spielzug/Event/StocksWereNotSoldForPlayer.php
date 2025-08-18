@@ -6,9 +6,11 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\LogEntry;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\Loggable;
 use Domain\CoreGameLogic\PlayerId;
 
-class StocksWereNotSoldForPlayer implements GameEventInterface, CommandInterface
+class StocksWereNotSoldForPlayer implements GameEventInterface, CommandInterface, Loggable
 {
     /**
      * @param PlayerId $playerId
@@ -35,5 +37,13 @@ class StocksWereNotSoldForPlayer implements GameEventInterface, CommandInterface
     public function getPlayerId(): PlayerId
     {
         return $this->playerId;
+    }
+
+    public function getLogEntry(): LogEntry
+    {
+        return new LogEntry(
+            playerId: $this->playerId,
+            text: "verkauft keine Aktien",
+        );
     }
 }

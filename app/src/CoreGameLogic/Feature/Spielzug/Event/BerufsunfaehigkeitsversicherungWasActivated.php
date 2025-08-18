@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\LogEntry;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\Loggable;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 
-final readonly class BerufsunfaehigkeitsversicherungWasActivated implements GameEventInterface
+final readonly class BerufsunfaehigkeitsversicherungWasActivated implements GameEventInterface, Loggable
 {
     public function __construct(
         public PlayerId $playerId,
@@ -34,5 +36,13 @@ final readonly class BerufsunfaehigkeitsversicherungWasActivated implements Game
             'gehalt' => $this->gehalt,
             'year' => $this->year,
         ];
+    }
+
+    public function getLogEntry(): LogEntry
+    {
+        return new LogEntry(
+            playerId: $this->playerId,
+            text: "bekommt zum Jahresende " . $this->gehalt->value . " € von der Berufsunfähigkeitsversicherung"
+        );
     }
 }

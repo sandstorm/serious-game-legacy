@@ -7,12 +7,14 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\LoanData;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\LogEntry;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\Loggable;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 
-class LoanWasTakenOutForPlayer implements GameEventInterface, ProvidesResourceChanges
+class LoanWasTakenOutForPlayer implements GameEventInterface, ProvidesResourceChanges, Loggable
 {
     public function __construct(
         public PlayerId $playerId,
@@ -51,5 +53,14 @@ class LoanWasTakenOutForPlayer implements GameEventInterface, ProvidesResourceCh
             );
         }
         return new ResourceChanges();
+    }
+
+    public function getLogEntry(): LogEntry
+    {
+        return new LogEntry(
+            playerId: $this->playerId,
+            text: "nimmt einen Kredit auf",
+            resourceChanges: $this->getResourceChanges($this->playerId),
+        );
     }
 }
