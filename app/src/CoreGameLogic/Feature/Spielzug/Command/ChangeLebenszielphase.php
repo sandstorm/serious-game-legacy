@@ -10,13 +10,16 @@ use Domain\CoreGameLogic\PlayerId;
 final readonly class ChangeLebenszielphase implements CommandInterface
 {
     public static function create(
-    PlayerId $playerId,
-): ChangeLebenszielphase {
-    return new self($playerId);
-}
+        PlayerId $playerId,
+    ): ChangeLebenszielphase
+    {
+        return new self($playerId);
+    }
+
     private function __construct(
         public PlayerId $playerId
-    ) {
+    )
+    {
 
     }
 }

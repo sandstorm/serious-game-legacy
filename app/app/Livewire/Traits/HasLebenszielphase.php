@@ -33,6 +33,10 @@ trait HasLebenszielphase
 
         $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create($this->myself));
         $this->isChangeLebenszielphaseVisible = true;
+        $this->showNotification(
+            "Die Lebenszielphase wurde erfolgreich gewechselt.",
+            NotificationTypeEnum::INFO
+        );
         $this->broadcastNotify();
     }
 }
