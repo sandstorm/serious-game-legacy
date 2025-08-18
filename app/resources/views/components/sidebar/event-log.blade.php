@@ -1,5 +1,5 @@
 <div class="sidebar__event-log">
-    <h2>Ereignisprotokoll:</h2>
+    <h2 class="sidebar__event-log-heading">Ereignisprotokoll:</h2>
     <ul @class(["sidebar__event-log-entries", $isPlayersTurn ? "sidebar__event-log-entries--is-players-turn": ""])>
         @foreach(array_reverse($this->getLogEntriesForPlayerLog()) as $logEntry)
             <li class="sidebar__event-log-entry">

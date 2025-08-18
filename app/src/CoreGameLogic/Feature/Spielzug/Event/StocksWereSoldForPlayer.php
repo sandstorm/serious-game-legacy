@@ -6,14 +6,16 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesStockAmountChanges;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\LogEntry;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\StockAmountChanges;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\Loggable;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\StockType;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
-class StocksWereSoldForPlayer implements GameEventInterface, ProvidesResourceChanges, ProvidesStockAmountChanges
+class StocksWereSoldForPlayer implements GameEventInterface, ProvidesResourceChanges, ProvidesStockAmountChanges, Loggable
 {
     /**
      * @param PlayerId $playerId
@@ -73,5 +75,14 @@ class StocksWereSoldForPlayer implements GameEventInterface, ProvidesResourceCha
             );
         }
         return new StockAmountChanges();
+    }
+
+    public function getLogEntry(): LogEntry
+    {
+        return new LogEntry(
+            playerId: $this->playerId,
+            text: "verkauft " . $this->amount . " '" . $this->stockType->toPrettyString() . "' Aktien",
+            resourceChanges: $this->getResourceChanges($this->playerId),
+        );
     }
 }

@@ -57,7 +57,7 @@ final readonly class LebenszielphaseWasChanged implements GameEventInterface, Pr
     {
         return new LogEntry(
             playerId: $this->playerId,
-            text: "wechselt zu lebenszielphase'" . $this->currentPhase->value . "' an",
+            text: "wechselt zu lebenszielphase'" . $this->currentPhase->value . "'",
             resourceChanges: $this->resourceChanges,
         );
     }

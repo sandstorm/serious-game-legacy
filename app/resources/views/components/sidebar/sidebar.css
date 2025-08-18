@@ -23,6 +23,10 @@
 }
 
 .sidebar__event-log {
+    .sidebar__event-log-heading {
+        font-size: inherit;
+        margin-bottom: 0;
+    }
     .sidebar__event-log-entries {
         display: flex;
         flex-direction: column-reverse;
@@ -32,14 +36,15 @@
         background: linear-gradient(180deg, rgba(77, 72, 62, 1) 0%, rgba(125, 125, 124, 1) 100% );
         padding: 0;
         overflow-y: scroll;
-        max-height: 290px;
+        height: 320px;
+        margin: 4px 0 3px;
     }
     .sidebar__event-log-entries--is-players-turn {
-        max-height: 120px;
+        max-height: 100px;
     }
     .sidebar__event-log-entry {
         font-size: var(--font-size-xs);
-        padding: 5px;
+        padding: 2px 5px;
         list-style: none;
 
         .event-log-entry__player-name.player-color-1 {
