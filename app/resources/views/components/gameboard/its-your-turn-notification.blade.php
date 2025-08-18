@@ -1,14 +1,14 @@
-@extends ('components.modal.modal', ['type' => "mandatory"])
+@extends ('components.modal.mandatory-modal')
 
-@section('icon')
+@section('icon_mandatory')
     <i class="icon-info" aria-hidden="true"></i>
 @endsection
 
-@section('content')
+@section('content_mandatory')
     <h3>Du bist am Zug!</h3>
 @endsection
 
-@section('footer')
+@section('footer_mandatory')
     <button type="button"
             @class([
                 "button",

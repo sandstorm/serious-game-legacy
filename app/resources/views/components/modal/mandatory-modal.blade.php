@@ -6,25 +6,25 @@
 >
     <div class="modal__backdrop"></div>
     <div class="modal__content">
-        @hasSection('icon')
+        @hasSection('icon_mandatory')
             <div class="modal__icon">
-                @yield('icon')
+                @yield('icon_mandatory')
             </div>
         @endif
 
-        @hasSection('title')
+        @hasSection('title_mandatory')
             <div class="modal__header">
-                @yield('title')
+                @yield('title_mandatory')
             </div>
         @endif
 
         <div class="modal__body">
-            @yield('content')
+            @yield('content_mandatory')
         </div>
 
-        @hasSection('footer')
+        @hasSection('footer_mandatory')
             <footer class="modal__actions">
-                @yield('footer')
+                @yield('footer_mandatory')
             </footer>
         @endif
     </div>
