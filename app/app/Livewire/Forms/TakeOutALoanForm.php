@@ -50,14 +50,14 @@ class TakeOutALoanForm extends Form
             ],
             'totalRepayment' => [
                 'required', 'numeric', function ($attribute, $value, $fail) use ($repaymentPeriod) {
-                    if ($this->totalRepayment !== LoanCalculator::getCalculatedTotalRepayment($this->loanAmount, $this->zinssatz)) {
+                    if (!LoanCalculator::equals($this->totalRepayment, LoanCalculator::getCalculatedTotalRepayment($this->loanAmount, $this->zinssatz))) {
                         $fail("Die Rückzahlung muss dem Kreditbetrag multipliziert mit dem Zinssatz geteilt durch $repaymentPeriod entsprechen.");
                     }
                 }
             ],
             'repaymentPerKonjunkturphase' => [
                 'required', 'numeric', function ($attribute, $value, $fail) use ($repaymentPeriod) {
-                    if ($this->repaymentPerKonjunkturphase !== LoanCalculator::getCalculatedRepaymentPerKonjunkturphase($this->loanAmount, $this->zinssatz)) {
+                    if (!LoanCalculator::equals($this->repaymentPerKonjunkturphase, LoanCalculator::getCalculatedRepaymentPerKonjunkturphase($this->loanAmount, $this->zinssatz))) {
                         $fail("Die Rückzahlung pro Runde muss der Rückzahlungssumme geteilt durch $repaymentPeriod entsprechen.");
                     }
                 }
@@ -75,14 +75,9 @@ class TakeOutALoanForm extends Form
         $this->generalError = '';
     }
 
-    public function getCalculatedTotalRepayment(): float
-    {
-        $repaymentPeriod = Configuration::REPAYMENT_PERIOD;
-        return $this->loanAmount * (1 + $this->zinssatz / $repaymentPeriod);
-    }
 
     public function getCalculatedRepaymentPerKonjunkturphase(): float
     {
-        return $this->getCalculatedTotalRepayment() / Configuration::REPAYMENT_PERIOD;
+        return LoanCalculator::getCalculatedRepaymentPerKonjunkturphase($this->loanAmount, $this->zinssatz);
     }
 }

@@ -25,7 +25,7 @@ class PlayerListPlayerDto
         public LebenszielPhaseDefinition $phaseDefinition,
         public LebenszielDefinition      $lebenszielDefinition,
         public MoneyAmount               $sumOfInvestments,
-        public MoneyAmount               $sumOfLoans,
+        public MoneyAmount               $annualExpensesForAllLoans,
         public ?JobCardDefinition        $job,
         public MoneyAmount               $gehalt,
         public MoneyAmount               $guthaben,

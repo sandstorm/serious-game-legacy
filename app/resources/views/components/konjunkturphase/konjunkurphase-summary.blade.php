@@ -30,7 +30,7 @@
         <tr>
             <td class="konjunkturphase-summary-table__empty-column"></td>
             <td class="konjunkturphase-summary-table__name-column">Kredite</td>
-            <td class="konjunkturphase-summary-table__value-column">{!! $moneySheet->sumOfAllLoans->formatWithIcon() !!}</td>
+            <td class="konjunkturphase-summary-table__value-column">{!! $moneySheet->annualExpensesForAllLoans->formatWithIcon() !!}</td>
         </tr>
         <tr>
             <td class="konjunkturphase-summary-table__empty-column"></td>

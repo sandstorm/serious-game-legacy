@@ -16,7 +16,7 @@ class MoneySheet
         public MoneyAmount $gehalt,
         public MoneyAMount $totalFromPlayerInput,
         public MoneyAmount $totalInsuranceCost,
-        public MoneyAmount $sumOfAllLoans,
+        public MoneyAmount $annualExpensesForAllLoans,
         public MoneyAmount $sumOfAllAssets,
         public MoneyAmount $annualIncome,
         public MoneyAmount $annualExpenses,

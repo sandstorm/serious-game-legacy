@@ -4,7 +4,7 @@
 
 @props([
     'loans' => null,
-    'sumOfLoans' => null,
+    'totalRepaymentValue' => null,
     'sumOfRepaymentsPerRound' => null,
 ])
 
@@ -52,7 +52,7 @@
         <span>Aktueller Zinssatz: {{ KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->modifier }}%</span>
     </div>
     <div class="loans__summary-column">
-        {!! $sumOfLoans->formatWithIcon() !!}
+        {!! $totalRepaymentValue->formatWithIcon() !!}
         <span>Summe Rückzahlungen</span>
     </div>
     <div class="loans__summary-column">
