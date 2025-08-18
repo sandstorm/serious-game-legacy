@@ -6,9 +6,9 @@
     'playerId' => null
 ])
 
-<div class="sidebar">
+<div class="sidebar" x-data="{ eventLogOpen: false }" :class="eventLogOpen ? 'sidebar--event-log-open' : ''">
     <div class="sidebar__header">
-        <button class="sidebar__lebensziel button button--type-text" title="Lebensziel anzeigen" wire:click="showPlayerLebensziel('{{ $playerId }}')">
+        <button class="button button--type-text" title="Lebensziel anzeigen" wire:click="showPlayerLebensziel('{{ $playerId }}')">
             <strong>Lebensziel:</strong>
             {{ PlayerState::getLebenszielDefinitionForPlayer($gameEvents, $playerId)->name }}
             <i class="icon-info" aria-hidden="true"></i>
@@ -21,10 +21,12 @@
         </div>
     </div>
 
-    <x-sidebar.event-log :is-players-turn="$this->currentPlayerIsMyself()"/>
+    <div class="sidebar__eventlog">
+        <x-sidebar.event-log />
+    </div>
 
     @if ($this->currentPlayerIsMyself())
-        <div class="sidebar__actions">
+        <div class="sidebar__actions" x-show="!eventLogOpen">
             @if (PlayerState::getJobForPlayer($this->gameEvents, $playerId) !== null)
                 <button class="button button--type-primary" wire:click="showIncomeTab('salary')">
                     Mein Job. {!! PlayerState::getCurrentGehaltForPlayer($this->gameEvents, $playerId)->format() !!}

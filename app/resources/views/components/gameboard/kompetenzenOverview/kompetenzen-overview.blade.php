@@ -34,11 +34,13 @@
                     ]) wire:click="showMoneySheet()">
                         {!! PlayerState::getGuthabenForPlayer($gameEvents, $playerId)->format() !!}
 
-                        @if(MoneySheetState::doesMoneySheetRequirePlayerAction($gameEvents, $playerId))
-                            <div class="moneysheet__action-required"><span class="sr-only">Berechnung erforderlich</span></div>
-                        @else
-                            <i class="icon-pencil-2" aria-hidden="true"></i>
-                        @endif
+                        <div @class([
+                                'kompetenzen-overview__action-required',
+                                MoneySheetState::doesMoneySheetRequirePlayerAction($gameEvents, $playerId) ? 'kompetenzen-overview__action-required--active' : ''
+                            ])
+                        >
+                            <i class="icon-pencil" aria-hidden="true"></i> <span class="sr-only">Berechnung erforderlich</span>
+                        </div>
                     </button>
                 </div>
 

@@ -58,16 +58,32 @@
         font-size: var(--font-size-xl);
     }
 
-    i {
+    > i {
         position: absolute;
         top: -8px;
         right: var(--spacing-100);
     }
+}
 
-    .moneysheet__action-required {
-        height: 14px;
-        width: 14px;
-        right: var(--spacing-100);
-        top: -7px;
+.kompetenzen-overview__action-required {
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    right: var(--spacing-100);
+    top: -8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--color-primary-dark);
+    border-radius: 50%;
+
+    i {
+        color: var(--color-primary-fg);
+        font-size: 12px;
+    }
+
+    &.kompetenzen-overview__action-required--active {
+        background-color: var(--color-error);
     }
 }
