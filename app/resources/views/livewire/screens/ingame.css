@@ -13,7 +13,7 @@
 .game__header {
     grid-area: header;
     position: relative;
-    min-height: var(--header-height);
+    height: var(--header-height);
 }
 
 .game__content {
@@ -23,6 +23,8 @@
 .game__aside {
     grid-area: aside;
     padding: var(--spacing-100);
+    height: calc(100dvh - var(--header-height));
+    overflow: hidden;
 
     background-image: radial-gradient(75% 75% at 50% 50%, #ECEEF6 0%, #ECF5F4 100%);
 }
