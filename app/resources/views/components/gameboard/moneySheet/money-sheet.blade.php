@@ -1,3 +1,5 @@
+@use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
+
 @props(['moneySheet' => null])
 
 <div class="moneysheet">
@@ -65,6 +67,10 @@
     </button>
 
     <div class="moneysheet__information">
+        <div class="text-align--center font-size--sm">Dein Kontostand</div>
+        <div class="badge-with-background font-size--lg">
+            {!! PlayerState::getGuthabenForPlayer($this->gameEvents, $this->myself)->format() !!}
+        </div>
         <table>
             <thead>
             <tr>

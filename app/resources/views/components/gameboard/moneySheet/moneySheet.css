@@ -19,10 +19,6 @@
             }
         }
     }
-
-    .badge-with-background {
-        width: 100%;
-    }
 }
 
 .moneysheet__income {
@@ -60,6 +56,14 @@
 .moneysheet__information {
     grid-area: information;
     padding-top: var(--spacing-100);
+
+    table {
+        font-size: var(--font-size-base);
+
+        thead {
+           height: auto;
+        }
+    }
 }
 
 .moneysheet__expenses-sum {
