@@ -156,7 +156,7 @@ trait HasMoneySheet
             gehalt: PlayerState::getCurrentGehaltForPlayer($this->gameEvents, $playerId),
             totalFromPlayerInput: MoneySheetState::calculateTotalFromPlayerInput($this->gameEvents, $playerId),
             totalInsuranceCost: new MoneyAmount(-1 * MoneySheetState::getCostOfAllInsurances($this->gameEvents, $playerId)->value),
-            sumOfAllLoans: MoneySheetState::getSumOfAllLoansForPlayer($this->gameEvents, $playerId),
+            annualExpensesForAllLoans: new MoneyAmount(-1 * MoneySheetState::getAnnualExpensesForAllLoans($this->gameEvents, $playerId)->value),
             sumOfAllAssets: PlayerState::getDividendForAllStocksForPlayer($this->gameEvents, $playerId), // TODO is it correct to use dividend here?
             annualIncome: MoneySheetState::getAnnualIncomeForPlayer($this->gameEvents, $playerId),
             annualExpenses: new MoneyAmount(-1 * MoneySheetState::getAnnualExpensesForPlayer($this->gameEvents, $playerId)->value),

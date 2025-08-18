@@ -42,7 +42,7 @@
 
         <div class="form__group take-out-loan__sum">
             <label for="totalRepayment">Rückzahlungssumme</label>
-            <x-form.textfield wire:model="takeOutALoanForm.totalRepayment" id="totalRepayment" name="totalRepayment" type="number" min="1" step="0.1" />
+            <x-form.textfield wire:model="takeOutALoanForm.totalRepayment" id="totalRepayment" name="totalRepayment" type="number" min="1" step="0.01" />
             @error('takeOutALoanForm.totalRepayment') <span class="form__error">{{ $message }}</span> @enderror
             <p>
                 Rückzahlungssumme = <br />
@@ -53,7 +53,7 @@
 
         <div class="form__group take-out-loan__repayment">
             <label for="repaymentPerKonjunkturphase">Rückzahlung pro Runde</label>
-            <x-form.textfield wire:model="takeOutALoanForm.repaymentPerKonjunkturphase" id="repaymentPerKonjunkturphase" name="repaymentPerKonjunkturphase" type="number" min="1" step="0.1" />
+            <x-form.textfield wire:model="takeOutALoanForm.repaymentPerKonjunkturphase" id="repaymentPerKonjunkturphase" name="repaymentPerKonjunkturphase" type="number" min="1" step="0.01" />
             @error('takeOutALoanForm.repaymentPerKonjunkturphase') <span class="form__error">{{ $message }}</span> @enderror
             <p>
                 Der Kredit wird innerhalb von <strong>{{ Configuration::REPAYMENT_PERIOD }}</strong> Jahren abbezahlt!

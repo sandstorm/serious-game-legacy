@@ -33,7 +33,7 @@
             <tr>
                 <td>Kredite</td>
                 <td class="text-align--right">
-                    {!! $moneySheet->sumOfAllLoans->formatWithIcon() !!}
+                    {!! $moneySheet->annualExpensesForAllLoans->formatWithIcon() !!}
                 </td>
             </tr>
             <tr>

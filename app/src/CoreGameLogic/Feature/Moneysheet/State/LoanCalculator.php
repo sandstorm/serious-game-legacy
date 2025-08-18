@@ -20,11 +20,16 @@ class LoanCalculator
     public static function getCalculatedTotalRepayment(float $loanAmount, float $zinssatz): float
     {
         $repaymentPeriod = Configuration::REPAYMENT_PERIOD;
-        return $loanAmount * (1 + $zinssatz / $repaymentPeriod);
+        return round($loanAmount * (1 + $zinssatz / $repaymentPeriod), 2);
     }
 
     public static function getCalculatedRepaymentPerKonjunkturphase(float $loanAmount, float $zinssatz): float
     {
-        return self::getCalculatedTotalRepayment($loanAmount, $zinssatz) / Configuration::REPAYMENT_PERIOD;
+        return round(self::getCalculatedTotalRepayment($loanAmount, $zinssatz) / Configuration::REPAYMENT_PERIOD, 2);
+    }
+
+    public static function equals(float $value1, float $value2): bool
+    {
+        return abs($value1 - $value2) < 0.01;
     }
 }

@@ -381,6 +381,16 @@ class MoneySheetState
         return new MoneyAmount($sum);
     }
 
+    public static function getTotalRepaymentValueForAllLoans(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
+    {
+        $loans = self::getLoansForPlayer($gameEvents, $playerId);
+        $total = 0;
+        foreach ($loans as $loan) {
+            $total = $total + $loan->loanData->totalRepayment->value;
+        }
+        return new MoneyAmount($total);
+    }
+
     /**
      * @param GameEvents $gameEvents
      * @param PlayerId $playerId
