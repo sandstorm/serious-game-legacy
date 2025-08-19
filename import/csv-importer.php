@@ -68,6 +68,19 @@ function printKompetenzbereichDefinition(string $type, string $maxKompetenzstein
 }
 
 
+/**
+ * @param string $type
+ * @param string $modifierValue
+ * @return void
+ */
+function printAuswirkungen(string $type, string $modifierValue):void
+{
+    echo "\t\t" . "new AuswirkungDefinition(\n";
+    echo "\t\t\t" . "scope: AuswirkungScopeEnum::" . $type . ",\n";
+    echo "\t\t\t" . "modifier: " . $modifierValue . "\n";
+    echo "\t\t" . "),\n";
+}
+
 /* IMPORT FUNCTIONS */
 
 /**
@@ -340,7 +353,6 @@ function importKonjunkturphasen(): void
         printKompetenzbereichDefinition("SOZIALES_UND_FREIZEIT", $lineArrayWithKeys["maxFreizeitUndSoziales"]);
         printKompetenzbereichDefinition("INVESTITIONEN", $lineArrayWithKeys["maxInvestitionen"]);
         printKompetenzbereichDefinition("JOBS", $lineArrayWithKeys["maxJobs"]);
-
         echo "\t" . "auswirkungen: [\n";
         if ($lineArrayWithKeys["Zeitsteine"] !== "") printAuswirkungen("ZEITSTEINE", $lineArrayWithKeys["Zeitsteine"]);
         printAuswirkungen("LEBENSERHALTUNGSKOSTEN", $lineArrayWithKeys["Lebenshaltungskosten"]);
@@ -352,6 +364,7 @@ function importKonjunkturphasen(): void
         printAuswirkungen("REAL_ESTATE", $lineArrayWithKeys["Immobilien"]);
         printAuswirkungen("CRYPTO", $lineArrayWithKeys["CryptoKursbonus"]);
         printAuswirkungen("BONUS_INCOME", $lineArrayWithKeys["Bonuseinkommen"]);
+        echo "\t" . "conditionalResourceChanges: [\n";
 
 
 
@@ -360,14 +373,13 @@ function importKonjunkturphasen(): void
     }
 }
 
-function printAuswirkungen(string $type, string $modifierValue):void
+function printConditionalResourceChanges(string $prerequisites, string $resourceChange, string $resourceChangeValue):void
 {
-    echo "\t\t" . "new AuswirkungDefinition(\n";
-    echo "\t\t\t" . "scope: AuswirkungScopeEnum::" . $type . ",\n";
-    echo "\t\t\t" . "modifier: " . $modifierValue . "\n";
+    echo "\t\t" . "new ConditionalResourceChange(\n";
+    echo "\t\t\t" . "prerequisite: EreignisPrerequisitesId::" . $prerequisites . ",\n"; //TODO table with prerequisites for resource changes
+    echo "\t\t\t" . "resourceChanges: new ResourceChanges(" . $resourceChange . ": " . $resourceChangeValue . ")\n"; //TODO table with changeId and changeValue
     echo "\t\t" . "),\n";
 }
-
 
 //importMiniJobCards();
 //importJobCards();
