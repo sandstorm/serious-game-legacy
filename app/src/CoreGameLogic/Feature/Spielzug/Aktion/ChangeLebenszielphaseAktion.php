@@ -35,10 +35,12 @@ class ChangeLebenszielphaseAktion extends Aktion
             throw new RuntimeException('Cannot Change Lebensphase: ' . $result->reason, 1751619852);
         }
         $currentPhaseDefinition = PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($gameEvents, $playerId);
+        $retainedKompetenzsteineInBildungUndKarriere = $currentPhaseDefinition->bildungsKompetenzSlots;
+        $retainedKompetenzsteineInSozialesUndFreizeit = $currentPhaseDefinition->freizeitKompetenzSlots;
         $resourceChanges = new ResourceChanges(
             guthabenChange: new MoneyAmount($currentPhaseDefinition->investitionen->value * -1),
-            bildungKompetenzsteinChange: -1 * PlayerState::getBildungsKompetenzsteine($gameEvents, $playerId),
-            freizeitKompetenzsteinChange: -1 * PlayerState::getFreizeitKompetenzsteine($gameEvents, $playerId),
+            bildungKompetenzsteinChange: -1 * PlayerState::getBildungsKompetenzsteine($gameEvents, $playerId) + $retainedKompetenzsteineInBildungUndKarriere,
+            freizeitKompetenzsteinChange: -1 * PlayerState::getFreizeitKompetenzsteine($gameEvents, $playerId) + $retainedKompetenzsteineInSozialesUndFreizeit,
         );
 
         return GameEventsToPersist::with(

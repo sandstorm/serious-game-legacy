@@ -39,8 +39,8 @@ class LebenszielFinder
                     Dabei möchtest du verschiedenste Selbstversorger-Projekte kennenlernen und Kontakte mit Gleichgesinnten knüpfen. Gestärkt
                     durch dieses Netzwerk wirst du dich schließlich entscheiden, in Kanada deine eigene Farm zu gründen.',
                     investitionen: new MoneyAmount(200000),
-                    bildungsKompetenzSlots: 1,
-                    freizeitKompetenzSlots: 2,
+                    bildungsKompetenzSlots: 2,
+                    freizeitKompetenzSlots: 4,
                 ),
                 new LebenszielPhaseDefinition(
                     lebenszielPhaseId: LebenszielPhaseId::PHASE_3,
@@ -48,8 +48,8 @@ class LebenszielFinder
                     kennenlernen möchten. Durch Führungen und Vorträge verbreitet sich dein Konzept. Wird es dir gelingen, mehr Menschen für ein
                     nachhaltiges, konsumreduziertes Leben zu begeistern?',
                     investitionen: new MoneyAmount(500000),
-                    bildungsKompetenzSlots: 1,
-                    freizeitKompetenzSlots: 2,
+                    bildungsKompetenzSlots: 3,
+                    freizeitKompetenzSlots: 6,
                 ),
             ]
         );
@@ -73,16 +73,16 @@ class LebenszielFinder
                     description: 'Du möchtest die Leitung in dem Aufforstungsprojekt in Niger übernehmen und leitest die Freiwilligen und Angestellten
                     bei der Aufforstung an. Zukünftig sollst du Aufgaben in der Öffentlichkeitsarbeit übernehmen und dein soziales Netzwerk weiter ausbauen.',
                     investitionen: new MoneyAmount(200000),
-                    bildungsKompetenzSlots: 1,
-                    freizeitKompetenzSlots: 2,
+                    bildungsKompetenzSlots: 2,
+                    freizeitKompetenzSlots: 4,
                 ),
                 new LebenszielPhaseDefinition(
                     lebenszielPhaseId: LebenszielPhaseId::PHASE_3,
                     description: 'Um das Projekt weiter auszubauen, braucht es noch mehr Grundkapital. Du bist viel in der Welt unterwegs, um für das
                     Projekt und für den Schutz der Wälder zu werben. Kannst du das Projekt weiter ausbauen und somit noch mehr Aufforstung betreiben?',
                     investitionen: new MoneyAmount(500000),
-                    bildungsKompetenzSlots: 1,
-                    freizeitKompetenzSlots: 2,
+                    bildungsKompetenzSlots: 3,
+                    freizeitKompetenzSlots: 6,
                 ),
             ]
         );
@@ -108,8 +108,8 @@ class LebenszielFinder
                     zu produzieren und erste Mitarbeitende für Entwicklung und Community-Support einzustellen. So können Kooperationen mit Reise-Marken entstehen.
                     Zusätzlich belegst du Kurse zu Vertrags- und Steuerfragen, um die geschäftliche Seite zu meistern.',
                     investitionen: new MoneyAmount(200000),
-                    bildungsKompetenzSlots: 2,
-                    freizeitKompetenzSlots: 1,
+                    bildungsKompetenzSlots: 3,
+                    freizeitKompetenzSlots: 3,
                 ),
                 new LebenszielPhaseDefinition(
                     lebenszielPhaseId: LebenszielPhaseId::PHASE_3,
@@ -117,8 +117,8 @@ class LebenszielFinder
                     Partner-Management. Währenddessen  priorisiert du neue Funktionen, wie etwa Live-Routen oder Gruppen-Challenges. Jetzt gilt es, den frischen
                     Ideenfluss hochzuhalten und die Plattform stabil weiterzuentwickeln.',
                     investitionen: new MoneyAmount(500000),
-                    bildungsKompetenzSlots: 1,
-                    freizeitKompetenzSlots: 2,
+                    bildungsKompetenzSlots: 4,
+                    freizeitKompetenzSlots: 5,
                 ),
             ]
         );
@@ -144,8 +144,8 @@ class LebenszielFinder
                     planst du, dein Netzwerk in Anwaltskammern und Fachverbänden auszubauen, Rhetorik- sowie Verhandlungsseminare zu besuchen und Gesetzesreformen zu
                     verfolgen, um auf dem neuesten Stand zu bleiben.',
                     investitionen: new MoneyAmount(200000),
-                    bildungsKompetenzSlots: 2,
-                    freizeitKompetenzSlots: 1,
+                    bildungsKompetenzSlots: 4,
+                    freizeitKompetenzSlots: 2,
                 ),
                 new LebenszielPhaseDefinition(
                     lebenszielPhaseId: LebenszielPhaseId::PHASE_3,
@@ -153,8 +153,8 @@ class LebenszielFinder
                     Netzwerk und nachweislichen Erfolgen gründest du deine Kanzlei, stellst qualifiziertes Personal ein und etablierst klare Qualitätsstandards. Gelingt
                     es dir, Mandatszahlen und Reputation kontinuierlich zu steigern und die Kanzlei zu einer festen Größe am Markt zu entwickeln?',
                     investitionen: new MoneyAmount(500000),
-                    bildungsKompetenzSlots: 2,
-                    freizeitKompetenzSlots: 1,
+                    bildungsKompetenzSlots: 6,
+                    freizeitKompetenzSlots: 3,
                 ),
             ]
         );
@@ -181,8 +181,8 @@ class LebenszielFinder
                     kennenlernst. Du möchtest nun die Satzung deiner künftigen Stiftung entwerfen, rechtliche Rahmenbedingungen klären, einen Beirat zusammenstellen
                     und wirbst Startkapital bei Förderinstituten ein.',
                     investitionen: new MoneyAmount(200000),
-                    bildungsKompetenzSlots: 1,
-                    freizeitKompetenzSlots: 2,
+                    bildungsKompetenzSlots: 3,
+                    freizeitKompetenzSlots: 3,
                 ),
                 new LebenszielPhaseDefinition(
                     lebenszielPhaseId: LebenszielPhaseId::PHASE_3,
@@ -191,8 +191,8 @@ class LebenszielFinder
                     in der Öffentlichkeit. Kannst du Reichweite und finanzielle Basis so ausbauen, dass die Stiftung langfristig einen spürbaren Beitrag zur
                     demokratischen Kultur leistet?',
                     investitionen: new MoneyAmount(500000),
-                    bildungsKompetenzSlots: 1,
-                    freizeitKompetenzSlots: 2,
+                    bildungsKompetenzSlots: 4,
+                    freizeitKompetenzSlots: 5,
                 ),
             ]
         );
@@ -216,8 +216,8 @@ class LebenszielFinder
                     description: 'Nach deinem Studium startest du deine berufliche Karriere in einer internationalen Umweltorganisation. Du möchtest nun viel Erfahrung sammeln und knüpfst
                     unterschiedliche Kontakte. Mit verschiedenen Weiterbildungen strebst du an, dein Wissen zu vertiefen.',
                     investitionen: new MoneyAmount(200000),
-                    bildungsKompetenzSlots: 2,
-                    freizeitKompetenzSlots: 1,
+                    bildungsKompetenzSlots: 3,
+                    freizeitKompetenzSlots: 3,
                 ),
                 new LebenszielPhaseDefinition(
                     lebenszielPhaseId: LebenszielPhaseId::PHASE_3,
@@ -225,8 +225,8 @@ class LebenszielFinder
                     kannst du auf dein soziales Netzwerk zurückgreifen. Insbesondere in der Aufbauphase investierst du viel Freizeit in die Führung der Umweltorganisation. Kann deine
                     Umweltorganisation langfristig überleben?',
                     investitionen: new MoneyAmount(500000),
-                    bildungsKompetenzSlots: 1,
-                    freizeitKompetenzSlots: 2,
+                    bildungsKompetenzSlots: 4,
+                    freizeitKompetenzSlots: 5,
                 ),
             ]
         );
@@ -251,16 +251,16 @@ class LebenszielFinder
                     Unternehmensstrategien auseinandersetzten. Daher bildest du dich nun in deiner Freizeit selbst weiter, erhältst ein Zertifikat im Bereich
                     Nachhaltigkeitsmanagement und gründest dein eigenes Start-Up für Unternehmensberatung.',
                     investitionen: new MoneyAmount(200000),
-                    bildungsKompetenzSlots: 1,
-                    freizeitKompetenzSlots: 2,
+                    bildungsKompetenzSlots: 3,
+                    freizeitKompetenzSlots: 3,
                 ),
                 new LebenszielPhaseDefinition(
                     lebenszielPhaseId: LebenszielPhaseId::PHASE_3,
                     description: 'Du berätst bereits deine ersten Stammkunden in deinem Start-Up. Um dein Start-Up langfristig noch weiter auszubauen, ist viel
                     Netzwerkarbeit gefragt. Zudem besuchst du weiterhin Fortbildungen, um immer auf dem aktuellen Stand zu bleiben. Wird dein Start-Up langfristig überleben?',
                     investitionen: new MoneyAmount(500000),
-                    bildungsKompetenzSlots: 1,
-                    freizeitKompetenzSlots: 2,
+                    bildungsKompetenzSlots: 4,
+                    freizeitKompetenzSlots: 5,
                 ),
             ]
         );
@@ -284,8 +284,8 @@ class LebenszielFinder
                     description: 'Gemeinsam mit einem kleinen Team baust du einen Prototypen mit wenigen Pilotkursen. Erste Firmen erproben die Plattform und ihre Rückmeldungen
                     fließen in Usability-Verbesserungen und Kursdesign ein. Parallel möchtest du dir Finanzierung über Förderprogramme sichern und rechtliche Rahmenbedingungen aufstellen.',
                     investitionen: new MoneyAmount(200000),
-                    bildungsKompetenzSlots: 1,
-                    freizeitKompetenzSlots: 2,
+                    bildungsKompetenzSlots: 3,
+                    freizeitKompetenzSlots: 3,
                 ),
                 new LebenszielPhaseDefinition(
                     lebenszielPhaseId: LebenszielPhaseId::PHASE_3,
@@ -293,8 +293,8 @@ class LebenszielFinder
                     auf. Kooperationen mit Branchenverbänden und Zertifizierungsstellen erhöhen Reichweite und Vertrauen. Kannst du Nutzerzahlen, Kursqualität und Finanzierung so in Einklang
                     bringen, dass dein Portal dauerhaft eine feste Größe im Weiterbildungsmarkt bleibt?',
                     investitionen: new MoneyAmount(500000),
-                    bildungsKompetenzSlots: 2,
-                    freizeitKompetenzSlots: 1,
+                    bildungsKompetenzSlots: 5,
+                    freizeitKompetenzSlots: 4,
                 ),
             ]
         );
@@ -318,8 +318,8 @@ class LebenszielFinder
                     description: 'Nach ersten Erfolgen im Fitnessstudio startest du eine eigene Online-Plattform mit Videokursen, Ernährungsplänen und limitierten Merchandise-Artikel.
                     Kooperationen mit Sportevents sollen nun für Reichweite sorgen und Feedback aus der Community direkt in neue Formate einfließen.',
                     investitionen: new MoneyAmount(200000),
-                    bildungsKompetenzSlots: 2,
-                    freizeitKompetenzSlots: 1,
+                    bildungsKompetenzSlots: 3,
+                    freizeitKompetenzSlots: 3,
                 ),
                 new LebenszielPhaseDefinition(
                     lebenszielPhaseId: LebenszielPhaseId::PHASE_3,
@@ -327,8 +327,8 @@ class LebenszielFinder
                     heraus und schließt Franchise-Verträge mit Studios im Ausland. Ziel ist es, ein globales Netzwerk aufzubauen, das Training, Lifestyle und Event-Erlebnis nahtlos verbindet.
                     Schaffst du es, die Energie der Marke weltweit lebendig zu halten?',
                     investitionen: new MoneyAmount(500000),
-                    bildungsKompetenzSlots: 1,
-                    freizeitKompetenzSlots: 2,
+                    bildungsKompetenzSlots: 4,
+                    freizeitKompetenzSlots: 5,
                 ),
             ]
         );
@@ -354,8 +354,8 @@ class LebenszielFinder
                     Vermessungen, Gutachten und Sanierungskonzepte für Gemeinden im Umkreis. Durch termingerechte Planung, transparente Kostenberechnungen und Baustellenbegleitung
                     gewinnst du Vertrauen und möchtest ein kleines Team aus Fachkräften aufbauen. ',
                     investitionen: new MoneyAmount(200000),
-                    bildungsKompetenzSlots: 2,
-                    freizeitKompetenzSlots: 1,
+                    bildungsKompetenzSlots: 4,
+                    freizeitKompetenzSlots: 2,
                 ),
                 new LebenszielPhaseDefinition(
                     lebenszielPhaseId: LebenszielPhaseId::PHASE_3,
@@ -363,8 +363,8 @@ class LebenszielFinder
                     Gleichzeitig bildest du Nachwuchs aus und kooperierst mit Hochschulen. Gelingt es dir, Projekte termingerecht umzusetzen, das Team zu erweitern und deine
                     Planungsgesellschaft als feste Größe in der Region zu verankern?',
                     investitionen: new MoneyAmount(500000),
-                    bildungsKompetenzSlots: 2,
-                    freizeitKompetenzSlots: 1,
+                    bildungsKompetenzSlots: 6,
+                    freizeitKompetenzSlots: 3,
                 ),
             ]
         );

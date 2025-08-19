@@ -359,9 +359,11 @@ describe('getKompetenzenForPlayer', function () {
             ->and(PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($gameEvents, $this->players[0], CategoryId::BILDUNG_UND_KARRIERE))->toBe(0);
     });
 
-    it('resets after phase was changed by player', function () {
+    it('removes excess kompetenzen after phase was changed by player', function () {
         /** @var TestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        $expectedRetainedKompetenzenInBildungUndKarriere = PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($gameEvents, $this->players[0])->bildungsKompetenzSlots;
+        $expectedRetainedKompetenzenInSozialesUndFreizeit = PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($gameEvents, $this->players[0])->freizeitKompetenzSlots;
         expect(PlayerState::getBildungsKompetenzsteine($gameEvents, $this->players[0]))->toEqual(0)
             ->and(PlayerState::getFreizeitKompetenzsteine($gameEvents, $this->players[0]))->toEqual(0);
 
@@ -393,8 +395,8 @@ describe('getKompetenzenForPlayer', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
         // returns 0 for the next phase
-        expect(PlayerState::getBildungsKompetenzsteine($gameEvents, $this->players[0]))->toEqual(0)
-            ->and(PlayerState::getFreizeitKompetenzsteine($gameEvents, $this->players[0]))->toEqual(0);
+        expect(PlayerState::getBildungsKompetenzsteine($gameEvents, $this->players[0]))->toEqual($expectedRetainedKompetenzenInBildungUndKarriere)
+            ->and(PlayerState::getFreizeitKompetenzsteine($gameEvents, $this->players[0]))->toEqual($expectedRetainedKompetenzenInSozialesUndFreizeit);
     });
 });
 
