@@ -6,34 +6,20 @@ namespace Domain\Definitions\Konjunkturphase\ValueObject;
 
 enum AuswirkungScopeEnum: string
 {
-    case ZEITSTEINE = 'Zeitsteine';
-    case LEBENSERHALTUNGSKOSTEN = 'Lebenshaltungskosten';
-    case BILDUNG = 'Bildung & Karriere';
-    case FREIZEIT = 'Freizeit & Soziales';
-    case INVESTITIONEN = 'Investitionen';
-    case ERWEBSEINKOMMEN = 'Erwerbseinkommen';
     case LOANS_INTEREST_RATE = 'Kreditzins';
     case STOCKS_BONUS = 'Aktien Kursbonus';
+    case CRYPTO = 'Crypto Kursbonus';
     case DIVIDEND = 'Dividende';
     case REAL_ESTATE = 'Immobilien';
-    case CRYPTO = 'Crypto Kursbonus';
-    case BONUS_INCOME = 'Bonuseinkommen';
 
     public static function fromString(string $value): self
     {
         return match ($value) {
-            'Zeitsteine' => self::ZEITSTEINE,
-            'Lebenshaltungskosten' => self::LEBENSERHALTUNGSKOSTEN,
-            'Bildung & Karriere' => self::BILDUNG,
-            'Freizeit & Soziales' => self::FREIZEIT,
-            'Investitionen' => self::INVESTITIONEN,
-            'Erwerbseinkommen' => self::ERWEBSEINKOMMEN,
             'Kreditzins' => self::LOANS_INTEREST_RATE,
             'Aktien Kursbonus' => self::STOCKS_BONUS,
+            'Crypto Kursbonus' => self::CRYPTO,
             'Dividende' => self::DIVIDEND,
             'Immobilien' => self::REAL_ESTATE,
-            'Crypto Kursbonus' => self::CRYPTO,
-            'Bonuseinkommen' => self::BONUS_INCOME,
             default => throw new \InvalidArgumentException("Invalid value: $value"),
         };
     }

@@ -162,10 +162,6 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
             modifierParameters: new ModifierParameters(),
             auswirkungen: [
                 new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::ZEITSTEINE,
-                    value: 1,
-                ),
-                new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
                     value: 4
                 ),
@@ -270,10 +266,6 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
             modifierParameters: new ModifierParameters(),
             auswirkungen: [
                 new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::ZEITSTEINE,
-                    value: 1,
-                ),
-                new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
                     value: 4
                 ),
@@ -377,10 +369,6 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
             modifierIds: [],
             modifierParameters: new ModifierParameters(),
             auswirkungen: [
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::ZEITSTEINE,
-                    value: 1,
-                ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
                     value: 4
