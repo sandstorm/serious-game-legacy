@@ -103,7 +103,7 @@ trait HasInvestitionen
         $aktion = new BuyInvestmentsForPlayerAktion(
             $investmentId,
             InvestmentPriceState::getCurrentInvestmentPrice($this->gameEvents, $investmentId),
-            $this->buyInvestmentsForm->amount
+            $this->buyInvestmentsForm->amount ?? 0
         );
         return $aktion->validate($this->myself, $this->gameEvents);
     }
@@ -131,7 +131,17 @@ trait HasInvestitionen
     {
         $this->buyInvestmentsForm->validate();
         $investmentId = InvestmentId::from($investmentId);
-        if (!$this->canBuyInvestments($investmentId)->canExecute) {
+        $validationResult = self::canBuyInvestments($investmentId);
+        if (!$validationResult->canExecute) {
+            $this->showNotification(
+                $validationResult->reason,
+                NotificationTypeEnum::ERROR
+            );
+            return;
+        }
+
+        // Amount should not ever be null, but just in case and to fix phpstan errors
+        if ($this->buyInvestmentsForm->amount === null) {
             return;
         }
 
@@ -168,7 +178,7 @@ trait HasInvestitionen
         $aktion = new SellInvestmentsForPlayerAktion(
             $investmentId,
             InvestmentPriceState::getCurrentInvestmentPrice($this->gameEvents, $investmentId),
-            $this->sellInvestmentsForm->amount
+            $this->sellInvestmentsForm->amount ?? 0
         );
         return $aktion->validate($this->myself, $this->gameEvents);
     }
@@ -184,6 +194,11 @@ trait HasInvestitionen
                 $validationResult->reason,
                 NotificationTypeEnum::ERROR
             );
+            return;
+        }
+
+        // Amount should not ever be null, but just in case and to fix phpstan errors
+        if ($this->sellInvestmentsForm->amount === null) {
             return;
         }
 

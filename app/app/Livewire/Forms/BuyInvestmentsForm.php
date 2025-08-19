@@ -10,7 +10,7 @@ use Livewire\Form;
 class BuyInvestmentsForm extends Form
 {
     #[Validate]
-    public int $amount = 0;
+    public ?int $amount = 0;
 
     // public properties needed for validation
     public float $sharePrice = 0;
@@ -26,6 +26,11 @@ class BuyInvestmentsForm extends Form
         return [
             'amount' => [
                 'required', 'numeric', 'min:1', function ($attribute, $value, $fail) {
+                    if ($this->amount === null) {
+                        $fail("Du musst eine Anzahl an Anteilen angeben.");
+                        return;
+                    }
+
                     if ($this->amount * $this->sharePrice > $this->guthaben) {
                         $fail("Du kannst nicht mehr Anteile kaufen, als du dir leisten kannst.");
                     }
