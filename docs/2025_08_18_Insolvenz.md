@@ -1,0 +1,90 @@
+# Insolvenz
+
+## Wann?
+
+- Immer am Ende der Konjunkturphase
+- ~~Spielerin hat/hätte nach CompleteMoneySheetForPlayer einen negativen Betrag auf dem Konto~~
+- ~~->Automatische(?) "Pfändung" (muss noch vor CompleteMoneySheetForPlayer-Event passieren?)~~
+- ~~CompleteMoneySheet nicht verfügbar~~
+- nach CompleteMoneySheet in Übersicht (zusätzliche Buttons/Info) => kann nicht auf "fertig" klicken
+- Optionen:
+    - Kredit aufnehmen (wenn möglich)
+    - Geldanlagen verkaufen
+    - Versicherungen kündigen
+- Geld ~~von Pfändung~~ reicht nicht? => Insolvenz
+
+## ~~Pfändung~~ Geldanlagen verkaufen
+
+- Versicherungen kündigen -> reicht das Geld jetzt?
+    - Ja => CompleteMoneySheetForPlayer
+    - Nein => Investitionen verkaufen?
+- Investitionen verkaufen (Reihenfolge?)
+    - Aktien/Etf/Crypto zum aktuellen Wert
+    - Immobilien zu 80% des Werts
+    - Reicht jetzt?
+        - Ja => Complete...
+        - Nein => Versicherungen kündigen?
+- keine Versicherung und keine Geldanlagen und Geld reicht nicht? => Insolvenz
+- sobald man wieder im plus ist, verschwinden die Optionen und der "ich bin fertig" Button ist wieder da
+
+## Insolvenz
+
+- Lebenshaltungskosten fest auf minValue (je nach Modifier)
+- alle Kredite werden getilgt
+- geht immer 3 Jahre (Schulden werden nicht getrackt), kann nicht eher beendet werden
+- nach 3 Jahren zu Ende
+
+## TODO
+
+- [ ] Shaping
+- [ ] Warnung vor drohender Insolvenz (wenn vor Konjunkturphasenende absehbar -> negativer Kontostand/kein Einkommen und Kontostand < Fixkosten)
+- [ ] Abfrage: Kreditaufnahme oder Verkauf von Geldanlagen (wenn möglich)
+- [ ] Insolvenz:
+    - [ ] Kontostand = 0 €
+    - [ ] alle Kredite werden getilgt (nochmal abklären)
+    - [ ] Lebenshaltungskosten auf minValue
+    - [ ] Unaffordable Ereigniskarten?
+    - [ ] Modifier: max 10.000 € (netto?) vom Job dürfen behalten werden
+    - [ ] Modifier: Ereignisse, die Geldbeträge auszahlen, zahlen nur 50% aus
+    - [ ] Modifier: Kreditsperre
+    - [ ] Modifier: Versicherungssperre
+    - [ ] Lebenshaltungskosten selbst zahlen, wenn möglich, sonst erstattet (komplett oder nur Fehlbetrag?)
+    - [ ] Investitionen: Beschluss von Martin -> erstmal Investitionssperre
+- [ ] Kreditvoraussetzungen nach Insolvenz
+- [ ] UI
+    - [ ] Kontostand in Übersicht (Konjunkturphasenwechsel)
+    - [ ] Abgaben an Insolvenzverwalter explizit in Moneysheet ausweisen
+    - [ ] Buttons
+    - [ ] Erklärungstexte
+    - [ ] Modals?
+
+## Commands, Aktionen, Events, "State"
+
+- nach CompleteMoneySheetForPlayer -> ist Kontostand positiv?
+    - ja: alles fein, weiter wie bisher
+    - nein: neue Optionen (siehe "Zahlungsunfähigkeit")
+    - [ ] MarkPlayerAsReady... braucht `hasPositiveBalanceValidator`
+- "Zahlungsunfähigkeit":
+    - [ ] check: `hasPlayerGeldanlagen` und `hasPlayerInsurances`
+        - ja -> Optionen zum Verkaufen/Kündigen
+        - nein -> "Insolvenz Anmelden" als Option
+- UI: Immer Kontostand mit sichtbar (und auch immer mit aktualisieren)
+- Versicherungen Kündigen
+    - [ ] Refactor: Versicherung wird immer im Voraus für's Jahr bezahlt
+    - [ ] UI: Auflistung der Versicherungen + "Kündigen" Button
+- Geldanlagen Verkaufen
+    - neue Aktion(en), Commands, Events (`sellInvestitionToAvoidInsolvenz`, ...)
+    - kein Einfluss auf Kurse
+    - kostet keinen Zeitstein/keine Slots
+    - kein Prompt für andere Spielende zum Verkaufen
+    - Sonderfall Immobilien: 80% des (Einkaufs-?) Werts
+    - "Alles Verkaufen" als Option?
+    - UI: Liste aller Geldanlagen + "Verkaufen" Butten (+ Input für Anzahl?)
+- Wenn nix mehr zu verkaufen/kündigen -> Button "Insolvenz anmelden"
+    - `FileInsolvenzForPlayer`, `PlayerHasFiledForInsolvenz`
+    - "MarkPlayerAsReady..." sollte jetzt wieder verfügbar sein
+
+## Fragen
+
+- Insolvenz automatisch erkennen?
+    - nicht genug Geldanlagen -> automatisch Insolvenz anstoßen oder trotzdem Spielerin alles einzeln verkaufen lassen, bis der Button kommt
