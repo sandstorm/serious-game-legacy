@@ -10,6 +10,7 @@ class ModifierMapping {
 
 
 /* PRINT FUNCTIONS */
+
 /**
  * @param array $lineArrayWithKeys - array containing the data for one card (one line in the csv)
  * @return void
@@ -49,16 +50,109 @@ function printPhaseAndYear(string $phase, string $year): void
     }
 }
 
+/**
+ * @param string $type
+ * @param string $maxKompetenzsteine
+ * @return void
+ */
+function printKompetenzbereichDefinition(string $type, string $maxKompetenzsteine):void
+{
+    echo "\t\t" . "new KompetenzbereichDefinition(\n";
+    echo "\t\t\t" . "name: CategoryId::" . $type . ",\n";
+    echo "\t\t\t" . "zeitslots: new Zeitslots([\n";
+    echo "\t\t\t\t" . "new ZeitslotsPerPlayer(2, " . $maxKompetenzsteine-1 . "),\n"; //for two players the max Kompetenzsteine are reduced by 1
+    echo "\t\t\t\t" . "new ZeitslotsPerPlayer(3, " . $maxKompetenzsteine . "),\n";
+    echo "\t\t\t\t" . "new ZeitslotsPerPlayer(4, " . $maxKompetenzsteine . "),\n";
+    echo "\t\t\t" . "])\n";
+    echo "\t\t" . "),\n";
+}
+
+/**
+ * @param string $prerequisites
+ * @param string $resourceChange
+ * @param string $value
+ * @return void
+ */
+function printConditionalResourceChanges(string $prerequisites, string $resourceChange, string $value):void
+{
+    echo "\t\t" . "new ConditionalResourceChange(\n";
+    echo "\t\t\t" . "prerequisite: EreignisPrerequisitesId::" . $prerequisites . ",\n";
+    if ($resourceChange === "guthabenChange") {
+        echo "\t\t\t" . "resourceChanges: new ResourceChanges(" . $resourceChange . ": new MoneyAmount(" . $value . "))\n";
+    } else {
+        echo "\t\t\t" . "resourceChanges: new ResourceChanges(" . $resourceChange . ": " . $value . ")\n";
+    }
+    echo "\t\t" . "),\n";
+}
+
+/**
+ * @param string $type
+ * @param string $modifierValue
+ * @return void
+ */
+function printAuswirkungen(string $type, string $modifierValue):void
+{
+    echo "\t\t" . "new AuswirkungDefinition(\n";
+    echo "\t\t\t" . "scope: AuswirkungScopeEnum::" . $type . ",\n";
+    echo "\t\t\t" . "value: " . $modifierValue . "\n";
+    echo "\t\t" . "),\n";
+}
+
+/**
+ * @param array $modifierArrayWithIdValuePairs
+ * @return void
+ */
+function printModifiers(array $modifierArrayWithIdValuePairs): void
+{
+    $modifierMappings = [
+        "AUSSETZEN" => new ModifierMapping("AUSSETZEN", ""),
+        "BERUFSUNFÄHIGKEITSVERSICHERUNG" => new ModifierMapping("BERUFSUNFAEHIGKEITSVERSICHERUNG", ""),
+        "GEHALT" => new ModifierMapping("GEHALT_CHANGE", "modifyGehaltPercent"),
+        "HAFTPFLICHTVERSICHERUNG" => new ModifierMapping("HAFTPFLICHTVERSICHERUNG", ""),
+        "INVESTITIONSSPERRE" => new ModifierMapping("INVESTITIONSSPERRE", ""),
+        "JOBVERLUST" => new ModifierMapping("JOBVERLUST", ""),
+        "LEBENSHALTUNGSKOSTEN_MULTIPLIER" => new ModifierMapping("LEBENSHALTUNGSKOSTEN_KIND_INCREASE", "modifyLebenshaltungskostenMultiplier"),
+        "LEBENSHALTUNGS_MINIMUM" => new ModifierMapping("LEBENSHALTUNGSKOSTEN_MIN_VALUE", "modifyLebenshaltungskostenMinValue"),
+        "PRIVATE_UNFALLVERSICHERUNG" => new ModifierMapping("PRIVATE_UNFALLVERSICHERUNG", ""),
+        "BildungKarriereKosten" => new ModifierMapping("BILDUNG_UND_KARRIERE_COST", "modifyKostenBildungUndKarrierePercent"),
+        "FreizeitSozialesKosten" => new ModifierMapping("SOZIALES_UND_FREIZEIT_COST", "modifyKostenSozialesUndFreizeitPercent"),
+        "Lebenshaltungskosten" => new ModifierMapping("LEBENSHALTUNGSKOSTEN_KONJUNKTURPHASE_MULTIPLIER", "modifyLebenshaltungskostenMultiplier"),
+        "KREDITSPERRE" => new ModifierMapping("KREDITSPERRE", ""),
+        "INCREASED_CHANCE_FOR_REZESSION" => new ModifierMapping("INCREASED_CHANCE_FOR_REZESSION", ""),
+    ];
+    echo "\t" . "modifierIds: [\n";
+    foreach ($modifierArrayWithIdValuePairs as $modifierId => $modifierValue) {
+        echo "\t\t" . "ModifierId::" . $modifierMappings[$modifierId]->modifierId . ",\n";
+    }
+    echo "\t" . "],\n";
+    echo "\t" . "modifierParameters: new ModifierParameters(\n";
+    foreach ($modifierArrayWithIdValuePairs as $modifierId => $modifierValue) {
+        if ($modifierValue !== "") { //some modifiers don't have a value/modifierParameter
+            if ($modifierId === "LEBENSHALTUNGS_MINIMUM") {
+                echo "\t\t" . $modifierMappings[$modifierId]->parameterName . ": new MoneyAmount(" . $modifierValue . "),\n";
+            } else {
+                echo "\t\t" . $modifierMappings[$modifierId]->parameterName . ":" . $modifierValue . ",\n";
+            }
+        }
+    }
+    echo "\t" . "),\n";
+}
+
 
 /* IMPORT FUNCTIONS */
+
+/**
+ * Function imports MiniJobCards from csv file and echoes them in the console.
+ * @return void
+ */
 function importMiniJobCards(): void
 {
     $file = file(__DIR__ . "/Minijobs.csv");
-    $fileContent = array_slice($file, 2); //removes the first two elements (table name and table header)
+    $tableContent = array_slice($file, 2); //removes the first two elements (table name and table header)
     $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
     $keys = array_slice(explode(";", $tableHeaderItems[0]), 0, 3); //three table header items
 
-    foreach ($fileContent as $line) {
+    foreach ($tableContent as $line) {
         $lineArray = explode(";", substr(trim($line), 0, -2));
         $lineArrayWithKeys = array_combine($keys, $lineArray);
 
@@ -72,14 +166,18 @@ function importMiniJobCards(): void
     }
 }
 
+/**
+ * Function imports JobCards from csv file and echoes them in the console.
+ * @return void
+ */
 function importJobCards(): void
 {
     $file = file(__DIR__ . "/Jobs.csv");
-    $fileContent = array_slice($file, 2); //removes the first two elements (table name and table header)
+    $tableContent = array_slice($file, 2); //removes the first two elements (table name and table header)
     $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
     $keys = array_slice(explode(";", trim($tableHeaderItems[0])), 0, 8); //eight table header items
 
-    foreach ($fileContent as $line) {
+    foreach ($tableContent as $line) {
         $lineArray = explode(";", trim($line));
         $lineArrayWithKeys = array_combine($keys, $lineArray);
 
@@ -97,15 +195,19 @@ function importJobCards(): void
     }
 }
 
+/**
+ * Function imports WeiterbildungsCards from csv file and echoes them in the console.
+ * @return void
+ */
 function importWeiterbildungCards(): void
 {
     $file = file(__DIR__ . "/Weiterbildungen.csv");
-    $fileContent = array_slice($file, 2); //removes the first two elements (table name and table header)
+    $tableContent = array_slice($file, 2); //removes the first two elements (table name and table header)
     $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
     $keys = array_slice(explode(";", trim($tableHeaderItems[0])), 0, 3); //first three table header items
     $answerIds = ["a", "b", "c", "d"];
 
-    foreach ($fileContent as $line) {
+    foreach ($tableContent as $line) {
         shuffle($answerIds); //first answer Id is used for the correct answer -> randomized through the shuffle
         $lineArray = explode(";", trim($line));
         $lineArrayWithoutWrongAnswers = array_slice($lineArray, 0, 3); //remove all wrong answers
@@ -124,14 +226,18 @@ function importWeiterbildungCards(): void
     }
 }
 
+/**
+ * Function imports KategorieCards from csv file and echoes them in the console.
+ * @return void
+ */
 function importKategorieCards(): void
 {
     $file = file(__DIR__ . "/Kategorie_Karten.csv");
-    $fileContent = array_slice($file, 2); //removes the first two elements (table name and table header)
+    $tableContent = array_slice($file, 2); //removes the first two elements (table name and table header)
     $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
     $keys = array_slice(explode(";", trim($tableHeaderItems[0])), 0); //table header items
 
-    foreach ($fileContent as $line) {
+    foreach ($tableContent as $line) {
         $lineArray = explode(";", trim($line));
         $lineArrayWithKeys = array_combine($keys, $lineArray);
 
@@ -146,22 +252,14 @@ function importKategorieCards(): void
     }
 }
 
+/**
+ * Function imports EreignisCards from csv file and echoes them in the console.
+ * @return void
+ */
 function importEreignisCards(): void
 {
-    $modifierMappings = [
-        "AUSSETZEN" => new ModifierMapping("AUSSETZEN", ""),
-        "BERUFSUNFÄHIGKEITSVERSICHERUNG" => new ModifierMapping("BERUFSUNFAEHIGKEITSVERSICHERUNG", ""),
-        "GEHALT" => new ModifierMapping("GEHALT_CHANGE", "modifyGehaltPercent"),
-        "HAFTPFLICHTVERSICHERUNG" => new ModifierMapping("HAFTPFLICHTVERSICHERUNG", ""),
-        "INVESTITIONSSPERRE" => new ModifierMapping("INVESTITIONSSPERRE", ""),
-        "JOBVERLUST" => new ModifierMapping("JOBVERLUST", ""),
-        "LEBENSHALTUNGSKOSTEN_MULTIPLIER" => new ModifierMapping("LEBENSHALTUNGSKOSTEN_KIND_INCREASE", "modifyLebenshaltungskostenMultiplier"),
-        "LEBENSHALTUNGS_MINIMUM" => new ModifierMapping("LEBENSHALTUNGSKOSTEN_MIN_VALUE", "modifyLebenshaltungskostenMinValue"),
-        "PRIVATE_UNFALLVERSICHERUNG" => new ModifierMapping("PRIVATE_UNFALLVERSICHERUNG", ""),
-    ];
-
     $file = file(__DIR__ . "/Ereignisse.csv");
-    $fileContent = array_slice($file, 2); //removes the first two elements (table name and table header)
+    $tableContent = array_slice($file, 2); //removes the first two elements (table name and table header)
     $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
     $tableHeaderArray = explode(";", trim($tableHeaderItems[0]));
     $keys = [];
@@ -172,7 +270,7 @@ function importEreignisCards(): void
     $modifierKeys = array_slice($keys, 11, 6); //6 modifier table header items
     $prerequisiteKeys = array_slice($keys, 17, 3); //3 prerequisite table header items
 
-    foreach ($fileContent as $line) {
+    foreach ($tableContent as $line) {
         $lineArray = explode(";", trim($line));
         $lineArrayWithoutModifiersAndPrerequisites = array_slice($lineArray, 0, 11); //removes modifiers and prerequisites
         $lineArrayWithKeys = array_combine($propertyKeys, $lineArrayWithoutModifiersAndPrerequisites);
@@ -200,22 +298,7 @@ function importEreignisCards(): void
         echo "\t" . "description: '" . $lineArrayWithKeys["description"] . "',\n";
         printPhaseAndYear($lineArrayWithKeys["phase"], $lineArrayWithKeys["year"]);
         printResourceChanges($lineArrayWithKeys);
-        echo "\t" . "modifierIds: [\n";
-        foreach ($modifierArrayWithIdValuePairs as $modifierId => $modifierValue) {
-            echo "\t\t" . "ModifierId::" . $modifierMappings[$modifierId]->modifierId . ",\n";
-        }
-        echo "\t" . "],\n";
-        echo "\t" . "modifierParameters: new ModifierParameters(\n";
-        foreach ($modifierArrayWithIdValuePairs as $modifierId => $modifierValue) {
-            if (!empty($modifierValue) || $modifierValue==="0") { //some modifiers don't have a value/modifierParameter
-                if ($modifierId === "LEBENSHALTUNGS_MINIMUM") {
-                    echo "\t\t" . $modifierMappings[$modifierId]->parameterName . ": new MoneyAmount(" . $modifierValue . "),\n";
-                } else {
-                    echo "\t\t" . $modifierMappings[$modifierId]->parameterName . ":" . $modifierValue . ",\n";
-                }
-            }
-        }
-        echo "\t" . "),\n";
+        printModifiers($modifierArrayWithIdValuePairs);
         echo "\t" . "ereignisRequirementIds: [\n";
         for ($i = 1; $i<=2; $i++) {
             if (!empty($prerequisiteArray[$i])) {
@@ -239,14 +322,18 @@ function importEreignisCards(): void
     }
 }
 
+/**
+ * Function imports InvestitionenCards from csv file and echoes them in the console.
+ * @return void
+ */
 function importInvestitionenCards(): void
 {
     $file = file(__DIR__ . "/Investitionen_Immobilien.csv");
-    $fileContent = array_slice($file, 2); //removes the first two elements (table name and table header)
+    $tableContent = array_slice($file, 2); //removes the first two elements (table name and table header)
     $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
     $keys = array_slice(explode(";", trim($tableHeaderItems[0])), 0, 8); //eight table header items
 
-    foreach ($fileContent as $line) {
+    foreach ($tableContent as $line) {
         $lineArray = explode(";", trim($line));
         $lineArrayWithKeys = array_combine($keys, $lineArray);
 
@@ -262,13 +349,106 @@ function importInvestitionenCards(): void
     }
 }
 
+/**
+ * Function imports Konjunkturphasen from csv file and echoes them in the console.
+ * @return void
+ */
+function importKonjunkturphasen(): void
+{
+    $file = file(__DIR__ . "/Konjunkturen.csv");
+    $tableContent = array_slice($file, 2); //removes the first two element (table header)
+    $tableHeader = trim(array_slice($file, 1, 1)[0]); //table header containing keys
+    $tableHeaderArray = explode(";", $tableHeader); //array containing the table headers
+    $keys = [];
+    foreach ($tableHeaderArray as $key) {
+        $keys[] = str_replace(["\"", " "], "", trim($key)); //removes spaces and " from table headers
+    }
+
+    foreach ($tableContent as $line) {
+        $lineArray = explode(";", trim($line));
+        $lineArrayWithKeys = array_combine($keys, $lineArray);
+//        $ereignisse = array_slice($lineArrayWithKeys, 23);
+//        $ereignisArray = [];
+//        for ($i = 1; $i <= 2; $i++) {
+//            $ereignisArray["ereignis$i"] = [
+//                "description" => $ereignisse["Ereignis$i"],
+//                "prerequisite" => $ereignisse["prerequisite$i"],
+//                "resourceChange" => $ereignisse["resourceChange$i"],
+//                "value" => $ereignisse["value$i"],
+//            ];
+//        }
+
+        //stores modifiers as key value pair (modifierId and modifierValue) as it simplifies the iteration over the elements
+        $modifierArrayWithKeys = array_slice($lineArrayWithKeys, 13, 8);
+        $modifierArrayWithIdValuePairs = [];
+        foreach (array_slice($modifierArrayWithKeys, 0, 4) as $key => $value) {
+            if ($value !== "100") { //100 percent is the default value -> no modification needed
+                $modifierArrayWithIdValuePairs[$key] = $value;
+            }
+        }
+        if (!empty($modifierArrayWithKeys["modifierId1"])) {
+            $modifierArrayWithIdValuePairs[$modifierArrayWithKeys["modifierId1"]] = $modifierArrayWithKeys["modifierValue1"];
+        }
+        if (!empty($modifierArrayWithKeys["modifierId2"])) {
+            $modifierArrayWithIdValuePairs[$modifierArrayWithKeys["modifierId2"]] = $modifierArrayWithKeys["modifierValue2"];
+        }
+
+
+        echo "\$konjunkturphase" . $lineArrayWithKeys["id"] . " = new KonjunkturphaseDefinition(\n";
+        echo "\t" . "id: KonjunkturphasenId::create(" . $lineArrayWithKeys["id"] . "),\n";
+        echo "\t" . "type: KonjunkturphaseTypeEnum::" . $lineArrayWithKeys["type"] . ",\n";
+        echo "\t" . "name: '" . $lineArrayWithKeys["title"] . "',\n";
+        echo "\t" . "description: '" . $lineArrayWithKeys["description"] . "',\n";
+        echo "\t" . "additionalEvents: '',\n";
+//        foreach ($ereignisArray as $ereignis) {
+//            if (!empty($ereignis["description"])) {
+//                echo $ereignis["description"] . ". ";
+//            }
+//        }
+//        echo "',\n";
+        echo "\t" . "zeitsteine: new Zeitsteine([\n";
+        echo "\t\t" . "new ZeitsteinePerPlayer(2, " . $lineArrayWithKeys["sumZeitsteine2Spieler"]/2 . "),\n";
+        echo "\t\t" . "new ZeitsteinePerPlayer(3, " . $lineArrayWithKeys["sumZeitsteine3Spieler"]/3 . "),\n";
+        echo "\t\t" . "new ZeitsteinePerPlayer(4, " . $lineArrayWithKeys["sumZeitsteine4Spieler"]/4 . "),\n";
+        echo "\t" . "]),\n";
+        echo "\t" . "kompetenzbereiche: [\n";
+        printKompetenzbereichDefinition("BILDUNG_UND_KARRIERE", $lineArrayWithKeys["maxBildungUndKarriere"]);
+        printKompetenzbereichDefinition("SOZIALES_UND_FREIZEIT", $lineArrayWithKeys["maxFreizeitUndSoziales"]);
+        printKompetenzbereichDefinition("INVESTITIONEN", $lineArrayWithKeys["maxInvestitionen"]);
+        printKompetenzbereichDefinition("JOBS", $lineArrayWithKeys["maxJobs"]);
+        echo "\t" . "],\n";
+        printModifiers($modifierArrayWithIdValuePairs);
+        echo "\t" . "auswirkungen: [\n";
+        printAuswirkungen("LOANS_INTEREST_RATE", $lineArrayWithKeys["Kreditzins"]);
+        printAuswirkungen("STOCKS_BONUS", $lineArrayWithKeys["AktienKursbonus"]);
+        printAuswirkungen("CRYPTO", $lineArrayWithKeys["CryptoKursbonus"]);
+        printAuswirkungen("DIVIDEND", $lineArrayWithKeys["Dividende"]);
+        printAuswirkungen("REAL_ESTATE", $lineArrayWithKeys["Immobilien"]);
+        echo "\t" . "],\n";
+//        echo "\t" . "conditionalResourceChanges: [\n";
+//        foreach ($ereignisArray as $ereignis) {
+//            if (!empty($ereignis["resourceChange"])) {
+//                printConditionalResourceChanges(
+//                    $ereignis["prerequisite"]==="" ? "NO_PREREQUISITES" : $ereignis["prerequisite"],
+//                    $ereignis["resourceChange"],
+//                    $ereignis["value"]
+//                );
+//            }
+//        }
+//        echo "\t" . "],\n";
+        echo ");\n\n";
+
+    }
+}
+
 
 //importMiniJobCards();
 //importJobCards();
 //importWeiterbildungCards();
 //importKategorieCards();
-importEreignisCards();
+//importEreignisCards();
 //importInvestitionenCards();
+importKonjunkturphasen();
 
 
 

@@ -214,22 +214,6 @@ abstract class TestCase extends BaseTestCase
             modifierParameters: new ModifierParameters(),
             auswirkungen: [
                 new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::ZEITSTEINE,
-                    value: 1,
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::LEBENSERHALTUNGSKOSTEN,
-                    value: 100
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::BILDUNG,
-                    value: 100
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::FREIZEIT,
-                    value: 100
-                ),
-                new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
                     value: 4
                 ),
@@ -248,10 +232,6 @@ abstract class TestCase extends BaseTestCase
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::CRYPTO,
                     value: 4
-                ),
-                new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::BONUS_INCOME,
-                    value: 0
                 ),
             ]
         );
