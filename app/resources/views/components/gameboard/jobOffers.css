@@ -70,3 +70,11 @@
         font-size: var(--font-size-xxl);
     }
 }
+
+.job-offers__kompetenzen {
+    padding-inline: var(--spacing-100);
+
+    .svg-empty-color {
+        fill: transparent;
+    }
+}

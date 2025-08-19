@@ -60,7 +60,10 @@
                     "weiterbildung__footer-icon--hidden" => $selectedAnswerId && !$isAnswerCorrect
                 ])>
                     <i class="icon-plus" aria-hidden="true"></i>
-                    <x-gameboard.kompetenzen.kompetenz-icon-bildung :draw-half-empty="true" />
+                    <x-gameboard.kompetenzen.kompetenz-icon-bildung
+                        :player-color-class="$selectedAnswerId && $isAnswerCorrect ? $this->getPlayerColorClass() : ''"
+                        :draw-half-empty="true"
+                    />
                     <span class="sr-only">Du bekommst eine halbe Bildungskompetenz</span>
                 </div>
 

@@ -34,6 +34,10 @@
     &.weiterbildung__footer-icon--correct {
         opacity: 1;
         color: var(--color-success);
+
+        i {
+            color: var(--color-success);
+        }
     }
 
     &.weiterbildung__footer-icon--hidden {
