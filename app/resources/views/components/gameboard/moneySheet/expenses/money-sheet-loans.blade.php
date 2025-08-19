@@ -52,11 +52,11 @@
         <span>Aktueller Zinssatz: {{ KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->modifier }}%</span>
     </div>
     <div class="loans__summary-column">
-        {!! $totalRepaymentValue->formatWithIcon() !!}
+        <span class="badge-with-background">{!! $totalRepaymentValue->formatWithIcon() !!}</span>
         <span>Summe Rückzahlungen</span>
     </div>
     <div class="loans__summary-column">
-        {!! $sumOfRepaymentsPerRound->formatWithIcon() !!}
+        <span class="badge-with-background">{!! $sumOfRepaymentsPerRound->formatWithIcon() !!}</span>
         <span>Summe Rückzahlungen pro Runde</span>
     </div>
 </div>

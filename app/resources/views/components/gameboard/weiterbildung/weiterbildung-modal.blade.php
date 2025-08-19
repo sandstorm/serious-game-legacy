@@ -15,10 +15,6 @@
     </div>
 @endsection
 
-@section('icon')
-    <x-gameboard.phase-icon />
-@endsection
-
 @section('content')
     @if ($weiterbildung)
         {{ $weiterbildung->getDescription() }}

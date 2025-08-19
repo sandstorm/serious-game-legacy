@@ -21,6 +21,11 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: var(--spacing-100);
 
     text-wrap: pretty;
+    color: var(--color-primary-dark);
+}
+
+i {
+    color: var(--color-primary-dark);
 }
 
 .text-align--center {
@@ -78,4 +83,17 @@ p {
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+}
+
+.badge-with-background {
+    display: flex;
+    align-items: center;
+    height: var(--button-height);
+    padding-inline: var(--spacing-100);
+    gap: var(--spacing-50);
+
+    background-color: var(--color-semi-transparent);
+    border-radius: 999px;
+
+    text-align: center;
 }

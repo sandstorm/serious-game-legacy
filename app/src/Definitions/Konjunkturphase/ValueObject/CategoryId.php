@@ -10,7 +10,7 @@ enum CategoryId: string
     case SOZIALES_UND_FREIZEIT = 'Freizeit & Soziales';
     case EREIGNIS_BILDUNG_UND_KARRIERE = 'Ereignis: Bildung & Karriere';
     case EREIGNIS_SOZIALES_UND_FREIZEIT = 'Ereignis: Freizeit & Soziales';
-    case INVESTITIONEN = 'Investitionen';
+    case INVESTITIONEN = 'Finanzen';
     case JOBS = 'Beruf';
     case MINIJOBS = 'Minijobs';
     case WEITERBILDUNG = 'Weiterbildung';

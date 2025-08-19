@@ -70,6 +70,10 @@
 
 .player-list__player-phase {
     font-size: var(--font-size-xxl);
+
+    i {
+        color: var(--color-primary-fg);
+    }
 }
 
 .player-list__player-name {

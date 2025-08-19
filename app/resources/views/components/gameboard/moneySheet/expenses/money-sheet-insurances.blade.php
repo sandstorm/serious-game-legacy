@@ -21,7 +21,7 @@
             {!! $totalCost->formatWithIcon() !!}
             <span>Summe Versicherungen</span>
         </div>
-        <x-form.submit disabled wire:dirty.remove.attr="disabled">Änderungen Speichern</x-form.submit>
+        <x-form.submit disabled wire:dirty.remove.attr="disabled">Änderungen speichern</x-form.submit>
     </div>
 </form>
 

@@ -5,10 +5,6 @@
     'resourceChanges' => null,
 ])
 
-@section('icon')
-    <x-gameboard.phase-icon />
-@endsection
-
 @section('title')
     <div class="card__actions-header">
         <div>

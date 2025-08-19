@@ -51,7 +51,7 @@
 }
 
 .card__title {
-    height: 50px;
+    height: 60px;
     display: flex;
     width: 100%;
     align-items: center;
@@ -60,6 +60,8 @@
 
     text-align: center;
     hyphens: auto;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-regular);
 }
 
 .card__content {

@@ -9,7 +9,7 @@
 <div class="stock-type">
     <div>
         <h4>{{ $stockType->toPrettyString() }}</h4>
-        <div class="resource-change">{!! StockPriceState::getCurrentStockPrice($gameEvents, $stockType)->format() !!}</div>
+        <div class="resource-change">{!! StockPriceState::getCurrentStockPrice($gameEvents, $stockType)->format() !!} / Aktie</div>
         <small>
             Handelsspanne:
             @if ($stockType === StockType::LOW_RISK)
