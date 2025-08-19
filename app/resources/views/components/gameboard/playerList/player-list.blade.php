@@ -64,9 +64,9 @@
                         </div>
                     @endif
 
-                    @if ($player->annualExpensesForAllLoans->value > 0)
+                    @if ($player->sumOfLoans->value > 0)
                         <div>
-                            Kreditsumme {!! $player->annualExpensesForAllLoans->format() !!}
+                            Kreditsumme {!! $player->sumOfLoans->format() !!}
                         </div>
                     @endif
                     @if ($player->sumOfInvestments->value > 0)
