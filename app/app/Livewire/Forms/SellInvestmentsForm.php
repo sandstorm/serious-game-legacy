@@ -11,7 +11,7 @@ use Livewire\Form;
 class SellInvestmentsForm extends Form
 {
     #[Validate]
-    public int $amount = 0;
+    public ?int $amount = 0;
 
     // public properties needed for validation
     public ?InvestmentId $investmentId;
