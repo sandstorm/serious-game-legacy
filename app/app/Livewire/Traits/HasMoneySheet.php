@@ -170,19 +170,24 @@ trait HasMoneySheet
 
     public function getMoneysheetForPlayerId(PlayerId $playerId): MoneySheetDto
     {
+        $totalFromPlayerInput = MoneySheetState::calculateTotalFromPlayerInput($this->getGameEvents(), $playerId);
+        $guthabenAfterKonjunkturphaseChange = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $playerId);
+        $guthabenBeforeKonjunkturphaseChange = $guthabenAfterKonjunkturphaseChange->subtract($totalFromPlayerInput);
         return new MoneySheetDto(
             lebenshaltungskosten: new MoneyAmount(-1 * MoneySheetState::getLastInputForLebenshaltungskosten($this->getGameEvents(), $playerId)->value),
             doesLebenshaltungskostenRequirePlayerAction: MoneySheetState::doesLebenshaltungskostenRequirePlayerAction($this->getGameEvents(), $playerId),
             steuernUndAbgaben: new MoneyAmount(-1 * MoneySheetState::getLastInputForSteuernUndAbgaben($this->getGameEvents(), $playerId)->value),
             doesSteuernUndAbgabenRequirePlayerAction: MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($this->getGameEvents(), $playerId),
             gehalt: PlayerState::getCurrentGehaltForPlayer($this->getGameEvents(), $playerId),
-            totalFromPlayerInput: MoneySheetState::calculateTotalFromPlayerInput($this->getGameEvents(), $playerId),
+            totalFromPlayerInput: $totalFromPlayerInput,
             totalInsuranceCost: new MoneyAmount(-1 * MoneySheetState::getCostOfAllInsurances($this->getGameEvents(), $playerId)->value),
             annualExpensesForAllLoans: new MoneyAmount(-1 * MoneySheetState::getAnnualExpensesForAllLoans($this->getGameEvents(), $playerId)->value),
             sumOfAllAssets: PlayerState::getDividendForAllStocksForPlayer($this->getGameEvents(), $playerId),
             annualIncome: MoneySheetState::getAnnualIncomeForPlayer($this->getGameEvents(), $playerId),
             annualExpenses: new MoneyAmount(-1 * MoneySheetState::getAnnualExpensesForPlayer($this->getGameEvents(), $playerId)->value),
             annualExpensesFromPlayerInput: new MoneyAmount (-1 * MoneySheetState::calculateAnnualExpensesFromPlayerInput($this->getGameEvents(), $playerId)->value),
+            guthabenBeforeKonjunkturphaseChange: $guthabenBeforeKonjunkturphaseChange,
+            guthabenAfterKonjunkturphaseChange: $guthabenAfterKonjunkturphaseChange,
         );
     }
 
@@ -278,7 +283,7 @@ trait HasMoneySheet
         if (!$resultOfLastInput->wasSuccessful && $resultOfLastInput->fine->value > 0) {
             $this->takeOutALoanForm->loanAmount = intval(min(
                 $this->takeOutALoanForm->loanAmount,
-                LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->sumOfAllAssets, $this->takeOutALoanForm->salary, $this->takeOutALoanForm->obligations)->value
+                LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->sumOfAllAssets, $this->takeOutALoanForm->salary, $this->takeOutALoanForm->obligations, $this->takeOutALoanForm->wasInsolvent)->value
             ));
             $this->takeOutALoanForm->totalRepayment = LoanCalculator::getCalculatedTotalRepayment($this->takeOutALoanForm->loanAmount, $this->takeOutALoanForm->zinssatz);
             $this->takeOutALoanForm->repaymentPerKonjunkturphase = $this->takeOutALoanForm->getCalculatedRepaymentPerKonjunkturphase();

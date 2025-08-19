@@ -40,9 +40,9 @@ readonly class MoneyAmount implements JsonSerializable
         return new self($this->value - $other->value);
     }
 
-    public function multiply(MoneyAmount $other): self
+    public function negate(): self
     {
-        return new self($this->value * $other->value);
+        return new self($this->value * -1);
     }
 
     public function equals(MoneyAmount|float $other): bool

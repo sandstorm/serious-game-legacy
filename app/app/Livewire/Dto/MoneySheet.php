@@ -12,7 +12,7 @@ class MoneySheet
         public MoneyAmount $lebenshaltungskosten,
         public bool  $doesLebenshaltungskostenRequirePlayerAction,
         public MoneyAmount $steuernUndAbgaben,
-        public bool  $doesSteuernUndAbgabenRequirePlayerAction,
+        public bool        $doesSteuernUndAbgabenRequirePlayerAction,
         public MoneyAmount $gehalt,
         public MoneyAMount $totalFromPlayerInput,
         public MoneyAmount $totalInsuranceCost,
@@ -21,5 +21,7 @@ class MoneySheet
         public MoneyAmount $annualIncome,
         public MoneyAmount $annualExpenses,
         public MoneyAMount $annualExpensesFromPlayerInput,
+        public MoneyAmount $guthabenBeforeKonjunkturphaseChange,
+        public MoneyAmount $guthabenAfterKonjunkturphaseChange,
     ) {}
 }

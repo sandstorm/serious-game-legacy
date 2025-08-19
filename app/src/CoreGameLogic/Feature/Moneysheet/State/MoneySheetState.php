@@ -39,6 +39,22 @@ class MoneySheetState
         GameEvents $gameEvents,
         PlayerId $playerId
     ): MoneyAmount {
+        if (PlayerState::isPlayerInsolvent($gameEvents, $playerId)) {
+            $currentGuthaben = PlayerState::getGuthabenForPlayer($gameEvents, $playerId);
+            $totalAnnualIncome = self::getAnnualIncomeForPlayer($gameEvents, $playerId);
+            $annualExpensesWithoutLebenshaltungskosten = new MoneyAmount(0)
+                ->add(self::getAnnualExpensesForAllLoans($gameEvents, $playerId))
+                ->add(self::getCostOfAllInsurances($gameEvents, $playerId))
+                ->add(self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId))
+                ->add(self::calculateInsolvenzabgabenForPlayer($gameEvents, $playerId));
+
+            $lebenshaltungskosten = self::calculateMinimumValueForLebenshaltungskostenForPlayer($gameEvents, $playerId);
+
+            return $currentGuthaben->add($totalAnnualIncome)->subtract($annualExpensesWithoutLebenshaltungskosten)->value < $lebenshaltungskosten->value
+                ? new MoneyAmount(0)
+                : $lebenshaltungskosten;
+        }
+
         $gehalt = PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId);
         return new MoneyAmount(max([
             $gehalt->value * self::getPercentageForLebenshaltungskostenForPlayer($gameEvents, $playerId) / 100,
@@ -320,8 +336,8 @@ class MoneySheetState
             // if there are any cancellation events after the conclusion event, the insurance is not active anymore
             $lastCancellationEvent = $eventsAfterInsuranceWasConcluded->findLastOrNullWhere(
                 fn($event) => $event instanceof InsuranceForPlayerWasCancelled &&
-                    $event->playerId->equals($playerId) &&
-                    $event->insuranceId === $insuranceId
+                    $event->getPlayerId()->equals($playerId) &&
+                    $event->getInsuranceId() === $insuranceId
             );
             if ($lastCancellationEvent !== null) {
                 return false;
@@ -466,6 +482,7 @@ class MoneySheetState
             ->add(self::getAnnualExpensesForAllLoans($gameEvents, $playerId))
             ->add(self::getCostOfAllInsurances($gameEvents, $playerId))
             ->add(self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId))
+            ->add(self::calculateInsolvenzabgabenForPlayer($gameEvents, $playerId))
             ->add(self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId));
     }
 
@@ -480,6 +497,7 @@ class MoneySheetState
             ->add(self::getAnnualExpensesForAllLoans($gameEvents, $playerId))
             ->add(self::getCostOfAllInsurances($gameEvents, $playerId))
             ->add(self::getLastInputForLebenshaltungskosten($gameEvents, $playerId))
+            ->add(self::calculateInsolvenzabgabenForPlayer($gameEvents, $playerId))
             ->add(self::getLastInputForSteuernUndAbgaben($gameEvents, $playerId));
     }
 
@@ -505,5 +523,23 @@ class MoneySheetState
     {
         return self::getAnnualIncomeForPlayer($gameEvents, $playerId)
             ->subtract(self::calculateAnnualExpensesFromPlayerInput($gameEvents, $playerId));
+    }
+
+    /**
+     * If the player is insolvent they only keep the amount specified in {@see Configuration::INSOLVENZ_PFAENDUNGSFREIGRENZE}
+     * of their income. Anything more than that will be deducted as Insolvenzabgaben.
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return MoneyAmount
+     */
+    public static function calculateInsolvenzabgabenForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
+    {
+        if (!PlayerState::isPlayerInsolvent($gameEvents, $playerId)) {
+            return new MoneyAmount(0);
+        }
+        $currentGehalt = PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId);
+        $steuernUndAbgaben = MoneySheetState::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId);
+        $nettoGehalt = $currentGehalt->subtract($steuernUndAbgaben);
+        return new MoneyAmount(max([0, $nettoGehalt->subtract(new MoneyAmount(Configuration::INSOLVENZ_PFAENDUNGSFREIGRENZE))->value]));
     }
 }

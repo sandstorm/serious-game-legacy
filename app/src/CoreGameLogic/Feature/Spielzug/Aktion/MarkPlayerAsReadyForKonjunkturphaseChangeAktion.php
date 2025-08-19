@@ -11,6 +11,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\KonjunkturphaseCommandHandler;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasKonjunkturphaseEndedValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerAPositiveBalanceValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerCompletedMoneySheetValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerWasMarkedAsReadyForKonjunkturphaseChange;
@@ -22,8 +23,9 @@ class MarkPlayerAsReadyForKonjunkturphaseChangeAktion extends Aktion
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
         $validatorChain = new HasKonjunkturphaseEndedValidator();
-        $validatorChain->setNext(new HasPlayerCompletedMoneySheetValidator());
-
+        $validatorChain
+            ->setNext(new HasPlayerCompletedMoneySheetValidator())
+            ->setNext(new HasPlayerAPositiveBalanceValidator());
         return $validatorChain->validate($gameEvents, $playerId);
     }
 
@@ -31,7 +33,7 @@ class MarkPlayerAsReadyForKonjunkturphaseChangeAktion extends Aktion
     {
         $result = $this->validate($playerId, $gameEvents);
         if (!$result->canExecute) {
-            throw new \RuntimeException('Cannot mark player as ready: ' . $result->reason, 1751373528);
+            throw new \RuntimeException('Cannot mark player as ready: ' . $result->reason, 1756798041);
         }
 
         $eventsToPersist = GameEventsToPersist::with(

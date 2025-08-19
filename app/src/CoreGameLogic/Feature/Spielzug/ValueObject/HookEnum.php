@@ -23,4 +23,6 @@ enum HookEnum: string
     case KREDITSPERRE = 'Kreditsperre';
     case LEBENSHALTUNGSKOSTEN_MULTIPLIER = 'Lebenshaltungskosten Multiplikator';
     case INCREASED_CHANCE_FOR_REZESSION = 'Erhöhte Chance for Rezession als nächste Konjunkturphase';
+    case FOR_TESTING_ONLY_NEVER_TRIGGER_EREIGNIS = 'Nur zum Testen: Es werden keine Ereignisse ausgelöst';
+    case FOR_TESTING_ONLY_ALWAYS_TRIGGER_EREIGNIS = 'Nur zum Testen: Es werden immer Ereignisse ausgelöst';
 }

@@ -8,14 +8,18 @@ use Domain\Definitions\Configuration\Configuration;
 
 class LoanCalculator
 {
-    public static function getMaxLoanAmount(float $sumOfAlAssets, float $salary, float $obligations): MoneyAmount
+    public static function getMaxLoanAmount(float $sumOfAlAssets, float $salary, float $obligations, bool $wasPlayerInsolventInThePast): MoneyAmount
     {
         if ($salary > 0) {
             // if player has job: limit is 5 times the salary + assets - obligations
-            return new MoneyAmount($salary * 5 + $sumOfAlAssets - $obligations);
+            return $wasPlayerInsolventInThePast
+                ? new MoneyAmount($salary * 2 + $sumOfAlAssets - $obligations)
+                : new MoneyAmount($salary * 5 + $sumOfAlAssets - $obligations);
         } else {
             // if player has no job: limit is 80% of the assets - obligations
-            return new MoneyAmount($sumOfAlAssets * 0.8 - $obligations);
+            return $wasPlayerInsolventInThePast
+                ? new MoneyAmount($sumOfAlAssets * 0.5 - $obligations)
+                : new MoneyAmount($sumOfAlAssets * 0.8 - $obligations);
         }
     }
 

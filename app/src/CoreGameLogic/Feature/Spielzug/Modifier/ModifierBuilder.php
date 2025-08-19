@@ -115,6 +115,20 @@ readonly final class ModifierBuilder
                     description: $description,
                 ),
             ],
+            ModifierId::FOR_TESTING_ONLY_NEVER_TRIGGER_EREIGNIS => [
+                // @phpstan-ignore disallowed.new
+                new ForTestingOnlyNeverTriggerEreignisModifier(
+                    playerTurn: $playerTurn,
+                    description: $description,
+                )
+            ],
+            ModifierId::FOR_TESTING_ONLY_ALWAYS_TRIGGER_EREIGNIS => [
+                // @phpstan-ignore disallowed.new
+                new ForTestingOnlyAlwaysTriggerEreignisModifier(
+                    playerTurn: $playerTurn,
+                    description: $description,
+                )
+            ],
             default => [],
         };
     }

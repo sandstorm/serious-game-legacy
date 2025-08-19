@@ -16,10 +16,13 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\BerufsunfaehigkeitsversicherungW
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasPutBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisProfitWasReducedBecauseOfInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldToAvoidInsolvenzForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasRepaidForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerGotAChild;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasFiledForInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasFinishedLebensziel;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereNotSoldForPlayer;
@@ -78,21 +81,39 @@ final readonly class EventNormalizer
         /** @var array<class-string<GameEventInterface>> $supportedEventClassNames */
         $supportedEventClassNames = [
             AnswerForWeiterbildungWasSubmitted::class,
+            BerufsunfaehigkeitsversicherungWasActivated::class,
             CardsWereShuffled::class,
             CardWasActivated::class,
+            CardWasPutBackOnTopOfPile::class,
             CardWasSkipped::class,
+            EreignisProfitWasReducedBecauseOfInsolvenz::class,
             EreignisWasTriggered::class,
             GameWasStarted::class,
+            InsuranceForPlayerWasCancelled::class,
+            InsuranceForPlayerWasConcluded::class,
+            InvestmentsWereBoughtForPlayer::class,
+            InvestmentsWereNotSoldForPlayer::class,
+            InvestmentsWereSoldToAvoidInsolvenzForPlayer::class,
+            InvestmentsWereSoldForPlayer::class,
+            InvestmentsWereSoldForPlayerAfterInvestmentByAnotherPlayer::class,
             JobOfferWasAccepted::class,
+            JobWasQuit::class,
             KonjunkturphaseHasEnded::class,
             KonjunkturphaseWasChanged::class,
             LebenshaltungskostenForPlayerWereCorrected::class,
             LebenshaltungskostenForPlayerWereEntered::class,
-            LebenszielWasSelected::class,
             LebenszielphaseWasChanged::class,
+            LebenszielWasSelected::class,
+            LoanForPlayerWasCorrected::class,
+            LoanForPlayerWasEntered::class,
+            LoanWasRepaidForPlayer::class,
+            LoanWasTakenOutForPlayer::class,
             MinijobWasDone::class,
             NameForPlayerWasSet::class,
+            PlayerGotAChild::class,
             PlayerHasCompletedMoneysheetForCurrentKonjunkturphase::class,
+            PlayerHasFiledForInsolvenz::class,
+            PlayerHasFinishedLebensziel::class,
             PlayerHasStartedKonjunkturphase::class,
             PlayerWasMarkedAsReadyForKonjunkturphaseChange::class,
             PreGameStarted::class,
@@ -100,22 +121,7 @@ final readonly class EventNormalizer
             SpielzugWasStarted::class,
             SteuernUndAbgabenForPlayerWereCorrected::class,
             SteuernUndAbgabenForPlayerWereEntered::class,
-            InsuranceForPlayerWasConcluded::class,
-            InsuranceForPlayerWasCancelled::class,
-            LoanWasTakenOutForPlayer::class,
-            LoanForPlayerWasEntered::class,
-            LoanForPlayerWasCorrected::class,
-            LoanWasRepaidForPlayer::class,
-            JobWasQuit::class,
             WeiterbildungWasStarted::class,
-            InvestmentsWereBoughtForPlayer::class,
-            InvestmentsWereSoldForPlayerAfterInvestmentByAnotherPlayer::class,
-            InvestmentsWereSoldForPlayer::class,
-            InvestmentsWereNotSoldForPlayer::class,
-            CardWasPutBackOnTopOfPile::class,
-            BerufsunfaehigkeitsversicherungWasActivated::class,
-            PlayerGotAChild::class,
-            PlayerHasFinishedLebensziel::class,
         ];
 
         $fullClassNameToShortEventType = [];

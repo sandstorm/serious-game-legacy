@@ -14,7 +14,8 @@ class LoanCalculatorTest extends TestCase
         $assets = 1000;
         $salary = 0;
         $obligations = 0;
-        $maxLoanAmount = LoanCalculator::getMaxLoanAmount($assets, $salary, $obligations)->value;
+        $wasPlayerInsolventInThePast = false;
+        $maxLoanAmount = LoanCalculator::getMaxLoanAmount($assets, $salary, $obligations, $wasPlayerInsolventInThePast)->value;
         $this->assertEquals(800.0, $maxLoanAmount);
     }
 
@@ -23,8 +24,19 @@ class LoanCalculatorTest extends TestCase
         $assets = 1000;
         $salary = 0;
         $obligations = 500;
-        $maxLoanAmount = LoanCalculator::getMaxLoanAmount($assets, $salary, $obligations)->value;
+        $wasPlayerInsolventInThePast = false;
+        $maxLoanAmount = LoanCalculator::getMaxLoanAmount($assets, $salary, $obligations,$wasPlayerInsolventInThePast)->value;
         $this->assertEquals(300.0, $maxLoanAmount);
+    }
+
+    public function testGetMaxLoanAmountWithoutJobAndObligationsAndInsolvenz(): void
+    {
+        $assets = 1000;
+        $salary = 0;
+        $obligations = 500;
+        $wasPlayerInsolventInThePast = true;
+        $maxLoanAmount = LoanCalculator::getMaxLoanAmount($assets, $salary, $obligations,$wasPlayerInsolventInThePast)->value;
+        $this->assertEquals(0, $maxLoanAmount);
     }
 
     public function testGetMaxLoanAmountWithoutJobAndHugeObligations(): void
@@ -32,7 +44,8 @@ class LoanCalculatorTest extends TestCase
         $assets = 1000;
         $salary = 0;
         $obligations = 1500;
-        $maxLoanAmount = LoanCalculator::getMaxLoanAmount($assets, $salary, $obligations)->value;
+        $wasPlayerInsolventInThePast = false;
+        $maxLoanAmount = LoanCalculator::getMaxLoanAmount($assets, $salary, $obligations, $wasPlayerInsolventInThePast)->value;
         $this->assertEquals(-700.0, $maxLoanAmount);
     }
 
@@ -41,7 +54,8 @@ class LoanCalculatorTest extends TestCase
         $assets = 1000;
         $salary = 100;
         $obligations = 0;
-        $maxLoanAmount = LoanCalculator::getMaxLoanAmount($assets, $salary, $obligations)->value;
+        $wasPlayerInsolventInThePast = false;
+        $maxLoanAmount = LoanCalculator::getMaxLoanAmount($assets, $salary, $obligations,$wasPlayerInsolventInThePast)->value;
         $this->assertEquals(1500.0, $maxLoanAmount);
     }
 
@@ -50,8 +64,19 @@ class LoanCalculatorTest extends TestCase
         $assets = 1000;
         $salary = 100;
         $obligations = 500;
-        $maxLoanAmount = LoanCalculator::getMaxLoanAmount($assets, $salary, $obligations)->value;
+        $wasPlayerInsolventInThePast = false;
+        $maxLoanAmount = LoanCalculator::getMaxLoanAmount($assets, $salary, $obligations,$wasPlayerInsolventInThePast)->value;
         $this->assertEquals(1000.0, $maxLoanAmount);
+    }
+
+    public function testGetMaxLoanAmountWithJobAndObligationsAndInsolvenz(): void
+    {
+        $assets = 1000;
+        $salary = 100;
+        $obligations = 500;
+        $wasPlayerInsolventInThePast = true;
+        $maxLoanAmount = LoanCalculator::getMaxLoanAmount($assets, $salary, $obligations,$wasPlayerInsolventInThePast)->value;
+        $this->assertEquals(700.0, $maxLoanAmount);
     }
 
     public function testGetCalculatedTotalRepayment(): void

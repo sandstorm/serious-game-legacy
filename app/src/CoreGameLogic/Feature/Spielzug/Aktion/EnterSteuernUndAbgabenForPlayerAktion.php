@@ -31,7 +31,7 @@ class EnterSteuernUndAbgabenForPlayerAktion extends Aktion
     {
         $result = $this->validate($playerId, $gameEvents);
         if (!$result->canExecute) {
-            throw new \RuntimeException('Cannot enter Steuern und Abgaben: ' . $result->reason, 1751373528);
+            throw new \RuntimeException('Cannot enter Steuern und Abgaben: ' . $result->reason, 1756798147);
         }
         $expectedInput = MoneySheetState::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId);
         $previousTries = MoneySheetState::getNumberOfTriesForSteuernUndAbgabenInput($gameEvents, $playerId);

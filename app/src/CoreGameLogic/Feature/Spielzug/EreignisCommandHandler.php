@@ -13,11 +13,14 @@ use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\MaybeTriggerEreignis;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\BerufsunfaehigkeitsversicherungWasActivated;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisProfitWasReducedBecauseOfInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerGotAChild;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\EreignisPrerequisiteChecker;
+use Domain\CoreGameLogic\Feature\Spielzug\State\ModifierCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\EreignisCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
@@ -46,8 +49,22 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
         };
     }
 
-    private function doesTrigger(): bool
+    private function doesTrigger(GameEvents $gameEvents): bool
     {
+        // In tests we may set special modifiers that always or never trigger Ereignisse
+        $isNeverTriggerModifierSet = ModifierCalculator::forStream($gameEvents)
+            ->withoutPlayer()
+            ->modify($gameEvents, HookEnum::FOR_TESTING_ONLY_NEVER_TRIGGER_EREIGNIS, false);
+        if ($isNeverTriggerModifierSet) {
+            return false;
+        }
+        $isAlwaysTriggerModifierSet = ModifierCalculator::forStream($gameEvents)
+            ->withoutPlayer()
+            ->modify($gameEvents, HookEnum::FOR_TESTING_ONLY_ALWAYS_TRIGGER_EREIGNIS, false);
+        if ($isAlwaysTriggerModifierSet) {
+            return true;
+        }
+
         // @phpstan-ignore disallowed.function
         return rand(1, 4) === 1;
     }
@@ -149,10 +166,22 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
         }
 
         // TODO don't use title -> use ModifierId
-        if($ereignisCardDefinition->getTitle() === "Geburt") {
-            return $additionalEvents->withAppendedEvents(new PlayerGotAChild(
-                playerId: $command->playerId,
-            ));
+        if ($ereignisCardDefinition->getTitle() === "Geburt") {
+            $additionalEvents = $additionalEvents
+                ->withAppendedEvents(new PlayerGotAChild(
+                    playerId: $command->playerId,
+                ));
+        }
+
+        // In case a player is insolvent and they gain money through an Ereignis, they have to give away half of that money as Insolvenzabgaben.
+        if (PlayerState::isPlayerInsolvent($gameEvents, $command->playerId)
+            && $ereignisCardDefinition->getResourceChanges()->guthabenChange->value > 0) {
+            $abgaben = new MoneyAmount($ereignisCardDefinition->getResourceChanges()->guthabenChange->value / 2);
+            $additionalEvents = $additionalEvents
+                ->withAppendedEvents(new EreignisProfitWasReducedBecauseOfInsolvenz(
+                   playerId: $command->playerId,
+                   resourceChanges: new ResourceChanges()->setGuthabenChange($abgaben->negate()),
+                ));
         }
 
         return $additionalEvents;
@@ -160,7 +189,7 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
 
     private function handleTriggerEreignis(MaybeTriggerEreignis $command, GameEvents $gameEvents): GameEventsToPersist
     {
-        if (!$this->doesTrigger()) {
+        if (!$this->doesTrigger($gameEvents)) {
             return GameEventsToPersist::empty();
         }
         $ereignisDefinition = $this->getRandomEreignisForCategory($gameEvents, $command);
