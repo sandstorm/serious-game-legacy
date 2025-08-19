@@ -67,7 +67,7 @@ class PlayerState
     }
 
     public static function getResourcesForPlayer(GameEvents $gameEvents, PlayerId $playerId): ResourceChanges
-    {
+        {
         $accumulatedResources = $gameEvents->findAllOfType(ProvidesResourceChanges::class)
             ->reduce(fn(
                 ResourceChanges $accumulator,
@@ -76,8 +76,8 @@ class PlayerState
         return new ResourceChanges(
             guthabenChange: $accumulatedResources->guthabenChange,
             zeitsteineChange: self::getZeitsteineForPlayer($gameEvents, $playerId),
-            bildungKompetenzsteinChange: self::getBildungsKompetenzsteine($gameEvents, $playerId),
-            freizeitKompetenzsteinChange: self::getFreizeitKompetenzsteine($gameEvents, $playerId),
+            bildungKompetenzsteinChange: $accumulatedResources->bildungKompetenzsteinChange,
+            freizeitKompetenzsteinChange: $accumulatedResources->freizeitKompetenzsteinChange,
         );
     }
 
@@ -125,18 +125,7 @@ class PlayerState
      */
     public static function getBildungsKompetenzsteine(GameEvents $gameEvents, PlayerId $playerId): float
     {
-        $eventsAfterLastLebenszielphaseWasChangedEvent = $gameEvents
-            ->findAllAfterLastOrNullWhere(fn ($event) => $event instanceof LebenszielphaseWasChanged
-                && $event->getPlayerId()->equals($playerId))
-            ?? $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
-
-        $accumulatedResourceChangesForPlayer = $eventsAfterLastLebenszielphaseWasChangedEvent->findAllOfType(ProvidesResourceChanges::class)
-            ->reduce(fn(
-                ResourceChanges $accumulator,
-                ProvidesResourceChanges $event
-            ) => $accumulator->accumulate($event->getResourceChanges($playerId)), new ResourceChanges());
-
-        return $accumulatedResourceChangesForPlayer->bildungKompetenzsteinChange;
+        return self::getResourcesForPlayer($gameEvents, $playerId)->bildungKompetenzsteinChange;
     }
 
     /**
@@ -148,18 +137,7 @@ class PlayerState
      */
     public static function getFreizeitKompetenzsteine(GameEvents $gameEvents, PlayerId $playerId): int
     {
-        $eventsAfterLastLebenszielphaseWasChangedEvent = $gameEvents
-            ->findAllAfterLastOrNullWhere(fn ($event) => $event instanceof LebenszielphaseWasChanged
-                && $event->getPlayerId()->equals($playerId))
-            ?? $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
-
-        $accumulatedResourceChangesForPlayer = $eventsAfterLastLebenszielphaseWasChangedEvent->findAllOfType(ProvidesResourceChanges::class)
-            ->reduce(fn(
-                ResourceChanges $accumulator,
-                ProvidesResourceChanges $event
-            ) => $accumulator->accumulate($event->getResourceChanges($playerId)), new ResourceChanges());
-
-        return $accumulatedResourceChangesForPlayer->freizeitKompetenzsteinChange;
+        return self::getResourcesForPlayer($gameEvents, $playerId)->freizeitKompetenzsteinChange;
     }
 
     /**
