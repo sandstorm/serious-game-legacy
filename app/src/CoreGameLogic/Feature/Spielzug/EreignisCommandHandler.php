@@ -62,7 +62,7 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
             default => throw new \RuntimeException("Cannot map category " . $command->categoryId->value . " to ereignis category"),
         };
         /** @var EreignisCardDefinition[] $allCards */
-        $allCards = CardFinder::getInstance()->getEreignisCardDefinitionsByCategoryAndPhase(
+        $allCards = CardFinder::getInstance()->getCardDefinitionsByCategoryAndPhase(
             $ereignisCardCategory,
             PlayerState::getCurrentLebenszielphaseIdForPlayer($gameEvents, $command->playerId),
         );
@@ -87,12 +87,15 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
             }
             return $hasPlayerAllPrerequisites && AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($command->playerId, $cardDefinition->getResourceChanges());
         });
+
         if (count($filteredCards) === 0) {
             throw new \RuntimeException("No EreignisCard matches the current requirements",
                 1753874959); // We should always have cards
         }
+
+        $filteredAndIncreasedCards = $this->increaseAmountOfCardsMatchingGewichtung($filteredCards);
         $randomizer = new Randomizer();
-        return $randomizer->shuffleArray($filteredCards)[0];
+        return $randomizer->shuffleArray($filteredAndIncreasedCards)[0];
     }
 
     private function getGuthabenChangesBasedOnPlayersInsurances(
@@ -174,5 +177,21 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
             ),
             ...$this->triggerAdditionalEvents($gameEvents, $command, $ereignisDefinition)->events,
         );
+    }
+
+    /**
+     * Function increases the amount of cards with Gewichtung > 1 (as they should have a higher probability)
+     * @param EreignisCardDefinition[] $filteredCards
+     * @return EreignisCardDefinition[]
+     */
+    private function increaseAmountOfCardsMatchingGewichtung(array $filteredCards): array
+    {
+        $cardsWithGewichtung = array_filter($filteredCards, fn($card) => $card->getGewichtung() !== 1);
+        foreach ($cardsWithGewichtung as $card) {
+            for ($gewichtung = $card->getGewichtung(); $gewichtung > 1; $gewichtung--) {
+                $filteredCards[] = $card;
+            }
+        }
+        return $filteredCards;
     }
 }

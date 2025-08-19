@@ -10373,30 +10373,6 @@ final class CardFinder
     }
 
     /**
-     * Returns all cards that match the Category and Lebenszielphase. LebenszielPhaseId::ANY_PHASE is a special case
-     * and matches all other phases. @see LebenszielPhaseId::looselyEquals()
-     * Also increases the amount of cards with Gewichtung > 1 (as they should have a higher probability)
-     * @param CategoryId $categoryId
-     * @param LebenszielPhaseId $phaseId
-     * @return EreignisCardDefinition[]
-     */
-    public function getEreignisCardDefinitionsByCategoryAndPhase(CategoryId $categoryId, LebenszielPhaseId $phaseId): array
-    {
-        $filteredCards = array_filter($this->cards, fn($card) =>
-            $card->getCategory()->value === $categoryId->value &&
-            $card->getPhase()->looselyEquals($phaseId) &&
-            $card instanceof EreignisCardDefinition
-        );
-        $cardsWithGewichtung = array_filter($filteredCards, fn($card) => $card->getGewichtung() !== 1);
-        foreach ($cardsWithGewichtung as $card) {
-            for ($gewichtung = $card->getGewichtung(); $gewichtung > 1; $gewichtung--) {
-                $filteredCards[] = $card;
-            }
-        }
-        return $filteredCards;
-    }
-
-    /**
      * Automatically sorts all cards into piles based on their Category and Phase
      * @return Pile[] all cards sorted by pileId
      */
