@@ -8,6 +8,7 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughResourcesValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerNotInsolventValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\PlayerDoesNotYetHaveThisInsuranceValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
@@ -36,7 +37,9 @@ class ConcludeInsuranceForPlayerAktion extends Aktion
         $this->resourceChanges = $this->getResourceChanges($gameEvents, $playerId);
 
         $validatorChain = new PlayerDoesNotYetHaveThisInsuranceValidator($this->insuranceId);
-        $validatorChain->setNext(new HasPlayerEnoughResourcesValidator($this->resourceChanges));
+        $validatorChain
+            ->setNext(new HasPlayerEnoughResourcesValidator($this->resourceChanges))
+            ->setNext(new IsPlayerNotInsolventValidator());
         return $validatorChain->validate($gameEvents, $playerId);
     }
 

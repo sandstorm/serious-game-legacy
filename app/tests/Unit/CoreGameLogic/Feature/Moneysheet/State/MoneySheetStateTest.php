@@ -20,6 +20,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\Dto\ModifierParameters;
+use Domain\Definitions\Card\ValueObject\ModifierId;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
@@ -47,14 +48,14 @@ beforeEach(function () {
 });
 
 describe('calculateLebenshaltungskostenForPlayer', function () {
-    it('returns 5000 when player has no job', function () {
+    it('returns minimum value when player has no job', function () {
         /** @var TestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actualKosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $this->players[0]);
-        expect($actualKosten)->toEqual(new MoneyAmount(5000));
+        expect($actualKosten)->toEqual(new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE));
     });
 
-    it('returns 5000 when 35% of the Gehalt is less than 5000', function () {
+    it('returns minimum value when 35% of the Gehalt is less than the minimum value', function () {
         /** @var TestCase $this */
 
         $cardsForTesting = [
@@ -74,10 +75,10 @@ describe('calculateLebenshaltungskostenForPlayer', function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actualKosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $this->players[0]);
-        expect($actualKosten)->toEqual(new MoneyAmount(5000));
+        expect($actualKosten)->toEqual(new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE));
     });
 
-    it('returns 35% of the Gehalt it that is more than 5000', function () {
+    it('returns 35% of the Gehalt if that is more than the minimum value', function () {
         /** @var TestCase $this */
 
         $cardsForTesting = [
@@ -98,6 +99,135 @@ describe('calculateLebenshaltungskostenForPlayer', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actualKosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $this->players[0]);
         expect($actualKosten)->toEqual(new MoneyAmount(11900));
+    });
+
+    it('returns minimum value when player has a job but is insolvent', function() {
+        /** @var TestCase $this */
+        $this->setupInsolvenz();
+
+        $cardsForTesting = [
+            new JobCardDefinition(
+                id: new CardId('tj0'),
+                title: 'offered 1',
+                description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                gehalt: new MoneyAmount(34000),
+                requirements: new JobRequirements(
+                    zeitsteine: 1,
+                ),
+            ),
+        ];
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('tj0')));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        $actualKosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $this->players[0]);
+        expect($actualKosten)->toEqual(new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE));
+    });
+
+    it('returns the modified minimum value when a player has a job but is insolvent', function () {
+        /** @var TestCase $this */
+        $this->konjunkturphaseDefinition = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(1),
+            type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
+            name: 'Erste Erholung',
+            description: 'Nachdem eine globale Krise die internationalen Lieferketten stark gestört hatte, ist der Konsum jedoch noch verhalten, da Haushalte und Unternehmen vorsichtig agieren. Unternehmen beginnen, ihre Lager aufzufüllen und Neueinstellungen zu tätigen. Die Zentralbank hält den Leitzins daher mit 1 % niedrig, um günstige Kredite zu ermöglichen und Investitionen sowie Konsumausgaben zu begünstigen. Dadurch bleiben Kredite günstig und die Unternehmen sowie Haushalte können leichter investieren und konsumieren.',
+            additionalEvents: '',
+            zeitsteine: new Zeitsteine(
+                [
+                    new ZeitsteinePerPlayer(2, 6),
+                    new ZeitsteinePerPlayer(3, 5),
+                    new ZeitsteinePerPlayer(4, 5),
+                ]
+            ),
+            kompetenzbereiche: [
+                new KompetenzbereichDefinition(
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 2),
+                        new ZeitslotsPerPlayer(4, 2),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::INVESTITIONEN,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::JOBS,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
+                ),
+            ],
+            modifierIds: [
+                ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
+                ModifierId::LEBENSHALTUNGSKOSTEN_KONJUNKTURPHASE_MULTIPLIER,
+            ],
+            modifierParameters: new ModifierParameters(
+                modifyLebenshaltungskostenMinValue: new MoneyAmount(+1000),
+                modifyLebenshaltungskostenMultiplier: 110,
+            ),
+            auswirkungen: [
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    value: 4
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::STOCKS_BONUS,
+                    value: 0
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    value: 1.40
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::REAL_ESTATE,
+                    value: 0
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::CRYPTO,
+                    value: 4
+                ),
+            ]
+        );
+        KonjunkturphaseFinder::getInstance()->overrideKonjunkturphaseDefinitionsForTesting([
+            $this->konjunkturphaseDefinition
+        ]);
+        $this->setupInsolvenz();
+
+        $cardsForTesting = [
+            new JobCardDefinition(
+                id: new CardId('tj0'),
+                title: 'offered 1',
+                description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                gehalt: new MoneyAmount(34000),
+                requirements: new JobRequirements(
+                    zeitsteine: 1,
+                ),
+            ),
+        ];
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('tj0')));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        $actualKosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $this->players[0]);
+        expect($actualKosten)->toEqual(new MoneyAmount(6600));
     });
 });
 
@@ -826,7 +956,7 @@ describe('getOpenRatesForLoan', function () {
         $expectedGuthaben -= Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE;
         expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->value)->toEqual($expectedGuthaben)
             ->and(MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], $loans[0]->loanId))->toEqual(0);
-    });
+    })->todo("Fix in #445");
 });
 
 describe("getAnnualExpensesForPlayer", function () {

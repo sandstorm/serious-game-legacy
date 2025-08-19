@@ -417,3 +417,20 @@ describe("getCurrentTurnForPlayer", function () {
             ->and(PlayerState::getCurrentTurnForPlayer($gameEvents, $this->players[1])->value)->toBe(1);
     });
 });
+
+describe("isPlayerInsolvent", function () {
+   it('returns true for the duration of Insolvenz and false after', function () {
+       /** @var TestCase $this */
+       $this->setupInsolvenz();
+
+       for ($i = 1; $i <= Configuration::INSOLVENZ_DURATION; $i++) {
+           expect(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[0]))->toBeTrue()
+               ->and(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[1]))->toBeFalse();
+           $this->startNewKonjunkturphaseWithCardsOnTop([]);
+       }
+
+       //first year after Insolvenz for player 1
+       expect(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[0]))->toBeFalse()
+           ->and(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[1]))->toBeFalse();
+   });
+});

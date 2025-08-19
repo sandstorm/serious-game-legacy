@@ -1,14 +1,23 @@
+@use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
+
 @props([
     'moneySheet' => null,
+    'gameEvents' => null,
+    'playerId' => null,
 ])
 
 <div class="konjunkturphase-summary__money-sheet">
     <table class="konjunkturphase-summary-table">
+        <tr class="konjunkturphase-summary-table__total-row">
+            <td class="konjunkturphase-summary-table__empty-column"></td>
+            <td class="konjunkturphase-summary-table__heading-column">Aktueller Kontostand</td>
+            <td class="konjunkturphase-summary-table__value-column">{!! $moneySheet->guthabenBeforeKonjunkturphaseChange->formatWithIcon() !!}</td>
+        </tr>
         <tr>
-            <th class="konjunkturphase-summary-table__icon-column">
+            <td class="konjunkturphase-summary-table__icon-column">
                 <i class="icon-plus text--success" aria-hidden="true"></i>
-            </th>
-            <th class="konjunkturphase-summary-table__heading-column" colspan="2">Einnahmen</th>
+            </td>
+            <td class="konjunkturphase-summary-table__heading-column" colspan="2">Einnahmen</td>
         </tr>
         <tr>
             <td class="konjunkturphase-summary-table__empty-column"></td>
@@ -22,10 +31,10 @@
         </tr>
 
         <tr>
-            <th class="konjunkturphase-summary-table__icon-column">
+            <td class="konjunkturphase-summary-table__icon-column">
                 <i class="icon-minus text--danger" aria-hidden="true"></i>
-            </th>
-            <th class="konjunkturphase-summary-table__heading-column" colspan="2">Ausgaben</th>
+            </td>
+            <td class="konjunkturphase-summary-table__heading-column" colspan="2">Ausgaben</td>
         </tr>
         <tr>
             <td class="konjunkturphase-summary-table__empty-column"></td>
@@ -48,9 +57,67 @@
             <td class="konjunkturphase-summary-table__value-column">{!! $moneySheet->totalInsuranceCost->formatWithIcon() !!}</td>
         </tr>
         <tr class="konjunkturphase-summary-tabe__total-row">
-            <th class="konjunkturphase-summary-table__icon-column">=</th>
-            <th class="konjunkturphase-summary-table__heading-column">Gesamt</th>
+            <td class="konjunkturphase-summary-table__icon-column">
+                <i class="icon-ist-gleich" aria-hidden="true"></i>
+            </td>
+            <td class="konjunkturphase-summary-table__heading-column">Summe der Ein- und Ausgaben</td>
             <td class="konjunkturphase-summary-table__value-column">{!! $moneySheet->totalFromPlayerInput->formatWithIcon() !!}</td>
         </tr>
+        <tr class="konjunkturphase-summary-tabe__total-row">
+            <td class="konjunkturphase-summary-table__icon-column">
+                <i class="icon-ist-gleich" aria-hidden="true"></i>
+            </td>
+            <td class="konjunkturphase-summary-table__heading-column">Neuer Kontostand</td>
+            <td class="konjunkturphase-summary-table__value-column">{!! $moneySheet->guthabenAfterKonjunkturphaseChange->formatWithIcon() !!}</td>
+        </tr>
+        @if($moneySheet->guthabenAfterKonjunkturphaseChange->value < 0)
+            <tr class="konjunkturphase-summary-tabe__total-row">
+                <td class="konjunkturphase-summary-table__icon-column">
+                    <i class="icon-insolvent text--danger" aria-hidden="true"></i>
+                </td>
+                <td class="konjunkturphase-summary-table__heading-column">Dein aktueller Kontostand und deine Einnahmen reichen nicht, um deine Kosten zu decken.</td>
+                <td class="konjunkturphase-summary-table__value-column"></td>
+            </tr>
+            @if($this->canCancelInsurances()->canExecute)
+                <tr class="konjunkturphase-summary-tabe__total-row">
+                    <td class="konjunkturphase-summary-table__icon-column"></td>
+                    <td class="konjunkturphase-summary-table__heading-column">Du hast nicht genügend Geld auf dem Konto, um deine Versicherung zu bezahlen.</td>
+                    <td class="konjunkturphase-summary-table__value-column">
+                        <button
+                            wire:click="cancelAllInsurancesToAvoidInsolvenz()"
+                            type="button"
+                            @class([
+                                "button",
+                                "button--type-primary",
+                                "button--size-small",
+                                $this->getPlayerColorClass(),
+                            ])
+                        >
+                            Versicherungen kündigen
+                        </button>
+                    </td>
+                </tr>
+            @endif
+            @if(PlayerState::getTotalValueOfAllInvestmentsForPlayer($gameEvents, $playerId)->value > 0)
+                <tr class="konjunkturphase-summary-tabe__total-row">
+                    <td class="konjunkturphase-summary-table__icon-column"></td>
+                    <td class="konjunkturphase-summary-table__heading-column">Du hast nicht genügend Geld auf dem Konto. Verkaufe deine Investitionen, um deine Kosten decken zu können.</td>
+                    <td class="konjunkturphase-summary-table__value-column">
+                        <button
+                            wire:click="toggleSellInvestmentsToAvoidInsolvenzModal()"
+                            type="button"
+                            @class([
+                                "button",
+                                "button--type-primary",
+                                "button--size-small",
+                                $this->getPlayerColorClass(),
+                            ])
+                        >
+                            Investitionen verkaufen
+                        </button>
+                    </td>
+                </tr>
+            @endif
+        @endif
     </table>
 </div>

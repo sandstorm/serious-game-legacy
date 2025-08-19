@@ -3,10 +3,12 @@
 @use('Domain\CoreGameLogic\Feature\Initialization\State\PreGameState')
 @use('Domain\CoreGameLogic\PlayerId')
 @use('Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState')
+@use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
+@use('Domain\CoreGameLogic\Feature\MoneySheet\State\MoneySheetState')
 
 @props([
     'gameEvents' => null,
-    'myself' => null,
+    'playerId' => null,
 ])
 
 @section('icon')
@@ -25,7 +27,13 @@
                         wire:click="showMoneysheetSummaryForPlayer('{{$player->playerId}}')"
                     >
                         {{$player->name}}
-                        @if(KonjunkturphaseState::isPlayerReadyForKonjunkturphaseChange($gameEvents, $player->playerId))✅@else⏳@endif
+                        @if(KonjunkturphaseState::isPlayerReadyForKonjunkturphaseChange($gameEvents, $player->playerId))
+                            <i class="icon-fertig" aria-hidden="true"></i>
+                            <span class="sr-only">Spieler ist bereit für den Konjunkturphasenwechsel.</span>
+                        @else
+                            <i class="icon-sanduhr" aria-hidden="true"></i>
+                            <span class="sr-only">Spieler ist noch nicht bereit für den Konjunkturphasenwechsel.</span>
+                        @endif
                     </button>
                 </li>
             @endforeach
@@ -35,19 +43,34 @@
             {{$this->summaryActiveTabId}}
             <x-konjunkturphase.konjunkurphase-summary
                 :money-sheet="$this->getMoneysheetForPlayerId(PlayerId::fromString($this->summaryActiveTabId))"
+                :game-events="$gameEvents"
+                :player-id="$playerId"
             />
         </div>
     </div>
 @endsection
 
 @section('footer')
-    @if(KonjunkturphaseState::isPlayerReadyForKonjunkturphaseChange($gameEvents, $myself) === false)
+    @if($this->canFileInsolvenzForPlayer()->canExecute)
+        <button
+            wire:click="fileInsolvenzForPlayer()"
+            type="button"
+            @class([
+                "button",
+                "button--type-primary",
+                $this->getPlayerColorClass(),
+            ])
+        >
+            Insolvenz anmelden
+        </button>
+    @elseif(KonjunkturphaseState::isPlayerReadyForKonjunkturphaseChange($gameEvents, $playerId) === false)
         <button
             wire:click="markPlayerAsReady()"
             type="button"
             @class([
                 "button",
                 "button--type-primary",
+                "button--disabled" => !$this->canMarkPlayerAsReady()->canExecute,
                 $this->getPlayerColorClass(),
             ])
         >

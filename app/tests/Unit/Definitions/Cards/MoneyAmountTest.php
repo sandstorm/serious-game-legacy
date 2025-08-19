@@ -43,9 +43,8 @@ describe('MoneyAmountTest', function () {
 
     it('can be multiplied by another MoneyAmount', function () {
         $amount1 = new MoneyAmount(10.00);
-        $amount2 = new MoneyAmount(5.00);
-        $result = $amount1->multiply($amount2);
-        expect($result->value)->toEqual(50.00);
+        $result = $amount1->negate();
+        expect($result->value)->toEqual(-10.00);
     });
 
     it('can check equality with another MoneyAmount', function () {

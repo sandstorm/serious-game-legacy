@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
+use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
@@ -17,14 +19,15 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\FileInsolvenzForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\AnswerOption;
 use Domain\Definitions\Card\Dto\CardDefinition;
-use Domain\Definitions\Card\Dto\EreignisCardDefinition;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
@@ -34,7 +37,7 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\ValueObject\AnswerId;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
+use Domain\Definitions\Card\ValueObject\ModifierId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Insurance\InsuranceDefinition;
 use Domain\Definitions\Insurance\InsuranceFinder;
@@ -52,7 +55,6 @@ use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
-use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
@@ -97,13 +99,12 @@ abstract class TestCase extends BaseTestCase
         $this->players = $this->generatePlayerIds($numberOfPlayers);
         CardFinder::getInstance()->overrideCardsForTesting(
             $cards !== null
-            ? [...$cards, ...$this->getCardsForEreignisse()] // Add at least one ereignisCard for each category to avoid errors
+            ? [...$cards]
             : [
                 ...$this->getCardsForBildungAndKarriere(),
                 ...$this->getCardsForSozialesAndFreizeit(),
                 ...$this->getCardsForJobs(),
                 ...$this->getCardsForMinijobs(),
-                ...$this->getCardsForEreignisse(),
                 ...$this->getCardsForWeiterbildung(),
             ]
         );
@@ -211,7 +212,9 @@ abstract class TestCase extends BaseTestCase
                     ])
                 ),
             ],
-            modifierIds: [],
+            modifierIds: [
+                ModifierId::FOR_TESTING_ONLY_NEVER_TRIGGER_EREIGNIS,
+            ],
             modifierParameters: new ModifierParameters(),
             auswirkungen: [
                 new AuswirkungDefinition(
@@ -442,79 +445,6 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * @return EreignisCardDefinition[]
-     */
-    protected function getCardsForEreignisse(): array
-    {
-        return [
-            "e0" => new EreignisCardDefinition(
-                id: new CardId('e0'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Nichts',
-                description: 'Es passiert nichts, damit die Tests vorhersehbar bleiben',
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(),
-                modifierIds: [],
-                modifierParameters: new ModifierParameters(),
-            ),
-            "e1" => new EreignisCardDefinition(
-                id: new CardId('e1'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Nichts',
-                description: 'Es passiert nichts, damit die Tests vorhersehbar bleiben',
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(),
-                modifierIds: [],
-                modifierParameters: new ModifierParameters(),
-            ),
-            "e2" => new EreignisCardDefinition(
-                id: new CardId('e2'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Nichts',
-                description: 'Es passiert nichts, damit die Tests vorhersehbar bleiben',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(),
-                modifierIds: [],
-                modifierParameters: new ModifierParameters(),
-            ),
-            "e3" => new EreignisCardDefinition(
-                id: new CardId('e3'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Nichts',
-                description: 'Es passiert nichts, damit die Tests vorhersehbar bleiben',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(),
-                modifierIds: [],
-                modifierParameters: new ModifierParameters(),
-            ),
-            "e4" => new EreignisCardDefinition(
-                id: new CardId('e4'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Nichts',
-                description: 'Es passiert nichts, damit die Tests vorhersehbar bleiben',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(),
-                modifierIds: [],
-                modifierParameters: new ModifierParameters(),
-            ),
-            "e5" => new EreignisCardDefinition(
-                id: new CardId('e5'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Nichts',
-                description: 'Es passiert nichts, damit die Tests vorhersehbar bleiben',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(),
-                modifierIds: [],
-                modifierParameters: new ModifierParameters(),
-            ),
-        ];
-    }
-
-    /**
      * @return WeiterbildungCardDefinition[]
      */
     protected function getCardsForWeiterbildung(): array
@@ -555,7 +485,6 @@ abstract class TestCase extends BaseTestCase
             ...$this->getCardsForSozialesAndFreizeit(),
             ...$this->getCardsForJobs(),
             ...$this->getCardsForMinijobs(),
-            ...$this->getCardsForEreignisse(),
             ...$this->getCardsForWeiterbildung(),
         ];
         $allCardsWithIdsAsKey = [];
@@ -570,5 +499,67 @@ abstract class TestCase extends BaseTestCase
                 ->withFixedKonjunkturphaseForTesting($this->konjunkturphaseDefinition)
                 ->withFixedCardOrderForTesting()
         );
+    }
+
+    public function getGameEvents(): GameEvents
+    {
+        return $this->coreGameLogic->getGameEvents($this->gameId);
+    }
+
+    public function getKonjunkturphaseDefinition(): ?KonjunkturphaseDefinition
+    {
+        return $this->konjunkturphaseDefinition;
+    }
+
+    public function handle(CommandInterface $command): void
+    {
+        $this->coreGameLogic->handle($this->gameId, $command);
+    }
+
+    public function getPlayers(): array
+    {
+        return $this->players;
+    }
+
+    public function setupInsolvenz(): void
+    {
+        $initialGuthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->players[0]);
+        // WHY: We use MiniJobs to avoid triggering events.
+        $cardsForTesting = [
+            new MinijobCardDefinition(
+                id: CardId::fromString("removeZeitsteine1"),
+                title: "RemoveZeitsteine1",
+                description: "RemoveZeitsteine1",
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: $initialGuthaben->negate(),
+                    zeitsteineChange: -1 * $this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
+                ),
+            ),
+            new MinijobCardDefinition(
+                id: CardId::fromString("removeZeitsteine2"),
+                title: "RemoveZeitsteine2",
+                description: "RemoveZeitsteine2",
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -1 * $this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
+                ),
+            ),
+        ];
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+
+        $this->handle(DoMinijob::create($this->getPlayers()[0]));
+        $this->handle(new EndSpielzug($this->getPlayers()[0]));
+
+        $this->handle(DoMinijob::create($this->getPlayers()[1]));
+        $this->handle(new EndSpielzug($this->getPlayers()[1]));
+
+        $this->handle(EnterLebenshaltungskostenForPlayer::create(
+            $this->getPlayers()[0],
+            MoneySheetState::calculateMinimumValueForLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[0])));
+
+        $this->handle(CompleteMoneysheetForPlayer::create($this->getPlayers()[0]));
+        $this->handle(FileInsolvenzForPlayer::create($this->getPlayers()[0]));
+        $this->handle(ChangeKonjunkturphase::create()
+            ->withFixedKonjunkturphaseForTesting($this->konjunkturphaseDefinition)
+            ->withFixedCardOrderForTesting());
     }
 }

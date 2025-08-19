@@ -13,6 +13,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunktur
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Illuminate\View\View;
 
 trait HasKonjunkturphase
@@ -105,10 +106,15 @@ trait HasKonjunkturphase
         return $validationResult->canExecute;
     }
 
-    public function markPlayerAsReady(): void
+    public function canMarkPlayerAsReady(): AktionValidationResult
     {
         $aktion = new MarkPlayerAsReadyForKonjunkturphaseChangeAktion();
-        $validationResult = $aktion->validate($this->myself, $this->getGameEvents());
+        return $aktion->validate($this->myself, $this->getGameEvents());
+    }
+
+    public function markPlayerAsReady(): void
+    {
+        $validationResult = self::canMarkPlayerAsReady();
         if (!$validationResult->canExecute) {
             $this->showNotification(
                 $validationResult->reason,

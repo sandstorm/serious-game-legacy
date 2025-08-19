@@ -31,7 +31,7 @@ class EnterLebenshaltungskostenForPlayerAktion extends Aktion
     {
         $result = $this->validate($playerId, $gameEvents);
         if (!$result->canExecute) {
-            throw new \RuntimeException('Cannot enter Lebenshaltungskosten: ' . $result->reason, 1751373528);
+            throw new \RuntimeException('Cannot enter Lebenshaltungskosten: ' . $result->reason, 1756798157);
         }
         $expectedInput = MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId);
         $previousTries = MoneySheetState::getNumberOfTriesForLebenshaltungskostenInput($gameEvents, $playerId);

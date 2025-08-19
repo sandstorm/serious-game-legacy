@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
+use Domain\CoreGameLogic\EventStore\DecoratedEvent;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
@@ -17,12 +18,9 @@ use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\EreignisCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
-use Domain\CoreGameLogic\Feature\Spielzug\State\ModifierCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
-use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
-use Domain\Definitions\Card\Dto\CardDefinition;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\PileId;
@@ -85,9 +83,17 @@ class ActivateCardAktion extends Aktion
             )
         );
 
+        // WHY: We need the lastest event (which has not yet been persisted) in the next handler
+        $gameEventsWithNotYetPersistedChanges = GameEvents::fromArray([
+            ...$gameEvents,
+            ...array_map(fn($event) => $event instanceof DecoratedEvent ? $event->innerEvent : $event, $eventsFromActivation->events)
+        ]);
         // Append Ereignis-Events (this has a 25 percent chance to be triggered, otherwise nothing gets added)
         return $eventsFromActivation->withAppendedEvents(
-            ...new EreignisCommandHandler()->handle(MaybeTriggerEreignis::create($playerId, $this->category), $gameEvents)
+            ...new EreignisCommandHandler()->handle(
+                MaybeTriggerEreignis::create($playerId, $this->category),
+                $gameEventsWithNotYetPersistedChanges
+            )
         );
     }
 }
