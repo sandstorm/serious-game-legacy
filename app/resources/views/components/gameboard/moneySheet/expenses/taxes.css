@@ -17,4 +17,9 @@
     gap: var(--spacing-200);
     align-items: center;
     justify-content: flex-end;
+
+    .badge-with-background {
+        text-align: left;
+        font-size: var(--font-size-sm);
+    }
 }

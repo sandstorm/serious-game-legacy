@@ -71,10 +71,10 @@
     position: relative;
     margin: auto;
     width: 100%;
-    height: auto;
+    min-height: 50%;
     padding: var(--spacing-250);
     max-width: 1200px;
-    max-height: 800px;
+    max-height: 100%;
     gap: var(--spacing-100);
 
     background-color: var(--color-primary-fg);
@@ -128,4 +128,6 @@
 
 .modal__body {
     overflow: scroll;
+    margin-top: auto;
+    margin-bottom: auto;
 }

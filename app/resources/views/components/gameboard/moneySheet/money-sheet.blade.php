@@ -87,12 +87,12 @@
     </div>
 
     <div class="moneysheet__income-sum">
-        {!! $moneySheet->annualIncome->formatWithIcon() !!}
+        <span class="badge-with-background">{!! $moneySheet->annualIncome->formatWithIcon() !!}</span>
     </div>
     <div class="moneysheet__expenses-sum">
-        {!! $moneySheet->annualExpensesFromPlayerInput->formatWithIcon() !!}
+        <span class="badge-with-background">{!! $moneySheet->annualExpensesFromPlayerInput->formatWithIcon() !!}</span>
     </div>
     <div class="moneysheet__sum">
-        = {!! $moneySheet->totalFromPlayerInput->formatWithIcon() !!}
+        <span class="badge-with-background">= {!! $moneySheet->totalFromPlayerInput->formatWithIcon() !!}</span>
     </div>
 </div>

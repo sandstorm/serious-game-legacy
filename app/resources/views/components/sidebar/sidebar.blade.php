@@ -32,10 +32,10 @@
             @endif
 
             <button class="button button--type-primary" wire:click="showTakeOutALoan()">
-                Kredit aufnehmen <i class="icon-dots" aria-hidden="true"></i>
+                <span>Kredit aufnehmen</span> <i class="icon-dots" aria-hidden="true"></i>
             </button>
             <button class="button button--type-primary" wire:click="showExpensesTab('{{ ExpensesTabEnum::INSURANCES }}')">
-                Versicherung abschließen <i class="icon-dots" aria-hidden="true"></i>
+                <span>Versicherung abschließen</span> <i class="icon-dots" aria-hidden="true"></i>
             </button>
             <button
                 type="button"

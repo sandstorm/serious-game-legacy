@@ -17,7 +17,7 @@
 @section('content')
     <form class="take-out-loan" wire:submit="takeOutALoan">
         <div class="take-out-loan__info-box">
-            <i class="icon-info" aria-hidden="true"></i>
+            <i class="icon-info-2" aria-hidden="true"></i>
             <div class="take-out-loan__info-section">
                 <small>Dein Kontostand</small>
                 {!! PlayerState::getGuthabenForPlayer($gameEvents, $playerId)->format() !!}

@@ -14,7 +14,7 @@
             Ein Job kostet Zeit. Pro Jahr bleibt dir ein Zeitstein weniger.
         </div>
         <div class="job-offers__header-category">
-            <i class="icon-bildung-und-karriere" aria-hidden="true"></i> Beruf
+            <i class="icon-erwerbseinkommen" aria-hidden="true"></i> Beruf
         </div>
     </div>
 @endsection

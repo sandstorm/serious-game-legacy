@@ -25,13 +25,13 @@
         </div>
     </div>
     <div class="tabs__lower-content taxes__actions">
-        @error('moneySheetSteuernUndAbgabenForm.steuernUndAbgaben') <span class="form__error">{{ $message }}</span> @enderror
+        @error('moneySheetSteuernUndAbgabenForm.steuernUndAbgaben') <span class="form__error badge-with-background">{{ $message }}</span> @enderror
         @if ($this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled)
-            <span class="text--success">
-                <i class="icon-info" aria-hidden="true"></i> Deine Steuern und Abgaben sind erfolgreich eingetragen. Das Formular ist so lange deaktiviert bis sich an deinem Gehalt etwas ändert.
+            <span class="text--success badge-with-background">
+                <i class="icon-info-2" aria-hidden="true"></i> Deine Steuern und Abgaben sind erfolgreich eingetragen. Das Formular ist so lange deaktiviert bis sich an deinem Gehalt etwas ändert.
             </span>
         @endif
-        <x-form.submit :disabled="$this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled">Änderungen Speichern</x-form.submit>
+        <x-form.submit :disabled="$this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled">Änderungen speichern</x-form.submit>
     </div>
 </form>
 
