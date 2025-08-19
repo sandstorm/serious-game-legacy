@@ -49,6 +49,7 @@ class JobOffersModal extends Component
         return view('components.gameboard.job-offers-modal', [
             'jobOffers' => $jobs,
             'playerId' => $this->playerId,
+            'gameEvents' => $this->gameEvents,
         ]);
     }
 }

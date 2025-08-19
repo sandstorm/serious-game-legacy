@@ -1,9 +1,12 @@
 @extends ('components.modal.modal', ['closeModal' => "closeJobOffer()", 'type' => "borderless"])
+
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor')
+@use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
 
 @props([
     'jobOffers' => [],
     'playerId' => null,
+    'gameEvents' => null,
 ])
 
 @section('title')
@@ -67,5 +70,15 @@
                 </div>
             </div>
         @endforeach
+    </div>
+    <div class="job-offers__kompetenzen">
+        <div class="badge-with-background">
+            <span>Deine bisher erworbenen Kompetenzen: </span>
+            <x-gameboard.lebensziel-kompetenzen
+                :player-id="$playerId"
+                :game-events="$gameEvents"
+                :lebensziel-phase="PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($gameEvents, $playerId)"
+            />
+        </div>
     </div>
 @endsection
