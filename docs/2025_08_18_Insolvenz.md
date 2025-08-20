@@ -21,3 +21,6 @@
 
 ## Insolvenz
 
+- Lebenshaltungskosten fest auf 5000
+- Schuldbetrag tracken oder nicht? -> zu klären
+- 
