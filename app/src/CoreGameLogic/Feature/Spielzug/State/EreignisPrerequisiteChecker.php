@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\State;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
 
@@ -20,12 +21,13 @@ final readonly class EreignisPrerequisiteChecker
         return new self($gameEvents);
     }
 
-    public function hasPlayerPrerequisites(PlayerId $playerId, EreignisPrerequisitesId $ereignisPrerequisitesId): bool
+    public function hasPlayerPrerequisites(PlayerId $playerId, EreignisPrerequisitesId $ereignisPrerequisitesId, string $requiredCardId): bool
     {
         return match ($ereignisPrerequisitesId) {
             EreignisPrerequisitesId::HAS_JOB => $this->hasPlayerAJob($playerId),
             EreignisPrerequisitesId::HAS_CHILD => $this->hasPlayerAChild($playerId),
             EreignisPrerequisitesId::HAS_NO_CHILD => !($this->hasPlayerAChild($playerId)),
+            EreignisPrerequisitesId::HAS_SPECIFIC_CARD => $this->hasPlayerThisCard($playerId, $requiredCardId),
             EreignisPrerequisitesId::NO_PREREQUISITES => true,
         };
     }
@@ -38,5 +40,11 @@ final readonly class EreignisPrerequisiteChecker
     private function hasPlayerAChild(PlayerId $playerId): bool
     {
         return PlayerState::hasChild($this->gameEvents, $playerId);
+    }
+
+    private function hasPlayerThisCard(PlayerId $playerId, string $requiredCardId): bool
+    {
+        return PlayerState::hasPlayerSpecificCard($this->gameEvents, $playerId, $requiredCardId);
+
     }
 }

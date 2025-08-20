@@ -71,7 +71,7 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
             foreach ($cardDefinition->getEreignisRequirementIds() as $requirementId) {
                 $hasPlayerAllPrerequisites = $hasPlayerAllPrerequisites &&
                     EreignisPrerequisiteChecker::forStream($gameEvents)
-                        ->hasPlayerPrerequisites($command->playerId, $requirementId);
+                        ->hasPlayerPrerequisites($command->playerId, $requirementId, $cardDefinition->getRequiredCard());
             }
 
             /**
@@ -83,7 +83,7 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
             if (in_array(ModifierId::JOBVERLUST->value, $modifierIdsAsString, true)
                 || in_array(ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG->value, $modifierIdsAsString, true)) {
                 $hasPlayerAllPrerequisites = EreignisPrerequisiteChecker::forStream($gameEvents)
-                    ->hasPlayerPrerequisites($command->playerId, EreignisPrerequisitesId::HAS_JOB);
+                    ->hasPlayerPrerequisites($command->playerId, EreignisPrerequisitesId::HAS_JOB, $cardDefinition->getRequiredCard());
             }
             return $hasPlayerAllPrerequisites && AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($command->playerId, $cardDefinition->getResourceChanges());
         });

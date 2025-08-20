@@ -18,6 +18,8 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\AnswerForWeiterbildungWasSubmitt
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\BerufsunfaehigkeitsversicherungWasActivated;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
@@ -501,8 +503,33 @@ class PlayerState
         return $investmentsWereSold !== null || $investmentsWereNotSold !== null;
     }
 
+    /**
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return bool
+     */
     public static function hasChild(GameEvents $gameEvents, PlayerId $playerId): bool
     {
         return $gameEvents->findLastOrNullWhere(fn ($event) => $event instanceof PlayerGotAChild && $playerId->equals($event->playerId)) !== null;
+    }
+
+    /**
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @param string $requiredCardId
+     * @return bool
+     */
+    public static function hasPlayerSpecificCard(GameEvents $gameEvents, PlayerId $playerId, string $requiredCardId) {
+        $ereignisWasTriggeredForPlayer = $gameEvents->findLastOrNullWhere(fn($event
+        ) => $event instanceof EreignisWasTriggered && $event->playerId->equals($playerId) && $event->ereignisCardId->value === ($requiredCardId));
+        $cardWasPlayedByPlayer = $gameEvents->findLastOrNullWhere(fn($event
+        ) => $event instanceof CardWasActivated && $event->playerId->equals($playerId) && $event->cardId->value === ($requiredCardId));
+        $jobOfferWasAcceptedByPlayer = $gameEvents->findLastOrNullWhere(fn($event
+        ) => $event instanceof JobOfferWasAccepted && $event->playerId->equals($playerId) && $event->cardId->value === ($requiredCardId));
+        return (
+            $ereignisWasTriggeredForPlayer !== null ||
+            $cardWasPlayedByPlayer !== null ||
+            $jobOfferWasAcceptedByPlayer !== null
+        );
     }
 }

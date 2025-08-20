@@ -180,6 +180,7 @@ function importEreignisCards(): void
         $modifierArrayWithKeys = array_combine($modifierKeys, $modifierArray);
         $prerequisiteArray = array_slice($lineArray, 17, 3);
         $prerequisiteArrayWithKeys = array_combine($prerequisiteKeys, $prerequisiteArray);
+        //print_r($prerequisiteArrayWithKeys);
 
         //stores multiplier as key value pair (modifierId and modifierValue) as it simplifies the iteration over the elements
         $modifierArrayWithIdValuePairs = [];
@@ -216,16 +217,18 @@ function importEreignisCards(): void
             }
         }
         echo "\t" . "),\n";
-
-        //TODO prerequisiteCardId -> add?!
-
         echo "\t" . "ereignisRequirementIds: [\n";
         for ($i = 1; $i<=2; $i++) {
             if (!empty($prerequisiteArray[$i])) {
                 echo "\t\t" . "EreignisPrerequisitesId::" . $prerequisiteArray[$i] . ",\n";
             }
         }
+        //all cards that have a requiredCardId need the Prerequisite HAS_SPECIFIC_CARD for validation
+        if ($prerequisiteArrayWithKeys["prerequisiteCardId"] !== "") {
+            echo "\t\t" . "EreignisPrerequisitesId::HAS_SPECIFIC_CARD,\n";
+        }
         echo "\t" . "],\n";
+        echo "\t" . "requiredCardId: '" . $prerequisiteArrayWithKeys["prerequisiteCardId"] . "',\n";
         if ($lineArrayWithKeys["gewichtung"] === "") {
             echo "\t" . "gewichtung: 1,\n";
         } else {
