@@ -14,7 +14,7 @@
 
 html, body {
     font-size: 14px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Roboto', sans-serif;
     color: var(--color-primary-dark);
     text-wrap: pretty;
 
