@@ -61,8 +61,7 @@ class KonjunkturphaseFinder
             type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
             name: 'Aufschwung I – Erste Erholung',
             description: 'Nachdem eine globale Krise die internationalen Lieferketten stark gestört hatte, ist der Konsum jedoch noch verhalten, da Haushalte und Unternehmen vorsichtig agieren. Unternehmen beginnen, ihre Lager aufzufüllen und Neueinstellungen zu tätigen. Die Zentralbank hält den Leitzins daher mit 1 % niedrig, um günstige Kredite zu ermöglichen und Investitionen sowie Konsumausgaben zu begünstigen. Dadurch bleiben Kredite günstig und die Unternehmen sowie Haushalte können leichter investieren und konsumieren.',
-            additionalEvents: [
-            ],
+            additionalEvents: '',
             zeitsteine: new Zeitsteine([
                 new ZeitsteinePerPlayer(2, 6),
                 new ZeitsteinePerPlayer(3, 5),
@@ -153,9 +152,7 @@ class KonjunkturphaseFinder
             type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
             name: 'Aufschwung II – Stabile Expansion',
             description: 'Ein staatliches Infrastrukturpaket sorgt für  wirtschaftlichen Schwung. Straßen, Bahnlinien und digitale Netze werden ausgebaut und es entstehen neue Jobs. Die Konjunktur festigt sich zunehmend und die Zentralbank reagiert vorsichtig. Sie erhöht den Leitzins auf 1,5 %, um zukünftigen Inflationsrisiken vorzubeugen. Kredite bleiben jedoch weiterhin attraktiv, sodass der Aufschwung nachhaltig unterstützt wird.',
-            additionalEvents: [
-                "Infrastrukturprogramm: Immobilienkauf und -verkauf +10 %",
-            ],
+            additionalEvents: 'Infrastrukturprogramm: Immobilienkauf und -verkauf +10 %. ',
             zeitsteine: new Zeitsteine([
                 new ZeitsteinePerPlayer(2, 5),
                 new ZeitsteinePerPlayer(3, 4),
@@ -242,9 +239,7 @@ class KonjunkturphaseFinder
             type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
             name: 'Aufschwung III – Kräftiges Wachstum',
             description: 'Neue technologische Innovationen führen zu deutlich höherer Produktivität und neuen Wachstumsimpulsen. Unternehmen investieren in Zukunftstechnologien und schaffen viele Arbeitsplätze. Weil die Wirtschaft nun robust wächst, hebt die Zentralbank den Leitzins auf 2 % an, um das Wachstum  zu begleiten und einer möglichen Überhitzung entgegenzuwirken. Kredite bleiben moderat teuer, trotz steigender Zinsen investieren jedoch Unternehmen weiter, da die Renditeerwartungen bei Investitionen in Zukunftstechnologien hoch sind.',
-            additionalEvents: [
-                "Einmalige Gehaltssonderzahlung i.H.v. 1000 €",
-            ],
+            additionalEvents: 'Einmalige Gehaltssonderzahlung i.H.v. 1000 €. ',
             zeitsteine: new Zeitsteine([
                 new ZeitsteinePerPlayer(2, 5),
                 new ZeitsteinePerPlayer(3, 4),
@@ -335,9 +330,7 @@ class KonjunkturphaseFinder
             type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
             name: 'Aufschwung IV – Späte Phase',
             description: 'Die Nachfrage nach Exportprodukten ist hoch, aber Fachkräfte und Rohstoffe werden zunehmend knapp. Unternehmen stoßen an ihre Kapazitätsgrenzen, was steigende Löhne und erste Inflationssignale zur Folge hat. Die Zentralbank greift nun entschiedener ein und hebt den Leitzins auf 2,5 % an, um die Wirtschaft sanft auszubremsen und eine Überhitzung zu verhindern. Dies führt zu höheren Kreditkosten, was die Investitionen erstmals etwas erschwert.',
-            additionalEvents: [
-                "Einmalig 500 € für steigende Lebensmittelpreise",
-            ],
+            additionalEvents: 'Einmalig 500 € für steigende Lebensmittelpreise. ',
             zeitsteine: new Zeitsteine([
                 new ZeitsteinePerPlayer(2, 4),
                 new ZeitsteinePerPlayer(3, 3),
@@ -432,8 +425,7 @@ class KonjunkturphaseFinder
             type: KonjunkturphaseTypeEnum::BOOM,
             name: 'Boom I - Frühe Expansion',
             description: 'Niedrige Zinssätze der letzten Jahre führen dazu, dass Unternehmen und Verbraucher weiterhin großzügig investieren und konsumieren. Die Wirtschaft wächst stabil, die Stimmung bleibt optimistisch, und Arbeitsplätze sind sicher. Die Zentralbank erkennt die gute Lage und stabilisiert den Leitzins bei 2 %, sodass der Kreditzins weiterhin attraktiv bleibt.',
-            additionalEvents: [
-            ],
+            additionalEvents: '',
             zeitsteine: new Zeitsteine([
                 new ZeitsteinePerPlayer(2, 6),
                 new ZeitsteinePerPlayer(3, 5),
@@ -524,9 +516,7 @@ class KonjunkturphaseFinder
             type: KonjunkturphaseTypeEnum::BOOM,
             name: 'Boom II - Mittlere Expansion',
             description: 'Ein globaler Handelsboom sorgt für Rekordgewinne in Unternehmen und spürbar steigende Löhne. Die Kaufkraft der Haushalte wächst stark und viele Märkte expandieren. Da die Wirtschaft nun auf Hochtouren läuft und Inflationsrisiken steigen, hebt die Zentralbank den Leitzins auf 3 % an. Die höheren Kreditkosten bremsen Investitionen bisher jedoch kaum, da die Gewinne weiterhin hoch sind.',
-            additionalEvents: [
-                "Einmalige Lohnsonderzahlung i.H.v. 10 % des Einkommens.",
-            ],
+            additionalEvents: 'Einmalige Lohnsonderzahlung i.H.v. 10 % des Einkommens.. ',
             zeitsteine: new Zeitsteine([
                 new ZeitsteinePerPlayer(2, 5),
                 new ZeitsteinePerPlayer(3, 4),
@@ -613,9 +603,7 @@ class KonjunkturphaseFinder
             type: KonjunkturphaseTypeEnum::BOOM,
             name: 'Boom III - Überhitzung',
             description: 'Eine globale Rohstoffknappheit treibt die Preise weltweit in die Höhe. Unternehmen haben Mühe, die steigenden Kosten weiterzugeben und erste Anzeichen einer Blasenbildung sind sichtbar. Spekulationen haben dazu geführt, dass Immobilienpreise zunehmend den Bezug zu den  wirtschaftlichen Kennzahlen verloren haben und eine Immobilienblase ist entstanden. Die Zentralbank reagiert mit einer deutlichen Anhebung des Leitzinses auf 4  %, um die Inflation zu bekämpfen. Die merklich gestiegenen Kreditkosten führen bereits zu ersten negativen Auswirkungen auf neue Investitionen.',
-            additionalEvents: [
-                "Immobilienblase, für jede Immobilie fallen Steuern i.H.v. 1000 € pro Objekt an",
-            ],
+            additionalEvents: 'Immobilienblase, für jede Immobilie fallen Steuern i.H.v. 1000 € pro Objekt an. ',
             zeitsteine: new Zeitsteine([
                 new ZeitsteinePerPlayer(2, 4),
                 new ZeitsteinePerPlayer(3, 3),
@@ -706,10 +694,7 @@ class KonjunkturphaseFinder
             type: KonjunkturphaseTypeEnum::BOOM,
             name: 'Boom IV - Asset-Blasé',
             description: 'Langjährig niedrige Zinsen haben spekulative Investitionen in Aktien, Immobilien und Kryptowährungen massiv ansteigen lassen. Die Preise sind stark überbewertet und weit von ihren fundamentalen Werten entfernt. Die Zentralbank zieht nun deutlich die geldpolitische Bremse und hebt den Leitzins auf 5  % an, was Kredite deutlich teurer macht. Experten warnen, dass die Wirtschaft sich am Rand einer Korrektur befindet und eine Rezession droht, falls ein unerwarteter Schock eintritt.',
-            additionalEvents: [
-                "Immobilienkauf und -verkauf +10 %",
-                "Einmalige Grundsteuer pro Immobilien i.H.v. 1000 € pro Objekt",
-            ],
+            additionalEvents: 'Immobilienkauf und -verkauf +10 %. Einmalige Grundsteuer pro Immobilien i.H.v. 1000 € pro Objekt. ',
             zeitsteine: new Zeitsteine([
                 new ZeitsteinePerPlayer(2, 5),
                 new ZeitsteinePerPlayer(3, 4),
@@ -796,9 +781,7 @@ class KonjunkturphaseFinder
             type: KonjunkturphaseTypeEnum::REZESSION,
             name: 'Rezession I – Sanfte Abkühlung',
             description: 'Die Wirtschaft verliert leicht an Schwung, da internationale Handelskonflikte und leichte Nachfragerückgänge erste Spuren hinterlassen. Unternehmen investieren vorsichtiger und verschieben größere Projekte. Die Zentralbank erkennt die schwache Entwicklung und senkt den Leitzins auf moderate 1  %, wodurch Kredite günstig bleiben und ein stärkerer Abschwung verhindert werden soll. Der Staat reagiert mit einem Bildungsgutschein, um die Qualifikation der Arbeitnehmer zu verbessern.',
-            additionalEvents: [
-                "Bildungs-Bonus: 1 Bildungs- & Karrierepunkt ",
-            ],
+            additionalEvents: 'Bildungs-Bonus: 1 Bildungs- & Karrierepunkt . ',
             zeitsteine: new Zeitsteine([
                 new ZeitsteinePerPlayer(2, 5),
                 new ZeitsteinePerPlayer(3, 4),
@@ -889,10 +872,7 @@ class KonjunkturphaseFinder
             type: KonjunkturphaseTypeEnum::REZESSION,
             name: 'Rezession II – Nachfragerückgang',
             description: 'Ein stärkerer Rückgang der Nachfrage belastet zunehmend die Wirtschaft. Immer mehr Unternehmen müssen Kurzarbeit anmelden, wodurch Arbeitszeit und Einkommen sinken. Die Zentralbank hält den Leitzins stabil niedrig bei 1  %, um weitere Schäden zu verhindern, doch die erhoffte Belebung bleibt vorerst aus. Die Unternehmen setzen aufgrund der schwierigen Lage Lohnsonderzahlungen aus, wodurch private Konsumausgaben zusätzlich belastet werden.',
-            additionalEvents: [
-                "Kurzarbeit",
-                "minus 1  Zeitstein wenn Erwerbseinkommen",
-            ],
+            additionalEvents: 'Kurzarbeit. minus 1  Zeitstein wenn Erwerbseinkommen. ',
             zeitsteine: new Zeitsteine([
                 new ZeitsteinePerPlayer(2, 4),
                 new ZeitsteinePerPlayer(3, 3),
@@ -983,10 +963,7 @@ class KonjunkturphaseFinder
             type: KonjunkturphaseTypeEnum::REZESSION,
             name: 'Rezession III – Nachfrageschwäche',
             description: 'Aufgrund eines anhaltenden Abschwungs bleibt die Stimmung in der Wirtschaft gedrückt. Unternehmen zeigen sich  vorsichtig bei Neueinstellungen und Investitionen. Um die anhaltende Nachfrageschwäche abzumildern, senkt die Zentralbank den Leitzins auf 0,75  %, was zu historisch niedrigen Kreditkosten führt. Zusätzlich versucht die Regierung, die Konsumenten mit einem einmaligen Konjunkturbonus von 500  € pro Person zu unterstützen. Dafür trifft Immobilienbesitzer eine zusätzliche Grundsteuer.',
-            additionalEvents: [
-                "Konjunkturbonus i.H.v. 500 € ",
-                "Grundsteuer pro Immobilie i.H.v. 500 €",
-            ],
+            additionalEvents: 'Konjunkturbonus i.H.v. 500 € . Grundsteuer pro Immobilie i.H.v. 500 €. ',
             zeitsteine: new Zeitsteine([
                 new ZeitsteinePerPlayer(2, 5),
                 new ZeitsteinePerPlayer(3, 4),
@@ -1077,10 +1054,7 @@ class KonjunkturphaseFinder
             type: KonjunkturphaseTypeEnum::REZESSION,
             name: 'Rezession IV – Kreditklemme',
             description: 'Banken werden aufgrund von Kreditausfällen zunehmend zurückhaltender werden. Unternehmen haben Schwierigkeiten, an frisches Geld zu kommen, wodurch viele Projekte vorerst gestoppt werden. Trotz einer  Zinssenkung der Zentralbank auf 0,5  %, bleibt der Kreditmarkt angespannt. Darlehensnehmer spüren zusätzlich die Krise durch eine einmalige Extra-Zinszahlung, während Immobilienwerte unter Druck geraten.',
-            additionalEvents: [
-                "Einmaliger Extrazins für alle mit Darlehen i.H.v. 200 €",
-                " Immobilienkauf und -verkauf -5 %",
-            ],
+            additionalEvents: 'Einmaliger Extrazins für alle mit Darlehen i.H.v. 200 €.  Immobilienkauf und -verkauf -5 %. ',
             zeitsteine: new Zeitsteine([
                 new ZeitsteinePerPlayer(2, 4),
                 new ZeitsteinePerPlayer(3, 3),
@@ -1171,9 +1145,7 @@ class KonjunkturphaseFinder
             type: KonjunkturphaseTypeEnum::DEPRESSION,
             name: 'Depression I – Einsetzen der Deflation',
             description: 'Die Wirtschaftskrise verschärft sich deutlich. Unternehmen finden kaum noch Abnehmer für ihre Produkte und Geschäfte reduzieren zunehmend ihre Preise, um damit Käufer anzulocken. Da immer weniger Menschen ihr Geld ausgeben, sinken die Preise weiter und es droht eine gefährliche Spirale. Die Zentralbank senkt die Zinsen nahezu auf null, doch die Zinssenkung zeigt kaum Wirkung. Die Verunsicherung am Markt lässt Immobilienpreise sinken.',
-            additionalEvents: [
-                "Immobilienkauf und -verkauf -10 %",
-            ],
+            additionalEvents: 'Immobilienkauf und -verkauf -10 %. ',
             zeitsteine: new Zeitsteine([
                 new ZeitsteinePerPlayer(2, 4),
                 new ZeitsteinePerPlayer(3, 3),
@@ -1264,10 +1236,7 @@ class KonjunkturphaseFinder
             type: KonjunkturphaseTypeEnum::DEPRESSION,
             name: 'Depression II – Bankenzusammenbruch',
             description: 'Es eskaliert eine Krise, als mehrere große Banken plötzlich kurz vor der Insolvenz stehen. Um das gesamte Finanzsystem vor dem Kollaps zu retten, stellt die Regierung die Banken unter Schutz und lässt Kredite vorübergehend einfrieren. Daraus resultiert eine Panik an den Märkten und Immobilienpreise und Aktienkurse brechen ein. Dies geschieht trotz des radikalen Eingriffs der Zentralbank, die den Leitzins vollständig auf null senkt.',
-            additionalEvents: [
-                "Es können keine Kredite aufgenommen werden",
-                "Immobilienkauf und -verkauf -15 %",
-            ],
+            additionalEvents: 'Es können keine Kredite aufgenommen werden. Immobilienkauf und -verkauf -15 %. ',
             zeitsteine: new Zeitsteine([
                 new ZeitsteinePerPlayer(2, 4),
                 new ZeitsteinePerPlayer(3, 3),
@@ -1358,9 +1327,7 @@ class KonjunkturphaseFinder
             type: KonjunkturphaseTypeEnum::DEPRESSION,
             name: 'Depression III – Stagnationstal',
             description: 'Die Wirtschaft scheint am tiefsten Punkt einer Krise angekommen zu sein. Unternehmen zögern mit Investitionen und die Menschen sparen, statt ihr Geld auszugeben. Trotz massiver geldpolitischer Maßnahmen der Zentralbank und der Senkung des Leitzins auf 0 % bleibt die Stimmung gedrückt. Um die Nachfrage kurzfristig anzukurbeln, verteilt der Staat eine einmalige finanzielle Unterstützung an alle Bürger. ',
-            additionalEvents: [
-                "Konjunkturbonus i.H.v. 500 € p.P.",
-            ],
+            additionalEvents: 'Konjunkturbonus i.H.v. 500 € p.P.. ',
             zeitsteine: new Zeitsteine([
                 new ZeitsteinePerPlayer(2, 5),
                 new ZeitsteinePerPlayer(3, 4),
@@ -1451,10 +1418,7 @@ class KonjunkturphaseFinder
             type: KonjunkturphaseTypeEnum::DEPRESSION,
             name: 'Depression IV – Zäher Boden',
             description: 'Eine lange Krise hat tiefe Spuren hinterlassen. Viele Haushalte sind überschuldet und Unternehmen kämpfen weiterhin ums Überleben. Die Zentralbank hält den Leitzins auf null Prozent und sorgt dafür, dass Kredite billig bleiben. Politik und Banken einigen sich auf einen Schuldenerlass, um die finanziellen Belastungen zu mildern. Infolge dieser Maßnahmen kehrt allmählich Vertrauen in die Wirtschaft zurück und zuvor fallende Kurse beginnen sich zu stabilisieren.',
-            additionalEvents: [
-                "Einmalig für offene Darlehen -1000 €",
-                " Immobilienkauf und -verkauf -5 %",
-            ],
+            additionalEvents: 'Einmalig für offene Darlehen -1000 €.  Immobilienkauf und -verkauf -5 %. ',
             zeitsteine: new Zeitsteine([
                 new ZeitsteinePerPlayer(2, 5),
                 new ZeitsteinePerPlayer(3, 4),
@@ -1535,6 +1499,7 @@ class KonjunkturphaseFinder
             conditionalResourceChanges: [
             ],
         );
+
 
         self::$instance = new self([
             $konjunkturphase1,

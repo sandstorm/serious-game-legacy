@@ -369,13 +369,13 @@ function importKonjunkturphasen(): void
         echo "\t" . "type: KonjunkturphaseTypeEnum::" . $lineArrayWithKeys["type"] . ",\n";
         echo "\t" . "name: '" . $lineArrayWithKeys["title"] . "',\n";
         echo "\t" . "description: '" . $lineArrayWithKeys["description"] . "',\n";
-        echo "\t" . "additionalEvents: [\n";
+        echo "\t" . "additionalEvents: '";
         foreach ($ereignisArray as $ereignis) {
             if (!empty($ereignis["description"])) {
-                echo "\t\t" . "\"" . $ereignis["description"] . "\",\n";
+                echo $ereignis["description"] . ". ";
             }
         }
-        echo "\t" . "],\n";
+        echo "',\n";
         echo "\t" . "zeitsteine: new Zeitsteine([\n";
         echo "\t\t" . "new ZeitsteinePerPlayer(2, " . $lineArrayWithKeys["sumZeitsteine2Spieler"]/2 . "),\n";
         echo "\t\t" . "new ZeitsteinePerPlayer(3, " . $lineArrayWithKeys["sumZeitsteine3Spieler"]/3 . "),\n";
