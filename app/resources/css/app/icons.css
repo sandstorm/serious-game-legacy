@@ -1,10 +1,10 @@
 @font-face {
     font-family: 'icomoon';
     src:
-        url('/fonts/icomoon.woff2?8dr2y7') format('woff2'),
-        url('/fonts/icomoon.ttf?8dr2y7') format('truetype'),
-        url('/fonts/icomoon.woff?8dr2y7') format('woff'),
-        url('/fonts/icomoon.svg?8dr2y7#icomoon') format('svg');
+        url('/fonts/icomoon.woff2?72xsl5') format('woff2'),
+        url('/fonts/icomoon.ttf?72xsl5') format('truetype'),
+        url('/fonts/icomoon.woff?72xsl5') format('woff'),
+        url('/fonts/icomoon.svg?72xsl5#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
     font-display: block;
@@ -31,14 +31,32 @@
 .icon-lock-open:before {
     content: "\e920";
 }
-.icon-dots:before {
-    content: "\e90d";
+.icon-fertig:before {
+    content: "\e925";
 }
-.icon-jobboerse:before {
-    content: "\e918";
+.icon-arrow-up:before {
+    content: "\e922";
+}
+.icon-log-ausklappen:before {
+    content: "\e913";
+}
+.icon-skippen:before {
+    content: "\e919";
+}
+.icon-minus:before {
+    content: "\e916";
+}
+.icon-plus:before {
+    content: "\e90a";
+}
+.icon-ist-gleich:before {
+    content: "\e926";
 }
 .icon-burger:before {
     content: "\e91a";
+}
+.icon-dots:before {
+    content: "\e90d";
 }
 .icon-close:before {
     content: "\e91b";
@@ -46,14 +64,32 @@
 .icon-close-round:before {
     content: "\e91c";
 }
+.icon-pencil:before {
+    content: "\e923";
+}
+.icon-pencil-2:before {
+    content: "\e924";
+}
 .icon-euro:before {
     content: "\e91d";
 }
-.icon-zeitstein:before {
-    content: "\e91e";
+.icon-lupe:before {
+    content: "\e904";
 }
 .icon-lupe-2:before {
     content: "\e900";
+}
+.icon-fehler:before {
+    content: "\e912";
+}
+.icon-info-2:before {
+    content: "\e921";
+}
+.icon-insolvent:before {
+    content: "\e910";
+}
+.icon-info:before {
+    content: "\e908";
 }
 .icon-ereignis:before {
     content: "\e901";
@@ -61,32 +97,32 @@
 .icon-immobilien:before {
     content: "\e902";
 }
+.icon-phasenwechsel:before {
+    content: "\e911";
+}
 .icon-phase-1:before {
     content: "\e903";
-}
-.icon-lupe:before {
-    content: "\e904";
 }
 .icon-phase-3:before {
     content: "\e905";
 }
-.icon-bildung-und-karriere:before {
-    content: "\e906";
-}
 .icon-phase-2:before {
     content: "\e907";
 }
-.icon-info:before {
-    content: "\e908";
+.icon-zeitstein:before {
+    content: "\e91e";
 }
-.icon-info-2:before {
-    content: "\e921";
+.icon-jobboerse:before {
+    content: "\e918";
 }
-.icon-edelmetalle:before {
-    content: "\e909";
+.icon-bildung-und-karriere:before {
+    content: "\e906";
 }
-.icon-plus:before {
-    content: "\e90a";
+.icon-freizeit-und-soziales:before {
+    content: "\e917";
+}
+.icon-erwerbseinkommen:before {
+    content: "\e90e";
 }
 .icon-weiterbildung:before {
     content: "\e90b";
@@ -94,36 +130,12 @@
 .icon-sanduhr:before {
     content: "\e90c";
 }
-.icon-erwerbseinkommen:before {
-    content: "\e90e";
-}
 .icon-aktien:before {
     content: "\e90f";
-}
-.icon-insolvent-2:before {
-    content: "\e910";
-}
-.icon-phasenwechsel:before {
-    content: "\e911";
-}
-.icon-fehler:before {
-    content: "\e912";
-}
-.icon-log-ausklappen:before {
-    content: "\e913";
 }
 .icon-ETF:before {
     content: "\e914";
 }
 .icon-krypto:before {
     content: "\e915";
-}
-.icon-minus:before {
-    content: "\e916";
-}
-.icon-freizeit-und-soziales:before {
-    content: "\e917";
-}
-.icon-skippen:before {
-    content: "\e919";
 }

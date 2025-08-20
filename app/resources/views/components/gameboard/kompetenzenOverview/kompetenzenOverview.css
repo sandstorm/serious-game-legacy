@@ -24,14 +24,7 @@
         font-weight: var(--font-weight-regular);
     }
 
-    .button {
-        width: 100%;
-        margin-top: auto;
 
-        text-align: center;
-        justify-content: center;
-        font-size: var(--font-size-xl);
-    }
 
     .kompetenzen {
         justify-content: center;
@@ -52,4 +45,29 @@
     align-items: center;
     justify-content: center;
     gap: var(--spacing-50);
+}
+
+.kompetenzen-overview__money-sheet-button {
+    .button {
+        position: relative;
+        width: 100%;
+        margin-top: auto;
+
+        text-align: center;
+        justify-content: center;
+        font-size: var(--font-size-xl);
+    }
+
+    i {
+        position: absolute;
+        top: -8px;
+        right: var(--spacing-100);
+    }
+
+    .moneysheet__action-required {
+        height: 14px;
+        width: 14px;
+        right: var(--spacing-100);
+        top: -7px;
+    }
 }
