@@ -32,12 +32,19 @@
 }
 
 h1, h2, h3, h4, h5, h6 {
+    display: flex;
+    align-items: center;
     margin-top: 0;
     margin-bottom: var(--spacing-100);
 
     text-wrap: pretty;
     color: var(--color-primary-dark);
     font-weight: var(--font-weight-bold);
+
+    i {
+        color: inherit;
+        margin-right: var(--spacing-50);
+    }
 }
 
 i {

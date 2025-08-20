@@ -227,7 +227,6 @@ trait HasMoneySheet
                 $this->coreGameLogic->handle($this->gameId, CancelInsuranceForPlayer::create($this->myself, $insuranceId));
             }
         }
-
         $this->broadcastNotify();
     }
 
@@ -270,6 +269,8 @@ trait HasMoneySheet
             $this->closeTakeOutALoan();
         }
 
+        $loanAmount = new MoneyAmount($this->takeOutALoanForm->loanAmount);
+        $this->showBanner("Du hast einen Kredit über {$loanAmount->formatWithoutHtml()} € aufgenommen.");
         $this->broadcastNotify();
     }
 

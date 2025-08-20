@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use App\Events\GameStateUpdated;
+use App\Livewire\Traits\HasBanner;
 use App\Livewire\Traits\HasCard;
 use App\Livewire\Traits\HasWeiterbildung;
 use App\Livewire\Traits\HasGamePhase;
@@ -47,6 +48,7 @@ class GameUi extends Component
     use HasInvestitionen;
     use HasQuitJob;
     use HasWeiterbildung;
+    use HasBanner;
 
     // injected from outside -> game-play.blade.php
     // Not the current player, but the player connected to THIS SESSION
@@ -56,10 +58,6 @@ class GameUi extends Component
     private Dispatcher $eventDispatcher;
     private GameEvents $gameEvents;
     private ForCoreGameLogic $coreGameLogic;
-
-    public function mount(): void
-    {
-    }
 
     public function boot(Dispatcher $eventDispatcher, ForCoreGameLogic $coreGameLogic): void
     {
@@ -89,6 +87,7 @@ class GameUi extends Component
         if (!KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($this->gameEvents, $this->myself)) {
             return $this->renderKonjunkturphaseStartScreen();
         }
+
         return $this->renderGamePhase();
     }
 

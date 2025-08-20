@@ -20,7 +20,7 @@ final readonly class ResourceChanges implements JsonSerializable
 
     /**
      * @param array{
-     *     guthabenChange: int,
+     *     guthabenChange: float,
      *     zeitsteineChange: int,
      *     bildungKompetenzsteinChange: float,
      *     freizeitKompetenzsteinChange: int,
@@ -30,7 +30,7 @@ final readonly class ResourceChanges implements JsonSerializable
     {
         return new self(
             guthabenChange: new MoneyAmount($values['guthabenChange']),
-            zeitsteineChange:  $values['zeitsteineChange'],
+            zeitsteineChange: $values['zeitsteineChange'],
             bildungKompetenzsteinChange: $values['bildungKompetenzsteinChange'],
             freizeitKompetenzsteinChange: $values['freizeitKompetenzsteinChange'],
         );
@@ -51,14 +51,19 @@ final readonly class ResourceChanges implements JsonSerializable
         );
     }
 
-
     /**
-     * @return array<int|float|MoneyAmount>
+     * @return array{
+     *      guthabenChange: float,
+     *      zeitsteineChange: int,
+     *      bildungKompetenzsteinChange: float,
+     *      freizeitKompetenzsteinChange: int,
+     *  }
      */
     public function jsonSerialize(): array
     {
         return [
-            'guthabenChange' => $this->guthabenChange,
+            // TODO discuss, without jsonSerialize() MoneyAmount is an object in this array
+            'guthabenChange' => $this->guthabenChange->jsonSerialize(),
             'zeitsteineChange' => $this->zeitsteineChange,
             'bildungKompetenzsteinChange' => $this->bildungKompetenzsteinChange,
             'freizeitKompetenzsteinChange' => $this->freizeitKompetenzsteinChange,

@@ -28,7 +28,6 @@
     <aside class="game__aside">
         <x-sidebar.sidebar :game-events="$this->gameEvents" :player-id="$myself" />
     </aside>
-    <x-notification.notification/>
 
     <div class="dev-bar">
         <button type="button" class="button button--type-primary" wire:click="showLog()">Log</button>
@@ -36,6 +35,9 @@
             <x-gameboard.log/>
         @endif
     </div>
+
+    <x-notification.notification/>
+    <x-banner.banner/>
 
     @if($isEreignisCardVisible)
         <x-ereignis-modal :game-events="$this->gameEvents" :player-id="$myself" />

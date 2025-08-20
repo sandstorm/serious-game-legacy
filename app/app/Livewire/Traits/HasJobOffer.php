@@ -65,5 +65,7 @@ trait HasJobOffer
 
         $this->jobOfferIsVisible = false;
         $this->broadcastNotify();
+
+        $this->showBanner("Du hast jetzt einen Job.");
     }
 }

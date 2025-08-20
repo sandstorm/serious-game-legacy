@@ -1,4 +1,4 @@
-@extends ('components.modal.modal', ['closeModal' => "closeCardActions()"])
+@extends ('components.modal.modal', ['closeModal' => "closeCardActions()", 'size' => 'small'])
 
 @use('\Domain\Definitions\Konjunkturphase\ValueObject\CategoryId')
 

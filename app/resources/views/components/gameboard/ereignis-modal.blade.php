@@ -1,4 +1,4 @@
-@extends ('components.modal.modal')
+@extends ('components.modal.modal', ['size' => "small"])
 
 @use('\Domain\Definitions\Konjunkturphase\ValueObject\CategoryId')
 
@@ -36,6 +36,16 @@
 @section('footer')
     <div class="card__actions-footer">
         <x-gameboard.resourceChanges.resource-changes style-class="horizontal" :resource-changes="$ereignisCard->getResourceChanges()" />
-        <button type="button" class="button button--type-primary" wire:click="closeEreignisCard()">Akzeptieren</button>
+        <button
+            type="button"
+            @class([
+               "button",
+               "button--type-primary",
+               $this->getPlayerColorClass(),
+            ])
+            wire:click="closeEreignisCard()"
+        >
+            Akzeptieren
+        </button>
     </div>
 @endsection

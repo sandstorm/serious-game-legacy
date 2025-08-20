@@ -1,4 +1,4 @@
-@extends ('components.modal.mandatory-modal')
+@extends ('components.modal.mandatory-modal', ['size' => "small"])
 
 @use('Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState')
 
