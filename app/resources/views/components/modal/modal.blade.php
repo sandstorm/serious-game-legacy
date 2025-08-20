@@ -1,12 +1,14 @@
 @props([
     'closeModal' => '',
     'type' => 'default', // default, borderless
+    'size' => '', // small
 ])
 
 <div x-data="{ open: true }" x-trap.noscroll="open"
     @class([
         "modal",
         "modal--type-" . $type,
+        "modal--size-" . $size,
         "modal--has-footer" => view()->hasSection('footer')
     ])
 >

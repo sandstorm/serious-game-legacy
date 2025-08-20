@@ -54,6 +54,12 @@
     }
 }
 
+.modal.modal--size-small {
+    .modal__content {
+        min-height: auto;
+    }
+}
+
 .modal__backdrop {
     position: fixed;
     z-index: 1;

@@ -6,14 +6,29 @@
     --font-size-xl: 1.25rem;
     --font-size-xxl: 1.5rem;
 
-    --font-weight-light: 300;
     --font-weight-regular: 400;
-    --font-weight-medium: 500;
     --font-weight-bold: 700;
 
     --line-height-tight: 1.1;
     --line-height-normal: 1.5;
     --line-height-loose: 1.8;
+}
+
+/* roboto-regular - latin */
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/fonts/roboto-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+/* roboto-700 - latin */
+@font-face {
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    src: url('/fonts/roboto-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -22,6 +37,7 @@ h1, h2, h3, h4, h5, h6 {
 
     text-wrap: pretty;
     color: var(--color-primary-dark);
+    font-weight: var(--font-weight-bold);
 }
 
 i {

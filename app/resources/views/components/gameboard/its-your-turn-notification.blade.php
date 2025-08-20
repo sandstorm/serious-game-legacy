@@ -1,7 +1,7 @@
-@extends ('components.modal.mandatory-modal')
+@extends ('components.modal.mandatory-modal', ['size' => "small"])
 
 @section('icon_mandatory')
-    <i class="icon-info" aria-hidden="true"></i>
+    <i class="icon-info-2" aria-hidden="true"></i>
 @endsection
 
 @section('content_mandatory')

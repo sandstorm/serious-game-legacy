@@ -1,7 +1,12 @@
+@props([
+    'size' => '', // small
+])
+
 <div x-data="{ open: true }" x-trap.noscroll="open"
     @class([
         "modal",
         "modal--type-mandatory",
+        "modal--size-" . $size,
     ])
 >
     <div class="modal__backdrop"></div>
