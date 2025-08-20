@@ -67,6 +67,25 @@ function printKompetenzbereichDefinition(string $type, string $maxKompetenzstein
     echo "\t\t" . "),\n";
 }
 
+/**
+ * @param string $prerequisites
+ * @param string $resourceChange
+ * @param string $value
+ * @return void
+ */
+function printConditionalResourceChanges(string $prerequisites, string $resourceChange, string $value):void
+{
+    echo "\t\t" . "new ConditionalResourceChange(\n";
+    echo "\t\t\t" . "prerequisite: EreignisPrerequisitesId::" . $prerequisites . ",\n";
+    if ($resourceChange === "guthabenChange") {
+        echo "\t\t\t" . "resourceChanges: new ResourceChanges(" . $resourceChange . ": new MoneyAmount(" . $value . "))\n";
+    } else {
+        echo "\t\t\t" . "resourceChanges: new ResourceChanges(" . $resourceChange . ": " . $value . ")\n";
+    }
+    echo "\t\t" . "),\n";
+}
+
+
 
 /**
  * @param string $type
@@ -330,19 +349,33 @@ function importKonjunkturphasen(): void
     foreach ($tableHeaderArray as $key) {
         $keys[] = str_replace(["\"", " "], "", trim($key)); //removes spaces and " from table headers
     }
-    //var_dump($keys);
 
     foreach ($fileContent as $line) {
         $lineArray = explode(";", trim($line));
         $lineArrayWithKeys = array_combine($keys, $lineArray);
-        //print_r($lineArrayWithKeys);
+        $ereignisse = array_slice($lineArrayWithKeys, 23);
+        $ereignisArray = [];
+        for ($i = 1; $i <= 2; $i++) {
+            $ereignisArray["ereignis$i"] = [
+                "description" => $ereignisse["Ereignis$i"],
+                "prerequisite" => $ereignisse["prerequisite$i"],
+                "resourceChange" => $ereignisse["resourceChange$i"],
+                "value" => $ereignisse["value$i"],
+            ];
+        }
 
         echo "\$konjunkturphase" . $lineArrayWithKeys["id"] . " = new KonjunkturphaseDefinition(\n";
         echo "\t" . "id: KonjunkturphasenId::create(" . $lineArrayWithKeys["id"] . "),\n";
         echo "\t" . "type: KonjunkturphaseTypeEnum::" . $lineArrayWithKeys["type"] . ",\n";
         echo "\t" . "name: '" . $lineArrayWithKeys["title"] . "',\n";
         echo "\t" . "description: '" . $lineArrayWithKeys["description"] . "',\n";
-        echo "\t" . "additionEvents: '',\n"; //TODO
+        echo "\t" . "additionalEvents: [\n";
+        foreach ($ereignisArray as $ereignis) {
+            if (!empty($ereignis["description"])) {
+                echo "\t\t" . "\"" . $ereignis["description"] . "\",\n";
+            }
+        }
+        echo "\t" . "],\n";
         echo "\t" . "zeitsteine: new Zeitsteine([\n";
         echo "\t\t" . "new ZeitsteinePerPlayer(2, " . $lineArrayWithKeys["sumZeitsteine2Spieler"]/2 . "),\n";
         echo "\t\t" . "new ZeitsteinePerPlayer(3, " . $lineArrayWithKeys["sumZeitsteine3Spieler"]/3 . "),\n";
@@ -353,6 +386,7 @@ function importKonjunkturphasen(): void
         printKompetenzbereichDefinition("SOZIALES_UND_FREIZEIT", $lineArrayWithKeys["maxFreizeitUndSoziales"]);
         printKompetenzbereichDefinition("INVESTITIONEN", $lineArrayWithKeys["maxInvestitionen"]);
         printKompetenzbereichDefinition("JOBS", $lineArrayWithKeys["maxJobs"]);
+        echo "\t" . "],\n";
         echo "\t" . "auswirkungen: [\n";
         if ($lineArrayWithKeys["Zeitsteine"] !== "") printAuswirkungen("ZEITSTEINE", $lineArrayWithKeys["Zeitsteine"]);
         printAuswirkungen("LEBENSERHALTUNGSKOSTEN", $lineArrayWithKeys["Lebenshaltungskosten"]);
@@ -364,22 +398,23 @@ function importKonjunkturphasen(): void
         printAuswirkungen("REAL_ESTATE", $lineArrayWithKeys["Immobilien"]);
         printAuswirkungen("CRYPTO", $lineArrayWithKeys["CryptoKursbonus"]);
         printAuswirkungen("BONUS_INCOME", $lineArrayWithKeys["Bonuseinkommen"]);
+        echo "\t" . "],\n";
         echo "\t" . "conditionalResourceChanges: [\n";
-
-
-
+        foreach ($ereignisArray as $ereignis) {
+            if (!empty($ereignis["resourceChange"])) {
+                printConditionalResourceChanges(
+                    $ereignis["prerequisite"]==="" ? "NO_PREREQUISITES" : $ereignis["prerequisite"],
+                    $ereignis["resourceChange"],
+                    $ereignis["value"]
+                );
+            }
+        }
         echo "\t" . "],\n";
         echo ");\n\n";
+
     }
 }
 
-function printConditionalResourceChanges(string $prerequisites, string $resourceChange, string $resourceChangeValue):void
-{
-    echo "\t\t" . "new ConditionalResourceChange(\n";
-    echo "\t\t\t" . "prerequisite: EreignisPrerequisitesId::" . $prerequisites . ",\n"; //TODO table with prerequisites for resource changes
-    echo "\t\t\t" . "resourceChanges: new ResourceChanges(" . $resourceChange . ": " . $resourceChangeValue . ")\n"; //TODO table with changeId and changeValue
-    echo "\t\t" . "),\n";
-}
 
 //importMiniJobCards();
 //importJobCards();
