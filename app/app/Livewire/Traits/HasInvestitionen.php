@@ -17,6 +17,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereBoughtForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 
@@ -145,11 +146,11 @@ trait HasInvestitionen
         $this->showCryptoModal = false;
         $this->showETFModal = false;
 
-        $this->showNotification(
-            $this->buyInvestmentsForm->amount . ' x ' . $investmentId->value . ' wurde erfolgreich gekauft. Alle anderen Spieler:innen haben jetzt die Möglichkeit ihre Anteile zu verkaufen.',
-            NotificationTypeEnum::INFO
-        );
         $this->broadcastNotify();
+
+        /** @var InvestmentsWereBoughtForPlayer $event */
+        $event = $this->gameEvents->findLast(InvestmentsWereBoughtForPlayer::class);
+        $this->showBanner($this->buyInvestmentsForm->amount . ' Anteile von ' . $investmentId->value . ' wurden erfolgreich gekauft. Alle anderen Spieler:innen haben jetzt die Möglichkeit ihre Anteile zu verkaufen.', $event->getResourceChanges($this->myself));
     }
 
     public function closeSellInvestmentsModal(): void
@@ -193,14 +194,14 @@ trait HasInvestitionen
             $this->sellInvestmentsForm->amount
         ));
 
-        $this->showNotification(
-            $this->sellInvestmentsForm->amount . ' x ' . $investmentId->value . ' wurde erfolgreich verkauft.',
-            NotificationTypeEnum::INFO
-        );
 
         $this->sellInvestmentsModalIsVisible = false;
         $this->sellInvestmentsForm->reset();
         $this->sellInvestmentsForm->resetValidation();
         $this->broadcastNotify();
+
+        /** @var InvestmentsWereSoldForPlayer $event */
+        $event = $this->gameEvents->findLast(InvestmentsWereSoldForPlayer::class);
+        $this->showBanner($this->buyInvestmentsForm->amount . ' Anteile von ' . $investmentId->value . ' wurden erfolgreich verkauft.', $event->getResourceChanges($this->myself));
     }
 }

@@ -131,6 +131,10 @@ trait HasCard
             $this->ereignisCardDefinition = $ereignisCardDefinition->getDescription();
             $this->isEreignisCardVisible = true;
         }
+
+        /** @var CardWasActivated $cardPlayed */
+        $cardPlayed = $this->gameEvents->findLast(CardWasActivated::class);
+        $this->showBanner("Karte wurde erfolgreich gespielt", $cardPlayed->getResourceChanges($this->myself));
         $this->broadcastNotify();
     }
 
@@ -153,6 +157,10 @@ trait HasCard
             CategoryId::from($category)
         ));
 
+        $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        /** @var CardWasSkipped $cardSkipped */
+        $cardSkipped = $this->gameEvents->findLast(CardWasSkipped::class);
+        $this->showBanner("Karte wurde übersprungen", $cardSkipped->getResourceChanges($this->myself));
         $this->broadcastNotify();
     }
 

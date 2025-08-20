@@ -7,6 +7,7 @@ namespace App\Livewire\Traits;
 use App\Livewire\ValueObject\NotificationTypeEnum;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ChangeLebenszielphaseAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ChangeLebenszielphase;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
 
 trait HasLebenszielphase
 {
@@ -33,10 +34,11 @@ trait HasLebenszielphase
 
         $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create($this->myself));
         $this->isChangeLebenszielphaseVisible = true;
-        $this->showNotification(
-            "Die Lebenszielphase wurde erfolgreich gewechselt.",
-            NotificationTypeEnum::INFO
-        );
+
+        /** @var LebenszielphaseWasChanged $event */
+        $event = $this->gameEvents->findLast(LebenszielphaseWasChanged::class);
+
         $this->broadcastNotify();
+        $this->showBanner("Du bist jetzt in Phase: " . $event->currentPhase->name, $event->getResourceChanges($this->myself));
     }
 }
