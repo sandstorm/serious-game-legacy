@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\CoreGameLogic\Feature\Moneysheet\State;
 
 use App\Livewire\Forms\TakeOutALoanForm;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
@@ -606,18 +607,20 @@ describe('getCostOfAllInsurances', function () {
     it('returns correct sum of all insurance costs', function () {
         $this->coreGameLogic->handle($this->gameId,
             ConcludeInsuranceForPlayer::create($this->players[0], $this->insurances[0]->id));
-        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(MoneySheetState::getCostOfAllInsurances($gameEvents, $this->players[0])->value)->toEqual(100);
 
         $this->coreGameLogic->handle($this->gameId,
             ConcludeInsuranceForPlayer::create($this->players[0], $this->insurances[1]->id));
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(MoneySheetState::getCostOfAllInsurances($gameEvents, $this->players[0])->value)->toEqual(250);
+        // Player already payed for insurance this Konjunkturphase (when they took out the insurance)
+        expect(MoneySheetState::getCostOfAllInsurances($gameEvents, $this->players[0])->value)->toEqual(0);
+
+        $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create());
 
         $this->coreGameLogic->handle($this->gameId,
             ConcludeInsuranceForPlayer::create($this->players[0], $this->insurances[2]->id));
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(MoneySheetState::getCostOfAllInsurances($gameEvents, $this->players[0])->value)->toEqual(750);
+        // Player must pay for the first two insurances
+        expect(MoneySheetState::getCostOfAllInsurances($gameEvents, $this->players[0])->value)->toEqual(250);
     });
 });
 
@@ -865,7 +868,6 @@ describe("getAnnualExpensesForPlayer", function () {
             ConcludeInsuranceForPlayer::create($this->players[0], $this->insurances[0]->id));
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
-        $expectedAnnualExpenses += 100; // add insurance cost
         expect(MoneySheetState::getAnnualExpensesForPlayer($gameEvents,
             $this->players[0])->value)->toEqual($expectedAnnualExpenses);
 
@@ -887,6 +889,7 @@ describe("getAnnualExpensesForPlayer", function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $expectedAnnualExpenses += 2500; // add job taxes (25% of 10000)
+        $expectedAnnualExpenses += 100; // add insurance cost (was taken out last Konjunkturphase)
         expect(MoneySheetState::getAnnualExpensesForPlayer($gameEvents,
             $this->players[0])->value)->toEqual($expectedAnnualExpenses);
     });

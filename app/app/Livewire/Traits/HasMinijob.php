@@ -31,6 +31,7 @@ trait HasMinijob
         }
 
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->myself));
+        $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $this->broadcastNotify();
         $this->isMinijobVisible = true;
     }

@@ -6,6 +6,7 @@ namespace Domain\CoreGameLogic\Feature\Moneysheet\State;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\InputResult;
@@ -319,6 +320,10 @@ class MoneySheetState
         foreach ($insurances as $insurance) {
             if (!self::doesPlayerHaveThisInsurance($gameEvents, $playerId, $insurance->id)) {
                 // Player does not have this insurance, skip it
+                continue;
+            }
+            if (PlayerState::hasPlayerPayedForInsuranceThisKonjunkturphase($gameEvents, $playerId, $insurance->id)) {
+                // Player already payed for it this year, skip it
                 continue;
             }
             $totalCost = $totalCost->add($insurance->getAnnualCost($currentPlayerPhase));

@@ -20,6 +20,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ChangeLebenszielphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\PutCardBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
@@ -51,6 +52,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\SteuernUndAbgabenForPlayerWereEn
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Card\Dto\AnswerOption;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
@@ -2907,4 +2909,39 @@ describe('handleSellInvestmentsForPlayer', function () {
             )
         );
     })->throws(\RuntimeException::class, 'Ein anderer Spieler muss Investitionen der gleichen Art gekauft haben, bevor du welche verkaufen kannst.', 1752753850);
+});
+
+describe('handleConcludeInsurance', function () {
+   it('removes the correct balance from the player\'s Guthaben', function () {
+       /** @var TestCase $this */
+       $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+       $initialGuthabenForPlayer1 = PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]);
+       $initialGuthabenForPlayer2 = PlayerState::getGuthabenForPlayer($gameEvents, $this->players[1]);
+       $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->players[0], InsuranceId::create(1)));
+       $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+       $actualGuthabenForPlayer1 = PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]);
+       $actualGuthabenForPlayer2 = PlayerState::getGuthabenForPlayer($gameEvents, $this->players[1]);
+       expect($actualGuthabenForPlayer1->value)->toEqual($initialGuthabenForPlayer1->value - 100)
+           ->and($actualGuthabenForPlayer2->value)->toEqual($initialGuthabenForPlayer2->value);
+   });
+
+    it('throws an error when the player does not have enough Guthaben', function () {
+        /** @var TestCase $this */
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        $initialGuthabenForPlayer1 = PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]);
+        $cardToRemoveGuthaben = new KategorieCardDefinition(
+            id: new CardId('cardToRemoveGuthaben'),
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+            title: 'for testing',
+            description: '...',
+            resourceChanges: new ResourceChanges(
+                guthabenChange: new MoneyAmount(-1 * $initialGuthabenForPlayer1->value),
+            ),
+        );
+        $this->startNewKonjunkturphaseWithCardsOnTop([$cardToRemoveGuthaben]);
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+
+        $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->players[0], InsuranceId::create(1)));
+
+    })->throws(\RuntimeException::class, 'Cannot conclude insurance: Du hast nicht genug Ressourcen', 1751554652);
 });

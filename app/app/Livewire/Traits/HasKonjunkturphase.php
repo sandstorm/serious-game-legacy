@@ -94,6 +94,7 @@ trait HasKonjunkturphase
             return;
         }
         $this->coreGameLogic->handle($this->gameId, CompleteMoneysheetForPlayer::create($this->myself));
+        $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $this->moneySheetIsVisible = false;
         $this->broadcastNotify();
     }

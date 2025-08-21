@@ -16,6 +16,8 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\LoanCalculator;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CancelInsuranceForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ConcludeInsuranceForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
@@ -214,18 +216,31 @@ trait HasMoneySheet
     {
         foreach($this->moneySheetInsurancesForm->insurances as $insuranceFromForm) {
             $insuranceId = InsuranceId::create($insuranceFromForm['id']);
-            $currentlyConcluded = MoneySheetState::doesPlayerHaveThisInsurance($this->gameEvents, $this->myself, $insuranceId);
             $shouldBeConcluded = $insuranceFromForm['value'] === true;
+            $currentlyConcluded = MoneySheetState::doesPlayerHaveThisInsurance($this->gameEvents, $this->myself, $insuranceId);
             if ($currentlyConcluded === $shouldBeConcluded) {
                 // nothing to do, insurance is already in the desired state
                 continue;
             }
             // conclude or cancel insurance
             if ($shouldBeConcluded) {
-                $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->myself, $insuranceId));
+                $concludeInsuranceValidationResult = (new ConcludeInsuranceForPlayerAktion($insuranceId))->validate($this->myself, $this->gameEvents);
+                if ($concludeInsuranceValidationResult->canExecute) {
+                    $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->myself, $insuranceId));
+                } else {
+                    $insuranceName = InsuranceFinder::getInstance()->findInsuranceById($insuranceId)->description;
+                    $this->showBanner('Du hast nicht genug Geld, um die ' . $insuranceName . ' abzuschließen.');
+                }
             } else {
-                $this->coreGameLogic->handle($this->gameId, CancelInsuranceForPlayer::create($this->myself, $insuranceId));
+                $cancelInsuranceValidationResult = (new CancelInsuranceForPlayerAktion($insuranceId))->validate($this->myself, $this->gameEvents);
+                if ($cancelInsuranceValidationResult->canExecute) {
+                    $this->coreGameLogic->handle($this->gameId, CancelInsuranceForPlayer::create($this->myself, $insuranceId));
+                }else {
+                    $insuranceName = InsuranceFinder::getInstance()->findInsuranceById($insuranceId)->description;
+                    $this->showBanner('Du kannst die ' . $insuranceName . ' nicht kündigen.');
+                }
             }
+            $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         }
         $this->broadcastNotify();
     }
