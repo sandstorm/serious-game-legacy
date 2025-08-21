@@ -53,7 +53,6 @@ function printPhaseAndYear(string $phase, string $year): void
 /* IMPORT FUNCTIONS */
 function importMiniJobCards(): void
 {
-    echo "\n\n--MINIJOB CARDS--\n\n";
     $file = file(__DIR__ . "/Minijobs.csv");
     $fileContent = array_slice($file, 2); //removes the first two elements (table name and table header)
     $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
@@ -75,7 +74,6 @@ function importMiniJobCards(): void
 
 function importJobCards(): void
 {
-    echo "\n\n--JOB CARDS--\n\n";
     $file = file(__DIR__ . "/Jobs.csv");
     $fileContent = array_slice($file, 2); //removes the first two elements (table name and table header)
     $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
@@ -101,7 +99,6 @@ function importJobCards(): void
 
 function importWeiterbildungCards(): void
 {
-    echo "\n\n--WEITERBILDUNG CARDS--\n\n";
     $file = file(__DIR__ . "/Weiterbildungen.csv");
     $fileContent = array_slice($file, 2); //removes the first two elements (table name and table header)
     $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
@@ -129,7 +126,6 @@ function importWeiterbildungCards(): void
 
 function importKategorieCards(): void
 {
-    echo "\n\n--KATEGORIE CARDS--\n\n";
     $file = file(__DIR__ . "/Kategorie_Karten.csv");
     $fileContent = array_slice($file, 2); //removes the first two elements (table name and table header)
     $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
@@ -164,7 +160,6 @@ function importEreignisCards(): void
         "PRIVATE_UNFALLVERSICHERUNG" => new ModifierMapping("PRIVATE_UNFALLVERSICHERUNG", ""),
     ];
 
-    echo "\n\n--EREIGNIS CARDS--\n\n";
     $file = file(__DIR__ . "/Ereignisse.csv");
     $fileContent = array_slice($file, 2); //removes the first two elements (table name and table header)
     $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
@@ -180,7 +175,6 @@ function importEreignisCards(): void
         $modifierArrayWithKeys = array_combine($modifierKeys, $modifierArray);
         $prerequisiteArray = array_slice($lineArray, 17, 3);
         $prerequisiteArrayWithKeys = array_combine($prerequisiteKeys, $prerequisiteArray);
-        //print_r($prerequisiteArrayWithKeys);
 
         //stores multiplier as key value pair (modifierId and modifierValue) as it simplifies the iteration over the elements
         $modifierArrayWithIdValuePairs = [];
@@ -228,7 +222,9 @@ function importEreignisCards(): void
             echo "\t\t" . "EreignisPrerequisitesId::HAS_SPECIFIC_CARD,\n";
         }
         echo "\t" . "],\n";
-        echo "\t" . "requiredCardId: '" . $prerequisiteArrayWithKeys["prerequisiteCardId"] . "',\n";
+        if ($prerequisiteArrayWithKeys["prerequisiteCardId"] !== "") {
+            echo "\t" . "requiredCardId: new CardId('" . $prerequisiteArrayWithKeys["prerequisiteCardId"] . "'),\n";
+        }
         if ($lineArrayWithKeys["gewichtung"] === "") {
             echo "\t" . "gewichtung: 1,\n";
         } else {
@@ -240,7 +236,6 @@ function importEreignisCards(): void
 
 function importInvestitionenCards(): void
 {
-    echo "\n\n--INVESTITIONEN CARDS--\n\n";
     $file = file(__DIR__ . "/Investitionen_Immobilien.csv");
     $fileContent = array_slice($file, 2); //removes the first two elements (table name and table header)
     $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
