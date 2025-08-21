@@ -75,7 +75,7 @@
         />
     @endif
     @if ($this->sellInvestmentsModalIsVisible)
-        <x-gameboard.sell-investments-modal
+        <x-gameboard.investitionen.investitionen-sell-after-purchase-modal
             :game-events="$this->gameEvents"
             :player-id="$myself"
         />

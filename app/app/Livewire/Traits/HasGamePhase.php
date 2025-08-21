@@ -22,27 +22,27 @@ trait HasGamePhase
 
     public function renderingHasGamePhase(): void
     {
-        if (PreGameState::isInPreGamePhase($this->gameEvents)) {
+        if (PreGameState::isInPreGamePhase($this->getGameEvents())) {
             return;
         }
 
         $this->showItsYourTurnNotification = false;
 
         // show notification if you are next active player
-        if ($this->currentPlayerIsMyself() && (new StartSpielzugAktion())->validate($this->myself, $this->gameEvents)->canExecute) {
+        if ($this->currentPlayerIsMyself() && (new StartSpielzugAktion())->validate($this->myself, $this->getGameEvents())->canExecute) {
             $this->showItsYourTurnNotification = true;
         }
     }
 
     public function renderGamePhase(): View
     {
-        $konjunkturphasenId = GamePhaseState::currentKonjunkturphasenId($this->gameEvents);
+        $konjunkturphasenId = GamePhaseState::currentKonjunkturphasenId($this->getGameEvents());
         $konjunkturphasenDefinition = KonjunkturphaseFinder::findKonjunkturphaseById(
             $konjunkturphasenId
         );
 
         return view('livewire.screens.ingame', [
-            'year' => GamePhaseState::currentKonjunkturphasenYear($this->gameEvents),
+            'year' => GamePhaseState::currentKonjunkturphasenYear($this->getGameEvents()),
             'konjunkturphasenDefinition' => $konjunkturphasenDefinition,
         ]);
     }
@@ -51,7 +51,7 @@ trait HasGamePhase
     public function canEndSpielzug(): AktionValidationResult
     {
         $aktion = new EndSpielzugAktion();
-        return $aktion->validate($this->myself, $this->gameEvents);
+        return $aktion->validate($this->myself, $this->getGameEvents());
     }
 
     public function spielzugAbschliessen(): void

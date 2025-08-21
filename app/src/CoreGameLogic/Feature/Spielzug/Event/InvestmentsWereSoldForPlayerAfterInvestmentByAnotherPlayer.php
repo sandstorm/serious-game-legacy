@@ -10,14 +10,12 @@ use Domain\CoreGameLogic\Feature\Spielzug\Dto\InvestmentAmountChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\LogEntry;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\Loggable;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
+use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
-use Domain\Definitions\Investments\ValueObject\InvestmentId;
-use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
-class InvestmentsWereBoughtForPlayer implements GameEventInterface, ProvidesResourceChanges, ZeitsteinAktion, ProvidesInvestmentAmountChanges, Loggable
+class InvestmentsWereSoldForPlayerAfterInvestmentByAnotherPlayer implements GameEventInterface, ProvidesResourceChanges, ProvidesInvestmentAmountChanges, Loggable
 {
     /**
      * @param PlayerId $playerId
@@ -27,12 +25,13 @@ class InvestmentsWereBoughtForPlayer implements GameEventInterface, ProvidesReso
      * @param ResourceChanges $resourceChanges
      */
     public function __construct(
-        public PlayerId        $playerId,
-        public InvestmentId    $investmentId,
-        public MoneyAmount     $price,
-        public int             $amount,
+        public PlayerId     $playerId,
+        public InvestmentId $investmentId,
+        public MoneyAmount  $price,
+        public int          $amount,
         public ResourceChanges $resourceChanges,
-    ) {
+    )
+    {
     }
 
     public static function fromArray(array $values): GameEventInterface
@@ -65,26 +64,16 @@ class InvestmentsWereBoughtForPlayer implements GameEventInterface, ProvidesReso
         return new ResourceChanges();
     }
 
-    public function getCategoryId(): CategoryId
-    {
-        return CategoryId::INVESTITIONEN;
-    }
-
     public function getPlayerId(): PlayerId
     {
         return $this->playerId;
-    }
-
-    public function getNumberOfZeitsteinslotsUsed(): int
-    {
-        return 1; // Buying investments uses one Zeitsteinslot
     }
 
     public function getInvestmentAmountChanges(PlayerId $playerId, InvestmentId $investmentId): InvestmentAmountChanges
     {
         if ($this->playerId->equals($playerId) && $this->investmentId === $investmentId) {
             return new InvestmentAmountChanges(
-                amountChange: $this->amount
+                amountChange: $this->amount * -1
             );
         }
         return new InvestmentAmountChanges();
@@ -94,7 +83,7 @@ class InvestmentsWereBoughtForPlayer implements GameEventInterface, ProvidesReso
     {
         return new LogEntry(
             playerId: $this->playerId,
-            text: "Investiert in '" . $this->investmentId->value . "' und kauft " . $this->amount . " Anteile zum Preis von " . $this->price->formatWithoutHtml(),
+            text: "Verkauft " . $this->amount . " Anteile von '" . $this->investmentId->value . "' für " . $this->price->formatWithoutHtml(),
             resourceChanges: $this->resourceChanges,
         );
     }

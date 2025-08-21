@@ -26,6 +26,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterLebenshaltungskostenForPla
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterSteuernUndAbgabenForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\MarkPlayerAsReadyForKonjunkturphaseChangeAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\QuitJobAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellInvestmentsForPlayerAfterInvestmentByAnotherPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellInvestmentsForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SkipCardAktion as SkipCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\StartKonjunkturphaseForPlayerAktion;
@@ -45,6 +46,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartWeiterbildung;
@@ -80,6 +82,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             || $command instanceof ChangeLebenszielphase
             || $command instanceof QuitJob
             || $command instanceof BuyInvestmentsForPlayer
+            || $command instanceof SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer
             || $command instanceof SellInvestmentsForPlayer
             || $command instanceof DontSellInvestmentsForPlayer
             || $command instanceof PutCardBackOnTopOfPile
@@ -115,6 +118,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             QuitJob::class => $this->handleQuitJob
                 ($command, $gameEvents),
             BuyInvestmentsForPlayer::class => $this->handleBuyInvestments($command, $gameEvents),
+            SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer::class => $this->handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer($command, $gameEvents),
             SellInvestmentsForPlayer::class => $this->handleSellInvestments($command, $gameEvents),
             DontSellInvestmentsForPlayer::class => $this->handleDontSellStocks($command, $gameEvents),
             ChangeLebenszielphase::class => $this->handleLebenszielphase($command, $gameEvents),
@@ -255,6 +259,21 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
     private function handleBuyInvestments(BuyInvestmentsForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
     {
         $aktion = new BuyInvestmentsForPlayerAktion(
+            $command->investmentId,
+            InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, $command->investmentId),
+            $command->amount,
+        );
+        return $aktion->execute($command->playerId, $gameEvents);
+    }
+
+    /**
+     * @param SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer $command
+     * @param GameEvents $gameEvents
+     * @return GameEventsToPersist
+     */
+    private function handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer(SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer $command, GameEvents $gameEvents): GameEventsToPersist
+    {
+        $aktion = new SellInvestmentsForPlayerAfterInvestmentByAnotherPlayerAktion(
             $command->investmentId,
             InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, $command->investmentId),
             $command->amount,

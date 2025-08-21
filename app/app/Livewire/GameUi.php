@@ -95,9 +95,9 @@ class GameUi extends Component
     /**
      * @return GameEvents
      */
-    public function gameEvents(): GameEvents
+    public function getGameEvents(): GameEvents
     {
-        return $this->gameEvents;
+        return $this->coreGameLogic->getGameEvents($this->gameId);
     }
 
     /**

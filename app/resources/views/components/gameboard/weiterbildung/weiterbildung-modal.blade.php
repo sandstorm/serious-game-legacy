@@ -10,7 +10,7 @@
 
 @section('title')
     <div class="weiterbildung__header">
-        <div>{{ $weiterbildung->getTitle() }}</div>
+        <div>{{ $weiterbildung?->getTitle() }}</div>
         <div class="weiterbildung__header-category">Weiterbildung</div>
     </div>
 @endsection

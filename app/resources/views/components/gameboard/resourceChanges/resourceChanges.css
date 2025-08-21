@@ -31,7 +31,7 @@
     gap: var(--spacing-50);
 
     font-size: var(--font-size-xxl);
-    font-weight: var(--font-weight-light);
+    white-space: nowrap;
 
     i.text--danger, i.text--success {
         font-size: var(--font-size-base);
