@@ -38,21 +38,21 @@ trait HasCard
      */
     public function renderingHasCard(): void
     {
-        if (PreGameState::isInPreGamePhase($this->gameEvents)) {
+        if (PreGameState::isInPreGamePhase($this->getGameEvents())) {
             return;
         }
 
         $this->playerHasToPlayCard = false;
 
         // if player skipped a card, we show the next card from the top of the pile
-        $aktionsCalculator = AktionsCalculator::forStream($this->gameEvents);
+        $aktionsCalculator = AktionsCalculator::forStream($this->getGameEvents());
         if ($aktionsCalculator->hasPlayerSkippedACardThisRound($this->myself) && !$aktionsCalculator->hasPlayerPlayedACardOrPutOneBack($this->myself)) {
             /** @var CardWasSkipped $cardWasSkipped */
-            $cardWasSkipped = $this->gameEvents->findLast(CardWasSkipped::class);
-            $pileId = new PileId($cardWasSkipped->getCategoryId(), PlayerState::getCurrentLebenszielphaseIdForPlayer($this->gameEvents, $this->myself));
+            $cardWasSkipped = $this->getGameEvents()->findLast(CardWasSkipped::class);
+            $pileId = new PileId($cardWasSkipped->getCategoryId(), PlayerState::getCurrentLebenszielphaseIdForPlayer($this->getGameEvents(), $this->myself));
 
             // get next card from top and show it
-            $topCardIdForPile = PileState::topCardIdForPile($this->gameEvents, $pileId);
+            $topCardIdForPile = PileState::topCardIdForPile($this->getGameEvents(), $pileId);
             $this->showCardActionsForCard = $topCardIdForPile->value;
             $this->playerHasToPlayCard = true;
         }
@@ -92,13 +92,13 @@ trait HasCard
     public function canActivateCard(string $category): AktionValidationResult
     {
         $aktion = new ActivateCardAktion(CategoryId::from($category));
-        return $aktion->validate($this->myself, $this->gameEvents);
+        return $aktion->validate($this->myself, $this->getGameEvents());
     }
 
     public function canSkipCard(string $category): AktionValidationResult
     {
         $aktion = new SkipCardAktion(CategoryId::from($category));
-        return $aktion->validate($this->myself, $this->gameEvents);
+        return $aktion->validate($this->myself, $this->getGameEvents());
     }
 
     /**
@@ -121,9 +121,7 @@ trait HasCard
             CategoryId::from($category)
         ));
 
-        // WHY: refresh the gameEvents - otherwise the modal for the last Ereignis will not be rendered correctly
-        $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        $eventsAfterActivateCard = $this->gameEvents->findAllAfterLastOfType(CardWasActivated::class);
+        $eventsAfterActivateCard = $this->getGameEvents()->findAllAfterLastOfType(CardWasActivated::class);
         /** @var EreignisWasTriggered|null $ereignisOrNull */
         $ereignisOrNull = $eventsAfterActivateCard->findLastOrNull(EreignisWasTriggered::class);
         if ($ereignisOrNull !== null) {
@@ -133,7 +131,7 @@ trait HasCard
         }
 
         /** @var CardWasActivated $cardPlayed */
-        $cardPlayed = $this->gameEvents->findLast(CardWasActivated::class);
+        $cardPlayed = $this->getGameEvents()->findLast(CardWasActivated::class);
         $this->showBanner("Karte wurde erfolgreich gespielt", $cardPlayed->getResourceChanges($this->myself));
         $this->broadcastNotify();
     }
@@ -157,9 +155,8 @@ trait HasCard
             CategoryId::from($category)
         ));
 
-        $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         /** @var CardWasSkipped $cardSkipped */
-        $cardSkipped = $this->gameEvents->findLast(CardWasSkipped::class);
+        $cardSkipped = $this->getGameEvents()->findLast(CardWasSkipped::class);
         $this->showBanner("Karte wurde übersprungen", $cardSkipped->getResourceChanges($this->myself));
         $this->broadcastNotify();
     }

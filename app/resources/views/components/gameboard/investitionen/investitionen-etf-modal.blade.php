@@ -16,6 +16,10 @@
         <span>
             Kauf - {{ $this->buyInvestmentOfType }} <i class="icon-ETF" aria-hidden="true"></i>
         </span>
+    @elseif ($this->sellInvestmentOfType)
+        <span>
+            Verkauf - {{ $this->sellInvestmentOfType }} <i class="icon-ETF" aria-hidden="true"></i>
+        </span>
     @else
         <span>
             ETF <i class="icon-ETF" aria-hidden="true"></i>
@@ -28,11 +32,17 @@
 
 @section('content')
     @if ($this->buyInvestmentOfType)
-        <x-gameboard.investitionen.invenstitionen-buy-form
+        <x-gameboard.investitionen.investitionen-buy-form
             :game-events="$gameEvents"
             :investment="InvestmentFinder::findInvestmentById($this->buyInvestmentOfType)"
             unit="ETF"
             buy-button-label="ETFs kaufen"
+        />
+    @elseif ($this->sellInvestmentOfType)
+        <x-gameboard.investitionen.investitionen-sell-form
+            :game-events="$gameEvents"
+            unit="ETF"
+            buy-button-label="ETFs verkaufen"
         />
     @else
         <p>
@@ -40,14 +50,14 @@
             Sie bilden dabei automatisch ganze Marktindizes (z. B. den Deutschen Aktienindex DAX) oder spezifische Themenbereiche (z. B. erneuerbare Energien) ab.
             Diese breite Streuung reduziert Einzelrisiken, allerdings hängt die Wertentwicklung weiterhin von der allgemeinen Markt- oder Branchenentwicklung ab.
         </p>
-        <div class="investment-types">
-            <x-gameboard.investitionen.investment-type
+        <div class="investitionen-types">
+            <x-gameboard.investitionen.investitionen-type
                 :investment-type="InvestmentId::ETF_MSCI_WORLD"
                 :game-Events="$gameEvents"
                 unit="ETF"
             />
 
-            <x-gameboard.investitionen.investment-type
+            <x-gameboard.investitionen.investitionen-type
                 :investmentType="InvestmentId::ETF_CLEAN_ENERGY"
                 :game-Events="$gameEvents"
                 unit="ETF"

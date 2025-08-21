@@ -51,7 +51,7 @@ final class CoreGameLogicApp implements ForCoreGameLogic
 
     public function getGameEvents(GameId $gameId): GameEvents
     {
-        [$gameEvents,] = $this->gameEventStore->getGameEventsAndLastVersion($gameId);
+        [$gameEvents] = $this->gameEventStore->getGameEventsAndLastVersion($gameId);
         return $gameEvents;
     }
 

@@ -39,7 +39,7 @@ trait HasLog
                 $items[$key] = json_encode($item);
             }
             return $items;
-        }, $this->gameEvents->events);
+        }, $this->getGameEvents()->events);
     }
 
     /**
@@ -49,11 +49,11 @@ trait HasLog
     {
         return array_map(function ($logEntry) {
             return new EventLogEntry(
-                playerName: PlayerState::getNameForPlayer($this->gameEvents, $logEntry->getPlayerId()),
+                playerName: PlayerState::getNameForPlayer($this->getGameEvents(), $logEntry->getPlayerId()),
                 text: $logEntry->getText(),
-                colorClass: PlayerState::getPlayerColorClass($this->gameEvents, $logEntry->getPlayerId()),
+                colorClass: PlayerState::getPlayerColorClass($this->getGameEvents(), $logEntry->getPlayerId()),
                 resourceChanges: $logEntry->getResourceChanges(),
             );
-        }, LogState::getLogEntries($this->gameEvents));
+        }, LogState::getLogEntries($this->getGameEvents()));
     }
 }

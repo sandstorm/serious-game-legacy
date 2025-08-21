@@ -14,7 +14,7 @@ trait HasQuitJob
     public function quitJob(): void
     {
         $aktion = new QuitJobAktion();
-        $validationResult = $aktion->validate($this->myself, $this->gameEvents);
+        $validationResult = $aktion->validate($this->myself, $this->getGameEvents());
         if (!$validationResult->canExecute) {
             $this->showNotification(
                 $validationResult->reason,
@@ -23,7 +23,6 @@ trait HasQuitJob
             return;
         }
         $this->coreGameLogic->handle($this->gameId, QuitJob::create($this->myself));
-        $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $this->broadcastNotify();
 
         $this->showBanner("Du hast deinen Job gekündigt.");
