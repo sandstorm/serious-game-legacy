@@ -1,26 +1,5 @@
-.investment-types {
-    padding: var(--spacing-100);
-    margin-top: var(--spacing-100);
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--spacing-200);
-    align-items: center;
-}
 
-.investment-type {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--spacing-200);
-
-    h4 {
-        margin: 0;
-    }
-}
-
-
-.investments__form {
+.investitionen-form {
     display: flex;
     flex-direction: row;
     gap: var(--spacing-100);
@@ -29,7 +8,7 @@
     justify-content: space-between;
 }
 
-.investments__form-price {
+.investitionen-form__price {
     display: flex;
     gap: var(--spacing-25);
     align-items: center;
@@ -39,7 +18,7 @@
     white-space: nowrap;
 }
 
-.investments__form-amount {
+.investitionen-form__amount {
     text-align: center;
 
     label {
@@ -51,7 +30,7 @@
     }
 }
 
-.investments__form-sum {
+.investitionen-form__sum {
     text-align: center;
 
     strong {
@@ -68,7 +47,7 @@
     }
 }
 
-.buy-investments__hints {
+.investitionen-form__hints {
     margin-top: var(--spacing-200);
     padding-top: var(--spacing-200);
 

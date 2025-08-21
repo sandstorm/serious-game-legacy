@@ -10,12 +10,14 @@ use Domain\CoreGameLogic\Feature\Spielzug\Dto\InvestmentAmountChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\LogEntry;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\Loggable;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
-class InvestmentsWereSoldForPlayer implements GameEventInterface, ProvidesResourceChanges, ProvidesInvestmentAmountChanges, Loggable
+class InvestmentsWereSoldForPlayer implements GameEventInterface, ZeitsteinAktion, ProvidesResourceChanges, ProvidesInvestmentAmountChanges, Loggable
 {
     /**
      * @param PlayerId $playerId
@@ -86,5 +88,15 @@ class InvestmentsWereSoldForPlayer implements GameEventInterface, ProvidesResour
             text: "Verkauft " . $this->amount . " Anteile von '" . $this->investmentId->value . "' für " . $this->price->formatWithoutHtml(),
             resourceChanges: $this->resourceChanges,
         );
+    }
+
+    public function getCategoryId(): CategoryId
+    {
+        return CategoryId::INVESTITIONEN;
+    }
+
+    public function getNumberOfZeitsteinslotsUsed(): int
+    {
+        return 1; // Selling investments uses one Zeitsteinslot
     }
 }

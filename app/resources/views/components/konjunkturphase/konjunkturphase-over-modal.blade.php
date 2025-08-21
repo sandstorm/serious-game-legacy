@@ -8,7 +8,7 @@
 @section('content')
     <div class="konjunkturphase-over">
         <h1>
-            Die Konjunkturphase "{{KonjunkturphaseState::getCurrentKonjunkturphase($this->gameEvents())->type->value}}" ist zu Ende.
+            Die Konjunkturphase "{{KonjunkturphaseState::getCurrentKonjunkturphase($this->getGameEvents())->type->value}}" ist zu Ende.
         </h1>
     </div>
 @endsection

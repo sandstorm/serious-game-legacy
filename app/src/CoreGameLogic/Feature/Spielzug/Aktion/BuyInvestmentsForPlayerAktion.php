@@ -6,7 +6,6 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\DoesNotSkipTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasCategoryFreeZeitsteinslotsValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerDoneNoZeitsteinaktionThisTurnValidator;
@@ -65,7 +64,6 @@ class BuyInvestmentsForPlayerAktion extends Aktion
                 investmentId: $this->investmentId,
                 price: $this->price,
                 amount: $this->amount,
-                investmentPrices: InvestmentPriceState::calculateInvestmentPrices($gameEvents),
                 resourceChanges: $resourceChanges,
             )
         );

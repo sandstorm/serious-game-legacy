@@ -74,4 +74,11 @@ final readonly class Configuration
      * @var float
      */
     public final const INITIAL_INVESTMENT_PRICE = 50.0;
+
+    /**
+     * The maximum input value for number input fields.
+     * This is to prevent integer overflow issues in laravel forms
+     * @var int
+     */
+    public final const MAX_INPUT_VALUE = 2147483647;
 }

@@ -58,14 +58,12 @@ final readonly class KonjunkturphaseWasChanged implements GameEventInterface, Pr
         ];
     }
 
-    public function getInvestmentPrice(InvestmentId $investmentId): MoneyAmount
+    /**
+     * @return InvestmentPrice[]
+     */
+    public function getInvestmentPrices(): array
     {
-        foreach ($this->investmentPrices as $investmentPrice) {
-            if ($investmentPrice->investmentId === $investmentId) {
-                return $investmentPrice->price;
-            }
-        }
-        throw new \DomainException('Investment price not found for: ' . $investmentId->value, 1752584032);
+        return $this->investmentPrices;
     }
 
     /**

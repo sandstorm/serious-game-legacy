@@ -13,7 +13,7 @@ use Domain\CoreGameLogic\PlayerId;
 /**
  * Succeeds if another player has bought stocks of the same type this turn.
  */
-final class HasAnotherPlayerBoughtInvestmentsThisTurnValidator extends AbstractValidator
+final class HasAnotherPlayerInvestedThisTurnValidator extends AbstractValidator
 {
     private InvestmentId $investmentId;
 
@@ -26,13 +26,13 @@ final class HasAnotherPlayerBoughtInvestmentsThisTurnValidator extends AbstractV
 
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
-        $hasAnotherPlayerBoughtStocksThisTurn = GamePhaseState::anotherPlayerHasBoughtInvestmentsThisTurn($gameEvents, $playerId);
+        $anotherPlayerHasInvestedThisTurn = GamePhaseState::anotherPlayerHasInvestedThisTurn($gameEvents, $playerId);
         $investmentsBought = $gameEvents->findLastOrNull(InvestmentsWereBoughtForPlayer::class)?->investmentId;
 
-        if (!$hasAnotherPlayerBoughtStocksThisTurn || $investmentsBought !== $this->investmentId) {
+        if (!$anotherPlayerHasInvestedThisTurn || $investmentsBought !== $this->investmentId) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Ein anderer Spieler muss Investitionen der gleichen Art gekauft haben, bevor du welche verkaufen kannst.',
+                reason: 'Ein anderer Spieler muss Investitionen der gleichen Art gekauft oder verkauft haben, bevor du welche verkaufen kannst.',
             );
         }
 

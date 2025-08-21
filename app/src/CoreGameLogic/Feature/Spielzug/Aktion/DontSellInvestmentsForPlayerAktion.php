@@ -6,7 +6,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasAnotherPlayerBoughtInvestmentsThisTurnValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasAnotherPlayerInvestedThisTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereNotSoldForPlayer;
 use Domain\CoreGameLogic\PlayerId;
@@ -21,7 +21,7 @@ class DontSellInvestmentsForPlayerAktion extends Aktion
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
-        $validationChain = new HasAnotherPlayerBoughtInvestmentsThisTurnValidator($this->investmentId);
+        $validationChain = new HasAnotherPlayerInvestedThisTurnValidator($this->investmentId);
         return $validationChain->validate($gameEvents, $playerId);
     }
 

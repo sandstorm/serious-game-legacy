@@ -28,7 +28,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerGotAChild;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereNotSoldForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayerAfterInvestmentByAnotherPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\WeiterbildungWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
@@ -499,7 +499,7 @@ class PlayerState
 
         // Check if the player has sold investments this turn or decided not to sell investments this turn.
         $investmentsWereSold = $eventsThisTurn->findLastOrNullWhere(fn($event
-        ) => $event instanceof InvestmentsWereSoldForPlayer && $event->playerId->equals($playerId));
+        ) => $event instanceof InvestmentsWereSoldForPlayerAfterInvestmentByAnotherPlayer && $event->playerId->equals($playerId));
         $investmentsWereNotSold = $eventsThisTurn->findLastOrNullWhere(fn($event
         ) => $event instanceof InvestmentsWereNotSoldForPlayer && $event->playerId->equals($playerId));
 

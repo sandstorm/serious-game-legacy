@@ -17,7 +17,6 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\LoanCalculator;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\TakeOutALoanForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerAllowedToTakeOutALoanValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CancelInsuranceForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ConcludeInsuranceForPlayerAktion;
@@ -60,7 +59,7 @@ trait HasMoneySheet
      */
     public function mountHasMoneySheet(): void
     {
-        if (PreGameState::isInPreGamePhase($this->gameEvents)) {
+        if (PreGameState::isInPreGamePhase($this->getGameEvents())) {
             // do not mount the money sheet if we are in pre-game phase
             return;
         }
@@ -77,13 +76,13 @@ trait HasMoneySheet
      */
     public function renderingHasMoneySheet(): void
     {
-        $latestInputForSteuernUndAbgaben = MoneySheetState::getLastInputForSteuernUndAbgaben($this->gameEvents, $this->myself);
-        $calculatedSteuernUndAbgaben = MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->gameEvents, $this->myself);
+        $latestInputForSteuernUndAbgaben = MoneySheetState::getLastInputForSteuernUndAbgaben($this->getGameEvents(), $this->myself);
+        $calculatedSteuernUndAbgaben = MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->getGameEvents(), $this->myself);
         $this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben = $latestInputForSteuernUndAbgaben->value;
         $this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled = $latestInputForSteuernUndAbgaben->equals($calculatedSteuernUndAbgaben);
 
-        $latestInputForLebenshaltungskosten = MoneySheetState::getLastInputForLebenshaltungskosten($this->gameEvents, $this->myself);
-        $calculatedLebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->gameEvents, $this->myself);
+        $latestInputForLebenshaltungskosten = MoneySheetState::getLastInputForLebenshaltungskosten($this->getGameEvents(), $this->myself);
+        $calculatedLebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->getGameEvents(), $this->myself);
         $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten = $latestInputForLebenshaltungskosten->value;
         $this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled = $latestInputForLebenshaltungskosten->equals($calculatedLebenshaltungskosten);
 
@@ -181,18 +180,18 @@ trait HasMoneySheet
     public function getMoneysheetForPlayerId(PlayerId $playerId): MoneySheetDto
     {
         return new MoneySheetDto(
-            lebenshaltungskosten: new MoneyAmount(-1 * MoneySheetState::getLastInputForLebenshaltungskosten($this->gameEvents, $playerId)->value),
-            doesLebenshaltungskostenRequirePlayerAction: MoneySheetState::doesLebenshaltungskostenRequirePlayerAction($this->gameEvents, $playerId),
-            steuernUndAbgaben: new MoneyAmount(-1 * MoneySheetState::getLastInputForSteuernUndAbgaben($this->gameEvents, $playerId)->value),
-            doesSteuernUndAbgabenRequirePlayerAction: MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($this->gameEvents, $playerId),
-            gehalt: PlayerState::getCurrentGehaltForPlayer($this->gameEvents, $playerId),
-            totalFromPlayerInput: MoneySheetState::calculateTotalFromPlayerInput($this->gameEvents, $playerId),
-            totalInsuranceCost: new MoneyAmount(-1 * MoneySheetState::getCostOfAllInsurances($this->gameEvents, $playerId)->value),
-            annualExpensesForAllLoans: new MoneyAmount(-1 * MoneySheetState::getAnnualExpensesForAllLoans($this->gameEvents, $playerId)->value),
-            sumOfAllAssets: PlayerState::getDividendForAllStocksForPlayer($this->gameEvents, $playerId), // TODO is it correct to use dividend here?
-            annualIncome: MoneySheetState::getAnnualIncomeForPlayer($this->gameEvents, $playerId),
-            annualExpenses: new MoneyAmount(-1 * MoneySheetState::getAnnualExpensesForPlayer($this->gameEvents, $playerId)->value),
-            annualExpensesFromPlayerInput: new MoneyAmount (-1 * MoneySheetState::calculateAnnualExpensesFromPlayerInput($this->gameEvents, $playerId)->value),
+            lebenshaltungskosten: new MoneyAmount(-1 * MoneySheetState::getLastInputForLebenshaltungskosten($this->getGameEvents(), $playerId)->value),
+            doesLebenshaltungskostenRequirePlayerAction: MoneySheetState::doesLebenshaltungskostenRequirePlayerAction($this->getGameEvents(), $playerId),
+            steuernUndAbgaben: new MoneyAmount(-1 * MoneySheetState::getLastInputForSteuernUndAbgaben($this->getGameEvents(), $playerId)->value),
+            doesSteuernUndAbgabenRequirePlayerAction: MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($this->getGameEvents(), $playerId),
+            gehalt: PlayerState::getCurrentGehaltForPlayer($this->getGameEvents(), $playerId),
+            totalFromPlayerInput: MoneySheetState::calculateTotalFromPlayerInput($this->getGameEvents(), $playerId),
+            totalInsuranceCost: new MoneyAmount(-1 * MoneySheetState::getCostOfAllInsurances($this->getGameEvents(), $playerId)->value),
+            annualExpensesForAllLoans: new MoneyAmount(-1 * MoneySheetState::getAnnualExpensesForAllLoans($this->getGameEvents(), $playerId)->value),
+            sumOfAllAssets: PlayerState::getDividendForAllStocksForPlayer($this->getGameEvents(), $playerId), // TODO is it correct to use dividend here?
+            annualIncome: MoneySheetState::getAnnualIncomeForPlayer($this->getGameEvents(), $playerId),
+            annualExpenses: new MoneyAmount(-1 * MoneySheetState::getAnnualExpensesForPlayer($this->getGameEvents(), $playerId)->value),
+            annualExpensesFromPlayerInput: new MoneyAmount (-1 * MoneySheetState::calculateAnnualExpensesFromPlayerInput($this->getGameEvents(), $playerId)->value),
         );
     }
 
@@ -247,14 +246,14 @@ trait HasMoneySheet
         foreach($this->moneySheetInsurancesForm->insurances as $insuranceFromForm) {
             $insuranceId = InsuranceId::create($insuranceFromForm['id']);
             $shouldBeConcluded = $insuranceFromForm['value'] === true;
-            $currentlyConcluded = MoneySheetState::doesPlayerHaveThisInsurance($this->gameEvents, $this->myself, $insuranceId);
+            $currentlyConcluded = MoneySheetState::doesPlayerHaveThisInsurance($this->getGameEvents(), $this->myself, $insuranceId);
             if ($currentlyConcluded === $shouldBeConcluded) {
                 // nothing to do, insurance is already in the desired state
                 continue;
             }
             // conclude or cancel insurance
             if ($shouldBeConcluded) {
-                $concludeInsuranceValidationResult = (new ConcludeInsuranceForPlayerAktion($insuranceId))->validate($this->myself, $this->gameEvents);
+                $concludeInsuranceValidationResult = (new ConcludeInsuranceForPlayerAktion($insuranceId))->validate($this->myself, $this->getGameEvents());
                 if ($concludeInsuranceValidationResult->canExecute) {
                     $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->myself, $insuranceId));
                 } else {
@@ -262,7 +261,7 @@ trait HasMoneySheet
                     $this->showBanner('Du hast nicht genug Geld, um die ' . $insuranceName . ' abzuschließen.');
                 }
             } else {
-                $cancelInsuranceValidationResult = (new CancelInsuranceForPlayerAktion($insuranceId))->validate($this->myself, $this->gameEvents);
+                $cancelInsuranceValidationResult = (new CancelInsuranceForPlayerAktion($insuranceId))->validate($this->myself, $this->getGameEvents());
                 if ($cancelInsuranceValidationResult->canExecute) {
                     $this->coreGameLogic->handle($this->gameId, CancelInsuranceForPlayer::create($this->myself, $insuranceId));
                 }else {
@@ -270,7 +269,6 @@ trait HasMoneySheet
                     $this->showBanner('Du kannst die ' . $insuranceName . ' nicht kündigen.');
                 }
             }
-            $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         }
         $this->broadcastNotify();
     }
@@ -280,9 +278,9 @@ trait HasMoneySheet
         $this->takeOutALoanForm->reset();
         $this->takeOutALoanForm->resetValidation();
         $this->takeOutALoanForm->loanId = LoanId::unique()->value;
-        $this->takeOutALoanForm->guthaben = PlayerState::getGuthabenForPlayer($this->gameEvents, $this->myself)->value + PlayerState::getTotalValueOfAllAssetsForPlayer($this->gameEvents, $this->myself)->value;
-        $this->takeOutALoanForm->hasJob = PlayerState::getJobForPlayer($this->gameEvents, $this->myself) !== null;
-        $this->takeOutALoanForm->zinssatz = KonjunkturphaseState::getCurrentKonjunkturphase($this->gameEvents)->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->value;
+        $this->takeOutALoanForm->guthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->myself)->value + PlayerState::getTotalValueOfAllAssetsForPlayer($this->getGameEvents(), $this->myself)->value;
+        $this->takeOutALoanForm->hasJob = PlayerState::getJobForPlayer($this->getGameEvents(), $this->myself) !== null;
+        $this->takeOutALoanForm->zinssatz = KonjunkturphaseState::getCurrentKonjunkturphase($this->getGameEvents())->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->value;
     }
 
     public function takeOutALoan(): void
@@ -322,9 +320,9 @@ trait HasMoneySheet
     private function initializeInsurancesForm(): void
     {
         $insurances = InsuranceFinder::getInstance()->getAllInsurances();
-        $currentPlayerPhase = PlayerState::getCurrentLebenszielphaseIdForPlayer($this->gameEvents, $this->myself)->value;
+        $currentPlayerPhase = PlayerState::getCurrentLebenszielphaseIdForPlayer($this->getGameEvents(), $this->myself)->value;
         foreach ($insurances as $insurance) {
-            $isActive = MoneySheetState::doesPlayerHaveThisInsurance($this->gameEvents, $this->myself, $insurance->id);
+            $isActive = MoneySheetState::doesPlayerHaveThisInsurance($this->getGameEvents(), $this->myself, $insurance->id);
             $this->moneySheetInsurancesForm->addInsurance(
                 $currentPlayerPhase,
                 $insurance,

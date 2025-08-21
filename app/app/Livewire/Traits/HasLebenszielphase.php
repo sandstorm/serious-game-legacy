@@ -32,13 +32,13 @@ trait HasLebenszielphase
     public function canChangeLebenszielphase(): bool
     {
         $aktion = new ChangeLebenszielphaseAktion();
-        return $aktion->validate($this->myself, $this->gameEvents)->canExecute;
+        return $aktion->validate($this->myself, $this->getGameEvents())->canExecute;
     }
 
     public function changeLebenszielphase(): void
     {
         $aktion = new ChangeLebenszielphaseAktion();
-        $validationResult = $aktion->validate($this->myself, $this->gameEvents);
+        $validationResult = $aktion->validate($this->myself, $this->getGameEvents());
 
         if (!$validationResult->canExecute) {
             $this->showNotification(
@@ -50,10 +50,9 @@ trait HasLebenszielphase
 
         $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create($this->myself));
         $this->isChangeLebenszielphaseVisible = true;
-        $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
         /** @var LebenszielphaseWasChanged $event */
-        $event = $this->gameEvents->findLast(LebenszielphaseWasChanged::class);
+        $event = $this->getGameEvents()->findLast(LebenszielphaseWasChanged::class);
 
         $this->broadcastNotify();
         if (GamePhaseState::hasAnyPlayerFinishedLebensziel($this->gameEvents) === false) {

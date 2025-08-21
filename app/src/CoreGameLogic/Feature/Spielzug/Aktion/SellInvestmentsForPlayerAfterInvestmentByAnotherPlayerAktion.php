@@ -7,21 +7,18 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\DoesNotSkipTurnValidator;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasCategoryFreeZeitsteinslotsValidator;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerDoneNoZeitsteinaktionThisTurnValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasAnotherPlayerInvestedThisTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughInvestmentsToSellValidator;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughZeitsteineValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerInteractedWithInvestmentsModalThisTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerAllowedToInvestValidator;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayerAfterInvestmentByAnotherPlayer;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
-use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
-class SellInvestmentsForPlayerAktion extends Aktion
+class SellInvestmentsForPlayerAfterInvestmentByAnotherPlayerAktion extends Aktion
 {
     public function __construct(
         private readonly InvestmentId   $investmentId,
@@ -32,15 +29,12 @@ class SellInvestmentsForPlayerAktion extends Aktion
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
-        $validationChain = new IsPlayersTurnValidator();
+        $validationChain = new HasAnotherPlayerInvestedThisTurnValidator($this->investmentId);
         $validationChain
             ->setNext(new DoesNotSkipTurnValidator())
             ->setNext(new IsPlayerAllowedToInvestValidator())
-            ->setNext(new HasPlayerEnoughZeitsteineValidator(1))
-            ->setNext(new HasPlayerDoneNoZeitsteinaktionThisTurnValidator(CategoryId::INVESTITIONEN))
-            ->setNext(new HasCategoryFreeZeitsteinslotsValidator(CategoryId::INVESTITIONEN))
-            ->setNext(new HasPlayerEnoughInvestmentsToSellValidator($this->investmentId, 1))
-            ->setNext(new HasPlayerEnoughInvestmentsToSellValidator($this->investmentId, $this->amount));
+            ->setNext(new HasPlayerEnoughInvestmentsToSellValidator($this->investmentId, $this->amount))
+            ->setNext(new HasPlayerInteractedWithInvestmentsModalThisTurnValidator());
         return $validationChain->validate($gameEvents, $playerId);
     }
 
@@ -52,14 +46,13 @@ class SellInvestmentsForPlayerAktion extends Aktion
         }
 
         return GameEventsToPersist::with(
-            new InvestmentsWereSoldForPlayer(
+            new InvestmentsWereSoldForPlayerAfterInvestmentByAnotherPlayer(
                 playerId: $playerId,
                 investmentId: $this->investmentId,
                 price: $this->price,
                 amount: $this->amount,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount($this->price->value * $this->amount),
-                    zeitsteineChange: -1
                 )
             )
         );
