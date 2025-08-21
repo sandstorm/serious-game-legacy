@@ -7,6 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\State;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
 
 final readonly class EreignisPrerequisiteChecker
@@ -21,13 +22,13 @@ final readonly class EreignisPrerequisiteChecker
         return new self($gameEvents);
     }
 
-    public function hasPlayerPrerequisites(PlayerId $playerId, EreignisPrerequisitesId $ereignisPrerequisitesId, string $requiredCardId): bool
+    public function hasPlayerPrerequisites(PlayerId $playerId, EreignisPrerequisitesId $ereignisPrerequisitesId, CardId $requiredCardId = null): bool
     {
         return match ($ereignisPrerequisitesId) {
             EreignisPrerequisitesId::HAS_JOB => $this->hasPlayerAJob($playerId),
             EreignisPrerequisitesId::HAS_CHILD => $this->hasPlayerAChild($playerId),
             EreignisPrerequisitesId::HAS_NO_CHILD => !($this->hasPlayerAChild($playerId)),
-            EreignisPrerequisitesId::HAS_SPECIFIC_CARD => $this->hasPlayerThisCard($playerId, $requiredCardId),
+            EreignisPrerequisitesId::HAS_SPECIFIC_CARD => $this->hasPlayerPlayedThisCard($playerId, $requiredCardId),
             EreignisPrerequisitesId::NO_PREREQUISITES => true,
         };
     }
@@ -42,9 +43,12 @@ final readonly class EreignisPrerequisiteChecker
         return PlayerState::hasChild($this->gameEvents, $playerId);
     }
 
-    private function hasPlayerThisCard(PlayerId $playerId, string $requiredCardId): bool
+    private function hasPlayerPlayedThisCard(PlayerId $playerId, CardId|null $requiredCardId): bool
     {
-        return PlayerState::hasPlayerSpecificCard($this->gameEvents, $playerId, $requiredCardId);
+        if ($requiredCardId === null) {
+            throw new \RuntimeException("Required Card Id not specified", 1755769328);
+        }
+        return PlayerState::hasPlayerPlayedSpecificCard($this->gameEvents, $playerId, $requiredCardId);
 
     }
 }

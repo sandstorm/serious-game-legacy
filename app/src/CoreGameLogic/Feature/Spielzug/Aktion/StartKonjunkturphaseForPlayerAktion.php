@@ -44,7 +44,7 @@ class StartKonjunkturphaseForPlayerAktion extends Aktion
         $resourceChanges = new ResourceChanges();
         foreach ($conditionalResourceChangesForCurrentKonjunkturphase as $conditionalResourceChange) {
             $isConditionMet = EreignisPrerequisiteChecker::forStream($gameEvents)
-                ->hasPlayerPrerequisites($playerId, $conditionalResourceChange->prerequisite, '');
+                ->hasPlayerPrerequisites($playerId, $conditionalResourceChange->prerequisite);
 
             if ($isConditionMet) {
                 $resourceChanges = $resourceChanges->accumulate($conditionalResourceChange->resourceChanges);

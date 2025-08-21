@@ -24,8 +24,8 @@ final readonly class EreignisCardDefinition implements CardDefinition, CardWithY
      * @param ModifierId[] $modifierIds
      * @param ModifierParameters $modifierParameters
      * @param EreignisPrerequisitesId[] $ereignisRequirementIds
+     * @param CardId|null $requiredCardId
      * @param int $gewichtung
-     * @param string $requiredCardId
      */
     public function __construct(
         protected CardId $id,
@@ -38,8 +38,8 @@ final readonly class EreignisCardDefinition implements CardDefinition, CardWithY
         protected array $modifierIds = [],
         protected ModifierParameters $modifierParameters = new ModifierParameters(),
         protected array $ereignisRequirementIds = [],
+        protected ?CardId $requiredCardId = null,
         protected int $gewichtung = 1,
-        protected string $requiredCardId = '',
     ) {
     }
 
@@ -101,7 +101,7 @@ final readonly class EreignisCardDefinition implements CardDefinition, CardWithY
         return $this->gewichtung;
     }
 
-    public function getRequiredCard(): string
+    public function getRequiredCardId(): CardId|null
     {
         return $this->requiredCardId;
     }

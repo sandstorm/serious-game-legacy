@@ -37,6 +37,7 @@ use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
+use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
@@ -516,16 +517,17 @@ class PlayerState
     /**
      * @param GameEvents $gameEvents
      * @param PlayerId $playerId
-     * @param string $requiredCardId
+     * @param CardId $requiredCardId
      * @return bool
      */
-    public static function hasPlayerSpecificCard(GameEvents $gameEvents, PlayerId $playerId, string $requiredCardId) {
+    public static function hasPlayerPlayedSpecificCard(GameEvents $gameEvents, PlayerId $playerId, CardId $requiredCardId): bool
+    {
         $ereignisWasTriggeredForPlayer = $gameEvents->findLastOrNullWhere(fn($event
-        ) => $event instanceof EreignisWasTriggered && $event->playerId->equals($playerId) && $event->ereignisCardId->value === ($requiredCardId));
+        ) => $event instanceof EreignisWasTriggered && $event->playerId->equals($playerId) && $event->ereignisCardId->equals($requiredCardId));
         $cardWasPlayedByPlayer = $gameEvents->findLastOrNullWhere(fn($event
-        ) => $event instanceof CardWasActivated && $event->playerId->equals($playerId) && $event->cardId->value === ($requiredCardId));
+        ) => $event instanceof CardWasActivated && $event->playerId->equals($playerId) && $event->cardId->equals($requiredCardId));
         $jobOfferWasAcceptedByPlayer = $gameEvents->findLastOrNullWhere(fn($event
-        ) => $event instanceof JobOfferWasAccepted && $event->playerId->equals($playerId) && $event->cardId->value === ($requiredCardId));
+        ) => $event instanceof JobOfferWasAccepted && $event->playerId->equals($playerId) && $event->cardId->equals($requiredCardId));
         return (
             $ereignisWasTriggeredForPlayer !== null ||
             $cardWasPlayedByPlayer !== null ||
