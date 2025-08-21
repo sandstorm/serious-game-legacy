@@ -1,4 +1,4 @@
-import TouchEvent from '@/TouchEvent'
+import TouchEvent from '@/touchevent'
 
 // provides slide up to close the player list
 export default () => ({
