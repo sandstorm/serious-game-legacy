@@ -152,6 +152,7 @@ trait HasInvestitionen
             $this->buyInvestmentsForm->amount
         ));
 
+        $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $this->showStocksModal = false;
         $this->showCryptoModal = false;
         $this->showETFModal = false;

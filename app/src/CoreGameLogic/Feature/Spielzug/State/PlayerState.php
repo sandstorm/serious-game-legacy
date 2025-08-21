@@ -20,6 +20,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\BerufsunfaehigkeitsversicherungWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
@@ -40,6 +41,7 @@ use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
+use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
@@ -533,5 +535,24 @@ class PlayerState
             $cardWasPlayedByPlayer !== null ||
             $jobOfferWasAcceptedByPlayer !== null
         );
+    }
+
+    /**
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @param InsuranceId $insuranceId
+     * @return bool
+     */
+    public static function hasPlayerPayedForInsuranceThisKonjunkturphase(GameEvents $gameEvents, PlayerId $playerId, InsuranceId $insuranceId): bool
+    {
+        $eventsAfterInsuranceWasConcluded = $gameEvents->findAllAfterLastOrNullWhere(fn($event) =>
+            $event instanceof InsuranceForPlayerWasConcluded &&
+            $event->playerId->equals($playerId) &&
+            $event->insuranceId === $insuranceId
+        );
+        if ($eventsAfterInsuranceWasConcluded === null) {
+            throw new RuntimeException("InsuranceWasConcluded Event not found for this player", 1755845748);
+        }
+        return ($eventsAfterInsuranceWasConcluded->findLastOrNull(KonjunkturphaseWasChanged::class) === null);
     }
 }

@@ -23,6 +23,7 @@ trait HasQuitJob
             return;
         }
         $this->coreGameLogic->handle($this->gameId, QuitJob::create($this->myself));
+        $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $this->broadcastNotify();
 
         $this->showBanner("Du hast deinen Job gekündigt.");

@@ -98,6 +98,7 @@ trait HasWeiterbildung
             $this->myself,
             $selectedAnswerId
         ));
+        $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
         $this->broadcastNotify();
         $this->isWeiterbildungVisible = true;

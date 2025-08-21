@@ -62,6 +62,7 @@ trait HasJobOffer
             $this->gameId,
             AcceptJobOffer::create($this->myself, $cardId)
         );
+        $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
         $this->jobOfferIsVisible = false;
         $this->broadcastNotify();
