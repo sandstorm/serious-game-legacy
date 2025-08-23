@@ -10,6 +10,7 @@ class ModifierMapping {
 
 
 /* PRINT FUNCTIONS */
+
 /**
  * @param array $lineArrayWithKeys - array containing the data for one card (one line in the csv)
  * @return void
@@ -49,8 +50,62 @@ function printPhaseAndYear(string $phase, string $year): void
     }
 }
 
+/**
+ * @param string $type
+ * @param string $maxKompetenzsteine
+ * @return void
+ */
+function printKompetenzbereichDefinition(string $type, string $maxKompetenzsteine):void
+{
+    echo "\t\t" . "new KompetenzbereichDefinition(\n";
+    echo "\t\t\t" . "name: CategoryId::" . $type . ",\n";
+    echo "\t\t\t" . "zeitslots: new Zeitslots([\n";
+    echo "\t\t\t\t" . "new ZeitslotsPerPlayer(2, " . $maxKompetenzsteine-1 . "),\n"; //for two players the max Kompetenzsteine are reduced by 1
+    echo "\t\t\t\t" . "new ZeitslotsPerPlayer(3, " . $maxKompetenzsteine . "),\n";
+    echo "\t\t\t\t" . "new ZeitslotsPerPlayer(4, " . $maxKompetenzsteine . "),\n";
+    echo "\t\t\t" . "])\n";
+    echo "\t\t" . "),\n";
+}
+
+/**
+ * @param string $prerequisites
+ * @param string $resourceChange
+ * @param string $value
+ * @return void
+ */
+function printConditionalResourceChanges(string $prerequisites, string $resourceChange, string $value):void
+{
+    echo "\t\t" . "new ConditionalResourceChange(\n";
+    echo "\t\t\t" . "prerequisite: EreignisPrerequisitesId::" . $prerequisites . ",\n";
+    if ($resourceChange === "guthabenChange") {
+        echo "\t\t\t" . "resourceChanges: new ResourceChanges(" . $resourceChange . ": new MoneyAmount(" . $value . "))\n";
+    } else {
+        echo "\t\t\t" . "resourceChanges: new ResourceChanges(" . $resourceChange . ": " . $value . ")\n";
+    }
+    echo "\t\t" . "),\n";
+}
+
+
+
+/**
+ * @param string $type
+ * @param string $modifierValue
+ * @return void
+ */
+function printAuswirkungen(string $type, string $modifierValue):void
+{
+    echo "\t\t" . "new AuswirkungDefinition(\n";
+    echo "\t\t\t" . "scope: AuswirkungScopeEnum::" . $type . ",\n";
+    echo "\t\t\t" . "modifier: " . $modifierValue . "\n";
+    echo "\t\t" . "),\n";
+}
 
 /* IMPORT FUNCTIONS */
+
+/**
+ * Function importes MiniJobCards from csv file and echos them in the console.
+ * @return void
+ */
 function importMiniJobCards(): void
 {
     $file = file(__DIR__ . "/Minijobs.csv");
@@ -72,6 +127,10 @@ function importMiniJobCards(): void
     }
 }
 
+/**
+ * Function importes JobCards from csv file and echos them in the console.
+ * @return void
+ */
 function importJobCards(): void
 {
     $file = file(__DIR__ . "/Jobs.csv");
@@ -97,6 +156,10 @@ function importJobCards(): void
     }
 }
 
+/**
+ * Function importes WeiterbildungsCards from csv file and echos them in the console.
+ * @return void
+ */
 function importWeiterbildungCards(): void
 {
     $file = file(__DIR__ . "/Weiterbildungen.csv");
@@ -124,6 +187,10 @@ function importWeiterbildungCards(): void
     }
 }
 
+/**
+ * Function importes KategorieCards from csv file and echos them in the console.
+ * @return void
+ */
 function importKategorieCards(): void
 {
     $file = file(__DIR__ . "/Kategorie_Karten.csv");
@@ -146,6 +213,10 @@ function importKategorieCards(): void
     }
 }
 
+/**
+ * Function importes EreignisCards from csv file and echos them in the console.
+ * @return void
+ */
 function importEreignisCards(): void
 {
     $modifierMappings = [
@@ -234,6 +305,10 @@ function importEreignisCards(): void
     }
 }
 
+/**
+ * Function importes InvestitionenCards from csv file and echos them in the console.
+ * @return void
+ */
 function importInvestitionenCards(): void
 {
     $file = file(__DIR__ . "/Investitionen_Immobilien.csv");
@@ -257,13 +332,95 @@ function importInvestitionenCards(): void
     }
 }
 
+/**
+ * Function importes Konjunkturphasen from csv file and echos them in the console.
+ * @return void
+ */
+function importKonjunkturphasen(): void
+{
+    echo "\n\n--KONJUNKTURPHASEN--\n\n";
+    $file = file(__DIR__ . "/Konjunkturen.csv");
+    $fileContent = array_slice($file, 1); //removes the first element (table header)
+    $tableHeader = trim(array_slice($file, 0, 1)[0]); //table header
+    $tableHeaderArray = array_slice(explode(";", $tableHeader), 1); //array containing the table headers (except the first one as it's not set in the table)
+    $keys = ["id"]; //first column doesn't has a header
+    foreach ($tableHeaderArray as $key) {
+        $keys[] = str_replace(["\"", " "], "", trim($key)); //removes spaces and " from table headers
+    }
+
+    foreach ($fileContent as $line) {
+        $lineArray = explode(";", trim($line));
+        $lineArrayWithKeys = array_combine($keys, $lineArray);
+        $ereignisse = array_slice($lineArrayWithKeys, 23);
+        $ereignisArray = [];
+        for ($i = 1; $i <= 2; $i++) {
+            $ereignisArray["ereignis$i"] = [
+                "description" => $ereignisse["Ereignis$i"],
+                "prerequisite" => $ereignisse["prerequisite$i"],
+                "resourceChange" => $ereignisse["resourceChange$i"],
+                "value" => $ereignisse["value$i"],
+            ];
+        }
+
+        echo "\$konjunkturphase" . $lineArrayWithKeys["id"] . " = new KonjunkturphaseDefinition(\n";
+        echo "\t" . "id: KonjunkturphasenId::create(" . $lineArrayWithKeys["id"] . "),\n";
+        echo "\t" . "type: KonjunkturphaseTypeEnum::" . $lineArrayWithKeys["type"] . ",\n";
+        echo "\t" . "name: '" . $lineArrayWithKeys["title"] . "',\n";
+        echo "\t" . "description: '" . $lineArrayWithKeys["description"] . "',\n";
+        echo "\t" . "additionalEvents: '";
+        foreach ($ereignisArray as $ereignis) {
+            if (!empty($ereignis["description"])) {
+                echo $ereignis["description"] . ". ";
+            }
+        }
+        echo "',\n";
+        echo "\t" . "zeitsteine: new Zeitsteine([\n";
+        echo "\t\t" . "new ZeitsteinePerPlayer(2, " . $lineArrayWithKeys["sumZeitsteine2Spieler"]/2 . "),\n";
+        echo "\t\t" . "new ZeitsteinePerPlayer(3, " . $lineArrayWithKeys["sumZeitsteine3Spieler"]/3 . "),\n";
+        echo "\t\t" . "new ZeitsteinePerPlayer(4, " . $lineArrayWithKeys["sumZeitsteine4Spieler"]/4 . "),\n";
+        echo "\t" . "]),\n";
+        echo "\t" . "kompetenzbereiche: [\n";
+        printKompetenzbereichDefinition("BILDUNG_UND_KARRIERE", $lineArrayWithKeys["maxBildungUndKarriere"]);
+        printKompetenzbereichDefinition("SOZIALES_UND_FREIZEIT", $lineArrayWithKeys["maxFreizeitUndSoziales"]);
+        printKompetenzbereichDefinition("INVESTITIONEN", $lineArrayWithKeys["maxInvestitionen"]);
+        printKompetenzbereichDefinition("JOBS", $lineArrayWithKeys["maxJobs"]);
+        echo "\t" . "],\n";
+        echo "\t" . "auswirkungen: [\n";
+        if ($lineArrayWithKeys["Zeitsteine"] !== "") printAuswirkungen("ZEITSTEINE", $lineArrayWithKeys["Zeitsteine"]);
+        printAuswirkungen("LEBENSERHALTUNGSKOSTEN", $lineArrayWithKeys["Lebenshaltungskosten"]);
+        printAuswirkungen("BILDUNG", $lineArrayWithKeys["Bildung&Karriere"]);
+        printAuswirkungen("FREIZEIT", $lineArrayWithKeys["Freizeit&Soziales"]);
+        printAuswirkungen("LOANS_INTEREST_RATE", $lineArrayWithKeys["Kreditzins"]);
+        printAuswirkungen("STOCKS_BONUS", $lineArrayWithKeys["AktienKursbonus"]);
+        printAuswirkungen("DIVIDEND", $lineArrayWithKeys["Dividende"]);
+        printAuswirkungen("REAL_ESTATE", $lineArrayWithKeys["Immobilien"]);
+        printAuswirkungen("CRYPTO", $lineArrayWithKeys["CryptoKursbonus"]);
+        printAuswirkungen("BONUS_INCOME", $lineArrayWithKeys["Bonuseinkommen"]);
+        echo "\t" . "],\n";
+        echo "\t" . "conditionalResourceChanges: [\n";
+        foreach ($ereignisArray as $ereignis) {
+            if (!empty($ereignis["resourceChange"])) {
+                printConditionalResourceChanges(
+                    $ereignis["prerequisite"]==="" ? "NO_PREREQUISITES" : $ereignis["prerequisite"],
+                    $ereignis["resourceChange"],
+                    $ereignis["value"]
+                );
+            }
+        }
+        echo "\t" . "],\n";
+        echo ");\n\n";
+
+    }
+}
+
 
 //importMiniJobCards();
 //importJobCards();
 //importWeiterbildungCards();
 //importKategorieCards();
-importEreignisCards();
+//importEreignisCards();
 //importInvestitionenCards();
+importKonjunkturphasen();
 
 
 
