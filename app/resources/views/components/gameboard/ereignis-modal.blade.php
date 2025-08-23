@@ -31,6 +31,9 @@
     <p>
         {{ $ereignisCard->getDescription() }}
     </p>
+    @foreach($ereignisCard->getModifierIds() as $modifier)
+            <p>{{ $modifier }}</p>
+    @endforeach
 @endsection
 
 @section('footer')

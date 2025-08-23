@@ -5142,78 +5142,78 @@ final class CardFinder
                     guthabenChange: new MoneyAmount(+5100),
                 ),
             ),
-            "e1" => new EreignisCardDefinition(
-                id: new CardId('e1'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Teilnahme Coaching-Seminaren',
-                description: 'Glückwunsch! Deine Teilnahme an Coaching-Seminaren zahlt sich aus: Du gewinnst bei einem Wettbewerb für junge Führungskräfte den ersten Platz und erhältst eine Finanzspritze für dein erstes Start-up.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(5000),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e2" => new EreignisCardDefinition(
-                id: new CardId('e2'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Auszeichnung',
-                description: 'Herzlichen Glückwunsch! Deine Bewerbung für die Auszeichnung besonderer Prüfungsleistungen war erfolgreich.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e3" => new EreignisCardDefinition(
-                id: new CardId('e3'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Neue Liebe',
-                description: 'Du bist verliebt und vernachlässigst dadurch deine (Lern-)Pflichten. Alles wieder aufzuholen kostet viel Zeit.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e4" => new EreignisCardDefinition(
-                id: new CardId('e4'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Work-Life-Balance',
-                description: 'Du hast die optimale Mitte gefunden. Es eröffnen sich zahlreiche neue Möglichkeiten.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
+//            "e1" => new EreignisCardDefinition(
+//                id: new CardId('e1'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Teilnahme Coaching-Seminaren',
+//                description: 'Glückwunsch! Deine Teilnahme an Coaching-Seminaren zahlt sich aus: Du gewinnst bei einem Wettbewerb für junge Führungskräfte den ersten Platz und erhältst eine Finanzspritze für dein erstes Start-up.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(5000),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e2" => new EreignisCardDefinition(
+//                id: new CardId('e2'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Auszeichnung',
+//                description: 'Herzlichen Glückwunsch! Deine Bewerbung für die Auszeichnung besonderer Prüfungsleistungen war erfolgreich.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e3" => new EreignisCardDefinition(
+//                id: new CardId('e3'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Neue Liebe',
+//                description: 'Du bist verliebt und vernachlässigst dadurch deine (Lern-)Pflichten. Alles wieder aufzuholen kostet viel Zeit.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e4" => new EreignisCardDefinition(
+//                id: new CardId('e4'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Work-Life-Balance',
+//                description: 'Du hast die optimale Mitte gefunden. Es eröffnen sich zahlreiche neue Möglichkeiten.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
             "e5" => new EreignisCardDefinition(
                 id: new CardId('e5'),
                 categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
@@ -5256,89 +5256,89 @@ final class CardFinder
                 ],
                 gewichtung: 1,
             ),
-            "e7" => new EreignisCardDefinition(
-                id: new CardId('e7'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Lohnerhöhung',
-                description: 'Die Gehaltsverhandlungen mit deinen Vorgesetzten liefen sehr gut und du erhälst für dieses Jahr mehr Jahresgehalt (brutto). ',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
-                resourceChanges: new ResourceChanges(
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:120,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e8" => new EreignisCardDefinition(
-                id: new CardId('e8'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Beziehungskrise',
-                description: 'Du streitest dich nur noch mit deiner Partnerin und findest deshalb keine Zeit für die Hausarbeit. Den entstandenen Rückstand aufzuholen, kostet viel Zeit.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('e142'),
-                gewichtung: 4,
-            ),
-            "e9" => new EreignisCardDefinition(
-                id: new CardId('e9'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Neue Wohnung',
-                description: 'Du ziehst um. Aufgrund des Umzugstresses vernachlässigst du deine anderen Verpflichtungen.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e10" => new EreignisCardDefinition(
-                id: new CardId('e10'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Stress',
-                description: 'Der Druck setzt dir zu, und du schläfst nicht genug. Deshalb nimmst du dir eine Auszeit. ',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
+//            "e7" => new EreignisCardDefinition(
+//                id: new CardId('e7'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Lohnerhöhung',
+//                description: 'Die Gehaltsverhandlungen mit deinen Vorgesetzten liefen sehr gut und du erhälst für dieses Jahr mehr Jahresgehalt (brutto). ',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(2),
+//                resourceChanges: new ResourceChanges(
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:120,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e8" => new EreignisCardDefinition(
+//                id: new CardId('e8'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Beziehungskrise',
+//                description: 'Du streitest dich nur noch mit deiner Partnerin und findest deshalb keine Zeit für die Hausarbeit. Den entstandenen Rückstand aufzuholen, kostet viel Zeit.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('e142'),
+//                gewichtung: 4,
+//            ),
+//            "e9" => new EreignisCardDefinition(
+//                id: new CardId('e9'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Neue Wohnung',
+//                description: 'Du ziehst um. Aufgrund des Umzugstresses vernachlässigst du deine anderen Verpflichtungen.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(2),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e10" => new EreignisCardDefinition(
+//                id: new CardId('e10'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Stress',
+//                description: 'Der Druck setzt dir zu, und du schläfst nicht genug. Deshalb nimmst du dir eine Auszeit. ',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
             "e11" => new EreignisCardDefinition(
                 id: new CardId('e11'),
                 categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
                 title: 'Kündigung',
                 description: 'Du hast dich mit deinem gesamten Kollegium zerstritten. Aus Frust kündigst du unüberlegt deinen Job und erhältst dieses Jahr kein Einkommen mehr.',
                 phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
+                year: new Year(1),
                 resourceChanges: new ResourceChanges(
                     zeitsteineChange: 1,
                 ),
@@ -5352,358 +5352,358 @@ final class CardFinder
                 ],
                 gewichtung: 1,
             ),
-            "e12" => new EreignisCardDefinition(
-                id: new CardId('e12'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Weiterbildung',
-                description: 'Dank deiner erfolgreichen Studienleistungen stehen dir spezialisierte Weiterbildungen offen. Du nutzt diese Möglichkeit, um dich gezielt weiterzubilden.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-8000),
-                    bildungKompetenzsteinChange: +2,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j2'),
-                gewichtung: 4,
-            ),
-            "e13" => new EreignisCardDefinition(
-                id: new CardId('e13'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Auszeichnung',
-                description: 'Dein Ausbildungsbetrieb empfiehlt dich für die Auszeichnung „Junge Talente“. Kurz darauf wirst du informiert, dass du die Auszeichnung erhalten hast.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(500),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j3'),
-                gewichtung: 4,
-            ),
-            "e14" => new EreignisCardDefinition(
-                id: new CardId('e14'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Auszeichnung',
-                description: 'Deine Ausbildungsarbeit wurde mit einer überregionalen Auszeichnung bedacht.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(1500),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j3'),
-                gewichtung: 4,
-            ),
-            "e15" => new EreignisCardDefinition(
-                id: new CardId('e15'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Auszeichnung',
-                description: 'Für deine Seminararbeit erhältst du einen Fachpreis, der dir in deinem Bereich besondere Sichtbarkeit verschafft.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(1000),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j2'),
-                gewichtung: 4,
-            ),
-            "e16" => new EreignisCardDefinition(
-                id: new CardId('e16'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Förderpreis',
-                description: 'Ein während deines Studiums gestartetes Projekt setzt sich nach dem Abschluss fort und erhält eine Förderauszeichnung.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(1500),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j2'),
-                gewichtung: 4,
-            ),
-            "e17" => new EreignisCardDefinition(
-                id: new CardId('e17'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Auslandsstipendium',
-                description: 'Aufgrund deiner guten Noten im Studium qualifizierst du dich für ein Auslandsstipendium und kannst so berufliche Entwicklung mit internationaler Erfahrung verbinden.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(3000),
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j2'),
-                gewichtung: 4,
-            ),
-            "e18" => new EreignisCardDefinition(
-                id: new CardId('e18'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Stipendium',
-                description: 'Deine sehr guten Leistungen im Studium werden mit einem Stipendium honoriert, das dich finanziell entlastet und dein Profil weiter aufwertet.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(3000),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j2'),
-                gewichtung: 4,
-            ),
-            "e19" => new EreignisCardDefinition(
-                id: new CardId('e19'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Arbeitszeitverkürzung',
-                description: 'Du entscheidest dich, dich privat weiterzubilden und startest eine Abendschule. Damit du mehr Zeit zum Lernen hast, reduzierst du für dieses Jahr deine Arbeitszeit.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e20" => new EreignisCardDefinition(
-                id: new CardId('e20'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Kurzarbeit',
-                description: 'Die wirtschaftliche Lage ist angespannt, und es kommt zu Kurzarbeit. Dein Jahresgehalt (brutto) passt sich der Kurzarbeit an.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
-                resourceChanges: new ResourceChanges(
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:60,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e21" => new EreignisCardDefinition(
-                id: new CardId('e21'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Arbeitszeitverkürzung',
-                description: 'Um dich fachlich zu spezialisieren, machst du eine mehrmonatige Weiterbildung und reduzierst dafür dieses Jahr deine Arbeitszeit. Dein Jahresgehalt (brutto) wird entsprechend gekürzt.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:50,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e22" => new EreignisCardDefinition(
-                id: new CardId('e22'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Prämie',
-                description: 'Deine Vorgesetzten sind stolz auf dich. Du hast dich in den letzten Monaten enorm weiterentwickelt. Aufgrund deiner starken Leistungen steigerte sich der Umsatz. Dies wird mit einer Prämie belohnt.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(3000),
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:50,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e23" => new EreignisCardDefinition(
-                id: new CardId('e23'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Weihnachten',
-                description: '"Weihnachten steht vor der Tür. Deine Teamleitung überrascht dich mit einem extra großenWeihnachtsgeld, da das Geschäftsjahr besonders gut ausfiel."',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(5000),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e24" => new EreignisCardDefinition(
-                id: new CardId('e24'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Weiterbildung',
-                description: 'Du entscheidest dich für eine achtmonatige berufsbegleitende Weiterbildung und reduzierst dafür deine Arbeitszeit. ',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +2,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e25" => new EreignisCardDefinition(
-                id: new CardId('e25'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Leadership-Seminare',
-                description: 'Deine Teamleitung erkennt dein Potenzial. Zweimal im Monat besuchst du ein Leadership-Seminar und bekommst dein eigenes Team, um das Gelernte umzusetzen. ',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:130,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e26" => new EreignisCardDefinition(
-                id: new CardId('e26'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: '"Mit Vitamin B die Karriere ankurbeln"',
-                description: 'Dein Onkel lässt seine Beziehungen spielen, und du erhältst eine Beförderung.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e27" => new EreignisCardDefinition(
-                id: new CardId('e27'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Jobverlust',
-                description: 'Die wirtschaftliche Lage ist angespannt und und es kommt zu zahlreichen Entlassungen. Auch du bist betroffen und wirst entlassen. ',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
-                resourceChanges: new ResourceChanges(
-                ),
-                modifierIds: [
-                    ModifierId::JOBVERLUST,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e28" => new EreignisCardDefinition(
-                id: new CardId('e28'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Trennung',
-                description: 'Die Trennung von deiner Partnerin bringt dich emotional aus dem Gleichgewicht, was sich negativ auf deine Leistungen auswirkt. Daher nimmst du therapeutische Beratung in Anspruch.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
+//            "e12" => new EreignisCardDefinition(
+//                id: new CardId('e12'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Weiterbildung',
+//                description: 'Dank deiner erfolgreichen Studienleistungen stehen dir spezialisierte Weiterbildungen offen. Du nutzt diese Möglichkeit, um dich gezielt weiterzubilden.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-8000),
+//                    bildungKompetenzsteinChange: +2,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j2'),
+//                gewichtung: 4,
+//            ),
+//            "e13" => new EreignisCardDefinition(
+//                id: new CardId('e13'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Auszeichnung',
+//                description: 'Dein Ausbildungsbetrieb empfiehlt dich für die Auszeichnung „Junge Talente“. Kurz darauf wirst du informiert, dass du die Auszeichnung erhalten hast.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(500),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j3'),
+//                gewichtung: 4,
+//            ),
+//            "e14" => new EreignisCardDefinition(
+//                id: new CardId('e14'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Auszeichnung',
+//                description: 'Deine Ausbildungsarbeit wurde mit einer überregionalen Auszeichnung bedacht.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(1500),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j3'),
+//                gewichtung: 4,
+//            ),
+//            "e15" => new EreignisCardDefinition(
+//                id: new CardId('e15'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Auszeichnung',
+//                description: 'Für deine Seminararbeit erhältst du einen Fachpreis, der dir in deinem Bereich besondere Sichtbarkeit verschafft.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(1000),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j2'),
+//                gewichtung: 4,
+//            ),
+//            "e16" => new EreignisCardDefinition(
+//                id: new CardId('e16'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Förderpreis',
+//                description: 'Ein während deines Studiums gestartetes Projekt setzt sich nach dem Abschluss fort und erhält eine Förderauszeichnung.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(1500),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j2'),
+//                gewichtung: 4,
+//            ),
+//            "e17" => new EreignisCardDefinition(
+//                id: new CardId('e17'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Auslandsstipendium',
+//                description: 'Aufgrund deiner guten Noten im Studium qualifizierst du dich für ein Auslandsstipendium und kannst so berufliche Entwicklung mit internationaler Erfahrung verbinden.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(3000),
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j2'),
+//                gewichtung: 4,
+//            ),
+//            "e18" => new EreignisCardDefinition(
+//                id: new CardId('e18'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Stipendium',
+//                description: 'Deine sehr guten Leistungen im Studium werden mit einem Stipendium honoriert, das dich finanziell entlastet und dein Profil weiter aufwertet.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(3000),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j2'),
+//                gewichtung: 4,
+//            ),
+//            "e19" => new EreignisCardDefinition(
+//                id: new CardId('e19'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Arbeitszeitverkürzung',
+//                description: 'Du entscheidest dich, dich privat weiterzubilden und startest eine Abendschule. Damit du mehr Zeit zum Lernen hast, reduzierst du für dieses Jahr deine Arbeitszeit.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(2),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e20" => new EreignisCardDefinition(
+//                id: new CardId('e20'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Kurzarbeit',
+//                description: 'Die wirtschaftliche Lage ist angespannt, und es kommt zu Kurzarbeit. Dein Jahresgehalt (brutto) passt sich der Kurzarbeit an.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(2),
+//                resourceChanges: new ResourceChanges(
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:60,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e21" => new EreignisCardDefinition(
+//                id: new CardId('e21'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Arbeitszeitverkürzung',
+//                description: 'Um dich fachlich zu spezialisieren, machst du eine mehrmonatige Weiterbildung und reduzierst dafür dieses Jahr deine Arbeitszeit. Dein Jahresgehalt (brutto) wird entsprechend gekürzt.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:50,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e22" => new EreignisCardDefinition(
+//                id: new CardId('e22'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Prämie',
+//                description: 'Deine Vorgesetzten sind stolz auf dich. Du hast dich in den letzten Monaten enorm weiterentwickelt. Aufgrund deiner starken Leistungen steigerte sich der Umsatz. Dies wird mit einer Prämie belohnt.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(3000),
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:50,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e23" => new EreignisCardDefinition(
+//                id: new CardId('e23'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Weihnachten',
+//                description: '"Weihnachten steht vor der Tür. Deine Teamleitung überrascht dich mit einem extra großenWeihnachtsgeld, da das Geschäftsjahr besonders gut ausfiel."',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(2),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(5000),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e24" => new EreignisCardDefinition(
+//                id: new CardId('e24'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Weiterbildung',
+//                description: 'Du entscheidest dich für eine achtmonatige berufsbegleitende Weiterbildung und reduzierst dafür deine Arbeitszeit. ',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +2,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e25" => new EreignisCardDefinition(
+//                id: new CardId('e25'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Leadership-Seminare',
+//                description: 'Deine Teamleitung erkennt dein Potenzial. Zweimal im Monat besuchst du ein Leadership-Seminar und bekommst dein eigenes Team, um das Gelernte umzusetzen. ',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(2),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:130,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e26" => new EreignisCardDefinition(
+//                id: new CardId('e26'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: '"Mit Vitamin B die Karriere ankurbeln"',
+//                description: 'Dein Onkel lässt seine Beziehungen spielen, und du erhältst eine Beförderung.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e27" => new EreignisCardDefinition(
+//                id: new CardId('e27'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Jobverlust',
+//                description: 'Die wirtschaftliche Lage ist angespannt und und es kommt zu zahlreichen Entlassungen. Auch du bist betroffen und wirst entlassen. ',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(2),
+//                resourceChanges: new ResourceChanges(
+//                ),
+//                modifierIds: [
+//                    ModifierId::JOBVERLUST,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e28" => new EreignisCardDefinition(
+//                id: new CardId('e28'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Trennung',
+//                description: 'Die Trennung von deiner Partnerin bringt dich emotional aus dem Gleichgewicht, was sich negativ auf deine Leistungen auswirkt. Daher nimmst du therapeutische Beratung in Anspruch.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
             "e29" => new EreignisCardDefinition(
                 id: new CardId('e29'),
                 categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
                 title: 'Betriebliche Weihnachtsfeier',
                 description: 'Bei einer betrieblichen Weihnachtsfeier hast du etwas zu tief ins Glas geschaut und streng geheime interne Beschlüsse weitergegeben. Das hat fatale Folgen und kostet dich deinen Job.',
                 phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
+                year: new Year(1),
                 resourceChanges: new ResourceChanges(
                     bildungKompetenzsteinChange: +-1,
                 ),
@@ -5717,1283 +5717,1283 @@ final class CardFinder
                 ],
                 gewichtung: 1,
             ),
-            "e30" => new EreignisCardDefinition(
-                id: new CardId('e30'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Mentoring-Programm',
-                description: 'Du wirst in ein Mentoring-Programm aufgenommen, in dem erfahrene Fachkräfte dich bei deiner weiteren beruflichen Entwicklung unterstützen.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j3'),
-                gewichtung: 4,
-            ),
-            "e31" => new EreignisCardDefinition(
-                id: new CardId('e31'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Fachtverband',
-                description: 'Du wirst Mitglied in einem Fachverband, der junge Fachkräfte unterstützt und dir Zugang zu exklusiven Job- und Weiterbildungsangeboten ermöglicht.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j3'),
-                gewichtung: 4,
-            ),
-            "e32" => new EreignisCardDefinition(
-                id: new CardId('e32'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Fachtagung',
-                description: 'Du erhältst eine Einladung zur Teilnahme an einer Fachtagung, bei der du dich mit anderen erfolgreichen Auszubildenden vernetzen kannst.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j3'),
-                gewichtung: 4,
-            ),
-            "e33" => new EreignisCardDefinition(
-                id: new CardId('e33'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Nachwuchsforum',
-                description: '"Du erhältst eine Einladung zur Teilnahme an einem speziellen Nachwuchsforum für Fachkräfte in deinem Ausbildungsberuf."',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j3'),
-                gewichtung: 4,
-            ),
-            "e34" => new EreignisCardDefinition(
-                id: new CardId('e34'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Talentförderprogramm',
-                description: 'Du wirst in ein hochkarätiges Talentförderprogramm aufgenommen und knüpfst dabei wertvolle Kontakte für deine zukünftige Karriere.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j2'),
-                gewichtung: 4,
-            ),
-            "e35" => new EreignisCardDefinition(
-                id: new CardId('e35'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Konferenz',
-                description: 'Du nimmst an der Young Professional-Konferenz teil, präsentierst dort deine Expertise und beeindruckst Arbeitgeber unmittelbar im direkten Austausch.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j2'),
-                gewichtung: 4,
-            ),
-            "e36" => new EreignisCardDefinition(
-                id: new CardId('e36'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Alumni-Netzwerk',
-                description: 'Du wirst in das Alumni-Netzwerk deiner Universität aufgenommen. Dadurch profitierst du auch zukünftig von exklusiven Veranstaltungen und Karrieremöglichkeiten.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j2'),
-                gewichtung: 4,
-            ),
-            "e37" => new EreignisCardDefinition(
-                id: new CardId('e37'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Elite-Internat',
-                description: 'Du schickst deine Kinder auf ein Elite-Internat, um ihre beruflichen Chancen zu verbessern. Gleichzeitig knüpfst du bei deinen Besuchen wertvolle Kontakte zu Eltern aus aller Welt.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-30000),
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_CHILD,
-                ],
-                gewichtung: 4,
-            ),
-            "e38" => new EreignisCardDefinition(
-                id: new CardId('e38'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Aufbaustudium',
-                description: 'Vertiefe deine betriebswirtschaftlichen Kenntnisse durch ein weiterführendes Studium.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-20000),
-                    zeitsteineChange: -1,
-                    bildungKompetenzsteinChange: +2,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j2'),
-                gewichtung: 4,
-            ),
-            "e39" => new EreignisCardDefinition(
-                id: new CardId('e39'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Streit Kollegium',
-                description: 'Du hast dich mit deinem gesamten Kollegium zerstritten. Aus Frust nimmst du dir zunächst vier Wochen unbezahlten Urlaub.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-3100),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e40" => new EreignisCardDefinition(
-                id: new CardId('e40'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Workshop',
-                description: 'Ein Unternehmen wird auf deine Forschung aufmerksam und lädt dich zu einem exklusiven Workshop zum Thema Innovation ein.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j49'),
-                gewichtung: 4,
-            ),
-            "e41" => new EreignisCardDefinition(
-                id: new CardId('e41'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Forschungsakademie',
-                description: 'Du wirst durch eine Forschungsakademie zusätzlich gefördert – mit Reisekosten, Mentoring oder Soft-Skill-Trainings.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(3000),
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j49'),
-                gewichtung: 4,
-            ),
-            "e42" => new EreignisCardDefinition(
-                id: new CardId('e42'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Internationaler Preis',
-                description: 'Dein Forschungsartikel erhält einen internationalen Preis – eine bedeutende Würdigung deiner wissenschaftlichen Arbeit.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(5000),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j49'),
-                gewichtung: 4,
-            ),
-            "e43" => new EreignisCardDefinition(
-                id: new CardId('e43'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Lehrauftrag',
-                description: 'Aufgrund deiner Promotion erhältst du einen speziellen Lehrauftrag an deiner Universität.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(6000),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j49'),
-                gewichtung: 4,
-            ),
-            "e44" => new EreignisCardDefinition(
-                id: new CardId('e44'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Auszeichnung',
-                description: 'Herzlichen Glückwunsch! Deine Bewerbung für eine Auszeichnung wegen herausragender Prüfungsleistungen wurde angenommen, und du bekommst nachträglich einen Teil deiner BAFöG-Ausgaben erstattet.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(8000),
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j2'),
-                gewichtung: 4,
-            ),
-            "e45" => new EreignisCardDefinition(
-                id: new CardId('e45'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Arbeitszeitverkürzung',
-                description: 'Du spürst, wie sehr dich dein Job mental belastet. Deshalb reduzierst du dieses Jahr deine Arbeitszeit, um Stress vorzubeugen. Dein Jahresgehalt (brutto) wird entsprechend angepasst.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e46" => new EreignisCardDefinition(
-                id: new CardId('e46'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Arbeitszeitverkürzung',
-                description: 'Du hast eine kreative Idee, die du endlich umsetzen willst. Um daran zu arbeiten, reduzierst du dieses Jahr deine Arbeitszeit. Dein Jahresgehalt (brutto) wird entsprechend gekürzt.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:80,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e47" => new EreignisCardDefinition(
-                id: new CardId('e47'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Kurzarbeit',
-                description: 'Die wirtschaftliche Lage ist angespannt, und es kommt zu Kurzarbeit. Dein Jahresgehalt (brutto) passt sich der Kurzarbeit an.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:70,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e48" => new EreignisCardDefinition(
-                id: new CardId('e48'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Arbeitszeitverkürzung',
-                description: 'Du planst deine Selbstständigkeit und brauchst dafür mehr Zeit. Deshalb reduzierst du in diesem Jahr deine Arbeitszeit und baust dein Unternehmen bei reduziertem Jahresgehalt (brutto) auf.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:60,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e49" => new EreignisCardDefinition(
-                id: new CardId('e49'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Kurzarbeit',
-                description: 'Die wirtschaftliche Lage ist angespannt, und es kommt zu Kurzarbeit. Dein Jahresgehalt (brutto) passt sich der Kurzarbeit an.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:60,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e50" => new EreignisCardDefinition(
-                id: new CardId('e50'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Arbeitszeitverkürzung',
-                description: 'Du planst eine berufliche Neuorientierung und besuchst dafür eine Umschulung. Um genug Zeit dafür zu haben, reduzierst du deine Arbeitszeit. Dein Jahresgehalt (brutto) wird entsprechend angepasst.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(5000),
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:50,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e51" => new EreignisCardDefinition(
-                id: new CardId('e51'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Prämie',
-                description: 'Deine Vorgesetzten sind stolz auf dich. Du hast dich in den letzten Monaten enorm weiterentwickelt. Aufgrund deiner starken Leistungen steigerte sich der Umsatz. Dies wird mit einer Prämie belohnt.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(5000),
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:50,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e52" => new EreignisCardDefinition(
-                id: new CardId('e52'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Beförderung',
-                description: 'Du machst deinen Job hervorragend und erhältst eine unerwartete Beförderung für dieses Jahr. ',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:110,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e53" => new EreignisCardDefinition(
-                id: new CardId('e53'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Ehrenamtliches Engagement',
-                description: 'Dein großes Engagement in der Obdachlosenhilfe begeistert den Bürgermeister. Deshalb schlägt er dich für ein Stipendienprogramm vor. Du wirst ausgewählt und erhältst finanzielle Unterstützung.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(12000),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e54" => new EreignisCardDefinition(
-                id: new CardId('e54'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Beförderung',
-                description: 'Du wirst befördert – dein Jahresgehalt (brutto) passt sich entsprechend an. ',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:120,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e55" => new EreignisCardDefinition(
-                id: new CardId('e55'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Weiterbildung',
-                description: 'Du entscheidest dich für eine achtmonatige berufsbegleitende Weiterbildung und reduzierst dafür deine Arbeitszeit. ',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +2,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:80,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e56" => new EreignisCardDefinition(
-                id: new CardId('e56'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Kündigung',
-                description: 'Du hast dich mit deinem Team zerstritten. Eine Zusammenarbeit ist nicht mehr möglich. Du kündigst und bekommst ab diesem Jahr kein Einkommen mehr.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::JOBVERLUST,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e57" => new EreignisCardDefinition(
-                id: new CardId('e57'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Work-Life-Balance ',
-                description: 'Du hast die optimale Mitte gefunden. Es eröffnen sich zahlreiche neue Möglichkeiten.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e58" => new EreignisCardDefinition(
-                id: new CardId('e58'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Stress',
-                description: 'Der Druck setzt dir zu, und du schläfst nicht genug. Deshalb nimmst du dir eine Auszeit. ',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e59" => new EreignisCardDefinition(
-                id: new CardId('e59'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Netzwerk',
-                description: 'Bei einem Netzwerktreffen für junge Absolventen baust du dein berufliches Netzwerk aus und knüpfst wertvolle neue Kontakte.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j3'),
-                gewichtung: 4,
-            ),
-            "e60" => new EreignisCardDefinition(
-                id: new CardId('e60'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Talentscout',
-                description: 'Schon seit einiger Zeit hast du die Aufmerksamkeit eines Talentscouts auf dich gezogen. Nun erhältst du die einmalige Chance, dich in einem Profifußballclub zu beweisen..',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('suf16'),
-                gewichtung: 4,
-            ),
-            "e61" => new EreignisCardDefinition(
-                id: new CardId('e61'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'erkranktes Familienmitglied',
-                description: 'In deiner Familie erkrankt eine dir nahestehende Person schwer. Du kümmerst dich um eine geeignete Behandlung und kannst deshalb an einer wichtigen Fortbildung nicht teilnehmen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
+//            "e30" => new EreignisCardDefinition(
+//                id: new CardId('e30'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Mentoring-Programm',
+//                description: 'Du wirst in ein Mentoring-Programm aufgenommen, in dem erfahrene Fachkräfte dich bei deiner weiteren beruflichen Entwicklung unterstützen.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j3'),
+//                gewichtung: 4,
+//            ),
+//            "e31" => new EreignisCardDefinition(
+//                id: new CardId('e31'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Fachtverband',
+//                description: 'Du wirst Mitglied in einem Fachverband, der junge Fachkräfte unterstützt und dir Zugang zu exklusiven Job- und Weiterbildungsangeboten ermöglicht.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j3'),
+//                gewichtung: 4,
+//            ),
+//            "e32" => new EreignisCardDefinition(
+//                id: new CardId('e32'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Fachtagung',
+//                description: 'Du erhältst eine Einladung zur Teilnahme an einer Fachtagung, bei der du dich mit anderen erfolgreichen Auszubildenden vernetzen kannst.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j3'),
+//                gewichtung: 4,
+//            ),
+//            "e33" => new EreignisCardDefinition(
+//                id: new CardId('e33'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Nachwuchsforum',
+//                description: '"Du erhältst eine Einladung zur Teilnahme an einem speziellen Nachwuchsforum für Fachkräfte in deinem Ausbildungsberuf."',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j3'),
+//                gewichtung: 4,
+//            ),
+//            "e34" => new EreignisCardDefinition(
+//                id: new CardId('e34'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Talentförderprogramm',
+//                description: 'Du wirst in ein hochkarätiges Talentförderprogramm aufgenommen und knüpfst dabei wertvolle Kontakte für deine zukünftige Karriere.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j2'),
+//                gewichtung: 4,
+//            ),
+//            "e35" => new EreignisCardDefinition(
+//                id: new CardId('e35'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Konferenz',
+//                description: 'Du nimmst an der Young Professional-Konferenz teil, präsentierst dort deine Expertise und beeindruckst Arbeitgeber unmittelbar im direkten Austausch.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j2'),
+//                gewichtung: 4,
+//            ),
+//            "e36" => new EreignisCardDefinition(
+//                id: new CardId('e36'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Alumni-Netzwerk',
+//                description: 'Du wirst in das Alumni-Netzwerk deiner Universität aufgenommen. Dadurch profitierst du auch zukünftig von exklusiven Veranstaltungen und Karrieremöglichkeiten.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j2'),
+//                gewichtung: 4,
+//            ),
+//            "e37" => new EreignisCardDefinition(
+//                id: new CardId('e37'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Elite-Internat',
+//                description: 'Du schickst deine Kinder auf ein Elite-Internat, um ihre beruflichen Chancen zu verbessern. Gleichzeitig knüpfst du bei deinen Besuchen wertvolle Kontakte zu Eltern aus aller Welt.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-30000),
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_CHILD,
+//                ],
+//                gewichtung: 4,
+//            ),
+//            "e38" => new EreignisCardDefinition(
+//                id: new CardId('e38'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Aufbaustudium',
+//                description: 'Vertiefe deine betriebswirtschaftlichen Kenntnisse durch ein weiterführendes Studium.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-20000),
+//                    zeitsteineChange: -1,
+//                    bildungKompetenzsteinChange: +2,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j2'),
+//                gewichtung: 4,
+//            ),
+//            "e39" => new EreignisCardDefinition(
+//                id: new CardId('e39'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Streit Kollegium',
+//                description: 'Du hast dich mit deinem gesamten Kollegium zerstritten. Aus Frust nimmst du dir zunächst vier Wochen unbezahlten Urlaub.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-3100),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e40" => new EreignisCardDefinition(
+//                id: new CardId('e40'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Workshop',
+//                description: 'Ein Unternehmen wird auf deine Forschung aufmerksam und lädt dich zu einem exklusiven Workshop zum Thema Innovation ein.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j49'),
+//                gewichtung: 4,
+//            ),
+//            "e41" => new EreignisCardDefinition(
+//                id: new CardId('e41'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Forschungsakademie',
+//                description: 'Du wirst durch eine Forschungsakademie zusätzlich gefördert – mit Reisekosten, Mentoring oder Soft-Skill-Trainings.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(3000),
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j49'),
+//                gewichtung: 4,
+//            ),
+//            "e42" => new EreignisCardDefinition(
+//                id: new CardId('e42'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Internationaler Preis',
+//                description: 'Dein Forschungsartikel erhält einen internationalen Preis – eine bedeutende Würdigung deiner wissenschaftlichen Arbeit.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(5000),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j49'),
+//                gewichtung: 4,
+//            ),
+//            "e43" => new EreignisCardDefinition(
+//                id: new CardId('e43'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Lehrauftrag',
+//                description: 'Aufgrund deiner Promotion erhältst du einen speziellen Lehrauftrag an deiner Universität.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(6000),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j49'),
+//                gewichtung: 4,
+//            ),
+//            "e44" => new EreignisCardDefinition(
+//                id: new CardId('e44'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Auszeichnung',
+//                description: 'Herzlichen Glückwunsch! Deine Bewerbung für eine Auszeichnung wegen herausragender Prüfungsleistungen wurde angenommen, und du bekommst nachträglich einen Teil deiner BAFöG-Ausgaben erstattet.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(8000),
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j2'),
+//                gewichtung: 4,
+//            ),
+//            "e45" => new EreignisCardDefinition(
+//                id: new CardId('e45'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Arbeitszeitverkürzung',
+//                description: 'Du spürst, wie sehr dich dein Job mental belastet. Deshalb reduzierst du dieses Jahr deine Arbeitszeit, um Stress vorzubeugen. Dein Jahresgehalt (brutto) wird entsprechend angepasst.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e46" => new EreignisCardDefinition(
+//                id: new CardId('e46'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Arbeitszeitverkürzung',
+//                description: 'Du hast eine kreative Idee, die du endlich umsetzen willst. Um daran zu arbeiten, reduzierst du dieses Jahr deine Arbeitszeit. Dein Jahresgehalt (brutto) wird entsprechend gekürzt.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:80,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e47" => new EreignisCardDefinition(
+//                id: new CardId('e47'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Kurzarbeit',
+//                description: 'Die wirtschaftliche Lage ist angespannt, und es kommt zu Kurzarbeit. Dein Jahresgehalt (brutto) passt sich der Kurzarbeit an.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:70,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e48" => new EreignisCardDefinition(
+//                id: new CardId('e48'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Arbeitszeitverkürzung',
+//                description: 'Du planst deine Selbstständigkeit und brauchst dafür mehr Zeit. Deshalb reduzierst du in diesem Jahr deine Arbeitszeit und baust dein Unternehmen bei reduziertem Jahresgehalt (brutto) auf.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:60,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e49" => new EreignisCardDefinition(
+//                id: new CardId('e49'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Kurzarbeit',
+//                description: 'Die wirtschaftliche Lage ist angespannt, und es kommt zu Kurzarbeit. Dein Jahresgehalt (brutto) passt sich der Kurzarbeit an.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:60,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e50" => new EreignisCardDefinition(
+//                id: new CardId('e50'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Arbeitszeitverkürzung',
+//                description: 'Du planst eine berufliche Neuorientierung und besuchst dafür eine Umschulung. Um genug Zeit dafür zu haben, reduzierst du deine Arbeitszeit. Dein Jahresgehalt (brutto) wird entsprechend angepasst.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(5000),
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:50,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e51" => new EreignisCardDefinition(
+//                id: new CardId('e51'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Prämie',
+//                description: 'Deine Vorgesetzten sind stolz auf dich. Du hast dich in den letzten Monaten enorm weiterentwickelt. Aufgrund deiner starken Leistungen steigerte sich der Umsatz. Dies wird mit einer Prämie belohnt.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(5000),
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:50,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e52" => new EreignisCardDefinition(
+//                id: new CardId('e52'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Beförderung',
+//                description: 'Du machst deinen Job hervorragend und erhältst eine unerwartete Beförderung für dieses Jahr. ',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:110,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e53" => new EreignisCardDefinition(
+//                id: new CardId('e53'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Ehrenamtliches Engagement',
+//                description: 'Dein großes Engagement in der Obdachlosenhilfe begeistert den Bürgermeister. Deshalb schlägt er dich für ein Stipendienprogramm vor. Du wirst ausgewählt und erhältst finanzielle Unterstützung.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(12000),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e54" => new EreignisCardDefinition(
+//                id: new CardId('e54'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Beförderung',
+//                description: 'Du wirst befördert – dein Jahresgehalt (brutto) passt sich entsprechend an. ',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:120,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e55" => new EreignisCardDefinition(
+//                id: new CardId('e55'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Weiterbildung',
+//                description: 'Du entscheidest dich für eine achtmonatige berufsbegleitende Weiterbildung und reduzierst dafür deine Arbeitszeit. ',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +2,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:80,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e56" => new EreignisCardDefinition(
+//                id: new CardId('e56'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Kündigung',
+//                description: 'Du hast dich mit deinem Team zerstritten. Eine Zusammenarbeit ist nicht mehr möglich. Du kündigst und bekommst ab diesem Jahr kein Einkommen mehr.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::JOBVERLUST,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e57" => new EreignisCardDefinition(
+//                id: new CardId('e57'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Work-Life-Balance ',
+//                description: 'Du hast die optimale Mitte gefunden. Es eröffnen sich zahlreiche neue Möglichkeiten.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e58" => new EreignisCardDefinition(
+//                id: new CardId('e58'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Stress',
+//                description: 'Der Druck setzt dir zu, und du schläfst nicht genug. Deshalb nimmst du dir eine Auszeit. ',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e59" => new EreignisCardDefinition(
+//                id: new CardId('e59'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Netzwerk',
+//                description: 'Bei einem Netzwerktreffen für junge Absolventen baust du dein berufliches Netzwerk aus und knüpfst wertvolle neue Kontakte.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j3'),
+//                gewichtung: 4,
+//            ),
+//            "e60" => new EreignisCardDefinition(
+//                id: new CardId('e60'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Talentscout',
+//                description: 'Schon seit einiger Zeit hast du die Aufmerksamkeit eines Talentscouts auf dich gezogen. Nun erhältst du die einmalige Chance, dich in einem Profifußballclub zu beweisen..',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('suf16'),
+//                gewichtung: 4,
+//            ),
+//            "e61" => new EreignisCardDefinition(
+//                id: new CardId('e61'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'erkranktes Familienmitglied',
+//                description: 'In deiner Familie erkrankt eine dir nahestehende Person schwer. Du kümmerst dich um eine geeignete Behandlung und kannst deshalb an einer wichtigen Fortbildung nicht teilnehmen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
             "e62" => new EreignisCardDefinition(
                 id: new CardId('e62'),
                 categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
                 title: 'Abschalten smarte Endgeräte',
                 description: 'Schalte deine smarten Endgeräte jeden Abend um 18 Uhr ab, um deine Konzentration zu erhöhen. Du verpasst dadurch wichtige Investitionschancen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::INVESTITIONSSPERRE,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e63" => new EreignisCardDefinition(
-                id: new CardId('e63'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Jobverlust',
-                description: 'Die wirtschaftliche Lage ist angespannt und und es kommt zu zahlreichen Entlassungen. Auch du bist betroffen und wirst entlassen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                ),
-                modifierIds: [
-                    ModifierId::JOBVERLUST,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e64" => new EreignisCardDefinition(
-                id: new CardId('e64'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Betriebliche Weihnachtsfeier',
-                description: 'Bei einer betrieblichen Weihnachtsfeier hast du etwas zu tief ins Glas geschaut und streng geheime interne Beschlüsse weitergegeben. Das hat fatale Folgen und kostet dich deinen Job.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +-1,
-                ),
-                modifierIds: [
-                    ModifierId::JOBVERLUST,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e65" => new EreignisCardDefinition(
-                id: new CardId('e65'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Publikation',
-                description: 'Deine Forschung wird in einer angesehenen Fachzeitschrift veröffentlicht – ein wichtiger Meilenstein in deiner wissenschaftlichen Karriere.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j49'),
-                gewichtung: 4,
-            ),
-            "e66" => new EreignisCardDefinition(
-                id: new CardId('e66'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Forschungskongress',
-                description: 'Du wirst zu einem internationalen Forschungskongress eingeladen, um deine Forschungsergebnisse zu präsentieren und dich mit führenden Wissenschaftlerinnen zu vernetzen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j49'),
-                gewichtung: 4,
-            ),
-            "e67" => new EreignisCardDefinition(
-                id: new CardId('e67'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Alumni-Netzwerk',
-                description: 'Für deine Promotion wirst du in ein exklusives Fördernetzwerk aufgenommen, das dir langfristig Zugang zu Chancen in Wissenschaft und Praxis eröffnet.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j49'),
-                gewichtung: 4,
-            ),
-            "e68" => new EreignisCardDefinition(
-                id: new CardId('e68'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Netzwerk',
-                description: 'Bei einem Netzwerktreffen für junge Absolventen baust du dein berufliches Netzwerk aus und knüpfst wertvolle neue Kontakte.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j2'),
-                gewichtung: 4,
-            ),
-            "e69" => new EreignisCardDefinition(
-                id: new CardId('e69'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Finanzierung private Universität',
-                description: 'Du ermöglichst deinem Kind den Besuch einer privaten Universität und profitierst selbst: Deine Besuche vor Ort erweitern auch deinen eigenen Horizont.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-50000),
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_CHILD,
-                ],
-                gewichtung: 4,
-            ),
-            "e70" => new EreignisCardDefinition(
-                id: new CardId('e70'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Streit Kollegium',
-                description: 'Du hast dich mit deinem gesamten Kollegium zerstritten. Aus Frust nimmst du dir zunächst vier Wochen unbezahlten Urlaub.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-9800),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e71" => new EreignisCardDefinition(
-                id: new CardId('e71'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Forschungsnetzwerk',
-                description: 'Du wirst in das Forschungsnetzwerk eines Exzellenzclusters aufgenommen und profitierst von der Unterstützung durch Drittmittel sowie vom interdisziplinären Austausch.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(3500),
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j75'),
-                gewichtung: 4,
-            ),
-            "e72" => new EreignisCardDefinition(
-                id: new CardId('e72'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Forschungspreis',
-                description: 'Die Fakultät zeichnet deine Publikationen mit einem Forschungspreis für herausragende wissenschaftliche Leistungen aus.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(11000),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j75'),
-                gewichtung: 4,
-            ),
-            "e73" => new EreignisCardDefinition(
-                id: new CardId('e73'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Stipendium',
-                description: 'Du erhältst ein Habilitations-Stipendium, um deine Forschung zu vertiefen und neue Projekte zu initiieren.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(22000),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j75'),
-                gewichtung: 4,
-            ),
-            "e74" => new EreignisCardDefinition(
-                id: new CardId('e74'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Arbeitszeitverkürzung',
-                description: 'Zur Vorbereitung auf eine Führungsposition nimmst du an einem internen Entwicklungsprogramm teil und reduzierst dafür in diesem Jahr deine Arbeitszeit. Dein Jahresgehalt (brutto) wird entsprechend angepasst.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e75" => new EreignisCardDefinition(
-                id: new CardId('e75'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Kurzarbeit',
-                description: 'Die wirtschaftliche Lage ist angespannt, und es kommt zu Kurzarbeit. Dein Jahresgehalt (brutto) passt sich der Kurzarbeit an.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:70,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e76" => new EreignisCardDefinition(
-                id: new CardId('e76'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Prämie',
-                description: 'Deine Vorgesetzten sind stolz auf dich. Du hast dich in den letzten Monaten enorm weiterentwickelt. Aufgrund deiner starken Leistungen steigerte sich der Umsatz. Dies wird mit einer Prämie belohnt.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(10000),
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:50,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e77" => new EreignisCardDefinition(
-                id: new CardId('e77'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Beförderung',
-                description: 'Du machst deinen Job hervorragend und erhältst eine unerwartete Beförderung für dieses Jahr. ',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:130,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e78" => new EreignisCardDefinition(
-                id: new CardId('e78'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Beförderung',
-                description: 'Du wirst befördert und dein Jahregsgehalt (brutto) steigert sich entsprechend für dieses Jahr.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:120,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e79" => new EreignisCardDefinition(
-                id: new CardId('e79'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Ehrenamtliches Engagement',
-                description: 'Dein großes Engagement in dem Flüchtlingsheim begeistert den Bürgermeister. Deshalb schlägt er dich für ein Stipendienprogramm vor. Du wirst ausgewählt und erhältst finanzielle Unterstützung.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(8000),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e80" => new EreignisCardDefinition(
-                id: new CardId('e80'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Weiterbildung',
-                description: 'Du entscheidest dich für eine achtmonatige berufsbegleitende Weiterbildung und reduzierst dafür deine Arbeitszeit. ',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +2,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e81" => new EreignisCardDefinition(
-                id: new CardId('e81'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Stress',
-                description: 'Der Druck setzt dir zu, und du schläfst nicht genug. Deshalb nimmst du dir eine Auszeit. ',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:70,
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e82" => new EreignisCardDefinition(
-                id: new CardId('e82'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Work-Life-Balance',
-                description: 'Du hast die optimale Mitte gefunden. Es eröffnen sich zahlreiche neue Möglichkeiten.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e83" => new EreignisCardDefinition(
-                id: new CardId('e83'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Kündigung',
-                description: 'Du hast dich mit deinem gesamten Kollegium zerstritten. Aus Frust kündigst du unüberlegt deinen Job und erhältst dieses Jahr kein Einkommen mehr.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::JOBVERLUST,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e84" => new EreignisCardDefinition(
-                id: new CardId('e84'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Abschalten smarte Endgeräte',
-                description: 'Schalte deine smarten Endgeräte jeden Abend um 18 Uhr ab, um deine Konzentration zu erhöhen. Du verpasst dadurch wichtige Investitionschancen.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::INVESTITIONSSPERRE,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e85" => new EreignisCardDefinition(
-                id: new CardId('e85'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Auszeichnung',
-                description: 'Deine Heimatuniversität ehrt dich für deine außergewöhnlichen Verdienste und dein langjähriges Engagement mit der Verleihung der Ehrendoktorwürde.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(10000),
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j49'),
-                gewichtung: 4,
-            ),
-            "e86" => new EreignisCardDefinition(
-                id: new CardId('e86'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Kinderbetreuung',
-                description: 'Dein Kind hat Schwierigkeiten in der Schule und braucht mehr Aufmerksamkeit von dir. Deshalb verbringst du deine Freizeit nun vermehrt mit deinem Nachwuchs und bildest dich weniger weiter.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e87" => new EreignisCardDefinition(
-                id: new CardId('e87'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Jobverlust',
-                description: 'Die wirtschaftliche Lage ist angespannt und und es kommt zu zahlreichen Entlassungen. Auch du bist betroffen und wirst entlassen. ',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                ),
-                modifierIds: [
-                    ModifierId::JOBVERLUST,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e88" => new EreignisCardDefinition(
-                id: new CardId('e88'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Betriebliche Weihnachtsfeier',
-                description: 'Bei einer betrieblichen Weihnachtsfeier hast du etwas zu tief ins Glas geschaut und streng geheime interne Beschlüsse weitergegeben. Das hat fatale Folgen und kostet dich deinen Job.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +-1,
-                ),
-                modifierIds: [
-                    ModifierId::JOBVERLUST,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e89" => new EreignisCardDefinition(
-                id: new CardId('e89'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Fachtagung',
-                description: 'Du wirst zu einer internationalen Fachtagung eingeladen – ein Förderprogramm übernimmt deine Reise- und Aufenthaltskosten.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j75'),
-                gewichtung: 4,
-            ),
-            "e90" => new EreignisCardDefinition(
-                id: new CardId('e90'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Gastprofessur',
-                description: 'Du erhältst eine Einladung zu einer Gastprofessur an einer renommierten ausländischen Universität.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(45000),
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j75'),
-                gewichtung: 4,
-            ),
-            "e91" => new EreignisCardDefinition(
-                id: new CardId('e91'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Fachgremien',
-                description: 'Deine Habilitation bringt dir Einladungen zu hochrangigen Fachgremien, etwa in Akkreditierungskommissionen oder wissenschaftlichen Beiräten.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    bildungKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('j75'),
-                gewichtung: 4,
-            ),
-            "e92" => new EreignisCardDefinition(
-                id: new CardId('e92'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Berufsunfähigkeitsversicherung',
-                description: 'Du bekommst eine chronische Sehnenscheidenentzündung und kannst deinen Beruf nicht mehr ausüben. Mit Berufsunfähigkeitsversicherung erhälst du trotzdem dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job beginnen. ',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
+                    bildungKompetenzsteinChange: +1,
                 ),
                 modifierIds: [
-                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
+                    ModifierId::INVESTITIONSSPERRE,
                 ],
                 modifierParameters: new ModifierParameters(
                 ),
                 ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
                 ],
                 gewichtung: 1,
             ),
+//            "e63" => new EreignisCardDefinition(
+//                id: new CardId('e63'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Jobverlust',
+//                description: 'Die wirtschaftliche Lage ist angespannt und und es kommt zu zahlreichen Entlassungen. Auch du bist betroffen und wirst entlassen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                ),
+//                modifierIds: [
+//                    ModifierId::JOBVERLUST,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e64" => new EreignisCardDefinition(
+//                id: new CardId('e64'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Betriebliche Weihnachtsfeier',
+//                description: 'Bei einer betrieblichen Weihnachtsfeier hast du etwas zu tief ins Glas geschaut und streng geheime interne Beschlüsse weitergegeben. Das hat fatale Folgen und kostet dich deinen Job.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +-1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::JOBVERLUST,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e65" => new EreignisCardDefinition(
+//                id: new CardId('e65'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Publikation',
+//                description: 'Deine Forschung wird in einer angesehenen Fachzeitschrift veröffentlicht – ein wichtiger Meilenstein in deiner wissenschaftlichen Karriere.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j49'),
+//                gewichtung: 4,
+//            ),
+//            "e66" => new EreignisCardDefinition(
+//                id: new CardId('e66'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Forschungskongress',
+//                description: 'Du wirst zu einem internationalen Forschungskongress eingeladen, um deine Forschungsergebnisse zu präsentieren und dich mit führenden Wissenschaftlerinnen zu vernetzen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j49'),
+//                gewichtung: 4,
+//            ),
+//            "e67" => new EreignisCardDefinition(
+//                id: new CardId('e67'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Alumni-Netzwerk',
+//                description: 'Für deine Promotion wirst du in ein exklusives Fördernetzwerk aufgenommen, das dir langfristig Zugang zu Chancen in Wissenschaft und Praxis eröffnet.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j49'),
+//                gewichtung: 4,
+//            ),
+//            "e68" => new EreignisCardDefinition(
+//                id: new CardId('e68'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Netzwerk',
+//                description: 'Bei einem Netzwerktreffen für junge Absolventen baust du dein berufliches Netzwerk aus und knüpfst wertvolle neue Kontakte.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j2'),
+//                gewichtung: 4,
+//            ),
+//            "e69" => new EreignisCardDefinition(
+//                id: new CardId('e69'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Finanzierung private Universität',
+//                description: 'Du ermöglichst deinem Kind den Besuch einer privaten Universität und profitierst selbst: Deine Besuche vor Ort erweitern auch deinen eigenen Horizont.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-50000),
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_CHILD,
+//                ],
+//                gewichtung: 4,
+//            ),
+//            "e70" => new EreignisCardDefinition(
+//                id: new CardId('e70'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Streit Kollegium',
+//                description: 'Du hast dich mit deinem gesamten Kollegium zerstritten. Aus Frust nimmst du dir zunächst vier Wochen unbezahlten Urlaub.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-9800),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e71" => new EreignisCardDefinition(
+//                id: new CardId('e71'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Forschungsnetzwerk',
+//                description: 'Du wirst in das Forschungsnetzwerk eines Exzellenzclusters aufgenommen und profitierst von der Unterstützung durch Drittmittel sowie vom interdisziplinären Austausch.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(3500),
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j75'),
+//                gewichtung: 4,
+//            ),
+//            "e72" => new EreignisCardDefinition(
+//                id: new CardId('e72'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Forschungspreis',
+//                description: 'Die Fakultät zeichnet deine Publikationen mit einem Forschungspreis für herausragende wissenschaftliche Leistungen aus.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(11000),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j75'),
+//                gewichtung: 4,
+//            ),
+//            "e73" => new EreignisCardDefinition(
+//                id: new CardId('e73'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Stipendium',
+//                description: 'Du erhältst ein Habilitations-Stipendium, um deine Forschung zu vertiefen und neue Projekte zu initiieren.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(22000),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j75'),
+//                gewichtung: 4,
+//            ),
+//            "e74" => new EreignisCardDefinition(
+//                id: new CardId('e74'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Arbeitszeitverkürzung',
+//                description: 'Zur Vorbereitung auf eine Führungsposition nimmst du an einem internen Entwicklungsprogramm teil und reduzierst dafür in diesem Jahr deine Arbeitszeit. Dein Jahresgehalt (brutto) wird entsprechend angepasst.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e75" => new EreignisCardDefinition(
+//                id: new CardId('e75'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Kurzarbeit',
+//                description: 'Die wirtschaftliche Lage ist angespannt, und es kommt zu Kurzarbeit. Dein Jahresgehalt (brutto) passt sich der Kurzarbeit an.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:70,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e76" => new EreignisCardDefinition(
+//                id: new CardId('e76'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Prämie',
+//                description: 'Deine Vorgesetzten sind stolz auf dich. Du hast dich in den letzten Monaten enorm weiterentwickelt. Aufgrund deiner starken Leistungen steigerte sich der Umsatz. Dies wird mit einer Prämie belohnt.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(10000),
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:50,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e77" => new EreignisCardDefinition(
+//                id: new CardId('e77'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Beförderung',
+//                description: 'Du machst deinen Job hervorragend und erhältst eine unerwartete Beförderung für dieses Jahr. ',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:130,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e78" => new EreignisCardDefinition(
+//                id: new CardId('e78'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Beförderung',
+//                description: 'Du wirst befördert und dein Jahregsgehalt (brutto) steigert sich entsprechend für dieses Jahr.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:120,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e79" => new EreignisCardDefinition(
+//                id: new CardId('e79'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Ehrenamtliches Engagement',
+//                description: 'Dein großes Engagement in dem Flüchtlingsheim begeistert den Bürgermeister. Deshalb schlägt er dich für ein Stipendienprogramm vor. Du wirst ausgewählt und erhältst finanzielle Unterstützung.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(8000),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e80" => new EreignisCardDefinition(
+//                id: new CardId('e80'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Weiterbildung',
+//                description: 'Du entscheidest dich für eine achtmonatige berufsbegleitende Weiterbildung und reduzierst dafür deine Arbeitszeit. ',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +2,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e81" => new EreignisCardDefinition(
+//                id: new CardId('e81'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Stress',
+//                description: 'Der Druck setzt dir zu, und du schläfst nicht genug. Deshalb nimmst du dir eine Auszeit. ',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:70,
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e82" => new EreignisCardDefinition(
+//                id: new CardId('e82'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Work-Life-Balance',
+//                description: 'Du hast die optimale Mitte gefunden. Es eröffnen sich zahlreiche neue Möglichkeiten.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e83" => new EreignisCardDefinition(
+//                id: new CardId('e83'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Kündigung',
+//                description: 'Du hast dich mit deinem gesamten Kollegium zerstritten. Aus Frust kündigst du unüberlegt deinen Job und erhältst dieses Jahr kein Einkommen mehr.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::JOBVERLUST,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e84" => new EreignisCardDefinition(
+//                id: new CardId('e84'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Abschalten smarte Endgeräte',
+//                description: 'Schalte deine smarten Endgeräte jeden Abend um 18 Uhr ab, um deine Konzentration zu erhöhen. Du verpasst dadurch wichtige Investitionschancen.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::INVESTITIONSSPERRE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e85" => new EreignisCardDefinition(
+//                id: new CardId('e85'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Auszeichnung',
+//                description: 'Deine Heimatuniversität ehrt dich für deine außergewöhnlichen Verdienste und dein langjähriges Engagement mit der Verleihung der Ehrendoktorwürde.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(10000),
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j49'),
+//                gewichtung: 4,
+//            ),
+//            "e86" => new EreignisCardDefinition(
+//                id: new CardId('e86'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Kinderbetreuung',
+//                description: 'Dein Kind hat Schwierigkeiten in der Schule und braucht mehr Aufmerksamkeit von dir. Deshalb verbringst du deine Freizeit nun vermehrt mit deinem Nachwuchs und bildest dich weniger weiter.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e87" => new EreignisCardDefinition(
+//                id: new CardId('e87'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Jobverlust',
+//                description: 'Die wirtschaftliche Lage ist angespannt und und es kommt zu zahlreichen Entlassungen. Auch du bist betroffen und wirst entlassen. ',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                ),
+//                modifierIds: [
+//                    ModifierId::JOBVERLUST,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e88" => new EreignisCardDefinition(
+//                id: new CardId('e88'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Betriebliche Weihnachtsfeier',
+//                description: 'Bei einer betrieblichen Weihnachtsfeier hast du etwas zu tief ins Glas geschaut und streng geheime interne Beschlüsse weitergegeben. Das hat fatale Folgen und kostet dich deinen Job.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +-1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::JOBVERLUST,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e89" => new EreignisCardDefinition(
+//                id: new CardId('e89'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Fachtagung',
+//                description: 'Du wirst zu einer internationalen Fachtagung eingeladen – ein Förderprogramm übernimmt deine Reise- und Aufenthaltskosten.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j75'),
+//                gewichtung: 4,
+//            ),
+//            "e90" => new EreignisCardDefinition(
+//                id: new CardId('e90'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Gastprofessur',
+//                description: 'Du erhältst eine Einladung zu einer Gastprofessur an einer renommierten ausländischen Universität.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(45000),
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j75'),
+//                gewichtung: 4,
+//            ),
+//            "e91" => new EreignisCardDefinition(
+//                id: new CardId('e91'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Fachgremien',
+//                description: 'Deine Habilitation bringt dir Einladungen zu hochrangigen Fachgremien, etwa in Akkreditierungskommissionen oder wissenschaftlichen Beiräten.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    bildungKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('j75'),
+//                gewichtung: 4,
+//            ),
+//            "e92" => new EreignisCardDefinition(
+//                id: new CardId('e92'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Berufsunfähigkeitsversicherung',
+//                description: 'Du bekommst eine chronische Sehnenscheidenentzündung und kannst deinen Beruf nicht mehr ausüben. Mit Berufsunfähigkeitsversicherung erhälst du trotzdem dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job beginnen. ',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
             "e93" => new EreignisCardDefinition(
                 id: new CardId('e93'),
                 categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
@@ -7014,304 +7014,304 @@ final class CardFinder
                 ],
                 gewichtung: 1,
             ),
-            "e94" => new EreignisCardDefinition(
-                id: new CardId('e94'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Berufsunfähigkeitsversicherung',
-                description: 'Du bekommst chronische Gelenkschmerzen und kannst deinen Beruf nicht mehr ausüben. Mit Berufsunfähigkeitsversicherung erhältst du trotzdem dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job beginnen.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e95" => new EreignisCardDefinition(
-                id: new CardId('e95'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Berufsunfähigkeitsversicherung',
-                description: 'Nach einer Krebserkrankung bist du dauerhaft geschwächt und kannst deinem Beruf nicht mehr nachgehen. Mit Berufsunfähigkeitsversicherung bekommst du weiterhin dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job starten.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e96" => new EreignisCardDefinition(
-                id: new CardId('e96'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Berufsunfähigkeitsversicherung',
-                description: 'Durch einen schweren Schlaganfall kannst du deinen Beruf nicht mehr ausüben. Mit Berufsunfähigkeitsversicherung erhälst du trotzdem dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job beginnen. ',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e97" => new EreignisCardDefinition(
-                id: new CardId('e97'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Berufsunfähigkeitsversicherung',
-                description: 'Du leidest unter schweren Depressionen und kannst für dieses Jahr nicht mehr arbeiten. Mit einer Berufsunfähigkeitsversicherung erhältst du trotzdem dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job beginnen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e98" => new EreignisCardDefinition(
-                id: new CardId('e98'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Berufsunfähigkeitsversicherung',
-                description: 'Ein Schlaganfall lähmt dich halbseitig, trotz Reha bleibt die Lähmung. Du kannst nicht mehr arbeiten, bekommst mit Berufsunfähigkeitsversicherung aber weiter dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job beginnen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e99" => new EreignisCardDefinition(
-                id: new CardId('e99'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Berufsunfähigkeitsversicherung',
-                description: '"Eine chronische Lungenerkrankung zwingt dich, deinen Beruf aufzugeben. Mit Berufsunfähigkeitsversicherung wird dein Jahresgehalt (brutto) weiterhin gezahlt. Ab dem neuen Jahr kannst du einen neuen Job antreten."',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e100" => new EreignisCardDefinition(
-                id: new CardId('e100'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Berufsunfähigkeitsversicherung',
-                description: '"Nach einem schweren Autounfall bist du geistig eingeschränkt und kannst deinem Beruf nicht mehr nachgehen. Deine Berufsunfähigkeitsversicherung sichert dir trotzdem dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job beginnen."',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e101" => new EreignisCardDefinition(
-                id: new CardId('e101'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Berufsunfähigkeitsversicherung',
-                description: 'Du hast eine schwere Herzkrankheit, die dich arbeitsunfähig macht. Mit Berufsunfähigkeitsversicherung erhälst du trotzdem dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job beginnen. ',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e102" => new EreignisCardDefinition(
-                id: new CardId('e102'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Berufsunfähigkeitsversicherung',
-                description: 'Du erleidest bei einem Unfall eine Querschnittslähmung ab der Taille und kannst deinen Beruf nicht mehr ausüben. Mit Berufsunfähigkeitsversicherung erhälst du trotzdem dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job beginnen. ',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e103" => new EreignisCardDefinition(
-                id: new CardId('e103'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Berufsunfähigkeitsversicherung',
-                description: 'Beim Sport verletzt du dich. Mehrere Wirbelbrüche führen dazu, dass du deinen Beruf nicht mehr ausüben kannst. Mit Berufsunfähigkeitsversicherung erhälst du trotzdem dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job beginnen. ',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e104" => new EreignisCardDefinition(
-                id: new CardId('e104'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Berufsunfähigkeitsversicherung',
-                description: '"Du erleidest durch eine Hirnverletzung bleibende Einschränkungen, die eine Berufsausübung unmöglich machen. Mit Berufsunfähigkeitsversicherung erhältst du dein Jahresgehalt (brutto) weiter. Ab dem neuen Jahr kannst du einen neuen Job beginnen."',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e105" => new EreignisCardDefinition(
-                id: new CardId('e105'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Berufsunfähigkeitsversicherung',
-                description: 'Du erleidest einen schweren Burnout und kannst deinen Beruf nicht mehr ausüben. Mit Berufsunfähigkeitsversicherung erhältst du trotzdem dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job beginnen.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e106" => new EreignisCardDefinition(
-                id: new CardId('e106'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Berufsunfähigkeitsversicherung',
-                description: 'Eine fortschreitende neurologische Erkrankung wie Parkinson macht eine weitere Berufsausübung unmöglich. Mit Berufsunfähigkeitsversicherung erhälst du trotzdem dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job beginnen. ',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e107" => new EreignisCardDefinition(
-                id: new CardId('e107'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Haftpflichtversicherung',
-                description: 'Du verschüttest Saft auf dem Laptop einer Kollegin, der dadurch unbrauchbar wird. Mit einer abgeschlossenen Haftpflichtversicherung werden die Kosten ersetzt.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-1200),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e108" => new EreignisCardDefinition(
-                id: new CardId('e108'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Haftpflichtversicherung',
-                description: 'Beim Präsentieren fällt dir ein Beamer vom Tisch, der dabei kaputtgeht und ersetzt werden muss. Mit einer abgeschlossenen Haftpflichtversicherung wird der Schaden übernommen.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-900),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
+//            "e94" => new EreignisCardDefinition(
+//                id: new CardId('e94'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Berufsunfähigkeitsversicherung',
+//                description: 'Du bekommst chronische Gelenkschmerzen und kannst deinen Beruf nicht mehr ausüben. Mit Berufsunfähigkeitsversicherung erhältst du trotzdem dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job beginnen.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(2),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e95" => new EreignisCardDefinition(
+//                id: new CardId('e95'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Berufsunfähigkeitsversicherung',
+//                description: 'Nach einer Krebserkrankung bist du dauerhaft geschwächt und kannst deinem Beruf nicht mehr nachgehen. Mit Berufsunfähigkeitsversicherung bekommst du weiterhin dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job starten.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(2),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e96" => new EreignisCardDefinition(
+//                id: new CardId('e96'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Berufsunfähigkeitsversicherung',
+//                description: 'Durch einen schweren Schlaganfall kannst du deinen Beruf nicht mehr ausüben. Mit Berufsunfähigkeitsversicherung erhälst du trotzdem dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job beginnen. ',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e97" => new EreignisCardDefinition(
+//                id: new CardId('e97'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Berufsunfähigkeitsversicherung',
+//                description: 'Du leidest unter schweren Depressionen und kannst für dieses Jahr nicht mehr arbeiten. Mit einer Berufsunfähigkeitsversicherung erhältst du trotzdem dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job beginnen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e98" => new EreignisCardDefinition(
+//                id: new CardId('e98'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Berufsunfähigkeitsversicherung',
+//                description: 'Ein Schlaganfall lähmt dich halbseitig, trotz Reha bleibt die Lähmung. Du kannst nicht mehr arbeiten, bekommst mit Berufsunfähigkeitsversicherung aber weiter dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job beginnen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e99" => new EreignisCardDefinition(
+//                id: new CardId('e99'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Berufsunfähigkeitsversicherung',
+//                description: '"Eine chronische Lungenerkrankung zwingt dich, deinen Beruf aufzugeben. Mit Berufsunfähigkeitsversicherung wird dein Jahresgehalt (brutto) weiterhin gezahlt. Ab dem neuen Jahr kannst du einen neuen Job antreten."',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e100" => new EreignisCardDefinition(
+//                id: new CardId('e100'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Berufsunfähigkeitsversicherung',
+//                description: '"Nach einem schweren Autounfall bist du geistig eingeschränkt und kannst deinem Beruf nicht mehr nachgehen. Deine Berufsunfähigkeitsversicherung sichert dir trotzdem dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job beginnen."',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e101" => new EreignisCardDefinition(
+//                id: new CardId('e101'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Berufsunfähigkeitsversicherung',
+//                description: 'Du hast eine schwere Herzkrankheit, die dich arbeitsunfähig macht. Mit Berufsunfähigkeitsversicherung erhälst du trotzdem dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job beginnen. ',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e102" => new EreignisCardDefinition(
+//                id: new CardId('e102'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Berufsunfähigkeitsversicherung',
+//                description: 'Du erleidest bei einem Unfall eine Querschnittslähmung ab der Taille und kannst deinen Beruf nicht mehr ausüben. Mit Berufsunfähigkeitsversicherung erhälst du trotzdem dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job beginnen. ',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e103" => new EreignisCardDefinition(
+//                id: new CardId('e103'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Berufsunfähigkeitsversicherung',
+//                description: 'Beim Sport verletzt du dich. Mehrere Wirbelbrüche führen dazu, dass du deinen Beruf nicht mehr ausüben kannst. Mit Berufsunfähigkeitsversicherung erhälst du trotzdem dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job beginnen. ',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e104" => new EreignisCardDefinition(
+//                id: new CardId('e104'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Berufsunfähigkeitsversicherung',
+//                description: '"Du erleidest durch eine Hirnverletzung bleibende Einschränkungen, die eine Berufsausübung unmöglich machen. Mit Berufsunfähigkeitsversicherung erhältst du dein Jahresgehalt (brutto) weiter. Ab dem neuen Jahr kannst du einen neuen Job beginnen."',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e105" => new EreignisCardDefinition(
+//                id: new CardId('e105'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Berufsunfähigkeitsversicherung',
+//                description: 'Du erleidest einen schweren Burnout und kannst deinen Beruf nicht mehr ausüben. Mit Berufsunfähigkeitsversicherung erhältst du trotzdem dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job beginnen.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e106" => new EreignisCardDefinition(
+//                id: new CardId('e106'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Berufsunfähigkeitsversicherung',
+//                description: 'Eine fortschreitende neurologische Erkrankung wie Parkinson macht eine weitere Berufsausübung unmöglich. Mit Berufsunfähigkeitsversicherung erhälst du trotzdem dein Jahresgehalt (brutto). Ab dem neuen Jahr kannst du einen neuen Job beginnen. ',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e107" => new EreignisCardDefinition(
+//                id: new CardId('e107'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Du verschüttest Saft auf dem Laptop einer Kollegin, der dadurch unbrauchbar wird. Mit einer abgeschlossenen Haftpflichtversicherung werden die Kosten ersetzt.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(2),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-1200),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e108" => new EreignisCardDefinition(
+//                id: new CardId('e108'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Beim Präsentieren fällt dir ein Beamer vom Tisch, der dabei kaputtgeht und ersetzt werden muss. Mit einer abgeschlossenen Haftpflichtversicherung wird der Schaden übernommen.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(2),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-900),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
             "e109" => new EreignisCardDefinition(
                 id: new CardId('e109'),
                 categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
@@ -7331,769 +7331,769 @@ final class CardFinder
                 ],
                 gewichtung: 1,
             ),
-            "e110" => new EreignisCardDefinition(
-                id: new CardId('e110'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Haftpflichtversicherung',
-                description: 'Du stößt versehentlich einen Monitor in einem Seminarraum um, wodurch das Display springt und der Monitor unbrauchbar wird. Mit einer abgeschlossenen Haftpflichtversicherung wird der Schaden übernommen.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-250),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e111" => new EreignisCardDefinition(
-                id: new CardId('e111'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Haftpflichtversicherung',
-                description: 'Beim Fußballspiel trittst du versehentlich einem Mitspieler gegen das Knie. Mit einer abgeschlossenen Haftpflichtversicherung werden die Kosten für Personenschäden übernommen.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-1500),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('suf15'),
-                gewichtung: 4,
-            ),
-            "e112" => new EreignisCardDefinition(
-                id: new CardId('e112'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Haftpflichtversicherung',
-                description: 'Du hilfst beim Umzug und lässt einen Fernseher fallen. Im Falle einer abgeschlossenen Haftpflichtversicherung werden die Kosten für den Schaden übernommen.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-800),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e113" => new EreignisCardDefinition(
-                id: new CardId('e113'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Haftpflichtversicherung',
-                description: 'Du wirfst deinen Laptop beim Aufräumen aus Versehen vom Tisch. Die Kosten musst du selbst tragen, denn die Haftpflichtversicherung deckt nur Schäden an Sachen, die dir nicht gehören.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-500),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e114" => new EreignisCardDefinition(
-                id: new CardId('e114'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Haftpflichtversicherung',
-                description: 'Beim Einkaufen stößt du versehentlich gegen eine teure Vase, die daraufhin zu Bruch geht. Mit abgeschlossener Haftpflichtversicherung werden die entstandenen Sachschäden übernommen.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-200),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e115" => new EreignisCardDefinition(
-                id: new CardId('e115'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Haftpflichtversicherung',
-                description: '"Beim gemeinsamen Klettern verursacht du unabsichtlich einen Unfall, bei dem eine andere Person verletzt wird. Mit abgeschlossener Haftpflichtversicherung werden die entstandenen Personenschäden übernommen."',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-800),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e116" => new EreignisCardDefinition(
-                id: new CardId('e116'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Haftpflichtversicherung',
-                description: '"Du lässt beim Spielen mit Freunden versehentlich deren Smartphone fallen und beschädigst es. Mit abgeschlossener Haftpflichtversicherung werden die entstandenen Sachschäden übernommen."',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-600),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e117" => new EreignisCardDefinition(
-                id: new CardId('e117'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Haftpflichtversicherung',
-                description: 'Bei einem Kundentermin stößt du aus Versehen eine teure Kamera vom Tisch. Der Laptop funktioniert nicht mehr. Solltest du eine Haftpflichtversicherung abgeschlossen haben, wird der Schaden übernommen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-2800),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e118" => new EreignisCardDefinition(
-                id: new CardId('e118'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Haftpflichtversicherung',
-                description: 'Du schließt versehentlich deine Wasserflasche nicht richtig, und der Rucksack deiner Arbeitskollegin mit Laptop wird nass. Der Laptop funktioniert nicht mehr. Im Falle einer abgeschlossenen Haftpflichtversicherung wird der Schaden übernommen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-1200),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e119" => new EreignisCardDefinition(
-                id: new CardId('e119'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Haftpflichtversicherung',
-                description: 'Du verschüttest Wasser auf die Tastatur deines Kollegen. Die Tastatur funktioniert nicht mehr. Solltest du eine Haftpflichtversicherung abgeschlossen haben, wird der Schaden übernommen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-200),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e120" => new EreignisCardDefinition(
-                id: new CardId('e120'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Haftpflichtversicherung',
-                description: 'Du hast deine Waschmaschine falsch angeschlossen und das Parkett in der Mietwohnung damit ruiniert. Im Falle einer abgeschlossenen Haftpflichtversicherung werden die Kosten für den Sachschaden übernommen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-6200),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e121" => new EreignisCardDefinition(
-                id: new CardId('e121'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Haftpflichtversicherung',
-                description: '"Beim Grillen auf dem Balkon deines Mietshauses entsteht Rußschaden an der Fassade.Im Falle einer abgeschlossenen Haftpflichtversicherung werden die Kosten für den Sachschaden übernommen."',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-3000),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e122" => new EreignisCardDefinition(
-                id: new CardId('e122'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Haftpflichtversicherung',
-                description: 'Dein Kleinkind zerkratzt ein parkendes Auto mit einem Stein. Im Falle einer abgeschlossenen Haftpflichtversicherung werden die Kosten für den Sachschaden übernommen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-3800),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_CHILD,
-                ],
-                gewichtung: 4,
-            ),
-            "e123" => new EreignisCardDefinition(
-                id: new CardId('e123'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Haftpflichtversicherung',
-                description: 'Du kippst ein Glas Rotwein auf dem Sofa eines Freundes um. Im Falle einer abgeschlossenen Haftpflichtversicherung werden die Kosten für den Sachschaden übernommen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-1500),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e124" => new EreignisCardDefinition(
-                id: new CardId('e124'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Haftpflichtversicherung',
-                description: '"Beim Spielen auf dem Spielplatz verletzt dein Kind einen anderen spielenden Jungen. Im Falle einer abgeschlossenen Haftpflichtversicherung werden die Kosten für die Behandlung übernommen."',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-2700),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_CHILD,
-                ],
-                gewichtung: 4,
-            ),
-            "e125" => new EreignisCardDefinition(
-                id: new CardId('e125'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Haftpflichtversicherung',
-                description: 'Beim Sporttraining schießt du versehentlich einen Ball gegen die Fensterfront der Halle. Mit abgeschlossener Haftpflichtversicherung werden die Kosten übernommen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-5200),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e126" => new EreignisCardDefinition(
-                id: new CardId('e126'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Haftpflichtversicherung',
-                description: 'Beim Inlineskaten kollidierst du unabsichtlich mit einem Fahrradfahrer, der verletzt wird. Mit abgeschlossener Haftpflichtversicherung werden die Kosten übernommen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-2200),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e127" => new EreignisCardDefinition(
-                id: new CardId('e127'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Haftpflichtversicherung',
-                description: 'Beim Besuch im Museum stößt du versehentlich ein wertvolles Kunstobjekt um. Im Falle einer abgeschlossenen Haftpflichtversicherung werden die Kosten für den Sachschaden übernommen.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-60000),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e128" => new EreignisCardDefinition(
-                id: new CardId('e128'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Haftpflichtversicherung',
-                description: 'Du schließt den Geschirrspüler selbst an, ein Schlauch platzt, und Wasser läuft in die Wohnung darunter. Bei abgeschlossener Haftpflichtversicherung werden die Kosten für den Sachschaden übernommen.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-25000),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e129" => new EreignisCardDefinition(
-                id: new CardId('e129'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Haftpflichtversicherung',
-                description: 'Du lässt ein Handtuch über einer Stehlampe hängen – es fängt Feuer und beschädigt Teile des Hotelzimmers. Bei abgeschlossener Haftpflichtversicherung werden die Kosten für den Sachschaden übernommen.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-18000),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e130" => new EreignisCardDefinition(
-                id: new CardId('e130'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Haftpflichtversicherung',
-                description: '"Beim Volleyball beschädigst du versehentlich die Zahnprothese eines Mitspielers. Im Falle einer abgeschlossenen Haftpflichtversicherung werden die Kosten für den Ersatz übernommen."',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-12000),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('suf3'),
-                gewichtung: 4,
-            ),
-            "e131" => new EreignisCardDefinition(
-                id: new CardId('e131'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Haftpflichtversicherung',
-                description: 'Du verlierst den Schlüssel zum Bürogebäude und die Schließanlage muss ausgetauscht werden. Solltest du eine Haftpflichtversicherung abgeschlossen haben, wird der Schaden übernommen.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-4500),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e132" => new EreignisCardDefinition(
-                id: new CardId('e132'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Haftpflichtversicherung',
-                description: 'Beim Aufbau der Firmenveranstaltung beschädigst du ein Lichtsystem. Solltest du eine Haftpflichtversicherung abgeschlossen haben, wird der Schaden übernommen.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-4000),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e133" => new EreignisCardDefinition(
-                id: new CardId('e133'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Haftpflichtversicherung',
-                description: 'Du lädst versehentlich Schadsoftware per USB-Stick auf einen Arbeitsrechner. Ein Teil des internen Netzwerks fällt aus. Solltest du eine Haftpflichtversicherung abgeschlossen haben, wird der Schaden übernommen.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(5000),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e134" => new EreignisCardDefinition(
-                id: new CardId('e134'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'kein Finanzbericht lesen',
-                description: 'Du hast mehr Freizeit, weil du den Börsenbericht nicht mehr liest und die Zeitung mit dem hervorragenden Wirtschaftsressort abbestellt hast.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::INVESTITIONSSPERRE,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e135" => new EreignisCardDefinition(
-                id: new CardId('e135'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'KiTa',
-                description: 'Du findest einen Platz in einer KiTa für dein Kind und gibst es dort in kompetente Betreuung.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-8000),
-                    freizeitKompetenzsteinChange: +2,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_CHILD,
-                ],
-                gewichtung: 4,
-            ),
-            "e136" => new EreignisCardDefinition(
-                id: new CardId('e136'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'BabysitterIn',
-                description: 'Du stellst eine Babysitterin ein, damit du mehr Freiraum für dich hast.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-5000),
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_CHILD,
-                ],
-                gewichtung: 4,
-            ),
-            "e137" => new EreignisCardDefinition(
-                id: new CardId('e137'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Arbeitszeitverkürzung',
-                description: 'Du spürst, wie sehr dich dein Job mental belastet. Deshalb reduzierst du dieses Jahr deine Arbeitszeit, um Stress vorzubeugen. Dein Bruttogehalt wird entsprechend angepasst.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:50,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e138" => new EreignisCardDefinition(
-                id: new CardId('e138'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Familie und Freundschaft',
-                description: 'Weil dir Familie und Freundschaft am wichtigsten sind, findest du wenig Zeit für Investitionen.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::INVESTITIONSSPERRE,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e139" => new EreignisCardDefinition(
-                id: new CardId('e139'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Sabbatjahr',
-                description: 'Für deine Weltreise nimmst du dir ein Sabbatjahr – auch wenn das bedeutet, dieses Jahr kein Gehalt zu bekommen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +2,
-                ),
-                modifierIds: [
-                    ModifierId::JOBVERLUST,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e140" => new EreignisCardDefinition(
-                id: new CardId('e140'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Familie und Freundschaft',
-                description: 'Da dir Familie und Freunde am meisten bedeuten, widmest du Investitionen wenig Aufmerksamkeit.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::INVESTITIONSSPERRE,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e141" => new EreignisCardDefinition(
-                id: new CardId('e141'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Familie und Freundschaft',
-                description: 'Da dir Familie und Freunde am meisten bedeuten, widmest du Investitionen wenig Aufmerksamkeit.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::INVESTITIONSSPERRE,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e142" => new EreignisCardDefinition(
-                id: new CardId('e142'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Hochzeit',
-                description: 'Herzlichen Glückwunsch, du findest deine Partnerin fürs Leben. Euer besonderer Tag war ein großer Aufwand, aber mit deiner neu gegründeten Familie erlebst du großes Glück und erfüllte Zeiten.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-15000),
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_NO_CHILD,
-                ],
-                gewichtung: 10,
-            ),
-            "e143" => new EreignisCardDefinition(
-                id: new CardId('e143'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Sprachtandem Erasmus',
-                description: 'Du verstehst dich so gut mit deinem Sprachtandem aus dem Erasmus-Programm, dass du beschließt, sein Heimatland zu besuchen. Dabei begegnest du vielen großartigen Menschen.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-1500),
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('suf9'),
-                gewichtung: 4,
-            ),
-            "e144" => new EreignisCardDefinition(
-                id: new CardId('e144'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Rechtsstreit',
-                description: 'Die lauten Partys deiner Nachbarin beeinträchtigen dich erheblich, weshalb es zu einem Rechtsstreit kommt. Die daraus resultierenden Gerichtskosten musst du tragen.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-800),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e145" => new EreignisCardDefinition(
-                id: new CardId('e145'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Einsatz für Demokratie',
-                description: 'Deine Informationsflyer zu demokratischen Werten kommen so gut an, dass du eine weitere Auflage drucken lässt. Die Druckkosten trägst du erneut selbst.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-500),
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('suf18'),
-                gewichtung: 4,
-            ),
-            "e146" => new EreignisCardDefinition(
-                id: new CardId('e146'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Arbeitszeitverkürzung',
-                description: 'Dein Job hat dazu geführt, dass du deine Freundschaften vernachlässigt hast. Um das zu ändern, reduzierst du deine Arbeitszeit dieses Jahr  – dein Bruttogehalt sinkt entsprechend.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:80,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e147" => new EreignisCardDefinition(
-                id: new CardId('e147'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Lottogewinn',
-                description: '"Herzlichen Glückwunsch! Du hast den Jackpot gewonnen und kannst dich über eine beträchtliche Gewinnsumme freuen."',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(10000),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e148" => new EreignisCardDefinition(
-                id: new CardId('e148'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Private Unfallversicherung',
-                description: 'Beim Eislaufen stürzt du und verletzt dir das Handgelenk, weshalb du eine Woche arbeitsunfähig bist. Mit einer privaten Unfallversicherung bekommst du in diesem Fall eine einmalige Invaliditätszahlung.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(200),
-                ),
-                modifierIds: [
-                    ModifierId::PRIVATE_UNFALLVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
+//            "e110" => new EreignisCardDefinition(
+//                id: new CardId('e110'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Du stößt versehentlich einen Monitor in einem Seminarraum um, wodurch das Display springt und der Monitor unbrauchbar wird. Mit einer abgeschlossenen Haftpflichtversicherung wird der Schaden übernommen.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-250),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e111" => new EreignisCardDefinition(
+//                id: new CardId('e111'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Beim Fußballspiel trittst du versehentlich einem Mitspieler gegen das Knie. Mit einer abgeschlossenen Haftpflichtversicherung werden die Kosten für Personenschäden übernommen.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(2),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-1500),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('suf15'),
+//                gewichtung: 4,
+//            ),
+//            "e112" => new EreignisCardDefinition(
+//                id: new CardId('e112'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Du hilfst beim Umzug und lässt einen Fernseher fallen. Im Falle einer abgeschlossenen Haftpflichtversicherung werden die Kosten für den Schaden übernommen.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-800),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e113" => new EreignisCardDefinition(
+//                id: new CardId('e113'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Du wirfst deinen Laptop beim Aufräumen aus Versehen vom Tisch. Die Kosten musst du selbst tragen, denn die Haftpflichtversicherung deckt nur Schäden an Sachen, die dir nicht gehören.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-500),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e114" => new EreignisCardDefinition(
+//                id: new CardId('e114'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Beim Einkaufen stößt du versehentlich gegen eine teure Vase, die daraufhin zu Bruch geht. Mit abgeschlossener Haftpflichtversicherung werden die entstandenen Sachschäden übernommen.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-200),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e115" => new EreignisCardDefinition(
+//                id: new CardId('e115'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Haftpflichtversicherung',
+//                description: '"Beim gemeinsamen Klettern verursacht du unabsichtlich einen Unfall, bei dem eine andere Person verletzt wird. Mit abgeschlossener Haftpflichtversicherung werden die entstandenen Personenschäden übernommen."',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-800),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e116" => new EreignisCardDefinition(
+//                id: new CardId('e116'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Haftpflichtversicherung',
+//                description: '"Du lässt beim Spielen mit Freunden versehentlich deren Smartphone fallen und beschädigst es. Mit abgeschlossener Haftpflichtversicherung werden die entstandenen Sachschäden übernommen."',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-600),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e117" => new EreignisCardDefinition(
+//                id: new CardId('e117'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Bei einem Kundentermin stößt du aus Versehen eine teure Kamera vom Tisch. Der Laptop funktioniert nicht mehr. Solltest du eine Haftpflichtversicherung abgeschlossen haben, wird der Schaden übernommen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-2800),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e118" => new EreignisCardDefinition(
+//                id: new CardId('e118'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Du schließt versehentlich deine Wasserflasche nicht richtig, und der Rucksack deiner Arbeitskollegin mit Laptop wird nass. Der Laptop funktioniert nicht mehr. Im Falle einer abgeschlossenen Haftpflichtversicherung wird der Schaden übernommen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-1200),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e119" => new EreignisCardDefinition(
+//                id: new CardId('e119'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Du verschüttest Wasser auf die Tastatur deines Kollegen. Die Tastatur funktioniert nicht mehr. Solltest du eine Haftpflichtversicherung abgeschlossen haben, wird der Schaden übernommen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-200),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e120" => new EreignisCardDefinition(
+//                id: new CardId('e120'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Du hast deine Waschmaschine falsch angeschlossen und das Parkett in der Mietwohnung damit ruiniert. Im Falle einer abgeschlossenen Haftpflichtversicherung werden die Kosten für den Sachschaden übernommen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-6200),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e121" => new EreignisCardDefinition(
+//                id: new CardId('e121'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Haftpflichtversicherung',
+//                description: '"Beim Grillen auf dem Balkon deines Mietshauses entsteht Rußschaden an der Fassade.Im Falle einer abgeschlossenen Haftpflichtversicherung werden die Kosten für den Sachschaden übernommen."',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-3000),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e122" => new EreignisCardDefinition(
+//                id: new CardId('e122'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Dein Kleinkind zerkratzt ein parkendes Auto mit einem Stein. Im Falle einer abgeschlossenen Haftpflichtversicherung werden die Kosten für den Sachschaden übernommen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-3800),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_CHILD,
+//                ],
+//                gewichtung: 4,
+//            ),
+//            "e123" => new EreignisCardDefinition(
+//                id: new CardId('e123'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Du kippst ein Glas Rotwein auf dem Sofa eines Freundes um. Im Falle einer abgeschlossenen Haftpflichtversicherung werden die Kosten für den Sachschaden übernommen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-1500),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e124" => new EreignisCardDefinition(
+//                id: new CardId('e124'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Haftpflichtversicherung',
+//                description: '"Beim Spielen auf dem Spielplatz verletzt dein Kind einen anderen spielenden Jungen. Im Falle einer abgeschlossenen Haftpflichtversicherung werden die Kosten für die Behandlung übernommen."',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-2700),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_CHILD,
+//                ],
+//                gewichtung: 4,
+//            ),
+//            "e125" => new EreignisCardDefinition(
+//                id: new CardId('e125'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Beim Sporttraining schießt du versehentlich einen Ball gegen die Fensterfront der Halle. Mit abgeschlossener Haftpflichtversicherung werden die Kosten übernommen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-5200),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e126" => new EreignisCardDefinition(
+//                id: new CardId('e126'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Beim Inlineskaten kollidierst du unabsichtlich mit einem Fahrradfahrer, der verletzt wird. Mit abgeschlossener Haftpflichtversicherung werden die Kosten übernommen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-2200),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e127" => new EreignisCardDefinition(
+//                id: new CardId('e127'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Beim Besuch im Museum stößt du versehentlich ein wertvolles Kunstobjekt um. Im Falle einer abgeschlossenen Haftpflichtversicherung werden die Kosten für den Sachschaden übernommen.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-60000),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e128" => new EreignisCardDefinition(
+//                id: new CardId('e128'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Du schließt den Geschirrspüler selbst an, ein Schlauch platzt, und Wasser läuft in die Wohnung darunter. Bei abgeschlossener Haftpflichtversicherung werden die Kosten für den Sachschaden übernommen.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-25000),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e129" => new EreignisCardDefinition(
+//                id: new CardId('e129'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Du lässt ein Handtuch über einer Stehlampe hängen – es fängt Feuer und beschädigt Teile des Hotelzimmers. Bei abgeschlossener Haftpflichtversicherung werden die Kosten für den Sachschaden übernommen.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-18000),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e130" => new EreignisCardDefinition(
+//                id: new CardId('e130'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Haftpflichtversicherung',
+//                description: '"Beim Volleyball beschädigst du versehentlich die Zahnprothese eines Mitspielers. Im Falle einer abgeschlossenen Haftpflichtversicherung werden die Kosten für den Ersatz übernommen."',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-12000),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('suf3'),
+//                gewichtung: 4,
+//            ),
+//            "e131" => new EreignisCardDefinition(
+//                id: new CardId('e131'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Du verlierst den Schlüssel zum Bürogebäude und die Schließanlage muss ausgetauscht werden. Solltest du eine Haftpflichtversicherung abgeschlossen haben, wird der Schaden übernommen.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-4500),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e132" => new EreignisCardDefinition(
+//                id: new CardId('e132'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Beim Aufbau der Firmenveranstaltung beschädigst du ein Lichtsystem. Solltest du eine Haftpflichtversicherung abgeschlossen haben, wird der Schaden übernommen.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-4000),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e133" => new EreignisCardDefinition(
+//                id: new CardId('e133'),
+//                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Du lädst versehentlich Schadsoftware per USB-Stick auf einen Arbeitsrechner. Ein Teil des internen Netzwerks fällt aus. Solltest du eine Haftpflichtversicherung abgeschlossen haben, wird der Schaden übernommen.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(5000),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e134" => new EreignisCardDefinition(
+//                id: new CardId('e134'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'kein Finanzbericht lesen',
+//                description: 'Du hast mehr Freizeit, weil du den Börsenbericht nicht mehr liest und die Zeitung mit dem hervorragenden Wirtschaftsressort abbestellt hast.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(2),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::INVESTITIONSSPERRE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e135" => new EreignisCardDefinition(
+//                id: new CardId('e135'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'KiTa',
+//                description: 'Du findest einen Platz in einer KiTa für dein Kind und gibst es dort in kompetente Betreuung.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-8000),
+//                    freizeitKompetenzsteinChange: +2,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_CHILD,
+//                ],
+//                gewichtung: 4,
+//            ),
+//            "e136" => new EreignisCardDefinition(
+//                id: new CardId('e136'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'BabysitterIn',
+//                description: 'Du stellst eine Babysitterin ein, damit du mehr Freiraum für dich hast.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-5000),
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_CHILD,
+//                ],
+//                gewichtung: 4,
+//            ),
+//            "e137" => new EreignisCardDefinition(
+//                id: new CardId('e137'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Arbeitszeitverkürzung',
+//                description: 'Du spürst, wie sehr dich dein Job mental belastet. Deshalb reduzierst du dieses Jahr deine Arbeitszeit, um Stress vorzubeugen. Dein Bruttogehalt wird entsprechend angepasst.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:50,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e138" => new EreignisCardDefinition(
+//                id: new CardId('e138'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Familie und Freundschaft',
+//                description: 'Weil dir Familie und Freundschaft am wichtigsten sind, findest du wenig Zeit für Investitionen.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::INVESTITIONSSPERRE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e139" => new EreignisCardDefinition(
+//                id: new CardId('e139'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Sabbatjahr',
+//                description: 'Für deine Weltreise nimmst du dir ein Sabbatjahr – auch wenn das bedeutet, dieses Jahr kein Gehalt zu bekommen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +2,
+//                ),
+//                modifierIds: [
+//                    ModifierId::JOBVERLUST,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e140" => new EreignisCardDefinition(
+//                id: new CardId('e140'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Familie und Freundschaft',
+//                description: 'Da dir Familie und Freunde am meisten bedeuten, widmest du Investitionen wenig Aufmerksamkeit.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::INVESTITIONSSPERRE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e141" => new EreignisCardDefinition(
+//                id: new CardId('e141'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Familie und Freundschaft',
+//                description: 'Da dir Familie und Freunde am meisten bedeuten, widmest du Investitionen wenig Aufmerksamkeit.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::INVESTITIONSSPERRE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e142" => new EreignisCardDefinition(
+//                id: new CardId('e142'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Hochzeit',
+//                description: 'Herzlichen Glückwunsch, du findest deine Partnerin fürs Leben. Euer besonderer Tag war ein großer Aufwand, aber mit deiner neu gegründeten Familie erlebst du großes Glück und erfüllte Zeiten.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(2),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-15000),
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_NO_CHILD,
+//                ],
+//                gewichtung: 10,
+//            ),
+//            "e143" => new EreignisCardDefinition(
+//                id: new CardId('e143'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Sprachtandem Erasmus',
+//                description: 'Du verstehst dich so gut mit deinem Sprachtandem aus dem Erasmus-Programm, dass du beschließt, sein Heimatland zu besuchen. Dabei begegnest du vielen großartigen Menschen.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-1500),
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('suf9'),
+//                gewichtung: 4,
+//            ),
+//            "e144" => new EreignisCardDefinition(
+//                id: new CardId('e144'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Rechtsstreit',
+//                description: 'Die lauten Partys deiner Nachbarin beeinträchtigen dich erheblich, weshalb es zu einem Rechtsstreit kommt. Die daraus resultierenden Gerichtskosten musst du tragen.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-800),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e145" => new EreignisCardDefinition(
+//                id: new CardId('e145'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Einsatz für Demokratie',
+//                description: 'Deine Informationsflyer zu demokratischen Werten kommen so gut an, dass du eine weitere Auflage drucken lässt. Die Druckkosten trägst du erneut selbst.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(2),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-500),
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('suf18'),
+//                gewichtung: 4,
+//            ),
+//            "e146" => new EreignisCardDefinition(
+//                id: new CardId('e146'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Arbeitszeitverkürzung',
+//                description: 'Dein Job hat dazu geführt, dass du deine Freundschaften vernachlässigt hast. Um das zu ändern, reduzierst du deine Arbeitszeit dieses Jahr  – dein Bruttogehalt sinkt entsprechend.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:80,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e147" => new EreignisCardDefinition(
+//                id: new CardId('e147'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Lottogewinn',
+//                description: '"Herzlichen Glückwunsch! Du hast den Jackpot gewonnen und kannst dich über eine beträchtliche Gewinnsumme freuen."',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(10000),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e148" => new EreignisCardDefinition(
+//                id: new CardId('e148'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Private Unfallversicherung',
+//                description: 'Beim Eislaufen stürzt du und verletzt dir das Handgelenk, weshalb du eine Woche arbeitsunfähig bist. Mit einer privaten Unfallversicherung bekommst du in diesem Fall eine einmalige Invaliditätszahlung.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(200),
+//                ),
+//                modifierIds: [
+//                    ModifierId::PRIVATE_UNFALLVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
             "e149" => new EreignisCardDefinition(
                 id: new CardId('e149'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
                 title: 'Private Unfallversicherung',
                 description: 'Beim Heimwerken verletzt du dir die Hand, was dich dauerhaft einschränkt und zum Jobverlust führt. Im Falle einer abgeschlossenen privaten Unfallversicherung erhälst du einmalig Invaliditätsleistung.',
                 phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(3),
+                year: new Year(1),
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(6000),
                     zeitsteineChange: 1,
@@ -8109,150 +8109,95 @@ final class CardFinder
             ),
             "e150" => new EreignisCardDefinition(
                 id: new CardId('e150'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
                 title: 'Geburt',
                 description: 'Dein Sohn Tristan ist geboren – herzlichen Glückwunsch! Ab jetzt zahlst du regelmäßig 10 % deines Bruttogehalts (mindestens 1.000 €). Außerdem fallen einmalig Kosten für die Erstausstattung an.',
                 phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-1000),
-                    freizeitKompetenzsteinChange: +2,
-                ),
-                modifierIds: [
-                    ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER,
-                    ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyLebenshaltungskostenMultiplier:10,
-                    modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e151" => new EreignisCardDefinition(
-                id: new CardId('e151'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Geburt',
-                description: 'Deine Tochter Alisa ist geboren – herzlichen Glückwunsch! Ab jetzt zahlst du regelmäßig 10 % deines Bruttogehalts (mindestens 1.000 €). Außerdem fallen einmalig Kosten für die Erstausstattung an.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-1000),
-                    freizeitKompetenzsteinChange: +2,
-                ),
-                modifierIds: [
-                    ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER,
-                    ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyLebenshaltungskostenMultiplier:10,
-                    modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e152" => new EreignisCardDefinition(
-                id: new CardId('e152'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Job kündigen und Weltreise',
-                description: 'Du entscheidest dich, deinen Job zu kündigen und auf Reisen zu gehen, um dich neu zu orientieren. Damit verzichtest du jedoch auch auf dein Gehalt für dieses Jahr.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::JOBVERLUST,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e153" => new EreignisCardDefinition(
-                id: new CardId('e153'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Geschenk',
-                description: 'Deine beste Freundin hat eine Überraschung für dich vorbereitet: ein Wellness-Wochenende in Südtirol.',
-                phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
                 resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
+                    guthabenChange: new MoneyAmount(-1000),
+                    freizeitKompetenzsteinChange: +2,
                 ),
                 modifierIds: [
+                    ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER,
+                    ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
                 ],
                 modifierParameters: new ModifierParameters(
+                    modifyLebenshaltungskostenMultiplier:10,
+                    modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
                 ),
                 ereignisRequirementIds: [
                 ],
-                gewichtung: 1,
+                gewichtung: 20,
             ),
+//            "e151" => new EreignisCardDefinition(
+//                id: new CardId('e151'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Geburt',
+//                description: 'Deine Tochter Alisa ist geboren – herzlichen Glückwunsch! Ab jetzt zahlst du regelmäßig 10 % deines Bruttogehalts (mindestens 1.000 €). Außerdem fallen einmalig Kosten für die Erstausstattung an.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(2),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-1000),
+//                    freizeitKompetenzsteinChange: +2,
+//                ),
+//                modifierIds: [
+//                    ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER,
+//                    ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyLebenshaltungskostenMultiplier:10,
+//                    modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e152" => new EreignisCardDefinition(
+//                id: new CardId('e152'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Job kündigen und Weltreise',
+//                description: 'Du entscheidest dich, deinen Job zu kündigen und auf Reisen zu gehen, um dich neu zu orientieren. Damit verzichtest du jedoch auch auf dein Gehalt für dieses Jahr.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::JOBVERLUST,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e153" => new EreignisCardDefinition(
+//                id: new CardId('e153'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Geschenk',
+//                description: 'Deine beste Freundin hat eine Überraschung für dich vorbereitet: ein Wellness-Wochenende in Südtirol.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
             "e154" => new EreignisCardDefinition(
                 id: new CardId('e154'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
                 title: 'Krankheit',
                 description: 'Du erkrankst an einer heftigen Influenza und liegst komplett flach. Du musst eine Runde aussetzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
-                resourceChanges: new ResourceChanges(
-                ),
-                modifierIds: [
-                    ModifierId::AUSSETZEN,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e155" => new EreignisCardDefinition(
-                id: new CardId('e155'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Gewinn E-Bike',
-                description: 'Herzlichen Glückwunsch – du hast bei einer Verlosung ein E-Bike gewonnen! Damit kommst du künftig schneller zu deinen Terminen und kannst deine Freizeit noch entspannter genießen.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e156" => new EreignisCardDefinition(
-                id: new CardId('e156'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Soziales Engagement',
-                description: 'Dein Chef schätzt dein soziales Engagement sehr. Er unterstützt deine sozialen Projekte von Herzen und gewährt dir Sonderurlaub für das kommende Sommercamp.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e157" => new EreignisCardDefinition(
-                id: new CardId('e157'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Krankheit',
-                description: 'Du erkrankst an einer heftigen Influenza und liegst komplett flach. Du musst eine Runde aussetzen.',
-                phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
                 resourceChanges: new ResourceChanges(
                 ),
@@ -8265,1750 +8210,1805 @@ final class CardFinder
                 ],
                 gewichtung: 1,
             ),
-            "e158" => new EreignisCardDefinition(
-                id: new CardId('e158'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Abbau Überstunden',
-                description: 'In den letzten Jahren hast du so fleißig gearbeitet, dass sich viele Überstunden angesammelt haben. Jetzt ist es an der Zeit, diese abzubauen. Du nimmst dir einen Monat frei und reist durch Asien.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e159" => new EreignisCardDefinition(
-                id: new CardId('e159'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Jobverlust',
-                description: 'Du hast dich mit deinem Team zerstritten und vereinbarst mit deiner Chefin einen Aufhebungsvertrag. Dadurch verlierst du deinen Job und bist vorerst arbeitslos.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::JOBVERLUST,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e160" => new EreignisCardDefinition(
-                id: new CardId('e160'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Burn-Out',
-                description: 'Bei der Verfolgung deines Traums hast du die Pausen völlig vergessen. Um dich zu erholen, gehst du in eine Rehaklinik.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e161" => new EreignisCardDefinition(
-                id: new CardId('e161'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Nicht beantragter Urlaub',
-                description: 'Du bekommst eine Magen-Darm-Grippe und kannst für eine Weile nichts essen. Du pausierst, um dich zu erholen, bevor du wieder weitermachen kannst.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::JOBVERLUST,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e162" => new EreignisCardDefinition(
-                id: new CardId('e162'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Streit mit der Familie ',
-                description: 'An Weihnachten hast du dich mit deiner Schwester zerstritten. Nun musst du die Wogen wieder glätten. Das kostet dich Zeit.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e163" => new EreignisCardDefinition(
-                id: new CardId('e163'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Einsatz heimische Bienen',
-                description: 'Dein Einsatz für den Schutz heimischer Bienenpopulation wird von dem deutschen Ehrenamtspreis ausgezeichnet.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e164" => new EreignisCardDefinition(
-                id: new CardId('e164'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Vorstandsarbeit in einem Verein',
-                description: 'Weil sich leider niemand sonst für den Vorstandsposten im Tennisverein zur Verfügung stellt, übernimmst du das Amt für eine weitere Amtszeit.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('suf47'),
-                gewichtung: 4,
-            ),
-            "e165" => new EreignisCardDefinition(
-                id: new CardId('e165'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Arbeitslosigkeit',
-                description: 'Du wirst wegen unentschuldigtem Fehlen fristlos gekündigt und bekommst kein Gehalt mehr. Durch die Arbeitslosigkeit gewinnst du jedoch mehr freie Zeit.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e166" => new EreignisCardDefinition(
-                id: new CardId('e166'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Preis für Integration',
-                description: 'Herzlichen Glückwunsch zum Preis für Integration! Dein Projekt fördert nachhaltige Inklusion, indem es Jugendliche mit und ohne Beeinträchtigungen durch gemeinschaftlichen Sport zusammenbringt.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::JOBVERLUST,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e167" => new EreignisCardDefinition(
-                id: new CardId('e167'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Familie',
-                description: 'Dein Kind wünscht sich den Besuch eines privaten Sportinternats. Das verursacht hohe Ausgaben, verschafft dir aber auch wertvolle neue Kontakte zu anderen Eltern.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-30000),
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_CHILD,
-                ],
-                gewichtung: 4,
-            ),
-            "e168" => new EreignisCardDefinition(
-                id: new CardId('e168'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Private Nachhilfe',
-                description: 'Um ihre schulischen Leistungen zu steigern, besuchen deine Kinder privaten Nachhilfeunterricht.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-28000),
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_CHILD,
-                ],
-                gewichtung: 4,
-            ),
-            "e169" => new EreignisCardDefinition(
-                id: new CardId('e169'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Hochzeit',
-                description: 'Herzlichen Glückwunsch, du findest deine Partnerin fürs Leben. Euer besonderer Tag war ein großer Aufwand, aber mit deiner neu gegründeten Familie erlebst du großes Glück und erfüllte Zeiten.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-25000),
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_NO_CHILD,
-                ],
-                gewichtung: 10,
-            ),
-            "e170" => new EreignisCardDefinition(
-                id: new CardId('e170'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Bauernhof-KiTa',
-                description: 'In der Bauernhof-Kita ist wieder Platz. Dein Kind wird liebevoll von qualifiziertem Personal begleitet und erlebt naturnahes Lernen, das Umweltbewusstsein, Bewegung und nachhaltige Werte fördert.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-9500),
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e171" => new EreignisCardDefinition(
-                id: new CardId('e171'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Rechtsstreit',
-                description: 'Die lauten Partys deiner Nachbarin beeinträchtigen dich erheblich, weshalb es zu einem Rechtsstreit kommt. Die daraus resultierenden Gerichtskosten musst du tragen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-2000),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e172" => new EreignisCardDefinition(
-                id: new CardId('e172'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Einsatz für Demokratie',
-                description: 'Deine Informationsflyer zu demokratischen Werten kommen so gut an, dass du eine weitere Auflage drucken lässt. Die Druckkosten trägst du erneut selbst.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-1000),
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('suf152'),
-                gewichtung: 4,
-            ),
-            "e173" => new EreignisCardDefinition(
-                id: new CardId('e173'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Private Unfallversicherung',
-                description: 'Beim Sportklettern stürzt du und brichst dir den Arm mehrfach. Im Falle einer abgeschlossenen privaten Unfallversicherung erhältst du eine einmalige Invaliditätsleistung.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(8500),
-                ),
-                modifierIds: [
-                    ModifierId::PRIVATE_UNFALLVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e174" => new EreignisCardDefinition(
-                id: new CardId('e174'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Private Unfallversicherung',
-                description: 'Du stürzt beim Inlineskaten und hast einen komplizierten Bruch. Im Falle einer abgeschlossenen privaten Unfallversicherung erhältst du eine einmalige Invaliditätsleistung.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(9000),
-                ),
-                modifierIds: [
-                    ModifierId::PRIVATE_UNFALLVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e175" => new EreignisCardDefinition(
-                id: new CardId('e175'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Arbeitszeitverkürzung',
-                description: 'Um deinen Alltag zu entschleunigen und mehr Zeit zum Kochen, für Freunde und für die Natur zu haben, arbeitest du dieses Jahr nicht in Vollzeit. Dein Bruttogehalt sinkt entsprechend.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:60,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e176" => new EreignisCardDefinition(
-                id: new CardId('e176'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Engagemenet Obdachlosenheim',
-                description: 'Du verringerst dieses Jahr deine Arbeitszeit, um dich beim Aufbau eines Obdachlosenheims zu beteiligen. Dein Gehalt wird entsprechend angepasst.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:90,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e177" => new EreignisCardDefinition(
-                id: new CardId('e177'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Reduzierung Arbeitszeit',
-                description: 'Ein neues Tier zieht bei dir ein und braucht viel Aufmerksamkeit. Du reduzierst deine Arbeitszeit, dein Gehalt verringert sich entsprechend.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:80,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e178" => new EreignisCardDefinition(
-                id: new CardId('e178'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Verhalten Kind',
-                description: 'Wegen aggressivem Verhalten ist dein Kind vorübergehend aus dem Kindergarten ausgeschlossen. Du betreust es selbst und arbeitest weniger, dein Gehalt sinkt.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:75,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_CHILD,
-                ],
-                gewichtung: 4,
-            ),
-            "e179" => new EreignisCardDefinition(
-                id: new CardId('e179'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Reduzierung Arbeitszeit',
-                description: 'Du betreust parallel deine Kinder und deine Eltern. Deshalb verringerst du deine Arbeitszeit, was sich auch auf dein Gehalt auswirkt.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:70,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_CHILD,
-                ],
-                gewichtung: 4,
-            ),
-            "e180" => new EreignisCardDefinition(
-                id: new CardId('e180'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'persönliche Assistentin',
-                description: 'Du stellst eine persönliche Assistentin ein, die dich nachhaltig bei deinen beruflichen Aufgaben unterstützt. Du investierst in diese Rolle, um Arbeit und Effizienz langfristig zu verbessern.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:70,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e181" => new EreignisCardDefinition(
-                id: new CardId('e181'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Reduzierung Arbeitszeit',
-                description: 'Ein Familienmitglied benötigt mehr Unterstützung im Alltag. Du übernimmst einen Teil der Pflege und reduzierst deshalb deine Arbeitszeit. Dein Gehalt wird dementsprechend angepasst.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:60,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e182" => new EreignisCardDefinition(
-                id: new CardId('e182'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Lottogewinn',
-                description: 'Herzlichen Glückwunsch zum Lottogewinn! Du darfst dich über eine hohe Gewinnsumme freuen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(40000),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e183" => new EreignisCardDefinition(
-                id: new CardId('e183'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Auszeichnung',
-                description: 'Du setzt dich für sozial benachteiligte Menschen mit Beeinträchtigung ein und unterstützt ihre Teilhabe am gesellschaftlichen Leben. Dafür bekommst du eine Auszeichnung.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(50000),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e184" => new EreignisCardDefinition(
-                id: new CardId('e184'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Geburt',
-                description: 'Dein Sohn Liam ist geboren – herzlichen Glückwunsch! Ab jetzt zahlst du regelmäßig 10 % deines Bruttogehalts (mindestens 1.000 €). Außerdem fallen einmalig Kosten für die Erstausstattung an.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-1000),
-                    freizeitKompetenzsteinChange: +2,
-                ),
-                modifierIds: [
-                    ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER,
-                    ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyLebenshaltungskostenMultiplier:10,
-                    modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e185" => new EreignisCardDefinition(
-                id: new CardId('e185'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Geburt',
-                description: 'Dein Sohn Ali ist geboren – herzlichen Glückwunsch! Ab jetzt zahlst du regelmäßig 10 % deines Bruttogehalts (mindestens 1.000 €). Außerdem fallen einmalig Kosten für die Erstausstattung an.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-1000),
-                    freizeitKompetenzsteinChange: +2,
-                ),
-                modifierIds: [
-                    ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER,
-                    ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyLebenshaltungskostenMultiplier:10,
-                    modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e186" => new EreignisCardDefinition(
-                id: new CardId('e186'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Beziehungskrise',
-                description: 'Du nimmst eine Paartherapie in Anspruch, um deine Beziehung zu retten – was bei den Obamas erfolgreich war, kann auch euch unterstützen. Allerdings bleibt dir dadurch vorerst weniger Zeit.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('e169'),
-                gewichtung: 4,
-            ),
-            "e187" => new EreignisCardDefinition(
-                id: new CardId('e187'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Handysucht',
-                description: 'Du verbringst bei Treffen mit Freundinnen  viel Zeit am Handy. Das stört sie und führt dazu, dass du immer mehr ausgegrenzt wirst. Die alten Freundschaften wiederherzustellen, braucht Zeit.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e188" => new EreignisCardDefinition(
-                id: new CardId('e188'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Trennung',
-                description: 'Dein Partner beendet die Beziehung mit dir. Du fällst tief in ein Loch. Eine Runde aussetzten.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                ),
-                modifierIds: [
-                    ModifierId::AUSSETZEN,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e189" => new EreignisCardDefinition(
-                id: new CardId('e189'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Freundschaft pflegen',
-                description: 'Aufgrund deines Jobs hast du deine Freundschaften nicht gepflegt. Das musst du dringend ändern!',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e190" => new EreignisCardDefinition(
-                id: new CardId('e190'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Sabbatjahr',
-                description: 'Für deine Weltreise nimmst du dir ein Sabbatjahr – auch wenn das bedeutet, dieses Jahr kein Gehalt zu bekommen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +2,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:0,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e191" => new EreignisCardDefinition(
-                id: new CardId('e191'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Geschenk',
-                description: 'Deine beste Freundin organisiert eine Überraschung und schenkt dir ein Wellness-Wochenende in Südtirol.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e192" => new EreignisCardDefinition(
-                id: new CardId('e192'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Burn-Out',
-                description: 'Bei der Verfolgung deines Traums hast du die Pausen ganz vergessen. Um dich wieder zu erholen, gehst du in eine Rehaklinik. Setze eine Runde aus.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                ),
-                modifierIds: [
-                    ModifierId::AUSSETZEN,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e193" => new EreignisCardDefinition(
-                id: new CardId('e193'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Geburtstagsparty',
-                description: 'Du organisierst eine Geburtstagsparty für Freunde und Familie. Das kostet dich viel Zeit.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e194" => new EreignisCardDefinition(
-                id: new CardId('e194'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Streit mit der Familie ',
-                description: 'An Weihnachten gab es Streit mit deiner Schwester. Jetzt solltest du versuchen, die Beziehung wieder zu verbessern.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e195" => new EreignisCardDefinition(
-                id: new CardId('e195'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Gewinn E-Roller',
-                description: 'Herzlichen Glückwunsch! Du hast bei einer Verlosung einen E-Roller gewonnen. Damit bist du schneller bei Terminen und kannst deine Freizeit ausgiebig genießen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e196" => new EreignisCardDefinition(
-                id: new CardId('e196'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Krankheit',
-                description: 'Du erkrankst an einer Herzmuskelentzündung und liegst komplett flach. Du musst eine Runde aussetzen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                ),
-                modifierIds: [
-                    ModifierId::AUSSETZEN,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e197" => new EreignisCardDefinition(
-                id: new CardId('e197'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Job kündigen und Weltreise',
-                description: 'Du kündigst deinen Job, um auf Reisen neue Wege zu entdecken – dadurch entfällt aber auch dein Einkommen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::JOBVERLUST,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e198" => new EreignisCardDefinition(
-                id: new CardId('e198'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Abbau Überstunden',
-                description: 'Nach Jahren voller Überstunden gönnst du dir bewusst eine Auszeit und nutzt einen Monat für eine Reise durch Asien, um neue Energie zu tanken und deine Work-Life-Balance nachhaltig zu stärken.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e199" => new EreignisCardDefinition(
-                id: new CardId('e199'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Arbeitslosigkeit',
-                description: 'Du wirst wegen unentschuldigtem Fehlen fristlos gekündigt und verlierst dadurch dein Einkommen. Deine Arbeitslosigkeit verschafft dir nun mehr freie Zeit.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::JOBVERLUST,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e200" => new EreignisCardDefinition(
-                id: new CardId('e200'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Jobverlust',
-                description: 'Du hast dich mit deinem Team zerstritten und dich mit deiner Chefin auf einen Aufhebungsvertrag geeinigt. Damit verlierst du deinen aktuellen Job und bist zunächst arbeitslos.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::JOBVERLUST,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e201" => new EreignisCardDefinition(
-                id: new CardId('e201'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Krankheit',
-                description: 'Du erkrankst an einer Herzmuskelentzündung und liegst komplett flach. Du musst eine Runde aussetzen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                ),
-                modifierIds: [
-                    ModifierId::AUSSETZEN,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e202" => new EreignisCardDefinition(
-                id: new CardId('e202'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Krankheit',
-                description: 'Dein Kind hat Windpocken. Du musst eine Runde aussetzen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                ),
-                modifierIds: [
-                    ModifierId::AUSSETZEN,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e203" => new EreignisCardDefinition(
-                id: new CardId('e203'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Krankheit',
-                description: 'Dein Kind hat Läuse. Du musst eine Runde aussetzen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                ),
-                modifierIds: [
-                    ModifierId::AUSSETZEN,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e204" => new EreignisCardDefinition(
-                id: new CardId('e204'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Preis für soziales Engangement',
-                description: 'Glückwunsch zum Preis für dein soziales Engagement! Durch deinen Einsatz im Flüchtlingszentrum hast du zahlreichen Menschen geholfen, sich rasch zu integrieren.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e205" => new EreignisCardDefinition(
-                id: new CardId('e205'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'soziales Engagement',
-                description: 'Dein Chef schätzt dein soziales Engagement sehr und unterstützt deine Projekte gerne. Für das nächste Sommercamp erhältst du sofort Sonderurlaub.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e206" => new EreignisCardDefinition(
-                id: new CardId('e206'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Vorstandsarbeit in einem Verein',
-                description: 'Da sich niemand für deinen Vorstandsposten im Tennisverein findet, übernimmst du das Amt für eine weitere Periode.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('suf100'),
-                gewichtung: 5,
-            ),
-            "e207" => new EreignisCardDefinition(
-                id: new CardId('e207'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Haftpflichtversicherung',
-                description: 'Beim Besuch im Museum stößt du versehentlich ein wertvolles Kunstobjekt um. Im Falle einer abgeschlossenen Haftpflichtversicherung werden die Kosten für den Sachschaden übernommen.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-60000),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e208" => new EreignisCardDefinition(
-                id: new CardId('e208'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Familie',
-                description: 'Dein Kind wünscht sich den Besuch eines privaten Sportinternats. Das verursacht hohe Ausgaben, verschafft dir aber auch wertvolle neue Kontakte zu anderen Eltern.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-50000),
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_CHILD,
-                ],
-                gewichtung: 4,
-            ),
-            "e209" => new EreignisCardDefinition(
-                id: new CardId('e209'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Hochzeit',
-                description: 'Herzlichen Glückwunsch, du findest deine Partnerin fürs Leben. Euer besonderer Tag war ein großer Aufwand, aber mit deiner neu gegründeten Familie erlebst du großes Glück und erfüllte Zeiten.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-35000),
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_NO_CHILD,
-                ],
-                gewichtung: 10,
-            ),
-            "e210" => new EreignisCardDefinition(
-                id: new CardId('e210'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Haftpflichtversicherung',
-                description: 'Du schließt den Geschirrspüler selbst an, ein Schlauch platzt, und Wasser läuft in die Wohnung darunter. Bei abgeschlossener Haftpflichtversicherung werden die Kosten für den Sachschaden übernommen.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-25000),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e211" => new EreignisCardDefinition(
-                id: new CardId('e211'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Ferienlager in Übersee',
-                description: 'Du meldest dein Kind für ein Ferienlager im Ausland an. Die Reisekosten sind zwar hoch, aber du hast dadurch auch einmal Zeit für dich.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-24500),
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_CHILD,
-                ],
-                gewichtung: 4,
-            ),
-            "e212" => new EreignisCardDefinition(
-                id: new CardId('e212'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Haftpflichtversicherung',
-                description: 'Du lässt ein Handtuch über einer Stehlampe hängen – es fängt Feuer und beschädigt Teile des Hotelzimmers. Bei abgeschlossener Haftpflichtversicherung werden die Kosten für den Sachschaden übernommen.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-18000),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e213" => new EreignisCardDefinition(
-                id: new CardId('e213'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Haftpflichtversicherung',
-                description: '"Beim Volleyball beschädigst du versehentlich die Zahnprothese eines Mitspielers. Im Falle einer abgeschlossenen Haftpflichtversicherung werden die Kosten für den Ersatz übernommen."',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-12000),
-                ),
-                modifierIds: [
-                    ModifierId::HAFTPFLICHTVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('suf3'),
-                gewichtung: 4,
-            ),
-            "e214" => new EreignisCardDefinition(
-                id: new CardId('e214'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Rechtsstreit',
-                description: 'Die lauten Partys deiner Nachbarin beeinträchtigen dich erheblich, weshalb es zu einem Rechtsstreit kommt. Die daraus resultierenden Gerichtskosten musst du tragen.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-5000),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e215" => new EreignisCardDefinition(
-                id: new CardId('e215'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Einsatz für Demokratie',
-                description: 'Deine Informationsflyer zu demokratischen Werten kommen so gut an, dass du eine weitere Auflage drucken lässt. Die Druckkosten trägst du erneut selbst.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-2000),
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('suf153'),
-                gewichtung: 4,
-            ),
-            "e216" => new EreignisCardDefinition(
-                id: new CardId('e216'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Private Unfallversicherung',
-                description: 'Beim Streichen der Wände fällst du von der Leiter und brichst dir die Schulter. Im Falle einer abgeschlossenen privaten Unfallversicherung erhältst du eine einmalige Invaliditätsleistung.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(5500),
-                ),
-                modifierIds: [
-                    ModifierId::PRIVATE_UNFALLVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e217" => new EreignisCardDefinition(
-                id: new CardId('e217'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Private Unfallversicherung',
-                description: 'Beim Reinigen der Dachrinne fällst du auf den Rücken und brichst mehrere Wirbel. Bei privater Unfallversicherung bekommst du eine einmalige Invaliditätsleistung.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(10000),
-                ),
-                modifierIds: [
-                    ModifierId::PRIVATE_UNFALLVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e218" => new EreignisCardDefinition(
-                id: new CardId('e218'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Auszeichnung',
-                description: 'Weil du dich für sozial benachteiligte Menschen mit Beeinträchtigung engagierst und ihre gesellschaftliche Teilhabe förderst, wirst du mit einer bedeutenden Auszeichnung mit hoher Gewinnsumme geehrt.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(60000),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e219" => new EreignisCardDefinition(
-                id: new CardId('e219'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Arbeitszeitverkürzung',
-                description: 'Du kümmerst dich gleichzeitig um deine Kinder und deine Eltern. Um allen gerecht zu werden, reduzierst du dieses Jahr deine Arbeitszeit. Dein Bruttogehalt wird entsprechend angepasst.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:80,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                    EreignisPrerequisitesId::HAS_CHILD,
-                ],
-                gewichtung: 4,
-            ),
-            "e220" => new EreignisCardDefinition(
-                id: new CardId('e220'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Reduzierung Arbeitszeit',
-                description: 'Du planst eine mehrmonatige Reise durch Südamerika und reduzierst dafür dieses Jahr deine Arbeitszeit. Dein Gehalt wird entsprechend angepasst.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:80,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e221" => new EreignisCardDefinition(
-                id: new CardId('e221'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Verhalten Kind',
-                description: 'Dein Kind darf wegen aggressiven Verhaltens vorläufig nicht in den Kindergarten. Du betreust es selbst und reduzierst deine Arbeitszeit. Dein Gehalt passt sich an.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:75,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_CHILD,
-                ],
-                gewichtung: 4,
-            ),
-            "e222" => new EreignisCardDefinition(
-                id: new CardId('e222'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Arbeitszeitverkürzung',
-                description: 'Du kümmerst dich um ein Familienmitglied, das mehr Unterstützung braucht, und reduzierst für dieses Jahr deine Arbeitszeit. Dein Bruttogehalt passt sich entsprechend an.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:70,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e223" => new EreignisCardDefinition(
-                id: new CardId('e223'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Reduzierung Arbeitszeit',
-                description: 'Du nimmst dir bewusst Zeit für dein kreatives Projekt – egal ob Malen, Schreiben oder Musik. Deshalb reduzierst du deine Arbeitszeit. Dein Gehalt wird entsprechend angepasst.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:70,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e224" => new EreignisCardDefinition(
-                id: new CardId('e224'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Reduzierung Arbeitszeit',
-                description: 'Ein Familienmitglied benötigt mehr Unterstützung im Alltag. Du übernimmst einen Teil der Pflege und reduzierst deshalb deine Arbeitszeit. Dein Gehalt wird dementsprechend angepasst.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:60,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e225" => new EreignisCardDefinition(
-                id: new CardId('e225'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Lottogewinn',
-                description: '"Glückwunsch! Du hast beim Roulette den Jackpot geknackt und eine saftige Gewinnsumme erhalten. Jetzt kannst du dir große Wünsche erfüllen oder ordentlich feiern."',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(60000),
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e226" => new EreignisCardDefinition(
-                id: new CardId('e226'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Geburt',
-                description: 'Deine Tochter Elif ist geboren – herzlichen Glückwunsch! Ab jetzt zahlst du regelmäßig 10 % deines Bruttogehalts (mindestens 1.000 €). Außerdem fallen einmalig Kosten für die Erstausstattung an.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-1000),
-                    freizeitKompetenzsteinChange: +2,
-                ),
-                modifierIds: [
-                    ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER,
-                    ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyLebenshaltungskostenMultiplier:10,
-                    modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e227" => new EreignisCardDefinition(
-                id: new CardId('e227'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Geburt',
-                description: 'Deine Tochter Sophie ist geboren – herzlichen Glückwunsch! Ab jetzt zahlst du regelmäßig 10 % deines Bruttogehalts (mindestens 1.000 €). Außerdem fallen einmalig Kosten für die Erstausstattung an.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-1000),
-                    freizeitKompetenzsteinChange: +2,
-                ),
-                modifierIds: [
-                    ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER,
-                    ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyLebenshaltungskostenMultiplier:10,
-                    modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e228" => new EreignisCardDefinition(
-                id: new CardId('e228'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Instagramsucht',
-                description: 'Du fotografierst bei Treffen ständig und teilst alles sofort auf Instagram. Das stört deine Freunde, da es dir wichtiger scheint als der Moment. Das Posten raubt dir zudem viel Zeit.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e229" => new EreignisCardDefinition(
-                id: new CardId('e229'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Trennung',
-                description: 'Dein Partner beendet die Beziehung mit dir. Du fällst tief in ein Loch. Eine Runde aussetzten.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e230" => new EreignisCardDefinition(
-                id: new CardId('e230'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Sabbatjahr',
-                description: 'Für deine Weltreise nimmst du dir ein Sabbatjahr – auch wenn das bedeutet, dieses Jahr kein Gehalt zu bekommen.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +2,
-                ),
-                modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
-                ],
-                modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:0,
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e231" => new EreignisCardDefinition(
-                id: new CardId('e231'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Flow',
-                description: 'Dir geht gerade alles leicht von der Hand. ',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e232" => new EreignisCardDefinition(
-                id: new CardId('e232'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Geschenk',
-                description: 'Dein Partner bereitet eine Überraschung vor und entführt dich auf eine traumhafte Kreuzfahrt durch die Karibik.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e233" => new EreignisCardDefinition(
-                id: new CardId('e233'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Burn-Out',
-                description: 'Bei der Verfolgung deines Traums hast du die Pausen ganz vergessen. Um dich wieder zu erholen, gehst du in eine Rehaklinik. Setze eine Runde aus.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e234" => new EreignisCardDefinition(
-                id: new CardId('e234'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Streit mit der Familie ',
-                description: 'An Weihnachten gab es Streit mit deiner Schwester. Jetzt solltest du versuchen, die Beziehung wieder zu verbessern.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e235" => new EreignisCardDefinition(
-                id: new CardId('e235'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Krankheit',
-                description: 'Du musst dich einer dringenden Operation unterziehen und liegst komplett flach.Du musst eine Runde aussetzen.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                ),
-                modifierIds: [
-                    ModifierId::AUSSETZEN,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e236" => new EreignisCardDefinition(
-                id: new CardId('e236'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Chauffeurdienst',
-                description: 'Herzlichen Glückwunsch! Du hast bei einer Verlosung einen einjährigen Chauffeurdienst gewonnen. Dadurch bist du schneller bei Terminen und kannst deine Freizeit mehr genießen.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e237" => new EreignisCardDefinition(
-                id: new CardId('e237'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Freundschaft pflegen',
-                description: 'Aufgrund deines Jobs hast du deine Freundschaften nicht gepflegt. Das musst du dringend ändern!',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e238" => new EreignisCardDefinition(
-                id: new CardId('e238'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Geburtstagsparty',
-                description: 'Du organisierst eine Geburtstagsparty für Freunde und Familie. Das kostet dich viel Zeit.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e239" => new EreignisCardDefinition(
-                id: new CardId('e239'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Job kündigen und Weltreise',
-                description: 'Du kündigst deinen Job, um auf Reisen neue Wege zu entdecken – dadurch entfällt aber auch dein Einkommen.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::JOBVERLUST,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
-            "e240" => new EreignisCardDefinition(
-                id: new CardId('e240'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Abbau Überstunden',
-                description: 'Nach Jahren voller Überstunden gönnst du dir bewusst eine Auszeit und nutzt einen Monat für eine Reise durch Asien, um neue Energie zu tanken und deine Work-Life-Balance nachhaltig zu stärken.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e241" => new EreignisCardDefinition(
-                id: new CardId('e241'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Arbeitslosigkeit',
-                description: 'Du wirst wegen unentschuldigtem Fehlen fristlos gekündigt und bekommst kein Gehalt mehr. Durch die Arbeitslosigkeit gewinnst du jedoch mehr freie Zeit.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::JOBVERLUST,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e242" => new EreignisCardDefinition(
-                id: new CardId('e242'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Jobverlust',
-                description: 'Du hast dich mit deinem Team zerstritten und dich mit deiner Chefin auf einen Aufhebungsvertrag geeinigt. Damit verlierst du deinen aktuellen Job und bist zunächst arbeitslos.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::JOBVERLUST,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e243" => new EreignisCardDefinition(
-                id: new CardId('e243'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Preis für Umweltprojekt',
-                description: 'Herzlichen Glückwunsch! Du gewinnst den Preis für Integration. Mit deinem Projekt „Bienen in Schulen“ hast du viele Bienenhotels gebaut und Kindern die Bedeutung der Bienen erklärt.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e244" => new EreignisCardDefinition(
-                id: new CardId('e244'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'soziales Engagement',
-                description: 'Dein Chef schätzt dein soziales Engagement sehr und unterstützt deine Projekte gerne. Für das nächste Sommercamp erhältst du sofort Sonderurlaub.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    freizeitKompetenzsteinChange: +1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e245" => new EreignisCardDefinition(
-                id: new CardId('e245'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Vorstandsarbeit in einem Verein',
-                description: 'Da sich niemand für deinen Vorstandsposten im Tennisverein findet, übernimmst du das Amt für eine weitere Periode.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
-                ],
-                requiredCardId: new CardId('suf151'),
-                gewichtung: 4,
-            ),
-            "e246" => new EreignisCardDefinition(
-                id: new CardId('e246'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Flow',
-                description: 'Dir geht gerade alles leicht von der Hand. ',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
-            "e247" => new EreignisCardDefinition(
-                id: new CardId('e247'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Flow',
-                description: 'Dir geht gerade alles leicht von der Hand. ',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                ],
-                gewichtung: 1,
-            ),
+//            "e155" => new EreignisCardDefinition(
+//                id: new CardId('e155'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Gewinn E-Bike',
+//                description: 'Herzlichen Glückwunsch – du hast bei einer Verlosung ein E-Bike gewonnen! Damit kommst du künftig schneller zu deinen Terminen und kannst deine Freizeit noch entspannter genießen.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e156" => new EreignisCardDefinition(
+//                id: new CardId('e156'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Soziales Engagement',
+//                description: 'Dein Chef schätzt dein soziales Engagement sehr. Er unterstützt deine sozialen Projekte von Herzen und gewährt dir Sonderurlaub für das kommende Sommercamp.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(2),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e157" => new EreignisCardDefinition(
+//                id: new CardId('e157'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Krankheit',
+//                description: 'Du erkrankst an einer heftigen Influenza und liegst komplett flach. Du musst eine Runde aussetzen.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                ),
+//                modifierIds: [
+//                    ModifierId::AUSSETZEN,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e158" => new EreignisCardDefinition(
+//                id: new CardId('e158'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Abbau Überstunden',
+//                description: 'In den letzten Jahren hast du so fleißig gearbeitet, dass sich viele Überstunden angesammelt haben. Jetzt ist es an der Zeit, diese abzubauen. Du nimmst dir einen Monat frei und reist durch Asien.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e159" => new EreignisCardDefinition(
+//                id: new CardId('e159'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Jobverlust',
+//                description: 'Du hast dich mit deinem Team zerstritten und vereinbarst mit deiner Chefin einen Aufhebungsvertrag. Dadurch verlierst du deinen Job und bist vorerst arbeitslos.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::JOBVERLUST,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e160" => new EreignisCardDefinition(
+//                id: new CardId('e160'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Burn-Out',
+//                description: 'Bei der Verfolgung deines Traums hast du die Pausen völlig vergessen. Um dich zu erholen, gehst du in eine Rehaklinik.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e161" => new EreignisCardDefinition(
+//                id: new CardId('e161'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Nicht beantragter Urlaub',
+//                description: 'Du bekommst eine Magen-Darm-Grippe und kannst für eine Weile nichts essen. Du pausierst, um dich zu erholen, bevor du wieder weitermachen kannst.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(2),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::JOBVERLUST,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e162" => new EreignisCardDefinition(
+//                id: new CardId('e162'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Streit mit der Familie ',
+//                description: 'An Weihnachten hast du dich mit deiner Schwester zerstritten. Nun musst du die Wogen wieder glätten. Das kostet dich Zeit.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(2),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e163" => new EreignisCardDefinition(
+//                id: new CardId('e163'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Einsatz heimische Bienen',
+//                description: 'Dein Einsatz für den Schutz heimischer Bienenpopulation wird von dem deutschen Ehrenamtspreis ausgezeichnet.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(1),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e164" => new EreignisCardDefinition(
+//                id: new CardId('e164'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Vorstandsarbeit in einem Verein',
+//                description: 'Weil sich leider niemand sonst für den Vorstandsposten im Tennisverein zur Verfügung stellt, übernimmst du das Amt für eine weitere Amtszeit.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('suf47'),
+//                gewichtung: 4,
+//            ),
+//            "e165" => new EreignisCardDefinition(
+//                id: new CardId('e165'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Arbeitslosigkeit',
+//                description: 'Du wirst wegen unentschuldigtem Fehlen fristlos gekündigt und bekommst kein Gehalt mehr. Durch die Arbeitslosigkeit gewinnst du jedoch mehr freie Zeit.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e166" => new EreignisCardDefinition(
+//                id: new CardId('e166'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Preis für Integration',
+//                description: 'Herzlichen Glückwunsch zum Preis für Integration! Dein Projekt fördert nachhaltige Inklusion, indem es Jugendliche mit und ohne Beeinträchtigungen durch gemeinschaftlichen Sport zusammenbringt.',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::JOBVERLUST,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e167" => new EreignisCardDefinition(
+//                id: new CardId('e167'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Familie',
+//                description: 'Dein Kind wünscht sich den Besuch eines privaten Sportinternats. Das verursacht hohe Ausgaben, verschafft dir aber auch wertvolle neue Kontakte zu anderen Eltern.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-30000),
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_CHILD,
+//                ],
+//                gewichtung: 4,
+//            ),
+//            "e168" => new EreignisCardDefinition(
+//                id: new CardId('e168'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Private Nachhilfe',
+//                description: 'Um ihre schulischen Leistungen zu steigern, besuchen deine Kinder privaten Nachhilfeunterricht.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-28000),
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_CHILD,
+//                ],
+//                gewichtung: 4,
+//            ),
+//            "e169" => new EreignisCardDefinition(
+//                id: new CardId('e169'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Hochzeit',
+//                description: 'Herzlichen Glückwunsch, du findest deine Partnerin fürs Leben. Euer besonderer Tag war ein großer Aufwand, aber mit deiner neu gegründeten Familie erlebst du großes Glück und erfüllte Zeiten.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-25000),
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_NO_CHILD,
+//                ],
+//                gewichtung: 10,
+//            ),
+//            "e170" => new EreignisCardDefinition(
+//                id: new CardId('e170'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Bauernhof-KiTa',
+//                description: 'In der Bauernhof-Kita ist wieder Platz. Dein Kind wird liebevoll von qualifiziertem Personal begleitet und erlebt naturnahes Lernen, das Umweltbewusstsein, Bewegung und nachhaltige Werte fördert.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-9500),
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e171" => new EreignisCardDefinition(
+//                id: new CardId('e171'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Rechtsstreit',
+//                description: 'Die lauten Partys deiner Nachbarin beeinträchtigen dich erheblich, weshalb es zu einem Rechtsstreit kommt. Die daraus resultierenden Gerichtskosten musst du tragen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-2000),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e172" => new EreignisCardDefinition(
+//                id: new CardId('e172'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Einsatz für Demokratie',
+//                description: 'Deine Informationsflyer zu demokratischen Werten kommen so gut an, dass du eine weitere Auflage drucken lässt. Die Druckkosten trägst du erneut selbst.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-1000),
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('suf152'),
+//                gewichtung: 4,
+//            ),
+//            "e173" => new EreignisCardDefinition(
+//                id: new CardId('e173'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Private Unfallversicherung',
+//                description: 'Beim Sportklettern stürzt du und brichst dir den Arm mehrfach. Im Falle einer abgeschlossenen privaten Unfallversicherung erhältst du eine einmalige Invaliditätsleistung.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(8500),
+//                ),
+//                modifierIds: [
+//                    ModifierId::PRIVATE_UNFALLVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e174" => new EreignisCardDefinition(
+//                id: new CardId('e174'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Private Unfallversicherung',
+//                description: 'Du stürzt beim Inlineskaten und hast einen komplizierten Bruch. Im Falle einer abgeschlossenen privaten Unfallversicherung erhältst du eine einmalige Invaliditätsleistung.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(9000),
+//                ),
+//                modifierIds: [
+//                    ModifierId::PRIVATE_UNFALLVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e175" => new EreignisCardDefinition(
+//                id: new CardId('e175'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Arbeitszeitverkürzung',
+//                description: 'Um deinen Alltag zu entschleunigen und mehr Zeit zum Kochen, für Freunde und für die Natur zu haben, arbeitest du dieses Jahr nicht in Vollzeit. Dein Bruttogehalt sinkt entsprechend.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:60,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e176" => new EreignisCardDefinition(
+//                id: new CardId('e176'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Engagemenet Obdachlosenheim',
+//                description: 'Du verringerst dieses Jahr deine Arbeitszeit, um dich beim Aufbau eines Obdachlosenheims zu beteiligen. Dein Gehalt wird entsprechend angepasst.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:90,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e177" => new EreignisCardDefinition(
+//                id: new CardId('e177'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Reduzierung Arbeitszeit',
+//                description: 'Ein neues Tier zieht bei dir ein und braucht viel Aufmerksamkeit. Du reduzierst deine Arbeitszeit, dein Gehalt verringert sich entsprechend.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:80,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e178" => new EreignisCardDefinition(
+//                id: new CardId('e178'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Verhalten Kind',
+//                description: 'Wegen aggressivem Verhalten ist dein Kind vorübergehend aus dem Kindergarten ausgeschlossen. Du betreust es selbst und arbeitest weniger, dein Gehalt sinkt.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:75,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_CHILD,
+//                ],
+//                gewichtung: 4,
+//            ),
+//            "e179" => new EreignisCardDefinition(
+//                id: new CardId('e179'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Reduzierung Arbeitszeit',
+//                description: 'Du betreust parallel deine Kinder und deine Eltern. Deshalb verringerst du deine Arbeitszeit, was sich auch auf dein Gehalt auswirkt.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:70,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_CHILD,
+//                ],
+//                gewichtung: 4,
+//            ),
+//            "e180" => new EreignisCardDefinition(
+//                id: new CardId('e180'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'persönliche Assistentin',
+//                description: 'Du stellst eine persönliche Assistentin ein, die dich nachhaltig bei deinen beruflichen Aufgaben unterstützt. Du investierst in diese Rolle, um Arbeit und Effizienz langfristig zu verbessern.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:70,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e181" => new EreignisCardDefinition(
+//                id: new CardId('e181'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Reduzierung Arbeitszeit',
+//                description: 'Ein Familienmitglied benötigt mehr Unterstützung im Alltag. Du übernimmst einen Teil der Pflege und reduzierst deshalb deine Arbeitszeit. Dein Gehalt wird dementsprechend angepasst.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:60,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e182" => new EreignisCardDefinition(
+//                id: new CardId('e182'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Lottogewinn',
+//                description: 'Herzlichen Glückwunsch zum Lottogewinn! Du darfst dich über eine hohe Gewinnsumme freuen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(40000),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e183" => new EreignisCardDefinition(
+//                id: new CardId('e183'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Auszeichnung',
+//                description: 'Du setzt dich für sozial benachteiligte Menschen mit Beeinträchtigung ein und unterstützt ihre Teilhabe am gesellschaftlichen Leben. Dafür bekommst du eine Auszeichnung.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(50000),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e184" => new EreignisCardDefinition(
+//                id: new CardId('e184'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Geburt',
+//                description: 'Dein Sohn Liam ist geboren – herzlichen Glückwunsch! Ab jetzt zahlst du regelmäßig 10 % deines Bruttogehalts (mindestens 1.000 €). Außerdem fallen einmalig Kosten für die Erstausstattung an.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-1000),
+//                    freizeitKompetenzsteinChange: +2,
+//                ),
+//                modifierIds: [
+//                    ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER,
+//                    ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyLebenshaltungskostenMultiplier:10,
+//                    modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e185" => new EreignisCardDefinition(
+//                id: new CardId('e185'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Geburt',
+//                description: 'Dein Sohn Ali ist geboren – herzlichen Glückwunsch! Ab jetzt zahlst du regelmäßig 10 % deines Bruttogehalts (mindestens 1.000 €). Außerdem fallen einmalig Kosten für die Erstausstattung an.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-1000),
+//                    freizeitKompetenzsteinChange: +2,
+//                ),
+//                modifierIds: [
+//                    ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER,
+//                    ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyLebenshaltungskostenMultiplier:10,
+//                    modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e186" => new EreignisCardDefinition(
+//                id: new CardId('e186'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Beziehungskrise',
+//                description: 'Du nimmst eine Paartherapie in Anspruch, um deine Beziehung zu retten – was bei den Obamas erfolgreich war, kann auch euch unterstützen. Allerdings bleibt dir dadurch vorerst weniger Zeit.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('e169'),
+//                gewichtung: 4,
+//            ),
+//            "e187" => new EreignisCardDefinition(
+//                id: new CardId('e187'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Handysucht',
+//                description: 'Du verbringst bei Treffen mit Freundinnen  viel Zeit am Handy. Das stört sie und führt dazu, dass du immer mehr ausgegrenzt wirst. Die alten Freundschaften wiederherzustellen, braucht Zeit.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e188" => new EreignisCardDefinition(
+//                id: new CardId('e188'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Trennung',
+//                description: 'Dein Partner beendet die Beziehung mit dir. Du fällst tief in ein Loch. Eine Runde aussetzten.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                ),
+//                modifierIds: [
+//                    ModifierId::AUSSETZEN,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e189" => new EreignisCardDefinition(
+//                id: new CardId('e189'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Freundschaft pflegen',
+//                description: 'Aufgrund deines Jobs hast du deine Freundschaften nicht gepflegt. Das musst du dringend ändern!',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e190" => new EreignisCardDefinition(
+//                id: new CardId('e190'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Sabbatjahr',
+//                description: 'Für deine Weltreise nimmst du dir ein Sabbatjahr – auch wenn das bedeutet, dieses Jahr kein Gehalt zu bekommen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +2,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:0,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e191" => new EreignisCardDefinition(
+//                id: new CardId('e191'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Geschenk',
+//                description: 'Deine beste Freundin organisiert eine Überraschung und schenkt dir ein Wellness-Wochenende in Südtirol.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e192" => new EreignisCardDefinition(
+//                id: new CardId('e192'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Burn-Out',
+//                description: 'Bei der Verfolgung deines Traums hast du die Pausen ganz vergessen. Um dich wieder zu erholen, gehst du in eine Rehaklinik. Setze eine Runde aus.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                ),
+//                modifierIds: [
+//                    ModifierId::AUSSETZEN,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e193" => new EreignisCardDefinition(
+//                id: new CardId('e193'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Geburtstagsparty',
+//                description: 'Du organisierst eine Geburtstagsparty für Freunde und Familie. Das kostet dich viel Zeit.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e194" => new EreignisCardDefinition(
+//                id: new CardId('e194'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Streit mit der Familie ',
+//                description: 'An Weihnachten gab es Streit mit deiner Schwester. Jetzt solltest du versuchen, die Beziehung wieder zu verbessern.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e195" => new EreignisCardDefinition(
+//                id: new CardId('e195'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Gewinn E-Roller',
+//                description: 'Herzlichen Glückwunsch! Du hast bei einer Verlosung einen E-Roller gewonnen. Damit bist du schneller bei Terminen und kannst deine Freizeit ausgiebig genießen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e196" => new EreignisCardDefinition(
+//                id: new CardId('e196'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Krankheit',
+//                description: 'Du erkrankst an einer Herzmuskelentzündung und liegst komplett flach. Du musst eine Runde aussetzen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                ),
+//                modifierIds: [
+//                    ModifierId::AUSSETZEN,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e197" => new EreignisCardDefinition(
+//                id: new CardId('e197'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Job kündigen und Weltreise',
+//                description: 'Du kündigst deinen Job, um auf Reisen neue Wege zu entdecken – dadurch entfällt aber auch dein Einkommen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::JOBVERLUST,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e198" => new EreignisCardDefinition(
+//                id: new CardId('e198'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Abbau Überstunden',
+//                description: 'Nach Jahren voller Überstunden gönnst du dir bewusst eine Auszeit und nutzt einen Monat für eine Reise durch Asien, um neue Energie zu tanken und deine Work-Life-Balance nachhaltig zu stärken.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e199" => new EreignisCardDefinition(
+//                id: new CardId('e199'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Arbeitslosigkeit',
+//                description: 'Du wirst wegen unentschuldigtem Fehlen fristlos gekündigt und verlierst dadurch dein Einkommen. Deine Arbeitslosigkeit verschafft dir nun mehr freie Zeit.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::JOBVERLUST,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e200" => new EreignisCardDefinition(
+//                id: new CardId('e200'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Jobverlust',
+//                description: 'Du hast dich mit deinem Team zerstritten und dich mit deiner Chefin auf einen Aufhebungsvertrag geeinigt. Damit verlierst du deinen aktuellen Job und bist zunächst arbeitslos.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::JOBVERLUST,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e201" => new EreignisCardDefinition(
+//                id: new CardId('e201'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Krankheit',
+//                description: 'Du erkrankst an einer Herzmuskelentzündung und liegst komplett flach. Du musst eine Runde aussetzen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                ),
+//                modifierIds: [
+//                    ModifierId::AUSSETZEN,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e202" => new EreignisCardDefinition(
+//                id: new CardId('e202'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Krankheit',
+//                description: 'Dein Kind hat Windpocken. Du musst eine Runde aussetzen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                ),
+//                modifierIds: [
+//                    ModifierId::AUSSETZEN,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e203" => new EreignisCardDefinition(
+//                id: new CardId('e203'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Krankheit',
+//                description: 'Dein Kind hat Läuse. Du musst eine Runde aussetzen.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                ),
+//                modifierIds: [
+//                    ModifierId::AUSSETZEN,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e204" => new EreignisCardDefinition(
+//                id: new CardId('e204'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Preis für soziales Engangement',
+//                description: 'Glückwunsch zum Preis für dein soziales Engagement! Durch deinen Einsatz im Flüchtlingszentrum hast du zahlreichen Menschen geholfen, sich rasch zu integrieren.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e205" => new EreignisCardDefinition(
+//                id: new CardId('e205'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'soziales Engagement',
+//                description: 'Dein Chef schätzt dein soziales Engagement sehr und unterstützt deine Projekte gerne. Für das nächste Sommercamp erhältst du sofort Sonderurlaub.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e206" => new EreignisCardDefinition(
+//                id: new CardId('e206'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Vorstandsarbeit in einem Verein',
+//                description: 'Da sich niemand für deinen Vorstandsposten im Tennisverein findet, übernimmst du das Amt für eine weitere Periode.',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('suf100'),
+//                gewichtung: 5,
+//            ),
+//            "e207" => new EreignisCardDefinition(
+//                id: new CardId('e207'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Beim Besuch im Museum stößt du versehentlich ein wertvolles Kunstobjekt um. Im Falle einer abgeschlossenen Haftpflichtversicherung werden die Kosten für den Sachschaden übernommen.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-60000),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e208" => new EreignisCardDefinition(
+//                id: new CardId('e208'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Familie',
+//                description: 'Dein Kind wünscht sich den Besuch eines privaten Sportinternats. Das verursacht hohe Ausgaben, verschafft dir aber auch wertvolle neue Kontakte zu anderen Eltern.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-50000),
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_CHILD,
+//                ],
+//                gewichtung: 4,
+//            ),
+//            "e209" => new EreignisCardDefinition(
+//                id: new CardId('e209'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Hochzeit',
+//                description: 'Herzlichen Glückwunsch, du findest deine Partnerin fürs Leben. Euer besonderer Tag war ein großer Aufwand, aber mit deiner neu gegründeten Familie erlebst du großes Glück und erfüllte Zeiten.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-35000),
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_NO_CHILD,
+//                ],
+//                gewichtung: 10,
+//            ),
+//            "e210" => new EreignisCardDefinition(
+//                id: new CardId('e210'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Du schließt den Geschirrspüler selbst an, ein Schlauch platzt, und Wasser läuft in die Wohnung darunter. Bei abgeschlossener Haftpflichtversicherung werden die Kosten für den Sachschaden übernommen.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-25000),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e211" => new EreignisCardDefinition(
+//                id: new CardId('e211'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Ferienlager in Übersee',
+//                description: 'Du meldest dein Kind für ein Ferienlager im Ausland an. Die Reisekosten sind zwar hoch, aber du hast dadurch auch einmal Zeit für dich.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-24500),
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_CHILD,
+//                ],
+//                gewichtung: 4,
+//            ),
+//            "e212" => new EreignisCardDefinition(
+//                id: new CardId('e212'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Haftpflichtversicherung',
+//                description: 'Du lässt ein Handtuch über einer Stehlampe hängen – es fängt Feuer und beschädigt Teile des Hotelzimmers. Bei abgeschlossener Haftpflichtversicherung werden die Kosten für den Sachschaden übernommen.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-18000),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e213" => new EreignisCardDefinition(
+//                id: new CardId('e213'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Haftpflichtversicherung',
+//                description: '"Beim Volleyball beschädigst du versehentlich die Zahnprothese eines Mitspielers. Im Falle einer abgeschlossenen Haftpflichtversicherung werden die Kosten für den Ersatz übernommen."',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-12000),
+//                ),
+//                modifierIds: [
+//                    ModifierId::HAFTPFLICHTVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('suf3'),
+//                gewichtung: 4,
+//            ),
+//            "e214" => new EreignisCardDefinition(
+//                id: new CardId('e214'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Rechtsstreit',
+//                description: 'Die lauten Partys deiner Nachbarin beeinträchtigen dich erheblich, weshalb es zu einem Rechtsstreit kommt. Die daraus resultierenden Gerichtskosten musst du tragen.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-5000),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e215" => new EreignisCardDefinition(
+//                id: new CardId('e215'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Einsatz für Demokratie',
+//                description: 'Deine Informationsflyer zu demokratischen Werten kommen so gut an, dass du eine weitere Auflage drucken lässt. Die Druckkosten trägst du erneut selbst.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-2000),
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('suf153'),
+//                gewichtung: 4,
+//            ),
+//            "e216" => new EreignisCardDefinition(
+//                id: new CardId('e216'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Private Unfallversicherung',
+//                description: 'Beim Streichen der Wände fällst du von der Leiter und brichst dir die Schulter. Im Falle einer abgeschlossenen privaten Unfallversicherung erhältst du eine einmalige Invaliditätsleistung.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(5500),
+//                ),
+//                modifierIds: [
+//                    ModifierId::PRIVATE_UNFALLVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e217" => new EreignisCardDefinition(
+//                id: new CardId('e217'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Private Unfallversicherung',
+//                description: 'Beim Reinigen der Dachrinne fällst du auf den Rücken und brichst mehrere Wirbel. Bei privater Unfallversicherung bekommst du eine einmalige Invaliditätsleistung.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(10000),
+//                ),
+//                modifierIds: [
+//                    ModifierId::PRIVATE_UNFALLVERSICHERUNG,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e218" => new EreignisCardDefinition(
+//                id: new CardId('e218'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Auszeichnung',
+//                description: 'Weil du dich für sozial benachteiligte Menschen mit Beeinträchtigung engagierst und ihre gesellschaftliche Teilhabe förderst, wirst du mit einer bedeutenden Auszeichnung mit hoher Gewinnsumme geehrt.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(60000),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e219" => new EreignisCardDefinition(
+//                id: new CardId('e219'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Arbeitszeitverkürzung',
+//                description: 'Du kümmerst dich gleichzeitig um deine Kinder und deine Eltern. Um allen gerecht zu werden, reduzierst du dieses Jahr deine Arbeitszeit. Dein Bruttogehalt wird entsprechend angepasst.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:80,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                    EreignisPrerequisitesId::HAS_CHILD,
+//                ],
+//                gewichtung: 4,
+//            ),
+//            "e220" => new EreignisCardDefinition(
+//                id: new CardId('e220'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Reduzierung Arbeitszeit',
+//                description: 'Du planst eine mehrmonatige Reise durch Südamerika und reduzierst dafür dieses Jahr deine Arbeitszeit. Dein Gehalt wird entsprechend angepasst.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:80,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e221" => new EreignisCardDefinition(
+//                id: new CardId('e221'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Verhalten Kind',
+//                description: 'Dein Kind darf wegen aggressiven Verhaltens vorläufig nicht in den Kindergarten. Du betreust es selbst und reduzierst deine Arbeitszeit. Dein Gehalt passt sich an.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:75,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_CHILD,
+//                ],
+//                gewichtung: 4,
+//            ),
+//            "e222" => new EreignisCardDefinition(
+//                id: new CardId('e222'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Arbeitszeitverkürzung',
+//                description: 'Du kümmerst dich um ein Familienmitglied, das mehr Unterstützung braucht, und reduzierst für dieses Jahr deine Arbeitszeit. Dein Bruttogehalt passt sich entsprechend an.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:70,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e223" => new EreignisCardDefinition(
+//                id: new CardId('e223'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Reduzierung Arbeitszeit',
+//                description: 'Du nimmst dir bewusst Zeit für dein kreatives Projekt – egal ob Malen, Schreiben oder Musik. Deshalb reduzierst du deine Arbeitszeit. Dein Gehalt wird entsprechend angepasst.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:70,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e224" => new EreignisCardDefinition(
+//                id: new CardId('e224'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Reduzierung Arbeitszeit',
+//                description: 'Ein Familienmitglied benötigt mehr Unterstützung im Alltag. Du übernimmst einen Teil der Pflege und reduzierst deshalb deine Arbeitszeit. Dein Gehalt wird dementsprechend angepasst.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:60,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e225" => new EreignisCardDefinition(
+//                id: new CardId('e225'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Lottogewinn',
+//                description: '"Glückwunsch! Du hast beim Roulette den Jackpot geknackt und eine saftige Gewinnsumme erhalten. Jetzt kannst du dir große Wünsche erfüllen oder ordentlich feiern."',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(60000),
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e226" => new EreignisCardDefinition(
+//                id: new CardId('e226'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Geburt',
+//                description: 'Deine Tochter Elif ist geboren – herzlichen Glückwunsch! Ab jetzt zahlst du regelmäßig 10 % deines Bruttogehalts (mindestens 1.000 €). Außerdem fallen einmalig Kosten für die Erstausstattung an.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-1000),
+//                    freizeitKompetenzsteinChange: +2,
+//                ),
+//                modifierIds: [
+//                    ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER,
+//                    ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyLebenshaltungskostenMultiplier:10,
+//                    modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e227" => new EreignisCardDefinition(
+//                id: new CardId('e227'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Geburt',
+//                description: 'Deine Tochter Sophie ist geboren – herzlichen Glückwunsch! Ab jetzt zahlst du regelmäßig 10 % deines Bruttogehalts (mindestens 1.000 €). Außerdem fallen einmalig Kosten für die Erstausstattung an.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    guthabenChange: new MoneyAmount(-1000),
+//                    freizeitKompetenzsteinChange: +2,
+//                ),
+//                modifierIds: [
+//                    ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER,
+//                    ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyLebenshaltungskostenMultiplier:10,
+//                    modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e228" => new EreignisCardDefinition(
+//                id: new CardId('e228'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Instagramsucht',
+//                description: 'Du fotografierst bei Treffen ständig und teilst alles sofort auf Instagram. Das stört deine Freunde, da es dir wichtiger scheint als der Moment. Das Posten raubt dir zudem viel Zeit.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e229" => new EreignisCardDefinition(
+//                id: new CardId('e229'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Trennung',
+//                description: 'Dein Partner beendet die Beziehung mit dir. Du fällst tief in ein Loch. Eine Runde aussetzten.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e230" => new EreignisCardDefinition(
+//                id: new CardId('e230'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Sabbatjahr',
+//                description: 'Für deine Weltreise nimmst du dir ein Sabbatjahr – auch wenn das bedeutet, dieses Jahr kein Gehalt zu bekommen.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +2,
+//                ),
+//                modifierIds: [
+//                    ModifierId::GEHALT_CHANGE,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                    modifyGehaltPercent:0,
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e231" => new EreignisCardDefinition(
+//                id: new CardId('e231'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Flow',
+//                description: 'Dir geht gerade alles leicht von der Hand. ',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e232" => new EreignisCardDefinition(
+//                id: new CardId('e232'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Geschenk',
+//                description: 'Dein Partner bereitet eine Überraschung vor und entführt dich auf eine traumhafte Kreuzfahrt durch die Karibik.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e233" => new EreignisCardDefinition(
+//                id: new CardId('e233'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Burn-Out',
+//                description: 'Bei der Verfolgung deines Traums hast du die Pausen ganz vergessen. Um dich wieder zu erholen, gehst du in eine Rehaklinik. Setze eine Runde aus.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e234" => new EreignisCardDefinition(
+//                id: new CardId('e234'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Streit mit der Familie ',
+//                description: 'An Weihnachten gab es Streit mit deiner Schwester. Jetzt solltest du versuchen, die Beziehung wieder zu verbessern.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e235" => new EreignisCardDefinition(
+//                id: new CardId('e235'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Krankheit',
+//                description: 'Du musst dich einer dringenden Operation unterziehen und liegst komplett flach.Du musst eine Runde aussetzen.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                ),
+//                modifierIds: [
+//                    ModifierId::AUSSETZEN,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e236" => new EreignisCardDefinition(
+//                id: new CardId('e236'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Chauffeurdienst',
+//                description: 'Herzlichen Glückwunsch! Du hast bei einer Verlosung einen einjährigen Chauffeurdienst gewonnen. Dadurch bist du schneller bei Terminen und kannst deine Freizeit mehr genießen.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e237" => new EreignisCardDefinition(
+//                id: new CardId('e237'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Freundschaft pflegen',
+//                description: 'Aufgrund deines Jobs hast du deine Freundschaften nicht gepflegt. Das musst du dringend ändern!',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e238" => new EreignisCardDefinition(
+//                id: new CardId('e238'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Geburtstagsparty',
+//                description: 'Du organisierst eine Geburtstagsparty für Freunde und Familie. Das kostet dich viel Zeit.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e239" => new EreignisCardDefinition(
+//                id: new CardId('e239'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Job kündigen und Weltreise',
+//                description: 'Du kündigst deinen Job, um auf Reisen neue Wege zu entdecken – dadurch entfällt aber auch dein Einkommen.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::JOBVERLUST,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_JOB,
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e240" => new EreignisCardDefinition(
+//                id: new CardId('e240'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Abbau Überstunden',
+//                description: 'Nach Jahren voller Überstunden gönnst du dir bewusst eine Auszeit und nutzt einen Monat für eine Reise durch Asien, um neue Energie zu tanken und deine Work-Life-Balance nachhaltig zu stärken.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e241" => new EreignisCardDefinition(
+//                id: new CardId('e241'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Arbeitslosigkeit',
+//                description: 'Du wirst wegen unentschuldigtem Fehlen fristlos gekündigt und bekommst kein Gehalt mehr. Durch die Arbeitslosigkeit gewinnst du jedoch mehr freie Zeit.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::JOBVERLUST,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e242" => new EreignisCardDefinition(
+//                id: new CardId('e242'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Jobverlust',
+//                description: 'Du hast dich mit deinem Team zerstritten und dich mit deiner Chefin auf einen Aufhebungsvertrag geeinigt. Damit verlierst du deinen aktuellen Job und bist zunächst arbeitslos.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                    ModifierId::JOBVERLUST,
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e243" => new EreignisCardDefinition(
+//                id: new CardId('e243'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Preis für Umweltprojekt',
+//                description: 'Herzlichen Glückwunsch! Du gewinnst den Preis für Integration. Mit deinem Projekt „Bienen in Schulen“ hast du viele Bienenhotels gebaut und Kindern die Bedeutung der Bienen erklärt.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e244" => new EreignisCardDefinition(
+//                id: new CardId('e244'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'soziales Engagement',
+//                description: 'Dein Chef schätzt dein soziales Engagement sehr und unterstützt deine Projekte gerne. Für das nächste Sommercamp erhältst du sofort Sonderurlaub.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    freizeitKompetenzsteinChange: +1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e245" => new EreignisCardDefinition(
+//                id: new CardId('e245'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Vorstandsarbeit in einem Verein',
+//                description: 'Da sich niemand für deinen Vorstandsposten im Tennisverein findet, übernimmst du das Amt für eine weitere Periode.',
+//                phaseId: LebenszielPhaseId::PHASE_3,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: -1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+//                ],
+//                requiredCardId: new CardId('suf151'),
+//                gewichtung: 4,
+//            ),
+//            "e246" => new EreignisCardDefinition(
+//                id: new CardId('e246'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Flow',
+//                description: 'Dir geht gerade alles leicht von der Hand. ',
+//                phaseId: LebenszielPhaseId::PHASE_2,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
+//            "e247" => new EreignisCardDefinition(
+//                id: new CardId('e247'),
+//                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+//                title: 'Flow',
+//                description: 'Dir geht gerade alles leicht von der Hand. ',
+//                phaseId: LebenszielPhaseId::PHASE_1,
+//                year: new Year(3),
+//                resourceChanges: new ResourceChanges(
+//                    zeitsteineChange: 1,
+//                ),
+//                modifierIds: [
+//                ],
+//                modifierParameters: new ModifierParameters(
+//                ),
+//                ereignisRequirementIds: [
+//                ],
+//                gewichtung: 1,
+//            ),
             "wb1" => new WeiterbildungCardDefinition(
                 id: new CardId('wb1'),
                 description: 'Welche handlungspolitische Maßnahme dient dem Schutz der heimischen Wirtschauft vor ausländischer Konkurrenz? ',
