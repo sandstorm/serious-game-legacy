@@ -49,7 +49,7 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
     private function doesTrigger(): bool
     {
         // @phpstan-ignore disallowed.function
-        return rand(1, 4) === 1;
+        return true;
     }
 
     private function getRandomEreignisForCategory(
