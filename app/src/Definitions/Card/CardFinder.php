@@ -3687,7 +3687,7 @@ final class CardFinder
             "j1" => new JobCardDefinition(
                 id: new CardId('j1'),
                 title: 'freiwilliges Praktikum',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
                 gehalt: new MoneyAmount(+12000),
@@ -3700,7 +3700,7 @@ final class CardFinder
             "j2" => new JobCardDefinition(
                 id: new CardId('j2'),
                 title: 'Duales Studium',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
                 gehalt: new MoneyAmount(+14000),
@@ -3713,7 +3713,7 @@ final class CardFinder
             "j3" => new JobCardDefinition(
                 id: new CardId('j3'),
                 title: 'Duale Ausbildung',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
                 gehalt: new MoneyAmount(+15000),
@@ -3726,7 +3726,7 @@ final class CardFinder
             "j4" => new JobCardDefinition(
                 id: new CardId('j4'),
                 title: 'Fachkraft für Fischerei',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
                 gehalt: new MoneyAmount(+16000),
@@ -3739,7 +3739,7 @@ final class CardFinder
             "j5" => new JobCardDefinition(
                 id: new CardId('j5'),
                 title: 'Küchenhilfspersonal',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
                 gehalt: new MoneyAmount(+16500),
@@ -3752,7 +3752,7 @@ final class CardFinder
             "j6" => new JobCardDefinition(
                 id: new CardId('j6'),
                 title: 'Barpersonal',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
                 gehalt: new MoneyAmount(+17900),
@@ -3765,7 +3765,7 @@ final class CardFinder
             "j7" => new JobCardDefinition(
                 id: new CardId('j7'),
                 title: 'Mitarbeitende im Call-Center',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
                 gehalt: new MoneyAmount(+17500),
@@ -3778,7 +3778,7 @@ final class CardFinder
             "j8" => new JobCardDefinition(
                 id: new CardId('j8'),
                 title: 'Entsorgungsfachkraft',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
                 gehalt: new MoneyAmount(+17000),
@@ -3791,7 +3791,7 @@ final class CardFinder
             "j9" => new JobCardDefinition(
                 id: new CardId('j9'),
                 title: 'Fahrpersonal Taxi',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
                 gehalt: new MoneyAmount(+18700),
@@ -3804,7 +3804,7 @@ final class CardFinder
             "j10" => new JobCardDefinition(
                 id: new CardId('j10'),
                 title: 'Gebäudereinigungsfachkraft',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
                 gehalt: new MoneyAmount(+18200),
@@ -3817,7 +3817,7 @@ final class CardFinder
             "j11" => new JobCardDefinition(
                 id: new CardId('j11'),
                 title: 'Fachkraft für Hauswirtschaft',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+18400),
@@ -3830,7 +3830,7 @@ final class CardFinder
             "j12" => new JobCardDefinition(
                 id: new CardId('j12'),
                 title: 'Zustellpersonal',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
                 gehalt: new MoneyAmount(+19000),
@@ -3843,7 +3843,7 @@ final class CardFinder
             "j13" => new JobCardDefinition(
                 id: new CardId('j13'),
                 title: 'Friseurfachkraft',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
                 gehalt: new MoneyAmount(+21800),
@@ -3856,7 +3856,7 @@ final class CardFinder
             "j14" => new JobCardDefinition(
                 id: new CardId('j14'),
                 title: 'Fachkraft für Malerei',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
                 gehalt: new MoneyAmount(+22000),
@@ -3869,7 +3869,7 @@ final class CardFinder
             "j15" => new JobCardDefinition(
                 id: new CardId('j15'),
                 title: 'Fachkraft für Lackierung',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
                 gehalt: new MoneyAmount(+22000),
@@ -3882,7 +3882,7 @@ final class CardFinder
             "j16" => new JobCardDefinition(
                 id: new CardId('j16'),
                 title: 'Medizinisches Assistenzpersonal',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
                 gehalt: new MoneyAmount(+22500),
@@ -3895,7 +3895,7 @@ final class CardFinder
             "j17" => new JobCardDefinition(
                 id: new CardId('j17'),
                 title: 'Hotelfachkraft',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
                 gehalt: new MoneyAmount(+22800),
@@ -3908,7 +3908,7 @@ final class CardFinder
             "j18" => new JobCardDefinition(
                 id: new CardId('j18'),
                 title: 'Fachkraft Kosmetik',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
                 gehalt: new MoneyAmount(+23000),
@@ -3921,7 +3921,7 @@ final class CardFinder
             "j19" => new JobCardDefinition(
                 id: new CardId('j19'),
                 title: 'Zahnmedizinisches Fachpersonal',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+23500),
@@ -3934,7 +3934,7 @@ final class CardFinder
             "j20" => new JobCardDefinition(
                 id: new CardId('j20'),
                 title: 'Fachkraft für Fliesen-, Platten und Mosaikarbeiten',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+24000),
@@ -3947,7 +3947,7 @@ final class CardFinder
             "j21" => new JobCardDefinition(
                 id: new CardId('j21'),
                 title: 'Pflegefachkraft',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+25000),
@@ -3960,7 +3960,7 @@ final class CardFinder
             "j22" => new JobCardDefinition(
                 id: new CardId('j22'),
                 title: 'Verkaufspersonal',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+25500),
@@ -3973,7 +3973,7 @@ final class CardFinder
             "j23" => new JobCardDefinition(
                 id: new CardId('j23'),
                 title: 'Verwaltungsfachkraft',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+25000),
@@ -3986,7 +3986,7 @@ final class CardFinder
             "j24" => new JobCardDefinition(
                 id: new CardId('j24'),
                 title: 'Verkaufsfachkraft im KfZ-Bereich',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+26000),
@@ -3999,7 +3999,7 @@ final class CardFinder
             "j25" => new JobCardDefinition(
                 id: new CardId('j25'),
                 title: 'Industriekauffrau/-mann',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+26500),
@@ -4012,7 +4012,7 @@ final class CardFinder
             "j26" => new JobCardDefinition(
                 id: new CardId('j26'),
                 title: 'Einzelhandelsfachkraft',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+26100),
@@ -4025,7 +4025,7 @@ final class CardFinder
             "j27" => new JobCardDefinition(
                 id: new CardId('j27'),
                 title: 'Buchhandelsfachkraft',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+27000),
@@ -4038,7 +4038,7 @@ final class CardFinder
             "j28" => new JobCardDefinition(
                 id: new CardId('j28'),
                 title: 'Fachkraft für Immobilienwirtschaft',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+27500),
@@ -4051,7 +4051,7 @@ final class CardFinder
             "j29" => new JobCardDefinition(
                 id: new CardId('j29'),
                 title: 'Person im Fahrdienst',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+28000),
@@ -4064,7 +4064,7 @@ final class CardFinder
             "j30" => new JobCardDefinition(
                 id: new CardId('j30'),
                 title: 'Fachkraft im Bäckerhandwerk',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+28200),
@@ -4077,7 +4077,7 @@ final class CardFinder
             "j31" => new JobCardDefinition(
                 id: new CardId('j31'),
                 title: 'Forstmanagement',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+28800),
@@ -4090,7 +4090,7 @@ final class CardFinder
             "j32" => new JobCardDefinition(
                 id: new CardId('j32'),
                 title: 'Kaufmännische Fachkraft im Büromanagenent ',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+28500),
@@ -4103,7 +4103,7 @@ final class CardFinder
             "j33" => new JobCardDefinition(
                 id: new CardId('j33'),
                 title: 'Kfz-Mechatronikfachkraft',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+28300),
@@ -4116,7 +4116,7 @@ final class CardFinder
             "j34" => new JobCardDefinition(
                 id: new CardId('j34'),
                 title: 'Zahntechnische Fachkraft',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+29000),
@@ -4129,7 +4129,7 @@ final class CardFinder
             "j35" => new JobCardDefinition(
                 id: new CardId('j35'),
                 title: 'Empfangspersonal',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+29500),
@@ -4142,7 +4142,7 @@ final class CardFinder
             "j36" => new JobCardDefinition(
                 id: new CardId('j36'),
                 title: 'Mechatronikfachkraft',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+30000),
@@ -4155,7 +4155,7 @@ final class CardFinder
             "j37" => new JobCardDefinition(
                 id: new CardId('j37'),
                 title: 'Pädagogische Fachkraft im Bereich Kindererziehung',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+30000),
@@ -4168,7 +4168,7 @@ final class CardFinder
             "j38" => new JobCardDefinition(
                 id: new CardId('j38'),
                 title: 'Leitung der Küche',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+30500),
@@ -4181,7 +4181,7 @@ final class CardFinder
             "j39" => new JobCardDefinition(
                 id: new CardId('j39'),
                 title: 'Meisterin im Schreinerhandwerk',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+32000),
@@ -4194,7 +4194,7 @@ final class CardFinder
             "j40" => new JobCardDefinition(
                 id: new CardId('j40'),
                 title: 'Fachkraft für Umwelttechnologie',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+32000),
@@ -4207,7 +4207,7 @@ final class CardFinder
             "j41" => new JobCardDefinition(
                 id: new CardId('j41'),
                 title: 'Assistenz Geschäftsleitung ',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+33500),
@@ -4220,7 +4220,7 @@ final class CardFinder
             "j42" => new JobCardDefinition(
                 id: new CardId('j42'),
                 title: 'Fachkraft für soziale Arbeit',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+33000),
@@ -4233,7 +4233,7 @@ final class CardFinder
             "j43" => new JobCardDefinition(
                 id: new CardId('j43'),
                 title: 'Empfangspersonal',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+33100),
@@ -4246,7 +4246,7 @@ final class CardFinder
             "j44" => new JobCardDefinition(
                 id: new CardId('j44'),
                 title: 'Fachkraft für Logistik',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+34000),
@@ -4259,7 +4259,7 @@ final class CardFinder
             "j45" => new JobCardDefinition(
                 id: new CardId('j45'),
                 title: 'Fachkraft Elektronik',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+34000),
@@ -4272,7 +4272,7 @@ final class CardFinder
             "j46" => new JobCardDefinition(
                 id: new CardId('j46'),
                 title: 'Teamleitung NGO',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+35000),
@@ -4285,7 +4285,7 @@ final class CardFinder
             "j47" => new JobCardDefinition(
                 id: new CardId('j47'),
                 title: 'Fachkraft im Garten- und Landschaftsbau',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+34000),
@@ -4298,7 +4298,7 @@ final class CardFinder
             "j48" => new JobCardDefinition(
                 id: new CardId('j48'),
                 title: 'IT-Fachkraft',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+36500),
@@ -4311,7 +4311,7 @@ final class CardFinder
             "j49" => new JobCardDefinition(
                 id: new CardId('j49'),
                 title: 'Promotion',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+26000),
@@ -4324,7 +4324,7 @@ final class CardFinder
             "j50" => new JobCardDefinition(
                 id: new CardId('j50'),
                 title: 'Speditionskauffrau/-mann',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+32000),
@@ -4337,7 +4337,7 @@ final class CardFinder
             "j51" => new JobCardDefinition(
                 id: new CardId('j51'),
                 title: 'Fachkraft für soziale Arbeit',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+33000),
@@ -4350,7 +4350,7 @@ final class CardFinder
             "j52" => new JobCardDefinition(
                 id: new CardId('j52'),
                 title: 'Meisterin im Bäckerhandwerk',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+34200),
@@ -4363,7 +4363,7 @@ final class CardFinder
             "j53" => new JobCardDefinition(
                 id: new CardId('j53'),
                 title: 'Offizierslaufbahn',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+34500),
@@ -4376,7 +4376,7 @@ final class CardFinder
             "j54" => new JobCardDefinition(
                 id: new CardId('j54'),
                 title: 'Fachkraft für Logistik',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+36000),
@@ -4389,7 +4389,7 @@ final class CardFinder
             "j55" => new JobCardDefinition(
                 id: new CardId('j55'),
                 title: 'Bankfachkraft',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+38000),
@@ -4402,7 +4402,7 @@ final class CardFinder
             "j56" => new JobCardDefinition(
                 id: new CardId('j56'),
                 title: 'Psychologin',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+34200),
@@ -4415,7 +4415,7 @@ final class CardFinder
             "j57" => new JobCardDefinition(
                 id: new CardId('j57'),
                 title: 'Key Account Management',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+46000),
@@ -4428,7 +4428,7 @@ final class CardFinder
             "j58" => new JobCardDefinition(
                 id: new CardId('j58'),
                 title: 'Veranstaltungsmanagement',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+48500),
@@ -4441,7 +4441,7 @@ final class CardFinder
             "j59" => new JobCardDefinition(
                 id: new CardId('j59'),
                 title: 'Finanzfachkraft',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+48000),
@@ -4454,7 +4454,7 @@ final class CardFinder
             "j60" => new JobCardDefinition(
                 id: new CardId('j60'),
                 title: 'Leitung von Spitzengastronomie',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+49500),
@@ -4467,7 +4467,7 @@ final class CardFinder
             "j61" => new JobCardDefinition(
                 id: new CardId('j61'),
                 title: 'Management Vertriebsingenieur',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+49000),
@@ -4480,7 +4480,7 @@ final class CardFinder
             "j62" => new JobCardDefinition(
                 id: new CardId('j62'),
                 title: 'Hochschuldozierende',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+49800),
@@ -4493,7 +4493,7 @@ final class CardFinder
             "j63" => new JobCardDefinition(
                 id: new CardId('j63'),
                 title: 'Oberstudienrätin',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+50000),
@@ -4506,7 +4506,7 @@ final class CardFinder
             "j64" => new JobCardDefinition(
                 id: new CardId('j64'),
                 title: 'Fachkraft für Finanzanalysen',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+54000),
@@ -4519,7 +4519,7 @@ final class CardFinder
             "j65" => new JobCardDefinition(
                 id: new CardId('j65'),
                 title: 'Software Engineer',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+55000),
@@ -4532,7 +4532,7 @@ final class CardFinder
             "j66" => new JobCardDefinition(
                 id: new CardId('j66'),
                 title: 'Archäologische Fachkraft',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+59000),
@@ -4545,7 +4545,7 @@ final class CardFinder
             "j67" => new JobCardDefinition(
                 id: new CardId('j67'),
                 title: 'Fachkraft für Wirtschaftsprüfung ',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+60000),
@@ -4558,7 +4558,7 @@ final class CardFinder
             "j68" => new JobCardDefinition(
                 id: new CardId('j68'),
                 title: 'Schulleitung',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+61000),
@@ -4571,7 +4571,7 @@ final class CardFinder
             "j69" => new JobCardDefinition(
                 id: new CardId('j69'),
                 title: 'Fachärztin',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+63000),
@@ -4584,7 +4584,7 @@ final class CardFinder
             "j70" => new JobCardDefinition(
                 id: new CardId('j70'),
                 title: 'Veranstaltungsmanagement',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+62000),
@@ -4597,7 +4597,7 @@ final class CardFinder
             "j71" => new JobCardDefinition(
                 id: new CardId('j71'),
                 title: 'IT-Teamleitung',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+65000),
@@ -4610,7 +4610,7 @@ final class CardFinder
             "j72" => new JobCardDefinition(
                 id: new CardId('j72'),
                 title: 'Unternehmensberatung ',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+65000),
@@ -4623,7 +4623,7 @@ final class CardFinder
             "j73" => new JobCardDefinition(
                 id: new CardId('j73'),
                 title: 'Notarin',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+70000),
@@ -4636,7 +4636,7 @@ final class CardFinder
             "j74" => new JobCardDefinition(
                 id: new CardId('j74'),
                 title: 'Speditions- und Logistikfachkraft',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+42000),
@@ -4649,7 +4649,7 @@ final class CardFinder
             "j75" => new JobCardDefinition(
                 id: new CardId('j75'),
                 title: 'Habilitation',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+45000),
@@ -4662,7 +4662,7 @@ final class CardFinder
             "j76" => new JobCardDefinition(
                 id: new CardId('j76'),
                 title: 'Logistikmanagement',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+55000),
@@ -4675,7 +4675,7 @@ final class CardFinder
             "j77" => new JobCardDefinition(
                 id: new CardId('j77'),
                 title: 'Archäologische Fachkraft',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+62000),
@@ -4688,7 +4688,7 @@ final class CardFinder
             "j78" => new JobCardDefinition(
                 id: new CardId('j78'),
                 title: 'Klinikprofessorin',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+64000),
@@ -4701,7 +4701,7 @@ final class CardFinder
             "j79" => new JobCardDefinition(
                 id: new CardId('j79'),
                 title: 'Steuerberatung',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+64000),
@@ -4714,7 +4714,7 @@ final class CardFinder
             "j80" => new JobCardDefinition(
                 id: new CardId('j80'),
                 title: 'Tierärztin',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+65000),
@@ -4727,7 +4727,7 @@ final class CardFinder
             "j81" => new JobCardDefinition(
                 id: new CardId('j81'),
                 title: 'Psychologin',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+65000),
@@ -4740,7 +4740,7 @@ final class CardFinder
             "j82" => new JobCardDefinition(
                 id: new CardId('j82'),
                 title: 'Führungskraft Marketing',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+70000),
@@ -4753,7 +4753,7 @@ final class CardFinder
             "j83" => new JobCardDefinition(
                 id: new CardId('j83'),
                 title: 'Schulleitung ',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+75000),
@@ -4766,7 +4766,7 @@ final class CardFinder
             "j84" => new JobCardDefinition(
                 id: new CardId('j84'),
                 title: 'Technische Leitung',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+78000),
@@ -4779,7 +4779,7 @@ final class CardFinder
             "j85" => new JobCardDefinition(
                 id: new CardId('j85'),
                 title: 'Führungskraft Personalwesen',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+80000),
@@ -4792,7 +4792,7 @@ final class CardFinder
             "j86" => new JobCardDefinition(
                 id: new CardId('j86'),
                 title: 'Hochschuldozierende',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+82000),
@@ -4805,7 +4805,7 @@ final class CardFinder
             "j87" => new JobCardDefinition(
                 id: new CardId('j87'),
                 title: 'Leitung des Bildungsministeriums',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+85000),
@@ -4818,7 +4818,7 @@ final class CardFinder
             "j88" => new JobCardDefinition(
                 id: new CardId('j88'),
                 title: 'Software Engineer',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+90000),
@@ -4831,7 +4831,7 @@ final class CardFinder
             "j89" => new JobCardDefinition(
                 id: new CardId('j89'),
                 title: 'Leitung Finanzbuchhaltung',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+95000),
@@ -4844,7 +4844,7 @@ final class CardFinder
             "j90" => new JobCardDefinition(
                 id: new CardId('j90'),
                 title: 'Notarin',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+92000),
@@ -4857,7 +4857,7 @@ final class CardFinder
             "j91" => new JobCardDefinition(
                 id: new CardId('j91'),
                 title: 'Raumfahrtpersonal ',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+96000),
@@ -4870,7 +4870,7 @@ final class CardFinder
             "j92" => new JobCardDefinition(
                 id: new CardId('j92'),
                 title: 'Offizierslaufbahn',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+93000),
@@ -4883,7 +4883,7 @@ final class CardFinder
             "j93" => new JobCardDefinition(
                 id: new CardId('j93'),
                 title: 'Unternehmensberatung ',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+95000),
@@ -4896,7 +4896,7 @@ final class CardFinder
             "j94" => new JobCardDefinition(
                 id: new CardId('j94'),
                 title: 'IT-Teamleitung',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+97000),
@@ -4909,7 +4909,7 @@ final class CardFinder
             "j95" => new JobCardDefinition(
                 id: new CardId('j95'),
                 title: 'Piloten-Crew',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+100000),
@@ -4922,7 +4922,7 @@ final class CardFinder
             "j96" => new JobCardDefinition(
                 id: new CardId('j96'),
                 title: 'Profibasketballerin',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+120000),
@@ -4935,7 +4935,7 @@ final class CardFinder
             "j97" => new JobCardDefinition(
                 id: new CardId('j97'),
                 title: 'CEO (Geschäftsführung)',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+120000),
@@ -4948,7 +4948,7 @@ final class CardFinder
             "j98" => new JobCardDefinition(
                 id: new CardId('j98'),
                 title: 'Fußballprofi',
-                description: 'Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.',
+                description: 'Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(2),
                 gehalt: new MoneyAmount(+130000),
@@ -5440,7 +5440,7 @@ final class CardFinder
             "e16" => new EreignisCardDefinition(
                 id: new CardId('e16'),
                 categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Förderpreis',
+                title: 'Auszeichnung',
                 description: 'Ein während deines Studiums gestartetes Projekt setzt sich nach dem Abschluss fort und erhält eine Förderauszeichnung.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
@@ -5586,7 +5586,7 @@ final class CardFinder
                 id: new CardId('e23'),
                 categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
                 title: 'Weihnachten',
-                description: '"Weihnachten steht vor der Tür. Deine Teamleitung überrascht dich mit einem extra großenWeihnachtsgeld, da das Geschäftsjahr besonders gut ausfiel."',
+                description: '"Weihnachten steht vor der Tür. Deine Teamleitung überrascht dich mit einem extra großen Weihnachtsgeld, da das Geschäftsjahr besonders gut ausfiel."',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 resourceChanges: new ResourceChanges(
@@ -5681,15 +5681,15 @@ final class CardFinder
             ),
             "e28" => new EreignisCardDefinition(
                 id: new CardId('e28'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
                 title: 'Trennung',
-                description: 'Die Trennung von deiner Partnerin bringt dich emotional aus dem Gleichgewicht, was sich negativ auf deine Leistungen auswirkt. Daher nimmst du therapeutische Beratung in Anspruch.',
+                description: 'Deine Partnerin beendet die Beziehung mit dir. Du fällst tief in ein Loch. Du musst eine Runde aussetzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
                 ),
                 modifierIds: [
+                    ModifierId::AUSSETZEN,
                 ],
                 modifierParameters: new ModifierParameters(
                 ),
@@ -5741,7 +5741,7 @@ final class CardFinder
             "e31" => new EreignisCardDefinition(
                 id: new CardId('e31'),
                 categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Fachtverband',
+                title: 'Fachverband',
                 description: 'Du wirst Mitglied in einem Fachverband, der junge Fachkräfte unterstützt und dir Zugang zu exklusiven Job- und Weiterbildungsangeboten ermöglicht.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
@@ -5764,8 +5764,8 @@ final class CardFinder
                 categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
                 title: 'Fachtagung',
                 description: 'Du erhältst eine Einladung zur Teilnahme an einer Fachtagung, bei der du dich mit anderen erfolgreichen Auszubildenden vernetzen kannst.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
+                phaseId: LebenszielPhaseId::PHASE_2,
+                year: new Year(3),
                 resourceChanges: new ResourceChanges(
                     bildungKompetenzsteinChange: +1,
                 ),
@@ -5868,7 +5868,7 @@ final class CardFinder
                 id: new CardId('e37'),
                 categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
                 title: 'Elite-Internat',
-                description: 'Du schickst deine Kinder auf ein Elite-Internat, um ihre beruflichen Chancen zu verbessern. Gleichzeitig knüpfst du bei deinen Besuchen wertvolle Kontakte zu Eltern aus aller Welt.',
+                description: 'Du schickst dein Kind auf ein Elite-Internat, um die beruflichen Chancen zu verbessern. Gleichzeitig knüpfst du bei deinen Besuchen wertvolle Kontakte zu Eltern aus aller Welt.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(3),
                 resourceChanges: new ResourceChanges(
@@ -5887,7 +5887,7 @@ final class CardFinder
             "e38" => new EreignisCardDefinition(
                 id: new CardId('e38'),
                 categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Aufbaustudium',
+                title: 'Weiterbildung',
                 description: 'Vertiefe deine betriebswirtschaftlichen Kenntnisse durch ein weiterführendes Studium.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(3),
@@ -5971,7 +5971,7 @@ final class CardFinder
             "e42" => new EreignisCardDefinition(
                 id: new CardId('e42'),
                 categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Internationaler Preis',
+                title: 'Auszeichnung',
                 description: 'Dein Forschungsartikel erhält einen internationalen Preis – eine bedeutende Würdigung deiner wissenschaftlichen Arbeit.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(3),
@@ -6375,7 +6375,7 @@ final class CardFinder
                 id: new CardId('e62'),
                 categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
                 title: 'Abschalten smarte Endgeräte',
-                description: 'Schalte deine smarten Endgeräte jeden Abend um 18 Uhr ab, um deine Konzentration zu erhöhen. Du verpasst dadurch wichtige Investitionschancen.',
+                description: 'Du schaltest ab 18 Uhr deine smarten Geräte aus, um dich zu konzentrieren. Dadurch verpasst du Investitionschancen und kannst eine Runde nicht investieren.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(3),
                 resourceChanges: new ResourceChanges(
@@ -6516,8 +6516,8 @@ final class CardFinder
             "e69" => new EreignisCardDefinition(
                 id: new CardId('e69'),
                 categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Finanzierung private Universität',
-                description: 'Du ermöglichst deinem Kind den Besuch einer privaten Universität und profitierst selbst: Deine Besuche vor Ort erweitern auch deinen eigenen Horizont.',
+                title: 'Elite-Internat',
+                description: 'Du ermöglichst deinem Kind den Besuch einem privaten Elite-Internat und profitierst selbst: Deine Besuche vor Ort erweitern auch deinen eigenen Horizont.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(3),
                 resourceChanges: new ResourceChanges(
@@ -6577,7 +6577,7 @@ final class CardFinder
             "e72" => new EreignisCardDefinition(
                 id: new CardId('e72'),
                 categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Forschungspreis',
+                title: 'Auszeichnung',
                 description: 'Die Fakultät zeichnet deine Publikationen mit einem Forschungspreis für herausragende wissenschaftliche Leistungen aus.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(3),
@@ -6817,7 +6817,7 @@ final class CardFinder
                 id: new CardId('e84'),
                 categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
                 title: 'Abschalten smarte Endgeräte',
-                description: 'Schalte deine smarten Endgeräte jeden Abend um 18 Uhr ab, um deine Konzentration zu erhöhen. Du verpasst dadurch wichtige Investitionschancen.',
+                description: 'Du schaltest ab 18 Uhr deine smarten Geräte aus, um dich zu konzentrieren. Dadurch verpasst du Investitionschancen und kannst eine Runde nicht investieren.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(3),
                 resourceChanges: new ResourceChanges(
@@ -6956,8 +6956,8 @@ final class CardFinder
             "e91" => new EreignisCardDefinition(
                 id: new CardId('e91'),
                 categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Fachgremien',
-                description: 'Deine Habilitation bringt dir Einladungen zu hochrangigen Fachgremien, etwa in Akkreditierungskommissionen oder wissenschaftlichen Beiräten.',
+                title: 'Fachtagung',
+                description: 'Deine Habilitation bringt dir Einladungen zu hochrangigen Fachtagungen, etwa in Akkreditierungskommissionen oder wissenschaftlichen Beiräten.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(3),
                 resourceChanges: new ResourceChanges(
@@ -7214,26 +7214,6 @@ final class CardFinder
                 ],
                 gewichtung: 1,
             ),
-            "e104" => new EreignisCardDefinition(
-                id: new CardId('e104'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Berufsunfähigkeitsversicherung',
-                description: '"Du erleidest durch eine Hirnverletzung bleibende Einschränkungen, die eine Berufsausübung unmöglich machen. Mit Berufsunfähigkeitsversicherung erhältst du dein Jahresgehalt (brutto) weiter. Ab dem neuen Jahr kannst du einen neuen Job beginnen."',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(3),
-                resourceChanges: new ResourceChanges(
-                    zeitsteineChange: 1,
-                ),
-                modifierIds: [
-                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
-                ],
-                modifierParameters: new ModifierParameters(
-                ),
-                ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
-                ],
-                gewichtung: 1,
-            ),
             "e105" => new EreignisCardDefinition(
                 id: new CardId('e105'),
                 categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
@@ -7368,7 +7348,7 @@ final class CardFinder
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
                 ],
-                requiredCardId: new CardId('suf15'),
+                requiredCardId: new CardId('suf16'),
                 gewichtung: 4,
             ),
             "e112" => new EreignisCardDefinition(
@@ -7796,7 +7776,7 @@ final class CardFinder
                 id: new CardId('e134'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
                 title: 'kein Finanzbericht lesen',
-                description: 'Du hast mehr Freizeit, weil du den Börsenbericht nicht mehr liest und die Zeitung mit dem hervorragenden Wirtschaftsressort abbestellt hast.',
+                description: 'Du hast mehr Freizeit, weil du den Börsenbericht nicht mehr liest. Dafür kannst du eine Runde nicht investieren.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(2),
                 resourceChanges: new ResourceChanges(
@@ -7876,7 +7856,7 @@ final class CardFinder
                 id: new CardId('e138'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
                 title: 'Familie und Freundschaft',
-                description: 'Weil dir Familie und Freundschaft am wichtigsten sind, findest du wenig Zeit für Investitionen.',
+                description: 'Weil dir Familie und Freundschaft am wichtigsten sind, findest du wenig Zeit für Investitionen und kannst eine Runde nicht investieren.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(3),
                 resourceChanges: new ResourceChanges(
@@ -7915,7 +7895,7 @@ final class CardFinder
                 id: new CardId('e140'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
                 title: 'Familie und Freundschaft',
-                description: 'Da dir Familie und Freunde am meisten bedeuten, widmest du Investitionen wenig Aufmerksamkeit.',
+                description: 'Weil dir Familie und Freundschaft am wichtigsten sind, findest du wenig Zeit für Investitionen und kannst eine Runde nicht investieren.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(3),
                 resourceChanges: new ResourceChanges(
@@ -7934,7 +7914,7 @@ final class CardFinder
                 id: new CardId('e141'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
                 title: 'Familie und Freundschaft',
-                description: 'Da dir Familie und Freunde am meisten bedeuten, widmest du Investitionen wenig Aufmerksamkeit.',
+                description: 'Weil dir Familie und Freundschaft am wichtigsten sind, findest du wenig Zeit für Investitionen und kannst eine Runde nicht investieren.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(3),
                 resourceChanges: new ResourceChanges(
@@ -8156,7 +8136,7 @@ final class CardFinder
             "e152" => new EreignisCardDefinition(
                 id: new CardId('e152'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Job kündigen und Weltreise',
+                title: 'Kündigung',
                 description: 'Du entscheidest dich, deinen Job zu kündigen und auf Reisen zu gehen, um dich neu zu orientieren. Damit verzichtest du jedoch auch auf dein Gehalt für dieses Jahr.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(3),
@@ -8198,7 +8178,7 @@ final class CardFinder
                 title: 'Krankheit',
                 description: 'Du erkrankst an einer heftigen Influenza und liegst komplett flach. Du musst eine Runde aussetzen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
+                year: new Year(1),
                 resourceChanges: new ResourceChanges(
                 ),
                 modifierIds: [
@@ -8213,7 +8193,7 @@ final class CardFinder
             "e155" => new EreignisCardDefinition(
                 id: new CardId('e155'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Gewinn E-Bike',
+                title: 'Gewinn ',
                 description: 'Herzlichen Glückwunsch – du hast bei einer Verlosung ein E-Bike gewonnen! Damit kommst du künftig schneller zu deinen Terminen und kannst deine Freizeit noch entspannter genießen.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
@@ -8252,8 +8232,8 @@ final class CardFinder
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
                 title: 'Krankheit',
                 description: 'Du erkrankst an einer heftigen Influenza und liegst komplett flach. Du musst eine Runde aussetzen.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(1),
+                phaseId: LebenszielPhaseId::PHASE_2,
+                year: new Year(3),
                 resourceChanges: new ResourceChanges(
                 ),
                 modifierIds: [
@@ -8308,13 +8288,13 @@ final class CardFinder
                 id: new CardId('e160'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
                 title: 'Burn-Out',
-                description: 'Bei der Verfolgung deines Traums hast du die Pausen völlig vergessen. Um dich zu erholen, gehst du in eine Rehaklinik.',
+                description: 'Bei der Verfolgung deines Traums hast du die Pausen ganz vergessen. Um dich wieder zu erholen, gehst du in eine Rehaklinik. Setze eine Runde aus.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(3),
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
                 ),
                 modifierIds: [
+                    ModifierId::AUSSETZEN,
                 ],
                 modifierParameters: new ModifierParameters(
                 ),
@@ -8325,20 +8305,19 @@ final class CardFinder
             "e161" => new EreignisCardDefinition(
                 id: new CardId('e161'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Nicht beantragter Urlaub',
+                title: 'Krankheit',
                 description: 'Du bekommst eine Magen-Darm-Grippe und kannst für eine Weile nichts essen. Du pausierst, um dich zu erholen, bevor du wieder weitermachen kannst.',
                 phaseId: LebenszielPhaseId::PHASE_1,
-                year: new Year(2),
+                year: new Year(3),
                 resourceChanges: new ResourceChanges(
                     zeitsteineChange: 1,
                 ),
                 modifierIds: [
-                    ModifierId::JOBVERLUST,
+                    ModifierId::AUSSETZEN,
                 ],
                 modifierParameters: new ModifierParameters(
                 ),
                 ereignisRequirementIds: [
-                    EreignisPrerequisitesId::HAS_JOB,
                 ],
                 gewichtung: 1,
             ),
@@ -8363,7 +8342,7 @@ final class CardFinder
             "e163" => new EreignisCardDefinition(
                 id: new CardId('e163'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Einsatz heimische Bienen',
+                title: 'Ehrenamtliches Engagement',
                 description: 'Dein Einsatz für den Schutz heimischer Bienenpopulation wird von dem deutschen Ehrenamtspreis ausgezeichnet.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(1),
@@ -8401,7 +8380,7 @@ final class CardFinder
             "e165" => new EreignisCardDefinition(
                 id: new CardId('e165'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Arbeitslosigkeit',
+                title: 'Jobverlust',
                 description: 'Du wirst wegen unentschuldigtem Fehlen fristlos gekündigt und bekommst kein Gehalt mehr. Durch die Arbeitslosigkeit gewinnst du jedoch mehr freie Zeit.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(3),
@@ -8420,7 +8399,7 @@ final class CardFinder
             "e166" => new EreignisCardDefinition(
                 id: new CardId('e166'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Preis für Integration',
+                title: 'Auszeichnung',
                 description: 'Herzlichen Glückwunsch zum Preis für Integration! Dein Projekt fördert nachhaltige Inklusion, indem es Jugendliche mit und ohne Beeinträchtigungen durch gemeinschaftlichen Sport zusammenbringt.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(3),
@@ -8428,7 +8407,6 @@ final class CardFinder
                     freizeitKompetenzsteinChange: +1,
                 ),
                 modifierIds: [
-                    ModifierId::JOBVERLUST,
                 ],
                 modifierParameters: new ModifierParameters(
                 ),
@@ -8439,7 +8417,7 @@ final class CardFinder
             "e167" => new EreignisCardDefinition(
                 id: new CardId('e167'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Familie',
+                title: 'Besuch Internat',
                 description: 'Dein Kind wünscht sich den Besuch eines privaten Sportinternats. Das verursacht hohe Ausgaben, verschafft dir aber auch wertvolle neue Kontakte zu anderen Eltern.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(3),
@@ -8460,7 +8438,7 @@ final class CardFinder
                 id: new CardId('e168'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
                 title: 'Private Nachhilfe',
-                description: 'Um ihre schulischen Leistungen zu steigern, besuchen deine Kinder privaten Nachhilfeunterricht.',
+                description: 'Um ihre schulischen Leistungen zu steigern, besucht dein Kind privaten Nachhilfeunterricht.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(3),
                 resourceChanges: new ResourceChanges(
@@ -8616,7 +8594,7 @@ final class CardFinder
             "e176" => new EreignisCardDefinition(
                 id: new CardId('e176'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Engagemenet Obdachlosenheim',
+                title: 'Ehrenamtliches Engagement',
                 description: 'Du verringerst dieses Jahr deine Arbeitszeit, um dich beim Aufbau eines Obdachlosenheims zu beteiligen. Dein Gehalt wird entsprechend angepasst.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(3),
@@ -8658,7 +8636,7 @@ final class CardFinder
             "e178" => new EreignisCardDefinition(
                 id: new CardId('e178'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Verhalten Kind',
+                title: 'Kinderbetreuung',
                 description: 'Wegen aggressivem Verhalten ist dein Kind vorübergehend aus dem Kindergarten ausgeschlossen. Du betreust es selbst und arbeitest weniger, dein Gehalt sinkt.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(3),
@@ -8846,8 +8824,8 @@ final class CardFinder
             "e187" => new EreignisCardDefinition(
                 id: new CardId('e187'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Handysucht',
-                description: 'Du verbringst bei Treffen mit Freundinnen  viel Zeit am Handy. Das stört sie und führt dazu, dass du immer mehr ausgegrenzt wirst. Die alten Freundschaften wiederherzustellen, braucht Zeit.',
+                title: 'Sucht',
+                description: 'Du verbringst bei Treffen mit Freundinnen viel Zeit am Handy. Das stört sie und führt dazu, dass du immer mehr ausgegrenzt wirst. Die alten Freundschaften wiederherzustellen, braucht Zeit.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(3),
                 resourceChanges: new ResourceChanges(
@@ -8865,7 +8843,7 @@ final class CardFinder
                 id: new CardId('e188'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
                 title: 'Trennung',
-                description: 'Dein Partner beendet die Beziehung mit dir. Du fällst tief in ein Loch. Eine Runde aussetzten.',
+                description: 'Deine Partnerin beendet die Beziehung mit dir. Du fällst tief in ein Loch. Du musst eine Runde aussetzen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(3),
                 resourceChanges: new ResourceChanges(
@@ -8876,13 +8854,15 @@ final class CardFinder
                 modifierParameters: new ModifierParameters(
                 ),
                 ereignisRequirementIds: [
+                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
                 ],
+                requiredCardId: new CardId('e142'),
                 gewichtung: 1,
             ),
             "e189" => new EreignisCardDefinition(
                 id: new CardId('e189'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Freundschaft pflegen',
+                title: 'Familie und Freundschaft',
                 description: 'Aufgrund deines Jobs hast du deine Freundschaften nicht gepflegt. Das musst du dringend ändern!',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(3),
@@ -8994,7 +8974,7 @@ final class CardFinder
             "e195" => new EreignisCardDefinition(
                 id: new CardId('e195'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Gewinn E-Roller',
+                title: 'Gewinn',
                 description: 'Herzlichen Glückwunsch! Du hast bei einer Verlosung einen E-Roller gewonnen. Damit bist du schneller bei Terminen und kannst deine Freizeit ausgiebig genießen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(3),
@@ -9030,7 +9010,7 @@ final class CardFinder
             "e197" => new EreignisCardDefinition(
                 id: new CardId('e197'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Job kündigen und Weltreise',
+                title: 'Kündigung',
                 description: 'Du kündigst deinen Job, um auf Reisen neue Wege zu entdecken – dadurch entfällt aber auch dein Einkommen.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(3),
@@ -9068,7 +9048,7 @@ final class CardFinder
             "e199" => new EreignisCardDefinition(
                 id: new CardId('e199'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Arbeitslosigkeit',
+                title: 'Jobverlust',
                 description: 'Du wirst wegen unentschuldigtem Fehlen fristlos gekündigt und verlierst dadurch dein Einkommen. Deine Arbeitslosigkeit verschafft dir nun mehr freie Zeit.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(3),
@@ -9110,7 +9090,7 @@ final class CardFinder
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
                 title: 'Krankheit',
                 description: 'Du erkrankst an einer Herzmuskelentzündung und liegst komplett flach. Du musst eine Runde aussetzen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
+                phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(3),
                 resourceChanges: new ResourceChanges(
                 ),
@@ -9138,6 +9118,7 @@ final class CardFinder
                 modifierParameters: new ModifierParameters(
                 ),
                 ereignisRequirementIds: [
+                    EreignisPrerequisitesId::HAS_CHILD,
                 ],
                 gewichtung: 1,
             ),
@@ -9146,7 +9127,7 @@ final class CardFinder
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
                 title: 'Krankheit',
                 description: 'Dein Kind hat Läuse. Du musst eine Runde aussetzen.',
-                phaseId: LebenszielPhaseId::PHASE_2,
+                phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(3),
                 resourceChanges: new ResourceChanges(
                 ),
@@ -9156,13 +9137,14 @@ final class CardFinder
                 modifierParameters: new ModifierParameters(
                 ),
                 ereignisRequirementIds: [
+                    EreignisPrerequisitesId::HAS_CHILD,
                 ],
                 gewichtung: 1,
             ),
             "e204" => new EreignisCardDefinition(
                 id: new CardId('e204'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Preis für soziales Engangement',
+                title: 'Auszeichnung',
                 description: 'Glückwunsch zum Preis für dein soziales Engagement! Durch deinen Einsatz im Flüchtlingszentrum hast du zahlreichen Menschen geholfen, sich rasch zu integrieren.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(3),
@@ -9237,7 +9219,7 @@ final class CardFinder
             "e208" => new EreignisCardDefinition(
                 id: new CardId('e208'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Familie',
+                title: 'Besuch Internat',
                 description: 'Dein Kind wünscht sich den Besuch eines privaten Sportinternats. Das verursacht hohe Ausgaben, verschafft dir aber auch wertvolle neue Kontakte zu anderen Eltern.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(3),
@@ -9494,7 +9476,7 @@ final class CardFinder
             "e221" => new EreignisCardDefinition(
                 id: new CardId('e221'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Verhalten Kind',
+                title: 'Kinderbetreuung',
                 description: 'Dein Kind darf wegen aggressiven Verhaltens vorläufig nicht in den Kindergarten. Du betreust es selbst und reduzierst deine Arbeitszeit. Dein Gehalt passt sich an.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(3),
@@ -9642,7 +9624,7 @@ final class CardFinder
             "e228" => new EreignisCardDefinition(
                 id: new CardId('e228'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Instagramsucht',
+                title: 'Sucht',
                 description: 'Du fotografierst bei Treffen ständig und teilst alles sofort auf Instagram. Das stört deine Freunde, da es dir wichtiger scheint als der Moment. Das Posten raubt dir zudem viel Zeit.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(3),
@@ -9661,13 +9643,13 @@ final class CardFinder
                 id: new CardId('e229'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
                 title: 'Trennung',
-                description: 'Dein Partner beendet die Beziehung mit dir. Du fällst tief in ein Loch. Eine Runde aussetzten.',
+                description: 'Deine Partnerin beendet die Beziehung mit dir. Du fällst tief in ein Loch. Du musst eine Runde aussetzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(3),
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
                 ),
                 modifierIds: [
+                    ModifierId::AUSSETZEN,
                 ],
                 modifierParameters: new ModifierParameters(
                 ),
@@ -9740,9 +9722,9 @@ final class CardFinder
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(3),
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1,
                 ),
                 modifierIds: [
+                    ModifierId::AUSSETZEN,
                 ],
                 modifierParameters: new ModifierParameters(
                 ),
@@ -9772,7 +9754,7 @@ final class CardFinder
                 id: new CardId('e235'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
                 title: 'Krankheit',
-                description: 'Du musst dich einer dringenden Operation unterziehen und liegst komplett flach.Du musst eine Runde aussetzen.',
+                description: 'Du musst dich einer dringenden Operation unterziehen und liegst komplett flach. Du musst eine Runde aussetzen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(3),
                 resourceChanges: new ResourceChanges(
@@ -9807,7 +9789,7 @@ final class CardFinder
             "e237" => new EreignisCardDefinition(
                 id: new CardId('e237'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Freundschaft pflegen',
+                title: 'Familie und Freundschaft',
                 description: 'Aufgrund deines Jobs hast du deine Freundschaften nicht gepflegt. Das musst du dringend ändern!',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(3),
@@ -9844,7 +9826,7 @@ final class CardFinder
             "e239" => new EreignisCardDefinition(
                 id: new CardId('e239'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Job kündigen und Weltreise',
+                title: 'Kündigung',
                 description: 'Du kündigst deinen Job, um auf Reisen neue Wege zu entdecken – dadurch entfällt aber auch dein Einkommen.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(3),
@@ -9882,7 +9864,7 @@ final class CardFinder
             "e241" => new EreignisCardDefinition(
                 id: new CardId('e241'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Arbeitslosigkeit',
+                title: 'Jobverlust',
                 description: 'Du wirst wegen unentschuldigtem Fehlen fristlos gekündigt und bekommst kein Gehalt mehr. Durch die Arbeitslosigkeit gewinnst du jedoch mehr freie Zeit.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(3),
@@ -9895,13 +9877,14 @@ final class CardFinder
                 modifierParameters: new ModifierParameters(
                 ),
                 ereignisRequirementIds: [
+                    EreignisPrerequisitesId::HAS_JOB,
                 ],
                 gewichtung: 1,
             ),
             "e242" => new EreignisCardDefinition(
                 id: new CardId('e242'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Jobverlust',
+                title: 'Kündigung',
                 description: 'Du hast dich mit deinem Team zerstritten und dich mit deiner Chefin auf einen Aufhebungsvertrag geeinigt. Damit verlierst du deinen aktuellen Job und bist zunächst arbeitslos.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(3),
@@ -9914,13 +9897,14 @@ final class CardFinder
                 modifierParameters: new ModifierParameters(
                 ),
                 ereignisRequirementIds: [
+                    EreignisPrerequisitesId::HAS_JOB,
                 ],
                 gewichtung: 1,
             ),
             "e243" => new EreignisCardDefinition(
                 id: new CardId('e243'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Preis für Umweltprojekt',
+                title: 'Auszeichnung',
                 description: 'Herzlichen Glückwunsch! Du gewinnst den Preis für Integration. Mit deinem Projekt „Bienen in Schulen“ hast du viele Bienenhotels gebaut und Kindern die Bedeutung der Bienen erklärt.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(3),
@@ -10002,6 +9986,64 @@ final class CardFinder
                     zeitsteineChange: 1,
                 ),
                 modifierIds: [
+                ],
+                modifierParameters: new ModifierParameters(
+                ),
+                ereignisRequirementIds: [
+                ],
+                gewichtung: 1,
+            ),
+            "e248" => new EreignisCardDefinition(
+                id: new CardId('e248'),
+                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+                title: 'Beziehungskrise',
+                description: 'Du nimmst eine Paartherapie in Anspruch, um deine Beziehung zu retten – was bei den Obamas erfolgreich war, kann auch euch unterstützen. Allerdings bleibt dir dadurch vorerst weniger Zeit.',
+                phaseId: LebenszielPhaseId::PHASE_3,
+                year: new Year(3),
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -1,
+                ),
+                modifierIds: [
+                ],
+                modifierParameters: new ModifierParameters(
+                ),
+                ereignisRequirementIds: [
+                    EreignisPrerequisitesId::HAS_SPECIFIC_CARD,
+                ],
+                requiredCardId: new CardId('e209'),
+                gewichtung: 4,
+            ),
+            "e249" => new EreignisCardDefinition(
+                id: new CardId('e249'),
+                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+                title: 'kein Finanzbericht lesen',
+                description: 'Du hast mehr Freizeit, weil du den Börsenbericht nicht mehr liest. Dafür kannst du eine Runde nicht investieren.',
+                phaseId: LebenszielPhaseId::PHASE_1,
+                year: new Year(2),
+                resourceChanges: new ResourceChanges(
+                    freizeitKompetenzsteinChange: +1,
+                ),
+                modifierIds: [
+                    ModifierId::INVESTITIONSSPERRE,
+                ],
+                modifierParameters: new ModifierParameters(
+                ),
+                ereignisRequirementIds: [
+                ],
+                gewichtung: 1,
+            ),
+            "e250" => new EreignisCardDefinition(
+                id: new CardId('e250'),
+                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+                title: 'kein Finanzbericht lesen',
+                description: 'Du hast mehr Freizeit, weil du den Börsenbericht nicht mehr liest. Dafür kannst du eine Runde nicht investieren.',
+                phaseId: LebenszielPhaseId::PHASE_1,
+                year: new Year(2),
+                resourceChanges: new ResourceChanges(
+                    freizeitKompetenzsteinChange: +1,
+                ),
+                modifierIds: [
+                    ModifierId::INVESTITIONSSPERRE,
                 ],
                 modifierParameters: new ModifierParameters(
                 ),

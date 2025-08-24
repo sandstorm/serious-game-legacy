@@ -163,14 +163,19 @@ function importEreignisCards(): void
     $file = file(__DIR__ . "/Ereignisse.csv");
     $fileContent = array_slice($file, 2); //removes the first two elements (table name and table header)
     $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
-    $keys = array_slice(explode(";", trim($tableHeaderItems[0])), 0, 11); //11 first table header items
-    $modifierKeys = array_slice(explode(";", trim($tableHeaderItems[0])), 11, 6); //6 modifier table header items
-    $prerequisiteKeys = array_slice(explode(";", trim($tableHeaderItems[0])), 17, 3); //3 prerequisite table header items
+    $tableHeaderArray = explode(";", trim($tableHeaderItems[0]));
+    $keys = [];
+    foreach ($tableHeaderArray as $key) {
+        $keys[] = str_replace(["\"", " "], "", trim($key)); //removes spaces and " from table headers
+    }
+    $propertyKeys = array_slice($keys, 0, 11); //11 first table header items
+    $modifierKeys = array_slice($keys, 11, 6); //6 modifier table header items
+    $prerequisiteKeys = array_slice($keys, 17, 3); //3 prerequisite table header items
 
     foreach ($fileContent as $line) {
         $lineArray = explode(";", trim($line));
         $lineArrayWithoutModifiersAndPrerequisites = array_slice($lineArray, 0, 11); //removes modifiers and prerequisites
-        $lineArrayWithKeys = array_combine($keys, $lineArrayWithoutModifiersAndPrerequisites);
+        $lineArrayWithKeys = array_combine($propertyKeys, $lineArrayWithoutModifiersAndPrerequisites);
         $modifierArray = array_slice($lineArray, 11, 6);
         $modifierArrayWithKeys = array_combine($modifierKeys, $modifierArray);
         $prerequisiteArray = array_slice($lineArray, 17, 3);
@@ -225,10 +230,10 @@ function importEreignisCards(): void
         if ($prerequisiteArrayWithKeys["prerequisiteCardId"] !== "") {
             echo "\t" . "requiredCardId: new CardId('" . $prerequisiteArrayWithKeys["prerequisiteCardId"] . "'),\n";
         }
-        if ($lineArrayWithKeys["gewichtung"] === "") {
+        if ($lineArrayWithKeys["Gewichtung"] === "") {
             echo "\t" . "gewichtung: 1,\n";
         } else {
-            echo "\t" . "gewichtung: " . $lineArrayWithKeys["gewichtung"] . ",\n";
+            echo "\t" . "gewichtung: " . $lineArrayWithKeys["Gewichtung"] . ",\n";
         }
         echo "),\n";
     }
