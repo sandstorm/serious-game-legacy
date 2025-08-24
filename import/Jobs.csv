@@ -1,100 +1,100 @@
 Jobs;;;;;;;
 id;title;description;phase;year;gehalt;minBildungUndKarriere;minSozialesUndFreizeit
-j1;freiwilliges Praktikum;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;12000;0;0
-j2;Duales Studium;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;14000;0;0
-j3;Duale Ausbildung;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;15000;0;0
-j4;Fachkraft für Fischerei;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;16000;1;0
-j5;Küchenhilfspersonal;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;16500;1;0
-j6;Barpersonal;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;17900;1;0
-j7;Mitarbeitende im Call-Center;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;17500;1;0
-j8;Entsorgungsfachkraft;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;17000;1;0
-j9;Fahrpersonal Taxi;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;18700;1;0
-j10;Gebäudereinigungsfachkraft;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;18200;1;0
-j11;Fachkraft für Hauswirtschaft;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;18400;1;1
-j12;Zustellpersonal;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;19000;1;0
-j13;Friseurfachkraft;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;21800;1;0
-j14;Fachkraft für Malerei;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;22000;1;0
-j15;Fachkraft für Lackierung;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;22000;1;0
-j16;Medizinisches Assistenzpersonal;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;22500;1;0
-j17;Hotelfachkraft;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;22800;1;0
-j18;Fachkraft Kosmetik;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;1;23000;1;0
-j19;Zahnmedizinisches Fachpersonal;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;23500;2;0
-j20;Fachkraft für Fliesen-, Platten und Mosaikarbeiten;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;24000;2;0
-j21;Pflegefachkraft;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;25000;1;1
-j22;Verkaufspersonal;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;25500;2;0
-j23;Verwaltungsfachkraft;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;25000;1;1
-j24;Verkaufsfachkraft im KfZ-Bereich;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;26000;2;0
-j25;Industriekauffrau/-mann;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;26500;2;0
-j26;Einzelhandelsfachkraft;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;26100;2;0
-j27;Buchhandelsfachkraft;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;27000;2;0
-j28;Fachkraft für Immobilienwirtschaft;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;27500;2;0
-j29;Person im Fahrdienst;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;28000;2;0
-j30;Fachkraft im Bäckerhandwerk;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;28200;2;0
-j31;Forstmanagement;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;28800;2;0
-j32;Kaufmännische Fachkraft im Büromanagenent ;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;28500;2;0
-j33;Kfz-Mechatronikfachkraft;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;28300;2;0
-j34;Zahntechnische Fachkraft;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;29000;2;0
-j35;Empfangspersonal;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;29500;2;0
-j36;Mechatronikfachkraft;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;30000;2;0
-j37;Pädagogische Fachkraft im Bereich Kindererziehung;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;30000;2;0
-j38;Leitung der Küche;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;30500;1;1
-j39;Meisterin im Schreinerhandwerk;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;32000;2;0
-j40;Fachkraft für Umwelttechnologie;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;32000;2;0
-j41;Assistenz Geschäftsleitung ;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;33500;2;0
-j42;Fachkraft für soziale Arbeit;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;33000;2;0
-j43;Empfangspersonal;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;33100;1;1
-j44;Fachkraft für Logistik;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;34000;2;0
-j45;Fachkraft Elektronik;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;34000;2;0
-j46;Teamleitung NGO;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;35000;2;0
-j47;Fachkraft im Garten- und Landschaftsbau;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;34000;1;1
-j48;IT-Fachkraft;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;1;2;36500;2;0
-j49;Promotion;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;26000;2;0
-j50;Speditionskauffrau/-mann;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;32000;2;0
-j51;Fachkraft für soziale Arbeit;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;33000;2;0
-j52;Meisterin im Bäckerhandwerk;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;34200;2;0
-j53;Offizierslaufbahn;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;34500;1;1
-j54;Fachkraft für Logistik;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;36000;2;0
-j55;Bankfachkraft;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;38000;2;1
-j56;Psychologin;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;34200;3;0
-j57;Key Account Management;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;46000;3;0
-j58;Veranstaltungsmanagement;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;48500;3;0
-j59;Finanzfachkraft;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;48000;3;0
-j60;Leitung von Spitzengastronomie;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;49500;3;0
-j61;Management Vertriebsingenieur;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;49000;3;1
-j62;Hochschuldozierende;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;49800;2;1
-j63;Oberstudienrätin;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;50000;3;0
-j64;Fachkraft für Finanzanalysen;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;54000;4;0
-j65;Software Engineer;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;55000;4;0
-j66;Archäologische Fachkraft;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;59000;4;0
-j67;Fachkraft für Wirtschaftsprüfung ;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;60000;2;2
-j68;Schulleitung;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;61000;3;1
-j69;Fachärztin;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;63000;3;1
-j70;Veranstaltungsmanagement;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;62000;3;1
-j71;IT-Teamleitung;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;65000;4;0
-j72;Unternehmensberatung ;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;65000;4;0
-j73;Notarin;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;2;2;70000;3;1
-j74;Speditions- und Logistikfachkraft;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;42000;3;0
-j75;Habilitation;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;45000;3;0
-j76;Logistikmanagement;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;55000;3;0
-j77;Archäologische Fachkraft;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;62000;4;0
-j78;Klinikprofessorin;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;64000;3;1
-j79;Steuerberatung;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;64000;3;0
-j80;Tierärztin;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;65000;2;1
-j81;Psychologin;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;65000;4;0
-j82;Führungskraft Marketing;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;70000;2;2
-j83;Schulleitung ;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;75000;4;0
-j84;Technische Leitung;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;78000;4;0
-j85;Führungskraft Personalwesen;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;80000;3;1
-j86;Hochschuldozierende;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;82000;2;2
-j87;Leitung des Bildungsministeriums;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;85000;4;0
-j88;Software Engineer;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;90000;4;0
-j89;Leitung Finanzbuchhaltung;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;95000;4;0
-j90;Notarin;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;92000;4;0
-j91;Raumfahrtpersonal ;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;96000;4;0
-j92;Offizierslaufbahn;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;93000;4;0
-j93;Unternehmensberatung ;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;95000;4;0
-j94;IT-Teamleitung;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;97000;4;0
-j95;Piloten-Crew;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;100000;4;1
-j96;Profibasketballerin;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;120000;3;2
-j97;CEO (Geschäftsführung);Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;120000;4;1
-j98;Fußballprofi;Wenn Du einen Job hast, kannst pro Jahr einen Zeitstein weniger setzen.;3;2;130000;3;2
+j1;freiwilliges Praktikum;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;1;12000;0;0
+j2;Duales Studium;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;1;14000;0;0
+j3;Duale Ausbildung;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;1;15000;0;0
+j4;Fachkraft für Fischerei;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;1;16000;1;0
+j5;Küchenhilfspersonal;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;1;16500;1;0
+j6;Barpersonal;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;1;17900;1;0
+j7;Mitarbeitende im Call-Center;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;1;17500;1;0
+j8;Entsorgungsfachkraft;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;1;17000;1;0
+j9;Fahrpersonal Taxi;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;1;18700;1;0
+j10;Gebäudereinigungsfachkraft;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;1;18200;1;0
+j11;Fachkraft für Hauswirtschaft;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;18400;1;1
+j12;Zustellpersonal;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;1;19000;1;0
+j13;Friseurfachkraft;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;1;21800;1;0
+j14;Fachkraft für Malerei;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;1;22000;1;0
+j15;Fachkraft für Lackierung;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;1;22000;1;0
+j16;Medizinisches Assistenzpersonal;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;1;22500;1;0
+j17;Hotelfachkraft;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;1;22800;1;0
+j18;Fachkraft Kosmetik;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;1;23000;1;0
+j19;Zahnmedizinisches Fachpersonal;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;23500;2;0
+j20;Fachkraft für Fliesen-, Platten und Mosaikarbeiten;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;24000;2;0
+j21;Pflegefachkraft;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;25000;1;1
+j22;Verkaufspersonal;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;25500;2;0
+j23;Verwaltungsfachkraft;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;25000;1;1
+j24;Verkaufsfachkraft im KfZ-Bereich;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;26000;2;0
+j25;Industriekauffrau/-mann;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;26500;2;0
+j26;Einzelhandelsfachkraft;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;26100;2;0
+j27;Buchhandelsfachkraft;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;27000;2;0
+j28;Fachkraft für Immobilienwirtschaft;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;27500;2;0
+j29;Person im Fahrdienst;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;28000;2;0
+j30;Fachkraft im Bäckerhandwerk;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;28200;2;0
+j31;Forstmanagement;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;28800;2;0
+j32;Kaufmännische Fachkraft im Büromanagenent ;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;28500;2;0
+j33;Kfz-Mechatronikfachkraft;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;28300;2;0
+j34;Zahntechnische Fachkraft;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;29000;2;0
+j35;Empfangspersonal;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;29500;2;0
+j36;Mechatronikfachkraft;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;30000;2;0
+j37;Pädagogische Fachkraft im Bereich Kindererziehung;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;30000;2;0
+j38;Leitung der Küche;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;30500;1;1
+j39;Meisterin im Schreinerhandwerk;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;32000;2;0
+j40;Fachkraft für Umwelttechnologie;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;32000;2;0
+j41;Assistenz Geschäftsleitung ;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;33500;2;0
+j42;Fachkraft für soziale Arbeit;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;33000;2;0
+j43;Empfangspersonal;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;33100;1;1
+j44;Fachkraft für Logistik;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;34000;2;0
+j45;Fachkraft Elektronik;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;34000;2;0
+j46;Teamleitung NGO;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;35000;2;0
+j47;Fachkraft im Garten- und Landschaftsbau;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;34000;1;1
+j48;IT-Fachkraft;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;1;2;36500;2;0
+j49;Promotion;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;26000;2;0
+j50;Speditionskauffrau/-mann;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;32000;2;0
+j51;Fachkraft für soziale Arbeit;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;33000;2;0
+j52;Meisterin im Bäckerhandwerk;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;34200;2;0
+j53;Offizierslaufbahn;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;34500;1;1
+j54;Fachkraft für Logistik;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;36000;2;0
+j55;Bankfachkraft;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;38000;2;1
+j56;Psychologin;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;34200;3;0
+j57;Key Account Management;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;46000;3;0
+j58;Veranstaltungsmanagement;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;48500;3;0
+j59;Finanzfachkraft;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;48000;3;0
+j60;Leitung von Spitzengastronomie;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;49500;3;0
+j61;Management Vertriebsingenieur;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;49000;3;1
+j62;Hochschuldozierende;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;49800;2;1
+j63;Oberstudienrätin;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;50000;3;0
+j64;Fachkraft für Finanzanalysen;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;54000;4;0
+j65;Software Engineer;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;55000;4;0
+j66;Archäologische Fachkraft;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;59000;4;0
+j67;Fachkraft für Wirtschaftsprüfung ;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;60000;2;2
+j68;Schulleitung;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;61000;3;1
+j69;Fachärztin;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;63000;3;1
+j70;Veranstaltungsmanagement;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;62000;3;1
+j71;IT-Teamleitung;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;65000;4;0
+j72;Unternehmensberatung ;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;65000;4;0
+j73;Notarin;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;2;2;70000;3;1
+j74;Speditions- und Logistikfachkraft;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;42000;3;0
+j75;Habilitation;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;45000;3;0
+j76;Logistikmanagement;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;55000;3;0
+j77;Archäologische Fachkraft;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;62000;4;0
+j78;Klinikprofessorin;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;64000;3;1
+j79;Steuerberatung;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;64000;3;0
+j80;Tierärztin;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;65000;2;1
+j81;Psychologin;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;65000;4;0
+j82;Führungskraft Marketing;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;70000;2;2
+j83;Schulleitung ;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;75000;4;0
+j84;Technische Leitung;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;78000;4;0
+j85;Führungskraft Personalwesen;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;80000;3;1
+j86;Hochschuldozierende;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;82000;2;2
+j87;Leitung des Bildungsministeriums;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;85000;4;0
+j88;Software Engineer;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;90000;4;0
+j89;Leitung Finanzbuchhaltung;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;95000;4;0
+j90;Notarin;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;92000;4;0
+j91;Raumfahrtpersonal ;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;96000;4;0
+j92;Offizierslaufbahn;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;93000;4;0
+j93;Unternehmensberatung ;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;95000;4;0
+j94;IT-Teamleitung;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;97000;4;0
+j95;Piloten-Crew;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;100000;4;1
+j96;Profibasketballerin;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;120000;3;2
+j97;CEO (Geschäftsführung);Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;120000;4;1
+j98;Fußballprofi;Wenn Du einen Job hast, kannst Du pro Jahr einen Zeitstein weniger setzen.;3;2;130000;3;2
