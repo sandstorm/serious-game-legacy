@@ -281,11 +281,11 @@ trait HasMoneySheet
             $this->takeOutALoanForm->generalError = "Du hast falsche Werte für den Kredit eingegeben.";
         } else {
             $this->takeOutALoanForm->resetValidation();
+            $loanAmount = new MoneyAmount($this->takeOutALoanForm->loanAmount);
+            $this->showBanner("Du hast einen Kredit über {$loanAmount->formatWithoutHtml()} aufgenommen.");
             $this->closeTakeOutALoan();
         }
 
-        $loanAmount = new MoneyAmount($this->takeOutALoanForm->loanAmount);
-        $this->showBanner("Du hast einen Kredit über {$loanAmount->formatWithoutHtml()} € aufgenommen.");
         $this->broadcastNotify();
     }
 
