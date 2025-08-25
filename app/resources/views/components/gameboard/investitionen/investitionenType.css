@@ -1,0 +1,28 @@
+.investitionen-types {
+    margin-top: var(--spacing-200);
+    padding-bottom: var(--spacing-50);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-200);
+    align-items: center;
+}
+
+.investitionen-type {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-100);
+
+    h4 {
+        margin: 0;
+    }
+}
+
+.investitionen-type__actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--spacing-100);
+}

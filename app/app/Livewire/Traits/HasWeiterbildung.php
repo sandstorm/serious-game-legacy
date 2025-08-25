@@ -27,7 +27,7 @@ trait HasWeiterbildung
      */
     public function mountHasWeiterbildung(): void
     {
-        if (PreGameState::isInPreGamePhase($this->gameEvents)) {
+        if (PreGameState::isInPreGamePhase($this->getGameEvents())) {
             // do not mount the if we are in pre-game phase
             return;
         }
@@ -58,13 +58,13 @@ trait HasWeiterbildung
     public function canStartWeiterbildung(): bool
     {
         $aktion = new StartWeiterbildungAktion();
-        return $aktion->validate($this->myself, $this->gameEvents)->canExecute;
+        return $aktion->validate($this->myself, $this->getGameEvents())->canExecute;
     }
 
     public function showWeiterbildung(): void
     {
         $aktion = new StartWeiterbildungAktion();
-        $validationResult = $aktion->validate($this->myself, $this->gameEvents);
+        $validationResult = $aktion->validate($this->myself, $this->getGameEvents());
         if (!$validationResult->canExecute) {
             $this->showNotification(
                 $validationResult->reason,
@@ -74,7 +74,6 @@ trait HasWeiterbildung
         }
 
         $this->coreGameLogic->handle($this->gameId, StartWeiterbildung::create($this->myself));
-        $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
         $this->isWeiterbildungVisible = true;
         $this->broadcastNotify();
@@ -98,7 +97,6 @@ trait HasWeiterbildung
             $this->myself,
             $selectedAnswerId
         ));
-        $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
         $this->broadcastNotify();
         $this->isWeiterbildungVisible = true;

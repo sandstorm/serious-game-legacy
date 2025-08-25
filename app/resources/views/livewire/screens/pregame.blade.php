@@ -5,7 +5,7 @@
     <h2>Spiel ID: {{ $gameId }}</h2>
     <h3>Vorbereitung des Spiels</h3>
 
-    @foreach(PreGameState::playersWithNameAndLebensziel($this->gameEvents()) as $nameAndLebensziel)
+    @foreach(PreGameState::playersWithNameAndLebensziel($this->getGameEvents()) as $nameAndLebensziel)
         @if($nameAndLebensziel->playerId->equals($myself))
             @if(!$nameAndLebensziel->hasNameAndLebensziel())
                 <form wire:submit="preGameSetNameAndLebensziel">
@@ -17,7 +17,7 @@
                     <div class="form__group">
                         <h4>Wähle ein Lebensziel aus</h4>
                         @error('nameLebenszielForm.lebensziel') <span
-                            class="form__error">{{ $message }}</span> @enderror
+                                class="form__error">{{ $message }}</span> @enderror
 
                         <ul class="lebensziele-selector">
                             @foreach($lebensziele as $lebensziel)
@@ -29,7 +29,7 @@
                                     <button type="button" class="button button--type-primary"
                                             wire:click="selectLebensZiel({{ $lebensziel->id->value }})">
                                         @if($nameLebenszielForm->lebensziel != $lebensziel->id->value)
-                                        Dieses Lebensziel auswählen
+                                            Dieses Lebensziel auswählen
                                         @else
                                             Lebensziel ausgewählt
                                         @endif
@@ -57,7 +57,7 @@
             <hr/>
         @endif
     @endforeach
-    @if(PreGameState::isReadyForGame($this->gameEvents()))
+    @if(PreGameState::isReadyForGame($this->getGameEvents()))
         <button type="button" class="button button--type-primary" wire:click="startGame">Spiel starten</button>
     @endif
 </div>

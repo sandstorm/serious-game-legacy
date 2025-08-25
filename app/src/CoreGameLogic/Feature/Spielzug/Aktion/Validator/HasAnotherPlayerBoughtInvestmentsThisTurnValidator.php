@@ -26,7 +26,7 @@ final class HasAnotherPlayerBoughtInvestmentsThisTurnValidator extends AbstractV
 
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
-        $hasAnotherPlayerBoughtStocksThisTurn = GamePhaseState::anotherPlayerHasBoughtInvestmentsThisTurn($gameEvents, $playerId);
+        $hasAnotherPlayerBoughtStocksThisTurn = GamePhaseState::anotherPlayerHasBoughtOrSoldInvestmentsThisTurn($gameEvents, $playerId);
         $investmentsBought = $gameEvents->findLastOrNull(InvestmentsWereBoughtForPlayer::class)?->investmentId;
 
         if (!$hasAnotherPlayerBoughtStocksThisTurn || $investmentsBought !== $this->investmentId) {

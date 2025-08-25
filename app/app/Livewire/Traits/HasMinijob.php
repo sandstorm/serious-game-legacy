@@ -15,13 +15,13 @@ trait HasMinijob
     public function canDoMinijob(): bool
     {
         $aktion = new DoMinijobAktion();
-        return $aktion->validate($this->myself, $this->gameEvents)->canExecute;
+        return $aktion->validate($this->myself, $this->getGameEvents())->canExecute;
     }
 
     public function doMinijob(): void
     {
         $aktion = new DoMinijobAktion();
-        $validationResult = $aktion->validate($this->myself,$this->gameEvents);
+        $validationResult = $aktion->validate($this->myself,$this->getGameEvents());
         if (!$validationResult->canExecute) {
             $this->showNotification(
                 $validationResult->reason,
@@ -31,7 +31,6 @@ trait HasMinijob
         }
 
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->myself));
-        $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $this->broadcastNotify();
         $this->isMinijobVisible = true;
     }

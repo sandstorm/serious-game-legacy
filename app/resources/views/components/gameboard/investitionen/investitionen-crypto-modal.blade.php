@@ -16,6 +16,10 @@
         <span>
             Kauf - {{ $this->buyInvestmentOfType }} Kryptowährung <i class="icon-krypto" aria-hidden="true"></i>
         </span>
+    @elseif ($this->sellInvestmentOfType)
+        <span>
+            Verkauf - {{ $this->sellInvestmentOfType }} <i class="icon-krypto" aria-hidden="true"></i>
+        </span>
     @else
         <span>
             Kryptowährungen <i class="icon-krypto" aria-hidden="true"></i>
@@ -28,25 +32,31 @@
 
 @section('content')
     @if ($this->buyInvestmentOfType)
-        <x-gameboard.investitionen.invenstitionen-buy-form
+        <x-gameboard.investitionen.investitionen-buy-form
             :game-events="$gameEvents"
             :investment="InvestmentFinder::findInvestmentById($this->buyInvestmentOfType)"
             unit="Coin"
             buy-button-label="Coins kaufen"
+        />
+    @elseif ($this->sellInvestmentOfType)
+        <x-gameboard.investitionen.investitionen-sell-form
+            :game-events="$gameEvents"
+            unit="Coin"
+            buy-button-label="Coins verkaufen"
         />
     @else
         <p>
             Kryptowährungen sind digitale, dezentral gehandelte Coins oder Tokens, deren Kurs allein durch Angebot und Nachfrage an Online-Börsen bestimmt wird.
             Sie versprechen hohe Renditechancen, gehen jedoch auch mit extremer Volatilität, regulatorischer Unsicherheit und technologischem Risiko einher.
         </p>
-        <div class="investment-types">
-            <x-gameboard.investitionen.investment-type
+        <div class="investitionen-types">
+            <x-gameboard.investitionen.investitionen-type
                 :investment-type="InvestmentId::BAT_COIN"
                 :game-Events="$gameEvents"
                 unit="Coin"
             />
 
-            <x-gameboard.investitionen.investment-type
+            <x-gameboard.investitionen.investitionen-type
                 :investmentType="InvestmentId::MEME_COIN"
                 :game-Events="$gameEvents"
                 unit="Coin"

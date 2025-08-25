@@ -40,7 +40,7 @@ trait HasJobOffer
     {
         $cardId = new CardId($cardIdString);
         $aktion = new AcceptJobOfferAktion($cardId);
-        return $aktion->validate($this->myself, $this->gameEvents);
+        return $aktion->validate($this->myself, $this->getGameEvents());
     }
 
     /**
@@ -62,7 +62,6 @@ trait HasJobOffer
             $this->gameId,
             AcceptJobOffer::create($this->myself, $cardId)
         );
-        $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
         $this->jobOfferIsVisible = false;
         $this->broadcastNotify();
