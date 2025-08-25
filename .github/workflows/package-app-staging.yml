@@ -11,7 +11,7 @@ jobs:
     name: Build Assets
     runs-on: [self-hosted, linux]
     container:
-      image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v4
+      image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.4-v4
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -73,7 +73,7 @@ jobs:
     name: Package App Staging
     runs-on: [self-hosted, linux]
     container:
-      image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v4
+      image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.4-v4
     needs: build_assets
     permissions:
       contents: read

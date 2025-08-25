@@ -146,7 +146,7 @@ class GameUi extends Component
         return PlayerState::getPlayerColorClass($this->gameEvents, $this->myself);
     }
 
-    public function getPlayerPhase(PlayerId $playerId = null): int
+    public function getPlayerPhase(?PlayerId $playerId = null): int
     {
         return PlayerState::getCurrentLebenszielphaseIdForPlayer($this->gameEvents, $playerId ?? $this->myself)->value;
     }

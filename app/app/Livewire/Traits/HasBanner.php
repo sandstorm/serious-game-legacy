@@ -24,7 +24,7 @@ trait HasBanner
      */
     public ?array $bannerResourceChanges = null;
 
-    public function showBanner(string $message, ResourceChanges $resourceChanges = null): void
+    public function showBanner(string $message, ?ResourceChanges $resourceChanges = null): void
     {
         $this->isBannerVisible = false;
         $this->bannerMessage = $message;

@@ -1,5 +1,5 @@
 # NOTE: this file is executed from the ROOT DIRECTORY of the project, i.e. "../"
-FROM php:8.3-fpm-bookworm
+FROM php:8.4-fpm-bookworm
 
 ###################### START - Dev Container only ######################
 # IMPORTANT: we try to keep the production and local-dev the same      #
