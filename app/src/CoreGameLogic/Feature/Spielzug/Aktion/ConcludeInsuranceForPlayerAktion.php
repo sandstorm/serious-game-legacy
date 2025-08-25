@@ -33,6 +33,7 @@ class ConcludeInsuranceForPlayerAktion extends Aktion
 
         $validatorChain = new PlayerDoesNotYetHaveThisInsuranceValidator($this->insuranceId);
         $validatorChain->setNext(new HasPlayerEnoughResourcesValidator($this->resourceChanges));
+        // TODO beim Aussetzen nicht erlaubt?
         return $validatorChain->validate($gameEvents, $playerId);
     }
 

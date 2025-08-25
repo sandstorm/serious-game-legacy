@@ -32,6 +32,7 @@ class CancelInsuranceForPlayerAktion extends Aktion
         return new AktionValidationResult(
             canExecute: true,
         );
+        // TODO beim Aussetzen nicht erlaubt?
     }
 
     public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist

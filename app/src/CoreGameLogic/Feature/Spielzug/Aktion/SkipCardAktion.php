@@ -7,6 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\DoesNotSkipTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasCategoryFreeZeitsteinslotsValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerDoneNoZeitsteinaktionThisTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughZeitsteineValidator;
@@ -36,6 +37,7 @@ class SkipCardAktion extends Aktion
         );
         $validatorChain = new IsPlayersTurnValidator();
         $validatorChain
+            ->setNext(new DoesNotSkipTurnValidator())
             ->setNext(new HasPlayerDoneNoZeitsteinaktionThisTurnValidator())
             ->setNext(new HasPlayerEnoughZeitsteineValidator(1))
             ->setNext(new HasCategoryFreeZeitsteinslotsValidator($this->category));
