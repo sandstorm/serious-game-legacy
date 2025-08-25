@@ -33,6 +33,7 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\ValueObject\AnswerId;
 use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Insurance\InsuranceDefinition;
 use Domain\Definitions\Insurance\InsuranceFinder;
@@ -480,6 +481,50 @@ abstract class TestCase extends BaseTestCase
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
                 title: 'Nichts',
                 description: 'Es passiert nichts, damit die Tests vorhersehbar bleiben',
+                year: new Year(1),
+                resourceChanges: new ResourceChanges(),
+                modifierIds: [],
+                modifierParameters: new ModifierParameters(),
+            ),
+            "e2" => new EreignisCardDefinition(
+                id: new CardId('e2'),
+                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+                title: 'Nichts',
+                description: 'Es passiert nichts, damit die Tests vorhersehbar bleiben',
+                phaseId: LebenszielPhaseId::PHASE_2,
+                year: new Year(1),
+                resourceChanges: new ResourceChanges(),
+                modifierIds: [],
+                modifierParameters: new ModifierParameters(),
+            ),
+            "e3" => new EreignisCardDefinition(
+                id: new CardId('e3'),
+                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+                title: 'Nichts',
+                description: 'Es passiert nichts, damit die Tests vorhersehbar bleiben',
+                phaseId: LebenszielPhaseId::PHASE_2,
+                year: new Year(1),
+                resourceChanges: new ResourceChanges(),
+                modifierIds: [],
+                modifierParameters: new ModifierParameters(),
+            ),
+            "e4" => new EreignisCardDefinition(
+                id: new CardId('e4'),
+                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+                title: 'Nichts',
+                description: 'Es passiert nichts, damit die Tests vorhersehbar bleiben',
+                phaseId: LebenszielPhaseId::PHASE_3,
+                year: new Year(1),
+                resourceChanges: new ResourceChanges(),
+                modifierIds: [],
+                modifierParameters: new ModifierParameters(),
+            ),
+            "e5" => new EreignisCardDefinition(
+                id: new CardId('e5'),
+                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+                title: 'Nichts',
+                description: 'Es passiert nichts, damit die Tests vorhersehbar bleiben',
+                phaseId: LebenszielPhaseId::PHASE_3,
                 year: new Year(1),
                 resourceChanges: new ResourceChanges(),
                 modifierIds: [],

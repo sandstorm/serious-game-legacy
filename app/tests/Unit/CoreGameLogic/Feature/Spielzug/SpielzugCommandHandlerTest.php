@@ -52,6 +52,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\SteuernUndAbgabenForPlayerWereEn
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
 use Domain\Definitions\Card\Dto\ModifierParameters;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
@@ -1371,6 +1372,74 @@ describe('handleChangeLebenszielphase', function () {
         expect($resources->guthabenChange->value)->toEqual(Configuration::STARTKAPITAL_VALUE + 50000)
             ->and($resources->bildungKompetenzsteinChange)->toEqual(2)
             ->and($resources->freizeitKompetenzsteinChange)->toEqual(3);
+    });
+
+    it('finishes Lebensziel when the player finishes Lebenszielphase 3', function () {
+        /** @var TestCase $this */
+        $cardsForTesting = [
+            new KategorieCardDefinition(
+                id: new CardId('phase1'),
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+2000000),
+                    zeitsteineChange: +1,
+                    bildungKompetenzsteinChange: +5,
+                    freizeitKompetenzsteinChange: +5,
+                ),
+            ),
+            new KategorieCardDefinition(
+                id: new CardId('phase2'),
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                title: 'for testing',
+                description: '...',
+                phaseId: LebenszielPhaseId::PHASE_2,
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: +1,
+                    bildungKompetenzsteinChange: +5,
+                    freizeitKompetenzsteinChange: +5,
+                ),
+            ),
+            new KategorieCardDefinition(
+                id: new CardId('phase3'),
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                title: 'for testing',
+                description: '...',
+                phaseId: LebenszielPhaseId::PHASE_3,
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: +1,
+                    bildungKompetenzsteinChange: +5,
+                    freizeitKompetenzsteinChange: +5,
+                ),
+            ),
+        ];
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[1]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
+
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[1]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
+
+        $gameEventsInPhaseThree = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getCurrentLebenszielphaseIdForPlayer($gameEventsInPhaseThree, $this->players[0]))
+            ->toEqual(LebenszielPhaseId::PHASE_3)
+            ->and(GamePhaseState::hasAnyPlayerFinishedLebensziel($gameEventsInPhaseThree))->toBeFalse();
+
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+
+        $gameEventsAfterPhaseThree = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getCurrentLebenszielphaseIdForPlayer($gameEventsAfterPhaseThree, $this->players[0]))
+            ->toEqual(LebenszielPhaseId::PHASE_3)
+            ->and(GamePhaseState::hasAnyPlayerFinishedLebensziel($gameEventsAfterPhaseThree))->toBeTrue();
     });
 });
 

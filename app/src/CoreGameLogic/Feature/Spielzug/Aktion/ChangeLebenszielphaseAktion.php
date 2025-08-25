@@ -11,6 +11,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughResour
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasFinishedLebensziel;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
@@ -30,7 +31,7 @@ class ChangeLebenszielphaseAktion extends Aktion
         return $validatorChain->validate($gameEvents, $playerId);
     }
 
-    // Moves to the next Lebenszielphase, changes the Ressources which are nessesary for the next phase and creating the event
+    // Moves to the next Lebenszielphase (or finishes Lebensziel), changes the Resources which are necessary for the next phase (for finishing) and creating the event
     public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist
     {
         $result = $this->validate($playerId, $gameEvents);
@@ -46,8 +47,19 @@ class ChangeLebenszielphaseAktion extends Aktion
             freizeitKompetenzsteinChange: -1 * PlayerState::getFreizeitKompetenzsteine($gameEvents, $playerId) + $retainedKompetenzsteineInSozialesUndFreizeit,
         );
 
+        $currentLebenszielphase = PlayerState::getCurrentLebenszielphaseIdForPlayer($gameEvents, $playerId);
+        $lebenszielName = PlayerState::getLebenszielDefinitionForPlayer($gameEvents, $playerId)->name;
+        if ($currentLebenszielphase === LebenszielPhaseId::PHASE_3) {
+            return GameEventsToPersist::with(
+                new PlayerHasFinishedLebensziel($playerId, $resourceChanges, $lebenszielName)
+            );
+        }
         return GameEventsToPersist::with(
-            new LebenszielphaseWasChanged($playerId, $resourceChanges, LebenszielPhaseId::from($currentPhaseDefinition->lebenszielPhaseId->value + 1))
+            new LebenszielphaseWasChanged(
+                $playerId,
+                $resourceChanges,
+                LebenszielPhaseId::from($currentPhaseDefinition->lebenszielPhaseId->value + 1)
+            )
         );
     }
 }

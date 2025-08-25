@@ -10,14 +10,13 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\Loggable;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
-use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
 
-final readonly class LebenszielphaseWasChanged implements GameEventInterface, ProvidesResourceChanges, Loggable
+final readonly class PlayerHasFinishedLebensziel implements GameEventInterface, ProvidesResourceChanges, Loggable
 {
     public function __construct(
-        public PlayerId          $playerId,
-        public ResourceChanges   $resourceChanges,
-        public LebenszielPhaseId           $currentPhase,
+        public PlayerId        $playerId,
+        public ResourceChanges $resourceChanges,
+        public string          $lebenszielName,
     )
     {
     }
@@ -27,7 +26,7 @@ final readonly class LebenszielphaseWasChanged implements GameEventInterface, Pr
         return new self(
             playerId: PlayerId::fromString($values['playerId']),
             resourceChanges: ResourceChanges::fromArray($values['resourceChanges']),
-            currentPhase: LebenszielPhaseId::from($values['currentPhase']),
+            lebenszielName: $values['lebenszielName'],
         );
     }
 
@@ -36,7 +35,7 @@ final readonly class LebenszielphaseWasChanged implements GameEventInterface, Pr
         return [
             'playerId' => $this->playerId,
             'resourceChanges' => $this->resourceChanges,
-            'currentPhase' => $this->currentPhase,
+            'lebenszielName' => $this->lebenszielName,
         ];
     }
 
@@ -57,7 +56,7 @@ final readonly class LebenszielphaseWasChanged implements GameEventInterface, Pr
     {
         return new LogEntry(
             playerId: $this->playerId,
-            text: "wechselt zu Lebenszielphase '" . $this->currentPhase->value . "'",
+            text: "erreicht Lebensziel '" . $this->lebenszielName . "'",
             resourceChanges: $this->resourceChanges,
         );
     }
