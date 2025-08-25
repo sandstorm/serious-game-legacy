@@ -13,6 +13,8 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
+use Domain\CoreGameLogic\Feature\Spielzug\State\ModifierCalculator;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\Pile;
 use Domain\Definitions\Card\ValueObject\CardId;
@@ -43,35 +45,40 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
      * Ends the current konjunkturphase and starts a new one.
      *
      * @param ChangeKonjunkturphase $command
-     * @param GameEvents $gameState
+     * @param GameEvents $gameEvents
      * @return GameEventsToPersist
      * @throws RandomException
      */
     public function handleChangeKonjunkturphase(
         ChangeKonjunkturphase $command,
-        GameEvents $gameState
+        GameEvents $gameEvents
     ): GameEventsToPersist {
-        if (!GamePhaseState::isInGamePhase($gameState)) {
+        if (!GamePhaseState::isInGamePhase($gameEvents)) {
             throw new \RuntimeException('not in game phase', 1747148685);
         }
 
         $year = 1;
         // increment year
-        if (GamePhaseState::hasKonjunkturphase($gameState) && GamePhaseState::currentKonjunkturphasenYear($gameState)->value > 0) {
-            $year = GamePhaseState::currentKonjunkturphasenYear($gameState)->value + 1;
+        if (GamePhaseState::hasKonjunkturphase($gameEvents) && GamePhaseState::currentKonjunkturphasenYear($gameEvents)->value > 0) {
+            $year = GamePhaseState::currentKonjunkturphasenYear($gameEvents)->value + 1;
         }
 
-        $lastKonjunkturphaseType = $gameState->findLastOrNull(KonjunkturphaseWasChanged::class)->type ?? null;
+        $lastKonjunkturphaseType = $gameEvents->findLastOrNull(KonjunkturphaseWasChanged::class)->type ?? null;
 
+        // Check for modifier that may influence the next KonjunkturphaseType
+        $isChanceForRezessionIncreased = ModifierCalculator::forStream($gameEvents)
+            ->withoutPlayer()
+            ->modify($gameEvents, HookEnum::INCREASED_CHANCE_FOR_REZESSION, false);
         // We pick a random next konjunkturphase from the definitions.
-        $nextKonjunkturphase = $command->fixedKonjunkturphaseForTesting ?? KonjunkturphaseFinder::getRandomKonjunkturphase($lastKonjunkturphaseType);
+        $nextKonjunkturphase = $command->fixedKonjunkturphaseForTesting
+            ?? KonjunkturphaseFinder::getRandomKonjunkturphase($lastKonjunkturphaseType, $isChanceForRezessionIncreased);
 
         return GameEventsToPersist::with(
             new KonjunkturphaseWasChanged(
                 id: $nextKonjunkturphase->id,
                 year: new Year($year),
                 type: $nextKonjunkturphase->type,
-                investmentPrices: InvestmentPriceState::calculateInvestmentPrices($gameState),
+                investmentPrices: InvestmentPriceState::calculateInvestmentPrices($gameEvents),
             ),
 
             // We ALSO SHUFFLE cards during Konjunkturphasenwechsel

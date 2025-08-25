@@ -381,7 +381,7 @@ class PlayerState
     public static function getDividendForAllStocksForPlayer(GameEvents $stream, PlayerId $playerId): MoneyAmount
     {
         $currentKonjunkturphase = KonjunkturphaseState::getCurrentKonjunkturphase($stream);
-        $currentDividend = $currentKonjunkturphase->getAuswirkungByScope(AuswirkungScopeEnum::DIVIDEND)->modifier;
+        $currentDividend = $currentKonjunkturphase->getAuswirkungByScope(AuswirkungScopeEnum::DIVIDEND)->value;
         $amountOfLowRiskStocksForPlayer = self::getAmountOfAllInvestmentsOfTypeForPlayer($stream, $playerId, InvestmentId::MERFEDES_PENZ);
 
         return new MoneyAmount($currentDividend * $amountOfLowRiskStocksForPlayer);

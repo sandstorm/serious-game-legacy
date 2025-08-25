@@ -31,7 +31,9 @@ final class CanPlayerAffordTopCardOnPileValidator extends AbstractValidator
         $costToActivate = new ResourceChanges(
             zeitsteineChange: AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound($playerId) ? 0 : -1
         );
-        return $cardDefinition instanceof KategorieCardDefinition ? $costToActivate->accumulate($cardDefinition->getResourceChanges()) : $costToActivate;
+        return $cardDefinition instanceof KategorieCardDefinition
+            ? $costToActivate->accumulate(AktionsCalculator::forStream($gameEvents)->getModifiedResourceChangesForCard($cardDefinition))
+            : $costToActivate;
     }
 
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult

@@ -155,7 +155,7 @@ function importEreignisCards(): void
         "HAFTPFLICHTVERSICHERUNG" => new ModifierMapping("HAFTPFLICHTVERSICHERUNG", ""),
         "INVESTITIONSSPERRE" => new ModifierMapping("INVESTITIONSSPERRE", ""),
         "JOBVERLUST" => new ModifierMapping("JOBVERLUST", ""),
-        "LEBENSHALTUNGSKOSTEN_MULTIPLIER" => new ModifierMapping("LEBENSHALTUNGSKOSTEN_MULTIPLIER", "modifyLebenshaltungskostenMultiplier"),
+        "LEBENSHALTUNGSKOSTEN_MULTIPLIER" => new ModifierMapping("LEBENSHALTUNGSKOSTEN_KIND_INCREASE", "modifyLebenshaltungskostenMultiplier"),
         "LEBENSHALTUNGS_MINIMUM" => new ModifierMapping("LEBENSHALTUNGSKOSTEN_MIN_VALUE", "modifyLebenshaltungskostenMinValue"),
         "PRIVATE_UNFALLVERSICHERUNG" => new ModifierMapping("PRIVATE_UNFALLVERSICHERUNG", ""),
     ];

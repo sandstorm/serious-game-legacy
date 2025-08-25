@@ -11,11 +11,14 @@ use App\Livewire\Forms\MoneySheetSteuernUndAbgabenForm;
 use App\Livewire\Forms\TakeOutALoanForm;
 use App\Livewire\ValueObject\ExpensesTabEnum;
 use App\Livewire\ValueObject\IncomeTabEnum;
+use App\Livewire\ValueObject\NotificationTypeEnum;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\LoanCalculator;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\TakeOutALoanForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerAllowedToTakeOutALoanValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CancelInsuranceForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ConcludeInsuranceForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelInsuranceForPlayer;
@@ -134,8 +137,35 @@ trait HasMoneySheet
         $this->takeOutALoanIsVisible = false;
     }
 
+    /**
+     * Returns true, if the player can take out a loan. Use this to disable buttons that open
+     * the loan form modal.
+     * @return bool
+     */
+    public function isPlayerAllowedToTakeOutALoan(): bool
+    {
+        $validator = new IsPlayerAllowedToTakeOutALoanValidator();
+        return $validator->validate($this->gameEvents, $this->myself)->canExecute;
+    }
+
+    /**
+     * Opens the TakeOutALoan Form, if the player is allowed to take out a loan.
+     * Displays an error message otherwise.
+     * @return void
+     */
     public function showTakeOutALoan(): void
     {
+        $validator = new IsPlayerAllowedToTakeOutALoanValidator();
+        $validationResult = $validator->validate($this->gameEvents, $this->myself);
+        if (!$validationResult->canExecute) {
+            $this->showNotification(
+                $validationResult->reason,
+                NotificationTypeEnum::ERROR
+            );
+            // Don't do anything else
+            return;
+        }
+
         $this->moneySheetIsVisible = false;
         $this->editIncomeIsVisible = false;
         $this->editExpensesIsVisible = false;
@@ -252,7 +282,7 @@ trait HasMoneySheet
         $this->takeOutALoanForm->loanId = LoanId::unique()->value;
         $this->takeOutALoanForm->guthaben = PlayerState::getGuthabenForPlayer($this->gameEvents, $this->myself)->value + PlayerState::getTotalValueOfAllAssetsForPlayer($this->gameEvents, $this->myself)->value;
         $this->takeOutALoanForm->hasJob = PlayerState::getJobForPlayer($this->gameEvents, $this->myself) !== null;
-        $this->takeOutALoanForm->zinssatz = KonjunkturphaseState::getCurrentKonjunkturphase($this->gameEvents)->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->modifier;
+        $this->takeOutALoanForm->zinssatz = KonjunkturphaseState::getCurrentKonjunkturphase($this->gameEvents)->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->value;
     }
 
     public function takeOutALoan(): void

@@ -113,8 +113,8 @@ describe('getListOfPossibleNextPhaseTypes', function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $lastPhase = KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents);
-        expect($lastPhase)->not()->toBeNull();
-        expect($lastPhase->type)->toBe(KonjunkturphaseTypeEnum::AUFSCHWUNG);
+        expect($lastPhase)->not()->toBeNull()
+            ->and($lastPhase->type)->toBe(KonjunkturphaseTypeEnum::AUFSCHWUNG);
 
         $possibleNextPhases = KonjunkturphaseFinder::getListOfPossibleNextPhaseTypes($lastPhase->type);
         expect($possibleNextPhases)->toBeArray()
@@ -123,4 +123,20 @@ describe('getListOfPossibleNextPhaseTypes', function () {
             ->and($possibleNextPhases[1])->tobe(KonjunkturphaseTypeEnum::BOOM)
             ->and($possibleNextPhases[2])->tobe(KonjunkturphaseTypeEnum::REZESSION);
     });
+
+    it('returns Rezession with increased likelihood when isChanceForRezessionIncreased is true', function () {
+        /** @var TestCase $this */
+        $this->setupBasicGame();
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        $lastPhase = KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents);
+
+        for ($i = 0; $i < 100; $i++) {
+            $possibleNextPhases = KonjunkturphaseFinder::getListOfPossibleNextPhaseTypes(
+                konjunkturphaseType: $lastPhase->type,
+                isChanceForRezessionIncreased: true
+            );
+            echo implode(", ", array_map(fn ($phase) => $phase->value ,$possibleNextPhases)) . "\n\n";
+        }
+    })->skip("Un-skip this to debug increased chance for Rezession");
 });

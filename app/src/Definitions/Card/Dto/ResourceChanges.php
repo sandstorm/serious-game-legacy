@@ -69,4 +69,14 @@ final readonly class ResourceChanges implements JsonSerializable
             'freizeitKompetenzsteinChange' => $this->freizeitKompetenzsteinChange,
         ];
     }
+
+    public function setGuthabenChange(MoneyAmount $newGuthabenChange): self
+    {
+        return new self(
+            guthabenChange: $newGuthabenChange,
+            zeitsteineChange: $this->zeitsteineChange,
+            bildungKompetenzsteinChange: $this->bildungKompetenzsteinChange,
+            freizeitKompetenzsteinChange: $this->freizeitKompetenzsteinChange,
+        );
+    }
 }

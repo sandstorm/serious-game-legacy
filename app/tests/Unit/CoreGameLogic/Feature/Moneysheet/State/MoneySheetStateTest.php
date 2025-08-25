@@ -18,6 +18,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlaye
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\Definitions\Card\Dto\ModifierParameters;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
@@ -718,22 +719,24 @@ describe('getOpenRatesForLoan', function () {
                     ])
                 ),
             ],
+            modifierIds: [],
+            modifierParameters: new ModifierParameters(),
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::DIVIDEND,
-                    modifier: 1.40
+                    value: 1.40
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::STOCKS_BONUS,
-                    modifier: 0
+                    value: 0
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    modifier: 4
+                    value: 4
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::CRYPTO,
-                    modifier: 0
+                    value: 0
                 ),
             ]
         );
@@ -940,7 +943,7 @@ describe("getAnnualIncomeForPlayer", function () {
         );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        $expectedDividend = $this->konjunkturphaseDefinition->getAuswirkungByScope(AuswirkungScopeEnum::DIVIDEND)->modifier;
+        $expectedDividend = $this->konjunkturphaseDefinition->getAuswirkungByScope(AuswirkungScopeEnum::DIVIDEND)->value;
         expect(MoneySheetState::getAnnualIncomeForPlayer($gameEvents,
             $this->players[0])->value)->toEqual($expectedDividend * $amountOfStocks);
     });

@@ -27,4 +27,10 @@ class ModifierCalculator
             return $state->withAdditional($event->getModifiers($playerId));
         }, new ModifierCollection([]));
     }
-}
+
+    public function withoutPlayer(): ModifierCollection
+    {
+        return $this->stream->findAllOfType(ProvidesModifiers::class)->reduce(function (ModifierCollection $state, ProvidesModifiers $event) {
+            return $state->withAdditional($event->getModifiers());
+        }, new ModifierCollection([]));
+    }}

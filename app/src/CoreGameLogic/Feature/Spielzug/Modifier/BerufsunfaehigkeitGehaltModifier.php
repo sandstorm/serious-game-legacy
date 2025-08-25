@@ -10,10 +10,16 @@ use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\ModifierId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
+/**
+ * This modifier is used when the player draws an EreignisCard that will cause them to lose their job but allows
+ * a Berufsunfähigkeitsversicherung to mitigate the consequences. If the player has a Berufsunfähigkeitsversicherung
+ * at the time of the EreignisCard, then the current Gehalt will be payed one last time at the end of the current
+ * Konjunkturphase.
+ * The modifier will stay active until the end of the current Konjunkturphase.
+ */
 readonly final class BerufsunfaehigkeitGehaltModifier extends Modifier
 {
     public function __construct(
-        public PlayerId $playerId,
         public PlayerTurn $playerTurn,
         string $description,
     ) {

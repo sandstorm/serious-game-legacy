@@ -39,9 +39,15 @@ class PlayerId implements \JsonSerializable
         return $this->value;
     }
 
-    public function equals(PlayerId $other): bool
+    /**
+     * Returns true if this player and the other player are the same.
+     * Returns false if other player is null or another player.
+     * @param PlayerId|null $other
+     * @return bool
+     */
+    public function equals(?PlayerId $other = null): bool
     {
-        return $this->value === $other->value;
+        return $other !== null && $this->value === $other->value;
     }
 
     public function jsonSerialize(): string

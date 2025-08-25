@@ -14,7 +14,7 @@ readonly final class ModifierBuilder
 {
     /**
      * @param ModifierId $modifierId
-     * @param PlayerId $playerId
+     * @param PlayerId|null $playerId
      * @param PlayerTurn $playerTurn
      * @param Year $year
      * @param ModifierParameters $modifierParameters
@@ -23,58 +23,94 @@ readonly final class ModifierBuilder
      */
     public static function build(
         ModifierId $modifierId,
-        PlayerId $playerId,
+        PlayerId|null $playerId,
         PlayerTurn $playerTurn,
         Year $year,
         ModifierParameters $modifierParameters,
         string $description
     ): array {
         return match ($modifierId) {
-            ModifierId::GEHALT_CHANGE => [new GehaltModifier(
-                playerId: $playerId,
-                playerTurn: $playerTurn,
-                description: $description,
-                activeYear: $year,
-                percentage: $modifierParameters->modifyGehaltPercent ?? throw new \RuntimeException("missing parameter"),// TODO better error message
-            )],
-            ModifierId::AUSSETZEN => [new AussetzenModifier(
-                playerId: $playerId,
-                playerTurn: $playerTurn,
-                description: $description,
-                numberOfSkippedTurns: $modifierParameters->numberOfTurns ?? 1,
-            )],
-            ModifierId::BIND_ZEITSTEIN_FOR_JOB => [new BindZeitsteinForJobModifier(
-                playerId: $playerId,
-                playerTurn: $playerTurn,
-                description: $description,
-            )],
-            ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER => [new LebenshaltungskostenMultiplierModifier(
-                playerId: $playerId,
-                playerTurn: $playerTurn,
-                description: $description,
-                activeYear: $year,
-                multiplier: $modifierParameters->modifyLebenshaltungskostenMultiplier ?? throw new \RuntimeException("missing parameter"),
-            )],
-            ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE => [new LebenshaltungskostenMinValueModifier(
-                playerId: $playerId,
-                playerTurn: $playerTurn,
-                description: $description,
-                activeYear: $year,
-                minValueChange: $modifierParameters->modifyLebenshaltungskostenMinValue ?? throw new \RuntimeException("missing parameter"),
-            )],
-            ModifierId::INVESTITIONSSPERRE => [new InvestitionssperreModifier(
-                playerId: $playerId,
-                playerTurn: $playerTurn,
-                description: $description,
-            )],
+            ModifierId::GEHALT_CHANGE => [
+                new GehaltModifier(
+                    playerTurn: $playerTurn,
+                    description: $description,
+                    percentage: $modifierParameters->modifyGehaltPercent ?? throw new \RuntimeException("missing parameter"),// TODO better error message
+                ),
+            ],
+            ModifierId::AUSSETZEN => [
+                new AussetzenModifier(
+                    playerId: $playerId ?? throw new \RuntimeException("missing parameter 'playerId'"),
+                    playerTurn: $playerTurn,
+                    description: $description,
+                    numberOfSkippedTurns: $modifierParameters->numberOfTurns ?? 1,
+                ),
+            ],
+            ModifierId::BIND_ZEITSTEIN_FOR_JOB => [
+                new BindZeitsteinForJobModifier(
+                    playerId: $playerId ?? throw new \RuntimeException("missing parameter 'playerId'"),
+                    playerTurn: $playerTurn,
+                    description: $description,
+                ),
+            ],
+            ModifierId::LEBENSHALTUNGSKOSTEN_KIND_INCREASE => [
+                new AdditionalLebenshaltungskostenKindModifier(
+                    playerTurn: $playerTurn,
+                    description: $description,
+                    additionalPercentage: $modifierParameters->modifyAdditionalLebenshaltungskostenPercentage ?? throw new \RuntimeException("missing parameter"),
+                ),
+            ],
+            ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE => [
+                new LebenshaltungskostenKindMinValueModifier(
+                    playerTurn: $playerTurn,
+                    description: $description,
+                    minValueChange: $modifierParameters->modifyLebenshaltungskostenMinValue ?? throw new \RuntimeException("missing parameter"),
+                ),
+            ],
+            ModifierId::INVESTITIONSSPERRE => [
+                new InvestitionssperreModifier(
+                    playerTurn: $playerTurn,
+                    description: $description,
+                ),
+            ],
             ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG => [
                 new BerufsunfaehigkeitJobsperreModifier(
-                    playerId: $playerId,
                     playerTurn: $playerTurn,
                     description: $description,
                 ),
                 new BerufsunfaehigkeitGehaltModifier(
-                    playerId: $playerId,
+                    playerTurn: $playerTurn,
+                    description: $description,
+                ),
+            ],
+            ModifierId::BILDUNG_UND_KARRIERE_COST => [
+                new BildungUndKarriereCostModifier(
+                    playerTurn: $playerTurn,
+                    description: $description,
+                    percentage: $modifierParameters->modifyKostenBildungUndKarrierePercent ?? throw new \RuntimeException("missing parameter"),
+                ),
+            ],
+            ModifierId::SOZIALES_UND_FREIZEIT_COST => [
+                new SozialesUndFreizeitCostModifier(
+                    playerTurn: $playerTurn,
+                    description: $description,
+                    percentage: $modifierParameters->modifyKostenSozialesUndFreizeitPercent ?? throw new \RuntimeException("missing parameter"),
+                ),
+            ],
+            ModifierId::LEBENSHALTUNGSKOSTEN_KONJUNKTURPHASE_MULTIPLIER => [
+                new LebenshaltungskostenKonjunkturphaseModifier(
+                    playerTurn: $playerTurn,
+                    description: $description,
+                    percentage: $modifierParameters->modifyLebenshaltungskostenMultiplier ?? throw new \RuntimeException("missing parameter"),
+                ),
+            ],
+            ModifierId::KREDITSPERRE => [
+                new KreditsperreModifier(
+                    playerTurn: $playerTurn,
+                    description: $description,
+                ),
+            ],
+            ModifierId::INCREASED_CHANCE_FOR_REZESSION => [
+                new IncreasedChanceForRezessionModifier(
                     playerTurn: $playerTurn,
                     description: $description,
                 ),

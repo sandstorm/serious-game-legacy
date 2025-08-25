@@ -9,10 +9,14 @@ use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\ModifierId;
 
+/**
+ * This modifier is used when the player draws an EreignisCard that will cause them to lose their job but allows
+ * a Berufsunfähigkeitsversicherung to mitigate the consequences. In addition to losing their job, the player
+ * will also not be allowed to take a new job until the end of the current Konjunkturphase.
+ */
 readonly final class BerufsunfaehigkeitJobsperreModifier extends Modifier
 {
     public function __construct(
-        public PlayerId $playerId,
         public PlayerTurn $playerTurn,
         string $description,
     ) {

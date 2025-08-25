@@ -41,19 +41,45 @@ class MoneySheetState
     ): MoneyAmount {
         $gehalt = PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId);
         return new MoneyAmount(max([
-            $gehalt->value * self::getMultiplierForLebenshaltungskostenForPlayer($gameEvents, $playerId),
-            self::getMinimumValueForLebenshaltungskostenForPlayer($gameEvents, $playerId)->value
-        ]));
+            $gehalt->value * self::getPercentageForLebenshaltungskostenForPlayer($gameEvents, $playerId) / 100,
+            self::calculateMinimumValueForLebenshaltungskostenForPlayer($gameEvents, $playerId)->value,
+            ]
+        ));
     }
 
-    public static function getMultiplierForLebenshaltungskostenForPlayer(GameEvents $gameEvents, PlayerId $playerId): float
+    /**
+     * Returns the modified percent value for the Lebenshaltungskosten. Considers a raw percent increase and modifiers
+     * that will be multiplied with the percent value.
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return float
+     */
+    public static function getPercentageForLebenshaltungskostenForPlayer(GameEvents $gameEvents, PlayerId $playerId): float
     {
-        return ModifierCalculator::forStream($gameEvents)->forPlayer($playerId)->modify($gameEvents, HookEnum::LEBENSHALTUNGSKOSTEN_MULTIPLIER, value: Configuration::LEBENSHALTUNGSKOSTEN_MULTIPLIER);
+        $multiplier = ModifierCalculator::forStream($gameEvents)->forPlayer($playerId)->modify($gameEvents, HookEnum::LEBENSHALTUNGSKOSTEN_MULTIPLIER, 1.0);
+        return $multiplier * ModifierCalculator::forStream($gameEvents)->forPlayer($playerId)->modify($gameEvents, HookEnum::LEBENSHALTUNGSKOSTEN_PERCENT_INCREASE, value: Configuration::LEBENSHALTUNGSKOSTEN_PERCENT);
     }
 
-    public static function getMinimumValueForLebenshaltungskostenForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
+    /**
+     * Returns the modified value for the minimum Lebenshaltungskosten. Takes into consideration any modifiers to the
+     * Lebenshaltungskosten multiplier and min value. Multiplier will be applied last.
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return MoneyAmount
+     */
+    public static function calculateMinimumValueForLebenshaltungskostenForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
-        return ModifierCalculator::forStream($gameEvents)->forPlayer($playerId)->modify($gameEvents, HookEnum::LEBENSHALTUNGSKOSTEN_MIN_VALUE, value: new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE));
+        $multiplier = ModifierCalculator::forStream($gameEvents)->forPlayer($playerId)->modify($gameEvents, HookEnum::LEBENSHALTUNGSKOSTEN_MULTIPLIER, 1.0);
+        return new MoneyAmount(
+            ModifierCalculator::forStream($gameEvents)
+                ->forPlayer($playerId)
+                ->modify(
+                    $gameEvents,
+                    HookEnum::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
+                    value: new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)
+                )->value
+            * $multiplier
+        );
     }
 
     public static function calculateSteuernUndAbgabenForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount

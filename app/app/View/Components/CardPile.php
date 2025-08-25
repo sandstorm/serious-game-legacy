@@ -6,7 +6,10 @@ namespace App\View\Components;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
+use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\Definitions\Card\CardFinder;
+use Domain\Definitions\Card\Dto\CardDefinition;
+use Domain\Definitions\Card\Dto\CardWithResourceChanges;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Illuminate\Contracts\View\View;
@@ -33,10 +36,19 @@ class CardPile extends Component
     public function render(): View
     {
         $topCardIdForPile = PileState::topCardIdForPile($this->gameEvents, $this->pileId);
+        /** @var CardWithResourceChanges & CardDefinition $cardDefinition */
+        $cardDefinition = CardFinder::getInstance()->getCardById($topCardIdForPile);
+        /**
+         * WHY:
+         * We cannot simply use the resourceChanges from the CardDefinition, since the current Konjunkturphase may
+         * modify the money costs.
+         */
+        $resourceChanges = AktionsCalculator::forStream($this->gameEvents)->getModifiedResourceChangesForCard($cardDefinition);
         return view('components.gameboard.cardPile.card-pile', [
             'category' => CategoryId::from($this->category),
             'pileId' => $this->pileId,
-            'card' => CardFinder::getInstance()->getCardById($topCardIdForPile),
+            'card' => $cardDefinition,
+            'resourceChanges' => $resourceChanges,
         ]);
     }
 }

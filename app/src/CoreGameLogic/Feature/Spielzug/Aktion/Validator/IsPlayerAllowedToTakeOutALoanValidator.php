@@ -10,17 +10,17 @@ use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Domain\CoreGameLogic\PlayerId;
 
 /**
- * Succeeds if the player is allowed to invest -> does not have an Investitionssperre-Modifier
+ * Succeeds if the player is allowed to take out a loan -> does not have a Kreditsperre-Modifier
  */
-final class IsPlayerAllowedToInvestValidator extends AbstractValidator
+final class IsPlayerAllowedToTakeOutALoanValidator extends AbstractValidator
 {
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
-        $hasInvestitionssperre = ModifierCalculator::forStream($gameEvents)->forPlayer($playerId)->modify($gameEvents, HookEnum::INVESTITIONSSPERRE, false);
-        if ($hasInvestitionssperre) {
+        $hasKreditsperre = ModifierCalculator::forStream($gameEvents)->forPlayer($playerId)->modify($gameEvents, HookEnum::KREDITSPERRE, false);
+        if ($hasKreditsperre) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: "Du darfst diese Konjunkturphase keine Investitionen tätigen."
+                reason: "Du darfst diese Konjunkturphase keine Kredite aufnehmen."
             );
         }
 

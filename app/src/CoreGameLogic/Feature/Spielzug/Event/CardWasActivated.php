@@ -20,7 +20,7 @@ use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
-final readonly class CardWasActivated implements ZeitsteinAktion, ProvidesModifiers, ProvidesResourceChanges, DrawsCard, GameEventInterface, Loggable
+final readonly class CardWasActivated implements ZeitsteinAktion, ProvidesResourceChanges, DrawsCard, GameEventInterface, Loggable
 {
     public function __construct(
         public PlayerId        $playerId,
@@ -29,11 +29,6 @@ final readonly class CardWasActivated implements ZeitsteinAktion, ProvidesModifi
         public ResourceChanges $resourceChanges,
         public int             $numberOfZeitsteinslotsUsed,
     ) {
-    }
-
-    public function getModifiers(PlayerId $playerId): ModifierCollection
-    {
-        return new ModifierCollection([]);
     }
 
     public function getResourceChanges(PlayerId $playerId): ResourceChanges

@@ -6,6 +6,7 @@
     'card' => null,
     'category' => null,
     'pileId' => null,
+    'resourceChanges' => null,
 ])
 
 @section('icon')
@@ -44,7 +45,7 @@
 
 @section('footer')
     <div class="card__actions-footer">
-        <x-gameboard.resourceChanges.resource-changes style-class="horizontal" :resource-changes="$card->getResourceChanges()" />
+        <x-gameboard.resourceChanges.resource-changes style-class="horizontal" :resource-changes="$resourceChanges" />
 
         @if (!$this->playerHasToPlayCard)
             <button

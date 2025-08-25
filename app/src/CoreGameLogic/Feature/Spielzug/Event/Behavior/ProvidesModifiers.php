@@ -14,5 +14,5 @@ use Domain\CoreGameLogic\PlayerId;
  */
 interface ProvidesModifiers
 {
-    public function getModifiers(PlayerId $playerId): ModifierCollection;
+    public function getModifiers(?PlayerId $playerId = null): ModifierCollection;
 }

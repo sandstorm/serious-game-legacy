@@ -35,12 +35,11 @@ class MoneySheetLivingCosts extends Component
         $modifierDescriptions = array_map(
             fn(Modifier $modifier) => $modifier->description,
             $modifiersForPlayer
-                ->getActiveModifiersForHook(HookEnum::LEBENSHALTUNGSKOSTEN_MULTIPLIER, $this->gameEvents)
+                ->getActiveModifiersForHook(HookEnum::LEBENSHALTUNGSKOSTEN_PERCENT_INCREASE, $this->gameEvents)
                 ->getModifiers()
         );
-        $livingCostMultiplier = MoneySheetState::getMultiplierForLebenshaltungskostenForPlayer($this->gameEvents, $this->playerId);
-        $livingCostPercent = $livingCostMultiplier * 100;
-        $livingCostMinValue = MoneySheetState::getMinimumValueForLebenshaltungskostenForPlayer($this->gameEvents, $this->playerId);
+        $livingCostPercent = MoneySheetState::getPercentageForLebenshaltungskostenForPlayer($this->gameEvents, $this->playerId);
+        $livingCostMinValue = MoneySheetState::calculateMinimumValueForLebenshaltungskostenForPlayer($this->gameEvents, $this->playerId);
         return view('components.gameboard.moneySheet.expenses.money-sheet-living-costs', [
             'moneySheet' => $this->moneySheet,
             'modifiers' => $modifierDescriptions,
