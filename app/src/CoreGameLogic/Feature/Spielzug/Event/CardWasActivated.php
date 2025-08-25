@@ -31,7 +31,7 @@ final readonly class CardWasActivated implements ZeitsteinAktion, ProvidesModifi
     ) {
     }
 
-    public function getModifiers(PlayerId $playerId): ModifierCollection
+    public function getModifiers(PlayerId $playerId = null): ModifierCollection
     {
         return new ModifierCollection([]);
     }

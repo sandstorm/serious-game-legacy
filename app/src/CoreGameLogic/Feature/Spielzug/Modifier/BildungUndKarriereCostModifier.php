@@ -8,29 +8,26 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
-use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\ModifierId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 
 /**
- * Modifies the Gehalt of the player.
- * A value of 100 means no changes.
- * A value of 105 means a 5% increase.
- * A value of 80 means a 20% decrease.
+ * A Konjunkturphase may modify the (money-) cost of Cards in the "Bildung und Karriere" pile. The base price is
+ * represented by 100 (percent). A value of 105 would represent a 5% increase and 90 a 10% decrease of the cost.
  *
- * Modifier stays active until the end of the current Konjunkturphase.
+ * The modifier will stay active until the end of the current Konjunkturphase.
  */
-readonly final class GehaltModifier extends Modifier
+readonly final class BildungUndKarriereCostModifier extends Modifier
 {
     public function __construct(
-        public PlayerId $playerId,
         public PlayerTurn $playerTurn,
         string $description,
         public Year $activeYear,
         public int $percentage,
     ) {
-        parent::__construct(ModifierId::GEHALT_CHANGE, $playerTurn, $description);
+        parent::__construct(ModifierId::BILDUNG_UND_KARRIERE_COST, $playerTurn, $description);
     }
 
     public function __toString(): string
@@ -40,14 +37,14 @@ readonly final class GehaltModifier extends Modifier
 
     public function canModify(HookEnum $hook): bool
     {
-        return $hook === HookEnum::GEHALT;
+        return $hook === HookEnum::BILDUNG_UND_KARRIERE_COST;
     }
 
-    public function modify(mixed $value): MoneyAmount
+    public function modify(mixed $value): ResourceChanges
     {
-        assert($value instanceof MoneyAmount);
+        assert($value instanceof ResourceChanges);
 
-        return new MoneyAmount($this->percentage * $value->value / 100);
+        return $value->setGuthabenChange(new MoneyAmount($value->guthabenChange->value * $this->percentage / 100));
     }
 
 }

@@ -52,6 +52,9 @@ readonly class ModifierCollection implements \IteratorAggregate
     {
         $returnValue = $value;
         foreach ($this->modifiers as $modifier) {
+            if (!$modifier instanceof  Modifier) {
+                dd($modifier);
+            }
             assert($modifier instanceof Modifier);
             if ($modifier->canModify($hookEnum) && $modifier->isActive($gameEvents)) {
                 $returnValue = $modifier->modify($value);

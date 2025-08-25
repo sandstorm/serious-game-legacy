@@ -9,24 +9,25 @@ use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\ModifierId;
-use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 
 /**
- * Currently only used when having a child, which increases the multiplier for the Lebenshaltungskosten by a fixed
- * amount. The value will be added to the @see Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE
+ * Having a child increases the Lebenshaltungskosten by a fixed percentage amount. The value will be added to the
+ * @see Configuration::LEBENSHALTUNGSKOSTEN_PERCENT
+ *
+ * An additionalPercentage of 10 will result in a total percentage of 45 (assuming that the base percentage is 35)
  */
-readonly final class LebenshaltungskostenMinValueModifier extends Modifier
+readonly final class AdditionalLebenshaltungskostenKindModifier extends Modifier
 {
     public function __construct(
         public PlayerId $playerId,
         public PlayerTurn $playerTurn,
         string $description,
         public Year $activeYear,
-        public MoneyAmount $minValueChange,
+        public float $additionalPercentage,
     ) {
-        parent::__construct(ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE, $playerTurn, $description);
+        parent::__construct(ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER, $playerTurn, $description);
     }
 
     public function __toString(): string
@@ -46,19 +47,19 @@ readonly final class LebenshaltungskostenMinValueModifier extends Modifier
 
     public function canModify(HookEnum $hook): bool
     {
-        return $hook === HookEnum::LEBENSHALTUNGSKOSTEN_MIN_VALUE;
+        return $hook === HookEnum::LEBENSHALTUNGSKOSTEN_PERCENT_INCREASE;
     }
 
     /**
-     * Modifies the minimum value for Lebenshaltungskosten.
+     * Modifies the percentage for the Lebenshaltungskosten.
      * @param mixed $value
-     * @return MoneyAmount
+     * @return float
      */
-    public function modify(mixed $value): MoneyAmount
+    public function modify(mixed $value): float
     {
-        assert($value instanceof MoneyAmount);
+        assert(is_float($value));
 
-        return $value->add($this->minValueChange);
+        return $value + $this->additionalPercentage;
     }
 
 }

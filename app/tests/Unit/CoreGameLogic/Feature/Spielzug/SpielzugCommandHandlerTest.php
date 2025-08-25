@@ -51,6 +51,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\SteuernUndAbgabenForPlayerWereEn
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\Definitions\Card\Dto\ModifierParameters;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Card\Dto\AnswerOption;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
@@ -2044,18 +2045,20 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
                     ])
                 ),
             ],
+            modifierIds: [],
+            modifierParameters: new ModifierParameters(),
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::ZEITSTEINE,
-                    modifier: 1,
+                    value: 1,
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    modifier: 4
+                    value: 4
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::DIVIDEND,
-                    modifier: 1.40
+                    value: 1.40
                 ),
             ],
             conditionalResourceChanges: [

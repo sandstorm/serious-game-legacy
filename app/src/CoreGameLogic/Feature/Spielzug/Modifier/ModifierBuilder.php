@@ -14,7 +14,7 @@ readonly final class ModifierBuilder
 {
     /**
      * @param ModifierId $modifierId
-     * @param PlayerId $playerId
+     * @param PlayerId|null $playerId
      * @param PlayerTurn $playerTurn
      * @param Year $year
      * @param ModifierParameters $modifierParameters
@@ -23,7 +23,7 @@ readonly final class ModifierBuilder
      */
     public static function build(
         ModifierId $modifierId,
-        PlayerId $playerId,
+        PlayerId|null $playerId,
         PlayerTurn $playerTurn,
         Year $year,
         ModifierParameters $modifierParameters,
@@ -48,14 +48,14 @@ readonly final class ModifierBuilder
                 playerTurn: $playerTurn,
                 description: $description,
             )],
-            ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER => [new LebenshaltungskostenMultiplierModifier(
+            ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER => [new AdditionalLebenshaltungskostenKindModifier(
                 playerId: $playerId,
                 playerTurn: $playerTurn,
                 description: $description,
                 activeYear: $year,
-                multiplier: $modifierParameters->modifyLebenshaltungskostenMultiplier ?? throw new \RuntimeException("missing parameter"),
+                additionalPercentage: $modifierParameters->modifyAdditionalLebenshaltungskostenPercentage ?? throw new \RuntimeException("missing parameter"),
             )],
-            ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE => [new LebenshaltungskostenMinValueModifier(
+            ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE => [new LebenshaltungskostenKindMinValueModifier(
                 playerId: $playerId,
                 playerTurn: $playerTurn,
                 description: $description,
@@ -79,6 +79,18 @@ readonly final class ModifierBuilder
                     description: $description,
                 ),
             ],
+            ModifierId::BILDUNG_UND_KARRIERE_COST => [new BildungUndKarriereCostModifier(
+                playerTurn: $playerTurn,
+                description: $description,
+                activeYear: $year,
+                percentage: $modifierParameters->modifyKostenBildungUndKarrierePercent ?? throw new \RuntimeException("missing parameter"),
+            )],
+            ModifierId::SOZIALES_UND_FREIZEIT_COST => [new SozialesUndFreizeitCostModifier(
+                playerTurn: $playerTurn,
+                description: $description,
+                activeYear: $year,
+                percentage: $modifierParameters->modifyKostenSozialesUndFreizeitPercent ?? throw new \RuntimeException("missing parameter"),
+            )],
             default => [],
         };
     }

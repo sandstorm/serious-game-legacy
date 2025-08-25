@@ -19,4 +19,6 @@ enum ModifierId: string
     case EMPTY = 'Leerer Modifier (TODO remove)';
     case BERUFSUNFAEHIGKEIT_JOBSPERRE = 'Berufsunfähigkeit Jobsperre';
     case BERUFSUNFAEHIGKEIT_GEHALT = 'Berufsunfähigkeit Gehaltsfortzahlung';
+    case BILDUNG_UND_KARRIERE_COST = 'Kosten für Bildung und Karriere';
+    case SOZIALES_UND_FREIZEIT_COST = 'Kosten für Soziales und Freizeit';
 }

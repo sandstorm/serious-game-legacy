@@ -39,9 +39,9 @@ class PlayerId implements \JsonSerializable
         return $this->value;
     }
 
-    public function equals(PlayerId $other): bool
+    public function equals(PlayerId $other = null): bool
     {
-        return $this->value === $other->value;
+        return $other !== null && $this->value === $other->value;
     }
 
     public function jsonSerialize(): string

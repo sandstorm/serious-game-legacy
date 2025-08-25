@@ -7,6 +7,8 @@ namespace Domain\Definitions\Konjunkturphase;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
+use Domain\Definitions\Card\Dto\ModifierParameters;
+use Domain\Definitions\Card\ValueObject\ModifierId;
 use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
 use Domain\Definitions\Konjunkturphase\Dto\ConditionalResourceChange;
 use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
@@ -106,18 +108,26 @@ class KonjunkturphaseFinder
                     ])
                 ),
             ],
+            modifierIds: [
+                ModifierId::BILDUNG_UND_KARRIERE_COST,
+                ModifierId::SOZIALES_UND_FREIZEIT_COST,
+            ],
+            modifierParameters: new ModifierParameters(
+                modifyKostenBildungUndKarrierePercent: 105,
+                modifyKostenSozialesUndFreizeitPercent: 105,
+            ),
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    modifier: 4
+                    value: 4
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::STOCKS_BONUS,
-                    modifier: 0
+                    value: 0
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::DIVIDEND,
-                    modifier: 1.40
+                    value: 1.40
                 ),
             ],
         );
@@ -172,18 +182,26 @@ class KonjunkturphaseFinder
                     ])
                 ),
             ],
+            modifierIds: [
+                ModifierId::BILDUNG_UND_KARRIERE_COST,
+                ModifierId::SOZIALES_UND_FREIZEIT_COST,
+            ],
+            modifierParameters: new ModifierParameters(
+                modifyKostenBildungUndKarrierePercent: 105,
+                modifyKostenSozialesUndFreizeitPercent: 105,
+            ),
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    modifier: 4.5
+                    value: 4.5
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::STOCKS_BONUS,
-                    modifier: 5
+                    value: 5
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::DIVIDEND,
-                    modifier: 1.50
+                    value: 1.50
                 ),
             ]
         );
@@ -238,18 +256,26 @@ class KonjunkturphaseFinder
                     ])
                 ),
             ],
+            modifierIds: [
+                ModifierId::BILDUNG_UND_KARRIERE_COST,
+                ModifierId::SOZIALES_UND_FREIZEIT_COST,
+            ],
+            modifierParameters: new ModifierParameters(
+                modifyKostenBildungUndKarrierePercent: 105,
+                modifyKostenSozialesUndFreizeitPercent: 105,
+            ),
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    modifier: 5
+                    value: 4
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::STOCKS_BONUS,
-                    modifier: 0
+                    value: 0
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::DIVIDEND,
-                    modifier: 1.50
+                    value: 1.40
                 ),
             ],
             conditionalResourceChanges: [
@@ -310,18 +336,26 @@ class KonjunkturphaseFinder
                     ])
                 ),
             ],
+            modifierIds: [
+                ModifierId::BILDUNG_UND_KARRIERE_COST,
+                ModifierId::SOZIALES_UND_FREIZEIT_COST,
+            ],
+            modifierParameters: new ModifierParameters(
+                modifyKostenBildungUndKarrierePercent: 105,
+                modifyKostenSozialesUndFreizeitPercent: 105,
+            ),
             auswirkungen: [
                 new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    modifier: 5.5
+                    scope: AuswirkungScopeEnum::REAL_ESTATE,
+                    value: 0
                 ),
                 new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::STOCKS_BONUS,
-                    modifier: 5
+                    scope: AuswirkungScopeEnum::CRYPTO,
+                    value: 4
                 ),
                 new AuswirkungDefinition(
-                    scope: AuswirkungScopeEnum::DIVIDEND,
-                    modifier: 1.6
+                    scope: AuswirkungScopeEnum::BONUS_INCOME,
+                    value: 0
                 ),
             ],
             conditionalResourceChanges: [
@@ -381,18 +415,26 @@ class KonjunkturphaseFinder
                     ])
                 ),
             ],
+            modifierIds: [
+                ModifierId::SOZIALES_UND_FREIZEIT_COST,
+                ModifierId::BILDUNG_UND_KARRIERE_COST,
+            ],
+            modifierParameters: new ModifierParameters(
+                modifyKostenBildungUndKarrierePercent: 105,
+                modifyKostenSozialesUndFreizeitPercent: 105,
+            ),
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    modifier: 5
+                    value: 5
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::STOCKS_BONUS,
-                    modifier: 5
+                    value: 5
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::DIVIDEND,
-                    modifier: 1.6
+                    value: 1.6
                 ),
             ]
         );
@@ -446,18 +488,20 @@ class KonjunkturphaseFinder
                     ])
                 ),
             ],
+            modifierIds: [],
+            modifierParameters: new ModifierParameters(),
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    modifier: 6
+                    value: 6
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::STOCKS_BONUS,
-                    modifier: 0
+                    value: 0
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::DIVIDEND,
-                    modifier: 1.8
+                    value: 1.8
                 ),
             ]
         );
@@ -512,18 +556,20 @@ class KonjunkturphaseFinder
                     ])
                 ),
             ],
+            modifierIds: [],
+            modifierParameters: new ModifierParameters(),
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    modifier: 7
+                    value: 7
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::STOCKS_BONUS,
-                    modifier: 0
+                    value: 0
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::DIVIDEND,
-                    modifier: 1.8
+                    value: 1.8
                 ),
             ]
         );
@@ -578,18 +624,20 @@ class KonjunkturphaseFinder
                     ])
                 ),
             ],
+            modifierIds: [],
+            modifierParameters: new ModifierParameters(),
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    modifier: 8
+                    value: 8
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::STOCKS_BONUS,
-                    modifier: 10
+                    value: 10
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::DIVIDEND,
-                    modifier: 2.1
+                    value: 2.1
                 ),
             ]
         );
@@ -644,18 +692,20 @@ class KonjunkturphaseFinder
                     ])
                 ),
             ],
+            modifierIds: [],
+            modifierParameters: new ModifierParameters(),
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    modifier: 4
+                    value: 4
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::STOCKS_BONUS,
-                    modifier: 0
+                    value: 0
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::DIVIDEND,
-                    modifier: 1.4
+                    value: 1.4
                 ),
             ],
             conditionalResourceChanges: [
@@ -716,18 +766,20 @@ class KonjunkturphaseFinder
                     ])
                 ),
             ],
+            modifierIds: [],
+            modifierParameters: new ModifierParameters(),
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    modifier: 4
+                    value: 4
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::STOCKS_BONUS,
-                    modifier: -5
+                    value: -5
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::DIVIDEND,
-                    modifier: 1.3
+                    value: 1.3
                 ),
             ]
         );
@@ -782,18 +834,20 @@ class KonjunkturphaseFinder
                     ])
                 ),
             ],
+            modifierIds: [],
+            modifierParameters: new ModifierParameters(),
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    modifier: 3.75
+                    value: 3.75
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::STOCKS_BONUS,
-                    modifier: 0
+                    value: 0
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::DIVIDEND,
-                    modifier: 1.2
+                    value: 1.2
                 ),
             ],
             conditionalResourceChanges: [
@@ -853,18 +907,20 @@ class KonjunkturphaseFinder
                     ])
                 ),
             ],
+            modifierIds: [],
+            modifierParameters: new ModifierParameters(),
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    modifier: 3.5
+                    value: 3.5
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::STOCKS_BONUS,
-                    modifier: -10
+                    value: -10
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::DIVIDEND,
-                    modifier: 1.1
+                    value: 1.1
                 ),
             ]
         );
@@ -919,18 +975,20 @@ class KonjunkturphaseFinder
                     ])
                 ),
             ],
+            modifierIds: [],
+            modifierParameters: new ModifierParameters(),
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    modifier: 3.25
+                    value: 3.25
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::STOCKS_BONUS,
-                    modifier: -15
+                    value: -15
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::DIVIDEND,
-                    modifier: 0.95
+                    value: 0.95
                 ),
             ]
         );
@@ -985,18 +1043,20 @@ class KonjunkturphaseFinder
                     ])
                 ),
             ],
+            modifierIds: [],
+            modifierParameters: new ModifierParameters(),
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    modifier: 3
+                    value: 3
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::STOCKS_BONUS,
-                    modifier: 0
+                    value: 0
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::DIVIDEND,
-                    modifier: 0.9
+                    value: 0.9
                 ),
             ]
         );
@@ -1050,18 +1110,20 @@ class KonjunkturphaseFinder
                     ])
                 ),
             ],
+            modifierIds: [],
+            modifierParameters: new ModifierParameters(),
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    modifier: 3
+                    value: 3
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::STOCKS_BONUS,
-                    modifier: 0
+                    value: 0
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::DIVIDEND,
-                    modifier: 0.9
+                    value: 0.9
                 ),
             ],
             conditionalResourceChanges: [
@@ -1122,18 +1184,20 @@ class KonjunkturphaseFinder
                     ])
                 ),
             ],
+            modifierIds: [],
+            modifierParameters: new ModifierParameters(),
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    modifier: 3
+                    value: 3
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::STOCKS_BONUS,
-                    modifier: -5
+                    value: -5
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::DIVIDEND,
-                    modifier: 0.9
+                    value: 0.9
                 ),
             ]
         );

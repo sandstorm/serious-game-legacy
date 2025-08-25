@@ -40,14 +40,14 @@ class MoneySheetState
     ): MoneyAmount {
         $gehalt = PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId);
         return new MoneyAmount(max([
-            $gehalt->value * self::getMultiplierForLebenshaltungskostenForPlayer($gameEvents, $playerId),
+            $gehalt->value * self::getPercentageForLebenshaltungskostenForPlayer($gameEvents, $playerId) / 100,
             self::getMinimumValueForLebenshaltungskostenForPlayer($gameEvents, $playerId)->value
         ]));
     }
 
-    public static function getMultiplierForLebenshaltungskostenForPlayer(GameEvents $gameEvents, PlayerId $playerId): float
+    public static function getPercentageForLebenshaltungskostenForPlayer(GameEvents $gameEvents, PlayerId $playerId): float
     {
-        return ModifierCalculator::forStream($gameEvents)->forPlayer($playerId)->modify($gameEvents, HookEnum::LEBENSHALTUNGSKOSTEN_MULTIPLIER, value: Configuration::LEBENSHALTUNGSKOSTEN_MULTIPLIER);
+        return ModifierCalculator::forStream($gameEvents)->forPlayer($playerId)->modify($gameEvents, HookEnum::LEBENSHALTUNGSKOSTEN_PERCENT_INCREASE, value: Configuration::LEBENSHALTUNGSKOSTEN_PERCENT);
     }
 
     public static function getMinimumValueForLebenshaltungskostenForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount

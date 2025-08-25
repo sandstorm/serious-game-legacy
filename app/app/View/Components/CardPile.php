@@ -6,6 +6,7 @@ namespace App\View\Components;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
+use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
@@ -33,10 +34,13 @@ class CardPile extends Component
     public function render(): View
     {
         $topCardIdForPile = PileState::topCardIdForPile($this->gameEvents, $this->pileId);
+        $cardDefinition = CardFinder::getInstance()->getCardById($topCardIdForPile);
+        $resourceChanges = AktionsCalculator::forStream($this->gameEvents)->getModifiedResourceChangesForCard($cardDefinition);
         return view('components.gameboard.cardPile.card-pile', [
             'category' => CategoryId::from($this->category),
             'pileId' => $this->pileId,
-            'card' => CardFinder::getInstance()->getCardById($topCardIdForPile),
+            'card' => $cardDefinition,
+            'resourceChanges' => $resourceChanges,
         ]);
     }
 }

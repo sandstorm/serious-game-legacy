@@ -10,9 +10,14 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasPutBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\Dto\CardDefinition;
+use Domain\Definitions\Card\Dto\CardWithResourceChanges;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 final readonly class AktionsCalculator
 {
@@ -78,5 +83,18 @@ final readonly class AktionsCalculator
             return true;
         }
         return false;
+    }
+
+    public function getModifiedResourceChangesForCard(CardDefinition & CardWithResourceChanges $card): ResourceChanges
+    {
+        return match ($card->getCategory()->name) {
+            CategoryId::BILDUNG_UND_KARRIERE->name => ModifierCalculator::forStream($this->stream)
+                ->withoutPlayer()
+                ->modify($this->stream, HookEnum::BILDUNG_UND_KARRIERE_COST, $card->getResourceChanges()),
+            CategoryId::SOZIALES_UND_FREIZEIT->name => ModifierCalculator::forStream($this->stream)
+                ->withoutPlayer()
+                ->modify($this->stream, HookEnum::SOZIALES_UND_FREIZEIT_COST, $card->getResourceChanges()),
+            default => $card->getResourceChanges(),
+        };
     }
 }

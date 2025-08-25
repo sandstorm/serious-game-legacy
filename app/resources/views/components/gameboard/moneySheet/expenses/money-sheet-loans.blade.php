@@ -40,16 +40,16 @@
 <div class="tabs__lower-content loans__summary">
     <div class="loans__summary-column">
         <button type="button"
-            @class([
-                "button",
-                "button--type-primary",
-                $this->getPlayerColorClass(),
-            ])
-            wire:click="showTakeOutALoan()"
+                @class([
+                    "button",
+                    "button--type-primary",
+                    $this->getPlayerColorClass(),
+                ])
+                wire:click="showTakeOutALoan()"
         >
             Kredit aufnehmen
         </button>
-        <span>Aktueller Zinssatz: {{ KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->modifier }}%</span>
+        <span>Aktueller Zinssatz: {{ KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->value }}%</span>
     </div>
     <div class="loans__summary-column">
         <span class="badge-with-background">{!! $totalRepaymentValue->formatWithIcon() !!}</span>

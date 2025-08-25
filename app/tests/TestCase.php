@@ -209,46 +209,48 @@ abstract class TestCase extends BaseTestCase
                     ])
                 ),
             ],
+            modifierIds: [],
+            modifierParameters: new ModifierParameters(),
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::ZEITSTEINE,
-                    modifier: 1,
+                    value: 1,
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LEBENSERHALTUNGSKOSTEN,
-                    modifier: 100
+                    value: 100
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::BILDUNG,
-                    modifier: 100
+                    value: 100
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::FREIZEIT,
-                    modifier: 100
+                    value: 100
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    modifier: 4
+                    value: 4
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::STOCKS_BONUS,
-                    modifier: 0
+                    value: 0
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::DIVIDEND,
-                    modifier: 1.40
+                    value: 1.40
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::REAL_ESTATE,
-                    modifier: 0
+                    value: 0
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::CRYPTO,
-                    modifier: 4
+                    value: 4
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::BONUS_INCOME,
-                    modifier: 0
+                    value: 0
                 ),
             ]
         );

@@ -9,24 +9,26 @@ use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\ModifierId;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 
 /**
- * Having a child increases the multiplier for the Lebenshaltungskosten by a fixed amount. The value will be added to the
- * @see Configuration::LEBENSHALTUNGSKOSTEN_MULTIPLIER
+ * Currently only used when having a child, which increases the minimal costs for Lebenshaltungskosten by a fixed
+ * amount. The value will be added to the @see Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE
  *
+ * This modifier will stay active until the end of the game.
  */
-readonly final class LebenshaltungskostenMultiplierModifier extends Modifier
+readonly final class LebenshaltungskostenKindMinValueModifier extends Modifier
 {
     public function __construct(
         public PlayerId $playerId,
         public PlayerTurn $playerTurn,
         string $description,
         public Year $activeYear,
-        public float $multiplier,
+        public MoneyAmount $minValueChange,
     ) {
-        parent::__construct(ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER, $playerTurn, $description);
+        parent::__construct(ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE, $playerTurn, $description);
     }
 
     public function __toString(): string
@@ -46,19 +48,19 @@ readonly final class LebenshaltungskostenMultiplierModifier extends Modifier
 
     public function canModify(HookEnum $hook): bool
     {
-        return $hook === HookEnum::LEBENSHALTUNGSKOSTEN_MULTIPLIER;
+        return $hook === HookEnum::LEBENSHALTUNGSKOSTEN_MIN_VALUE;
     }
 
     /**
-     * Modifies the **multiplier** for the Lebenshaltungskosten.
+     * Modifies the minimum value for Lebenshaltungskosten.
      * @param mixed $value
-     * @return float
+     * @return MoneyAmount
      */
-    public function modify(mixed $value): float
+    public function modify(mixed $value): MoneyAmount
     {
-        assert(is_float($value));
+        assert($value instanceof MoneyAmount);
 
-        return $value + $this->multiplier/100;
+        return $value->add($this->minValueChange);
     }
 
 }

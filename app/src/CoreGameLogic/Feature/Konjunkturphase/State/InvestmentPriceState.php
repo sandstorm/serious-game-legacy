@@ -162,16 +162,13 @@ class InvestmentPriceState
     {
         $konjunkturphaseDefinition = KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents);
 
-        $schockStocks = $konjunkturphaseDefinition->getAuswirkungByScope(AuswirkungScopeEnum::STOCKS_BONUS)->modifier / 100;
-        $schockCrypto = $konjunkturphaseDefinition->getAuswirkungByScope(AuswirkungScopeEnum::CRYPTO)->modifier / 100;
+        $schockStocks = $konjunkturphaseDefinition->getAuswirkungByScope(AuswirkungScopeEnum::STOCKS_BONUS)->value / 100;
+        $schockCrypto = $konjunkturphaseDefinition->getAuswirkungByScope(AuswirkungScopeEnum::CRYPTO)->value / 100;
 
         return match ($investmentType) {
-            InvestmentId::MERFEDES_PENZ => $schockStocks,
-            InvestmentId::BETA_PEAR => $schockStocks,
-            InvestmentId::ETF_MSCI_WORLD => 0,
-            InvestmentId::ETF_CLEAN_ENERGY => 0,
-            InvestmentId::BAT_COIN => $schockCrypto,
-            InvestmentId::MEME_COIN => $schockCrypto,
+            InvestmentId::MERFEDES_PENZ, InvestmentId::BETA_PEAR => $schockStocks,
+            InvestmentId::ETF_MSCI_WORLD, InvestmentId::ETF_CLEAN_ENERGY => 0,
+            InvestmentId::BAT_COIN, InvestmentId::MEME_COIN => $schockCrypto,
         };
     }
 

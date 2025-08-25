@@ -27,7 +27,7 @@
                 <ul>
                     @foreach ($konjunkturphase->auswirkungen as $auswirkung)
                         <li>
-                            <strong>{{ $auswirkung->scope }}</strong>: {{ $auswirkung->modifier }}
+                            <strong>{{ $auswirkung->scope }}</strong>: {{ $auswirkung->value }}
                         </li>
                     @endforeach
                 </ul>

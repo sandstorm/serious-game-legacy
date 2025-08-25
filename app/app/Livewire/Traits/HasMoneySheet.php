@@ -238,7 +238,7 @@ trait HasMoneySheet
         $this->takeOutALoanForm->loanId = LoanId::unique()->value;
         $this->takeOutALoanForm->guthaben = PlayerState::getGuthabenForPlayer($this->gameEvents, $this->myself)->value + PlayerState::getTotalValueOfAllAssetsForPlayer($this->gameEvents, $this->myself)->value;
         $this->takeOutALoanForm->hasJob = PlayerState::getJobForPlayer($this->gameEvents, $this->myself) !== null;
-        $this->takeOutALoanForm->zinssatz = KonjunkturphaseState::getCurrentKonjunkturphase($this->gameEvents)->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->modifier;
+        $this->takeOutALoanForm->zinssatz = KonjunkturphaseState::getCurrentKonjunkturphase($this->gameEvents)->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->value;
     }
 
     public function takeOutALoan(): void
