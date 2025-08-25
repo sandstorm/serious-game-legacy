@@ -12,7 +12,7 @@ jobs:
     name: PHP Code Analysis
     runs-on: [self-hosted, linux]
     container:
-      image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v4
+      image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.4-v4
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -47,7 +47,7 @@ jobs:
     # For main branch or tags, it runs automatically
     #if: ${{ github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/') }}
     container:
-      image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.3-v4
+      image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.4-v4
     services:
       # MariaDB service
       mariadb:

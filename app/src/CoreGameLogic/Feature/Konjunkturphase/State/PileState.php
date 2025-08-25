@@ -62,9 +62,8 @@ class PileState
     {
         /** @var Pile[] $cardPiles */
         $cardPiles = $gameEvents->findLast(CardsWereShuffled::class)->piles;
-        // TODO use array_find after switching to PHP 8.4
         /** @var Pile $jobCardPile */
-        $jobCardPile = array_values(array_filter($cardPiles, fn($pile) => $pile->getPileId()->equals($pileId)))[0];
+        $jobCardPile = array_find($cardPiles, fn($pile) => $pile->getPileId()->equals($pileId));
         // each time a job offer was accepted we discard the two other job offers as well -> after accepting a
         // job three new cards get drawn from the job offer card pile
         $startIndex = self::numberOfCardDrawsSinceLastShuffle($gameEvents, $pileId) * 3;

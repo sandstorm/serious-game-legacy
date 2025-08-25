@@ -1,5 +1,5 @@
 # NOTE: this file is executed from the ROOT DIRECTORY of the project, i.e. "../"
-FROM php:8.3-fpm-bookworm
+FROM php:8.4-fpm-bookworm
 
 # add S6 Process Supervisor
 ARG S6_OVERLAY_VERSION=3.2.0.2
