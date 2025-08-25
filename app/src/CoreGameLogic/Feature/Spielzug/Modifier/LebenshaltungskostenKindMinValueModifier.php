@@ -7,23 +7,21 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Modifier;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
-use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\ModifierId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
-use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 
 /**
- * Currently only used when having a child, which increases the multiplier for the Lebenshaltungskosten by a fixed
+ * Currently only used when having a child, which increases the minimal costs for Lebenshaltungskosten by a fixed
  * amount. The value will be added to the @see Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE
+ *
+ * This modifier will stay active until the end of the game.
  */
-readonly final class LebenshaltungskostenMinValueModifier extends Modifier
+readonly final class LebenshaltungskostenKindMinValueModifier extends Modifier
 {
     public function __construct(
-        public PlayerId $playerId,
         public PlayerTurn $playerTurn,
         string $description,
-        public Year $activeYear,
         public MoneyAmount $minValueChange,
     ) {
         parent::__construct(ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE, $playerTurn, $description);

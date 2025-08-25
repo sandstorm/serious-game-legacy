@@ -13,11 +13,12 @@ class AuswirkungDefinition
 {
     /**
      * @param AuswirkungScopeEnum $scope
-     * @param float $modifier
+     * @param float $value
      */
     public function __construct(
+//        public string $title,
         public AuswirkungScopeEnum $scope,
-        public float $modifier,
+        public float $value,
     ) {
     }
 }

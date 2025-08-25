@@ -8099,11 +8099,11 @@ final class CardFinder
                     freizeitKompetenzsteinChange: +2,
                 ),
                 modifierIds: [
-                    ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER,
+                    ModifierId::LEBENSHALTUNGSKOSTEN_KIND_INCREASE,
                     ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
                 ],
                 modifierParameters: new ModifierParameters(
-                    modifyLebenshaltungskostenMultiplier:10,
+                    modifyAdditionalLebenshaltungskostenPercentage:10,
                     modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
                 ),
                 ereignisRequirementIds: [
@@ -8122,11 +8122,11 @@ final class CardFinder
                     freizeitKompetenzsteinChange: +2,
                 ),
                 modifierIds: [
-                    ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER,
+                    ModifierId::LEBENSHALTUNGSKOSTEN_KIND_INCREASE,
                     ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
                 ],
                 modifierParameters: new ModifierParameters(
-                    modifyLebenshaltungskostenMultiplier:10,
+                    modifyAdditionalLebenshaltungskostenPercentage:10,
                     modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
                 ),
                 ereignisRequirementIds: [
@@ -8767,11 +8767,11 @@ final class CardFinder
                     freizeitKompetenzsteinChange: +2,
                 ),
                 modifierIds: [
-                    ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER,
+                    ModifierId::LEBENSHALTUNGSKOSTEN_KIND_INCREASE,
                     ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
                 ],
                 modifierParameters: new ModifierParameters(
-                    modifyLebenshaltungskostenMultiplier:10,
+                    modifyAdditionalLebenshaltungskostenPercentage:10,
                     modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
                 ),
                 ereignisRequirementIds: [
@@ -8790,11 +8790,11 @@ final class CardFinder
                     freizeitKompetenzsteinChange: +2,
                 ),
                 modifierIds: [
-                    ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER,
+                    ModifierId::LEBENSHALTUNGSKOSTEN_KIND_INCREASE,
                     ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
                 ],
                 modifierParameters: new ModifierParameters(
-                    modifyLebenshaltungskostenMultiplier:10,
+                    modifyAdditionalLebenshaltungskostenPercentage:10,
                     modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
                 ),
                 ereignisRequirementIds: [
@@ -9587,11 +9587,11 @@ final class CardFinder
                     freizeitKompetenzsteinChange: +2,
                 ),
                 modifierIds: [
-                    ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER,
+                    ModifierId::LEBENSHALTUNGSKOSTEN_KIND_INCREASE,
                     ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
                 ],
                 modifierParameters: new ModifierParameters(
-                    modifyLebenshaltungskostenMultiplier:10,
+                    modifyAdditionalLebenshaltungskostenPercentage:10,
                     modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
                 ),
                 ereignisRequirementIds: [
@@ -9610,11 +9610,11 @@ final class CardFinder
                     freizeitKompetenzsteinChange: +2,
                 ),
                 modifierIds: [
-                    ModifierId::LEBENSHALTUNGSKOSTEN_MULTIPLIER,
+                    ModifierId::LEBENSHALTUNGSKOSTEN_KIND_INCREASE,
                     ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
                 ],
                 modifierParameters: new ModifierParameters(
-                    modifyLebenshaltungskostenMultiplier:10,
+                    modifyAdditionalLebenshaltungskostenPercentage:10,
                     modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
                 ),
                 ereignisRequirementIds: [

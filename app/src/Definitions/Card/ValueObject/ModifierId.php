@@ -9,7 +9,7 @@ enum ModifierId: string
     case AUSSETZEN = 'Aussetzen';
     case BIND_ZEITSTEIN_FOR_JOB = 'Bind Zeitstein';
     case GEHALT_CHANGE = 'Gehaltsänderung';
-    case LEBENSHALTUNGSKOSTEN_MULTIPLIER = 'Lebenshaltungskosten Multiplikator';
+    case LEBENSHALTUNGSKOSTEN_KIND_INCREASE = 'Lebenshaltungskosten Steigerung durch Kind';
     case LEBENSHALTUNGSKOSTEN_MIN_VALUE = 'Lebenshaltungskosten mindestwert';
     case BERUFSUNFAEHIGKEITSVERSICHERUNG = 'Berufsunfähigkeitsversicherung';
     case HAFTPFLICHTVERSICHERUNG = 'Haftpflichtversicherung';
@@ -19,4 +19,9 @@ enum ModifierId: string
     case EMPTY = 'Leerer Modifier (TODO remove)';
     case BERUFSUNFAEHIGKEIT_JOBSPERRE = 'Berufsunfähigkeit Jobsperre';
     case BERUFSUNFAEHIGKEIT_GEHALT = 'Berufsunfähigkeit Gehaltsfortzahlung';
+    case BILDUNG_UND_KARRIERE_COST = 'Kosten für Bildung und Karriere';
+    case SOZIALES_UND_FREIZEIT_COST = 'Kosten für Soziales und Freizeit';
+    case LEBENSHALTUNGSKOSTEN_KONJUNKTURPHASE_MULTIPLIER = 'Lebenshaltungskosten Konjunkturphase';
+    case KREDITSPERRE = 'Kreditsperre';
+    case INCREASED_CHANCE_FOR_REZESSION = 'Erhöhte Chance für eine Rezession';
 }

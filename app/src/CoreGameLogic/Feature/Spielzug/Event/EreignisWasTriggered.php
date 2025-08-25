@@ -45,12 +45,12 @@ final readonly class EreignisWasTriggered implements ProvidesModifiers, Provides
     }
 
     /**
-     * @param PlayerId $playerId
+     * @param PlayerId|null $playerId
      * @return ModifierCollection
      */
-    public function getModifiers(PlayerId $playerId): ModifierCollection
+    public function getModifiers(?PlayerId $playerId = null): ModifierCollection
     {
-        if ($playerId->equals($this->playerId)) {
+        if ($this->playerId->equals($playerId)) {
             $modifiers = [];
             foreach ($this->ereignisCardDefinition->getModifierIds() as $modifierId) {
                 $modifiers = [

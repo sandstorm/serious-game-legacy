@@ -4,22 +4,24 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Modifier;
 
-use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
-use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\ModifierId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
-use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 
+/**
+ * Modifies the Gehalt of the player.
+ * A value of 100 means no changes.
+ * A value of 105 means a 5% increase.
+ * A value of 80 means a 20% decrease.
+ *
+ * Modifier stays active until the end of the current Konjunkturphase.
+ */
 readonly final class GehaltModifier extends Modifier
 {
     public function __construct(
-        public PlayerId $playerId,
         public PlayerTurn $playerTurn,
         string $description,
-        public Year $activeYear,
         public int $percentage,
     ) {
         parent::__construct(ModifierId::GEHALT_CHANGE, $playerTurn, $description);
@@ -28,11 +30,6 @@ readonly final class GehaltModifier extends Modifier
     public function __toString(): string
     {
         return '[ModifierId: ' . $this->id->value . ']';
-    }
-
-    public function isActive(GameEvents $gameEvents): bool
-    {
-        return KonjunkturphaseState::getCurrentYear($gameEvents)->equals($this->activeYear);
     }
 
     public function canModify(HookEnum $hook): bool

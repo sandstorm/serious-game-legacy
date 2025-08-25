@@ -6,20 +6,18 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Modifier;
 
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
-use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\ModifierId;
 
 /**
- * Used after the player draws an EreignisCard that disallows investing. While this modifier is active, the player
- * cannot buy or sell any stocks/etfs/crypto/immobilien. Stays active until the end of the current Konjunkturphase.
+ * Player cannot take out a loan. A Konjunkturphase may set this modifier.
  */
-readonly final class InvestitionssperreModifier extends Modifier
+readonly final class KreditsperreModifier extends Modifier
 {
     public function __construct(
         public PlayerTurn $playerTurn,
         string $description,
     ) {
-        parent::__construct(ModifierId::INVESTITIONSSPERRE, $playerTurn, $description);
+        parent::__construct(ModifierId::KREDITSPERRE, $playerTurn, $description);
     }
 
     public function __toString(): string
@@ -29,9 +27,13 @@ readonly final class InvestitionssperreModifier extends Modifier
 
     public function canModify(HookEnum $hook): bool
     {
-        return $hook === HookEnum::INVESTITIONSSPERRE;
+        return $hook === HookEnum::KREDITSPERRE;
     }
 
+    /**
+     * @param mixed $value has player a kreditsperre (is forbidden to take out a loan)
+     * @return bool
+     */
     public function modify(mixed $value): bool
     {
         assert(is_bool($value));

@@ -17,7 +17,9 @@ use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\EreignisCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
+use Domain\CoreGameLogic\Feature\Spielzug\State\ModifierCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\CardDefinition;
@@ -54,14 +56,15 @@ class ActivateCardAktion extends Aktion
     }
 
     private function getTotalCosts(
-        PlayerId $playerId,
         GameEvents $gameEvents,
-        CardDefinition $cardDefinition
+        KategorieCardDefinition $cardDefinition,
+        PlayerId $playerId,
     ): ResourceChanges {
         $costToActivate = new ResourceChanges(
             zeitsteineChange: AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound($playerId) ? 0 : -1
         );
-        return $cardDefinition instanceof KategorieCardDefinition ? $costToActivate->accumulate($cardDefinition->getResourceChanges()) : $costToActivate;
+        $modifiedCardResources = AktionsCalculator::forStream($gameEvents)->getModifiedResourceChangesForCard($cardDefinition);
+        return $costToActivate->accumulate($modifiedCardResources);
     }
 
     public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist
@@ -71,13 +74,13 @@ class ActivateCardAktion extends Aktion
             throw new RuntimeException('Cannot activate Card: ' . $result->reason, 1748951140);
         }
         $topCardOnPile = PileState::topCardIdForPile($gameEvents, $this->pileId);
-        $cardDefinition = CardFinder::getInstance()->getCardById($topCardOnPile);
+        $cardDefinition = CardFinder::getInstance()->getCardById($topCardOnPile, KategorieCardDefinition::class);
         $eventsFromActivation = GameEventsToPersist::with(
             new CardWasActivated(
                 $playerId,
                 $this->pileId,
                 $cardDefinition->getId(),
-                $this->getTotalCosts($playerId, $gameEvents, $cardDefinition),
+                $this->getTotalCosts($gameEvents, $cardDefinition, $playerId),
                 AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound($playerId) ? 0 : 1,
             )
         );

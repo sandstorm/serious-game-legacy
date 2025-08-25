@@ -2,6 +2,7 @@
     'card' => null,
     'category' => null,
     'pileId' => null,
+    'resourceChanges' => null,
 ])
 
 <div class="card-pile">
@@ -14,11 +15,11 @@
         <h4 class="card__title">{{ $card->getTitle() }}</h4>
 
         <div class="card__content">
-            <x-gameboard.resourceChanges.resource-changes :resource-changes="$card->getResourceChanges()" />
+            <x-gameboard.resourceChanges.resource-changes :resource-changes="$resourceChanges" />
         </div>
     </button>
 </div>
 
 @if ($this->cardActionsVisible($card->getId()->value))
-    <x-gameboard.cardPile.card-actions-modal :category="$category" :card="$card" :pile-id="$pileId" />
+    <x-gameboard.cardPile.card-actions-modal :category="$category" :card="$card" :pile-id="$pileId" :resource-changes="$resourceChanges" />
 @endif

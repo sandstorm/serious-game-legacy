@@ -14,8 +14,9 @@ readonly final class ModifierParameters implements \JsonSerializable
         public ?int $modifySteuernUndAbgabenPercent = null,
         public ?int $modifyKostenBildungUndKarrierePercent = null,
         public ?int $modifyKostenSozialesUndFreizeitPercent = null,
-        public ?float $modifyLebenshaltungskostenMultiplier = null,
+        public ?float $modifyAdditionalLebenshaltungskostenPercentage = null,
         public ?MoneyAmount $modifyLebenshaltungskostenMinValue = null,
+        public ?float $modifyLebenshaltungskostenMultiplier = null,
     ) {
     }
 
@@ -26,8 +27,9 @@ readonly final class ModifierParameters implements \JsonSerializable
      *      modifySteuernUndAbgabenPercent: int,
      *      modifyKostenBildungUndKarrierePercent: int,
      *      modifyKostenSozialesUndFreizeitPercent: int,
-     *      modifyLebenshaltungskostenMultiplier: float,
+     *      modifyAdditionalLebenshaltungskostenPercentage: float,
      *      modifyLebenshaltungskostenMinValue: MoneyAmount,
+     *      modifyLebenshaltungskostenMultiplier: float,
      *     } $values
      * @return self
      */
@@ -39,8 +41,9 @@ readonly final class ModifierParameters implements \JsonSerializable
             modifySteuernUndAbgabenPercent: $values['modifySteuernUndAbgabenPercent'],
             modifyKostenBildungUndKarrierePercent: $values['modifyKostenBildungUndKarrierePercent'],
             modifyKostenSozialesUndFreizeitPercent: $values['modifyKostenSozialesUndFreizeitPercent'],
-            modifyLebenshaltungskostenMultiplier: $values['modifyLebenshaltungskostenMultiplier'],
+            modifyAdditionalLebenshaltungskostenPercentage: $values['modifyAdditionalLebenshaltungskostenPercentage'],
             modifyLebenshaltungskostenMinValue: $values['modifyLebenshaltungskostenMinValue'],
+            modifyLebenshaltungskostenMultiplier: $values['modifyLebenshaltungskostenMultiplier'],
         );
     }
 
@@ -52,8 +55,9 @@ readonly final class ModifierParameters implements \JsonSerializable
             'modifySteuernUndAbgabenPercent' => $this->modifySteuernUndAbgabenPercent,
             'modifyKostenBildungUndKarrierePercent' => $this->modifyKostenBildungUndKarrierePercent,
             'modifyKostenSozialesUndFreizeitPercent' => $this->modifyKostenSozialesUndFreizeitPercent,
-            'modifyLebenshaltungskostenMultiplier' => $this->modifyLebenshaltungskostenMultiplier,
+            'modifyAdditionalLebenshaltungskostenPercentage' => $this->modifyAdditionalLebenshaltungskostenPercentage,
             'modifyLebenshaltungskostenMinValue' => $this->modifyLebenshaltungskostenMinValue,
+            'modifyLebenshaltungskostenMultiplier' => $this->modifyLebenshaltungskostenMultiplier,
         ];
     }
 }

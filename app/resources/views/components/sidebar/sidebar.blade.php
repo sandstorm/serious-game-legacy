@@ -33,8 +33,14 @@
                 </button>
             @endif
 
-            <button class="button button--type-primary" wire:click="showTakeOutALoan()">
-                <span>Kredit aufnehmen</span> <i class="icon-dots" aria-hidden="true"></i>
+            <button
+                @class([
+                    "button",
+                    "button--type-primary",
+                    $this->isPlayerAllowedToTakeOutALoan() ? "" : "button--disabled",
+                ])
+                wire:click="showTakeOutALoan()">
+                    <span>Kredit aufnehmen</span> <i class="icon-dots" aria-hidden="true"></i>
             </button>
             <button class="button button--type-primary" wire:click="showExpensesTab('{{ ExpensesTabEnum::INSURANCES }}')">
                 <span>Versicherung abschließen</span> <i class="icon-dots" aria-hidden="true"></i>
