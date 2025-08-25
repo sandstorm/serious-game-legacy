@@ -28,6 +28,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Lebensziel\LebenszielFinder;
 use Illuminate\Events\Dispatcher;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -149,5 +150,15 @@ class GameUi extends Component
     public function getPlayerPhase(?PlayerId $playerId = null): int
     {
         return PlayerState::getCurrentLebenszielphaseIdForPlayer($this->gameEvents, $playerId ?? $this->myself)->value;
+    }
+
+    public function getCurrentPlayerName(): string
+    {
+        return PlayerState::getNameForPlayer($this->gameEvents, $this->getCurrentPlayer());
+    }
+
+    public function getLebenszielNameForCurrentPlayer(): string
+    {
+        return PlayerState::getLebenszielDefinitionForPlayer($this->gameEvents, $this->getCurrentPlayer())->name;
     }
 }

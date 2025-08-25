@@ -83,4 +83,10 @@
     @if ($this->showItsYourTurnNotification)
         <x-gameboard.its-your-turn-notification />
     @endif
+    @if ($this->isFinishedGameModalVisible)
+        <x-gameboard.finished-game-modal
+            :winner-name="$this->getCurrentPlayerName()"
+            :lebensziel-name="$this->getLebenszielNameForCurrentPlayer()"
+        />
+    @endif
 </div>

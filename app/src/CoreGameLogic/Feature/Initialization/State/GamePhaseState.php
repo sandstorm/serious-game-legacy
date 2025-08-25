@@ -7,6 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Initialization\State;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasFinishedLebensziel;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereBoughtForPlayer;
@@ -96,5 +97,11 @@ class GamePhaseState
 
         $spielzugStartedEvent = $eventsThisTurn->findLastOrNull(SpielzugWasStarted::class);
         return $spielzugStartedEvent !== null && $spielzugStartedEvent->playerId->equals($playerId);
+    }
+
+    public static function hasAnyPlayerFinishedLebensziel(GameEvents $gameEvents): bool
+    {
+        $playerHasFinishedLebenszielphase = $gameEvents->findLastOrNull(PlayerHasFinishedLebensziel::class);
+        return $playerHasFinishedLebenszielphase !== null;
     }
 }

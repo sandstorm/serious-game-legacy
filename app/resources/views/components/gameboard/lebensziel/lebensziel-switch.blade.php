@@ -17,7 +17,7 @@
         >
             <i class="icon-lock-closed"></i>
             @if ($lebenszielPhase === 3)
-                Spiel <br /> beenden
+                Lebensziel <br /> abschließen
             @else
                 Phase <br /> wechseln
             @endif
@@ -40,7 +40,7 @@
             @endif
 
             @if ($lebenszielPhase === 3)
-                Spiel <br /> beenden
+                Lebensziel <br /> abschließen
             @else
                 Phase <br /> wechseln
             @endif

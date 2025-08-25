@@ -18,6 +18,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasPutBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerGotAChild;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasFinishedLebensziel;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereNotSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\WeiterbildungWasStarted;
@@ -110,6 +111,7 @@ final readonly class EventNormalizer
             CardWasPutBackOnTopOfPile::class,
             BerufsunfaehigkeitsversicherungWasActivated::class,
             PlayerGotAChild::class,
+            PlayerHasFinishedLebensziel::class,
         ];
 
         $fullClassNameToShortEventType = [];
