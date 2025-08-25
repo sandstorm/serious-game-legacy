@@ -19,6 +19,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ChangeLebenszielphaseAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CompleteMoneySheetForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ConcludeInsuranceForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\DontSellInvestmentsForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\FinishGameAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\PutCardBackOnTopOfPileAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\DoMinijobAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EndSpielzugAktion;
@@ -38,6 +39,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ChangeLebenszielphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellInvestmentsForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\FinishGame;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\PutCardBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelInsuranceForPlayer;
@@ -84,7 +86,8 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             || $command instanceof DontSellInvestmentsForPlayer
             || $command instanceof PutCardBackOnTopOfPile
             || $command instanceof StartWeiterbildung
-            || $command instanceof SubmitAnswerForWeiterbildung;
+            || $command instanceof SubmitAnswerForWeiterbildung
+            || $command instanceof FinishGame;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameEvents): GameEventsToPersist
@@ -121,6 +124,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             PutCardBackOnTopOfPile::class => $this->handlePutCardBackOnTopOfPile($command, $gameEvents),
             StartWeiterbildung::class => $this->handleStartWeiterbildung($command, $gameEvents),
             SubmitAnswerForWeiterbildung::class => $this->handleSubmitAnswerWeiterbildung($command, $gameEvents),
+            FinishGame::class => $this->handleFinishGame($command, $gameEvents),
         };
     }
 
@@ -308,6 +312,12 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
     private function handleStartWeiterbildung(StartWeiterbildung $command, GameEvents $gameEvents): GameEventsToPersist
     {
         $aktion = new StartWeiterbildungAktion();
+        return $aktion->execute($command->playerId, $gameEvents);
+    }
+
+    private function handleFinishGame(FinishGame $command, GameEvents $gameEvents): GameEventsToPersist
+    {
+        $aktion = new FinishGameAktion();
         return $aktion->execute($command->playerId, $gameEvents);
     }
 }
