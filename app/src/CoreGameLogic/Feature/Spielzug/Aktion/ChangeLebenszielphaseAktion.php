@@ -6,6 +6,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\DoesNotSkipTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughResourcesForLebenszielphasenChangeValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
@@ -22,7 +23,9 @@ class ChangeLebenszielphaseAktion extends Aktion
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
         $validatorChain = new IsPlayersTurnValidator();
-        $validatorChain->setNext(new HasPlayerEnoughResourcesForLebenszielphasenChangeValidator());
+        $validatorChain
+            ->setNext(new DoesNotSkipTurnValidator())
+            ->setNext(new HasPlayerEnoughResourcesForLebenszielphasenChangeValidator());
 
         return $validatorChain->validate($gameEvents, $playerId);
     }

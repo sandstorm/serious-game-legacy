@@ -39,6 +39,7 @@ class TakeOutALoanForPlayerAktion extends Aktion
                 canExecute: false,
             );
         }
+        // TODO beim Aussetzen nicht erlaubt?
     }
 
     public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist

@@ -8,6 +8,7 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\CanPlayerAffordTopCardOnPileValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\DoesNotSkipTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasCategoryFreeZeitsteinslotsValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerDoneNoZeitsteinaktionThisTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
@@ -44,6 +45,7 @@ class ActivateCardAktion extends Aktion
 
         $validationChain = new IsPlayersTurnValidator();
         $validationChain
+            ->setNext(new DoesNotSkipTurnValidator())
             ->setNext(new CanPlayerAffordTopCardOnPileValidator($this->pileId))
             ->setNext(HasPlayerDoneNoZeitsteinaktionThisTurnValidator::withSpecialRulesForActivateCard($this->category))
             ->setNext(HasCategoryFreeZeitsteinslotsValidator::withSpecialRulesForActivateCard($this->category));

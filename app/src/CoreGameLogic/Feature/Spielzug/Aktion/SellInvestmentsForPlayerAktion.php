@@ -6,6 +6,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\DoesNotSkipTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasAnotherPlayerBoughtInvestmentsThisTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughInvestmentsToSellValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerInteractedWithInvestmentsModalThisTurnValidator;
@@ -30,6 +31,7 @@ class SellInvestmentsForPlayerAktion extends Aktion
     {
         $validationChain = new HasAnotherPlayerBoughtInvestmentsThisTurnValidator($this->investmentId);
         $validationChain
+            ->setNext(new DoesNotSkipTurnValidator())
             ->setNext(new IsPlayerAllowedToInvestValidator())
             ->setNext(new HasPlayerEnoughInvestmentsToSellValidator($this->investmentId, $this->amount))
             ->setNext(new HasPlayerInteractedWithInvestmentsModalThisTurnValidator());
