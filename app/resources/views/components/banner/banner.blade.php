@@ -1,7 +1,7 @@
 @use('\Domain\Definitions\Card\Dto\ResourceChanges')
 
 <div
-    x-data="{ visible: @entangle('isBannerVisible'), message: @entangle('bannerMessage'), timer: null }"
+    x-data="{ visible: false, message: @entangle('bannerMessage'), timer: null }"
     @class([
         "banner",
         $this->getPlayerColorClass()
@@ -9,8 +9,12 @@
     x-cloak
     x-show="visible"
     x-init="
-        timer = setTimeout(() => $wire.closeBanner(), 10000);
+        timer = setTimeout(() => {visible = false; message = null}, 10000);
         $watch('message', () => {
+            if (!message) {
+                return;
+            }
+            visible = true;
             // reset css animation on button
             $refs.bannerCloseButton.style.animation = 'none';
             $refs.bannerCloseButton.offsetHeight;
@@ -18,7 +22,7 @@
             // reset timer
             clearTimeout(timer);
             // set new timer
-            timer = setTimeout(() => $wire.closeBanner(), 10000)
+            timer = setTimeout(() => {visible = false; message = null}, 10000)
         })"
 >
     <div class="banner__content"
@@ -29,10 +33,10 @@
         @endif
 
         <div class="banner__body">
-            {{$this->bannerMessage}}
+            <span x-text="message"></span>
         </div>
 
-        <button x-ref="bannerCloseButton" class="banner__close button button--type-text" x-on:click="clearTimeout(timer); $wire.closeBanner()">
+        <button x-ref="bannerCloseButton" class="banner__close button button--type-text" x-on:click="clearTimeout(timer); visible = false; message = null">
             <i class="icon-close" aria-hidden="true"></i>
             <span class="sr-only">Banner schließen</span>
         </button>
