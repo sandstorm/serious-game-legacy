@@ -10,4 +10,5 @@
         <x-konjunkturphase.konjunkturphase-over-modal />
     @endif
     <x-notification.notification/>
+    <x-banner.banner/>
 </div>
