@@ -4,7 +4,8 @@
 ])
 
 <ul class="kompetenzen">
-    @foreach($bildungsKompetenzen as $kompetenz)
+    <span class="sr-only">{{ $bildungsKompetenzen->ariaLabel }}</span>
+    @foreach($bildungsKompetenzen->kompetenzen as $kompetenz)
         <x-dynamic-component :component="$kompetenz->iconComponentName"
              :player-name="$kompetenz->playerName"
              :player-color-class="$kompetenz->colorClass"
@@ -15,7 +16,8 @@
 </ul>
 
 <ul class="kompetenzen">
-    @foreach($freizeitKompetenzen as $kompetenz)
+    <span class="sr-only">{{ $freizeitKompetenzen->ariaLabel }}</span>
+    @foreach($freizeitKompetenzen->kompetenzen as $kompetenz)
         <x-dynamic-component :component="$kompetenz->iconComponentName"
             :player-name="$kompetenz->playerName"
             :player-color-class="$kompetenz->colorClass"

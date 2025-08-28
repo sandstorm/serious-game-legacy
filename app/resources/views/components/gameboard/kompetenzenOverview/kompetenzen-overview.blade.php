@@ -12,9 +12,10 @@
         <div class="kompetenzen-overview__category">
             <h4>{{ $category->title }}</h4>
 
-            @if (count($category->kompetenzen) > 0)
+            @if ($category->kompetenzen !== null && count($category->kompetenzen->kompetenzen) > 0)
                 <div class="kompetenzen">
-                    @foreach($category->kompetenzen as $kompetenz)
+                    <span class="sr-only">{{ $category->kompetenzen->ariaLabel }}</span>
+                    @foreach($category->kompetenzen->kompetenzen as $kompetenz)
                         <x-dynamic-component :component="$kompetenz->iconComponentName"
                             :player-name="$kompetenz->playerName"
                             :player-color-class="$kompetenz->colorClass"

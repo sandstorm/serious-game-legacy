@@ -6,7 +6,8 @@
     @foreach($categories as $category)
         <div class="category">
             <ul class="zeitsteine">
-                @foreach($category->zeitsteine as $zeitstein)
+                <span class="sr-only">{{ $category->zeitsteine->ariaLabel }}</span>
+                @foreach($category->zeitsteine->zeitsteine as $zeitstein)
                     <x-gameboard.zeitsteine.zeitstein-icon :player-name="$zeitstein->playerName" :player-color-class="$zeitstein->colorClass" :draw-empty="$zeitstein->drawEmpty" />
                 @endforeach
             </ul>
