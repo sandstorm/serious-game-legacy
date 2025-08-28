@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\View\Components\Gameboard;
 
 use App\Helper\KompetenzenHelper;
-use App\Livewire\Dto\AbstractIconWithColor;
 use App\Livewire\Dto\GameboardInformationForKompetenzenOverview;
-use App\Livewire\Dto\KompetenzWithColor;
+use App\Livewire\Dto\KompetenzSteineForCategory;
+use App\Livewire\Dto\KompetenzSteinWithColor;
 use App\Livewire\Dto\ZeitsteinWithColor;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
@@ -36,22 +36,24 @@ class KompetenzenOverview extends Component
         $categories = [
             new GameboardInformationForKompetenzenOverview(
                 title: CategoryId::BILDUNG_UND_KARRIERE,
-                kompetenzen: KompetenzenHelper::getKompetenzen(
+                kompetenzen: KompetenzenHelper::getKompetenzSteineForCategory(
                     PlayerState::getPlayerColorClass($this->gameEvents, $this->playerId),
                     PlayerState::getNameForPlayer($this->gameEvents, $this->playerId),
                     PlayerState::getBildungsKompetenzsteine($this->gameEvents, $this->playerId),
                     $currentLebenszielPhaseDefinition->bildungsKompetenzSlots,
-                    'gameboard.kompetenzen.kompetenz-icon-bildung'
+                    'gameboard.kompetenzen.kompetenz-icon-bildung',
+                    CategoryId::BILDUNG_UND_KARRIERE
                 ),
             ),
             new GameboardInformationForKompetenzenOverview(
                 title: CategoryId::SOZIALES_UND_FREIZEIT,
-                kompetenzen: KompetenzenHelper::getKompetenzen(
+                kompetenzen: KompetenzenHelper::getKompetenzSteineForCategory(
                     PlayerState::getPlayerColorClass($this->gameEvents, $this->playerId),
                     PlayerState::getNameForPlayer($this->gameEvents, $this->playerId),
                     PlayerState::getFreizeitKompetenzsteine($this->gameEvents, $this->playerId),
                     $currentLebenszielPhaseDefinition->freizeitKompetenzSlots,
                     'gameboard.kompetenzen.kompetenz-icon-freizeit',
+                    CategoryId::SOZIALES_UND_FREIZEIT
                 ),
             ),
             new GameboardInformationForKompetenzenOverview(
@@ -60,7 +62,7 @@ class KompetenzenOverview extends Component
             ),
             new GameboardInformationForKompetenzenOverview(
                 title: CategoryId::INVESTITIONEN,
-                kompetenzen: [],
+                kompetenzen: null,
             ),
         ];
 
@@ -71,15 +73,16 @@ class KompetenzenOverview extends Component
     }
 
     /**
-     * @return AbstractIconWithColor[]
+     * @return KompetenzSteineForCategory
      */
-    private function getKompentenzenBeruf(): array
+    private function getKompentenzenBeruf(): KompetenzSteineForCategory
     {
         $playerHasJob = PlayerState::getJobForPlayer($this->gameEvents, $this->playerId);
 
+        // special case for job: its one job icon and one zeitstein icon, if you have a job
         if ($playerHasJob === null) {
-            return [
-                new KompetenzWithColor(
+            $kompetenzSteine = [
+                new KompetenzSteinWithColor(
                     drawEmpty: true,
                     colorClass: '',
                     playerName: '',
@@ -87,8 +90,8 @@ class KompetenzenOverview extends Component
                 )
             ];
         } else {
-            return [
-                new KompetenzWithColor(
+            $kompetenzSteine = [
+                new KompetenzSteinWithColor(
                     drawEmpty: false,
                     colorClass: PlayerState::getPlayerColorClass($this->gameEvents, $this->playerId),
                     playerName: PlayerState::getNameForPlayer($this->gameEvents, $this->playerId),
@@ -101,5 +104,10 @@ class KompetenzenOverview extends Component
                 ),
             ];
         }
+
+        return new KompetenzSteineForCategory(
+            ariaLabel: $playerHasJob !== null ? 'Du hast einen Job (Ein Zeitstein ist dauerhaft gebunden)' : 'Du hast keinen Job',
+            kompetenzSteine: $kompetenzSteine
+        );
     }
 }

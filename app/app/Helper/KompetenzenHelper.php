@@ -4,29 +4,35 @@ declare(strict_types=1);
 
 namespace App\Helper;
 
-use App\Livewire\Dto\KompetenzWithColor;
-use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
-use Domain\CoreGameLogic\PlayerId;
+use App\Livewire\Dto\KompetenzSteineForCategory;
+use App\Livewire\Dto\KompetenzSteinWithColor;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 class KompetenzenHelper
 {
     /**
      * @param string $colorClass
      * @param string $playerName
-     * @param float $kompetenzen
-     * @param int $requiredKompetenzen
+     * @param float $numberOfkompetenzSteine
+     * @param int $requiredNumberOfKompetenzSteine
      * @param string $iconComponentName
-     * @return KompetenzWithColor[]
+     * @return KompetenzSteineForCategory
      */
-    public static function getKompetenzen(string $colorClass, string $playerName, float $kompetenzen, int $requiredKompetenzen, string $iconComponentName): array
+    public static function getKompetenzSteineForCategory(
+        string     $colorClass,
+        string     $playerName,
+        float      $numberOfkompetenzSteine,
+        int        $requiredNumberOfKompetenzSteine,
+        string     $iconComponentName,
+        CategoryId $categoryId,
+    ): KompetenzSteineForCategory
     {
-        $kompetenzenArray = [];
-        for ($i = 0; $i < $kompetenzen; $i++) {
-            $kompetenzenArray[] = new KompetenzWithColor(
+        $kompetenzSteine = [];
+        for ($i = 0; $i < $numberOfkompetenzSteine; $i++) {
+            $kompetenzSteine[] = new KompetenzSteinWithColor(
                 drawEmpty: false,
                 // only possible for category bildung at the moment
-                drawHalfEmpty: abs($i + 0.5 - $kompetenzen) < 0.01,
+                drawHalfEmpty: abs($i + 0.5 - $numberOfkompetenzSteine) < 0.01,
                 colorClass: $colorClass,
                 playerName: $playerName,
                 iconComponentName: $iconComponentName,
@@ -34,9 +40,9 @@ class KompetenzenHelper
         }
 
         // fill up the rest with empty ones
-        $slotsUsed = count($kompetenzenArray);
-        for ($i = 0; $i < $requiredKompetenzen - $slotsUsed; $i++) {
-            $kompetenzenArray[] = new KompetenzWithColor(
+        $slotsUsed = count($kompetenzSteine);
+        for ($i = 0; $i < $requiredNumberOfKompetenzSteine - $slotsUsed; $i++) {
+            $kompetenzSteine[] = new KompetenzSteinWithColor(
                 drawEmpty: true,
                 colorClass: '',
                 playerName: '',
@@ -44,7 +50,10 @@ class KompetenzenHelper
             );
         }
 
-        return $kompetenzenArray;
+        return new KompetenzSteineForCategory(
+            ariaLabel: 'Deine Kompetenzsteine im Bereich ' . $categoryId->value .  ': '. $numberOfkompetenzSteine . ' von ' . $requiredNumberOfKompetenzSteine,
+            kompetenzSteine: $kompetenzSteine
+        );
     }
 
 }
