@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\View\Components\Gameboard;
 
 use App\Livewire\Dto\GameboardInformationForCategory;
+use App\Livewire\Dto\Zeitsteine;
 use App\Livewire\Dto\ZeitsteinWithColor;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
@@ -66,17 +67,20 @@ class Categories extends Component
 
     /**
      * @param CategoryId $category
-     * @return ZeitsteinWithColor[]
+     * @return Zeitsteine
      */
-    private function getZeitsteineForCategory(CategoryId $category): array
+    private function getZeitsteineForCategory(CategoryId $category): Zeitsteine
     {
         $players = GamePhaseState::getOrderedPlayers($this->gameEvents);
         $availableSlots = $this->getSlotsForKompetenzbereich($category);
 
         $zeitsteine = [];
 
+        $ariaLabelsForPlayers = [];
         foreach ($players as $player) {
             $amountOfZeitsteinePlayerPlaced = PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($this->gameEvents, $player, $category);
+
+            $ariaLabelsForPlayers[] = PlayerState::getNameForPlayer($this->gameEvents, $player) . ': ' . $amountOfZeitsteinePlayerPlaced;
 
             for($i = 0; $i < $amountOfZeitsteinePlayerPlaced; $i++) {
                 $zeitsteine[] = new ZeitsteinWithColor(
@@ -88,12 +92,16 @@ class Categories extends Component
         }
 
         // fill with empty zeitsteine for the remaining slots
-        $remainingSlots = $availableSlots - count($zeitsteine);
+        $usedSlots = count($zeitsteine);
+        $remainingSlots = $availableSlots - $usedSlots;
         for ($i = 0; $i < $remainingSlots; $i++) {
             $zeitsteine[] = new ZeitsteinWithColor(drawEmpty: true);
         }
 
-        return $zeitsteine;
+        return new Zeitsteine(
+            ariaLabel: $usedSlots . ' von ' . $availableSlots . ' Zeitsteinen wurden platziert. ' . implode(', ', $ariaLabelsForPlayers),
+            zeitsteine: $zeitsteine
+        );
     }
 
     /**

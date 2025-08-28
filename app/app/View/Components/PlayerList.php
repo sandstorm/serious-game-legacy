@@ -6,6 +6,7 @@ namespace App\View\Components;
 
 use App\Livewire\Dto\PlayerListEmptySlotDto;
 use App\Livewire\Dto\PlayerListPlayerDto;
+use App\Livewire\Dto\Zeitsteine;
 use App\Livewire\Dto\ZeitsteinWithColor;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
@@ -95,9 +96,9 @@ class PlayerList extends Component
 
     /**
      * @param PlayerId $playerId
-     * @return ZeitsteinWithColor[]
+     * @return Zeitsteine
      */
-    private function getZeitsteineForPlayer(PlayerId $playerId): array
+    private function getZeitsteineForPlayer(PlayerId $playerId): Zeitsteine
     {
         $availableZeitsteine = PlayerState::getZeitsteineForPlayer($this->gameEvents, $playerId);
         $initialZeitsteine = KonjunkturphaseState::getInitialZeitsteineForCurrentKonjunkturphase($this->gameEvents);
@@ -112,6 +113,9 @@ class PlayerList extends Component
             $zeitsteine[] = $zeitstein;
         }
 
-        return $zeitsteine;
+        return new Zeitsteine(
+            ariaLabel: 'Du hast noch ' . $availableZeitsteine . ' von ' . $initialZeitsteine . ' Zeitsteinen übrig.',
+            zeitsteine: $zeitsteine
+        );
     }
 }

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\View\Components\Gameboard;
 
 use App\Helper\KompetenzenHelper;
-use App\Livewire\Dto\AbstractIconWithColor;
 use App\Livewire\Dto\GameboardInformationForKompetenzenOverview;
+use App\Livewire\Dto\Kompetenzen;
 use App\Livewire\Dto\KompetenzWithColor;
 use App\Livewire\Dto\ZeitsteinWithColor;
 use Domain\CoreGameLogic\EventStore\GameEvents;
@@ -41,7 +41,8 @@ class KompetenzenOverview extends Component
                     PlayerState::getNameForPlayer($this->gameEvents, $this->playerId),
                     PlayerState::getBildungsKompetenzsteine($this->gameEvents, $this->playerId),
                     $currentLebenszielPhaseDefinition->bildungsKompetenzSlots,
-                    'gameboard.kompetenzen.kompetenz-icon-bildung'
+                    'gameboard.kompetenzen.kompetenz-icon-bildung',
+                    CategoryId::BILDUNG_UND_KARRIERE
                 ),
             ),
             new GameboardInformationForKompetenzenOverview(
@@ -52,6 +53,7 @@ class KompetenzenOverview extends Component
                     PlayerState::getFreizeitKompetenzsteine($this->gameEvents, $this->playerId),
                     $currentLebenszielPhaseDefinition->freizeitKompetenzSlots,
                     'gameboard.kompetenzen.kompetenz-icon-freizeit',
+                    CategoryId::SOZIALES_UND_FREIZEIT
                 ),
             ),
             new GameboardInformationForKompetenzenOverview(
@@ -60,7 +62,7 @@ class KompetenzenOverview extends Component
             ),
             new GameboardInformationForKompetenzenOverview(
                 title: CategoryId::INVESTITIONEN,
-                kompetenzen: [],
+                kompetenzen: null,
             ),
         ];
 
@@ -71,14 +73,14 @@ class KompetenzenOverview extends Component
     }
 
     /**
-     * @return AbstractIconWithColor[]
+     * @return Kompetenzen
      */
-    private function getKompentenzenBeruf(): array
+    private function getKompentenzenBeruf(): Kompetenzen
     {
         $playerHasJob = PlayerState::getJobForPlayer($this->gameEvents, $this->playerId);
 
         if ($playerHasJob === null) {
-            return [
+            $kompetenzen = [
                 new KompetenzWithColor(
                     drawEmpty: true,
                     colorClass: '',
@@ -87,7 +89,7 @@ class KompetenzenOverview extends Component
                 )
             ];
         } else {
-            return [
+            $kompetenzen = [
                 new KompetenzWithColor(
                     drawEmpty: false,
                     colorClass: PlayerState::getPlayerColorClass($this->gameEvents, $this->playerId),
@@ -101,5 +103,10 @@ class KompetenzenOverview extends Component
                 ),
             ];
         }
+
+        return new Kompetenzen(
+            ariaLabel: $playerHasJob !== null ? 'Du hast einen Job (Ein Zeitstein ist dauerhaft gebunden)' : 'Du hast keinen Job',
+            kompetenzen: $kompetenzen
+        );
     }
 }

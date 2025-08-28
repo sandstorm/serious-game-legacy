@@ -32,7 +32,8 @@
                 </div>
 
                 <ul class="zeitsteine">
-                    @foreach($player->zeitsteine as $playerZeitstein)
+                    <span class="sr-only">{{ $player->zeitsteine->ariaLabel }}</span>
+                    @foreach($player->zeitsteine->zeitsteine as $playerZeitstein)
                         <x-gameboard.zeitsteine.zeitstein-icon :player-name="$player->name" :player-color-class="$playerZeitstein->colorClass" :draw-empty="$playerZeitstein->drawEmpty" />
                     @endforeach
                 </ul>

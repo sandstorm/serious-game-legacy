@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Helper;
 
+use App\Livewire\Dto\Kompetenzen;
 use App\Livewire\Dto\KompetenzWithColor;
-use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
-use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 class KompetenzenHelper
 {
@@ -17,9 +16,16 @@ class KompetenzenHelper
      * @param float $kompetenzen
      * @param int $requiredKompetenzen
      * @param string $iconComponentName
-     * @return KompetenzWithColor[]
+     * @return Kompetenzen
      */
-    public static function getKompetenzen(string $colorClass, string $playerName, float $kompetenzen, int $requiredKompetenzen, string $iconComponentName): array
+    public static function getKompetenzen(
+        string $colorClass,
+        string $playerName,
+        float $kompetenzen,
+        int $requiredKompetenzen,
+        string $iconComponentName,
+        CategoryId $categoryId,
+    ): Kompetenzen
     {
         $kompetenzenArray = [];
         for ($i = 0; $i < $kompetenzen; $i++) {
@@ -44,7 +50,10 @@ class KompetenzenHelper
             );
         }
 
-        return $kompetenzenArray;
+        return new Kompetenzen(
+            ariaLabel: 'Deine Kompetenzen im Bereich ' . $categoryId->value .  ': '. $kompetenzen . ' von ' . $requiredKompetenzen,
+            kompetenzen: $kompetenzenArray
+        );
     }
 
 }
