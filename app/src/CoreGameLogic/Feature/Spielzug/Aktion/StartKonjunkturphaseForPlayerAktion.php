@@ -8,13 +8,17 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
+use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasKonjunkturphaseNotStartedValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasStartedKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\State\EreignisPrerequisiteChecker;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
+use Domain\Definitions\Konjunkturphase\Dto\ConditionalResourceChange;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 
 /**
@@ -41,16 +45,54 @@ class StartKonjunkturphaseForPlayerAktion extends Aktion
         $conditionalResourceChangesForCurrentKonjunkturphase = KonjunkturphaseFinder::findKonjunkturphaseById(
             $gameEvents->findLast(KonjunkturphaseWasChanged::class)->id)->getConditionalResourceChanges();
 
-        $resourceChanges = new ResourceChanges();
+        $accumulatedResourceChanges = new ResourceChanges();
         foreach ($conditionalResourceChangesForCurrentKonjunkturphase as $conditionalResourceChange) {
             $isConditionMet = EreignisPrerequisiteChecker::forStream($gameEvents)
                 ->hasPlayerPrerequisites($playerId, $conditionalResourceChange->prerequisite);
 
+            $actualResourceChanges = $this->calculateActualResourceChangeFromConditionalResourceChanges(
+                $gameEvents,
+                $playerId,
+                $conditionalResourceChange
+            );
             if ($isConditionMet) {
-                $resourceChanges = $resourceChanges->accumulate($conditionalResourceChange->resourceChanges);
+                $accumulatedResourceChanges = $accumulatedResourceChanges->accumulate($actualResourceChanges);
             }
         }
-        return $resourceChanges;
+        return $accumulatedResourceChanges;
+    }
+
+    /**
+     * Calculates the actual ResourceChanges, since there are some special cases (ExtraZins, Lohnsonderzahlung,
+     * Grundsteuer) that need the current state to determine the actual cost which we cannot do in the definition.
+     *
+     * This special case only applies for KonjunkturphaseChanges and we only need to worry about it here.
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @param ConditionalResourceChange $conditionalResourceChange
+     * @return ResourceChanges
+     */
+    private function calculateActualResourceChangeFromConditionalResourceChanges(
+        GameEvents $gameEvents,
+        PlayerId $playerId,
+        ConditionalResourceChange $conditionalResourceChange
+    ): ResourceChanges {
+        if ($conditionalResourceChange->isExtraZins) {
+            $extraZinsAmount = $conditionalResourceChange->resourceChanges->guthabenChange->value;
+            $numberOfLoans = count(MoneySheetState::getLoansForPlayer($gameEvents, $playerId));
+            return new ResourceChanges(guthabenChange: new MoneyAmount($extraZinsAmount * $numberOfLoans));
+        }
+        if ($conditionalResourceChange->isGrundsteuer) {
+            $grundSteuerAmount = $conditionalResourceChange->resourceChanges->guthabenChange->value;
+            $numberOfProperties = 0; // TODO use real number of Real Estate Properties once it's implemented
+            return new ResourceChanges(guthabenChange: new MoneyAmount($grundSteuerAmount * $numberOfProperties));
+        }
+        if ($conditionalResourceChange->lohnsonderzahlungPercent !== null) {
+            $currentGehaltForPlayer = PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId)->value;
+            $multiplier = $conditionalResourceChange->lohnsonderzahlungPercent / 100;
+            return new ResourceChanges(guthabenChange: new MoneyAmount($currentGehaltForPlayer * $multiplier));
+        }
+        return $conditionalResourceChange->resourceChanges;
     }
 
     /**

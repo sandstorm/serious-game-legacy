@@ -54,15 +54,15 @@ wird in StartKonjunkturphaseForPlayer abgehandelt
     - [x] CONDITIONALRESOURCECHANGE:
 - [x] einmalige Gehaltssonderzahlung (1000 €) -> ConditionalResourceChange
 - [x] einmalig 500 für gestiegene Lebensmittelpreise -> ConditionalResourceChange
-- [ ] einmalige Lohnsonderzahlung (10%) -> TODO  (ConditionalResourceChange) -> Lohnsonderzahlung als Property
-- [ ] für jede Immobilie fallen 1000 € (pro Objekt) an -> ConditionalResourceChange -> Grundsteuer als Property
+- [x] einmalige Lohnsonderzahlung (10%) -> TODO  (ConditionalResourceChange) -> Lohnsonderzahlung als Property
+- [x] für jede Immobilie fallen 1000 € (pro Objekt) an -> ConditionalResourceChange -> Grundsteuer in ResourceChanges
+- [x] Extrazins -> ConditionalResourceChange (brauchen neuen Prerequisite HAS_LOAN) -> Extrazins in ResourceChanges
 - [x] 1 punkt in Bildung und Karriere -> ConditionalResourceChange
-- [ ] Extrazins -> ConditionalResourceChange (brauchen neuen Prerequisite HAS_LOAN)
 - [x] kreditZins (Definition)
 - [x] aktienKursbonus (Definition)
 - [x] cryptoKursbonus (Definition)
-- [ ] etfKursbonus (Definition) ?
 - [x] dividende (Definition)
+- [ ] etfKursbonus (Definition) ?
 - [ ] immobilien ??? (Definition)
 
 Je 2 Spalten für Modifier (Modifier sind eigentlich selbst immer 2 Spalten) und ConditionalResourceChanges (sind je 4 spalten)
