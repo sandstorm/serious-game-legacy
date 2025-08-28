@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\State;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
@@ -28,6 +29,7 @@ final readonly class EreignisPrerequisiteChecker
             EreignisPrerequisitesId::HAS_CHILD => $this->hasPlayerAChild($playerId),
             EreignisPrerequisitesId::HAS_NO_CHILD => !($this->hasPlayerAChild($playerId)),
             EreignisPrerequisitesId::HAS_SPECIFIC_CARD => $this->hasPlayerPlayedThisCard($playerId, $requiredCardId),
+            EreignisPrerequisitesId::HAS_LOAN => $this->hasPlayerPlayedALoan($playerId),
             EreignisPrerequisitesId::NO_PREREQUISITES => true,
         };
     }
@@ -49,5 +51,11 @@ final readonly class EreignisPrerequisiteChecker
         }
         return PlayerState::hasPlayerPlayedSpecificCard($this->gameEvents, $playerId, $requiredCardId);
 
+    }
+
+    private function hasPlayerPlayedALoan(PlayerId $playerId): bool
+    {
+        $currentLoansForPlayer = MoneySheetState::getLoansForPlayer($this->gameEvents, $playerId);
+        return count($currentLoansForPlayer) > 0;
     }
 }

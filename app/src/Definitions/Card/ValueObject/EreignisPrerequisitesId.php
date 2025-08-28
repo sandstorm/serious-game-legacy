@@ -10,5 +10,6 @@ enum EreignisPrerequisitesId: string
     case HAS_CHILD = 'Spieler hat ein Kind';
     case HAS_NO_CHILD = 'Spieler hat kein Kind';
     case HAS_SPECIFIC_CARD = 'Spieler hat die vorausgesetzte Karte gespielt';
+    case HAS_LOAN = 'Spieler hat mindestens einen Kredit';
     case NO_PREREQUISITES = 'Keine Voraussetzungen';
 }
