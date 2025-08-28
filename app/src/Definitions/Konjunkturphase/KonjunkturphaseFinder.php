@@ -129,6 +129,8 @@ class KonjunkturphaseFinder
                     value: 0
                 ),
             ],
+            conditionalResourceChanges: [
+            ],
         );
 
         $konjunkturphase2 = new KonjunkturphaseDefinition(
@@ -201,6 +203,8 @@ class KonjunkturphaseFinder
                     scope: AuswirkungScopeEnum::REAL_ESTATE,
                     value: 10
                 ),
+            ],
+            conditionalResourceChanges: [
             ],
         );
 
@@ -283,6 +287,12 @@ class KonjunkturphaseFinder
                     value: 0
                 ),
             ],
+            conditionalResourceChanges: [
+                new ConditionalResourceChange(
+                    prerequisite: EreignisPrerequisitesId::HAS_JOB,
+                    resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(1000)),
+                ),
+            ],
         );
 
         $konjunkturphase4 = new KonjunkturphaseDefinition(
@@ -362,6 +372,12 @@ class KonjunkturphaseFinder
                     value: 0
                 ),
             ],
+            conditionalResourceChanges: [
+                new ConditionalResourceChange(
+                    prerequisite: EreignisPrerequisitesId::NO_PREREQUISITES,
+                    resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(500)),
+                ),
+            ],
         );
 
         $konjunkturphase5 = new KonjunkturphaseDefinition(
@@ -434,6 +450,8 @@ class KonjunkturphaseFinder
                     scope: AuswirkungScopeEnum::REAL_ESTATE,
                     value: 0
                 ),
+            ],
+            conditionalResourceChanges: [
             ],
         );
 
@@ -516,6 +534,13 @@ class KonjunkturphaseFinder
                     value: 0
                 ),
             ],
+            conditionalResourceChanges: [
+                new ConditionalResourceChange(
+                    prerequisite: EreignisPrerequisitesId::HAS_JOB,
+                    resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(0)),
+                    lohnsonderzahlungPercent: 10,
+                ),
+            ],
         );
 
         $konjunkturphase7 = new KonjunkturphaseDefinition(
@@ -593,6 +618,13 @@ class KonjunkturphaseFinder
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::REAL_ESTATE,
                     value: 0
+                ),
+            ],
+            conditionalResourceChanges: [
+                new ConditionalResourceChange(
+                    prerequisite: EreignisPrerequisitesId::NO_PREREQUISITES,
+                    resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(-1000)),
+                    isGrundsteuer: true,
                 ),
             ],
         );
@@ -675,6 +707,13 @@ class KonjunkturphaseFinder
                     value: 10
                 ),
             ],
+            conditionalResourceChanges: [
+                new ConditionalResourceChange(
+                    prerequisite: EreignisPrerequisitesId::NO_PREREQUISITES,
+                    resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(-1000)),
+                    isGrundsteuer: true,
+                ),
+            ],
         );
 
         $konjunkturphase9 = new KonjunkturphaseDefinition(
@@ -746,6 +785,12 @@ class KonjunkturphaseFinder
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::REAL_ESTATE,
                     value: 0
+                ),
+            ],
+            conditionalResourceChanges: [
+                new ConditionalResourceChange(
+                    prerequisite: EreignisPrerequisitesId::NO_PREREQUISITES,
+                    resourceChanges: new ResourceChanges(bildungKompetenzsteinChange: 1),
                 ),
             ],
         );
@@ -823,6 +868,12 @@ class KonjunkturphaseFinder
                     value: 0
                 ),
             ],
+            conditionalResourceChanges: [
+                new ConditionalResourceChange(
+                    prerequisite: EreignisPrerequisitesId::HAS_JOB,
+                    resourceChanges: new ResourceChanges(zeitsteineChange: -1),
+                ),
+            ],
         );
 
         $konjunkturphase11 = new KonjunkturphaseDefinition(
@@ -894,6 +945,17 @@ class KonjunkturphaseFinder
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::REAL_ESTATE,
                     value: 0
+                ),
+            ],
+            conditionalResourceChanges: [
+                new ConditionalResourceChange(
+                    prerequisite: EreignisPrerequisitesId::NO_PREREQUISITES,
+                    resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(500)),
+                ),
+                new ConditionalResourceChange(
+                    prerequisite: EreignisPrerequisitesId::NO_PREREQUISITES,
+                    resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(-500)),
+                    isGrundsteuer: true,
                 ),
             ],
         );
@@ -969,6 +1031,13 @@ class KonjunkturphaseFinder
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::REAL_ESTATE,
                     value: -5
+                ),
+            ],
+            conditionalResourceChanges: [
+                new ConditionalResourceChange(
+                    prerequisite: EreignisPrerequisitesId::HAS_LOAN,
+                    resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(-200)),
+                    isExtraZins: true,
                 ),
             ],
         );
@@ -1049,6 +1118,8 @@ class KonjunkturphaseFinder
                     scope: AuswirkungScopeEnum::REAL_ESTATE,
                     value: -10
                 ),
+            ],
+            conditionalResourceChanges: [
             ],
         );
 
@@ -1132,6 +1203,8 @@ class KonjunkturphaseFinder
                     value: -15
                 ),
             ],
+            conditionalResourceChanges: [
+            ],
         );
 
         $konjunkturphase15 = new KonjunkturphaseDefinition(
@@ -1211,6 +1284,12 @@ class KonjunkturphaseFinder
                     value: 0
                 ),
             ],
+            conditionalResourceChanges: [
+                new ConditionalResourceChange(
+                    prerequisite: EreignisPrerequisitesId::NO_PREREQUISITES,
+                    resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(500)),
+                ),
+            ],
         );
 
         $konjunkturphase16 = new KonjunkturphaseDefinition(
@@ -1288,6 +1367,13 @@ class KonjunkturphaseFinder
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::REAL_ESTATE,
                     value: -5
+                ),
+            ],
+            conditionalResourceChanges: [
+                new ConditionalResourceChange(
+                    prerequisite: EreignisPrerequisitesId::HAS_LOAN,
+                    resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(-1000)),
+                    isExtraZins: true,
                 ),
             ],
         );

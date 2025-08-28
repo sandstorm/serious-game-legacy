@@ -77,10 +77,19 @@ function printConditionalResourceChanges(string $prerequisites, string $resource
 {
     echo "\t\t" . "new ConditionalResourceChange(\n";
     echo "\t\t\t" . "prerequisite: EreignisPrerequisitesId::" . $prerequisites . ",\n";
-    if ($resourceChange === "guthabenChange") {
-        echo "\t\t\t" . "resourceChanges: new ResourceChanges(" . $resourceChange . ": new MoneyAmount(" . $value . "))\n";
+    if ($resourceChange === "Lohnsonderzahlung") {
+        echo "\t\t\t" . "resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(0)),\n";
+        echo "\t\t\t" . "lohnsonderzahlungPercent: " . $value . ",\n";
+    } elseif ($resourceChange === "Extrazins") {
+        echo "\t\t\t" . "resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(" . $value . ")),\n";
+        echo "\t\t\t" . "isExtraZins: true,\n";
+    } elseif ($resourceChange === "Grundsteuer") {
+        echo "\t\t\t" . "resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(" . $value . ")),\n";
+        echo "\t\t\t" . "isGrundsteuer: true,\n";
+    } elseif ($resourceChange === "guthabenChange") {
+        echo "\t\t\t" . "resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(" . $value . ")),\n";
     } else {
-        echo "\t\t\t" . "resourceChanges: new ResourceChanges(" . $resourceChange . ": " . $value . ")\n";
+        echo "\t\t\t" . "resourceChanges: new ResourceChanges(" . $resourceChange . ": " . $value . "),\n";
     }
     echo "\t\t" . "),\n";
 }
@@ -367,16 +376,6 @@ function importKonjunkturphasen(): void
     foreach ($tableContent as $line) {
         $lineArray = explode(";", trim($line));
         $lineArrayWithKeys = array_combine($keys, $lineArray);
-//        $ereignisse = array_slice($lineArrayWithKeys, 23);
-//        $ereignisArray = [];
-//        for ($i = 1; $i <= 2; $i++) {
-//            $ereignisArray["ereignis$i"] = [
-//                "description" => $ereignisse["Ereignis$i"],
-//                "prerequisite" => $ereignisse["prerequisite$i"],
-//                "resourceChange" => $ereignisse["resourceChange$i"],
-//                "value" => $ereignisse["value$i"],
-//            ];
-//        }
 
         //stores modifiers as key value pair (modifierId and modifierValue) as it simplifies the iteration over the elements
         $modifierArrayWithKeys = array_slice($lineArrayWithKeys, 13, 8);
@@ -393,19 +392,26 @@ function importKonjunkturphasen(): void
             $modifierArrayWithIdValuePairs[$modifierArrayWithKeys["modifierId2"]] = $modifierArrayWithKeys["modifierValue2"];
         }
 
+        //stores conditionalResourceChanges as array in array as it simplifies the iteration over the elements
+        $conditionalResourceChanges = array_slice($lineArrayWithKeys, 26);
+        $conditionalResourceChangesArray = [];
+        for ($i = 1; $i <= 2; $i++) {
+            if ($conditionalResourceChanges["resourceChange$i"] !== "") { //removes empty resourceChanges
+                $conditionalResourceChangesArray[] = [
+                    "description" => $conditionalResourceChanges["description$i"],
+                    "prerequisite" => $conditionalResourceChanges["prerequisite$i"],
+                    "resourceChange" => $conditionalResourceChanges["resourceChange$i"],
+                    "value" => $conditionalResourceChanges["value$i"],
+                ];
+            }
+        }
 
         echo "\$konjunkturphase" . $lineArrayWithKeys["id"] . " = new KonjunkturphaseDefinition(\n";
         echo "\t" . "id: KonjunkturphasenId::create(" . $lineArrayWithKeys["id"] . "),\n";
         echo "\t" . "type: KonjunkturphaseTypeEnum::" . $lineArrayWithKeys["type"] . ",\n";
         echo "\t" . "name: '" . $lineArrayWithKeys["title"] . "',\n";
         echo "\t" . "description: '" . $lineArrayWithKeys["description"] . "',\n";
-        echo "\t" . "additionalEvents: '',\n";
-//        foreach ($ereignisArray as $ereignis) {
-//            if (!empty($ereignis["description"])) {
-//                echo $ereignis["description"] . ". ";
-//            }
-//        }
-//        echo "',\n";
+        echo "\t" . "additionalEvents: '',\n"; //TODO remove?
         echo "\t" . "zeitsteine: new Zeitsteine([\n";
         echo "\t\t" . "new ZeitsteinePerPlayer(2, " . $lineArrayWithKeys["sumZeitsteine2Spieler"]/2 . "),\n";
         echo "\t\t" . "new ZeitsteinePerPlayer(3, " . $lineArrayWithKeys["sumZeitsteine3Spieler"]/3 . "),\n";
@@ -425,17 +431,15 @@ function importKonjunkturphasen(): void
         printAuswirkungen("DIVIDEND", $lineArrayWithKeys["Dividende"]);
         printAuswirkungen("REAL_ESTATE", $lineArrayWithKeys["Immobilien"]);
         echo "\t" . "],\n";
-//        echo "\t" . "conditionalResourceChanges: [\n";
-//        foreach ($ereignisArray as $ereignis) {
-//            if (!empty($ereignis["resourceChange"])) {
-//                printConditionalResourceChanges(
-//                    $ereignis["prerequisite"]==="" ? "NO_PREREQUISITES" : $ereignis["prerequisite"],
-//                    $ereignis["resourceChange"],
-//                    $ereignis["value"]
-//                );
-//            }
-//        }
-//        echo "\t" . "],\n";
+        echo "\t" . "conditionalResourceChanges: [\n";
+        foreach ($conditionalResourceChangesArray as $conditionalResourceChange) {
+            printConditionalResourceChanges(
+                $conditionalResourceChange["prerequisite"]==="" ? "NO_PREREQUISITES" : $conditionalResourceChange["prerequisite"],
+                $conditionalResourceChange["resourceChange"],
+                $conditionalResourceChange["value"]
+            );
+        }
+        echo "\t" . "],\n";
         echo ");\n\n";
 
     }
