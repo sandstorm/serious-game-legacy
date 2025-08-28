@@ -9,7 +9,7 @@
             ])
             wire:click="showWeiterbildung()"
         >
-            <span>Weiterbildung (sofort)</span>
+            <span>Weiterbildung <small>sofort</small></span>
             <div class="button__suffix">
                 <div>
                     <i class="icon-plus text--success" aria-hidden="true"></i>
@@ -33,7 +33,7 @@
             ])
             wire:click="doMinijob()"
         >
-            <span>Minijob (sofort)</span>
+            <span>Minijob <small>sofort</small></span>
             <div class="button__suffix">
                 <div>
                     <i class="icon-plus text--success" aria-hidden="true"></i><i class="icon-euro" aria-hidden="true"></i>

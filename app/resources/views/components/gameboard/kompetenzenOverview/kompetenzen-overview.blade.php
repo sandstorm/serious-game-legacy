@@ -12,14 +12,15 @@
         <div class="kompetenzen-overview__category">
             <h4>{{ $category->title }}</h4>
 
-            @if (count($category->kompetenzen) > 0)
+            @if ($category->kompetenzen !== null && count($category->kompetenzen->kompetenzSteine) > 0)
                 <div class="kompetenzen">
-                    @foreach($category->kompetenzen as $kompetenz)
-                        <x-dynamic-component :component="$kompetenz->iconComponentName"
-                            :player-name="$kompetenz->playerName"
-                            :player-color-class="$kompetenz->colorClass"
-                            :draw-empty="$kompetenz->drawEmpty"
-                            :draw-half-empty="$kompetenz->drawHalfEmpty"
+                    <span class="sr-only">{{ $category->kompetenzen->ariaLabel }}</span>
+                    @foreach($category->kompetenzen->kompetenzSteine as $kompetenzSteine)
+                        <x-dynamic-component :component="$kompetenzSteine->iconComponentName"
+                            :player-name="$kompetenzSteine->playerName"
+                            :player-color-class="$kompetenzSteine->colorClass"
+                            :draw-empty="$kompetenzSteine->drawEmpty"
+                            :draw-half-empty="$kompetenzSteine->drawHalfEmpty"
                         />
                     @endforeach
                 </div>
@@ -39,12 +40,14 @@
                                 MoneySheetState::doesMoneySheetRequirePlayerAction($gameEvents, $playerId) ? 'kompetenzen-overview__action-required--active' : ''
                             ])
                         >
-                            <i class="icon-pencil" aria-hidden="true"></i> <span class="sr-only">Berechnung erforderlich</span>
+                            <i class="icon-pencil" aria-hidden="true"></i> <span
+                                class="sr-only">Berechnung erforderlich</span>
                         </div>
                     </button>
                 </div>
 
-                <div class="kompetenzen-overview__investitionen-target" title="Benötigte Investitionen für die nächste Phase">
+                <div class="kompetenzen-overview__investitionen-target"
+                     title="Benötigte Investitionen für die nächste Phase">
                     <i class="icon-phasenwechsel" aria-hidden="true"></i> {!! $investitionen->format() !!}
                 </div>
             @endif

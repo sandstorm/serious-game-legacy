@@ -4,23 +4,25 @@
 ])
 
 <ul class="kompetenzen">
-    @foreach($bildungsKompetenzen as $kompetenz)
-        <x-dynamic-component :component="$kompetenz->iconComponentName"
-             :player-name="$kompetenz->playerName"
-             :player-color-class="$kompetenz->colorClass"
-             :draw-empty="$kompetenz->drawEmpty"
-             :draw-half-empty="$kompetenz->drawHalfEmpty"
+    <span class="sr-only">{{ $bildungsKompetenzen->ariaLabel }}</span>
+    @foreach($bildungsKompetenzen->kompetenzSteine as $kompetenzStein)
+        <x-dynamic-component :component="$kompetenzStein->iconComponentName"
+             :player-name="$kompetenzStein->playerName"
+             :player-color-class="$kompetenzStein->colorClass"
+             :draw-empty="$kompetenzStein->drawEmpty"
+             :draw-half-empty="$kompetenzStein->drawHalfEmpty"
         />
     @endforeach
 </ul>
 
 <ul class="kompetenzen">
-    @foreach($freizeitKompetenzen as $kompetenz)
-        <x-dynamic-component :component="$kompetenz->iconComponentName"
-            :player-name="$kompetenz->playerName"
-            :player-color-class="$kompetenz->colorClass"
-            :draw-empty="$kompetenz->drawEmpty"
-            :draw-half-empty="$kompetenz->drawHalfEmpty"
+    <span class="sr-only">{{ $freizeitKompetenzen->ariaLabel }}</span>
+    @foreach($freizeitKompetenzen->kompetenzSteine as $kompetenzStein)
+        <x-dynamic-component :component="$kompetenzStein->iconComponentName"
+            :player-name="$kompetenzStein->playerName"
+            :player-color-class="$kompetenzStein->colorClass"
+            :draw-empty="$kompetenzStein->drawEmpty"
+            :draw-half-empty="$kompetenzStein->drawHalfEmpty"
         />
     @endforeach
 </ul>

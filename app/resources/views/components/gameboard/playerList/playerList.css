@@ -80,7 +80,9 @@
     flex-grow: 0;
     white-space: nowrap;
     overflow: hidden;
+
     text-overflow: ellipsis;
+    font-size: var(--font-size-lg);
 }
 
 .player-list__player-details {

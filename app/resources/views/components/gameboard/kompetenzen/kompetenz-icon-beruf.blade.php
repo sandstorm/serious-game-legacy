@@ -18,7 +18,6 @@
                 </g>
             </g>
         </svg>
-        <span class="sr-only">Leere Berufskompetenz</span>
     @else
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 18 16" aria-hidden="true">
             <g>
@@ -29,6 +28,5 @@
                 </g>
             </g>
         </svg>
-        <span class="sr-only">Eine Berufskompetenz</span>
     @endif
 </div>

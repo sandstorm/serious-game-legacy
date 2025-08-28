@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Dto;
 
-class KompetenzWithColor extends AbstractIconWithColor
+class KompetenzSteinWithColor extends AbstractIconWithColor
 {
     public function __construct(
         public bool $drawEmpty = true,

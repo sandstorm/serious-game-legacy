@@ -8,6 +8,7 @@ use App\Helper\KompetenzenHelper;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Lebensziel\Dto\LebenszielPhaseDefinition;
 use Illuminate\View\Component;
 use Illuminate\View\View;
@@ -33,19 +34,21 @@ class LebenszielKompetenzen extends Component
         $freizeitKompetenzen = $currentLebenszielPhaseDefinition->lebenszielPhaseId->value === $this->lebenszielPhase->lebenszielPhaseId->value ? PlayerState::getFreizeitKompetenzsteine($this->gameEvents, $this->playerId) : 0;
 
         return view('components.gameboard.lebensziel.lebensziel-kompetenzen', [
-            'bildungsKompetenzen' => KompetenzenHelper::getKompetenzen(
+            'bildungsKompetenzen' => KompetenzenHelper::getKompetenzSteineForCategory(
                 PlayerState::getPlayerColorClass($this->gameEvents, $this->playerId),
                 PlayerState::getNameForPlayer($this->gameEvents, $this->playerId),
                 $bildungsKompetenzen,
                 $this->lebenszielPhase->bildungsKompetenzSlots,
-                'gameboard.kompetenzen.kompetenz-icon-bildung'
+                'gameboard.kompetenzen.kompetenz-icon-bildung',
+                CategoryId::BILDUNG_UND_KARRIERE
             ),
-            'freizeitKompetenzen' => KompetenzenHelper::getKompetenzen(
+            'freizeitKompetenzen' => KompetenzenHelper::getKompetenzSteineForCategory(
                 PlayerState::getPlayerColorClass($this->gameEvents, $this->playerId),
                 PlayerState::getNameForPlayer($this->gameEvents, $this->playerId),
                 $freizeitKompetenzen,
                 $this->lebenszielPhase->freizeitKompetenzSlots,
                 'gameboard.kompetenzen.kompetenz-icon-freizeit',
+                CategoryId::SOZIALES_UND_FREIZEIT
             )
         ]);
     }
