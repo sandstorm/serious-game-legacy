@@ -22,11 +22,11 @@ trait HasLebenszielphase
      */
     public function renderingHasLebenszielphase(): void
     {
-        if (PreGameState::isInPreGamePhase($this->gameEvents)) {
+        if (PreGameState::isInPreGamePhase($this->getGameEvents())) {
             // do not mount the if we are in pre-game phase
             return;
         }
-        $this->isFinishedGameModalVisible = GamePhaseState::hasAnyPlayerFinishedLebensziel($this->gameEvents);
+        $this->isFinishedGameModalVisible = GamePhaseState::hasAnyPlayerFinishedLebensziel($this->getGameEvents());
     }
 
     public function canChangeLebenszielphase(): bool
@@ -55,7 +55,7 @@ trait HasLebenszielphase
         $event = $this->getGameEvents()->findLast(LebenszielphaseWasChanged::class);
 
         $this->broadcastNotify();
-        if (GamePhaseState::hasAnyPlayerFinishedLebensziel($this->gameEvents) === false) {
+        if (GamePhaseState::hasAnyPlayerFinishedLebensziel($this->getGameEvents()) === false) {
             $this->showBanner("Du bist jetzt in Phase: " . $event->currentPhase->name, $event->getResourceChanges($this->myself));
         }
     }

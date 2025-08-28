@@ -1,12 +1,12 @@
 {{-- !!! Livewire components MUST have a single root element !!! --}}
 <div class="game">
     <header class="game__header">
-        <x-player-list :game-events="$this->gameEvents" :myself="$myself" :active-player="$this->getCurrentPlayer()"/>
+        <x-player-list :game-events="$this->getGameEvents()" :myself="$myself" :active-player="$this->getCurrentPlayer()"/>
     </header>
 
     <div class="game__content">
         <div class="game-board">
-            <x-gameboard.kompetenzen-overview :game-events="$this->gameEvents" :player-id="$myself" />
+            <x-gameboard.kompetenzen-overview :game-events="$this->getGameEvents()" :player-id="$myself" />
 
             <div class="game-board__konjukturphase">
                 <hr />
@@ -17,16 +17,16 @@
                 <hr />
             </div>
             @if ($konjunkturphaseDetailsVisible)
-                <x-konjunkturphase-details :game-events="$this->gameEvents"/>
+                <x-konjunkturphase-details :game-events="$this->getGameEvents()"/>
             @endif
 
-            <x-gameboard.categories :game-events="$this->gameEvents" :player-id="$myself" />
+            <x-gameboard.categories :game-events="$this->getGameEvents()" :player-id="$myself" />
             <x-gameboard.instantActions.instanct-actions />
         </div>
     </div>
 
     <aside class="game__aside">
-        <x-sidebar.sidebar :game-events="$this->gameEvents" :player-id="$myself" />
+        <x-sidebar.sidebar :game-events="$this->getGameEvents()" :player-id="$myself" />
     </aside>
 
     <div class="dev-bar">
@@ -40,19 +40,19 @@
     <x-banner.banner/>
 
     @if($isEreignisCardVisible)
-        <x-ereignis-modal :game-events="$this->gameEvents" :player-id="$myself" />
+        <x-ereignis-modal :game-events="$this->getGameEvents()" :player-id="$myself" />
     @endif
     @if ($moneySheetIsVisible)
         @if ($editIncomeIsVisible)
             <x-gameboard.moneySheet.money-sheet-income-modal
                 :money-sheet="$this->getMoneysheetForPlayerId($myself)"
-                :game-events="$this->gameEvents"
+                :game-events="$this->getGameEvents()"
                 :player-id="$myself"
             />
         @elseif ($editExpensesIsVisible)
             <x-gameboard.moneySheet.money-sheet-expenses-modal
                 :money-sheet="$this->getMoneysheetForPlayerId($myself)"
-                :game-events="$this->gameEvents"
+                :game-events="$this->getGameEvents()"
                 :player-id="$myself"
             />
         @else
@@ -60,23 +60,23 @@
         @endif
     @endif
     @if ($isMinijobVisible)
-        <x-minijob-modal :player-id="$myself" :game-events="$this->gameEvents"/>
+        <x-minijob-modal :player-id="$myself" :game-events="$this->getGameEvents()"/>
     @endif
     @if ($isWeiterbildungVisible)
-        <x-weiterbildung-modal :player-id="$myself" :game-events="$this->gameEvents"/>
+        <x-weiterbildung-modal :player-id="$myself" :game-events="$this->getGameEvents()"/>
     @endif
     @if ($showLebenszielForPlayer)
-        <x-lebensziel-modal :player-id="$showLebenszielForPlayer" :game-events="$this->gameEvents" />
+        <x-lebensziel-modal :player-id="$showLebenszielForPlayer" :game-events="$this->getGameEvents()" />
     @endif
     @if ($takeOutALoanIsVisible)
         <x-gameboard.moneySheet.take-out-loan-modal
-            :game-events="$this->gameEvents"
+            :game-events="$this->getGameEvents()"
             :player-id="$myself"
         />
     @endif
     @if ($this->sellInvestmentsModalIsVisible)
         <x-gameboard.investitionen.investitionen-sell-after-purchase-modal
-            :game-events="$this->gameEvents"
+            :game-events="$this->getGameEvents()"
             :player-id="$myself"
         />
     @endif
