@@ -33,6 +33,6 @@ class RenderApplicationUnavailable extends Command
      */
     public function handle(): void
     {
-        echo (new ApplicationUnavailable())->render();
+        echo new ApplicationUnavailable()->render();
     }
 }
