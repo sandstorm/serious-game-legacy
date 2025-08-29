@@ -30,10 +30,10 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPl
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\RepayLoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartWeiterbildung;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SubmitAnswerForWeiterbildung;
@@ -41,13 +41,14 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\LoanData;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasPutBackOnTopOfPile;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasCorrected;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasRepaidForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasTakenOutForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerWasMarkedAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
@@ -56,7 +57,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
-use Domain\Definitions\Card\Dto\ModifierParameters;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Card\Dto\AnswerOption;
@@ -68,22 +68,10 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\ValueObject\AnswerId;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
-use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
-use Domain\Definitions\Konjunkturphase\Dto\ConditionalResourceChange;
-use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
-use Domain\Definitions\Konjunkturphase\Dto\Zeitslots;
-use Domain\Definitions\Konjunkturphase\Dto\ZeitslotsPerPlayer;
-use Domain\Definitions\Konjunkturphase\Dto\Zeitsteine;
-use Domain\Definitions\Konjunkturphase\Dto\ZeitsteinePerPlayer;
-use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
-use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
-use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
-use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use RuntimeException;
 use Tests\ComponentWithForm;
 use Tests\TestCase;
@@ -2328,6 +2316,8 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
 
 describe('handleTakeOutALoanForPlayer', function () {
     it('player gets fine for entering loan data wrong', function () {
+        /** @var TestCase $this */
+
         $takeoutLoanFormComponent = new ComponentWithForm();
         $takeoutLoanFormComponent->mount(TakeOutALoanForm::class);
 
@@ -2336,7 +2326,7 @@ describe('handleTakeOutALoanForPlayer', function () {
         $takeoutLoanForm->loanAmount = 10000;
         $takeoutLoanForm->totalRepayment = 12500;
         $takeoutLoanForm->repaymentPerKonjunkturphase = 600; // wrong value
-        $takeoutLoanForm->guthaben = Configuration::STARTKAPITAL_VALUE;
+        $takeoutLoanForm->sumOfAllAssets = Configuration::STARTKAPITAL_VALUE;
         $takeoutLoanForm->zinssatz = 5;
         $takeoutLoanForm->loanId = LoanId::unique()->value;
 
@@ -2385,6 +2375,157 @@ describe('handleTakeOutALoanForPlayer', function () {
             ->and(PlayerState::getGuthabenForPlayer($gameEvents,
                 $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE - Configuration::FINE_VALUE));
     });
+
+    it('adds the loan amount to the player\s Guthaben', function () {
+        /** @var TestCase $this */
+
+        $takeoutLoanFormComponent = new ComponentWithForm();
+        $takeoutLoanFormComponent->mount(TakeOutALoanForm::class);
+
+        $loanAmount = 10000;
+
+        /** @var TakeOutALoanForm $takeoutLoanForm */
+        $takeoutLoanForm = $takeoutLoanFormComponent->form;
+        $takeoutLoanForm->loanAmount = $loanAmount;
+        $takeoutLoanForm->totalRepayment = 12500;
+        $takeoutLoanForm->repaymentPerKonjunkturphase = 625; // correct value
+        $takeoutLoanForm->sumOfAllAssets = Configuration::STARTKAPITAL_VALUE;
+        $takeoutLoanForm->zinssatz = 5;
+        $takeoutLoanForm->loanId = LoanId::unique()->value;
+
+        // player 0 takes out a loan
+        $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
+            $this->players[0],
+            $takeoutLoanForm
+        ));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        /** @var LoanForPlayerWasEntered $loanWasEntered */
+        $loanWasEntered = $gameEvents->findLast(LoanForPlayerWasEntered::class);
+
+        expect($loanWasEntered)->toBeInstanceOf(LoanForPlayerWasEntered::class)
+            ->and($loanWasEntered->getLoanData())->toEqual(new LoanData(
+                loanAmount: new MoneyAmount(10000),
+                totalRepayment: new MoneyAmount(12500),
+                repaymentPerKonjunkturphase: new MoneyAmount(625),
+            ))
+            ->and($loanWasEntered->wasInputCorrect())->toBeTrue()
+            ->and(PlayerState::getGuthabenForPlayer($gameEvents,
+                $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE + $loanAmount));
+
+        /** @var LoanWasTakenOutForPlayer $loanWasTakenOut */
+        $loanWasTakenOut = $gameEvents->findLast(LoanWasTakenOutForPlayer::class);
+        expect($loanWasTakenOut->getResourceChanges($this->players[0])->guthabenChange)->toEqual(new MoneyAmount(10000));
+    });
+});
+
+describe('handleRepayLoanForPlayer', function () {
+    it('correctly repays loans', function () {
+        /** @var TestCase $this */
+
+        // first player needs to take out a loan
+        $takeoutLoanFormComponent = new ComponentWithForm();
+        $takeoutLoanFormComponent->mount(TakeOutALoanForm::class);
+
+        $loanAmount = 10000;
+
+        /** @var TakeOutALoanForm $takeoutLoanForm */
+        $takeoutLoanForm = $takeoutLoanFormComponent->form;
+        $takeoutLoanForm->loanAmount = $loanAmount;
+        $takeoutLoanForm->totalRepayment = 12500;
+        $takeoutLoanForm->repaymentPerKonjunkturphase = 625; // correct value
+        $takeoutLoanForm->sumOfAllAssets = Configuration::STARTKAPITAL_VALUE;
+        $takeoutLoanForm->zinssatz = 5;
+        $takeoutLoanForm->loanId = LoanId::unique()->value;
+
+        // player 0 takes out a loan
+        $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
+            $this->players[0],
+            $takeoutLoanForm
+        ));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        /** @var LoanWasTakenOutForPlayer $loanWasTakenOut */
+        $loanWasTakenOut = $gameEvents->findLast(LoanWasTakenOutForPlayer::class);
+        expect($loanWasTakenOut->getResourceChanges($this->players[0])->guthabenChange)->toEqual(new MoneyAmount(10000))
+            ->and(PlayerState::getGuthabenForPlayer($gameEvents,
+                $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE + $loanAmount));
+        $loanId = $loanWasTakenOut->loanId;
+
+        // player 0 repays the loan
+        $this->coreGameLogic->handle($this->gameId, RepayLoanForPlayer::create(
+            $this->players[0],
+            $loanId
+        ));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        $expectedRepaymentCost = new MoneyAmount(-12625);
+
+        /** @var LoanWasRepaidForPlayer $loanWasRepaid */
+        $loanWasRepaid = $gameEvents->findLast(LoanWasRepaidForPlayer::class);
+        expect($loanWasRepaid->getResourceChanges($this->players[0])->guthabenChange)->toEqual($expectedRepaymentCost)
+            ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))
+            ->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE + $loanAmount + $expectedRepaymentCost->value))
+            ->and(MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], $loanId))->toEqual(0)
+            ->and(MoneySheetState::getOpenRepaymentValueForLoan($gameEvents, $this->players[0], $loanId))->toEqual(new MoneyAmount(0))
+            ->and(MoneySheetState::getAnnualExpensesForAllLoans($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(0))
+            ->and(MoneySheetState::getTotalOpenRepaymentValueForAllLoans($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(0));
+    });
+
+    it('throws exception when player does not have enough money to pay back the loan', function () {
+        /** @var TestCase $this */
+
+        // first player needs to take out a loan
+        $takeoutLoanFormComponent = new ComponentWithForm();
+        $takeoutLoanFormComponent->mount(TakeOutALoanForm::class);
+
+        $loanAmount = 10000;
+
+        /** @var TakeOutALoanForm $takeoutLoanForm */
+        $takeoutLoanForm = $takeoutLoanFormComponent->form;
+        $takeoutLoanForm->loanAmount = $loanAmount;
+        $takeoutLoanForm->totalRepayment = 12500;
+        $takeoutLoanForm->repaymentPerKonjunkturphase = 625; // correct value
+        $takeoutLoanForm->sumOfAllAssets = Configuration::STARTKAPITAL_VALUE;
+        $takeoutLoanForm->zinssatz = 5;
+        $takeoutLoanForm->loanId = LoanId::unique()->value;
+
+        // player 0 takes out a loan
+        $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
+            $this->players[0],
+            $takeoutLoanForm
+        ));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+
+        /** @var LoanWasTakenOutForPlayer $loanWasTakenOut */
+        $loanWasTakenOut = $gameEvents->findLast(LoanWasTakenOutForPlayer::class);
+        expect($loanWasTakenOut->getResourceChanges($this->players[0])->guthabenChange)->toEqual(new MoneyAmount(10000))
+            ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))
+                ->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE + $loanAmount));
+        $loanId = $loanWasTakenOut->loanId;
+
+        // buy investments to reduce guthaben
+        $amount = intval(Configuration::STARTKAPITAL_VALUE / Configuration::INITIAL_INVESTMENT_PRICE);
+        $this->coreGameLogic->handle($this->gameId, BuyInvestmentsForPlayer::create(
+            $this->players[0],
+            InvestmentId::MERFEDES_PENZ,
+            $amount
+        ));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))
+            ->toEqual(new MoneyAmount(10000));
+
+        // player 0 repays the loan but does not have enough money
+        $this->coreGameLogic->handle($this->gameId, RepayLoanForPlayer::create(
+            $this->players[0],
+            $loanId
+        ));
+    })->throws(RuntimeException::class, 'Du hast nicht genug Ressourcen', 1756813341);
 });
 
 describe('handleBuyInvestmentsForPlayer', function () {

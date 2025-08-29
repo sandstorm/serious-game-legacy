@@ -16,14 +16,17 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\LoanCalculator;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\RepayLoanForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerAllowedToTakeOutALoanValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CancelInsuranceForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ConcludeInsuranceForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\RepayLoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasRepaidForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
@@ -43,6 +46,7 @@ trait HasMoneySheet
     public bool $editIncomeIsVisible = false;
     public bool $editExpensesIsVisible = false;
     public bool $takeOutALoanIsVisible = false;
+    public ?string $repaymentFormForLoanId = null;
 
     // set in the view money-sheet-income.blade.php
     public IncomeTabEnum $activeTabForIncome = IncomeTabEnum::INVESTMENTS;
@@ -60,6 +64,7 @@ trait HasMoneySheet
         $this->editIncomeIsVisible = false;
         $this->editExpensesIsVisible = false;
         $this->takeOutALoanIsVisible = false;
+        $this->repaymentFormForLoanId = null;
     }
 
     public function toggleEditIncome(): void
@@ -80,21 +85,24 @@ trait HasMoneySheet
 
     public function showIncomeTab(string $tab): void
     {
+        $this->editExpensesIsVisible = false;
+        $this->takeOutALoanIsVisible = false;
+        $this->repaymentFormForLoanId = null;
+
         $this->moneySheetIsVisible = true;
         $this->editIncomeIsVisible = true;
-        $this->editExpensesIsVisible = false;
         $this->activeTabForIncome = IncomeTabEnum::from($tab);
-        $this->takeOutALoanIsVisible = false;
     }
 
     public function showExpensesTab(string $tab): void
     {
         $tab = ExpensesTabEnum::from($tab);
+        $this->activeTabForExpenses = $tab;
         $this->moneySheetIsVisible = true;
         $this->editIncomeIsVisible = false;
         $this->editExpensesIsVisible = true;
-        $this->activeTabForExpenses = $tab;
         $this->takeOutALoanIsVisible = false;
+        $this->repaymentFormForLoanId = null;
 
         match($tab) {
             ExpensesTabEnum::LIVING_COSTS => $this->initializeLivingCostsForm(),
@@ -136,11 +144,26 @@ trait HasMoneySheet
         $this->moneySheetIsVisible = false;
         $this->editIncomeIsVisible = false;
         $this->editExpensesIsVisible = false;
+        $this->repaymentFormForLoanId = null;
         $this->takeOutALoanIsVisible = true;
         $this->initTakeOutALoanForm();
     }
 
     public function closeTakeOutALoan(): void
+    {
+        $this->showExpensesTab(ExpensesTabEnum::LOANS->value);
+    }
+
+    public function showRepayLoan(string $loanId): void
+    {
+        $this->moneySheetIsVisible = false;
+        $this->editIncomeIsVisible = false;
+        $this->editExpensesIsVisible = false;
+        $this->takeOutALoanIsVisible = false;
+        $this->repaymentFormForLoanId = $loanId;
+    }
+
+    public function closeRepayLoan(): void
     {
         $this->showExpensesTab(ExpensesTabEnum::LOANS->value);
     }
@@ -156,7 +179,7 @@ trait HasMoneySheet
             totalFromPlayerInput: MoneySheetState::calculateTotalFromPlayerInput($this->getGameEvents(), $playerId),
             totalInsuranceCost: new MoneyAmount(-1 * MoneySheetState::getCostOfAllInsurances($this->getGameEvents(), $playerId)->value),
             annualExpensesForAllLoans: new MoneyAmount(-1 * MoneySheetState::getAnnualExpensesForAllLoans($this->getGameEvents(), $playerId)->value),
-            sumOfAllAssets: PlayerState::getDividendForAllStocksForPlayer($this->getGameEvents(), $playerId), // TODO is it correct to use dividend here?
+            sumOfAllAssets: PlayerState::getDividendForAllStocksForPlayer($this->getGameEvents(), $playerId),
             annualIncome: MoneySheetState::getAnnualIncomeForPlayer($this->getGameEvents(), $playerId),
             annualExpenses: new MoneyAmount(-1 * MoneySheetState::getAnnualExpensesForPlayer($this->getGameEvents(), $playerId)->value),
             annualExpensesFromPlayerInput: new MoneyAmount (-1 * MoneySheetState::calculateAnnualExpensesFromPlayerInput($this->getGameEvents(), $playerId)->value),
@@ -255,7 +278,7 @@ trait HasMoneySheet
         if (!$resultOfLastInput->wasSuccessful && $resultOfLastInput->fine->value > 0) {
             $this->takeOutALoanForm->loanAmount = intval(min(
                 $this->takeOutALoanForm->loanAmount,
-                LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->guthaben, $this->takeOutALoanForm->hasJob)
+                LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->sumOfAllAssets, $this->takeOutALoanForm->salary, $this->takeOutALoanForm->obligations)->value
             ));
             $this->takeOutALoanForm->totalRepayment = LoanCalculator::getCalculatedTotalRepayment($this->takeOutALoanForm->loanAmount, $this->takeOutALoanForm->zinssatz);
             $this->takeOutALoanForm->repaymentPerKonjunkturphase = $this->takeOutALoanForm->getCalculatedRepaymentPerKonjunkturphase();
@@ -275,14 +298,38 @@ trait HasMoneySheet
         $this->broadcastNotify();
     }
 
+    public function repayLoan(string $loanId): void
+    {
+        $repayAktion = new RepayLoanForPlayerAktion(new LoanId($loanId));
+        $validationResult = $repayAktion->validate($this->myself, $this->getGameEvents());
+        if (!$validationResult->canExecute) {
+            $this->showNotification(
+                $validationResult->reason,
+                NotificationTypeEnum::ERROR
+            );
+            return;
+        }
+
+        $this->coreGameLogic->handle($this->gameId, RepayLoanForPlayer::create(
+            $this->myself,
+            new LoanId($loanId)
+        ));
+
+        $repaymentEvent = $this->getGameEvents()->findLast(LoanWasRepaidForPlayer::class);
+        $this->showBanner("Du hast deinen Kredit komplett zurückgezahlt.", $repaymentEvent->getResourceChanges($this->myself));
+        $this->closeRepayLoan();
+        $this->broadcastNotify();
+    }
+
     private function initTakeOutALoanForm(): void
     {
         $this->takeOutALoanForm->reset();
         $this->takeOutALoanForm->resetValidation();
         $this->takeOutALoanForm->loanId = LoanId::unique()->value;
-        $this->takeOutALoanForm->guthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->myself)->value + PlayerState::getTotalValueOfAllAssetsForPlayer($this->getGameEvents(), $this->myself)->value;
-        $this->takeOutALoanForm->hasJob = PlayerState::getJobForPlayer($this->getGameEvents(), $this->myself) !== null;
+        $this->takeOutALoanForm->sumOfAllAssets = PlayerState::getTotalValueOfAllAssetsForPlayer($this->getGameEvents(), $this->myself)->value + PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->myself)->value;
+        $this->takeOutALoanForm->salary = PlayerState::getCurrentGehaltForPlayer($this->getGameEvents(), $this->myself)->value;
         $this->takeOutALoanForm->zinssatz = KonjunkturphaseState::getCurrentKonjunkturphase($this->getGameEvents())->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->value;
+        $this->takeOutALoanForm->obligations = MoneySheetState::getTotalOpenRepaymentValueForAllLoans($this->getGameEvents(), $this->myself)->value;
     }
 
     private function initializeTaxesForm(): void

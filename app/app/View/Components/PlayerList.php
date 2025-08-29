@@ -71,7 +71,7 @@ class PlayerList extends Component
                 phaseDefinition: PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($this->gameEvents, $playerId),
                 lebenszielDefinition: PlayerState::getLebenszielDefinitionForPlayer($this->gameEvents, $playerId),
                 sumOfInvestments: PlayerState::getTotalValueOfAllAssetsForPlayer($this->gameEvents, $playerId),
-                sumOfLoans: MoneySheetState::getSumOfAllLoansForPlayer($this->gameEvents, $playerId),
+                sumOfLoans: MoneySheetState::getTotalOpenRepaymentValueForAllLoans($this->gameEvents, $playerId),
                 job: PlayerState::getJobForPlayer($this->gameEvents, $playerId),
                 gehalt: PlayerState::getCurrentGehaltForPlayer($this->gameEvents, $playerId),
                 guthaben: PlayerState::getGuthabenForPlayer($this->gameEvents, $playerId),
