@@ -27,6 +27,11 @@
             ])
         >
             <button type="button" title="Spielerübersicht öffnen/schließen" class="button button--type-borderless" x-on:click="playerListOpen = !playerListOpen">
+                @if ($player->isPlayersTurn)
+                    <div class="player-list__player-turn-indicator" aria-hidden="true"></div>
+                    <span class="sr-only">Aktueller Spieler</span>
+                @endif
+
                 <div class="player-list__player-name">
                     {{ $player->name }}
                 </div>
