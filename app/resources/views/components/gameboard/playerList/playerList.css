@@ -21,8 +21,9 @@
 }
 
 .player-list__player {
+    position: relative;
     background: var(--color-player-list-bg);
-    padding-top: var(--spacing-25);
+    padding-top: var(--spacing-50);
     display: flex;
     flex-direction: column;
 
@@ -34,6 +35,7 @@
 
     > .button {
         padding: var(--spacing-50);
+        padding-top: var(--spacing-25);
         width: 100%;
         flex-direction: row;
         min-height: unset;
@@ -44,28 +46,68 @@
 }
 
 .player-list__player.player-list__player--is-active {
-    border-top: var(--spacing-25) solid;
-    padding-top: 0;
+}
+
+.player-list__player-turn-indicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: var(--spacing-50);
+
+    animation: gradient 5s ease infinite;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
 }
 
 .player-list__player.player-color-1 {
     border-top-color: var(--color-player-1);
     background: linear-gradient(90deg, var(--color-player-list-bg) 0%, var(--color-player-1--super-dark) 100%);
+
+    .player-list__player-turn-indicator {
+        background: linear-gradient(90deg, var(--color-player-1), var(--color-player-1--dark), var(--color-player-1));
+        background-size: 400% 400%;
+    }
 }
 
 .player-list__player.player-color-2 {
     border-top-color: var(--color-player-2);
     background: linear-gradient(90deg, var(--color-player-list-bg) 0%, var(--color-player-2--super-dark) 100%);
+
+    .player-list__player-turn-indicator {
+        background: linear-gradient(-90deg, var(--color-player-2), var(--color-player-2--dark), var(--color-player-2));
+        background-size: 400% 400%;
+    }
 }
 
 .player-list__player.player-color-3 {
     border-top-color: var(--color-player-3);
     background: linear-gradient(90deg, var(--color-player-list-bg) 0%, var(--color-player-3--super-dark) 100%);
+
+    .player-list__player-turn-indicator {
+        background: linear-gradient(-90deg, var(--color-player-3), var(--color-player-3--dark), var(--color-player-3));
+        background-size: 400% 400%;
+    }
 }
 
 .player-list__player.player-color-4 {
     border-top-color: var(--color-player-4);
     background: linear-gradient(90deg, var(--color-player-list-bg) 0%, var(--color-player-4--super-dark) 100%);
+
+    .player-list__player-turn-indicator {
+        background: linear-gradient(-90deg, var(--color-player-4), var(--color-player-4--dark), var(--color-player-4));
+        background-size: 400% 400%;
+    }
 }
 
 .player-list__player-phase {
