@@ -14,17 +14,6 @@ trait HasJobOffer
 {
     public bool $jobOfferIsVisible = false;
 
-    /**
-     * Update the form state on a rendering. Can happen for example when user changes their job.
-     * Rerendering is triggered by Livewire when we use the broadcastNotify() method.
-     *
-     * @return void
-     */
-    public function renderingHasJobOffer(): void
-    {
-        // open job offer modal again if that was the last action
-    }
-
     public function showJobOffers(): void
     {
         $this->jobOfferIsVisible = true;

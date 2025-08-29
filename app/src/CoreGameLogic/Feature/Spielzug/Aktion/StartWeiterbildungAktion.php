@@ -44,7 +44,7 @@ class StartWeiterbildungAktion extends Aktion
 
         /** @var WeiterbildungCardDefinition $weiterbildungCardDefinition */
         $weiterbildungCardDefinition = CardFinder::getInstance()->getCardById($topCardOnPile);
-        $weiterbildungsOptions = (new Randomizer())->shuffleArray($weiterbildungCardDefinition->getAnswerOptions());
+        $weiterbildungsOptions = new Randomizer()->shuffleArray($weiterbildungCardDefinition->getAnswerOptions());
 
         return GameEventsToPersist::with(
             new WeiterbildungWasStarted(
