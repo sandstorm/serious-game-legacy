@@ -28,7 +28,7 @@ class MoneySheetLoans extends Component
     {
         return view('components.gameboard.moneySheet.expenses.money-sheet-loans', [
             'loans' => MoneySheetState::getLoansForPlayer($this->gameEvents, $this->playerId),
-            'totalRepaymentValue' => new MoneyAmount(-1 * MoneySheetState::getTotalRepaymentValueForAllLoans($this->gameEvents, $this->playerId)->value),
+            'totalRepaymentValue' => new MoneyAmount(-1 * MoneySheetState::getTotalOpenRepaymentValueForAllLoans($this->gameEvents, $this->playerId)->value),
             'sumOfRepaymentsPerRound' => new MoneyAmount(-1 * MoneySheetState::getAnnualExpensesForAllLoans($this->gameEvents, $this->playerId)->value),
         ]);
     }

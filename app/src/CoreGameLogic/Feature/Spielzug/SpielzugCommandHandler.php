@@ -26,6 +26,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterLebenshaltungskostenForPla
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterSteuernUndAbgabenForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\MarkPlayerAsReadyForKonjunkturphaseChangeAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\QuitJobAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\RepayLoanForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellInvestmentsForPlayerAfterInvestmentByAnotherPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellInvestmentsForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SkipCardAktion as SkipCardAktion;
@@ -46,6 +47,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\RepayLoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
@@ -79,6 +81,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             || $command instanceof ConcludeInsuranceForPlayer
             || $command instanceof CancelInsuranceForPlayer
             || $command instanceof TakeOutALoanForPlayer
+            || $command instanceof RepayLoanForPlayer
             || $command instanceof ChangeLebenszielphase
             || $command instanceof QuitJob
             || $command instanceof BuyInvestmentsForPlayer
@@ -111,8 +114,8 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
                 $command, $gameEvents),
             CancelInsuranceForPlayer::class => $this->handleCancelInsuranceForPlayer(
                 $command, $gameEvents),
-            TakeOutALoanForPlayer::class => $this->handleTakeOutALoanForPlayer(
-                $command, $gameEvents),
+            TakeOutALoanForPlayer::class => $this->handleTakeOutALoanForPlayer($command, $gameEvents),
+            RepayLoanForPlayer::class => $this->handleRepayLoanForPlayer($command, $gameEvents),
             DoMinijob::class => $this->handleDoMinijob
                 ($command, $gameEvents),
             QuitJob::class => $this->handleQuitJob
@@ -247,6 +250,14 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
     {
         $aktion = new TakeOutALoanForPlayerAktion(
             $command->takeOutLoanForm
+        );
+        return $aktion->execute($command->playerId, $gameEvents);
+    }
+
+    private function handleRepayLoanForPlayer(RepayLoanForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
+    {
+        $aktion = new RepayLoanForPlayerAktion(
+            $command->loanId,
         );
         return $aktion->execute($command->playerId, $gameEvents);
     }

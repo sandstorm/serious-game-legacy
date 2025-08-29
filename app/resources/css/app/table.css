@@ -1,10 +1,10 @@
 table {
     width: 100%;
     border-collapse: collapse;
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-base);
 
     th {
-        font-weight: var(--font-weight-medium);
+        font-weight: var(--font-weight-regular);
     }
 
     td, th {

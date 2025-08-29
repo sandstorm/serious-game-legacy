@@ -41,6 +41,8 @@
         min-height: unset;
         gap: var(--spacing-25);
 
+        border-radius: 0;
+
         color: var(--color-primary-fg);
     }
 }

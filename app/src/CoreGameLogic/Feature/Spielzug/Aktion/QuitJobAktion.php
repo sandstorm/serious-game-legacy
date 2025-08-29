@@ -10,7 +10,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerAJobValidato
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
-use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use RuntimeException;
 

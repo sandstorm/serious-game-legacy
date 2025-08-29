@@ -18,6 +18,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasPutBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasRepaidForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerGotAChild;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasFinishedLebensziel;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasStarted;
@@ -104,6 +105,7 @@ final readonly class EventNormalizer
             LoanWasTakenOutForPlayer::class,
             LoanForPlayerWasEntered::class,
             LoanForPlayerWasCorrected::class,
+            LoanWasRepaidForPlayer::class,
             JobWasQuit::class,
             WeiterbildungWasStarted::class,
             InvestmentsWereBoughtForPlayer::class,
