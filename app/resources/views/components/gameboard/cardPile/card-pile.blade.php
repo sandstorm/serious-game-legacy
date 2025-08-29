@@ -5,10 +5,14 @@
     'resourceChanges' => null,
 ])
 
-<div class="card-pile">
+<div @class(["card-pile", $this->canShowCardActions($category)->canExecute ?: 'card-pile--disabled'])>
     <div class="shadow-card-1"></div>
     <div class="shadow-card-2"></div>
-    <button class="card" aria-label="Karte anzeigen" wire:click="showCardActions('{{$card->getId()->value}}')">
+    <button
+        class="card"
+        aria-label="Karte anzeigen"
+        wire:click="showCardActions('{{$card->getId()->value}}', '{{$category}}')"
+    >
         <div class="card__icon">
             <i class="icon-lupe" aria-hidden="true"></i>
         </div>
