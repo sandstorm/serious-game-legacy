@@ -134,7 +134,7 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
         $modifierIdsAsString = array_map(fn($id) => $id->value, $ereignisCardDefinition->getModifierIds());
         if (in_array(ModifierId::JOBVERLUST->value, $modifierIdsAsString, true) ||
             in_array(ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG->value, $modifierIdsAsString, true)) {
-            $additionalEvents = (new SpielzugCommandHandler())->handle(QuitJob::create($command->playerId),
+            $additionalEvents = new SpielzugCommandHandler()->handle(QuitJob::create($command->playerId),
                 $gameEvents);
         }
 
