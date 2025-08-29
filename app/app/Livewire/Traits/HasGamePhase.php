@@ -29,7 +29,7 @@ trait HasGamePhase
         $this->showItsYourTurnNotification = false;
 
         // show notification if you are next active player
-        if ($this->currentPlayerIsMyself() && (new StartSpielzugAktion())->validate($this->myself, $this->getGameEvents())->canExecute) {
+        if ($this->currentPlayerIsMyself() && new StartSpielzugAktion()->validate($this->myself, $this->getGameEvents())->canExecute) {
             $this->showItsYourTurnNotification = true;
         }
     }

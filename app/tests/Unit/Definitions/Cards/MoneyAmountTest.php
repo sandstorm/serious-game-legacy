@@ -19,7 +19,7 @@ describe('MoneyAmountTest', function () {
     });
 
     it('can be added to another MoneyAmount', function ($amount1, $amount2, $expected) {
-        $result = (new MoneyAmount($amount1))->add(new MoneyAmount($amount2));
+        $result = new MoneyAmount($amount1)->add(new MoneyAmount($amount2));
         expect($result->value)->toEqual($expected);
     })->with([
         [100.00, 50.00, 150.00],
@@ -30,7 +30,7 @@ describe('MoneyAmountTest', function () {
     ]);
 
     it('can be subtracted from another MoneyAmount', function ($amount1, $amount2, $expected) {
-        $result = (new MoneyAmount($amount1))->subtract(new MoneyAmount($amount2));
+        $result = new MoneyAmount($amount1)->subtract(new MoneyAmount($amount2));
         expect($result->value)->toEqual($expected);
     })->with([
         [100.00, 50.00, 50.00],

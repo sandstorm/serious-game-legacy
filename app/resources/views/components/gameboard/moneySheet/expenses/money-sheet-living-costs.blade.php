@@ -6,7 +6,7 @@
     <div class="tabs__upper-content">
         <p>
             Dazu zählen Nahrung, Wohnen, Krankenversicherung, ... <br />
-            Pro Jahr gibst Du {{$livingCostPercent}}% Deines Gehaltes für Lebenshaltungskosten aus. Jedoch mindestens {!! $livingCostMinValue->format() !!}
+            Pro Jahr gibst Du <strong>{{$livingCostPercent}}%</strong> Deines Gehaltes für Lebenshaltungskosten aus. Jedoch mindestens <strong>{!! $livingCostMinValue->format() !!}</strong>
         </p>
 
         <div class="taxes">
