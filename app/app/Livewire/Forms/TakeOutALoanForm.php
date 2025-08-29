@@ -24,9 +24,10 @@ class TakeOutALoanForm extends Form
     public float $repaymentPerKonjunkturphase = 0;
 
     // public properties needed for validation
-    public float $guthaben = 0;
+    public float $sumOfAllAssets = 0;
+    public float $obligations = 0;
     public float $zinssatz = 0;
-    public bool $hasJob = false;
+    public float $salary = 0;
 
     /**
      * Set of custom validation rules for the form.
@@ -39,12 +40,8 @@ class TakeOutALoanForm extends Form
         return [
             'loanAmount' => [
                 'required', 'numeric', 'min:1', function ($attribute, $value, $fail) {
-                    if ($this->loanAmount > LoanCalculator::getMaxLoanAmount($this->guthaben, $this->hasJob)) {
-                        if ($this->hasJob) {
-                            $fail("Du kannst keinen Kredit aufnehmen, der höher ist als das 10-fache deines aktuellen Guthabens.");
-                        } else {
-                            $fail("Du kannst keinen Kredit aufnehmen, der höher ist als 80% deines aktuellen Guthabens.");
-                        }
+                    if ($this->loanAmount > LoanCalculator::getMaxLoanAmount($this->sumOfAllAssets, $this->salary, $this->obligations)->value) {
+                        $fail("Du kannst keinen Kredit aufnehmen, der höher ist als das Kreditlimit.");
                     }
                 }
             ],
