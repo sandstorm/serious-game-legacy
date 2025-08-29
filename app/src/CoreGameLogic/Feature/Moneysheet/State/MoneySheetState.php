@@ -412,6 +412,29 @@ class MoneySheetState
         return new MoneyAmount($sum);
     }
 
+    public static function getOpenRepaymentValueForLoan(GameEvents $gameEvents, PlayerId $playerId, LoanId $loanId): MoneyAmount
+    {
+        /** @var LoanWasTakenOutForPlayer|null $loan */
+        $loan = $gameEvents->findLastOrNullWhere(
+            fn($event) => $event instanceof LoanWasTakenOutForPlayer &&
+                $event->playerId->equals($playerId) &&
+                $event->loanId->equals($loanId)
+        );
+
+        if ($loan === null) {
+            throw new \RuntimeException("No loan found for player {$playerId->value} with ID {$loanId->value}");
+        }
+
+        $openRates = self::getOpenRatesForLoan($gameEvents, $playerId, $loanId);
+
+        return new MoneyAmount($openRates * $loan->loanData->repaymentPerKonjunkturphase->value);
+    }
+
+    /**
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return MoneyAmount
+     */
     public static function getTotalRepaymentValueForAllLoans(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
         $loans = self::getLoansForPlayer($gameEvents, $playerId);

@@ -1,9 +1,11 @@
 @extends ('components.modal.modal', ["closeModal" => "closeTakeOutALoan()", "type" => "borderless"])
 
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
+@use('Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState')
 @use('Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState')
 @use('Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum')
 @use('Domain\Definitions\Configuration\Configuration')
+@use('Domain\CoreGameLogic\Feature\Moneysheet\State\LoanCalculator')
 
 @props([
     'gameEvents' => null,
@@ -19,12 +21,16 @@
         <div class="take-out-loan__info-box">
             <i class="icon-info-2" aria-hidden="true"></i>
             <div class="take-out-loan__info-section">
-                <small>Dein Kontostand</small>
-                {!! PlayerState::getGuthabenForPlayer($gameEvents, $playerId)->format() !!}
+                <small>Dein Gehalt</small>
+                {!! PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId)->format() !!}
             </div>
             <div class="take-out-loan__info-section">
                 <small>Deine Vermögenswerte</small>
                 {!! PlayerState::getTotalValueOfAllAssetsForPlayer($gameEvents, $playerId)->format() !!}
+            </div>
+            <div class="take-out-loan__info-section">
+                <small>Deine Verbindlichkeiten</small>
+                {!! MoneySheetState::getTotalRepaymentValueForAllLoans($gameEvents, $playerId)->format() !!}
             </div>
         </div>
         <div class="form__group take-out-loan__amount">
@@ -32,10 +38,17 @@
             <x-form.textfield wire:model="takeOutALoanForm.loanAmount" id="loanAmount" name="loanAmount" type="number" min="1" />
             @error('takeOutALoanForm.loanAmount') <span class="form__error">{{ $message }}</span> @enderror
             <p>
+                <strong>Kreditlimit: </strong> {!! LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->sumOfAllAssets, $this->takeOutALoanForm->salary, $this->takeOutALoanForm->obligations)->format() !!}
+                <br />
                 @if (PlayerState::getJobForPlayer($gameEvents, $playerId) !== null)
-                    Das gesamte Kreditvolumen darf das <strong>10-fache</strong> der aktuellen Einnahmen + Vermögenswerte nicht übersteigen! <br />
+                    Das gesamte Kreditvolumen darf das <strong>5-fache</strong> des aktuellen Jahresgehalt (brutto) <br />
+                    + Anlagevermögen <br />
+                    - Verbindlichkeiten <br />
+                    nicht übersteigen!
                 @else
-                    Gesamtes Kreditvolumen darf <strong>80%</strong> der aktuellen Einnahmen + Vermögenswerte nicht übersteigen!
+                    Gesamtes Kreditvolumen darf <strong>80%</strong> des Anlagevermögen <br />
+                    - Verbindlichkeiten <br />
+                    nicht übersteigen!
                 @endif
             </p>
         </div>

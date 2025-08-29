@@ -15,19 +15,30 @@
             <tr>
                 <th>Kredit</th>
                 <th class="text-align--right">Kredithöhe</th>
-                <th class="text-align--right">Rückzahlungssumme</th>
+                <th class="text-align--right">Offene Rückzahlungssumme</th>
                 <th class="text-align--right">Rückzahlung pro Runde</th>
                 <th class="text-align--right">offene Raten</th>
+                <td></td>
             </tr>
             </thead>
             <tbody>
             @foreach($loans as $key => $loan)
                 <tr>
-                    <td>{{ $key }}</td>
+                    <td>{{ $key + 1 }}</td>
                     <td class="text-align--right">{!! $loan->loanData->loanAmount->format() !!}</td>
-                    <td class="text-align--right">{!! $loan->loanData->totalRepayment->format() !!}</td>
+                    <td class="text-align--right">{!! MoneySheetState::getOpenRepaymentValueForLoan($gameEvents, $playerId, $loan->loanId)->format() !!}</td>
                     <td class="text-align--right">{!! $loan->loanData->repaymentPerKonjunkturphase->format() !!}</td>
                     <td class="text-align--right">{{ MoneySheetState::getOpenRatesForLoan($gameEvents, $playerId, $loan->loanId) }}</td>
+                    <td>
+                        <button @class([
+                            "button",
+                            "button--type-primary",
+                            "button--size-small",
+                            $this->getPlayerColorClass(),
+                        ]) wire:click="showRepayLoan('{{ $loan->loanId->value }}')">
+                            Kredit tilgen
+                        </button>
+                    </td>
                 </tr>
             @endforeach
             </tbody>

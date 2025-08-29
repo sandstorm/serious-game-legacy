@@ -44,6 +44,7 @@ trait HasMoneySheet
     public bool $editIncomeIsVisible = false;
     public bool $editExpensesIsVisible = false;
     public bool $takeOutALoanIsVisible = false;
+    public ?string $showRepaymentFormForLoan = null;
 
     // set in the view money-sheet-income.blade.php
     public IncomeTabEnum $activeTabForIncome = IncomeTabEnum::INVESTMENTS;
@@ -100,6 +101,7 @@ trait HasMoneySheet
         $this->editIncomeIsVisible = false;
         $this->editExpensesIsVisible = false;
         $this->takeOutALoanIsVisible = false;
+        $this->showRepaymentFormForLoan = null;
     }
 
     public function toggleEditIncome(): void
@@ -120,20 +122,24 @@ trait HasMoneySheet
 
     public function showIncomeTab(string $tab): void
     {
+        $this->editExpensesIsVisible = false;
+        $this->takeOutALoanIsVisible = false;
+        $this->showRepaymentFormForLoan = null;
+
         $this->moneySheetIsVisible = true;
         $this->editIncomeIsVisible = true;
-        $this->editExpensesIsVisible = false;
         $this->activeTabForIncome = IncomeTabEnum::from($tab);
-        $this->takeOutALoanIsVisible = false;
     }
 
     public function showExpensesTab(string $tab): void
     {
-        $this->moneySheetIsVisible = true;
         $this->editIncomeIsVisible = false;
+        $this->takeOutALoanIsVisible = false;
+        $this->showRepaymentFormForLoan = null;
+
+        $this->moneySheetIsVisible = true;
         $this->editExpensesIsVisible = true;
         $this->activeTabForExpenses = ExpensesTabEnum::from($tab);
-        $this->takeOutALoanIsVisible = false;
     }
 
     /**
@@ -168,11 +174,28 @@ trait HasMoneySheet
         $this->moneySheetIsVisible = false;
         $this->editIncomeIsVisible = false;
         $this->editExpensesIsVisible = false;
+        $this->showRepaymentFormForLoan = null;
         $this->takeOutALoanIsVisible = true;
         $this->resetTakeOutALoanForm();
     }
 
     public function closeTakeOutALoan(): void
+    {
+        $this->showExpensesTab(ExpensesTabEnum::LOANS->value);
+    }
+
+    public function showRepayLoan(string $loanId): void
+    {
+        $this->moneySheetIsVisible = false;
+        $this->editIncomeIsVisible = false;
+        $this->editExpensesIsVisible = false;
+        $this->takeOutALoanIsVisible = false;
+        $this->showRepaymentFormForLoan = $loanId;
+        // Restbetrag + 1 % * Restbetrag
+        // TODO
+    }
+
+    public function closeRepayLoan(): void
     {
         $this->showExpensesTab(ExpensesTabEnum::LOANS->value);
     }
@@ -278,9 +301,10 @@ trait HasMoneySheet
         $this->takeOutALoanForm->reset();
         $this->takeOutALoanForm->resetValidation();
         $this->takeOutALoanForm->loanId = LoanId::unique()->value;
-        $this->takeOutALoanForm->guthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->myself)->value + PlayerState::getTotalValueOfAllAssetsForPlayer($this->getGameEvents(), $this->myself)->value;
-        $this->takeOutALoanForm->hasJob = PlayerState::getJobForPlayer($this->getGameEvents(), $this->myself) !== null;
+        $this->takeOutALoanForm->sumOfAllAssets = PlayerState::getTotalValueOfAllAssetsForPlayer($this->getGameEvents(), $this->myself)->value;
+        $this->takeOutALoanForm->salary = PlayerState::getCurrentGehaltForPlayer($this->getGameEvents(), $this->myself)->value;
         $this->takeOutALoanForm->zinssatz = KonjunkturphaseState::getCurrentKonjunkturphase($this->getGameEvents())->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->value;
+        $this->takeOutALoanForm->obligations = MoneySheetState::getTotalRepaymentValueForAllLoans($this->getGameEvents(), $this->myself)->value;
     }
 
     public function takeOutALoan(): void
@@ -297,7 +321,7 @@ trait HasMoneySheet
         if (!$resultOfLastInput->wasSuccessful && $resultOfLastInput->fine->value > 0) {
             $this->takeOutALoanForm->loanAmount = intval(min(
                 $this->takeOutALoanForm->loanAmount,
-                LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->guthaben, $this->takeOutALoanForm->hasJob)
+                LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->sumOfAllAssets, $this->takeOutALoanForm->salary, $this->takeOutALoanForm->obligations)->value
             ));
             $this->takeOutALoanForm->totalRepayment = LoanCalculator::getCalculatedTotalRepayment($this->takeOutALoanForm->loanAmount, $this->takeOutALoanForm->zinssatz);
             $this->takeOutALoanForm->repaymentPerKonjunkturphase = $this->takeOutALoanForm->getCalculatedRepaymentPerKonjunkturphase();
@@ -315,6 +339,11 @@ trait HasMoneySheet
         }
 
         $this->broadcastNotify();
+    }
+
+    public function repayLoan(string $loanId)
+    {
+        // TODO
     }
 
     private function initializeInsurancesForm(): void
