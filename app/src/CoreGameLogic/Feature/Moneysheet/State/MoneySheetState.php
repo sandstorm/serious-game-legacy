@@ -6,7 +6,6 @@ namespace Domain\CoreGameLogic\Feature\Moneysheet\State;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\InputResult;
@@ -20,6 +19,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWer
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasCorrected;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasEntered;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasRepaidForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasTakenOutForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SteuernUndAbgabenForPlayerWereCorrected;
@@ -390,6 +390,18 @@ class MoneySheetState
             throw new \RuntimeException("No loan found for player {$playerId->value} with ID {$loanId->value}");
         }
 
+        // Check if loan was fully repaid
+        $repaymentEvent = $gameEvents->findLastOrNullWhere(
+            fn($event) => $event instanceof LoanWasRepaidForPlayer &&
+                $event->playerId->equals($playerId) &&
+                $event->loanId->equals($loanId)
+        );
+
+        if ($repaymentEvent !== null) {
+            return 0;
+        }
+
+
         // Calculate the open rates based on the total repayment and the repayment per Konjunkturphase
         $yearOfTheLoan = $loan->year->value;
         $year = GamePhaseState::currentKonjunkturphasenYear($gameEvents)->value;
@@ -397,27 +409,35 @@ class MoneySheetState
         return max(Configuration::REPAYMENT_PERIOD - ($year - $yearOfTheLoan), 0);
     }
 
+    public static function getOpenRepaymentValueForLoan(GameEvents $gameEvents, PlayerId $playerId, LoanId $loanId): MoneyAmount
+    {
+        /** @var LoanWasTakenOutForPlayer|null $loan */
+        $loan = $gameEvents->findLastOrNullWhere(
+            fn($event) => $event instanceof LoanWasTakenOutForPlayer &&
+                $event->playerId->equals($playerId) &&
+                $event->loanId->equals($loanId)
+        );
+
+        if ($loan === null) {
+            throw new \RuntimeException("No loan with ID $loanId->value found for player $playerId->value");
+        }
+
+        $openRates = self::getOpenRatesForLoan($gameEvents, $playerId, $loanId);
+
+        return new MoneyAmount($openRates * $loan->loanData->repaymentPerKonjunkturphase->value);
+    }
+
     /**
      * @param GameEvents $gameEvents
      * @param PlayerId $playerId
      * @return MoneyAmount
      */
-    public static function getSumOfAllLoansForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
-    {
-        $loans = self::getLoansForPlayer($gameEvents, $playerId);
-        $sum = 0;
-        foreach ($loans as $loan) {
-            $sum += $loan->loanData->loanAmount->value;
-        }
-        return new MoneyAmount($sum);
-    }
-
-    public static function getTotalRepaymentValueForAllLoans(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
+    public static function getTotalOpenRepaymentValueForAllLoans(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
         $loans = self::getLoansForPlayer($gameEvents, $playerId);
         $total = 0;
         foreach ($loans as $loan) {
-            $total = $total + $loan->loanData->totalRepayment->value;
+            $total += self::getOpenRepaymentValueForLoan($gameEvents, $playerId, $loan->loanId)->value;
         }
         return new MoneyAmount($total);
     }
@@ -446,13 +466,11 @@ class MoneySheetState
      */
     public static function getAnnualExpensesForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
-        $annualExpenses = new MoneyAmount(0)
+        return new MoneyAmount(0)
             ->add(self::getAnnualExpensesForAllLoans($gameEvents, $playerId))
             ->add(self::getCostOfAllInsurances($gameEvents, $playerId))
             ->add(self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId))
             ->add(self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId));
-
-        return $annualExpenses;
     }
 
     /**
@@ -462,13 +480,11 @@ class MoneySheetState
      */
     public static function calculateAnnualExpensesFromPlayerInput(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
-        $annualExpensesFromPlayerInput = new MoneyAmount(0)
+        return new MoneyAmount(0)
             ->add(self::getAnnualExpensesForAllLoans($gameEvents, $playerId))
             ->add(self::getCostOfAllInsurances($gameEvents, $playerId))
             ->add(self::getLastInputForLebenshaltungskosten($gameEvents, $playerId))
             ->add(self::getLastInputForSteuernUndAbgaben($gameEvents, $playerId));
-
-        return $annualExpensesFromPlayerInput;
     }
 
     /**
@@ -478,11 +494,9 @@ class MoneySheetState
      */
     public static function getAnnualIncomeForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
-        $annualIncome = new MoneyAmount(0)
+        return new MoneyAmount(0)
             ->add(PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId))
             ->add(PlayerState::getDividendForAllStocksForPlayer($gameEvents, $playerId));
-
-        return $annualIncome;
     }
 
     public static function calculateTotalForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount

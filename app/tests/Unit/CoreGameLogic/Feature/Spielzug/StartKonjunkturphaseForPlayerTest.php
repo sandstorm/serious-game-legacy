@@ -38,7 +38,6 @@ use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 use Tests\ComponentWithForm;
 use Tests\TestCase;
-use const App\Livewire\Forms\TakeOutALoanForm;
 
 beforeEach(function () {
     /** @var TestCase $this */
@@ -402,7 +401,7 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
         $takeoutLoanForm->loanAmount = 10000;
         $takeoutLoanForm->totalRepayment = 12500;
         $takeoutLoanForm->repaymentPerKonjunkturphase = 625;
-        $takeoutLoanForm->guthaben = Configuration::STARTKAPITAL_VALUE;
+        $takeoutLoanForm->sumOfAllAssets = Configuration::STARTKAPITAL_VALUE;
         $takeoutLoanForm->zinssatz = 5;
         $takeoutLoanForm->loanId = LoanId::unique()->value;
 
