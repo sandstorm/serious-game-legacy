@@ -1,4 +1,13 @@
 .card-pile {
     position: relative;
     z-index: 10;
+
+    &.card-pile--disabled {
+        opacity: 0.5;
+
+        .card {
+            cursor: default;
+        }
+    }
 }
+

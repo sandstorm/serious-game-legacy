@@ -9,6 +9,7 @@ use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ActivateCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SkipCardAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasCategoryFreeZeitsteinslotsValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\PutCardBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
@@ -58,12 +59,26 @@ trait HasCard
         }
     }
 
+    public function canShowCardActions(string $categoryId): AktionValidationResult
+    {
+        $validationChain = new HasCategoryFreeZeitsteinslotsValidator(CategoryId::from($categoryId));
+        return $validationChain->validate($this->getGameEvents(), $this->myself);
+    }
+
     /**
      * @param string $cardId
      * @return void
      */
-    public function showCardActions(string $cardId): void
+    public function showCardActions(string $cardId, string $categoryId): void
     {
+        $validationResult = self::canShowCardActions($categoryId);
+        if (!$validationResult->canExecute) {
+            $this->showNotification(
+                $validationResult->reason,
+                NotificationTypeEnum::ERROR
+            );
+            return;
+        }
         $this->showCardActionsForCard = $cardId;
     }
 
