@@ -536,23 +536,4 @@ class PlayerState
             $jobOfferWasAcceptedByPlayer !== null
         );
     }
-
-    /**
-     * @param GameEvents $gameEvents
-     * @param PlayerId $playerId
-     * @param InsuranceId $insuranceId
-     * @return bool
-     */
-    public static function hasPlayerPayedForInsuranceThisKonjunkturphase(GameEvents $gameEvents, PlayerId $playerId, InsuranceId $insuranceId): bool
-    {
-        $eventsAfterInsuranceWasConcluded = $gameEvents->findAllAfterLastOrNullWhere(fn($event) =>
-            $event instanceof InsuranceForPlayerWasConcluded &&
-            $event->playerId->equals($playerId) &&
-            $event->insuranceId === $insuranceId
-        );
-        if ($eventsAfterInsuranceWasConcluded === null) {
-            throw new RuntimeException("InsuranceWasConcluded Event not found for this player", 1755845748);
-        }
-        return ($eventsAfterInsuranceWasConcluded->findLastOrNull(KonjunkturphaseWasChanged::class) === null);
-    }
 }
