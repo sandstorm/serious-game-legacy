@@ -605,6 +605,10 @@ describe('doesPlayerHaveThisInsurance', function () {
     });
 });
 
+/**
+ * Insurances are paid in advance for either the current year (the year in which you take out the insurance) or the
+ * upcoming year (at the end of a Konjunkturphase)
+ */
 describe('getCostOfAllInsurances', function () {
     it('returns correct sum of all insurance costs', function () {
         $this->coreGameLogic->handle($this->gameId,
@@ -613,16 +617,17 @@ describe('getCostOfAllInsurances', function () {
         $this->coreGameLogic->handle($this->gameId,
             ConcludeInsuranceForPlayer::create($this->players[0], $this->insurances[1]->id));
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        // Player already payed for insurance this Konjunkturphase (when they took out the insurance)
-        expect(MoneySheetState::getCostOfAllInsurances($gameEvents, $this->players[0])->value)->toEqual(0);
+        // Player already payed for insurance this Konjunkturphase (when they took out the insurance), but
+        // they are expected to pay again for the next year.
+        expect(MoneySheetState::getCostOfAllInsurances($gameEvents, $this->players[0])->value)->toEqual(250);
 
         $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create());
 
         $this->coreGameLogic->handle($this->gameId,
             ConcludeInsuranceForPlayer::create($this->players[0], $this->insurances[2]->id));
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        // Player must pay for the first two insurances
-        expect(MoneySheetState::getCostOfAllInsurances($gameEvents, $this->players[0])->value)->toEqual(250);
+        // Player must pay in advance for all insurances
+        expect(MoneySheetState::getCostOfAllInsurances($gameEvents, $this->players[0])->value)->toEqual(750);
     });
 });
 
@@ -878,6 +883,7 @@ describe("getAnnualExpensesForPlayer", function () {
         // player 0 concludes an insurance
         $this->coreGameLogic->handle($this->gameId,
             ConcludeInsuranceForPlayer::create($this->players[0], $this->insurances[0]->id));
+        $expectedAnnualExpenses += 100; // insurance gets added to annual expenses
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
         expect(MoneySheetState::getAnnualExpensesForPlayer($gameEvents,
@@ -901,7 +907,6 @@ describe("getAnnualExpensesForPlayer", function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $expectedAnnualExpenses += 2500; // add job taxes (25% of 10000)
-        $expectedAnnualExpenses += 100; // add insurance cost (was taken out last Konjunkturphase)
         expect(MoneySheetState::getAnnualExpensesForPlayer($gameEvents,
             $this->players[0])->value)->toEqual($expectedAnnualExpenses);
     });

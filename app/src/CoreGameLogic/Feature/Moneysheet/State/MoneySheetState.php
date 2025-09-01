@@ -348,10 +348,6 @@ class MoneySheetState
                 // Player does not have this insurance, skip it
                 continue;
             }
-            if (PlayerState::hasPlayerPayedForInsuranceThisKonjunkturphase($gameEvents, $playerId, $insurance->id)) {
-                // Player already payed for it this year, skip it
-                continue;
-            }
             $totalCost = $totalCost->add($insurance->getAnnualCost($currentPlayerPhase));
         }
 
