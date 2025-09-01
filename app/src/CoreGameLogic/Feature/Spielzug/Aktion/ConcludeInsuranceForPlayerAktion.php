@@ -18,6 +18,10 @@ use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Insurance\InsuranceFinder;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 
+/**
+ * An insurance may mitigate the effects of some EreignisCards. The player has to pay for the insurance immediately and at the end of
+ * each Konjunkturphase they will pay for the upcoming year.
+ */
 class ConcludeInsuranceForPlayerAktion extends Aktion
 {
 
@@ -33,7 +37,6 @@ class ConcludeInsuranceForPlayerAktion extends Aktion
 
         $validatorChain = new PlayerDoesNotYetHaveThisInsuranceValidator($this->insuranceId);
         $validatorChain->setNext(new HasPlayerEnoughResourcesValidator($this->resourceChanges));
-        // TODO beim Aussetzen nicht erlaubt?
         return $validatorChain->validate($gameEvents, $playerId);
     }
 
