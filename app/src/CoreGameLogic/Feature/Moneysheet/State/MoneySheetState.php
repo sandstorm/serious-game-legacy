@@ -442,13 +442,11 @@ class MoneySheetState
      */
     public static function getAnnualExpensesForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
-        $annualExpenses = (new MoneyAmount(0))
+        return new MoneyAmount(0)
             ->add(self::getAnnualExpensesForAllLoans($gameEvents, $playerId))
             ->add(self::getCostOfAllInsurances($gameEvents, $playerId))
             ->add(self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId))
             ->add(self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId));
-
-        return $annualExpenses;
     }
 
     /**
@@ -458,13 +456,11 @@ class MoneySheetState
      */
     public static function calculateAnnualExpensesFromPlayerInput(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
-        $annualExpensesFromPlayerInput = (new MoneyAmount(0))
+        return new MoneyAmount(0)
             ->add(self::getAnnualExpensesForAllLoans($gameEvents, $playerId))
             ->add(self::getCostOfAllInsurances($gameEvents, $playerId))
             ->add(self::getLastInputForLebenshaltungskosten($gameEvents, $playerId))
             ->add(self::getLastInputForSteuernUndAbgaben($gameEvents, $playerId));
-
-        return $annualExpensesFromPlayerInput;
     }
 
     /**
@@ -474,11 +470,9 @@ class MoneySheetState
      */
     public static function getAnnualIncomeForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
-        $annualIncome = (new MoneyAmount(0))
+        return new MoneyAmount(0)
             ->add(PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId))
             ->add(PlayerState::getDividendForAllStocksForPlayer($gameEvents, $playerId));
-
-        return $annualIncome;
     }
 
     public static function calculateTotalForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount

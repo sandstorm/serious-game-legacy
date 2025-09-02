@@ -10,17 +10,18 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 
 /**
- * Succeeds if the player has a positive Balance.
+ * Succeeds if the player has a negative Balance.
+ * This is a requirement for Insolvenz.
  */
-final class HasPlayerAPositiveBalanceValidator extends AbstractValidator
+final class HasPlayerANegativeBalanceValidator extends AbstractValidator
 {
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
 
-        if (PlayerState::getGuthabenForPlayer($gameEvents, $playerId)->value < 0) {
+        if (PlayerState::getGuthabenForPlayer($gameEvents, $playerId)->value >= 0) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Dein Kontostand ist negativ'
+                reason: 'Dein Kontostand ist positiv'
             );
         }
         return parent::validate($gameEvents, $playerId);

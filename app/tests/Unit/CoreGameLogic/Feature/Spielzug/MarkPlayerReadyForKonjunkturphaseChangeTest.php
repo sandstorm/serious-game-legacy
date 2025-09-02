@@ -145,7 +145,7 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
             $this->gameId,
             MarkPlayerAsReadyForKonjunkturphaseChange::create($this->players[0])
         );
-    })->throws(\RuntimeException::class, "Cannot mark player as ready: dein Kontostand ist negativ", 1756798041);
+    })->throws(\RuntimeException::class, "Cannot mark player as ready: Dein Kontostand ist negativ", 1756798041);
 
     it('marks the player as ready', function () {
         /** @var TestCase $this */

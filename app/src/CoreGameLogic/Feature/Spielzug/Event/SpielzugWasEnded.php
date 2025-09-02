@@ -11,8 +11,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Dto\LogEntry;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\Loggable;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
 use Domain\CoreGameLogic\PlayerId;
-use Domain\Definitions\Card\ValueObject\MoneyAmount;
-use Domain\Definitions\Investments\ValueObject\InvestmentId;
 
 final readonly class SpielzugWasEnded implements GameEventInterface, Loggable, ProvidesInvestmentPriceChanges
 {

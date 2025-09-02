@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
+use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
@@ -569,5 +571,25 @@ abstract class TestCase extends BaseTestCase
                 ->withFixedKonjunkturphaseForTesting($this->konjunkturphaseDefinition)
                 ->withFixedCardOrderForTesting()
         );
+    }
+
+    public function getGameEvents(): GameEvents
+    {
+        return $this->coreGameLogic->getGameEvents($this->gameId);
+    }
+
+    public function getKonjunkturphaseDefinition(): ?KonjunkturphaseDefinition
+    {
+        return $this->konjunkturphaseDefinition;
+    }
+
+    public function handle(CommandInterface $command): void
+    {
+        $this->coreGameLogic->handle($this->gameId, $command);
+    }
+
+    public function getPlayers(): array
+    {
+        return $this->players;
     }
 }

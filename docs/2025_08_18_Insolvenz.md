@@ -36,20 +36,20 @@
 
 ## TODO
 
-- [ ] Shaping
+- [x] Shaping
 - [ ] Warnung vor drohender Insolvenz (wenn vor Konjunkturphasenende absehbar -> negativer Kontostand/kein Einkommen und Kontostand < Fixkosten)
 - [ ] Abfrage: Kreditaufnahme oder Verkauf von Geldanlagen (wenn möglich)
 - [ ] Insolvenz:
-    - [ ] Kontostand = 0 €
+    - [x] Kontostand = 0 €
     - [ ] alle Kredite werden getilgt (nochmal abklären)
-    - [ ] Lebenshaltungskosten auf minValue
     - [ ] Unaffordable Ereigniskarten?
+    - [ ] Modifier: Lebenshaltungskosten auf minValue
     - [ ] Modifier: max 10.000 € (netto?) vom Job dürfen behalten werden
     - [ ] Modifier: Ereignisse, die Geldbeträge auszahlen, zahlen nur 50% aus
-    - [ ] Modifier: Kreditsperre
+    - [x] Modifier: Kreditsperre
     - [ ] Modifier: Versicherungssperre
     - [ ] Lebenshaltungskosten selbst zahlen, wenn möglich, sonst erstattet (komplett oder nur Fehlbetrag?)
-    - [ ] Investitionen: Beschluss von Martin -> erstmal Investitionssperre
+    - [x] Investitionen: Beschluss von Martin -> erstmal Investitionssperre
 - [ ] Kreditvoraussetzungen nach Insolvenz
 - [ ] UI
     - [ ] Kontostand in Übersicht (Konjunkturphasenwechsel)
@@ -65,7 +65,7 @@
     - nein: neue Optionen (siehe "Zahlungsunfähigkeit")
     - [x] MarkPlayerAsReady... braucht `hasPositiveBalanceValidator`
 - "Zahlungsunfähigkeit":
-    - [ ] check: `hasPlayerGeldanlagen` und `hasPlayerInsurances`
+    - [x] check: `hasPlayerGeldanlagen` und `hasPlayerInsurances`
         - ja -> Optionen zum Verkaufen/Kündigen
         - nein -> "Insolvenz Anmelden" als Option
 - UI: Immer Kontostand mit sichtbar (und auch immer mit aktualisieren)
