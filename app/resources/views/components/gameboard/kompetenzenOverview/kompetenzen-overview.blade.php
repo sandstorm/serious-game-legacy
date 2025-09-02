@@ -40,8 +40,10 @@
                                 MoneySheetState::doesMoneySheetRequirePlayerAction($gameEvents, $playerId) ? 'kompetenzen-overview__action-required--active' : ''
                             ])
                         >
-                            <i class="icon-pencil" aria-hidden="true"></i> <span
-                                class="sr-only">Berechnung erforderlich</span>
+                            <i class="icon-pencil" aria-hidden="true"></i>
+                            @if (MoneySheetState::doesMoneySheetRequirePlayerAction($gameEvents, $playerId))
+                                <span class="sr-only">Berechnung erforderlich</span>
+                            @endif
                         </div>
                     </button>
                 </div>

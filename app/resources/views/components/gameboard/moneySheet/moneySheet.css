@@ -30,6 +30,7 @@
 }
 
 .moneysheet__income, .moneysheet__expenses {
+    position: relative;
     padding: var(--spacing-100);
     display: flex;
     align-items: flex-start;
