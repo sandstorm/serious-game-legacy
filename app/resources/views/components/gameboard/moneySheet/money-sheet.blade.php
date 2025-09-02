@@ -1,9 +1,14 @@
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
+@use('Domain\CoreGameLogic\Feature\MoneySheet\State\MoneySheetState')
+@use('Domain\Definitions\Configuration\Configuration')
 
 @props(['moneySheet' => null])
 
 <div class="moneysheet">
-    <button wire:click="toggleEditIncome()" @class(["moneysheet__income", $this->getPlayerColorClass()])>
+    <button wire:click="toggleEditIncome()" @class(["moneysheet__income", $this->getPlayerColorClass()]) aria-label="Einnahmen bearbeiten">
+        <div class="kompetenzen-overview__action-required">
+            <i class="icon-pencil" aria-hidden="true"></i>
+        </div>
         <table>
             <thead>
             <tr>
@@ -23,7 +28,17 @@
             </tbody>
         </table>
     </button>
-    <button wire:click="toggleEditExpenses()" @class(["moneysheet__expenses", $this->getPlayerColorClass()])>
+    <button wire:click="toggleEditExpenses()" @class(["moneysheet__expenses", $this->getPlayerColorClass()]) aria-label="Ausgaben bearbeiten">
+        <div @class([
+                'kompetenzen-overview__action-required',
+                MoneySheetState::doesMoneySheetRequirePlayerAction($this->getGameEvents(), $this->myself) ? 'kompetenzen-overview__action-required--active' : ''
+            ])
+        >
+            <i class="icon-pencil" aria-hidden="true"></i>
+            @if (MoneySheetState::doesMoneySheetRequirePlayerAction($this->getGameEvents(), $this->myself))
+                <span class="sr-only">Berechnung erforderlich</span>
+            @endif
+        </div>
         <table>
             <thead>
             <tr>
@@ -69,7 +84,7 @@
     <div class="moneysheet__information">
         <div class="text-align--center font-size--sm">Dein Kontostand</div>
         <div class="badge-with-background font-size--lg">
-            {!! PlayerState::getGuthabenForPlayer($this->gameEvents, $this->myself)->format() !!}
+            {!! PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->myself)->format() !!}
         </div>
         <table>
             <thead>
@@ -84,7 +99,7 @@
                     <td>
                         <p>
                             Bei allen Einnahmen und Ausgaben, die Du selbst berechnen musst, hast Du immer zwei Versuche. <br />
-                            <strong>Bei dem dritten Fehlversuch hilft Dir das Spiel. Dir werden jedoch {{\Domain\Definitions\Configuration\Configuration::FINE_VALUE}} € abgezogen.</strong>
+                            <strong>Bei dem dritten Fehlversuch hilft Dir das Spiel. Dir werden jedoch {{ Configuration::FINE_VALUE }} € abgezogen.</strong>
                         </p>
                     </td>
                 </tr>
