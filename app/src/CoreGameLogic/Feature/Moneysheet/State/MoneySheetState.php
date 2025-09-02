@@ -6,7 +6,6 @@ namespace Domain\CoreGameLogic\Feature\Moneysheet\State;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\InputResult;
@@ -39,6 +38,10 @@ class MoneySheetState
         GameEvents $gameEvents,
         PlayerId $playerId
     ): MoneyAmount {
+        if (PlayerState::isPlayerInsolvent($gameEvents, $playerId)) {
+            return self::calculateMinimumValueForLebenshaltungskostenForPlayer($gameEvents, $playerId);
+        }
+
         $gehalt = PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId);
         return new MoneyAmount(max([
             $gehalt->value * self::getPercentageForLebenshaltungskostenForPlayer($gameEvents, $playerId) / 100,

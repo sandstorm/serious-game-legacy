@@ -43,7 +43,7 @@
     - [x] Kontostand = 0 €
     - [ ] alle Kredite werden getilgt (nochmal abklären)
     - [ ] Unaffordable Ereigniskarten?
-    - [ ] Modifier: Lebenshaltungskosten auf minValue
+    - [x] ~~Modifier:~~ Lebenshaltungskosten auf minValue -> mit Validator
     - [ ] Modifier: max 10.000 € (netto?) vom Job dürfen behalten werden
     - [ ] Modifier: Ereignisse, die Geldbeträge auszahlen, zahlen nur 50% aus
     - [x] ~~Modifier:~~ Kreditsperre -> mit Validator

@@ -630,7 +630,7 @@ abstract class TestCase extends BaseTestCase
 
         $this->handle(EnterLebenshaltungskostenForPlayer::create(
             $this->getPlayers()[0],
-            new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)));
+            MoneySheetState::calculateMinimumValueForLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[0])));
 
         $this->handle(CompleteMoneysheetForPlayer::create($this->getPlayers()[0]));
         $this->handle(FileInsolvenzForPlayer::create($this->getPlayers()[0]));
