@@ -64,8 +64,6 @@ final readonly class PlayerHasFiledForInsolvenz implements GameEventInterface, L
         }
 
         return new ModifierCollection([
-            new KreditsperreModifier($this->playerTurn, "Du bist insolvent und kannst in dieser Zeit keinen Kredit aufnehmen."),
-            new InvestitionssperreModifier($this->playerTurn, "Du bist insolvent und kannst in dieser Zeit keinen Investition tätigen."),
             // TODO Versicherungssperre
             // TODO GeschenkModifier
             // TODO InsolvenzAbgaben

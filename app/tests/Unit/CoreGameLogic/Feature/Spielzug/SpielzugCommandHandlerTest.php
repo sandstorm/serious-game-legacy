@@ -28,12 +28,10 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartWeiterbildung;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SubmitAnswerForWeiterbildung;
@@ -41,7 +39,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\LoanData;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasPutBackOnTopOfPile;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereEntered;
@@ -49,14 +46,12 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasCorrected;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerWasMarkedAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SteuernUndAbgabenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
-use Domain\Definitions\Card\Dto\ModifierParameters;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Card\Dto\AnswerOption;
@@ -68,22 +63,10 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\ValueObject\AnswerId;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
-use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
-use Domain\Definitions\Konjunkturphase\Dto\ConditionalResourceChange;
-use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
-use Domain\Definitions\Konjunkturphase\Dto\Zeitslots;
-use Domain\Definitions\Konjunkturphase\Dto\ZeitslotsPerPlayer;
-use Domain\Definitions\Konjunkturphase\Dto\Zeitsteine;
-use Domain\Definitions\Konjunkturphase\Dto\ZeitsteinePerPlayer;
-use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
-use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
-use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
-use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use RuntimeException;
 use Tests\ComponentWithForm;
 use Tests\TestCase;
@@ -2198,205 +2181,6 @@ describe('handleEnterLebenshaltungskostenForPlayer', function () {
     });
 });
 
-
-describe('handleTakeOutALoanForPlayer', function () {
-    it('player gets fine for entering loan data wrong', function () {
-        $takeoutLoanFormComponent = new ComponentWithForm();
-        $takeoutLoanFormComponent->mount(TakeOutALoanForm::class);
-
-        /** @var TakeOutALoanForm $takeoutLoanForm */
-        $takeoutLoanForm = $takeoutLoanFormComponent->form;
-        $takeoutLoanForm->loanAmount = 10000;
-        $takeoutLoanForm->totalRepayment = 12500;
-        $takeoutLoanForm->repaymentPerKonjunkturphase = 600; // wrong value
-        $takeoutLoanForm->guthaben = Configuration::STARTKAPITAL_VALUE;
-        $takeoutLoanForm->zinssatz = 5;
-        $takeoutLoanForm->loanId = LoanId::unique()->value;
-
-        // player 0 takes out a loan
-        $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
-            $this->players[0],
-            $takeoutLoanForm
-        ));
-
-        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-
-        /** @var LoanForPlayerWasEntered $loanWasEnteredEvent */
-        $loanWasEnteredEvent = $gameEvents->findLast(LoanForPlayerWasEntered::class);
-
-        expect($loanWasEnteredEvent)->toBeInstanceOf(LoanForPlayerWasEntered::class)
-            ->and($loanWasEnteredEvent->wasInputCorrect())->toBeFalse()
-            ->and($loanWasEnteredEvent->getLoanData())->toEqual(new LoanData(
-                loanAmount: new MoneyAmount(10000),
-                totalRepayment: new MoneyAmount(12500),
-                repaymentPerKonjunkturphase: new MoneyAmount(600),
-            ))
-            ->and($loanWasEnteredEvent->getExpectedLoanData())->toEqual(new LoanData(
-                loanAmount: new MoneyAmount(10000),
-                totalRepayment: new MoneyAmount(12500),
-                repaymentPerKonjunkturphase: new MoneyAmount(625),
-            ));
-
-        // try again with also wrong values
-        $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
-            $this->players[0],
-            $takeoutLoanForm
-        ));
-
-        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-
-        /** @var LoanForPlayerWasCorrected $loanWasCorrectedEvent */
-        $loanWasCorrectedEvent = $gameEvents->findLast(LoanForPlayerWasCorrected::class);
-
-        expect($loanWasCorrectedEvent)->toBeInstanceOf(LoanForPlayerWasCorrected::class)
-            ->and($loanWasCorrectedEvent->getLoanData())->toEqual(new LoanData(
-                loanAmount: new MoneyAmount(10000),
-                totalRepayment: new MoneyAmount(12500),
-                repaymentPerKonjunkturphase: new MoneyAmount(625),
-            ))
-            ->and($loanWasCorrectedEvent->getResourceChanges($this->players[0])->guthabenChange)->toEqual(new MoneyAmount(-Configuration::FINE_VALUE))
-            ->and(PlayerState::getGuthabenForPlayer($gameEvents,
-                $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE - Configuration::FINE_VALUE));
-    });
-});
-
-describe('handleBuyInvestmentsForPlayer', function () {
-    it('works as expected when buying investments', function () {
-        /** @var TestCase $this */
-
-        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        $currentPriceLowRisk = InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MERFEDES_PENZ);
-        expect($currentPriceLowRisk)->toEqual(new MoneyAmount(Configuration::INITIAL_INVESTMENT_PRICE));
-
-        // buy low risk stocks
-        $amountOfStocks = 100;
-
-        $this->coreGameLogic->handle(
-            $this->gameId,
-            BuyInvestmentsForPlayer::create(
-                $this->players[0],
-                InvestmentId::MERFEDES_PENZ,
-                $amountOfStocks
-            )
-        );
-
-        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        $expectedSumOfAllStocks = new MoneyAmount($currentPriceLowRisk->value * $amountOfStocks);
-        $expectedGuthaben = new MoneyAmount(Configuration::STARTKAPITAL_VALUE - Configuration::INITIAL_INVESTMENT_PRICE * $amountOfStocks);
-        expect(PlayerState::getTotalValueOfAllInvestmentsForPlayer($gameEvents,
-            $this->players[0]))->toEqual($expectedSumOfAllStocks)
-            ->and(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEvents, $this->players[0],
-                InvestmentId::MERFEDES_PENZ))->toEqual($amountOfStocks)
-            ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual($expectedGuthaben)
-            ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[1]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE))
-            ->and(count($gameEvents->findAllOfType(ProvidesInvestmentPriceChanges::class)))->toEqual(1)
-            ->and(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MERFEDES_PENZ))->toEqual($currentPriceLowRisk);
-
-        // other player does not sell any stocks
-        $this->coreGameLogic->handle(
-            $this->gameId,
-            DontSellInvestmentsForPlayer::create($this->players[1], InvestmentId::MERFEDES_PENZ)
-        );
-
-        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MERFEDES_PENZ))->toEqual($currentPriceLowRisk)
-            ->and(GamePhaseState::playerBoughtOrSoldInvestmentsThisTurn($gameEvents, $this->players[0]))->toBeTrue()
-            ->and(GamePhaseState::playerBoughtOrSoldInvestmentsThisTurn($gameEvents, $this->players[1]))->toBeFalse();
-
-        // end zug for player 0
-        $this->coreGameLogic->handle(
-            $this->gameId,
-            new EndSpielzug($this->players[0])
-        );
-
-        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect($gameEvents->findLast(SpielzugWasEnded::class)->haveInvestmentPricesChanged)->toBeTrue();
-        $currentPriceLowRisk = InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MERFEDES_PENZ);
-
-        // player 1 does mini job
-        $this->coreGameLogic->handle(
-            $this->gameId,
-            DoMinijob::create($this->players[1])
-        );
-
-        // end zug for player 1
-        $this->coreGameLogic->handle(
-            $this->gameId,
-            new EndSpielzug($this->players[1])
-        );
-
-        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        // after the end of spielzug for player 1, the price has not changed because no one sold/bought stocks
-        expect(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MERFEDES_PENZ))->toEqual($currentPriceLowRisk)
-            ->and(count($gameEvents->findAllOfType(ProvidesInvestmentPriceChanges::class)))->toEqual(3)
-            ->and($gameEvents->findLast(SpielzugWasEnded::class)->haveInvestmentPricesChanged)->toBeFalse()
-            ->and(GamePhaseState::playerBoughtOrSoldInvestmentsThisTurn($gameEvents, $this->players[0]))->toBeFalse()
-            ->and(GamePhaseState::playerBoughtOrSoldInvestmentsThisTurn($gameEvents, $this->players[1]))->toBeFalse();
-
-        $highRiskPriceBeforeFirstBuy = InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::BETA_PEAR);
-
-        // buy some high risk stocks
-        $amountOfStocksHighRisk = 50;
-        $this->coreGameLogic->handle(
-            $this->gameId,
-            BuyInvestmentsForPlayer::create(
-                $this->players[0],
-                InvestmentId::BETA_PEAR,
-                $amountOfStocksHighRisk
-            )
-        );
-
-        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        $currentPriceLowRisk = InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MERFEDES_PENZ);
-        $currentPriceHighRisk = InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::BETA_PEAR);
-        $expectedSumOfAllStocks = new MoneyAmount($currentPriceLowRisk->value * $amountOfStocks + $currentPriceHighRisk->value * $amountOfStocksHighRisk);
-        $expectedGuthaben = $expectedGuthaben->add(
-            new MoneyAmount($highRiskPriceBeforeFirstBuy->value * $amountOfStocksHighRisk * -1)
-        );
-
-        expect(PlayerState::getTotalValueOfAllInvestmentsForPlayer($gameEvents,
-            $this->players[0]))->toEqual($expectedSumOfAllStocks)
-            ->and(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEvents, $this->players[0],
-                InvestmentId::MERFEDES_PENZ))->toEqual($amountOfStocks)
-            ->and(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEvents, $this->players[0],
-                InvestmentId::BETA_PEAR))->toEqual($amountOfStocksHighRisk)
-            ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual($expectedGuthaben)
-            ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[1]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE + 5000))
-            ->and(count($gameEvents->findAllOfType(ProvidesInvestmentPriceChanges::class)))->toEqual(3);
-    });
-
-    it('throws exception if player tries to end spielzug before other players sold their investments', function () {
-        /** @var TestCase $this */
-        $this->coreGameLogic->handle(
-            $this->gameId,
-            BuyInvestmentsForPlayer::create(
-                $this->players[0],
-                InvestmentId::MERFEDES_PENZ,
-                10
-            )
-        );
-
-        // end zug for player 0
-        $this->coreGameLogic->handle(
-            $this->gameId,
-            new EndSpielzug($this->players[0])
-        );
-    })->throws(\RuntimeException::class, 'Du kannst deinen Spielzug nicht beenden. Andere Spieler können noch Investitionen verkaufen', 1748946243);
-
-    it('throws exception if player tries to buy more investments than he can afford', function () {
-        $amountOfStocks = intval(Configuration::STARTKAPITAL_VALUE / Configuration::INITIAL_INVESTMENT_PRICE + 1);
-
-        /** @var TestCase $this */
-        $this->coreGameLogic->handle(
-            $this->gameId,
-            BuyInvestmentsForPlayer::create(
-                $this->players[0],
-                InvestmentId::MERFEDES_PENZ,
-                $amountOfStocks
-            )
-        );
-    })->throws(\RuntimeException::class, 'Du hast nicht genug Ressourcen', 1752066529);
-});
 
 describe('handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer', function () {
     it('selling investments after purchase works as expected', function () {

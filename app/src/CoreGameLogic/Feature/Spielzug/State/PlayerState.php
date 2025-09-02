@@ -26,6 +26,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerGotAChild;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasFiledForInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereNotSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayerAfterInvestmentByAnotherPlayer;
@@ -41,6 +42,7 @@ use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
+use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
@@ -535,5 +537,18 @@ class PlayerState
             $cardWasPlayedByPlayer !== null ||
             $jobOfferWasAcceptedByPlayer !== null
         );
+    }
+
+    public static function isPlayerInsolvent(GameEvents $gameEvents, PlayerId $playerId): bool
+    {
+        $currentYear = KonjunkturphaseState::getCurrentYear($gameEvents);
+        $playerHasFiledForInsolvenzEventOrNull = $gameEvents->findLastOrNullWhere(
+            fn($event) => $event instanceof PlayerHasFiledForInsolvenz &&
+                $playerId->equals($event->playerId) &&
+                // Insolvenz lasts Configuration::INSOLVENZ_DURATION years, but it starts at the end of the Konjunkturphase
+                // so we subtract one more
+                $event->year->value > $currentYear->value - Configuration::INSOLVENZ_DURATION - 1);
+
+        return $playerHasFiledForInsolvenzEventOrNull !== null;
     }
 }

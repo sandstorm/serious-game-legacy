@@ -12,6 +12,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerDoneNoZeitst
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughResourcesValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughZeitsteineValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerAllowedToInvestValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerNotInsolventValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereBoughtForPlayer;
@@ -36,6 +37,7 @@ class BuyInvestmentsForPlayerAktion extends Aktion
     {
         $validationChain = new IsPlayersTurnValidator();
         $validationChain
+            ->setNext(new IsPlayerNotInsolventValidator())
             ->setNext(new DoesNotSkipTurnValidator())
             ->setNext(new IsPlayerAllowedToInvestValidator())
             ->setNext(new HasPlayerEnoughZeitsteineValidator(1))
@@ -50,7 +52,7 @@ class BuyInvestmentsForPlayerAktion extends Aktion
     {
         $result = $this->validate($playerId, $gameEvents);
         if (!$result->canExecute) {
-            throw new \RuntimeException('' . $result->reason, 1752066529);
+            throw new \RuntimeException('Cannot buy investment: ' . $result->reason, 1752066529);
         }
 
         $resourceChanges = new ResourceChanges(

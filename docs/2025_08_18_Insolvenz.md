@@ -46,10 +46,10 @@
     - [ ] Modifier: Lebenshaltungskosten auf minValue
     - [ ] Modifier: max 10.000 € (netto?) vom Job dürfen behalten werden
     - [ ] Modifier: Ereignisse, die Geldbeträge auszahlen, zahlen nur 50% aus
-    - [x] Modifier: Kreditsperre
-    - [ ] Modifier: Versicherungssperre
-    - [ ] Lebenshaltungskosten selbst zahlen, wenn möglich, sonst erstattet (komplett oder nur Fehlbetrag?)
-    - [x] Investitionen: Beschluss von Martin -> erstmal Investitionssperre
+    - [x] ~~Modifier:~~ Kreditsperre -> mit Validator
+    - [x] ~~Modifier:~~ Versicherungssperre -> mit Validator
+    - [ ] Modifier: Lebenshaltungskosten selbst zahlen, wenn möglich, sonst erstattet (komplett oder nur Fehlbetrag?)
+    - [x] Investitionen: Beschluss von Martin -> erstmal Investitionssperre -> mit Validator
 - [ ] Kreditvoraussetzungen nach Insolvenz
 - [ ] UI
     - [ ] Kontostand in Übersicht (Konjunkturphasenwechsel)

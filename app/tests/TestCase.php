@@ -18,8 +18,10 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\FileInsolvenzForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
@@ -37,6 +39,7 @@ use Domain\Definitions\Card\ValueObject\AnswerId;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
+use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Insurance\InsuranceDefinition;
 use Domain\Definitions\Insurance\InsuranceFinder;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
@@ -591,5 +594,48 @@ abstract class TestCase extends BaseTestCase
     public function getPlayers(): array
     {
         return $this->players;
+    }
+
+    public function setupInsolvenz()
+    {
+        $initialGuthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->players[0]);
+        $cardsForTesting = [
+            new KategorieCardDefinition(
+                id: CardId::fromString("removeZeitsteine1"),
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                title: "RemoveZeitsteine1",
+                description: "RemoveZeitsteine1",
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: $initialGuthaben->negate(),
+                    zeitsteineChange: -1 * $this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
+                ),
+            ),
+            new KategorieCardDefinition(
+                id: CardId::fromString("removeZeitsteine2"),
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                title: "RemoveZeitsteine2",
+                description: "RemoveZeitsteine2",
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -1 * $this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
+                ),
+            ),
+        ];
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+
+        $this->handle(ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->handle(new EndSpielzug($this->getPlayers()[0]));
+
+        $this->handle(ActivateCard::create($this->getPlayers()[1], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->handle(new EndSpielzug($this->getPlayers()[1]));
+
+        $this->handle(EnterLebenshaltungskostenForPlayer::create(
+            $this->getPlayers()[0],
+            new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)));
+
+        $this->handle(CompleteMoneysheetForPlayer::create($this->getPlayers()[0]));
+        $this->handle(FileInsolvenzForPlayer::create($this->getPlayers()[0]));
+        $this->handle(ChangeKonjunkturphase::create()
+            ->withFixedKonjunkturphaseForTesting($this->konjunkturphaseDefinition)
+            ->withFixedCardOrderForTesting());
     }
 }
