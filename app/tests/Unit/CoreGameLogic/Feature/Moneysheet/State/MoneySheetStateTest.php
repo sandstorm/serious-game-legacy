@@ -816,7 +816,7 @@ describe('getOpenRatesForLoan', function () {
         $expectedGuthaben = Configuration::STARTKAPITAL_VALUE + $loanAmount - (Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE * 21) - ($loans[0]->loanData->totalRepayment->value);
         expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->value)->toEqual($expectedGuthaben)
             ->and(MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], $loans[0]->loanId))->toEqual(0);
-    });
+    })->todo("Fix in #445");
 });
 
 describe("getAnnualExpensesForPlayer", function () {

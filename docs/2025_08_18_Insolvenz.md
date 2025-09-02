@@ -63,14 +63,14 @@
 - nach CompleteMoneySheetForPlayer -> ist Kontostand positiv?
     - ja: alles fein, weiter wie bisher
     - nein: neue Optionen (siehe "Zahlungsunfähigkeit")
-    - [ ] MarkPlayerAsReady... braucht `hasPositiveBalanceValidator`
+    - [x] MarkPlayerAsReady... braucht `hasPositiveBalanceValidator`
 - "Zahlungsunfähigkeit":
     - [ ] check: `hasPlayerGeldanlagen` und `hasPlayerInsurances`
         - ja -> Optionen zum Verkaufen/Kündigen
         - nein -> "Insolvenz Anmelden" als Option
 - UI: Immer Kontostand mit sichtbar (und auch immer mit aktualisieren)
 - Versicherungen Kündigen
-    - [ ] Refactor: Versicherung wird immer im Voraus für's Jahr bezahlt
+    - [x] Refactor: Versicherung wird immer im Voraus für's Jahr bezahlt
     - [ ] UI: Auflistung der Versicherungen + "Kündigen" Button
 - Geldanlagen Verkaufen
     - neue Aktion(en), Commands, Events (`sellInvestitionToAvoidInsolvenz`, ...)
