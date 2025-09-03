@@ -15,6 +15,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
@@ -27,7 +28,6 @@ use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\AnswerOption;
 use Domain\Definitions\Card\Dto\CardDefinition;
-use Domain\Definitions\Card\Dto\EreignisCardDefinition;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
@@ -37,9 +37,8 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\ValueObject\AnswerId;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
+use Domain\Definitions\Card\ValueObject\ModifierId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
-use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Insurance\InsuranceDefinition;
 use Domain\Definitions\Insurance\InsuranceFinder;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
@@ -56,7 +55,6 @@ use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
-use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
@@ -101,13 +99,12 @@ abstract class TestCase extends BaseTestCase
         $this->players = $this->generatePlayerIds($numberOfPlayers);
         CardFinder::getInstance()->overrideCardsForTesting(
             $cards !== null
-            ? [...$cards, ...$this->getCardsForEreignisse()] // Add at least one ereignisCard for each category to avoid errors
+            ? [...$cards]
             : [
                 ...$this->getCardsForBildungAndKarriere(),
                 ...$this->getCardsForSozialesAndFreizeit(),
                 ...$this->getCardsForJobs(),
                 ...$this->getCardsForMinijobs(),
-                ...$this->getCardsForEreignisse(),
                 ...$this->getCardsForWeiterbildung(),
             ]
         );
@@ -215,7 +212,9 @@ abstract class TestCase extends BaseTestCase
                     ])
                 ),
             ],
-            modifierIds: [],
+            modifierIds: [
+                ModifierId::FOR_TESTING_ONLY_NEVER_TRIGGER_EREIGNIS,
+            ],
             modifierParameters: new ModifierParameters(),
             auswirkungen: [
                 new AuswirkungDefinition(
@@ -446,79 +445,6 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * @return EreignisCardDefinition[]
-     */
-    protected function getCardsForEreignisse(): array
-    {
-        return [
-            "e0" => new EreignisCardDefinition(
-                id: new CardId('e0'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Nichts',
-                description: 'Es passiert nichts, damit die Tests vorhersehbar bleiben',
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(),
-                modifierIds: [],
-                modifierParameters: new ModifierParameters(),
-            ),
-            "e1" => new EreignisCardDefinition(
-                id: new CardId('e1'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Nichts',
-                description: 'Es passiert nichts, damit die Tests vorhersehbar bleiben',
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(),
-                modifierIds: [],
-                modifierParameters: new ModifierParameters(),
-            ),
-            "e2" => new EreignisCardDefinition(
-                id: new CardId('e2'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Nichts',
-                description: 'Es passiert nichts, damit die Tests vorhersehbar bleiben',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(),
-                modifierIds: [],
-                modifierParameters: new ModifierParameters(),
-            ),
-            "e3" => new EreignisCardDefinition(
-                id: new CardId('e3'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Nichts',
-                description: 'Es passiert nichts, damit die Tests vorhersehbar bleiben',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(),
-                modifierIds: [],
-                modifierParameters: new ModifierParameters(),
-            ),
-            "e4" => new EreignisCardDefinition(
-                id: new CardId('e4'),
-                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Nichts',
-                description: 'Es passiert nichts, damit die Tests vorhersehbar bleiben',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(),
-                modifierIds: [],
-                modifierParameters: new ModifierParameters(),
-            ),
-            "e5" => new EreignisCardDefinition(
-                id: new CardId('e5'),
-                categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                title: 'Nichts',
-                description: 'Es passiert nichts, damit die Tests vorhersehbar bleiben',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                year: new Year(1),
-                resourceChanges: new ResourceChanges(),
-                modifierIds: [],
-                modifierParameters: new ModifierParameters(),
-            ),
-        ];
-    }
-
-    /**
      * @return WeiterbildungCardDefinition[]
      */
     protected function getCardsForWeiterbildung(): array
@@ -559,7 +485,6 @@ abstract class TestCase extends BaseTestCase
             ...$this->getCardsForSozialesAndFreizeit(),
             ...$this->getCardsForJobs(),
             ...$this->getCardsForMinijobs(),
-            ...$this->getCardsForEreignisse(),
             ...$this->getCardsForWeiterbildung(),
         ];
         $allCardsWithIdsAsKey = [];
@@ -596,13 +521,13 @@ abstract class TestCase extends BaseTestCase
         return $this->players;
     }
 
-    public function setupInsolvenz()
+    public function setupInsolvenz(): void
     {
         $initialGuthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->players[0]);
+        // WHY: We use MiniJobs to avoid triggering events.
         $cardsForTesting = [
-            new KategorieCardDefinition(
+            new MinijobCardDefinition(
                 id: CardId::fromString("removeZeitsteine1"),
-                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
                 title: "RemoveZeitsteine1",
                 description: "RemoveZeitsteine1",
                 resourceChanges: new ResourceChanges(
@@ -610,9 +535,8 @@ abstract class TestCase extends BaseTestCase
                     zeitsteineChange: -1 * $this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
-            new KategorieCardDefinition(
+            new MinijobCardDefinition(
                 id: CardId::fromString("removeZeitsteine2"),
-                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
                 title: "RemoveZeitsteine2",
                 description: "RemoveZeitsteine2",
                 resourceChanges: new ResourceChanges(
@@ -622,10 +546,10 @@ abstract class TestCase extends BaseTestCase
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
-        $this->handle(ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->handle(DoMinijob::create($this->getPlayers()[0]));
         $this->handle(new EndSpielzug($this->getPlayers()[0]));
 
-        $this->handle(ActivateCard::create($this->getPlayers()[1], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->handle(DoMinijob::create($this->getPlayers()[1]));
         $this->handle(new EndSpielzug($this->getPlayers()[1]));
 
         $this->handle(EnterLebenshaltungskostenForPlayer::create(

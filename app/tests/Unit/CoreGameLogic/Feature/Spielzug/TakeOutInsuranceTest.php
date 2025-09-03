@@ -1,21 +1,16 @@
 <?php
 declare(strict_types=1);
 
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\FileInsolvenzForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
+use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
-use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Tests\TestCase;
@@ -62,6 +57,15 @@ describe('handleConcludeInsurance', function () {
     it('throws an error when the player is insolvent', function () {
         /** @var TestCase $this */
         $this->setupInsolvenz();
+        $cardForTesting = new MinijobCardDefinition(
+            id: CardId::fromString("removeZeitsteine1"),
+            title: "RemoveZeitsteine1",
+            description: "RemoveZeitsteine1",
+            resourceChanges: new ResourceChanges(
+                guthabenChange: new MoneyAmount(1000),
+            ),
+        );
+        $this->startNewKonjunkturphaseWithCardsOnTop([$cardForTesting]);
 
         $this->handle(StartKonjunkturphaseForPlayer::create($this->getPlayers()[0]));
         $this->handle(DoMinijob::create($this->getPlayers()[0]));

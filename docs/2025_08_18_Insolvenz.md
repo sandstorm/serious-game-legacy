@@ -45,7 +45,7 @@
     - [ ] Unaffordable Ereigniskarten?
     - [x] ~~Modifier:~~ Lebenshaltungskosten auf minValue -> mit Validator
     - [x] ~~Modifier:~~ max 10.000 € (netto?) vom Job dürfen behalten werden -> über MoneySheetState + Insolvenzabgaben
-    - [ ] Modifier: Ereignisse, die Geldbeträge auszahlen, zahlen nur 50% aus
+    - [x] ~~Modifier:~~ Ereignisse, die Geldbeträge auszahlen, zahlen nur 50% aus -> EreignisCommandHandler
     - [x] ~~Modifier:~~ Kreditsperre -> mit Validator
     - [x] ~~Modifier:~~ Versicherungssperre -> mit Validator
     - [ ] Modifier: Lebenshaltungskosten selbst zahlen, wenn möglich, sonst erstattet (komplett oder nur Fehlbetrag?)
