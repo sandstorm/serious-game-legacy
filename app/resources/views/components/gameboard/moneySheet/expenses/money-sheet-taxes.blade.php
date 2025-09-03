@@ -6,7 +6,7 @@
     <div class="tabs__upper-content">
         <p>
             Zu den Steuern zählen Einkommensteuern, Sozialversicherung und Solidaritätszuschlag. <br />
-            Pro Jahr gibst Du 25% Deines Jahreseinkommens brutto für Steuern und Abgaben aus.
+            Pro Jahr gibst Du <strong>25%</strong> Deines Jahreseinkommens brutto für Steuern und Abgaben aus.
         </p>
 
         @if ($this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled)

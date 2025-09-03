@@ -12,7 +12,6 @@ use App\Livewire\Forms\TakeOutALoanForm;
 use App\Livewire\ValueObject\ExpensesTabEnum;
 use App\Livewire\ValueObject\IncomeTabEnum;
 use App\Livewire\ValueObject\NotificationTypeEnum;
-use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\LoanCalculator;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
@@ -49,45 +48,6 @@ trait HasMoneySheet
     public IncomeTabEnum $activeTabForIncome = IncomeTabEnum::INVESTMENTS;
     // set in the view money-sheet-expenses.blade.php
     public ExpensesTabEnum $activeTabForExpenses = ExpensesTabEnum::LOANS;
-
-    /**
-     * Prefixed with "mount" to avoid conflicts with Livewire's mount method.
-     * Is automatically called by Livewire.
-     * See https://livewire.laravel.com/docs/lifecycle-hooks#using-hooks-inside-a-trait
-     *
-     * @return void
-     */
-    public function mountHasMoneySheet(): void
-    {
-        if (PreGameState::isInPreGamePhase($this->getGameEvents())) {
-            // do not mount the money sheet if we are in pre-game phase
-            return;
-        }
-
-        // init insurances form
-        $this->initializeInsurancesForm();
-    }
-
-    /**
-     * Update the form state on a rendering. Can happen for example when user changes their job.
-     * Rerendering is triggered by Livewire when we use the broadcastNotify() method.
-     *
-     * @return void
-     */
-    public function renderingHasMoneySheet(): void
-    {
-        $latestInputForSteuernUndAbgaben = MoneySheetState::getLastInputForSteuernUndAbgaben($this->getGameEvents(), $this->myself);
-        $calculatedSteuernUndAbgaben = MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->getGameEvents(), $this->myself);
-        $this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben = $latestInputForSteuernUndAbgaben->value;
-        $this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled = $latestInputForSteuernUndAbgaben->equals($calculatedSteuernUndAbgaben);
-
-        $latestInputForLebenshaltungskosten = MoneySheetState::getLastInputForLebenshaltungskosten($this->getGameEvents(), $this->myself);
-        $calculatedLebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->getGameEvents(), $this->myself);
-        $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten = $latestInputForLebenshaltungskosten->value;
-        $this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled = $latestInputForLebenshaltungskosten->equals($calculatedLebenshaltungskosten);
-
-        $this->initializeInsurancesForm();
-    }
 
     public function showMoneySheet(): void
     {
@@ -129,11 +89,19 @@ trait HasMoneySheet
 
     public function showExpensesTab(string $tab): void
     {
+        $tab = ExpensesTabEnum::from($tab);
         $this->moneySheetIsVisible = true;
         $this->editIncomeIsVisible = false;
         $this->editExpensesIsVisible = true;
-        $this->activeTabForExpenses = ExpensesTabEnum::from($tab);
+        $this->activeTabForExpenses = $tab;
         $this->takeOutALoanIsVisible = false;
+
+        match($tab) {
+            ExpensesTabEnum::LIVING_COSTS => $this->initializeLivingCostsForm(),
+            ExpensesTabEnum::TAXES => $this->initializeTaxesForm(),
+            ExpensesTabEnum::INSURANCES => $this->initializeInsurancesForm(),
+            default => null
+        };
     }
 
     /**
@@ -169,7 +137,7 @@ trait HasMoneySheet
         $this->editIncomeIsVisible = false;
         $this->editExpensesIsVisible = false;
         $this->takeOutALoanIsVisible = true;
-        $this->resetTakeOutALoanForm();
+        $this->initTakeOutALoanForm();
     }
 
     public function closeTakeOutALoan(): void
@@ -209,12 +177,12 @@ trait HasMoneySheet
         if (!$resultOfLastInput->wasSuccessful && $resultOfLastInput->fine->value > 0) {
             $this->moneySheetLebenshaltungskostenForm->addError('lebenshaltungskosten',
                 "Du hast einen falschen Wert für die Lebenshaltungskosten eingegeben. Dir wurden {$resultOfLastInput->fine->value} € abgezogen. Wir haben den Wert für dich korrigiert.");
-            $this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled = true;
         } elseif (!$resultOfLastInput->wasSuccessful) {
             $this->moneySheetLebenshaltungskostenForm->addError('lebenshaltungskosten',
                 "Du hast einen falschen Wert für die Lebenshaltungskosten eingegeben.");
         }
 
+        $this->initializeLivingCostsForm();
         $this->broadcastNotify();
     }
 
@@ -232,12 +200,12 @@ trait HasMoneySheet
         if (!$resultOfLastInput->wasSuccessful && $resultOfLastInput->fine->value > 0) {
             $this->moneySheetSteuernUndAbgabenForm->addError('steuernUndAbgaben',
                 "Du hast einen falschen Wert für die Steuern und Abgaben eingegeben. Dir wurden {$resultOfLastInput->fine->value} € abgezogen. Wir haben den Wert für dich korrigiert.");
-            $this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled = true;
         } elseif (!$resultOfLastInput->wasSuccessful) {
             $this->moneySheetSteuernUndAbgabenForm->addError('steuernUndAbgaben',
                 "Du hast einen falschen Wert für die Steuern und Abgaben eingegeben.");
         }
 
+        $this->initializeTaxesForm();
         $this->broadcastNotify();
     }
 
@@ -253,7 +221,7 @@ trait HasMoneySheet
             }
             // conclude or cancel insurance
             if ($shouldBeConcluded) {
-                $concludeInsuranceValidationResult = (new ConcludeInsuranceForPlayerAktion($insuranceId))->validate($this->myself, $this->getGameEvents());
+                $concludeInsuranceValidationResult = new ConcludeInsuranceForPlayerAktion($insuranceId)->validate($this->myself, $this->getGameEvents());
                 if ($concludeInsuranceValidationResult->canExecute) {
                     $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->myself, $insuranceId));
                 } else {
@@ -261,7 +229,7 @@ trait HasMoneySheet
                     $this->showBanner('Du hast nicht genug Geld, um die ' . $insuranceName . ' abzuschließen.');
                 }
             } else {
-                $cancelInsuranceValidationResult = (new CancelInsuranceForPlayerAktion($insuranceId))->validate($this->myself, $this->getGameEvents());
+                $cancelInsuranceValidationResult = new CancelInsuranceForPlayerAktion($insuranceId)->validate($this->myself, $this->getGameEvents());
                 if ($cancelInsuranceValidationResult->canExecute) {
                     $this->coreGameLogic->handle($this->gameId, CancelInsuranceForPlayer::create($this->myself, $insuranceId));
                 }else {
@@ -271,16 +239,6 @@ trait HasMoneySheet
             }
         }
         $this->broadcastNotify();
-    }
-
-    private function resetTakeOutALoanForm(): void
-    {
-        $this->takeOutALoanForm->reset();
-        $this->takeOutALoanForm->resetValidation();
-        $this->takeOutALoanForm->loanId = LoanId::unique()->value;
-        $this->takeOutALoanForm->guthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->myself)->value + PlayerState::getTotalValueOfAllAssetsForPlayer($this->getGameEvents(), $this->myself)->value;
-        $this->takeOutALoanForm->hasJob = PlayerState::getJobForPlayer($this->getGameEvents(), $this->myself) !== null;
-        $this->takeOutALoanForm->zinssatz = KonjunkturphaseState::getCurrentKonjunkturphase($this->getGameEvents())->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->value;
     }
 
     public function takeOutALoan(): void
@@ -315,6 +273,32 @@ trait HasMoneySheet
         }
 
         $this->broadcastNotify();
+    }
+
+    private function initTakeOutALoanForm(): void
+    {
+        $this->takeOutALoanForm->reset();
+        $this->takeOutALoanForm->resetValidation();
+        $this->takeOutALoanForm->loanId = LoanId::unique()->value;
+        $this->takeOutALoanForm->guthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->myself)->value + PlayerState::getTotalValueOfAllAssetsForPlayer($this->getGameEvents(), $this->myself)->value;
+        $this->takeOutALoanForm->hasJob = PlayerState::getJobForPlayer($this->getGameEvents(), $this->myself) !== null;
+        $this->takeOutALoanForm->zinssatz = KonjunkturphaseState::getCurrentKonjunkturphase($this->getGameEvents())->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->value;
+    }
+
+    private function initializeTaxesForm(): void
+    {
+        $latestInputForSteuernUndAbgaben = MoneySheetState::getLastInputForSteuernUndAbgaben($this->getGameEvents(), $this->myself);
+        $calculatedSteuernUndAbgaben = MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->getGameEvents(), $this->myself);
+        $this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben = $latestInputForSteuernUndAbgaben->value;
+        $this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled = $latestInputForSteuernUndAbgaben->equals($calculatedSteuernUndAbgaben);
+    }
+
+    private function initializeLivingCostsForm(): void
+    {
+        $latestInputForLebenshaltungskosten = MoneySheetState::getLastInputForLebenshaltungskosten($this->getGameEvents(), $this->myself);
+        $calculatedLebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->getGameEvents(), $this->myself);
+        $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten = $latestInputForLebenshaltungskosten->value;
+        $this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled = $latestInputForLebenshaltungskosten->equals($calculatedLebenshaltungskosten);
     }
 
     private function initializeInsurancesForm(): void

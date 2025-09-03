@@ -87,7 +87,7 @@ class ActivateCardAktion extends Aktion
 
         // Append Ereignis-Events (this has a 25 percent chance to be triggered, otherwise nothing gets added)
         return $eventsFromActivation->withAppendedEvents(
-            ...(new EreignisCommandHandler())->handle(MaybeTriggerEreignis::create($playerId, $this->category), $gameEvents)
+            ...new EreignisCommandHandler()->handle(MaybeTriggerEreignis::create($playerId, $this->category), $gameEvents)
         );
     }
 }
