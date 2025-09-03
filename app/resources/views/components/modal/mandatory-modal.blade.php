@@ -2,7 +2,7 @@
     'size' => '', // small
 ])
 
-<div x-data="{ open: true }" x-trap.noscroll="open"
+<div x-data="{ open: true }" x-trap.inert.noscroll="open"
     @class([
         "modal",
         "modal--type-mandatory",

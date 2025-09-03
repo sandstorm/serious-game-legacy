@@ -3,7 +3,7 @@
     'emptySlots' => [],
 ])
 
-<div x-data="playerList()" x-trap.noscroll="playerListOpen" @touchstart.passive="touchStart($event)" @touchend.passive="touchEnd()"
+<div x-data="playerList()" x-trap.inert.noscroll="playerListOpen" @touchstart.passive="touchStart($event)" @touchend.passive="touchEnd()"
     @class([
         'player-list',
     ])

@@ -9,7 +9,7 @@
 >
     @if ($this->currentPlayerIsMyself())
         <button class="event-log__toggle button button--type-icon" x-on:click="eventLogOpen = !eventLogOpen">
-            <i :class="eventLogOpen ? 'icon-close' : 'icon-log-ausklappen'"></i>
+            <i :class="eventLogOpen ? 'icon-close' : 'icon-log-ausklappen'" aria-hidden="true"></i>
             <span class="sr-only">Ereignisprotokoll ausklappen/einklappen</span>
         </button>
     @endif
