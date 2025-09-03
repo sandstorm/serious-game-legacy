@@ -11,6 +11,8 @@
                 <h4>Phase {{$phase->lebenszielPhaseId->value}}</h4>
                 <p>{{$phase->description}}</p>
 
+                <h5>Bildung & Karriere</h5>
+                <span class="sr-only">Benötigte Kompetenzsteine: {{ $phase->bildungsKompetenzSlots }}</span>
                 <ul class="kompetenzen">
                     @for($i = 0; $i < $phase->bildungsKompetenzSlots; $i++)
                         <x-gameboard.kompetenzen.kompetenz-icon-bildung
@@ -18,6 +20,8 @@
                     @endfor
                 </ul>
 
+                <h5>Freizeit & Soziales</h5>
+                <span class="sr-only">Benötigte Kompetenzsteine: {{ $phase->freizeitKompetenzSlots }}</span>
                 <ul class="kompetenzen">
                     @for($i = 0; $i < $phase->freizeitKompetenzSlots; $i++)
                         <x-gameboard.kompetenzen.kompetenz-icon-freizeit

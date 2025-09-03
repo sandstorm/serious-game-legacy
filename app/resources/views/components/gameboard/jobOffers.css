@@ -28,8 +28,9 @@
     h5 {
         margin-top: var(--spacing-100);
         margin-bottom: 0;
+        justify-content: center;
 
-        font-weight: var(--font-weight-medium);
+        font-weight: var(--font-weight-regular);
         text-align: center;
         font-size: var(--font-size-sm);
     }

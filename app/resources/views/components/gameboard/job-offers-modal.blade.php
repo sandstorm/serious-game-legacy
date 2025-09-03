@@ -54,6 +54,8 @@
                     @if ($jobOffer->getRequirements()->bildungKompetenzsteine === 0 && $jobOffer->getRequirements()->freizeitKompetenzsteine === 0)
                         <strong>Keine</strong>
                     @else
+                        <span class="sr-only">Kompetenzsteine im Bereich Bildung & Karriere: {{ $jobOffer->getRequirements()->bildungKompetenzsteine  }}</span>
+                        <span class="sr-only">Kompetenzsteine im Bereich Freizeit & Soziales: {{ $jobOffer->getRequirements()->freizeitKompetenzsteine  }}</span>
                         <ul class="kompetenzen">
                             @for($i = 0; $i < $jobOffer->getRequirements()->bildungKompetenzsteine; $i++)
                                 <x-gameboard.kompetenzen.kompetenz-icon-bildung

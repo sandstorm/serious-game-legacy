@@ -92,18 +92,20 @@
                     </div>
                 </div>
 
-                <button type="button"
-                    @class([
-                        'button',
-                        'button--type-primary',
-                        'player-list__close-button',
-                        $player->playerColorClass,
-                    ])
-                    x-on:click="playerListOpen = false"
-                >
-                    <i class="icon-arrow-up" aria-hidden="true"></i>
-                    <span class="sr-only">Spielerübersicht schließen</span>
-                </button>
+                @if ($this->playerIsMyself($player->playerId))
+                    <button type="button"
+                        @class([
+                            'button',
+                            'button--type-primary',
+                            'player-list__close-button',
+                            $player->playerColorClass,
+                        ])
+                        x-on:click="playerListOpen = false"
+                    >
+                        <i class="icon-arrow-up" aria-hidden="true"></i>
+                        <span class="sr-only">Spielerübersicht schließen</span>
+                    </button>
+                @endif
             </div>
         </div>
     @endforeach
