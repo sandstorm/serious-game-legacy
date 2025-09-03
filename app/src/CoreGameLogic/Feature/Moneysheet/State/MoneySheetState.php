@@ -449,6 +449,7 @@ class MoneySheetState
             ->add(self::getAnnualExpensesForAllLoans($gameEvents, $playerId))
             ->add(self::getCostOfAllInsurances($gameEvents, $playerId))
             ->add(self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId))
+            ->add(self::calculateInsolvenzabgabenForPlayer($gameEvents, $playerId))
             ->add(self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId));
     }
 
@@ -463,6 +464,7 @@ class MoneySheetState
             ->add(self::getAnnualExpensesForAllLoans($gameEvents, $playerId))
             ->add(self::getCostOfAllInsurances($gameEvents, $playerId))
             ->add(self::getLastInputForLebenshaltungskosten($gameEvents, $playerId))
+            ->add(self::calculateInsolvenzabgabenForPlayer($gameEvents, $playerId))
             ->add(self::getLastInputForSteuernUndAbgaben($gameEvents, $playerId));
     }
 
@@ -488,5 +490,23 @@ class MoneySheetState
     {
         return self::getAnnualIncomeForPlayer($gameEvents, $playerId)
             ->subtract(self::calculateAnnualExpensesFromPlayerInput($gameEvents, $playerId));
+    }
+
+    /**
+     * If the player is insolvent they only keep the amount specified in {@see Configuration::INSOLVENZ_PFAENDUNGSFREIGRENZE}
+     * of their income. Anything more than that will be deducted as Insolvenzabgaben.
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return MoneyAmount
+     */
+    public static function calculateInsolvenzabgabenForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
+    {
+        if (!PlayerState::isPlayerInsolvent($gameEvents, $playerId)) {
+            return new MoneyAmount(0);
+        }
+        $currentGehalt = PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId);
+        $steuernUndAbgaben = MoneySheetState::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId);
+        $nettoGehalt = $currentGehalt->subtract($steuernUndAbgaben);
+        return new MoneyAmount(max([0, $nettoGehalt->subtract(new MoneyAmount(Configuration::INSOLVENZ_PFAENDUNGSFREIGRENZE))->value]));
     }
 }

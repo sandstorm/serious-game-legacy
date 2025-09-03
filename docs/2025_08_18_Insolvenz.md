@@ -44,7 +44,7 @@
     - [ ] alle Kredite werden getilgt (nochmal abklären)
     - [ ] Unaffordable Ereigniskarten?
     - [x] ~~Modifier:~~ Lebenshaltungskosten auf minValue -> mit Validator
-    - [ ] Modifier: max 10.000 € (netto?) vom Job dürfen behalten werden
+    - [x] ~~Modifier:~~ max 10.000 € (netto?) vom Job dürfen behalten werden -> über MoneySheetState + Insolvenzabgaben
     - [ ] Modifier: Ereignisse, die Geldbeträge auszahlen, zahlen nur 50% aus
     - [x] ~~Modifier:~~ Kreditsperre -> mit Validator
     - [x] ~~Modifier:~~ Versicherungssperre -> mit Validator

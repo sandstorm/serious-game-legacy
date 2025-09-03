@@ -86,4 +86,9 @@ final readonly class Configuration
      * The duration of an insolvenz in years.
      */
     public final const INSOLVENZ_DURATION = 3;
+
+    /**
+     * The maximum amount of money a player can keep from their income when they are insolvent.
+     */
+    public final const INSOLVENZ_PFAENDUNGSFREIGRENZE = 10000;
 }
