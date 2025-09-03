@@ -10,12 +10,12 @@
     :class="playerListOpen ? 'player-list--show-details' : ''"
 >
     @foreach($emptySlots as $emptySlot)
-        <li
+        <div
             @class([
                 'player-list__player',
                 $emptySlot->playerColorClass,
             ])>
-        </li>
+        </div>
     @endforeach
 
     @foreach($players as $player)
@@ -36,8 +36,8 @@
                     {{ $player->name }}
                 </div>
 
+                <span class="sr-only">{{ $player->zeitsteine->ariaLabel }}</span>
                 <ul class="zeitsteine">
-                    <span class="sr-only">{{ $player->zeitsteine->ariaLabel }}</span>
                     @foreach($player->zeitsteine->zeitsteine as $playerZeitstein)
                         <x-gameboard.zeitsteine.zeitstein-icon :player-name="$player->name" :player-color-class="$playerZeitstein->colorClass" :draw-empty="$playerZeitstein->drawEmpty" />
                     @endforeach
