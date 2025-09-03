@@ -15,7 +15,7 @@
                 $this->getPlayerColorClass(),
             ])
         >
-            <i class="icon-lock-closed"></i>
+            <i class="icon-lock-closed" aria-hidden="true"></i>
             @if ($lebenszielPhase === 3)
                 Lebensziel <br /> abschließen
             @else
@@ -34,9 +34,9 @@
             wire:click="changeLebenszielphase()"
         >
             @if($this->canChangeLebenszielphase())
-                <i class="icon-lock-open"></i>
+                <i class="icon-lock-open" aria-hidden="true"></i>
             @else
-                <i class="icon-lock-closed"></i>
+                <i class="icon-lock-closed" aria-hidden="true"></i>
             @endif
 
             @if ($lebenszielPhase === 3)

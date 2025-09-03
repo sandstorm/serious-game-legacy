@@ -17,10 +17,10 @@
         </div>
         <div class="card__actions-header-category">
             @if ($ereignisCard->getCategory() === CategoryId::SOZIALES_UND_FREIZEIT->value)
-                <i class="icon-freizeit-und-soziales"></i>
+                <i class="icon-freizeit-und-soziales" aria-hidden="true"></i>
             @endif
             @if ($ereignisCard->getCategory() === CategoryId::BILDUNG_UND_KARRIERE->value)
-                <i class="icon-bildung-und-karriere"></i>
+                <i class="icon-bildung-und-karriere"> aria-hidden="true"</i>
             @endif
             {{ $ereignisCard->getCategory() }}
         </div>

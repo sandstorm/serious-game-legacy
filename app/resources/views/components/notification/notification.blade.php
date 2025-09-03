@@ -1,6 +1,6 @@
 
 @if ($this->notificationIsVisible)
-    <div x-data="{ open: true }" x-trap.noscroll="open"
+    <div x-data="{ open: true }" x-trap.inert.noscroll="open"
         @class([
             'notification',
             'notification--type-'.$this->notificationType->value
@@ -9,7 +9,7 @@
         <div class="notification__backdrop" wire:click="closeNotification()"></div>
         <div class="notification__content">
             <div class="notification__icon">
-                <i class="icon-ereignis"></i>
+                <i class="icon-ereignis" aria-hidden="true"></i>
             </div>
             <div class="notification__close-button">
                 <button type="button" class="button button--type-borderless" wire:click="closeNotification()">

@@ -8,6 +8,7 @@
     ])
     x-cloak
     x-show="visible"
+    x-trap.inert.noscroll="visible"
     x-init="
         timer = setTimeout(() => {visible = false; message = null}, 10000);
         $watch('message', () => {
