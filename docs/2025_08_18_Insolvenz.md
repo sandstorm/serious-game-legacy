@@ -48,7 +48,7 @@
     - [x] ~~Modifier:~~ Ereignisse, die Geldbeträge auszahlen, zahlen nur 50% aus -> EreignisCommandHandler
     - [x] ~~Modifier:~~ Kreditsperre -> mit Validator
     - [x] ~~Modifier:~~ Versicherungssperre -> mit Validator
-    - [ ] Modifier: Lebenshaltungskosten selbst zahlen, wenn möglich, sonst erstattet (komplett oder nur Fehlbetrag?)
+    - [x] ~~Modifier:~~ Lebenshaltungskosten selbst zahlen, wenn möglich, sonst erstattet (komplett ~~oder nur Fehlbetrag?~~)
     - [x] Investitionen: Beschluss von Martin -> erstmal Investitionssperre -> mit Validator
 - [ ] Kreditvoraussetzungen nach Insolvenz
 - [ ] UI

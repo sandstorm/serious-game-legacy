@@ -39,7 +39,19 @@ class MoneySheetState
         PlayerId $playerId
     ): MoneyAmount {
         if (PlayerState::isPlayerInsolvent($gameEvents, $playerId)) {
-            return self::calculateMinimumValueForLebenshaltungskostenForPlayer($gameEvents, $playerId);
+            $currentGuthaben = PlayerState::getGuthabenForPlayer($gameEvents, $playerId);
+            $totalAnnualIncome = self::getAnnualIncomeForPlayer($gameEvents, $playerId);
+            $annualExpensesWithoutLebenshaltungskosten = new MoneyAmount(0)
+                ->add(self::getAnnualExpensesForAllLoans($gameEvents, $playerId))
+                ->add(self::getCostOfAllInsurances($gameEvents, $playerId))
+                ->add(self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId))
+                ->add(self::calculateInsolvenzabgabenForPlayer($gameEvents, $playerId));
+
+            $lebenshaltungskosten = self::calculateMinimumValueForLebenshaltungskostenForPlayer($gameEvents, $playerId);
+
+            return $currentGuthaben->add($totalAnnualIncome)->subtract($annualExpensesWithoutLebenshaltungskosten)->value < $lebenshaltungskosten->value
+                ? new MoneyAmount(0)
+                : $lebenshaltungskosten;
         }
 
         $gehalt = PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId);
