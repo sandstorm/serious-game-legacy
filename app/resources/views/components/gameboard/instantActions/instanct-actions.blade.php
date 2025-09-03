@@ -37,11 +37,11 @@
             <div class="button__suffix">
                 <div>
                     <i class="icon-plus text--success" aria-hidden="true"></i><i class="icon-euro" aria-hidden="true"></i>
-                    <span class="sr-only">, gibt einmalige Zahlung</span>
+                    <span class="sr-only">Du bekommst eine einmalige Zahlung</span>
                 </div>
                 <div>
                     <i class="icon-minus text--danger" aria-hidden="true"></i><i class="icon-zeitstein" aria-hidden="true"></i>
-                    <span class="sr-only">, kostet einen Zeitstein</span>
+                    <span class="sr-only">Kostet einen Zeitstein</span>
                 </div>
             </div>
         </button>

@@ -10,14 +10,13 @@
         @for($i = $change; $i < 0; $i++)
             <i @class([$iconClass]) aria-hidden="true"></i>
         @endfor
-        <span class="sr-only">- {{ $change }} {{ $srLabel }} </span>
     @else
         <i class="text--success icon-plus" aria-hidden="true"></i>
         @for($i = 0; $i < $change; $i++)
             <i @class([$iconClass]) aria-hidden="true"></i>
         @endfor
-        <span class="sr-only">+ {{ $change }} {{ $srLabel }} </span>
     @endif
+    <span class="sr-only">{{ $change }} {{ $srLabel }} </span>
 </div>
 
 
