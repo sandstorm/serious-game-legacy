@@ -39,6 +39,8 @@
 - [x] Shaping
 - [ ] Warnung vor drohender Insolvenz (wenn vor Konjunkturphasenende absehbar -> negativer Kontostand/kein Einkommen und Kontostand < Fixkosten)
 - [ ] Abfrage: Kreditaufnahme oder Verkauf von Geldanlagen (wenn möglich)
+    - [ ] Versicherungen kündigen (wenn möglich)
+    - [ ] Investitionen verkaufen (wenn möglich)
 - [ ] Insolvenz:
     - [x] Kontostand = 0 €
     - [ ] alle Kredite werden getilgt (nochmal abklären)
@@ -50,7 +52,7 @@
     - [x] ~~Modifier:~~ Versicherungssperre -> mit Validator
     - [x] ~~Modifier:~~ Lebenshaltungskosten selbst zahlen, wenn möglich, sonst erstattet (komplett ~~oder nur Fehlbetrag?~~)
     - [x] Investitionen: Beschluss von Martin -> erstmal Investitionssperre -> mit Validator
-- [ ] Kreditvoraussetzungen nach Insolvenz
+- [x] Kreditvoraussetzungen nach Insolvenz -> ohne Job nur noch 50% des Vermögens (statt 80%)
 - [ ] UI
     - [ ] Kontostand in Übersicht (Konjunkturphasenwechsel)
     - [ ] Abgaben an Insolvenzverwalter explizit in Moneysheet ausweisen

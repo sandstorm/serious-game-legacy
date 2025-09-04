@@ -551,4 +551,13 @@ class PlayerState
 
         return $playerHasFiledForInsolvenzEventOrNull !== null;
     }
+
+    public static function wasPlayerInsolventOnceThisGame(GameEvents $gameEvents, PlayerId $playerId): bool
+    {
+        $playerHasFiledForInsolvenzEventOrNull = $gameEvents->findLastOrNullWhere(
+            fn($event) => $event instanceof PlayerHasFiledForInsolvenz &&
+                $playerId->equals($event->playerId));
+
+        return $playerHasFiledForInsolvenzEventOrNull !== null;
+    }
 }

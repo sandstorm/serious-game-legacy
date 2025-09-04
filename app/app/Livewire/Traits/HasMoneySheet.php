@@ -280,6 +280,7 @@ trait HasMoneySheet
         $this->takeOutALoanForm->loanId = LoanId::unique()->value;
         $this->takeOutALoanForm->guthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->myself)->value + PlayerState::getTotalValueOfAllAssetsForPlayer($this->getGameEvents(), $this->myself)->value;
         $this->takeOutALoanForm->hasJob = PlayerState::getJobForPlayer($this->getGameEvents(), $this->myself) !== null;
+        $this->takeOutALoanForm->wasInsolvent = PlayerState::wasPlayerInsolventOnceThisGame($this->getGameEvents(), $this->myself);
         $this->takeOutALoanForm->zinssatz = KonjunkturphaseState::getCurrentKonjunkturphase($this->getGameEvents())->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->value;
     }
 
@@ -297,7 +298,7 @@ trait HasMoneySheet
         if (!$resultOfLastInput->wasSuccessful && $resultOfLastInput->fine->value > 0) {
             $this->takeOutALoanForm->loanAmount = intval(min(
                 $this->takeOutALoanForm->loanAmount,
-                LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->guthaben, $this->takeOutALoanForm->hasJob)
+                LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->guthaben, $this->takeOutALoanForm->hasJob, $this->takeOutALoanForm->wasInsolvent)
             ));
             $this->takeOutALoanForm->totalRepayment = LoanCalculator::getCalculatedTotalRepayment($this->takeOutALoanForm->loanAmount, $this->takeOutALoanForm->zinssatz);
             $this->takeOutALoanForm->repaymentPerKonjunkturphase = $this->takeOutALoanForm->getCalculatedRepaymentPerKonjunkturphase();

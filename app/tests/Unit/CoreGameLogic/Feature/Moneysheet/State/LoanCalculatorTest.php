@@ -13,7 +13,8 @@ class LoanCalculatorTest extends TestCase
     {
         $guthaben = 1000.0;
         $hasJob = false;
-        $maxLoanAmount = LoanCalculator::getMaxLoanAmount($guthaben, $hasJob);
+        $wasInsolvent = false;
+        $maxLoanAmount = LoanCalculator::getMaxLoanAmount($guthaben, $hasJob, $wasInsolvent);
         $this->assertEquals(800.0, $maxLoanAmount);
     }
 
@@ -21,8 +22,27 @@ class LoanCalculatorTest extends TestCase
     {
         $guthaben = 1000.0;
         $hasJob = true;
-        $maxLoanAmount = LoanCalculator::getMaxLoanAmount($guthaben, $hasJob);
+        $wasInsolvent = false;
+        $maxLoanAmount = LoanCalculator::getMaxLoanAmount($guthaben, $hasJob, $wasInsolvent);
         $this->assertEquals(10000.0, $maxLoanAmount);
+    }
+
+    public function testGetMaxLoanAmountWithJobAndInsolvenz(): void
+    {
+        $guthaben = 1000.0;
+        $hasJob = true;
+        $wasInsolvent = true;
+        $maxLoanAmount = LoanCalculator::getMaxLoanAmount($guthaben, $hasJob, $wasInsolvent);
+        $this->assertEquals(10000.0, $maxLoanAmount);
+    }
+
+    public function testGetMaxLoanAmountWithoutJobAndWithInsolvenz(): void
+    {
+        $guthaben = 1000.0;
+        $hasJob = false;
+        $wasInsolvent = true;
+        $maxLoanAmount = LoanCalculator::getMaxLoanAmount($guthaben, $hasJob, $wasInsolvent);
+        $this->assertEquals(500.0, $maxLoanAmount);
     }
 
     public function testGetCalculatedTotalRepayment(): void
