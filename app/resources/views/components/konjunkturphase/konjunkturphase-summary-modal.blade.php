@@ -25,7 +25,13 @@
                         wire:click="showMoneysheetSummaryForPlayer('{{$player->playerId}}')"
                     >
                         {{$player->name}}
-                        @if(KonjunkturphaseState::isPlayerReadyForKonjunkturphaseChange($gameEvents, $player->playerId))✅@else⏳@endif
+                        @if(KonjunkturphaseState::isPlayerReadyForKonjunkturphaseChange($gameEvents, $player->playerId))
+                            <i class="icon-fertig" aria-hidden="true"></i>
+                            <span class="sr-only">Spieler ist bereit für den Konjunkturphasenwechsel.</span>
+                        @else
+                            <i class="icon-sanduhr" aria-hidden="true"></i>
+                            <span class="sr-only">Spieler ist noch nicht bereit für den Konjunkturphasenwechsel.</span>
+                        @endif
                     </button>
                 </li>
             @endforeach

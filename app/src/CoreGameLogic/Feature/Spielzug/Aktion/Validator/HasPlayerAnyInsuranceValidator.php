@@ -4,22 +4,22 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
-use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 
 /**
- * Succeeds if the player is not insolvent.
+ * Succeeds if the player has any insurance.
  */
-final class IsPlayerNotInsolventValidator extends AbstractValidator
+final class HasPlayerAnyInsuranceValidator extends AbstractValidator
 {
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
 
-        if (PlayerState::isPlayerInsolvent($gameEvents, $playerId)) {
+        if (MoneySheetState::getCostOfAllInsurances($gameEvents, $playerId)->value <= 0) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Du bist insolvent'
+                reason: 'Du hast keine Versicherung, die gekündigt werden kann'
             );
         }
 

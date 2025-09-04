@@ -7,6 +7,7 @@ namespace App\Livewire;
 use App\Events\GameStateUpdated;
 use App\Livewire\Traits\HasBanner;
 use App\Livewire\Traits\HasCard;
+use App\Livewire\Traits\HasInsolvenz;
 use App\Livewire\Traits\HasWeiterbildung;
 use App\Livewire\Traits\HasGamePhase;
 use App\Livewire\Traits\HasInvestitionen;
@@ -28,7 +29,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
-use Domain\Definitions\Lebensziel\LebenszielFinder;
 use Illuminate\Events\Dispatcher;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -50,6 +50,7 @@ class GameUi extends Component
     use HasQuitJob;
     use HasWeiterbildung;
     use HasBanner;
+    use HasInsolvenz;
 
     // injected from outside -> game-play.blade.php
     // Not the current player, but the player connected to THIS SESSION

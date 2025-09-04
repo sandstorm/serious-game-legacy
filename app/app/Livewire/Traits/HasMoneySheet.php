@@ -179,19 +179,24 @@ trait HasMoneySheet
 
     public function getMoneysheetForPlayerId(PlayerId $playerId): MoneySheetDto
     {
+        $totalFromPlayerInput = MoneySheetState::calculateTotalFromPlayerInput($this->getGameEvents(), $playerId);
+        $guthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $playerId);
+        $oldGuthaben = $guthaben->subtract($totalFromPlayerInput);
         return new MoneySheetDto(
             lebenshaltungskosten: new MoneyAmount(-1 * MoneySheetState::getLastInputForLebenshaltungskosten($this->getGameEvents(), $playerId)->value),
             doesLebenshaltungskostenRequirePlayerAction: MoneySheetState::doesLebenshaltungskostenRequirePlayerAction($this->getGameEvents(), $playerId),
             steuernUndAbgaben: new MoneyAmount(-1 * MoneySheetState::getLastInputForSteuernUndAbgaben($this->getGameEvents(), $playerId)->value),
             doesSteuernUndAbgabenRequirePlayerAction: MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($this->getGameEvents(), $playerId),
             gehalt: PlayerState::getCurrentGehaltForPlayer($this->getGameEvents(), $playerId),
-            totalFromPlayerInput: MoneySheetState::calculateTotalFromPlayerInput($this->getGameEvents(), $playerId),
+            totalFromPlayerInput: $totalFromPlayerInput,
             totalInsuranceCost: new MoneyAmount(-1 * MoneySheetState::getCostOfAllInsurances($this->getGameEvents(), $playerId)->value),
             annualExpensesForAllLoans: new MoneyAmount(-1 * MoneySheetState::getAnnualExpensesForAllLoans($this->getGameEvents(), $playerId)->value),
             sumOfAllAssets: PlayerState::getDividendForAllStocksForPlayer($this->getGameEvents(), $playerId), // TODO is it correct to use dividend here?
             annualIncome: MoneySheetState::getAnnualIncomeForPlayer($this->getGameEvents(), $playerId),
             annualExpenses: new MoneyAmount(-1 * MoneySheetState::getAnnualExpensesForPlayer($this->getGameEvents(), $playerId)->value),
             annualExpensesFromPlayerInput: new MoneyAmount (-1 * MoneySheetState::calculateAnnualExpensesFromPlayerInput($this->getGameEvents(), $playerId)->value),
+            newGuthaben: $guthaben,
+            oldGuthaben: $oldGuthaben,
         );
     }
 

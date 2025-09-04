@@ -14,6 +14,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\AcceptJobOfferAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ActivateCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\BuyInvestmentsForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CancelAllInsurancesForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CancelInsuranceForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ChangeLebenszielphaseAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CompleteMoneySheetForPlayerAktion;
@@ -38,6 +39,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\TakeOutALoanForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelAllInsurancesForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ChangeLebenszielphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\FileInsolvenzForPlayer;
@@ -90,7 +92,8 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             || $command instanceof PutCardBackOnTopOfPile
             || $command instanceof StartWeiterbildung
             || $command instanceof SubmitAnswerForWeiterbildung
-            || $command instanceof FileInsolvenzForPlayer;
+            || $command instanceof FileInsolvenzForPlayer
+            || $command instanceof CancelAllInsurancesForPlayer;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameEvents): GameEventsToPersist
@@ -129,6 +132,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             StartWeiterbildung::class => $this->handleStartWeiterbildung($command, $gameEvents),
             SubmitAnswerForWeiterbildung::class => $this->handleSubmitAnswerWeiterbildung($command, $gameEvents),
             FileInsolvenzForPlayer::class => $this->handleFileInsolvenzForPlayer($command, $gameEvents),
+            CancelAllInsurancesForPlayer::class => $this->handleCancelALlInsurancesForPlayer($command, $gameEvents),
         };
     }
 
@@ -338,5 +342,11 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
     {
         $aktion = new FileInsolvenzForPlayerAktion();
         return $aktion->execute($command->getPlayer(), $gameEvents);
+    }
+
+    private function handleCancelAllInsurancesForPlayer(CancelAllInsurancesForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
+    {
+        $aktion = new CancelAllInsurancesForPlayerAktion();
+        return $aktion->execute($command->playerId, $gameEvents);
     }
 }
