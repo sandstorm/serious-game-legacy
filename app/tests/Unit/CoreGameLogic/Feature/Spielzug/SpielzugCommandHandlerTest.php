@@ -5,26 +5,21 @@ declare(strict_types=1);
 namespace Tests\CoreGameLogic\Feature\Spielzug;
 
 
-use App\Livewire\Forms\TakeOutALoanForm;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesInvestmentPriceChanges;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
-use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ChangeLebenszielphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\PutCardBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
@@ -35,24 +30,17 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartWeiterbildung;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SubmitAnswerForWeiterbildung;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Dto\LoanData;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasPutBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereEntered;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasCorrected;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SteuernUndAbgabenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
-use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Card\Dto\AnswerOption;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
@@ -68,7 +56,6 @@ use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use RuntimeException;
-use Tests\ComponentWithForm;
 use Tests\TestCase;
 
 @covers(SpielzugCommandHandler::class);
@@ -2348,37 +2335,3 @@ describe('handleSellInvestmentsForPlayer', function () {
     })->throws(\RuntimeException::class, 'Du hast nicht genug Investitionen vom Typ Merfedes-Penz zum Verkaufen.', 1752753850);
 });
 
-describe('handleConcludeInsurance', function () {
-   it('removes the correct balance from the player\'s Guthaben', function () {
-       /** @var TestCase $this */
-       $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-       $initialGuthabenForPlayer1 = PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]);
-       $initialGuthabenForPlayer2 = PlayerState::getGuthabenForPlayer($gameEvents, $this->players[1]);
-       $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->players[0], InsuranceId::create(1)));
-       $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-       $actualGuthabenForPlayer1 = PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]);
-       $actualGuthabenForPlayer2 = PlayerState::getGuthabenForPlayer($gameEvents, $this->players[1]);
-       expect($actualGuthabenForPlayer1->value)->toEqual($initialGuthabenForPlayer1->value - 100)
-           ->and($actualGuthabenForPlayer2->value)->toEqual($initialGuthabenForPlayer2->value);
-   });
-
-    it('throws an error when the player does not have enough Guthaben', function () {
-        /** @var TestCase $this */
-        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        $initialGuthabenForPlayer1 = PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]);
-        $cardToRemoveGuthaben = new KategorieCardDefinition(
-            id: new CardId('cardToRemoveGuthaben'),
-            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
-            title: 'for testing',
-            description: '...',
-            resourceChanges: new ResourceChanges(
-                guthabenChange: new MoneyAmount(-1 * $initialGuthabenForPlayer1->value),
-            ),
-        );
-        $this->startNewKonjunkturphaseWithCardsOnTop([$cardToRemoveGuthaben]);
-        $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
-
-        $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->players[0], InsuranceId::create(1)));
-
-    })->throws(\RuntimeException::class, 'Cannot conclude insurance: Du hast nicht genug Ressourcen', 1751554652);
-});

@@ -425,21 +425,21 @@ describe("isPlayerInsolvent", function () {
 
        //first year of Insolvenz for player 1
        expect(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[0]))->toBeTrue()
-           ->and(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[1]))->not()->toBeTrue();
+           ->and(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[1]))->toBeFalse();
 
        $this->startNewKonjunkturphaseWithCardsOnTop([]);
        //second year of Insolvenz for player 1
        expect(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[0]))->toBeTrue()
-           ->and(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[1]))->not()->toBeTrue();
+           ->and(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[1]))->toBeFalse();
 
        $this->startNewKonjunkturphaseWithCardsOnTop([]);
        //third year of Insolvenz for player 1
        expect(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[0]))->toBeTrue()
-           ->and(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[1]))->not()->toBeTrue();
+           ->and(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[1]))->toBeFalse();
 
        $this->startNewKonjunkturphaseWithCardsOnTop([]);
        //first year after Insolvenz for player 1
-       expect(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[0]))->not()->toBeTrue()
-           ->and(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[1]))->not()->toBeTrue();
+       expect(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[0]))->toBeFalse()
+           ->and(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[1]))->toBeFalse();
    });
 });

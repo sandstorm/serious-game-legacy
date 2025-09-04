@@ -7,6 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerANegativeBalanceValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerAnyInsuranceValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerNotInsolventValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
@@ -27,6 +28,7 @@ class CancelAllInsurancesForPlayerAktion extends Aktion
     {
         $validatorChain = new IsPlayerNotInsolventValidator();
         $validatorChain
+            ->setNext(new HasPlayerANegativeBalanceValidator())
             ->setNext(new HasPlayerAnyInsuranceValidator());
         return $validatorChain->validate($gameEvents, $playerId);
     }

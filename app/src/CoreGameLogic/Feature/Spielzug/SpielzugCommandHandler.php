@@ -132,7 +132,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             StartWeiterbildung::class => $this->handleStartWeiterbildung($command, $gameEvents),
             SubmitAnswerForWeiterbildung::class => $this->handleSubmitAnswerWeiterbildung($command, $gameEvents),
             FileInsolvenzForPlayer::class => $this->handleFileInsolvenzForPlayer($command, $gameEvents),
-            CancelAllInsurancesForPlayer::class => $this->handleCancelALlInsurancesForPlayer($command, $gameEvents),
+            CancelAllInsurancesForPlayer::class => $this->handleCancelAllInsurancesForPlayer($command, $gameEvents),
         };
     }
 
