@@ -18,3 +18,23 @@
     .card__title {
     }
 }
+
+.investitionen__buy-sell-immobilien {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-100);
+
+    .card-pile {
+        max-width: 300px;
+    }
+
+    .card__content {
+        flex-shrink: 0;
+        height: auto;
+
+        .button {
+            margin-top: var(--spacing-100);
+        }
+    }
+}

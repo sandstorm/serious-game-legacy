@@ -18,6 +18,7 @@ use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyImmobilieForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ChangeLebenszielphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
@@ -30,10 +31,10 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPl
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SellImmobilieForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartWeiterbildung;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SubmitAnswerForWeiterbildung;
@@ -41,7 +42,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\LoanData;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasPutBackOnTopOfPile;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereEntered;
@@ -55,8 +55,9 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\SteuernUndAbgabenForPlayerWereEn
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\Definitions\Card\Dto\InvestitionenCardDefinition;
+use Domain\Definitions\Card\ValueObject\ImmobilienType;
 use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
-use Domain\Definitions\Card\Dto\ModifierParameters;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Card\Dto\AnswerOption;
@@ -68,22 +69,10 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\ValueObject\AnswerId;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
-use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
-use Domain\Definitions\Konjunkturphase\Dto\ConditionalResourceChange;
-use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
-use Domain\Definitions\Konjunkturphase\Dto\Zeitslots;
-use Domain\Definitions\Konjunkturphase\Dto\ZeitslotsPerPlayer;
-use Domain\Definitions\Konjunkturphase\Dto\Zeitsteine;
-use Domain\Definitions\Konjunkturphase\Dto\ZeitsteinePerPlayer;
-use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
-use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
-use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
-use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use RuntimeException;
 use Tests\ComponentWithForm;
 use Tests\TestCase;
@@ -2263,7 +2252,6 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
 
     it('marks the player as ready', function () {
         /** @var TestCase $this */
-
         $cardsForTesting = [
             new KategorieCardDefinition(
                 id: new CardId('cardToRemoveZeitsteine'),
@@ -2834,4 +2822,210 @@ describe('handleConcludeInsurance', function () {
         $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->players[0], InsuranceId::create(1)));
 
     })->throws(\RuntimeException::class, 'Cannot conclude insurance: Du hast nicht genug Ressourcen', 1751554652);
+});
+
+describe('handleBuyImmoblie', function () {
+    it('buying works as expected', function () {
+        $cardsForTesting = [
+            new InvestitionenCardDefinition(
+                id: new CardId('inv1'),
+                title: 'Kauf Wohnung',
+                description: 'Eine Wohnung in einem neuen Sudierendenwohnheim steht zum Verkauf.',
+                phaseId: LebenszielPhaseId::PHASE_1,
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(-20000),
+                ),
+                annualRent: new MoneyAmount(1500),
+                immobilienTyp: ImmobilienType::WOHNUNG
+            ),
+        ];
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            BuyImmobilieForPlayer::create(
+                $this->players[0],
+                new CardId('inv1'),
+            )
+        );
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE - 20000))
+            ->and(PlayerState::getImmoblienOwnedByPlayer($gameEvents, $this->players[0]))->toHaveCount(1)
+            ->and(PlayerState::getAnnualRentIncomeForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(1500))
+            ->and(PlayerState::getZeitsteineForPlayer($gameEvents, $this->players[0]))->toEqual($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1)
+            ->and(PlayerState::getImmoblienOwnedByPlayer($gameEvents, $this->players[1]))->toHaveCount(0)
+            ->and(PlayerState::getAnnualRentIncomeForPlayer($gameEvents, $this->players[1]))->toEqual(new MoneyAmount(0))
+            ->and(PlayerState::getZeitsteineForPlayer($gameEvents, $this->players[1]))->toEqual($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
+    });
+
+    it('throws exception if player tries to buy an immobile they cannot afford', function () {
+        $cardsForTesting = [
+            new InvestitionenCardDefinition(
+                id: new CardId('inv1'),
+                title: 'Kauf Wohnung',
+                description: 'Eine Wohnung in einem neuen Sudierendenwohnheim steht zum Verkauf.',
+                phaseId: LebenszielPhaseId::PHASE_1,
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount((Configuration::STARTKAPITAL_VALUE + 20000) * -1),
+                ),
+                annualRent: new MoneyAmount(1500),
+                immobilienTyp: ImmobilienType::WOHNUNG
+            ),
+        ];
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            BuyImmobilieForPlayer::create(
+                $this->players[0],
+                new CardId('inv1'),
+            )
+        );
+    })->throws(\RuntimeException::class, 'Du hast nicht genug Ressourcen', 1754661378);
+});
+
+describe('handleSellImmoblie', function () {
+    it('selling works as expected', function () {
+        $cardsForTesting = [
+            new InvestitionenCardDefinition(
+                id: new CardId('inv1'),
+                title: 'Kauf Wohnung',
+                description: 'Eine Wohnung in einem neuen Sudierendenwohnheim steht zum Verkauf.',
+                phaseId: LebenszielPhaseId::PHASE_1,
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(-20000),
+                ),
+                annualRent: new MoneyAmount(1500),
+                immobilienTyp: ImmobilienType::WOHNUNG
+            ),
+            new InvestitionenCardDefinition(
+                id: new CardId('inv2'),
+                title: 'Verkauf Wohnung',
+                description: 'Jemand möchte deine Wohnung kaufen.',
+                phaseId: LebenszielPhaseId::PHASE_1,
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(10000),
+                ),
+                annualRent: new MoneyAmount(0),
+                immobilienTyp: ImmobilienType::WOHNUNG
+            ),
+        ];
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            BuyImmobilieForPlayer::create(
+                $this->players[0],
+                new CardId('inv1'),
+            )
+        );
+
+        // end zug for player 0
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[0])
+        );
+
+        // requst job offers for player 1
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            DoMinijob::create($this->players[1])
+        );
+
+        // end zug for player 1
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[1])
+        );
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE - 20000))
+            ->and(PlayerState::getImmoblienOwnedByPlayer($gameEvents, $this->players[0]))->toHaveCount(1)
+            ->and(PlayerState::getAnnualRentIncomeForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(1500));
+
+        // now sell the immobile
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            SellImmobilieForPlayer::create(
+                $this->players[0],
+                new CardId('inv2'),
+            )
+        );
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE - 20000 + 10000))
+            ->and(PlayerState::getImmoblienOwnedByPlayer($gameEvents, $this->players[0]))->toHaveCount(0)
+            ->and(PlayerState::getAnnualRentIncomeForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(0));
+    });
+
+    it('throws exception if player tries to sell an immobile they do not own', function () {
+        $cardsForTesting = [
+            new InvestitionenCardDefinition(
+                id: new CardId('inv1'),
+                title: 'Kauf Haus',
+                description: 'Ein Haus steht zum Verkauf.',
+                phaseId: LebenszielPhaseId::PHASE_1,
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(-40000),
+                ),
+                annualRent: new MoneyAmount(0),
+                immobilienTyp: ImmobilienType::HAUS
+            ),
+            new InvestitionenCardDefinition(
+                id: new CardId('inv2'),
+                title: 'Verkauf Wohnung',
+                description: 'Jemand möchte deine Wohnung kaufen.',
+                phaseId: LebenszielPhaseId::PHASE_1,
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(10000),
+                ),
+                annualRent: new MoneyAmount(0),
+                immobilienTyp: ImmobilienType::WOHNUNG
+            ),
+        ];
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+
+        // buy a house
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            BuyImmobilieForPlayer::create(
+                $this->players[0],
+                new CardId('inv1'),
+            )
+        );
+
+        // end zug for player 0
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[0])
+        );
+
+        // requst job offers for player 1
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            DoMinijob::create($this->players[1])
+        );
+
+        // end zug for player 1
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[1])
+        );
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE - 40000))
+            ->and(PlayerState::getImmoblienOwnedByPlayer($gameEvents, $this->players[0]))->toHaveCount(1)
+            ->and(PlayerState::getAnnualRentIncomeForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(0));
+
+        // try to sell a flat that the player does not own
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            SellImmobilieForPlayer::create(
+                $this->players[0],
+                new CardId('inv2'),
+            )
+        );
+    })->throws(\RuntimeException::class, 'Du hast keine Immobilie des Typs Wohnung zum Verkaufen', 1754909475);
+
 });

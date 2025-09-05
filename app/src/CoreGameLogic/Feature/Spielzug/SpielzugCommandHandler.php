@@ -13,6 +13,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\AcceptJobOfferAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ActivateCardAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\BuyImmobilieAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\BuyInvestmentsForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CancelInsuranceForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ChangeLebenszielphaseAktion;
@@ -26,6 +27,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterLebenshaltungskostenForPla
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterSteuernUndAbgabenForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\MarkPlayerAsReadyForKonjunkturphaseChangeAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\QuitJobAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellImmobilieAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellInvestmentsForPlayerAfterInvestmentByAnotherPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellInvestmentsForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SkipCardAktion as SkipCardAktion;
@@ -36,6 +38,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SubmitAnswerForWeiterbildungAkt
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\TakeOutALoanForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyImmobilieForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ChangeLebenszielphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellInvestmentsForPlayer;
@@ -46,6 +49,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SellImmobilieForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
@@ -87,7 +91,9 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             || $command instanceof DontSellInvestmentsForPlayer
             || $command instanceof PutCardBackOnTopOfPile
             || $command instanceof StartWeiterbildung
-            || $command instanceof SubmitAnswerForWeiterbildung;
+            || $command instanceof SubmitAnswerForWeiterbildung
+            || $command instanceof BuyImmobilieForPlayer
+            || $command instanceof SellImmobilieForPlayer;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameEvents): GameEventsToPersist
@@ -125,6 +131,8 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             PutCardBackOnTopOfPile::class => $this->handlePutCardBackOnTopOfPile($command, $gameEvents),
             StartWeiterbildung::class => $this->handleStartWeiterbildung($command, $gameEvents),
             SubmitAnswerForWeiterbildung::class => $this->handleSubmitAnswerWeiterbildung($command, $gameEvents),
+            BuyImmobilieForPlayer::class => $this->handleBuyImmoblie($command, $gameEvents),
+            SellImmobilieForPlayer::class => $this->handleSellImmoblie($command, $gameEvents),
         };
     }
 
@@ -318,15 +326,47 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
         return $aktion->execute($command->playerId, $gameEvents);
     }
 
+    /**
+     * @param SubmitAnswerForWeiterbildung $command
+     * @param GameEvents $gameEvents
+     * @return GameEventsToPersist
+     */
     private function handleSubmitAnswerWeiterbildung(SubmitAnswerForWeiterbildung $command, GameEvents $gameEvents):GameEventsToPersist
     {
         $aktion = new SubmitAnswerForWeiterbildungAktion($command->selectedAnswer);
         return $aktion->execute($command->playerId, $gameEvents);
     }
 
+    /**
+     * @param StartWeiterbildung $command
+     * @param GameEvents $gameEvents
+     * @return GameEventsToPersist
+     */
     private function handleStartWeiterbildung(StartWeiterbildung $command, GameEvents $gameEvents): GameEventsToPersist
     {
         $aktion = new StartWeiterbildungAktion();
+        return $aktion->execute($command->playerId, $gameEvents);
+    }
+
+    /**
+     * @param BuyImmobilieForPlayer $command
+     * @param GameEvents $gameEvents
+     * @return GameEventsToPersist
+     */
+    private function handleBuyImmoblie(BuyImmobilieForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
+    {
+        $aktion = new BuyImmobilieAktion($command->cardId);
+        return $aktion->execute($command->playerId, $gameEvents);
+    }
+
+    /**
+     * @param SellImmobilieForPlayer $command
+     * @param GameEvents $gameEvents
+     * @return GameEventsToPersist
+     */
+    private function handleSellImmoblie(SellImmobilieForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
+    {
+        $aktion = new SellImmobilieAktion($command->cardId);
         return $aktion->execute($command->playerId, $gameEvents);
     }
 }

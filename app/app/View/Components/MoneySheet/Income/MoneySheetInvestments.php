@@ -50,8 +50,10 @@ class MoneySheetInvestments extends Component
                 ),
             );
         }
+
         return view('components.gameboard.moneySheet.income.money-sheet-investments', [
-            'investments' => $investments
+            'investments' => $investments,
+            'immobilien' => PlayerState::getImmoblienOwnedByPlayer($this->gameEvents, $this->playerId),
         ]);
     }
 
