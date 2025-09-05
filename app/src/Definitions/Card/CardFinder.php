@@ -83,7 +83,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-75000),
                 ),
-                annualRent: new MoneyAmount(1500),
+                annualRent: new MoneyAmount(4125),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv2" => new InvestitionenCardDefinition(
@@ -94,7 +94,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-50000),
                 ),
-                annualRent: new MoneyAmount(1000),
+                annualRent: new MoneyAmount(2750),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv3" => new InvestitionenCardDefinition(
@@ -105,7 +105,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-200000),
                 ),
-                annualRent: new MoneyAmount(5000),
+                annualRent: new MoneyAmount(11000),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv4" => new InvestitionenCardDefinition(
@@ -116,7 +116,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-100000),
                 ),
-                annualRent: new MoneyAmount(2000),
+                annualRent: new MoneyAmount(5500),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv5" => new InvestitionenCardDefinition(
@@ -127,7 +127,7 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-150000),
                 ),
-                annualRent: new MoneyAmount(2000),
+                annualRent: new MoneyAmount(8250),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv6" => new InvestitionenCardDefinition(
@@ -138,667 +138,315 @@ final class CardFinder
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-100000),
                 ),
-                annualRent: new MoneyAmount(2500),
+                annualRent: new MoneyAmount(5500),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
             "inv7" => new InvestitionenCardDefinition(
                 id: new CardId('inv7'),
-                title: 'Verkauf Wohnung',
-                description: 'Eltern suchen eine Wohnung für ihren Sohn. Verkaufe deine Wohnung.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(75000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::WOHNUNG,
-            ),
-            "inv8" => new InvestitionenCardDefinition(
-                id: new CardId('inv8'),
-                title: 'Verkauf Wohnung',
-                description: 'Eltern suchen eine Wohnung für ihre Tochter. Verkaufen deine Wohnung.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(50000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::WOHNUNG,
-            ),
-            "inv9" => new InvestitionenCardDefinition(
-                id: new CardId('inv9'),
-                title: 'Verkauf Wohnung',
-                description: 'Eine Bäckerei sucht Räume für eine neue Filiale. Nutze die Gelegenheit und verkaufe deine Wohnung.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(200000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::WOHNUNG,
-            ),
-            "inv10" => new InvestitionenCardDefinition(
-                id: new CardId('inv10'),
-                title: 'Verkauf Wohnung',
-                description: 'Ein Start-Up sucht eine Immobile. Du bietest deine Wohnung zum Verkauf an. ',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(150000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::WOHNUNG,
-            ),
-            "inv11" => new InvestitionenCardDefinition(
-                id: new CardId('inv11'),
-                title: 'Verkauf Wohnung',
-                description: 'Ein Immobilienfonds möchte investieren. Nutze die Chance und verkaufe deine Wohnung.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(120000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::WOHNUNG,
-            ),
-            "inv12" => new InvestitionenCardDefinition(
-                id: new CardId('inv12'),
-                title: 'Verkauf Wohnung',
-                description: 'Eine junge Familie ist auf der Suche nach einer neuen Wohnung. Nutze die Chance und verkaufe deine Wohnung.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(100000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::WOHNUNG,
-            ),
-            "inv13" => new InvestitionenCardDefinition(
-                id: new CardId('inv13'),
                 title: 'Kauf Haus',
                 description: 'Ein Haus in einem Brennpunktviertel steht zum Verkauf. ',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-175000),
                 ),
-                annualRent: new MoneyAmount(0),
+                annualRent: new MoneyAmount(9625),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv14" => new InvestitionenCardDefinition(
-                id: new CardId('inv14'),
+            "inv8" => new InvestitionenCardDefinition(
+                id: new CardId('inv8'),
                 title: 'Kauf Haus',
                 description: 'Ein sanierungsbedürftiges Haus steht zum Verkauf.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-200000),
                 ),
-                annualRent: new MoneyAmount(4000),
+                annualRent: new MoneyAmount(11000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv15" => new InvestitionenCardDefinition(
-                id: new CardId('inv15'),
+            "inv9" => new InvestitionenCardDefinition(
+                id: new CardId('inv9'),
                 title: 'Kauf Haus',
                 description: 'Ein renovierungsbedürftiges Haus steht zum Verkauf. ',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-200000),
                 ),
-                annualRent: new MoneyAmount(5000),
+                annualRent: new MoneyAmount(11000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv16" => new InvestitionenCardDefinition(
-                id: new CardId('inv16'),
+            "inv10" => new InvestitionenCardDefinition(
+                id: new CardId('inv10'),
                 title: 'Kauf Haus',
                 description: 'Ein Haus steht zum Verkauf. ',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-300000),
                 ),
-                annualRent: new MoneyAmount(7000),
+                annualRent: new MoneyAmount(16500),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv17" => new InvestitionenCardDefinition(
-                id: new CardId('inv17'),
+            "inv11" => new InvestitionenCardDefinition(
+                id: new CardId('inv11'),
                 title: 'Kauf Haus',
                 description: 'Ein Haus in hervorragender Lage steht zum Verkauf.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-350000),
                 ),
-                annualRent: new MoneyAmount(8000),
+                annualRent: new MoneyAmount(19250),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv18" => new InvestitionenCardDefinition(
-                id: new CardId('inv18'),
+            "inv12" => new InvestitionenCardDefinition(
+                id: new CardId('inv12'),
                 title: 'Kauf Haus',
                 description: 'Ein neu renoviertes Haus steht zum Verkauf. ',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-400000),
                 ),
-                annualRent: new MoneyAmount(8500),
+                annualRent: new MoneyAmount(22000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv19" => new InvestitionenCardDefinition(
-                id: new CardId('inv19'),
-                title: 'Verkauf Haus',
-                description: 'Ein Paar möchte endlich gemeinsam wohnen und sucht eine Immobilie. Du kannst dein Haus verkaufen.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(250000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::HAUS,
-            ),
-            "inv20" => new InvestitionenCardDefinition(
-                id: new CardId('inv20'),
-                title: 'Verkauf Haus',
-                description: 'Eine Familie sucht eine Immobilie vor den Toren der Stadt. Nutze die Chance und verkaufe dein Haus.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(280000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::HAUS,
-            ),
-            "inv21" => new InvestitionenCardDefinition(
-                id: new CardId('inv21'),
-                title: 'Verkauf Haus',
-                description: 'Eine Investorin sucht eine Immobile.  Du bietest dein Haus zum Verkauf an. ',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(300000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::HAUS,
-            ),
-            "inv22" => new InvestitionenCardDefinition(
-                id: new CardId('inv22'),
-                title: 'Verkauf Haus',
-                description: 'Eine Investorin sucht ein Objekt. Du hast die Möglichkeit, dein Haus an sie zu verkaufen.',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(350000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::HAUS,
-            ),
-            "inv23" => new InvestitionenCardDefinition(
-                id: new CardId('inv23'),
-                title: 'Verkauf Haus',
-                description: 'Eine Investorin sucht eine Immobile.  Du bietest dein Haus zum Verkauf an. ',
-                phaseId: LebenszielPhaseId::PHASE_1,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(400000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::HAUS,
-            ),
-            "inv24" => new InvestitionenCardDefinition(
-                id: new CardId('inv24'),
+            "inv13" => new InvestitionenCardDefinition(
+                id: new CardId('inv13'),
                 title: 'Kauf Wohnung',
                 description: 'Eine Wohnung in einem neuen Sudierendenwohnheim steht zum Verkauf.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-150000),
                 ),
-                annualRent: new MoneyAmount(3000),
+                annualRent: new MoneyAmount(9000),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv25" => new InvestitionenCardDefinition(
-                id: new CardId('inv25'),
+            "inv14" => new InvestitionenCardDefinition(
+                id: new CardId('inv14'),
                 title: 'Kauf Wohnung',
                 description: 'Eine frisch renovierte Wohnung mit solventen Mieterinnen steht zum Verkauf.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-270000),
                 ),
-                annualRent: new MoneyAmount(6000),
+                annualRent: new MoneyAmount(16200),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv26" => new InvestitionenCardDefinition(
-                id: new CardId('inv26'),
+            "inv15" => new InvestitionenCardDefinition(
+                id: new CardId('inv15'),
                 title: 'Kauf Wohnung',
                 description: 'Eine Wohnung in einer SeniorInnenanlage steht zum Verkauf.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-280000),
                 ),
-                annualRent: new MoneyAmount(7000),
+                annualRent: new MoneyAmount(16800),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv27" => new InvestitionenCardDefinition(
-                id: new CardId('inv27'),
+            "inv16" => new InvestitionenCardDefinition(
+                id: new CardId('inv16'),
                 title: 'Kauf Wohnung',
                 description: 'Eine Wohnung in hervorragender Lage steht zum Verkauf. ',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-290000),
                 ),
-                annualRent: new MoneyAmount(7000),
+                annualRent: new MoneyAmount(17400),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv28" => new InvestitionenCardDefinition(
-                id: new CardId('inv28'),
+            "inv17" => new InvestitionenCardDefinition(
+                id: new CardId('inv17'),
                 title: 'Kauf Wohnung',
                 description: 'Ein renoviertes Loft  mit DINKs (Double Income, No Kids) –Mieterinnen steht zum Verkauf.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-300000),
                 ),
-                annualRent: new MoneyAmount(7500),
+                annualRent: new MoneyAmount(18000),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv29" => new InvestitionenCardDefinition(
-                id: new CardId('inv29'),
-                title: 'Verkauf Wohnung',
-                description: 'Eltern suchen für ihren Sohn eine Wohnung. Nutze die Gelegenheit und verkaufe deine Wohnung.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(160000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::WOHNUNG,
-            ),
-            "inv30" => new InvestitionenCardDefinition(
-                id: new CardId('inv30'),
-                title: 'Verkauf Wohnung',
-                description: 'Eltern suchen für ihre Tochter eine Wohnung. Nutze die Gelegenheit und verkaufe deine Wohnung.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(180000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::WOHNUNG,
-            ),
-            "inv31" => new InvestitionenCardDefinition(
-                id: new CardId('inv31'),
-                title: 'Verkauf Wohnung',
-                description: 'Eine junge Familie sucht ein neues Zuhause. Verkaufe deine Wohnung an sie.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(200000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::WOHNUNG,
-            ),
-            "inv32" => new InvestitionenCardDefinition(
-                id: new CardId('inv32'),
-                title: 'Verkauf Wohnung',
-                description: 'Für ihre nächste Filiale sucht eine Bäckerei eine Immobilie. Biete deine Wohnung zum Verkauf an. ',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(250000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::WOHNUNG,
-            ),
-            "inv33" => new InvestitionenCardDefinition(
-                id: new CardId('inv33'),
-                title: 'Verkauf Wohnung',
-                description: 'Eine Familie sucht eine Immobilie im Umland. Biete deine Wohnung zum Verkauf an.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(400000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::WOHNUNG,
-            ),
-            "inv34" => new InvestitionenCardDefinition(
-                id: new CardId('inv34'),
-                title: 'Verkauf Wohnung',
-                description: 'Eine Investorin ist auf der Suche nach einer Immobilie. Verkaufe deine Wohnung an sie.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(450000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::WOHNUNG,
-            ),
-            "inv35" => new InvestitionenCardDefinition(
-                id: new CardId('inv35'),
+            "inv18" => new InvestitionenCardDefinition(
+                id: new CardId('inv18'),
                 title: 'Kauf Haus',
                 description: 'Ein sanierungsbedürftiges Haus steht zum Verkauf.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-120000),
                 ),
-                annualRent: new MoneyAmount(3000),
+                annualRent: new MoneyAmount(7200),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv36" => new InvestitionenCardDefinition(
-                id: new CardId('inv36'),
+            "inv19" => new InvestitionenCardDefinition(
+                id: new CardId('inv19'),
                 title: 'Kauf Haus',
                 description: 'Ein renovierungsbedürftiges Haus steht zum Verkauf. ',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-200000),
                 ),
-                annualRent: new MoneyAmount(4500),
+                annualRent: new MoneyAmount(12000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv37" => new InvestitionenCardDefinition(
-                id: new CardId('inv37'),
+            "inv20" => new InvestitionenCardDefinition(
+                id: new CardId('inv20'),
                 title: 'Kauf Haus',
                 description: 'Ein Haus in einem Brennpunktviertel steht zum Verkauf. ',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-200000),
                 ),
-                annualRent: new MoneyAmount(3000),
+                annualRent: new MoneyAmount(12000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv38" => new InvestitionenCardDefinition(
-                id: new CardId('inv38'),
+            "inv21" => new InvestitionenCardDefinition(
+                id: new CardId('inv21'),
                 title: 'Kauf Haus',
                 description: 'Ein neu renoviertes Haus steht zum Verkauf. ',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-250000),
                 ),
-                annualRent: new MoneyAmount(6000),
+                annualRent: new MoneyAmount(15000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv39" => new InvestitionenCardDefinition(
-                id: new CardId('inv39'),
+            "inv22" => new InvestitionenCardDefinition(
+                id: new CardId('inv22'),
                 title: 'Kauf Haus',
                 description: 'Ein Haus in hervorragender Lage steht zum Verkauf.',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-280000),
                 ),
-                annualRent: new MoneyAmount(6500),
+                annualRent: new MoneyAmount(16800),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv40" => new InvestitionenCardDefinition(
-                id: new CardId('inv40'),
+            "inv23" => new InvestitionenCardDefinition(
+                id: new CardId('inv23'),
                 title: 'Kauf Haus',
                 description: 'Ein Haus im Grünen soll verkauft werden. ',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-300000),
                 ),
-                annualRent: new MoneyAmount(7000),
+                annualRent: new MoneyAmount(18000),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv41" => new InvestitionenCardDefinition(
-                id: new CardId('inv41'),
-                title: 'Verkauf Haus',
-                description: 'Eine Investorin ist auf der Suche nach einer Immobilie. Verkaufe deine Wohnung an sie.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(180000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::HAUS,
-            ),
-            "inv42" => new InvestitionenCardDefinition(
-                id: new CardId('inv42'),
-                title: 'Verkauf Haus',
-                description: 'Für sein Wachstum sucht ein Start-up eine Immobilie. Nutze die Chance und verkaufe dein Haus.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(200000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::HAUS,
-            ),
-            "inv43" => new InvestitionenCardDefinition(
-                id: new CardId('inv43'),
-                title: 'Verkauf Haus',
-                description: 'Eine Investorin ist auf der Suche nach einer Immobilie. Verkaufe deine Wohnung an sie.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(240000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::HAUS,
-            ),
-            "inv44" => new InvestitionenCardDefinition(
-                id: new CardId('inv44'),
-                title: 'Verkauf Haus',
-                description: 'Ein Paar möchte zusammen wohnen und sucht eine Immobilie. Biete dein Haus zum Verkauf an.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(270000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::HAUS,
-            ),
-            "inv45" => new InvestitionenCardDefinition(
-                id: new CardId('inv45'),
-                title: 'Verkauf Haus',
-                description: 'Eine Investorin ist auf der Suche nach einer Immobilie. Verkaufe deine Wohnung an sie.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(370000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::HAUS,
-            ),
-            "inv46" => new InvestitionenCardDefinition(
-                id: new CardId('inv46'),
-                title: 'Verkauf Haus',
-                description: 'Eine Investorin sucht eine Immobile. Biete dein Haus zum Verkauf an.',
-                phaseId: LebenszielPhaseId::PHASE_2,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(450000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::HAUS,
-            ),
-            "inv47" => new InvestitionenCardDefinition(
-                id: new CardId('inv47'),
+            "inv24" => new InvestitionenCardDefinition(
+                id: new CardId('inv24'),
                 title: 'Kauf Wohnung',
                 description: 'Eine Wohnung in einem neuen Studierendenwohnheim steht zum Verkauf.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-155000),
                 ),
-                annualRent: new MoneyAmount(1000),
+                annualRent: new MoneyAmount(10000),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv48" => new InvestitionenCardDefinition(
-                id: new CardId('inv48'),
+            "inv25" => new InvestitionenCardDefinition(
+                id: new CardId('inv25'),
                 title: 'Kauf Wohnung',
                 description: 'Eine Wohnung in einer Senior:innenanlage steht zum Verkauf.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-290000),
                 ),
-                annualRent: new MoneyAmount(7200),
+                annualRent: new MoneyAmount(18850),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv49" => new InvestitionenCardDefinition(
-                id: new CardId('inv49'),
+            "inv26" => new InvestitionenCardDefinition(
+                id: new CardId('inv26'),
                 title: 'Kauf Wohnung',
                 description: 'Eine frisch renovierte Wohnung mit solventen Mieterinnen steht zum Verkauf.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-290000),
                 ),
-                annualRent: new MoneyAmount(7000),
+                annualRent: new MoneyAmount(18850),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv50" => new InvestitionenCardDefinition(
-                id: new CardId('inv50'),
+            "inv27" => new InvestitionenCardDefinition(
+                id: new CardId('inv27'),
                 title: 'Kauf Wohnung',
                 description: 'Eine Wohnung in hervorragender Lage steht zum Verkauf. ',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-310000),
                 ),
-                annualRent: new MoneyAmount(7000),
+                annualRent: new MoneyAmount(20150),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv51" => new InvestitionenCardDefinition(
-                id: new CardId('inv51'),
+            "inv28" => new InvestitionenCardDefinition(
+                id: new CardId('inv28'),
                 title: 'Kauf Wohnung',
                 description: 'Ein renoviertes Loft  mit DINKs (Double Income, No Kids) –Mieterinnen steht zum Verkauf.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-350000),
                 ),
-                annualRent: new MoneyAmount(8500),
+                annualRent: new MoneyAmount(22750),
                 immobilienTyp: ImmobilienType::WOHNUNG,
             ),
-            "inv52" => new InvestitionenCardDefinition(
-                id: new CardId('inv52'),
-                title: 'Verkauf Wohnung',
-                description: 'Eltern suchen für ihre Tochter eine Wohnung. Nutze die Gelegenheit und verkaufe deine Wohnung.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(220000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::WOHNUNG,
-            ),
-            "inv53" => new InvestitionenCardDefinition(
-                id: new CardId('inv53'),
-                title: 'Verkauf Wohnung',
-                description: 'Ein Immobilienfonds möchte in Wohnungen investieren. Nutze die Gelegenheit und verkaufe deine Wohnung.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(300000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::WOHNUNG,
-            ),
-            "inv54" => new InvestitionenCardDefinition(
-                id: new CardId('inv54'),
-                title: 'Verkauf Wohnung',
-                description: 'Eine junge Familie sucht ein neues Zuhause. Verkaufe deine Wohnung an sie.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(320000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::WOHNUNG,
-            ),
-            "inv55" => new InvestitionenCardDefinition(
-                id: new CardId('inv55'),
-                title: 'Verkauf Wohnung',
-                description: 'Ein Immobilienfond sucht Wohnungen zum Investieren. Verkaufe deine Wohnung.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(480000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::WOHNUNG,
-            ),
-            "inv56" => new InvestitionenCardDefinition(
-                id: new CardId('inv56'),
+            "inv29" => new InvestitionenCardDefinition(
+                id: new CardId('inv29'),
                 title: 'Kauf Haus',
                 description: 'Ein sanierungsbedürftiges Haus steht zum Verkauf.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-160000),
                 ),
-                annualRent: new MoneyAmount(1200),
+                annualRent: new MoneyAmount(10400),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv57" => new InvestitionenCardDefinition(
-                id: new CardId('inv57'),
+            "inv30" => new InvestitionenCardDefinition(
+                id: new CardId('inv30'),
                 title: 'Kauf Haus',
                 description: 'Ein neu renoviertesHaus steht zum Verkauf. ',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-255000),
                 ),
-                annualRent: new MoneyAmount(6300),
+                annualRent: new MoneyAmount(16575),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv58" => new InvestitionenCardDefinition(
-                id: new CardId('inv58'),
+            "inv31" => new InvestitionenCardDefinition(
+                id: new CardId('inv31'),
                 title: 'Kauf Haus',
                 description: 'Eine Haus in renovierungsbedürftigem Zustand steht zum Verkauf. ',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-280000),
                 ),
-                annualRent: new MoneyAmount(5000),
+                annualRent: new MoneyAmount(18200),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv59" => new InvestitionenCardDefinition(
-                id: new CardId('inv59'),
+            "inv32" => new InvestitionenCardDefinition(
+                id: new CardId('inv32'),
                 title: 'Kauf Haus',
                 description: 'Ein Haus in einem Brennpunktviertel steht zum Verkauf. ',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-300000),
                 ),
-                annualRent: new MoneyAmount(6000),
+                annualRent: new MoneyAmount(19500),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv60" => new InvestitionenCardDefinition(
-                id: new CardId('inv60'),
+            "inv33" => new InvestitionenCardDefinition(
+                id: new CardId('inv33'),
                 title: 'Kauf Haus',
                 description: 'Ein Haus wird zum Verkauf angeboten.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-330000),
                 ),
-                annualRent: new MoneyAmount(8400),
+                annualRent: new MoneyAmount(21450),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
-            "inv61" => new InvestitionenCardDefinition(
-                id: new CardId('inv61'),
+            "inv34" => new InvestitionenCardDefinition(
+                id: new CardId('inv34'),
                 title: 'Kauf Haus',
                 description: 'Ein Haus in hervorragender Lage steht zum Verkauf.',
                 phaseId: LebenszielPhaseId::PHASE_3,
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-380000),
                 ),
-                annualRent: new MoneyAmount(9500),
-                immobilienTyp: ImmobilienType::HAUS,
-            ),
-            "inv62" => new InvestitionenCardDefinition(
-                id: new CardId('inv62'),
-                title: 'Verkauf Haus',
-                description: 'Ein Start-up ist auf der Suche nach einer Immobilie. Biete dein Haus zum Verkauf an.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(310000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::HAUS,
-            ),
-            "inv63" => new InvestitionenCardDefinition(
-                id: new CardId('inv63'),
-                title: 'Verkauf Haus',
-                description: 'Ein Paar sucht eine Immobilie um endlich zusammen wohnen zu können. Du kannst dein Haus an sie verkaufen. ',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(330000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::HAUS,
-            ),
-            "inv64" => new InvestitionenCardDefinition(
-                id: new CardId('inv64'),
-                title: 'Verkauf Haus',
-                description: 'Eine Bäckerei sucht eine Immobilie  für ihre nächste Filiale. Verkaufe dein Haus an sie.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(410000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::HAUS,
-            ),
-            "inv65" => new InvestitionenCardDefinition(
-                id: new CardId('inv65'),
-                title: 'Verkauf Haus',
-                description: 'Eine Investorin sucht eine Immobile. Du kannst dein Haus verkaufen. ',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(460000),
-                ),
-                annualRent: new MoneyAmount(0),
-                immobilienTyp: ImmobilienType::HAUS,
-            ),
-            "inv66" => new InvestitionenCardDefinition(
-                id: new CardId('inv66'),
-                title: 'Verkauf Haus',
-                description: 'Eine Investorin sucht eine Immobilie zum Kauf. Verkaufe dein Haus an sie.',
-                phaseId: LebenszielPhaseId::PHASE_3,
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(500000),
-                ),
-                annualRent: new MoneyAmount(0),
+                annualRent: new MoneyAmount(24700),
                 immobilienTyp: ImmobilienType::HAUS,
             ),
             "buk0" => new KategorieCardDefinition(

@@ -1,68 +1,36 @@
-Investition (Immobilien);;;;;;
-id;title;description;phase;moneyChange;annualRent;type
-inv1;Kauf Wohnung;Eine Wohnung in einem neuen Sudierendenwohnheim steht zum Verkauf.;1;-75000;1500;WOHNUNG
-inv2;Kauf Wohnung;Eine Wohnung in einem neuen Studierendenwohnheim steht zum Verkauf.;1;-50000;1000;WOHNUNG
-inv3;Kauf Wohnung;Ein renoviertes Loft  mit DINKs (Double Income, No Kids) –Mieterinnen steht zum Verkauf.;1;-200000;5000;WOHNUNG
-inv4;Kauf Wohnung;Eine Wohnung in hervorragender Lage steht zum Verkauf. ;1;-100000;2000;WOHNUNG
-inv5;Kauf Wohnung;Eine Wohnung in einer Seniorinnenanlage steht zum Verkauf.;1;-150000;2000;WOHNUNG
-inv6;Kauf Wohnung;Eine frisch renovierte Wohnung mit solventen Mieterinnen steht zum Verkauf.;1;-100000;2500;WOHNUNG
-inv7;Verkauf Wohnung;Eltern suchen eine Wohnung für ihren Sohn. Verkaufe deine Wohnung.;1;75000;0;WOHNUNG
-inv8;Verkauf Wohnung;Eltern suchen eine Wohnung für ihre Tochter. Verkaufen deine Wohnung.;1;50000;0;WOHNUNG
-inv9;Verkauf Wohnung;Eine Bäckerei sucht Räume für eine neue Filiale. Nutze die Gelegenheit und verkaufe deine Wohnung.;1;200000;0;WOHNUNG
-inv10;Verkauf Wohnung;Ein Start-Up sucht eine Immobile. Du bietest deine Wohnung zum Verkauf an. ;1;150000;0;WOHNUNG
-inv11;Verkauf Wohnung;Ein Immobilienfonds möchte investieren. Nutze die Chance und verkaufe deine Wohnung.;1;120000;0;WOHNUNG
-inv12;Verkauf Wohnung;Eine junge Familie ist auf der Suche nach einer neuen Wohnung. Nutze die Chance und verkaufe deine Wohnung.;1;100000;0;WOHNUNG
-inv13;Kauf Haus;Ein Haus in einem Brennpunktviertel steht zum Verkauf. ;1;-175000;0;HAUS
-inv14;Kauf Haus;Ein sanierungsbedürftiges Haus steht zum Verkauf.;1;-200000;4000;HAUS
-inv15;Kauf Haus;Ein renovierungsbedürftiges Haus steht zum Verkauf. ;1;-200000;5000;HAUS
-inv16;Kauf Haus;Ein Haus steht zum Verkauf. ;1;-300000;7000;HAUS
-inv17;Kauf Haus;Ein Haus in hervorragender Lage steht zum Verkauf.;1;-350000;8000;HAUS
-inv18;Kauf Haus;Ein neu renoviertes Haus steht zum Verkauf. ;1;-400000;8500;HAUS
-inv19;Verkauf Haus;Ein Paar möchte endlich gemeinsam wohnen und sucht eine Immobilie. Du kannst dein Haus verkaufen.;1;250000;0;HAUS
-inv20;Verkauf Haus;Eine Familie sucht eine Immobilie vor den Toren der Stadt. Nutze die Chance und verkaufe dein Haus.;1;280000;0;HAUS
-inv21;Verkauf Haus;Eine Investorin sucht eine Immobile.  Du bietest dein Haus zum Verkauf an. ;1;300000;0;HAUS
-inv22;Verkauf Haus;Eine Investorin sucht ein Objekt. Du hast die Möglichkeit, dein Haus an sie zu verkaufen.;1;350000;0;HAUS
-inv23;Verkauf Haus;Eine Investorin sucht eine Immobile.  Du bietest dein Haus zum Verkauf an. ;1;400000;0;HAUS
-inv24;Kauf Wohnung;Eine Wohnung in einem neuen Sudierendenwohnheim steht zum Verkauf.;2;-150000;3000;WOHNUNG
-inv25;Kauf Wohnung;Eine frisch renovierte Wohnung mit solventen Mieterinnen steht zum Verkauf.;2;-270000;6000;WOHNUNG
-inv26;Kauf Wohnung;Eine Wohnung in einer SeniorInnenanlage steht zum Verkauf.;2;-280000;7000;WOHNUNG
-inv27;Kauf Wohnung;Eine Wohnung in hervorragender Lage steht zum Verkauf. ;2;-290000;7000;WOHNUNG
-inv28;Kauf Wohnung;Ein renoviertes Loft  mit DINKs (Double Income, No Kids) –Mieterinnen steht zum Verkauf.;2;-300000;7500;WOHNUNG
-inv29;Verkauf Wohnung;Eltern suchen für ihren Sohn eine Wohnung. Nutze die Gelegenheit und verkaufe deine Wohnung.;2;160000;0;WOHNUNG
-inv30;Verkauf Wohnung;Eltern suchen für ihre Tochter eine Wohnung. Nutze die Gelegenheit und verkaufe deine Wohnung.;2;180000;0;WOHNUNG
-inv31;Verkauf Wohnung;Eine junge Familie sucht ein neues Zuhause. Verkaufe deine Wohnung an sie.;2;200000;0;WOHNUNG
-inv32;Verkauf Wohnung;Für ihre nächste Filiale sucht eine Bäckerei eine Immobilie. Biete deine Wohnung zum Verkauf an. ;2;250000;0;WOHNUNG
-inv33;Verkauf Wohnung;Eine Familie sucht eine Immobilie im Umland. Biete deine Wohnung zum Verkauf an.;2;400000;0;WOHNUNG
-inv34;Verkauf Wohnung;Eine Investorin ist auf der Suche nach einer Immobilie. Verkaufe deine Wohnung an sie.;2;450000;0;WOHNUNG
-inv35;Kauf Haus;Ein sanierungsbedürftiges Haus steht zum Verkauf.;2;-120000;3000;HAUS
-inv36;Kauf Haus;Ein renovierungsbedürftiges Haus steht zum Verkauf. ;2;-200000;4500;HAUS
-inv37;Kauf Haus;Ein Haus in einem Brennpunktviertel steht zum Verkauf. ;2;-200000;3000;HAUS
-inv38;Kauf Haus;Ein neu renoviertes Haus steht zum Verkauf. ;2;-250000;6000;HAUS
-inv39;Kauf Haus;Ein Haus in hervorragender Lage steht zum Verkauf.;2;-280000;6500;HAUS
-inv40;Kauf Haus;Ein Haus im Grünen soll verkauft werden. ;2;-300000;7000;HAUS
-inv41;Verkauf Haus;Eine Investorin ist auf der Suche nach einer Immobilie. Verkaufe deine Wohnung an sie.;2;180000;0;HAUS
-inv42;Verkauf Haus;Für sein Wachstum sucht ein Start-up eine Immobilie. Nutze die Chance und verkaufe dein Haus.;2;200000;0;HAUS
-inv43;Verkauf Haus;Eine Investorin ist auf der Suche nach einer Immobilie. Verkaufe deine Wohnung an sie.;2;240000;0;HAUS
-inv44;Verkauf Haus;Ein Paar möchte zusammen wohnen und sucht eine Immobilie. Biete dein Haus zum Verkauf an.;2;270000;0;HAUS
-inv45;Verkauf Haus;Eine Investorin ist auf der Suche nach einer Immobilie. Verkaufe deine Wohnung an sie.;2;370000;0;HAUS
-inv46;Verkauf Haus;Eine Investorin sucht eine Immobile. Biete dein Haus zum Verkauf an.;2;450000;0;HAUS
-inv47;Kauf Wohnung;Eine Wohnung in einem neuen Studierendenwohnheim steht zum Verkauf.;3;-155000;1000;WOHNUNG
-inv48;Kauf Wohnung;Eine Wohnung in einer Senior:innenanlage steht zum Verkauf.;3;-290000;7200;WOHNUNG
-inv49;Kauf Wohnung;Eine frisch renovierte Wohnung mit solventen Mieterinnen steht zum Verkauf.;3;-290000;7000;WOHNUNG
-inv50;Kauf Wohnung;Eine Wohnung in hervorragender Lage steht zum Verkauf. ;3;-310000;7000;WOHNUNG
-inv51;Kauf Wohnung;Ein renoviertes Loft  mit DINKs (Double Income, No Kids) –Mieterinnen steht zum Verkauf.;3;-350000;8500;WOHNUNG
-inv52;Verkauf Wohnung;Eltern suchen für ihre Tochter eine Wohnung. Nutze die Gelegenheit und verkaufe deine Wohnung.;3;220000;0;WOHNUNG
-inv53;Verkauf Wohnung;Ein Immobilienfonds möchte in Wohnungen investieren. Nutze die Gelegenheit und verkaufe deine Wohnung.;3;300000;0;WOHNUNG
-inv54;Verkauf Wohnung;Eine junge Familie sucht ein neues Zuhause. Verkaufe deine Wohnung an sie.;3;320000;0;WOHNUNG
-inv55;Verkauf Wohnung;Ein Immobilienfond sucht Wohnungen zum Investieren. Verkaufe deine Wohnung.;3;480000;0;WOHNUNG
-inv56;Kauf Haus;Ein sanierungsbedürftiges Haus steht zum Verkauf.;3;-160000;1200;HAUS
-inv57;Kauf Haus;Ein neu renoviertesHaus steht zum Verkauf. ;3;-255000;6300;HAUS
-inv58;Kauf Haus;Eine Haus in renovierungsbedürftigem Zustand steht zum Verkauf. ;3;-280000;5000;HAUS
-inv59;Kauf Haus;Ein Haus in einem Brennpunktviertel steht zum Verkauf. ;3;-300000;6000;HAUS
-inv60;Kauf Haus;Ein Haus wird zum Verkauf angeboten.;3;-330000;8400;HAUS
-inv61;Kauf Haus;Ein Haus in hervorragender Lage steht zum Verkauf.;3;-380000;9500;HAUS
-inv62;Verkauf Haus;Ein Start-up ist auf der Suche nach einer Immobilie. Biete dein Haus zum Verkauf an.;3;310000;0;HAUS
-inv63;Verkauf Haus;Ein Paar sucht eine Immobilie um endlich zusammen wohnen zu können. Du kannst dein Haus an sie verkaufen. ;3;330000;0;HAUS
-inv64;Verkauf Haus;Eine Bäckerei sucht eine Immobilie  für ihre nächste Filiale. Verkaufe dein Haus an sie.;3;410000;0;HAUS
-inv65;Verkauf Haus;Eine Investorin sucht eine Immobile. Du kannst dein Haus verkaufen. ;3;460000;0;HAUS
-inv66;Verkauf Haus;Eine Investorin sucht eine Immobilie zum Kauf. Verkaufe dein Haus an sie.;3;500000;0;HAUS
+﻿Investition (Immobilien);;;;;;;;;
+id;title;description;phase;moneyChange;annualRent;type;;;
+inv1;Kauf Wohnung;Eine Wohnung in einem neuen Sudierendenwohnheim steht zum Verkauf.;1;-75000;4125;WOHNUNG;;;
+inv2;Kauf Wohnung;Eine Wohnung in einem neuen Studierendenwohnheim steht zum Verkauf.;1;-50000;2750;WOHNUNG;;;
+inv3;Kauf Wohnung;Ein renoviertes Loft  mit DINKs (Double Income, No Kids) –Mieterinnen steht zum Verkauf.;1;-200000;11000;WOHNUNG;;;
+inv4;Kauf Wohnung;Eine Wohnung in hervorragender Lage steht zum Verkauf. ;1;-100000;5500;WOHNUNG;;;
+inv5;Kauf Wohnung;Eine Wohnung in einer Seniorinnenanlage steht zum Verkauf.;1;-150000;8250;WOHNUNG;;;
+inv6;Kauf Wohnung;Eine frisch renovierte Wohnung mit solventen Mieterinnen steht zum Verkauf.;1;-100000;5500;WOHNUNG;;;
+inv7;Kauf Haus;Ein Haus in einem Brennpunktviertel steht zum Verkauf. ;1;-175000;9625;HAUS;;;
+inv8;Kauf Haus;Ein sanierungsbedürftiges Haus steht zum Verkauf.;1;-200000;11000;HAUS;;;
+inv9;Kauf Haus;Ein renovierungsbedürftiges Haus steht zum Verkauf. ;1;-200000;11000;HAUS;;;
+inv10;Kauf Haus;Ein Haus steht zum Verkauf. ;1;-300000;16500;HAUS;;;
+inv11;Kauf Haus;Ein Haus in hervorragender Lage steht zum Verkauf.;1;-350000;19250;HAUS;;;
+inv12;Kauf Haus;Ein neu renoviertes Haus steht zum Verkauf. ;1;-400000;22000;HAUS;;;
+inv13;Kauf Wohnung;Eine Wohnung in einem neuen Sudierendenwohnheim steht zum Verkauf.;2;-150000;9000;WOHNUNG;;;
+inv14;Kauf Wohnung;Eine frisch renovierte Wohnung mit solventen Mieterinnen steht zum Verkauf.;2;-270000;16200;WOHNUNG;;;
+inv15;Kauf Wohnung;Eine Wohnung in einer SeniorInnenanlage steht zum Verkauf.;2;-280000;16800;WOHNUNG;;;
+inv16;Kauf Wohnung;Eine Wohnung in hervorragender Lage steht zum Verkauf. ;2;-290000;17400;WOHNUNG;;;
+inv17;Kauf Wohnung;Ein renoviertes Loft  mit DINKs (Double Income, No Kids) –Mieterinnen steht zum Verkauf.;2;-300000;18000;WOHNUNG;;;
+inv18;Kauf Haus;Ein sanierungsbedürftiges Haus steht zum Verkauf.;2;-120000;7200;HAUS;;;
+inv19;Kauf Haus;Ein renovierungsbedürftiges Haus steht zum Verkauf. ;2;-200000;12000;HAUS;;;
+inv20;Kauf Haus;Ein Haus in einem Brennpunktviertel steht zum Verkauf. ;2;-200000;12000;HAUS;;;
+inv21;Kauf Haus;Ein neu renoviertes Haus steht zum Verkauf. ;2;-250000;15000;HAUS;;;
+inv22;Kauf Haus;Ein Haus in hervorragender Lage steht zum Verkauf.;2;-280000;16800;HAUS;;;
+inv23;Kauf Haus;Ein Haus im Grünen soll verkauft werden. ;2;-300000;18000;HAUS;;;
+inv24;Kauf Wohnung;Eine Wohnung in einem neuen Studierendenwohnheim steht zum Verkauf.;3;-155000;10000;WOHNUNG;;;
+inv25;Kauf Wohnung;Eine Wohnung in einer Senior:innenanlage steht zum Verkauf.;3;-290000;18850;WOHNUNG;;;
+inv26;Kauf Wohnung;Eine frisch renovierte Wohnung mit solventen Mieterinnen steht zum Verkauf.;3;-290000;18850;WOHNUNG;;;
+inv27;Kauf Wohnung;Eine Wohnung in hervorragender Lage steht zum Verkauf. ;3;-310000;20150;WOHNUNG;;;
+inv28;Kauf Wohnung;Ein renoviertes Loft  mit DINKs (Double Income, No Kids) –Mieterinnen steht zum Verkauf.;3;-350000;22750;WOHNUNG;;;
+inv29;Kauf Haus;Ein sanierungsbedürftiges Haus steht zum Verkauf.;3;-160000;10400;HAUS;;;
+inv30;Kauf Haus;Ein neu renoviertesHaus steht zum Verkauf. ;3;-255000;16575;HAUS;;;
+inv31;Kauf Haus;Eine Haus in renovierungsbedürftigem Zustand steht zum Verkauf. ;3;-280000;18200;HAUS;;;
+inv32;Kauf Haus;Ein Haus in einem Brennpunktviertel steht zum Verkauf. ;3;-300000;19500;HAUS;;;
+inv33;Kauf Haus;Ein Haus wird zum Verkauf angeboten.;3;-330000;21450;HAUS;;;
+inv34;Kauf Haus;Ein Haus in hervorragender Lage steht zum Verkauf.;3;-380000;24700;HAUS;;;
