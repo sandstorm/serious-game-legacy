@@ -6,7 +6,6 @@ namespace Domain\CoreGameLogic\Feature\Moneysheet\State;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\InputResult;
@@ -39,6 +38,22 @@ class MoneySheetState
         GameEvents $gameEvents,
         PlayerId $playerId
     ): MoneyAmount {
+        if (PlayerState::isPlayerInsolvent($gameEvents, $playerId)) {
+            $currentGuthaben = PlayerState::getGuthabenForPlayer($gameEvents, $playerId);
+            $totalAnnualIncome = self::getAnnualIncomeForPlayer($gameEvents, $playerId);
+            $annualExpensesWithoutLebenshaltungskosten = new MoneyAmount(0)
+                ->add(self::getAnnualExpensesForAllLoans($gameEvents, $playerId))
+                ->add(self::getCostOfAllInsurances($gameEvents, $playerId))
+                ->add(self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId))
+                ->add(self::calculateInsolvenzabgabenForPlayer($gameEvents, $playerId));
+
+            $lebenshaltungskosten = self::calculateMinimumValueForLebenshaltungskostenForPlayer($gameEvents, $playerId);
+
+            return $currentGuthaben->add($totalAnnualIncome)->subtract($annualExpensesWithoutLebenshaltungskosten)->value < $lebenshaltungskosten->value
+                ? new MoneyAmount(0)
+                : $lebenshaltungskosten;
+        }
+
         $gehalt = PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId);
         return new MoneyAmount(max([
             $gehalt->value * self::getPercentageForLebenshaltungskostenForPlayer($gameEvents, $playerId) / 100,
@@ -348,10 +363,6 @@ class MoneySheetState
                 // Player does not have this insurance, skip it
                 continue;
             }
-            if (PlayerState::hasPlayerPayedForInsuranceThisKonjunkturphase($gameEvents, $playerId, $insurance->id)) {
-                // Player already payed for it this year, skip it
-                continue;
-            }
             $totalCost = $totalCost->add($insurance->getAnnualCost($currentPlayerPhase));
         }
 
@@ -446,13 +457,12 @@ class MoneySheetState
      */
     public static function getAnnualExpensesForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
-        $annualExpenses = (new MoneyAmount(0))
+        return new MoneyAmount(0)
             ->add(self::getAnnualExpensesForAllLoans($gameEvents, $playerId))
             ->add(self::getCostOfAllInsurances($gameEvents, $playerId))
             ->add(self::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId))
+            ->add(self::calculateInsolvenzabgabenForPlayer($gameEvents, $playerId))
             ->add(self::calculateLebenshaltungskostenForPlayer($gameEvents, $playerId));
-
-        return $annualExpenses;
     }
 
     /**
@@ -462,13 +472,12 @@ class MoneySheetState
      */
     public static function calculateAnnualExpensesFromPlayerInput(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
-        $annualExpensesFromPlayerInput = (new MoneyAmount(0))
+        return new MoneyAmount(0)
             ->add(self::getAnnualExpensesForAllLoans($gameEvents, $playerId))
             ->add(self::getCostOfAllInsurances($gameEvents, $playerId))
             ->add(self::getLastInputForLebenshaltungskosten($gameEvents, $playerId))
+            ->add(self::calculateInsolvenzabgabenForPlayer($gameEvents, $playerId))
             ->add(self::getLastInputForSteuernUndAbgaben($gameEvents, $playerId));
-
-        return $annualExpensesFromPlayerInput;
     }
 
     /**
@@ -478,11 +487,9 @@ class MoneySheetState
      */
     public static function getAnnualIncomeForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
-        $annualIncome = (new MoneyAmount(0))
+        return new MoneyAmount(0)
             ->add(PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId))
             ->add(PlayerState::getDividendForAllStocksForPlayer($gameEvents, $playerId));
-
-        return $annualIncome;
     }
 
     public static function calculateTotalForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
@@ -495,5 +502,23 @@ class MoneySheetState
     {
         return self::getAnnualIncomeForPlayer($gameEvents, $playerId)
             ->subtract(self::calculateAnnualExpensesFromPlayerInput($gameEvents, $playerId));
+    }
+
+    /**
+     * If the player is insolvent they only keep the amount specified in {@see Configuration::INSOLVENZ_PFAENDUNGSFREIGRENZE}
+     * of their income. Anything more than that will be deducted as Insolvenzabgaben.
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return MoneyAmount
+     */
+    public static function calculateInsolvenzabgabenForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
+    {
+        if (!PlayerState::isPlayerInsolvent($gameEvents, $playerId)) {
+            return new MoneyAmount(0);
+        }
+        $currentGehalt = PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId);
+        $steuernUndAbgaben = MoneySheetState::calculateSteuernUndAbgabenForPlayer($gameEvents, $playerId);
+        $nettoGehalt = $currentGehalt->subtract($steuernUndAbgaben);
+        return new MoneyAmount(max([0, $nettoGehalt->subtract(new MoneyAmount(Configuration::INSOLVENZ_PFAENDUNGSFREIGRENZE))->value]));
     }
 }

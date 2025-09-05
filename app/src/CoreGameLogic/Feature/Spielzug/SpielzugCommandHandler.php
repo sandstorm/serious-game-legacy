@@ -14,11 +14,13 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\AcceptJobOfferAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ActivateCardAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\BuyInvestmentsForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CancelAllInsurancesForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CancelInsuranceForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ChangeLebenszielphaseAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CompleteMoneySheetForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ConcludeInsuranceForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\DontSellInvestmentsForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\FileInsolvenzForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\PutCardBackOnTopOfPileAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\DoMinijobAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EndSpielzugAktion;
@@ -26,6 +28,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterLebenshaltungskostenForPla
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\EnterSteuernUndAbgabenForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\MarkPlayerAsReadyForKonjunkturphaseChangeAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\QuitJobAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellInvestmentsForInsolvenzForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellInvestmentsForPlayerAfterInvestmentByAnotherPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellInvestmentsForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SkipCardAktion as SkipCardAktion;
@@ -37,8 +40,10 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\TakeOutALoanForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelAllInsurancesForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ChangeLebenszielphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellInvestmentsForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\FileInsolvenzForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\PutCardBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelInsuranceForPlayer;
@@ -46,6 +51,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForInsolvenzForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
@@ -87,7 +93,10 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             || $command instanceof DontSellInvestmentsForPlayer
             || $command instanceof PutCardBackOnTopOfPile
             || $command instanceof StartWeiterbildung
-            || $command instanceof SubmitAnswerForWeiterbildung;
+            || $command instanceof SubmitAnswerForWeiterbildung
+            || $command instanceof FileInsolvenzForPlayer
+            || $command instanceof CancelAllInsurancesForPlayer
+            || $command instanceof SellInvestmentsForInsolvenzForPlayer;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameEvents): GameEventsToPersist
@@ -125,6 +134,9 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             PutCardBackOnTopOfPile::class => $this->handlePutCardBackOnTopOfPile($command, $gameEvents),
             StartWeiterbildung::class => $this->handleStartWeiterbildung($command, $gameEvents),
             SubmitAnswerForWeiterbildung::class => $this->handleSubmitAnswerWeiterbildung($command, $gameEvents),
+            FileInsolvenzForPlayer::class => $this->handleFileInsolvenzForPlayer($command, $gameEvents),
+            CancelAllInsurancesForPlayer::class => $this->handleCancelAllInsurancesForPlayer($command, $gameEvents),
+            SellInvestmentsForInsolvenzForPlayer::class => $this->handleSellInvestmentsForInsolvenzForPlayer($command, $gameEvents),
         };
     }
 
@@ -327,6 +339,28 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
     private function handleStartWeiterbildung(StartWeiterbildung $command, GameEvents $gameEvents): GameEventsToPersist
     {
         $aktion = new StartWeiterbildungAktion();
+        return $aktion->execute($command->playerId, $gameEvents);
+    }
+
+    private function handleFileInsolvenzForPlayer(FileInsolvenzForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
+    {
+        $aktion = new FileInsolvenzForPlayerAktion();
+        return $aktion->execute($command->getPlayer(), $gameEvents);
+    }
+
+    private function handleCancelAllInsurancesForPlayer(CancelAllInsurancesForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
+    {
+        $aktion = new CancelAllInsurancesForPlayerAktion();
+        return $aktion->execute($command->playerId, $gameEvents);
+    }
+
+    private function handleSellInvestmentsForInsolvenzForPlayer(SellInvestmentsForInsolvenzForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
+    {
+        $aktion = new SellInvestmentsForInsolvenzForPlayerAktion(
+            $command->investmentId,
+            InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, $command->investmentId),
+            $command->amount,
+        );
         return $aktion->execute($command->playerId, $gameEvents);
     }
 }

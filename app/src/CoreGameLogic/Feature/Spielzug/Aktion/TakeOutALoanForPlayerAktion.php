@@ -12,6 +12,7 @@ use Domain\CoreGameLogic\Feature\Moneysheet\State\LoanCalculator;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerAllowedToTakeOutALoanValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerNotInsolventValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\LoanData;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasCorrected;
@@ -31,8 +32,8 @@ class TakeOutALoanForPlayerAktion extends Aktion
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
-
         $validator = new IsPlayerAllowedToTakeOutALoanValidator();
+        $validator->setNext(new IsPlayerNotInsolventValidator());
         return $validator->validate($gameEvents, $playerId);
     }
 
@@ -60,7 +61,7 @@ class TakeOutALoanForPlayerAktion extends Aktion
             repaymentPerKonjunkturphase: new MoneyAmount($this->takeOutALoanForm->repaymentPerKonjunkturphase)
         );
 
-        $expectedLoanAmount = min($this->takeOutALoanForm->loanAmount, LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->guthaben, $this->takeOutALoanForm->hasJob));
+        $expectedLoanAmount = min($this->takeOutALoanForm->loanAmount, LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->guthaben, $this->takeOutALoanForm->hasJob, $this->takeOutALoanForm->wasInsolvent));
         $expectedLoanData = new LoanData(
             loanAmount: new MoneyAmount($expectedLoanAmount),
             totalRepayment: new MoneyAmount(LoanCalculator::getCalculatedTotalRepayment($expectedLoanAmount, $this->takeOutALoanForm->zinssatz)),

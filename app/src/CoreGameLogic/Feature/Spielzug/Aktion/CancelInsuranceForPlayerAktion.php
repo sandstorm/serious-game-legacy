@@ -10,6 +10,7 @@ use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 
 class CancelInsuranceForPlayerAktion extends Aktion
@@ -46,6 +47,7 @@ class CancelInsuranceForPlayerAktion extends Aktion
             new InsuranceForPlayerWasCancelled(
                 playerId: $playerId,
                 insuranceId: $this->insuranceId,
+                resourceChanges: new ResourceChanges(),
             )
         );
     }

@@ -7,14 +7,18 @@ use Domain\Definitions\Configuration\Configuration;
 
 class LoanCalculator
 {
-    public static function getMaxLoanAmount(float $guthaben, bool $hasJob): float
+    public static function getMaxLoanAmount(float $guthaben, bool $hasJob, bool $wasInsolvent): float
     {
         if ($guthaben <= 0) {
             return 0; // No loan can be taken if the balance is zero or negative
         }
-        // without job only a loan of 80% of the current balance is allowed
-        // if player has a job, they can take a loan of 10 times their current balance
-        return $hasJob ? $guthaben * 10 : $guthaben * 0.8;
+        if ($hasJob) {
+            return $guthaben * 10; // if player has a job, they can take a loan of 10 times their current balance
+        } else if ($wasInsolvent) {
+            return $guthaben * 0.5; // without job and if the player was insolvent once already this game only 50% of current balance is allowed
+        } else {
+            return $guthaben * 0.8; // without job only a loan of 80% of the current balance is allowed
+        }
     }
 
     public static function getCalculatedTotalRepayment(float $loanAmount, float $zinssatz): float

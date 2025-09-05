@@ -6,7 +6,7 @@
 
 @props([
     'gameEvents' => null,
-    'myself' => null,
+    'playerId' => null,
 ])
 
 @section('icon')
@@ -25,7 +25,13 @@
                         wire:click="showMoneysheetSummaryForPlayer('{{$player->playerId}}')"
                     >
                         {{$player->name}}
-                        @if(KonjunkturphaseState::isPlayerReadyForKonjunkturphaseChange($gameEvents, $player->playerId))✅@else⏳@endif
+                        @if(KonjunkturphaseState::isPlayerReadyForKonjunkturphaseChange($gameEvents, $player->playerId))
+                            <i class="icon-fertig" aria-hidden="true"></i>
+                            <span class="sr-only">Spieler ist bereit für den Konjunkturphasenwechsel.</span>
+                        @else
+                            <i class="icon-sanduhr" aria-hidden="true"></i>
+                            <span class="sr-only">Spieler ist noch nicht bereit für den Konjunkturphasenwechsel.</span>
+                        @endif
                     </button>
                 </li>
             @endforeach
@@ -35,13 +41,15 @@
             {{$this->summaryActiveTabId}}
             <x-konjunkturphase.konjunkurphase-summary
                 :money-sheet="$this->getMoneysheetForPlayerId(PlayerId::fromString($this->summaryActiveTabId))"
+                :game-events="$gameEvents"
+                :player-id="$playerId"
             />
         </div>
     </div>
 @endsection
 
 @section('footer')
-    @if(KonjunkturphaseState::isPlayerReadyForKonjunkturphaseChange($gameEvents, $myself) === false)
+    @if(KonjunkturphaseState::isPlayerReadyForKonjunkturphaseChange($gameEvents, $playerId) === false)
         <button
             wire:click="markPlayerAsReady()"
             type="button"

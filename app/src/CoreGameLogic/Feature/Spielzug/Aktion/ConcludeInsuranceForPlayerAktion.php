@@ -8,6 +8,7 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughResourcesValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerNotInsolventValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\PlayerDoesNotYetHaveThisInsuranceValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
@@ -18,6 +19,10 @@ use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Insurance\InsuranceFinder;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 
+/**
+ * An insurance may mitigate the effects of some EreignisCards. The player has to pay for the insurance immediately and at the end of
+ * each Konjunkturphase they will pay for the upcoming year.
+ */
 class ConcludeInsuranceForPlayerAktion extends Aktion
 {
 
@@ -32,8 +37,9 @@ class ConcludeInsuranceForPlayerAktion extends Aktion
         $this->resourceChanges = $this->getResourceChanges($gameEvents, $playerId);
 
         $validatorChain = new PlayerDoesNotYetHaveThisInsuranceValidator($this->insuranceId);
-        $validatorChain->setNext(new HasPlayerEnoughResourcesValidator($this->resourceChanges));
-        // TODO beim Aussetzen nicht erlaubt?
+        $validatorChain
+            ->setNext(new HasPlayerEnoughResourcesValidator($this->resourceChanges))
+            ->setNext(new IsPlayerNotInsolventValidator());
         return $validatorChain->validate($gameEvents, $playerId);
     }
 

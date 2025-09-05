@@ -24,4 +24,6 @@ enum ModifierId: string
     case LEBENSHALTUNGSKOSTEN_KONJUNKTURPHASE_MULTIPLIER = 'Lebenshaltungskosten Konjunkturphase';
     case KREDITSPERRE = 'Kreditsperre';
     case INCREASED_CHANCE_FOR_REZESSION = 'Erhöhte Chance für eine Rezession';
+    case FOR_TESTING_ONLY_NEVER_TRIGGER_EREIGNIS = 'Nur zum Testen: Es werden keine Ereignisse ausgelöst';
+    case FOR_TESTING_ONLY_ALWAYS_TRIGGER_EREIGNIS = 'Nur zum Testen: Es werden immer Ereignisse ausgelöst';
 }
