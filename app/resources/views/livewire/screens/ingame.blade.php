@@ -74,6 +74,12 @@
             :player-id="$myself"
         />
     @endif
+    @if ($repaymentFormForLoanId)
+        <x-gameboard.moneySheet.repay-loan-modal
+            :game-events="$this->getGameEvents()"
+            :player-id="$myself"
+        />
+    @endif
     @if ($this->sellInvestmentsModalIsVisible)
         <x-gameboard.investitionen.investitionen-sell-after-purchase-modal
             :game-events="$this->getGameEvents()"
