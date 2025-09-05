@@ -39,8 +39,9 @@
 - [x] Shaping
 - [ ] Warnung vor drohender Insolvenz (wenn vor Konjunkturphasenende absehbar -> negativer Kontostand/kein Einkommen und Kontostand < Fixkosten)
 - [ ] Abfrage: Kreditaufnahme oder Verkauf von Geldanlagen (wenn möglich)
-    - [ ] Versicherungen kündigen (wenn möglich)
-    - [ ] Investitionen verkaufen (wenn möglich)
+    - [x] Versicherungen kündigen (wenn möglich)
+    - [x] Investitionen verkaufen (wenn möglich)
+    - [ ] Immobilien verkaufen
 - [ ] Insolvenz:
     - [x] Kontostand = 0 €
     - [ ] alle Kredite werden getilgt (nochmal abklären)
@@ -54,7 +55,7 @@
     - [x] Investitionen: Beschluss von Martin -> erstmal Investitionssperre -> mit Validator
 - [x] Kreditvoraussetzungen nach Insolvenz -> ohne Job nur noch 50% des Vermögens (statt 80%)
 - [ ] UI
-    - [ ] Kontostand in Übersicht (Konjunkturphasenwechsel)
+    - [x] Kontostand in Übersicht (Konjunkturphasenwechsel)
     - [ ] Abgaben an Insolvenzverwalter explizit in Moneysheet ausweisen
     - [ ] Buttons
     - [ ] Erklärungstexte
@@ -73,18 +74,19 @@
 - UI: Immer Kontostand mit sichtbar (und auch immer mit aktualisieren)
 - Versicherungen Kündigen
     - [x] Refactor: Versicherung wird immer im Voraus für's Jahr bezahlt
-    - [ ] UI: Auflistung der Versicherungen + "Kündigen" Button
+    - [x] UI: Auflistung der Versicherungen + "Kündigen" Button
 - Geldanlagen Verkaufen
-    - neue Aktion(en), Commands, Events (`sellInvestitionToAvoidInsolvenz`, ...)
-    - kein Einfluss auf Kurse
-    - kostet keinen Zeitstein/keine Slots
-    - kein Prompt für andere Spielende zum Verkaufen
-    - Sonderfall Immobilien: 80% des (Einkaufs-?) Werts
-    - "Alles Verkaufen" als Option?
-    - UI: Liste aller Geldanlagen + "Verkaufen" Butten (+ Input für Anzahl?)
-- Wenn nix mehr zu verkaufen/kündigen -> Button "Insolvenz anmelden"
-    - `FileInsolvenzForPlayer`, `PlayerHasFiledForInsolvenz`
-    - "MarkPlayerAsReady..." sollte jetzt wieder verfügbar sein
+    - [x] neue Aktion(en), Commands, Events (`sellInvestitionToAvoidInsolvenz`, ...)
+    - [x] kein Einfluss auf Kurse
+    - [x] kostet keinen Zeitstein/keine Slots
+    - [x] kein Prompt für andere Spielende zum Verkaufen
+    - [ ] Sonderfall Immobilien: 80% des (Einkaufs-?) Werts
+    - [ ] "Alles Verkaufen" als Option?
+    - [x] UI: Liste aller Geldanlagen + "Verkaufen" Butten (+ Input für Anzahl?)
+- Wenn nix mehr zu verkaufen/kündigen
+    - [x] `FileInsolvenzForPlayer`, `PlayerHasFiledForInsolvenz`
+    - [ ] "MarkPlayerAsReady..." sollte jetzt wieder verfügbar sein
+    - [ ] UI: Button "Insolvenz anmelden"
 
 ## Fragen
 

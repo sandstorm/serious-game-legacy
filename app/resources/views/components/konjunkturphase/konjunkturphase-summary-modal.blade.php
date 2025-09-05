@@ -6,7 +6,7 @@
 
 @props([
     'gameEvents' => null,
-    'myself' => null,
+    'playerId' => null,
 ])
 
 @section('icon')
@@ -41,13 +41,15 @@
             {{$this->summaryActiveTabId}}
             <x-konjunkturphase.konjunkurphase-summary
                 :money-sheet="$this->getMoneysheetForPlayerId(PlayerId::fromString($this->summaryActiveTabId))"
+                :game-events="$gameEvents"
+                :player-id="$playerId"
             />
         </div>
     </div>
 @endsection
 
 @section('footer')
-    @if(KonjunkturphaseState::isPlayerReadyForKonjunkturphaseChange($gameEvents, $myself) === false)
+    @if(KonjunkturphaseState::isPlayerReadyForKonjunkturphaseChange($gameEvents, $playerId) === false)
         <button
             wire:click="markPlayerAsReady()"
             type="button"

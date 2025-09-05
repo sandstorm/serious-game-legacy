@@ -18,6 +18,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasPutBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisProfitWasReducedBecauseOfInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForInsolvenzForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerGotAChild;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasFiledForInsolvenz;
@@ -91,6 +92,7 @@ final readonly class EventNormalizer
             InsuranceForPlayerWasConcluded::class,
             InvestmentsWereBoughtForPlayer::class,
             InvestmentsWereNotSoldForPlayer::class,
+            InvestmentsWereSoldForInsolvenzForPlayer::class,
             InvestmentsWereSoldForPlayer::class,
             InvestmentsWereSoldForPlayerAfterInvestmentByAnotherPlayer::class,
             JobOfferWasAccepted::class,

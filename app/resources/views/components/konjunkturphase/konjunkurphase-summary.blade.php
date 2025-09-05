@@ -1,5 +1,9 @@
+@use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
+
 @props([
     'moneySheet' => null,
+    'gameEvents' => null,
+    'playerId' => null,
 ])
 
 <div class="konjunkturphase-summary__money-sheet">
@@ -90,6 +94,26 @@
                             ])
                         >
                             Versicherungen kündigen
+                        </button>
+                    </td>
+                </tr>
+            @endif
+            @if(PlayerState::getTotalValueOfAllInvestmentsForPlayer($gameEvents, $playerId)->value > 0)
+                <tr class="konjunkturphase-summary-tabe__total-row">
+                    <td class="konjunkturphase-summary-table__icon-column"></td>
+                    <td class="konjunkturphase-summary-table__heading-column">Du hast nicht genügend Geld auf dem Konto, um deine Lebenshaltungskosten zu bezahlen. Verkaufe deine Investitionen, um deine Lebenshaltungskosten decken zu können.</td>
+                    <td class="konjunkturphase-summary-table__value-column">
+                        <button
+                            wire:click="toggleSellAllInvestmentsModal()"
+                            type="button"
+                            @class([
+                                "button",
+                                "button--type-primary",
+                                "button--size-small",
+                                $this->getPlayerColorClass(),
+                            ])
+                        >
+                            Investitionen verkaufen
                         </button>
                     </td>
                 </tr>
