@@ -13,6 +13,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
@@ -286,10 +287,10 @@ abstract class TestCase extends BaseTestCase
     /**
      * @return void
      */
-    public function makeSpielzugForPlayersBySkippingACard(): void
+    public function makeSpielzugForPlayersByDoingAMiniJob(): void
     {
         foreach ($this->players as $player) {
-            $this->coreGameLogic->handle($this->gameId, new SkipCard($player, CategoryId::BILDUNG_UND_KARRIERE));
+            $this->coreGameLogic->handle($this->gameId, DoMiniJob::create($player));
             $this->coreGameLogic->handle($this->gameId, new EndSpielzug($player));
         }
 

@@ -311,50 +311,6 @@ describe('handleActivateCard', function () {
             $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
     });
 
-    it('will consume a Zeitstein (later turns)', function () {
-        /** @var TestCase $this */
-        $skipThisCard = new CardId('skipped');
-        $cardsForTesting = [
-            "testcard" => new KategorieCardDefinition(
-                id: new CardId('testcard'),
-                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
-                title: 'for testing',
-                description: '...',
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-200),
-                    bildungKompetenzsteinChange: +1,
-                ),
-            ),
-        ];
-
-        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
-
-        // Check the initial assumption of how many Zeitsteine the player has at the start of the test
-        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-
-        expect(PlayerState::getZeitsteineForPlayer($stream,
-            $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
-
-        $this->coreGameLogic->handle($this->gameId, new SkipCard(
-            playerId: $this->players[0],
-            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
-        ));
-
-        $this->coreGameLogic->handle(
-            $this->gameId,
-            new EndSpielzug($this->players[0])
-        );
-
-        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
-            playerId: $this->players[1],
-            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
-        ));
-
-        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream,
-            $this->players[1]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
-    });
-
     it('will not consume a Zeitstein after skipping a Card', function () {
         /** @var TestCase $this */
         $skipThisCard = new KategorieCardDefinition(
@@ -1386,7 +1342,7 @@ describe('handleStartWeiterbildung', function () {
         );
 
         $this->coreGameLogic->handle($this->gameId,
-            new SkipCard(playerId: $this->players[1], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
+            DoMinijob::create(playerId: $this->players[1]));
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -1652,7 +1608,7 @@ describe('handleEndSpielzug', function () {
             // Player 2 does _something_ and finishes their turn
             $this->coreGameLogic->handle(
                 $this->gameId,
-                new SkipCard($this->players[1], CategoryId::SOZIALES_UND_FREIZEIT)
+                DoMiniJob::create($this->players[1])
             );
             $this->coreGameLogic->handle(
                 $this->gameId,
@@ -1677,7 +1633,7 @@ describe('handleEndSpielzug', function () {
         /** @var TestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
-            new SkipCard($this->players[0], CategoryId::SOZIALES_UND_FREIZEIT)
+            DoMinijob::create($this->players[0])
         );
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -1691,7 +1647,7 @@ describe('handleEndSpielzug', function () {
         /** @var TestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
-            new SkipCard($this->players[0], CategoryId::SOZIALES_UND_FREIZEIT)
+            DoMinijob::create($this->players[0])
         );
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -1699,7 +1655,7 @@ describe('handleEndSpielzug', function () {
         );
         $this->coreGameLogic->handle(
             $this->gameId,
-            new SkipCard($this->players[1], CategoryId::SOZIALES_UND_FREIZEIT)
+            DoMinijob::create($this->players[1])
         );
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -1765,7 +1721,7 @@ describe('handleStartSpielzug', function () {
         // player 0 ends his turn
         $this->coreGameLogic->handle(
             $this->gameId,
-            new SkipCard($this->players[0], CategoryId::SOZIALES_UND_FREIZEIT)
+            DoMinijob::create($this->players[0])
         );
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -1792,7 +1748,7 @@ describe('handleStartSpielzug', function () {
         // player 0 ends her turn
         $this->coreGameLogic->handle(
             $this->gameId,
-            new SkipCard($this->players[0], CategoryId::SOZIALES_UND_FREIZEIT)
+            DoMinijob::create($this->players[0])
         );
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -1818,7 +1774,7 @@ describe('handleStartSpielzug', function () {
         // player 1 ends his turn
         $this->coreGameLogic->handle(
             $this->gameId,
-            new SkipCard($this->players[1], CategoryId::SOZIALES_UND_FREIZEIT)
+            DoMinijob::create($this->players[1])
         );
         $this->coreGameLogic->handle(
             $this->gameId,

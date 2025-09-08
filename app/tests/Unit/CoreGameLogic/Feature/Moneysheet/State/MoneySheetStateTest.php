@@ -17,6 +17,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\Dto\ModifierParameters;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
@@ -787,9 +788,15 @@ describe('getOpenRatesForLoan', function () {
             $expectedYear++;
             $expectedGuthaben -= $rate;
             $expectedGuthaben -= Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE;
-            $this->makeSpielzugForPlayersBySkippingACard();
+            $this->makeSpielzugForPlayersByDoingAMiniJob();
 
             $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+            /** @var null|MinijobWasDone $miniJob */
+            $miniJob = $gameEvents->findLastOrNullWhere(
+                fn($e) => $e instanceof MinijobWasDone && $e->playerId->equals($this->players[0])
+            );
+            $expectedGuthaben += $miniJob->getResourceChanges($this->players[0])->guthabenChange->value; // mini job income
+
             $openRates = MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], $loans[0]->loanId);
             expect($loans)->toHaveCount(1)
                 ->and($openRates)->toEqual(Configuration::REPAYMENT_PERIOD - $i)
@@ -800,14 +807,18 @@ describe('getOpenRatesForLoan', function () {
 
         // after 20 years, the loan should be fully repaid
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        $expectedGuthaben = Configuration::STARTKAPITAL_VALUE + $loanAmount - (Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE * 20) - ($loans[0]->loanData->totalRepayment->value);
         expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->value)->toEqual($expectedGuthaben)
             ->and(MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], $loans[0]->loanId))->toEqual(0);
 
         // the loan rates should not be paid anymore the next year
-        $this->makeSpielzugForPlayersBySkippingACard();
+        $this->makeSpielzugForPlayersByDoingAMiniJob();
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        $expectedGuthaben = Configuration::STARTKAPITAL_VALUE + $loanAmount - (Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE * 21) - ($loans[0]->loanData->totalRepayment->value);
+        /** @var null|MinijobWasDone $miniJob */
+        $miniJob = $gameEvents->findLastOrNullWhere(
+            fn($e) => $e instanceof MinijobWasDone && $e->playerId->equals($this->players[0])
+        );
+        $expectedGuthaben += $miniJob->getResourceChanges($this->players[0])->guthabenChange->value; // mini job income
+        $expectedGuthaben -= Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE;
         expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->value)->toEqual($expectedGuthaben)
             ->and(MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], $loans[0]->loanId))->toEqual(0);
     });
