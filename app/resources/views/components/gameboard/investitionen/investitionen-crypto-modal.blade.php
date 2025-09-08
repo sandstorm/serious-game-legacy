@@ -41,8 +41,9 @@
     @elseif ($this->sellInvestmentOfType)
         <x-gameboard.investitionen.investitionen-sell-form
             :game-events="$gameEvents"
+            action="sellInvestments('{{ $this->sellInvestmentOfType }}')"
             unit="Coin"
-            buy-button-label="Coins verkaufen"
+            sell-button-label="Coins verkaufen"
         />
     @else
         <p>
