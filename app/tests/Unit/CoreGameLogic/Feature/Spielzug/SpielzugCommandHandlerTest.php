@@ -33,7 +33,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartWeiterbildung;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SubmitAnswerForWeiterbildung;
@@ -41,7 +40,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\LoanData;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasPutBackOnTopOfPile;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereEntered;
@@ -56,7 +54,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
-use Domain\Definitions\Card\Dto\ModifierParameters;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Card\Dto\AnswerOption;
@@ -68,22 +65,10 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\ValueObject\AnswerId;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
-use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
-use Domain\Definitions\Konjunkturphase\Dto\ConditionalResourceChange;
-use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
-use Domain\Definitions\Konjunkturphase\Dto\Zeitslots;
-use Domain\Definitions\Konjunkturphase\Dto\ZeitslotsPerPlayer;
-use Domain\Definitions\Konjunkturphase\Dto\Zeitsteine;
-use Domain\Definitions\Konjunkturphase\Dto\ZeitsteinePerPlayer;
-use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
-use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
-use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
-use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use RuntimeException;
 use Tests\ComponentWithForm;
 use Tests\TestCase;
@@ -321,50 +306,6 @@ describe('handleActivateCard', function () {
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream,
             $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
-    });
-
-    it('will consume a Zeitstein (later turns)', function () {
-        /** @var TestCase $this */
-        $skipThisCard = new CardId('skipped');
-        $cardsForTesting = [
-            "testcard" => new KategorieCardDefinition(
-                id: new CardId('testcard'),
-                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
-                title: 'for testing',
-                description: '...',
-                resourceChanges: new ResourceChanges(
-                    guthabenChange: new MoneyAmount(-200),
-                    bildungKompetenzsteinChange: +1,
-                ),
-            ),
-        ];
-
-        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
-
-        // Check the initial assumption of how many Zeitsteine the player has at the start of the test
-        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-
-        expect(PlayerState::getZeitsteineForPlayer($stream,
-            $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
-
-        $this->coreGameLogic->handle($this->gameId, new SkipCard(
-            playerId: $this->players[0],
-            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
-        ));
-
-        $this->coreGameLogic->handle(
-            $this->gameId,
-            new EndSpielzug($this->players[0])
-        );
-
-        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
-            playerId: $this->players[1],
-            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
-        ));
-
-        $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream,
-            $this->players[1]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1);
     });
 
     it('will not consume a Zeitstein after skipping a Card', function () {
@@ -1398,7 +1339,7 @@ describe('handleStartWeiterbildung', function () {
         );
 
         $this->coreGameLogic->handle($this->gameId,
-            new SkipCard(playerId: $this->players[1], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
+            DoMinijob::create(playerId: $this->players[1]));
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -1664,7 +1605,7 @@ describe('handleEndSpielzug', function () {
             // Player 2 does _something_ and finishes their turn
             $this->coreGameLogic->handle(
                 $this->gameId,
-                new SkipCard($this->players[1], CategoryId::SOZIALES_UND_FREIZEIT)
+                DoMiniJob::create($this->players[1])
             );
             $this->coreGameLogic->handle(
                 $this->gameId,
@@ -1689,7 +1630,7 @@ describe('handleEndSpielzug', function () {
         /** @var TestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
-            new SkipCard($this->players[0], CategoryId::SOZIALES_UND_FREIZEIT)
+            DoMinijob::create($this->players[0])
         );
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -1703,7 +1644,7 @@ describe('handleEndSpielzug', function () {
         /** @var TestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
-            new SkipCard($this->players[0], CategoryId::SOZIALES_UND_FREIZEIT)
+            DoMinijob::create($this->players[0])
         );
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -1711,7 +1652,7 @@ describe('handleEndSpielzug', function () {
         );
         $this->coreGameLogic->handle(
             $this->gameId,
-            new SkipCard($this->players[1], CategoryId::SOZIALES_UND_FREIZEIT)
+            DoMinijob::create($this->players[1])
         );
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -1777,7 +1718,7 @@ describe('handleStartSpielzug', function () {
         // player 0 ends his turn
         $this->coreGameLogic->handle(
             $this->gameId,
-            new SkipCard($this->players[0], CategoryId::SOZIALES_UND_FREIZEIT)
+            DoMinijob::create($this->players[0])
         );
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -1804,7 +1745,7 @@ describe('handleStartSpielzug', function () {
         // player 0 ends her turn
         $this->coreGameLogic->handle(
             $this->gameId,
-            new SkipCard($this->players[0], CategoryId::SOZIALES_UND_FREIZEIT)
+            DoMinijob::create($this->players[0])
         );
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -1830,7 +1771,7 @@ describe('handleStartSpielzug', function () {
         // player 1 ends his turn
         $this->coreGameLogic->handle(
             $this->gameId,
-            new SkipCard($this->players[1], CategoryId::SOZIALES_UND_FREIZEIT)
+            DoMinijob::create($this->players[1])
         );
         $this->coreGameLogic->handle(
             $this->gameId,

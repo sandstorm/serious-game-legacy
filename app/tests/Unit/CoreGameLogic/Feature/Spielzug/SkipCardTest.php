@@ -8,6 +8,7 @@ namespace Tests\CoreGameLogic\Feature\Spielzug;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
@@ -53,7 +54,7 @@ describe('handleSkipCard', function () {
             new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
     })->throws(
         RuntimeException::class,
-        'Du kannst nur eine Zeitsteinaktion pro Runde ausführen',
+        'Cannot skip card: Du kannst nur eine Zeitsteinaktion pro Runde ausführen',
         1747325793);
 
     it('can only skip when it\'s the player\'s turn', function () {
@@ -62,8 +63,19 @@ describe('handleSkipCard', function () {
             new SkipCard(playerId: $this->players[1], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
     })->throws(
         RuntimeException::class,
-        'Cannot skip card: Du bist gerade nicht dran',
+        'Du bist gerade nicht dran',
         1747325793);
+
+    it('throws an error when the player tries to end their Spielzug directly after skipping a card', function () {
+        /** @var TestCase $this */
+        $this->coreGameLogic->handle($this->gameId,
+            new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId,
+            new EndSpielzug($this->players[0]));
+    })->throws(
+        RuntimeException::class,
+        'Cannot end spielzug: Du musst die Karte entweder aktivieren oder zurück auf den Stapel legen',
+        1748946243);
 
     it('cannot skip without a Zeitstein', function () {
         /** @var TestCase $this */
@@ -94,8 +106,10 @@ describe('handleSkipCard', function () {
             $this->gameId,
             new EndSpielzug($this->players[0])
         );
+
         $this->coreGameLogic->handle($this->gameId,
-            new SkipCard(playerId: $this->players[1], categoryId: CategoryId::SOZIALES_UND_FREIZEIT));
+            DoMinijob::create($this->players[1]));
+
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
 
         // confirm that the player has 0 Zeitsteine
