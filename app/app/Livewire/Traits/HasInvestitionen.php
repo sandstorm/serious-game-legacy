@@ -162,7 +162,7 @@ trait HasInvestitionen
             return;
         }
 
-        $this->coreGameLogic->handle($this->gameId, BuyInvestmentsForPlayer::create(
+        $this->handleCommand(BuyInvestmentsForPlayer::create(
             $this->myself,
             $investmentId,
             $this->buyInvestmentsForm->amount
@@ -179,7 +179,7 @@ trait HasInvestitionen
     public function closeSellInvestmentsModal(): void
     {
         $stocksBoughtEvent = $this->getGameEvents()->findLast(InvestmentsWereBoughtForPlayer::class);
-        $this->coreGameLogic->handle($this->gameId, DontSellInvestmentsForPlayer::create(
+        $this->handleCommand(DontSellInvestmentsForPlayer::create(
             $this->myself,
             $stocksBoughtEvent->investmentId
         ));
@@ -216,7 +216,7 @@ trait HasInvestitionen
             return;
         }
 
-        $this->coreGameLogic->handle($this->gameId, SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer::create(
+        $this->handleCommand(SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer::create(
             $this->myself,
             $investmentId,
             $this->sellInvestmentsForm->amount
@@ -287,7 +287,7 @@ trait HasInvestitionen
             return;
         }
 
-        $this->coreGameLogic->handle($this->gameId, SellInvestmentsForPlayer::create(
+        $this->handleCommand(SellInvestmentsForPlayer::create(
             $this->myself,
             $investmentId,
             $this->sellInvestmentsForm->amount

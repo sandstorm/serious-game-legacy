@@ -131,7 +131,7 @@ trait HasCard
             return;
         }
 
-        $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
+        $this->handleCommand(ActivateCard::create(
             $this->myself,
             CategoryId::from($category)
         ));
@@ -166,7 +166,7 @@ trait HasCard
             );
             return;
         }
-        $this->coreGameLogic->handle($this->gameId, new SkipCard(
+        $this->handleCommand(new SkipCard(
             $this->myself,
             CategoryId::from($category)
         ));
@@ -186,7 +186,7 @@ trait HasCard
      */
     public function putCardBackOnTopOfPile(string $category): void
     {
-        $this->coreGameLogic->handle($this->gameId, new PutCardBackOnTopOfPile($this->myself, CategoryId::from($category)));
+        $this->handleCommand(new PutCardBackOnTopOfPile($this->myself, CategoryId::from($category)));
         $this->broadcastNotify();
         $this->showCardActionsForCard = null;
     }

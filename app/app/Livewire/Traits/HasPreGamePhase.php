@@ -43,9 +43,9 @@ trait HasPreGamePhase
     public function preGameSetNameAndLebensziel(): void
     {
         $this->nameLebenszielForm->validate();
-        $this->coreGameLogic->handle($this->gameId, new SetNameForPlayer($this->myself, $this->nameLebenszielForm->name));
+        $this->handleCommand(new SetNameForPlayer($this->myself, $this->nameLebenszielForm->name));
         if ($this->nameLebenszielForm->lebensziel !== null) {
-            $this->coreGameLogic->handle($this->gameId, new SelectLebensziel($this->myself, LebenszielId::create($this->nameLebenszielForm->lebensziel)));
+            $this->handleCommand(new SelectLebensziel($this->myself, LebenszielId::create($this->nameLebenszielForm->lebensziel)));
         }
 
         $this->broadcastNotify();
@@ -58,8 +58,8 @@ trait HasPreGamePhase
 
     public function startGame(): void
     {
-        $this->coreGameLogic->handle($this->gameId, StartGame::create());
-        $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create());
+        $this->handleCommand(StartGame::create());
+        $this->handleCommand(ChangeKonjunkturphase::create());
         $this->broadcastNotify();
     }
 }

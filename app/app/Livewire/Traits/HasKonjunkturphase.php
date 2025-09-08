@@ -77,7 +77,7 @@ trait HasKonjunkturphase
             );
             return;
         }
-        $this->coreGameLogic->handle($this->gameId, StartKonjunkturphaseForPlayer::create($this->myself));
+        $this->handleCommand(StartKonjunkturphaseForPlayer::create($this->myself));
         $this->broadcastNotify();
         $this->konjunkturphaseStartScreenPage = 0;
     }
@@ -93,7 +93,7 @@ trait HasKonjunkturphase
             );
             return;
         }
-        $this->coreGameLogic->handle($this->gameId, CompleteMoneysheetForPlayer::create($this->myself));
+        $this->handleCommand(CompleteMoneysheetForPlayer::create($this->myself));
         $this->moneySheetIsVisible = false;
         $this->broadcastNotify();
     }
@@ -116,7 +116,7 @@ trait HasKonjunkturphase
             );
             return;
         }
-        $this->coreGameLogic->handle($this->gameId, MarkPlayerAsReadyForKonjunkturphaseChange::create($this->myself));
+        $this->handleCommand(MarkPlayerAsReadyForKonjunkturphaseChange::create($this->myself));
         $this->broadcastNotify();
     }
 }

@@ -73,7 +73,7 @@ trait HasWeiterbildung
             return;
         }
 
-        $this->coreGameLogic->handle($this->gameId, StartWeiterbildung::create($this->myself));
+        $this->handleCommand(StartWeiterbildung::create($this->myself));
 
         $this->isWeiterbildungVisible = true;
         $this->broadcastNotify();
@@ -93,7 +93,7 @@ trait HasWeiterbildung
         $this->weiterbildungForm->validate();
 
         $selectedAnswerId = new AnswerId($this->weiterbildungForm->answer);
-        $this->coreGameLogic->handle($this->gameId, SubmitAnswerForWeiterbildung::create(
+        $this->handleCommand(SubmitAnswerForWeiterbildung::create(
             $this->myself,
             $selectedAnswerId
         ));

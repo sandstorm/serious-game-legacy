@@ -47,10 +47,7 @@ trait HasJobOffer
             );
             return;
         }
-        $this->coreGameLogic->handle(
-            $this->gameId,
-            AcceptJobOffer::create($this->myself, $cardId)
-        );
+        $this->handleCommand(AcceptJobOffer::create($this->myself, $cardId));
 
         $this->jobOfferIsVisible = false;
         $this->broadcastNotify();

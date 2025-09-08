@@ -189,7 +189,7 @@ trait HasMoneySheet
     public function setLebenshaltungskosten(): void
     {
         $this->moneySheetLebenshaltungskostenForm->validate();
-        $this->coreGameLogic->handle($this->gameId, EnterLebenshaltungskostenForPlayer::create(
+        $this->handleCommand(EnterLebenshaltungskostenForPlayer::create(
             $this->myself,
             new MoneyAmount($this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten)
         ));
@@ -212,7 +212,7 @@ trait HasMoneySheet
     public function setSteuernUndAbgaben(): void
     {
         $this->moneySheetSteuernUndAbgabenForm->validate();
-        $this->coreGameLogic->handle($this->gameId, EnterSteuernUndAbgabenForPlayer::create(
+        $this->handleCommand(EnterSteuernUndAbgabenForPlayer::create(
             $this->myself,
             new MoneyAmount($this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben)
         ));
@@ -246,7 +246,7 @@ trait HasMoneySheet
             if ($shouldBeConcluded) {
                 $concludeInsuranceValidationResult = new ConcludeInsuranceForPlayerAktion($insuranceId)->validate($this->myself, $this->getGameEvents());
                 if ($concludeInsuranceValidationResult->canExecute) {
-                    $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->myself, $insuranceId));
+                    $this->handleCommand(ConcludeInsuranceForPlayer::create($this->myself, $insuranceId));
                 } else {
                     $insuranceName = InsuranceFinder::getInstance()->findInsuranceById($insuranceId)->description;
                     $this->showBanner('Du hast nicht genug Geld, um die ' . $insuranceName . ' abzuschließen.');
@@ -254,7 +254,7 @@ trait HasMoneySheet
             } else {
                 $cancelInsuranceValidationResult = new CancelInsuranceForPlayerAktion($insuranceId)->validate($this->myself, $this->getGameEvents());
                 if ($cancelInsuranceValidationResult->canExecute) {
-                    $this->coreGameLogic->handle($this->gameId, CancelInsuranceForPlayer::create($this->myself, $insuranceId));
+                    $this->handleCommand(CancelInsuranceForPlayer::create($this->myself, $insuranceId));
                 }else {
                     $insuranceName = InsuranceFinder::getInstance()->findInsuranceById($insuranceId)->description;
                     $this->showBanner('Du kannst die ' . $insuranceName . ' nicht kündigen.');
@@ -267,7 +267,7 @@ trait HasMoneySheet
     public function takeOutALoan(): void
     {
         $loanId = new LoanId($this->takeOutALoanForm->loanId);
-        $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
+        $this->handleCommand(TakeOutALoanForPlayer::create(
             $this->myself,
             $this->takeOutALoanForm
         ));
@@ -310,7 +310,7 @@ trait HasMoneySheet
             return;
         }
 
-        $this->coreGameLogic->handle($this->gameId, RepayLoanForPlayer::create(
+        $this->handleCommand(RepayLoanForPlayer::create(
             $this->myself,
             new LoanId($loanId)
         ));

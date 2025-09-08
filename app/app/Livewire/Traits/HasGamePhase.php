@@ -64,13 +64,13 @@ trait HasGamePhase
             );
             return;
         }
-        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->myself));
+        $this->handleCommand(new EndSpielzug($this->myself));
         $this->broadcastNotify();
     }
 
     public function startSpielzug(): void
     {
-        $this->coreGameLogic->handle($this->gameId, new StartSpielzug($this->myself));
+        $this->handleCommand(new StartSpielzug($this->myself));
         $this->broadcastNotify();
     }
 }

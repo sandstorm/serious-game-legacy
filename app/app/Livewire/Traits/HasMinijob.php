@@ -30,7 +30,7 @@ trait HasMinijob
             return;
         }
 
-        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->myself));
+        $this->handleCommand(DoMinijob::create($this->myself));
         $this->broadcastNotify();
         $this->isMinijobVisible = true;
     }
