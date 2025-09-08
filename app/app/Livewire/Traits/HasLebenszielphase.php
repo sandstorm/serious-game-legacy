@@ -48,7 +48,7 @@ trait HasLebenszielphase
             return;
         }
 
-        $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create($this->myself));
+        $this->handleCommand(ChangeLebenszielphase::create($this->myself));
         $this->isChangeLebenszielphaseVisible = true;
 
         /** @var LebenszielphaseWasChanged $event */

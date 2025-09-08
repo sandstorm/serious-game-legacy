@@ -20,6 +20,7 @@ use App\Livewire\Traits\HasPreGamePhase;
 use App\Livewire\Traits\HasMoneySheet;
 use App\Livewire\Traits\HasMinijob;
 use App\Livewire\Traits\HasQuitJob;
+use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
@@ -28,7 +29,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
-use Domain\Definitions\Lebensziel\LebenszielFinder;
 use Illuminate\Events\Dispatcher;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -97,7 +97,17 @@ class GameUi extends Component
      */
     public function getGameEvents(): GameEvents
     {
-        return $this->coreGameLogic->getGameEvents($this->gameId);
+        return $this->gameEvents;
+    }
+
+    /**
+     * Always use this method to execute commands in the frontend, because it will
+     * also update the local gameEvents.
+     */
+    public function handleCommand(CommandInterface $command): void
+    {
+        $this->coreGameLogic->handle($this->gameId, $command);
+        $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
     }
 
     /**

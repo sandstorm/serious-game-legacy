@@ -463,7 +463,12 @@
     <PhpStan_settings>
       <PhpStanConfiguration tool_path="$PROJECT_DIR$/app/vendor/bin/phpstan" />
       <phpstan_by_interpreter interpreter_id="514a332a-0a67-412b-89f6-5bb8cebec009" tool_path="$PROJECT_DIR$/app/vendor/bin/phpstan" timeout="60000" />
+      <phpstan_by_interpreter asDefaultInterpreter="true" interpreter_id="8edbe9dd-3630-4d84-8e5c-636cd7e749fb" tool_path="/app/vendor/bin/phpstan" timeout="60000" />
     </PhpStan_settings>
+  </component>
+  <component name="PhpStanOptionsConfiguration">
+    <option name="config" value="$PROJECT_DIR$/app/phpstan.neon" />
+    <option name="fullProject" value="true" />
   </component>
   <component name="PhpUnit">
     <phpunit_settings>

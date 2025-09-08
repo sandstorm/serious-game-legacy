@@ -40,6 +40,12 @@ parameters:
             method: '*ForTesting*()'
             message: '..forTesting() only allowed in testcases.'
 
+         -  # We always want to use GameUi::handleCommand() which also updates the gameEvents
+            method: 'Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic::handle()'
+            message: 'use GameUi::handleCommand() instead'
+            allowExceptIn:
+                - app/Livewire/Traits/*
+
     disallowedFunctionCalls:
         -   # We do not want to use helpers which access global state. -> Dependency Injection
             function:
