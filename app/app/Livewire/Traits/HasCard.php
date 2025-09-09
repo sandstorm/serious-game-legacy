@@ -149,6 +149,7 @@ trait HasCard
         $cardPlayed = $this->getGameEvents()->findLast(CardWasActivated::class);
         $this->showBanner("Karte wurde erfolgreich gespielt", $cardPlayed->getResourceChanges($this->myself));
         $this->broadcastNotify();
+        $this->showCardActionsForCard = null;
     }
 
     /**
@@ -187,5 +188,6 @@ trait HasCard
     {
         $this->coreGameLogic->handle($this->gameId, new PutCardBackOnTopOfPile($this->myself, CategoryId::from($category)));
         $this->broadcastNotify();
+        $this->showCardActionsForCard = null;
     }
 }
