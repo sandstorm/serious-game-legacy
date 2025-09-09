@@ -85,8 +85,8 @@
     - [x] UI: Liste aller Geldanlagen + "Verkaufen" Butten (+ Input für Anzahl?)
 - Wenn nix mehr zu verkaufen/kündigen
     - [x] `FileInsolvenzForPlayer`, `PlayerHasFiledForInsolvenz`
-    - [ ] "MarkPlayerAsReady..." sollte jetzt wieder verfügbar sein
-    - [ ] UI: Button "Insolvenz anmelden"
+    - [x] "MarkPlayerAsReady..." sollte jetzt wieder verfügbar sein
+    - [x] UI: Button "Insolvenz anmelden"
 
 ## Fragen
 

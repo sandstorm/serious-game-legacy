@@ -44,14 +44,25 @@
             <x-form.textfield wire:model="takeOutALoanForm.loanAmount" id="loanAmount" name="loanAmount" type="number" min="1" />
             @error('takeOutALoanForm.loanAmount') <span class="form__error">{{ $message }}</span> @enderror
             <p>
-                <strong>Kreditlimit: </strong> {!! LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->sumOfAllAssets, $this->takeOutALoanForm->salary, $this->takeOutALoanForm->obligations)->format() !!}
+                <strong>Kreditlimit: </strong> {!! LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->sumOfAllAssets, $this->takeOutALoanForm->salary, $this->takeOutALoanForm->obligations, $this->takeOutALoanForm->wasPlayerInsolventInThePast)->format() !!}
                 <br />
                 @if (PlayerState::getJobForPlayer($gameEvents, $playerId) !== null)
-                    Das gesamte Kreditvolumen darf das <strong>5-fache</strong> des aktuellen Jahresgehalt (brutto)
-                    <strong>zzgl. Vermögenswerte</strong>, <strong>abzgl. Verbindlichkeiten</strong> nicht übersteigen!
+                    @if (PlayerState::wasPlayerInsolventInThePast($gameEvents, $playerId))
+                        Das gesamte Kreditvolumen darf das <strong>2-fache</strong> des aktuellen Jahresgehalt (brutto)
+                        <strong>zzgl. Vermögenswerte</strong>, <strong>abzgl. Verbindlichkeiten</strong> nicht übersteigen!
+                    @else
+                        Das gesamte Kreditvolumen darf das <strong>5-fache</strong> des aktuellen Jahresgehalt (brutto)
+                        <strong>zzgl. Vermögenswerte</strong>, <strong>abzgl. Verbindlichkeiten</strong> nicht übersteigen!
+                    @endif
                 @else
-                    Gesamtes Kreditvolumen darf <strong>80%</strong> deiner Vermögenswerte
-                    <strong>abzgl. Verbindlichkeiten</strong> nicht übersteigen!
+                    @if (PlayerState::wasPlayerInsolventInThePast($gameEvents, $playerId))
+                        Gesamtes Kreditvolumen darf <strong>50%</strong> deiner Vermögenswerte
+                        <strong>abzgl. Verbindlichkeiten</strong> nicht übersteigen!
+                    @else
+                        Gesamtes Kreditvolumen darf <strong>80%</strong> deiner Vermögenswerte
+                        <strong>abzgl. Verbindlichkeiten</strong> nicht übersteigen!
+                    @endif
+
                 @endif
             </p>
         </div>

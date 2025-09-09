@@ -28,7 +28,7 @@ class TakeOutALoanForm extends Form
     public float $obligations = 0;
     public float $zinssatz = 0;
     public float $salary = 0;
-    public bool $wasInsolvent = false;
+    public bool $wasPlayerInsolventInThePast = false;
 
     /**
      * Set of custom validation rules for the form.
@@ -41,7 +41,7 @@ class TakeOutALoanForm extends Form
         return [
             'loanAmount' => [
                 'required', 'numeric', 'min:1', function ($attribute, $value, $fail) {
-                    if ($this->loanAmount > LoanCalculator::getMaxLoanAmount($this->sumOfAllAssets, $this->salary, $this->obligations, $this->wasInsolvent)->value) {
+                    if ($this->loanAmount > LoanCalculator::getMaxLoanAmount($this->sumOfAllAssets, $this->salary, $this->obligations, $this->wasPlayerInsolventInThePast)->value) {
                         $fail("Du kannst keinen Kredit aufnehmen, der höher ist als das Kreditlimit.");
                     }
                 }

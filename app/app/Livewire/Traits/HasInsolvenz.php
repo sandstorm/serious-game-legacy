@@ -59,7 +59,7 @@ trait HasInsolvenz
         $this->isSellInvestmentsToAvoidInsolvenzModalVisible = !$this->isSellInvestmentsToAvoidInsolvenzModalVisible;
     }
 
-    public function showSellInvestmentOfTypeForInsolvenz(string $investmentId): void
+    public function showSellInvestmentOfTypeToAvoidInsolvenz(string $investmentId): void
     {
         $this->sellInvestmentsForm->reset();
         $this->sellInvestmentsForm->resetValidation();
