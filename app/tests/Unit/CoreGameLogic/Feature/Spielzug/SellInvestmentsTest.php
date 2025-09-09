@@ -3,10 +3,13 @@ declare(strict_types=1);
 
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
+use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsToAvoidInsolvenzForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer;
@@ -301,7 +304,10 @@ describe('handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer', function 
 });
 
 describe('handleSellInvestmentsToAvoidInsolvenzForPlayer', function () {
-    // sell investments for a player if they would need to file for Insolvenz
+    /**
+     * sellInvestmentsToAvoidInsolvenzForPlayer sells investments for a player if they would need to file for Insolvenz
+     * (if they have a negative balance during the KonjunkturphaseChange)
+     */
     it('throws an exception if player has no negative balance and therefore is not allowed to sell investments during the KonjunkturphaseChange', function () {
         /** @var TestCase $this */
         $this->handle(BuyInvestmentsForPlayer::create($this->getPlayers()[0], InvestmentId::MERFEDES_PENZ, 10));
@@ -321,16 +327,33 @@ describe('handleSellInvestmentsToAvoidInsolvenzForPlayer', function () {
                     zeitsteineChange: -1 * $this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
+            new MinijobCardDefinition(
+                id: CardId::fromString("forTesting"),
+                title: "forTesting",
+                description: "forTesting",
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -1 * $this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
+                )
+            ),
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+
         $this->handle(DoMinijob::create($this->getPlayers()[0]));
+        $this->handle(new EndSpielzug($this->getPlayers()[0]));
+
+        $this->handle(DoMinijob::create($this->getPlayers()[1]));
+        $this->handle(new EndSpielzug($this->getPlayers()[1]));
+
+        $lebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[0]);
+        $this->handle(EnterLebenshaltungskostenForPlayer::create($this->getPlayers()[0], $lebenshaltungskosten));
+        $this->handle(CompleteMoneysheetForPlayer::create($this->getPlayers()[0]));
         $this->handle(SellInvestmentsToAvoidInsolvenzForPlayer::create($this->getPlayers()[0], InvestmentId::MERFEDES_PENZ, 10));
     })->throws(\RuntimeException::class, 'Cannot sell investments for insolvenz: Du hast nicht genug Investitionen vom Typ Merfedes-Penz zum Verkaufen.', 1757078994);
 
     it('sells investments for almost insolvent player and returns correct amount of money', function () {
         /** @var TestCase $this */
-        $this->handle(BuyInvestmentsForPlayer::create($this->getPlayers()[0], InvestmentId::MERFEDES_PENZ, 10));
-        $this->handle(SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer::create($this->getPlayers()[1], InvestmentId::MERFEDES_PENZ, 0));
+        $this->handle(BuyInvestmentsForPlayer::create($this->getPlayers()[0], InvestmentId::BETA_PEAR, 10));
+        $this->handle(SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer::create($this->getPlayers()[1], InvestmentId::BETA_PEAR, 0));
         $this->handle(new EndSpielzug($this->getPlayers()[0]));
 
         $initialGuthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->players[0]);
@@ -339,14 +362,16 @@ describe('handleSellInvestmentsToAvoidInsolvenzForPlayer', function () {
                 id: CardId::fromString("forTesting"),
                 title: "forTesting",
                 description: "forTesting",
-                resourceChanges: new ResourceChanges(),
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -1 * $this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
+                )
             ),
             new MinijobCardDefinition(
                 id: CardId::fromString("removeZeitsteine1"),
                 title: "RemoveZeitsteine1",
                 description: "RemoveZeitsteine1",
                 resourceChanges: new ResourceChanges(
-                    guthabenChange: $initialGuthaben->add(new MoneyAmount(1))->negate(),
+                    guthabenChange: $initialGuthaben->negate(),
                     zeitsteineChange: -1 * $this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
@@ -357,19 +382,27 @@ describe('handleSellInvestmentsToAvoidInsolvenzForPlayer', function () {
         $this->handle(new EndSpielzug($this->getPlayers()[1]));
 
         $this->handle(DoMinijob::create($this->getPlayers()[0]));
-        $gameEventsBeforeSellingAllInvestments = $this->getGameEvents();
-        $this->handle(SellInvestmentsToAvoidInsolvenzForPlayer::create($this->getPlayers()[0], InvestmentId::MERFEDES_PENZ, 10));
-        $gameEventsAfterSellingAllInvestments = $this->getGameEvents();
+        $this->handle(new EndSpielzug($this->getPlayers()[0]));
 
-        $amountOfInvestmentsBeforeSellingAllInvestments = PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEventsBeforeSellingAllInvestments, $this->getPlayers()[0], InvestmentId::MERFEDES_PENZ);
-        $amountOfInvestmentsAfterSellingAllInvestments = PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEventsAfterSellingAllInvestments, $this->getPlayers()[0], InvestmentId::MERFEDES_PENZ);
+        $lebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[0]);
+        $this->handle(EnterLebenshaltungskostenForPlayer::create($this->getPlayers()[0], $lebenshaltungskosten));
+        $this->handle(CompleteMoneysheetForPlayer::create($this->getPlayers()[0]));
+
+        $gameEventsBeforeSellingAllInvestments = $this->getGameEvents();
+        $amountOfInvestmentsBeforeSellingAllInvestments = PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEventsBeforeSellingAllInvestments, $this->getPlayers()[0], InvestmentId::BETA_PEAR);
         $guthabenBeforeSellingAllInvestments = PlayerState::getGuthabenForPlayer($gameEventsBeforeSellingAllInvestments, $this->getPlayers()[0]);
+
+        $this->handle(SellInvestmentsToAvoidInsolvenzForPlayer::create($this->getPlayers()[0], InvestmentId::BETA_PEAR, 10));
+
+        $gameEventsAfterSellingAllInvestments = $this->getGameEvents();
+        $amountOfInvestmentsAfterSellingAllInvestments = PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEventsAfterSellingAllInvestments, $this->getPlayers()[0], InvestmentId::BETA_PEAR);
         $guthabenAfterSellingAllInvestments = PlayerState::getGuthabenForPlayer($gameEventsAfterSellingAllInvestments, $this->getPlayers()[0]);
-        $currentInvestmentPrice = InvestmentPriceState::getCurrentInvestmentPrice($gameEventsAfterSellingAllInvestments, InvestmentId::MERFEDES_PENZ);
+        $currentInvestmentPrice = InvestmentPriceState::getCurrentInvestmentPrice($gameEventsAfterSellingAllInvestments, InvestmentId::BETA_PEAR);
 
         expect($amountOfInvestmentsBeforeSellingAllInvestments)->toEqual(10)
             ->and($amountOfInvestmentsAfterSellingAllInvestments)->toEqual(0)
-            ->and($guthabenBeforeSellingAllInvestments->value)->toEqual(-1)
-            ->and($guthabenAfterSellingAllInvestments->value)->toEqual(round(-1 + ($currentInvestmentPrice->value * 10), 1));
+            // works because we chose an investition without dividende (otherwise this needs to be added to the expected guthaben)
+            ->and($guthabenBeforeSellingAllInvestments->value)->toEqual($lebenshaltungskosten->negate()->value)
+            ->and($guthabenAfterSellingAllInvestments->value)->toEqual(round($lebenshaltungskosten->negate()->value + ($currentInvestmentPrice->value * 10), 1));
     });
 });

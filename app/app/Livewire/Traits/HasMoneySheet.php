@@ -17,6 +17,7 @@ use Domain\CoreGameLogic\Feature\Moneysheet\State\LoanCalculator;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\RepayLoanForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\TakeOutALoanForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerAllowedToTakeOutALoanValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CancelInsuranceForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ConcludeInsuranceForPlayerAktion;
@@ -130,8 +131,8 @@ trait HasMoneySheet
      */
     public function showTakeOutALoan(): void
     {
-        $validator = new IsPlayerAllowedToTakeOutALoanValidator();
-        $validationResult = $validator->validate($this->gameEvents, $this->myself);
+        $takeOutALoanAktion = new TakeOutALoanForPlayerAktion();
+        $validationResult = $takeOutALoanAktion->validate($this->myself, $this->getGameEvents());
         if (!$validationResult->canExecute) {
             $this->showNotification(
                 $validationResult->reason,
@@ -254,7 +255,7 @@ trait HasMoneySheet
                     $this->handleCommand(ConcludeInsuranceForPlayer::create($this->myself, $insuranceId));
                 } else {
                     $insuranceName = InsuranceFinder::getInstance()->findInsuranceById($insuranceId)->description;
-                    $this->showBanner('Du hast nicht genug Geld, um die ' . $insuranceName . ' abzuschließen.');
+                    $this->showBanner("Du kannst die " . $insuranceName . " nicht abschließen: " . $concludeInsuranceValidationResult->reason);
                 }
             } else {
                 $cancelInsuranceValidationResult = new CancelInsuranceForPlayerAktion($insuranceId)->validate($this->myself, $this->getGameEvents());
@@ -262,7 +263,7 @@ trait HasMoneySheet
                     $this->handleCommand(CancelInsuranceForPlayer::create($this->myself, $insuranceId));
                 }else {
                     $insuranceName = InsuranceFinder::getInstance()->findInsuranceById($insuranceId)->description;
-                    $this->showBanner('Du kannst die ' . $insuranceName . ' nicht kündigen.');
+                    $this->showBanner('Du kannst die ' . $insuranceName . ' nicht kündigen: ' . $cancelInsuranceValidationResult->reason);
                 }
             }
         }
@@ -283,7 +284,7 @@ trait HasMoneySheet
         if (!$resultOfLastInput->wasSuccessful && $resultOfLastInput->fine->value > 0) {
             $this->takeOutALoanForm->loanAmount = intval(min(
                 $this->takeOutALoanForm->loanAmount,
-                LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->sumOfAllAssets, $this->takeOutALoanForm->salary, $this->takeOutALoanForm->obligations, $this->takeOutALoanForm->wasInsolvent)->value
+                LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->sumOfAllAssets, $this->takeOutALoanForm->salary, $this->takeOutALoanForm->obligations, $this->takeOutALoanForm->wasPlayerInsolventInThePast)->value
             ));
             $this->takeOutALoanForm->totalRepayment = LoanCalculator::getCalculatedTotalRepayment($this->takeOutALoanForm->loanAmount, $this->takeOutALoanForm->zinssatz);
             $this->takeOutALoanForm->repaymentPerKonjunkturphase = $this->takeOutALoanForm->getCalculatedRepaymentPerKonjunkturphase();
@@ -335,6 +336,7 @@ trait HasMoneySheet
         $this->takeOutALoanForm->salary = PlayerState::getCurrentGehaltForPlayer($this->getGameEvents(), $this->myself)->value;
         $this->takeOutALoanForm->zinssatz = KonjunkturphaseState::getCurrentKonjunkturphase($this->getGameEvents())->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->value;
         $this->takeOutALoanForm->obligations = MoneySheetState::getTotalOpenRepaymentValueForAllLoans($this->getGameEvents(), $this->myself)->value;
+        $this->takeOutALoanForm->wasPlayerInsolventInThePast = PlayerState::wasPlayerInsolventInThePast($this->getGameEvents(), $this->myself);
     }
 
     private function initializeTaxesForm(): void

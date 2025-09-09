@@ -38,7 +38,7 @@ describe('handleTakeOutALoanForPlayer', function () {
         $takeoutLoanForm->sumOfAllAssets = Configuration::STARTKAPITAL_VALUE;
         $takeoutLoanForm->zinssatz = 5;
         $takeoutLoanForm->loanId = LoanId::unique()->value;
-        $takeoutLoanForm->wasInsolvent = false;
+        $takeoutLoanForm->wasPlayerInsolventInThePast = false;
 
         // player 0 takes out a loan
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(

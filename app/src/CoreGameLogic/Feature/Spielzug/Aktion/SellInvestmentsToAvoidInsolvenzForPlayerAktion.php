@@ -7,6 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerANegativeBalanceValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerCompletedMoneySheetValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughInvestmentsToSellValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldToAvoidInsolvenzForPlayer;
@@ -28,6 +29,7 @@ class SellInvestmentsToAvoidInsolvenzForPlayerAktion extends Aktion
     {
         $validationChain = new HasPlayerANegativeBalanceValidator();
         $validationChain
+            ->setNext(new HasPlayerCompletedMoneySheetValidator())
             ->setNext(new HasPlayerEnoughInvestmentsToSellValidator($this->investmentId, $this->amount));
         return $validationChain->validate($gameEvents, $playerId);
     }

@@ -19,7 +19,7 @@ final class HasPlayerAnyInsuranceValidator extends AbstractValidator
         if (MoneySheetState::getCostOfAllInsurances($gameEvents, $playerId)->value <= 0) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Du hast keine Versicherung, die gekündigt werden kann'
+                reason: 'Du hast keine Versicherung'
             );
         }
 

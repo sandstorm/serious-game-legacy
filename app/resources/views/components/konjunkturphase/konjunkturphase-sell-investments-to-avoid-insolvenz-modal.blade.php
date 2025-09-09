@@ -34,7 +34,7 @@
                         <td>{!! $investment->price->format() !!}</td>
                         <td>
                             <button
-                                wire:click="showSellInvestmentOfTypeForInsolvenz('{{ $investment->investmentId }}')"
+                                wire:click="showSellInvestmentOfTypeToAvoidInsolvenz('{{ $investment->investmentId }}')"
                                 type="button"
                                 @class([
                                     "button",

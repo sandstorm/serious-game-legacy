@@ -25,8 +25,13 @@ use RuntimeException;
 
 class TakeOutALoanForPlayerAktion extends Aktion
 {
+    /**
+     * TakeOutALoanForm can be null in case we want to validate if a player is in general allowed to take out a loan
+     * (e.g. if the player is insolvent or has a Kreditsperre they are not allowed to take out a loan).
+     * @param TakeOutALoanForm|null $takeOutALoanForm
+     */
     public function __construct(
-        private readonly TakeOutALoanForm $takeOutALoanForm
+        private readonly TakeOutALoanForm|null $takeOutALoanForm = null
     ) {
     }
 
@@ -40,7 +45,7 @@ class TakeOutALoanForPlayerAktion extends Aktion
     private function isFormInputCorrect(): bool
     {
         try {
-            $this->takeOutALoanForm->validate();
+            $this->takeOutALoanForm?->validate();
             return true;
         } catch (\Exception $e) {
             return false;
@@ -50,6 +55,10 @@ class TakeOutALoanForPlayerAktion extends Aktion
 
     public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist
     {
+        if ($this->takeOutALoanForm === null) {
+            throw new RuntimeException('Cannot take out a loan: TakeOutALoanForm is null.');
+        }
+
         $validationResult = $this->validate($playerId, $gameEvents);
         if (!$validationResult->canExecute) {
             throw new RuntimeException('Cannot take out a loan: ' . $validationResult->reason, 1756200359);
@@ -61,7 +70,7 @@ class TakeOutALoanForPlayerAktion extends Aktion
             repaymentPerKonjunkturphase: new MoneyAmount($this->takeOutALoanForm->repaymentPerKonjunkturphase)
         );
 
-        $expectedLoanAmount = min($this->takeOutALoanForm->loanAmount, LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->sumOfAllAssets, $this->takeOutALoanForm->salary, $this->takeOutALoanForm->obligations, $this->takeOutALoanForm->wasInsolvent)->value);
+        $expectedLoanAmount = min($this->takeOutALoanForm->loanAmount, LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->sumOfAllAssets, $this->takeOutALoanForm->salary, $this->takeOutALoanForm->obligations, $this->takeOutALoanForm->wasPlayerInsolventInThePast)->value);
         $expectedLoanData = new LoanData(
             loanAmount: new MoneyAmount($expectedLoanAmount),
             totalRepayment: new MoneyAmount(LoanCalculator::getCalculatedTotalRepayment($expectedLoanAmount, $this->takeOutALoanForm->zinssatz)),
