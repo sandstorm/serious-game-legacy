@@ -4,7 +4,7 @@
     'size' => '', // small
 ])
 
-<div x-data="{ open: true }" x-trap.inert.noscroll="open"
+<div x-data="{ open: true }" x-trap.noscroll="open" aria-modal="true" aria-labelledby="modal-headline" aria-describedby="modal-content"
     @class([
         "modal",
         "modal--type-" . $type,
@@ -34,12 +34,12 @@
         @endif
 
         @hasSection('title')
-            <div class="modal__header">
+            <h2 class="modal__header" id="modal-headline">
                 @yield('title')
-            </div>
+            </h2>
         @endif
 
-        <div class="modal__body">
+        <div class="modal__body" id="modal-content">
             @yield('content')
         </div>
 

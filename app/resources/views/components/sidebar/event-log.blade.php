@@ -8,13 +8,13 @@
     :class="eventLogOpen ? 'event-log--open' : ''"
 >
     @if ($this->currentPlayerIsMyself())
-        <button class="event-log__toggle button button--type-icon" x-on:click="eventLogOpen = !eventLogOpen">
+        <button class="event-log__toggle button button--type-icon" :aria-expanded="eventLogOpen" id="event-log-trigger" aria-controls="event-log-entries" x-on:click="eventLogOpen = !eventLogOpen">
             <i :class="eventLogOpen ? 'icon-close' : 'icon-log-ausklappen'" aria-hidden="true"></i>
             <span class="sr-only">Ereignisprotokoll ausklappen/einklappen</span>
         </button>
     @endif
 
-    <ul class="event-log__entries">
+    <ul class="event-log__entries" id="event-log-entries" aria-labelledby="event-log-trigger">
         @forelse(array_reverse($this->getLogEntriesForPlayerLog()) as $logEntry)
             <li class="event-log__entry">
                 <strong @class(["event-log__entry-player-name", $logEntry->colorClass])>{{$logEntry->playerName}}</strong>

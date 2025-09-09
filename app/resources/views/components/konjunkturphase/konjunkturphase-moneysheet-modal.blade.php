@@ -9,7 +9,7 @@
 ])
 
 @section('icon')
-    <i class="icon-phasenwechsel" aria-hidden="true"></i> Moneysheet ausfüllen
+    <i class="icon-phasenwechsel" aria-hidden="true"></i> <span lang="en">Moneysheet</span> ausfüllen
 @endsection
 
 @section('content')
