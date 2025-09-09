@@ -25,7 +25,7 @@
             </div>
 
             <div class="form-group">
-                <label class="form-group__label" for="steuernUndAbgaben">{{$livingCostPercent}}% Deines Gehalts</label>
+                <label class="form-group__label" for="lebenshaltungskosten">{{$livingCostPercent}}% Deines Gehalts</label>
                 <x-form.textfield wire:model="moneySheetLebenshaltungskostenForm.lebenshaltungskosten" id="lebenshaltungskosten" name="lebenshaltungskosten" type="number" step="0.01" :disabled="$this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled" />
             </div>
         </div>

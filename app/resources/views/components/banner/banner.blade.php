@@ -25,6 +25,7 @@
             // set new timer
             timer = setTimeout(() => {visible = false; message = null}, 10000)
         })"
+    role="status"
 >
     <div class="banner__content"
         @if ($this->getBannerResourceChanges())

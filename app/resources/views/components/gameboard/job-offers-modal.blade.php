@@ -29,24 +29,24 @@
 @section('content')
     <div class="job-offers">
         @foreach($jobOffers as $jobOffer)
-            <div @class(["card", "card--disabled" => !$this->canAcceptJobOffer($jobOffer->getId()->value)->canExecute])>
+            <button type="button" wire:click="applyForJob('{{ $jobOffer->getId()->value }}')" title="Beruf annehmen" @class(["card", "card--disabled" => !$this->canAcceptJobOffer($jobOffer->getId()->value)->canExecute])>
                 <h4 class="card__title">{{ $jobOffer->getTitle() }}</h4>
                 <div class="card__content">
                     <div class="resource-change">
                         {!! $jobOffer->getGehalt()->formatWithIcon() !!}
                     </div>
                     <span class="font-size--sm">Jahresgehalt brutto</span>
-                    <button type="button"
+                    <span
+                        aria-hidden="true"
                         @class([
                             "button",
                             "button--type-primary",
                             "button--disabled" => !$this->canAcceptJobOffer($jobOffer->getId()->value)->canExecute,
                             $this->getPlayerColorClass()
                         ])
-                        wire:click="applyForJob('{{ $jobOffer->getId()->value }}')"
                     >
                         Das mache ich!
-                    </button>
+                    </span>
                 </div>
 
                 <div class="job-offer__requirements">
@@ -70,7 +70,7 @@
                         </ul>
                     @endif
                 </div>
-            </div>
+            </button>
         @endforeach
     </div>
     <div class="job-offers__kompetenzen">

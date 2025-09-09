@@ -3,7 +3,8 @@
 ])
 
 <form class="insurances" wire:submit="setInsurances">
-    <div class="tabs__upper-content form__group">
+    <fieldset class="tabs__upper-content form__group">
+        <legend class="sr-only">Auswahl an Versicherungen: </legend>
         @foreach ($this->moneySheetInsurancesForm->insurances as $key => $insurance)
             <label @class(["switch", $this->getPlayerColorClass()])>
                 <input type="checkbox" name="insurances[]" value="{{ $key }}" {{ $insurance['value'] ? 'checked' : '' }} wire:model="moneySheetInsurancesForm.insurances.{{ $key }}.value" />
@@ -14,7 +15,7 @@
                 </div>
             </label>
         @endforeach
-    </div>
+    </fieldset>
 
     <div class="tabs__lower-content insurances__actions">
         <div class="insurances__total-cost">

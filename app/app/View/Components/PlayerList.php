@@ -102,6 +102,7 @@ class PlayerList extends Component
     {
         $availableZeitsteine = PlayerState::getZeitsteineForPlayer($this->gameEvents, $playerId);
         $initialZeitsteine = KonjunkturphaseState::getInitialZeitsteineForCurrentKonjunkturphase($this->gameEvents);
+        $playerName = PlayerState::getNameForPlayer($this->gameEvents, $playerId);
 
         $zeitsteine = [];
         for ($i = 0; $i < $initialZeitsteine; $i++) {
@@ -114,7 +115,7 @@ class PlayerList extends Component
         }
 
         return new Zeitsteine(
-            ariaLabel: 'Du hast noch ' . $availableZeitsteine . ' von ' . $initialZeitsteine . ' Zeitsteinen übrig.',
+            ariaLabel: $playerName. ' hat noch ' . $availableZeitsteine . ' von ' . $initialZeitsteine . ' Zeitsteinen übrig.',
             zeitsteine: $zeitsteine
         );
     }

@@ -3,7 +3,7 @@
     'emptySlots' => [],
 ])
 
-<div x-data="playerList()" x-trap.inert.noscroll="playerListOpen" @touchstart.passive="touchStart($event)" @touchend.passive="touchEnd()"
+<div x-data="playerList()" x-trap.noscroll="playerListOpen" @touchstart.passive="touchStart($event)" @touchend.passive="touchEnd()"
     @class([
         'player-list',
     ])
@@ -18,7 +18,7 @@
         </div>
     @endforeach
 
-    @foreach($players as $player)
+    @foreach($players as $key => $player)
         <div
             @class([
                 'player-list__player',
@@ -26,7 +26,7 @@
                 $player->playerColorClass,
             ])
         >
-            <button type="button" title="Spielerübersicht öffnen/schließen" class="button button--type-borderless" x-on:click="playerListOpen = !playerListOpen">
+            <button type="button" title="Spielerübersicht öffnen/schließen" class="button button--type-borderless" :aria-expanded="playerListOpen" id="player-details-trigger-{{ $key }}" aria-controls="player-details-{{ $key }}" x-on:click="playerListOpen = !playerListOpen">
                 @if ($player->isPlayersTurn)
                     <div class="player-list__player-turn-indicator" aria-hidden="true"></div>
                     <span class="sr-only">Aktueller Spieler</span>
@@ -48,7 +48,7 @@
                 </div>
             </button>
 
-            <div class="player-list__player-details" x-cloak x-show="playerListOpen">
+            <div class="player-list__player-details" id="player-details-{{ $key }}" aria-labelledby="player-details-trigger-{{ $key }}" x-cloak x-show="playerListOpen">
                 <small><a href={{ @route("game-play.game", ['gameId' => $this->gameId, 'playerId' => $player->playerId]) }}>{{ $player->playerId }}</a></small>
                 <div>
                     <strong>Lebensziel:</strong> {{ $player->lebenszielDefinition->name }}
