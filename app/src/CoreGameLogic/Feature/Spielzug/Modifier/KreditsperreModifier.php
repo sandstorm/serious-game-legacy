@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Modifier;
 
+use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
 use Domain\Definitions\Card\ValueObject\ModifierId;
+use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 
 /**
  * Player cannot take out a loan. A Konjunkturphase may set this modifier.
@@ -16,6 +19,7 @@ readonly final class KreditsperreModifier extends Modifier
     public function __construct(
         public PlayerTurn $playerTurn,
         string $description,
+        private Year $year,
     ) {
         parent::__construct(ModifierId::KREDITSPERRE, $playerTurn, $description);
     }
@@ -28,6 +32,15 @@ readonly final class KreditsperreModifier extends Modifier
     public function canModify(HookEnum $hook): bool
     {
         return $hook === HookEnum::KREDITSPERRE;
+    }
+
+    public function isActive(GameEvents $gameEvents): bool
+    {
+        $konjunkturphaseChangesAfterSperre = $gameEvents->findLastOrNullWhere(
+            fn($event) => $event instanceof KonjunkturphaseWasChanged && $event->year->equals($this->year)
+        );
+
+        return $konjunkturphaseChangesAfterSperre === null;
     }
 
     /**
