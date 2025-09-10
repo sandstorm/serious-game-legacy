@@ -2,7 +2,7 @@
     'size' => '', // small
 ])
 
-<div x-data="{ open: true }" x-trap.inert.noscroll="open"
+<div x-data="{ open: true }" x-trap.inert.noscroll="open" role="alertdialog" aria-modal="true" aria-modal="true" aria-labelledby="mandatory-modal-headline" aria-describedby="mandatory-modal-content"
     @class([
         "modal",
         "modal--type-mandatory",
@@ -18,12 +18,12 @@
         @endif
 
         @hasSection('title_mandatory')
-            <div class="modal__header">
+            <h2 class="modal__header" id="mandatory-modal-headline">
                 @yield('title_mandatory')
-            </div>
+            </h2>
         @endif
 
-        <div class="modal__body">
+        <div class="modal__body" id="mandatory-modal-content">
             @yield('content_mandatory')
         </div>
 
