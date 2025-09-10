@@ -21,6 +21,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldToAvoidInsolvenzForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasRepaidForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasRepaidForPlayerInCaseOfInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerGotAChild;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasBoughtImmobilie;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasFiledForInsolvenz;
@@ -109,6 +110,7 @@ final readonly class EventNormalizer
             LoanForPlayerWasCorrected::class,
             LoanForPlayerWasEntered::class,
             LoanWasRepaidForPlayer::class,
+            LoanWasRepaidForPlayerInCaseOfInsolvenz::class,
             LoanWasTakenOutForPlayer::class,
             MinijobWasDone::class,
             NameForPlayerWasSet::class,

@@ -20,6 +20,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWer
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasCorrected;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasRepaidForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasRepaidForPlayerInCaseOfInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasTakenOutForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SteuernUndAbgabenForPlayerWereCorrected;
@@ -382,6 +383,25 @@ class MoneySheetState
     }
 
     /**
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return LoanWasTakenOutForPlayer[]
+     */
+    public static function getOpenLoansForPlayer(GameEvents $gameEvents, PlayerId $playerId): array
+    {
+        $allLoansForPlayer = self::getLoansForPlayer($gameEvents, $playerId);
+        $allOpenLoansForPlayer = [];
+        foreach ($allLoansForPlayer as $loan) {
+            if (self::getOpenRatesForLoan($gameEvents, $playerId, $loan->loanId) <= 0) {
+                // loan has no open rates
+                continue;
+            }
+            $allOpenLoansForPlayer[] = $loan;
+        }
+        return $allOpenLoansForPlayer;
+    }
+
+    /**
      * Returns the amount of open rates for a specific loan.
      *
      * @param GameEvents $gameEvents
@@ -404,7 +424,8 @@ class MoneySheetState
 
         // Check if loan was fully repaid
         $repaymentEvent = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof LoanWasRepaidForPlayer &&
+            fn($event) =>
+                ($event instanceof LoanWasRepaidForPlayer || $event instanceof LoanWasRepaidForPlayerInCaseOfInsolvenz) &&
                 $event->playerId->equals($playerId) &&
                 $event->loanId->equals($loanId)
         );

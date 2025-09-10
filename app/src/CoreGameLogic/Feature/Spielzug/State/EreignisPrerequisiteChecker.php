@@ -29,7 +29,7 @@ final readonly class EreignisPrerequisiteChecker
             EreignisPrerequisitesId::HAS_CHILD => $this->hasPlayerAChild($playerId),
             EreignisPrerequisitesId::HAS_NO_CHILD => !($this->hasPlayerAChild($playerId)),
             EreignisPrerequisitesId::HAS_SPECIFIC_CARD => $this->hasPlayerPlayedThisCard($playerId, $requiredCardId),
-            EreignisPrerequisitesId::HAS_LOAN => $this->hasPlayerPlayedALoan($playerId),
+            EreignisPrerequisitesId::HAS_LOAN => $this->hasPlayerAnOpenLoan($playerId),
             EreignisPrerequisitesId::NO_PREREQUISITES => true,
         };
     }
@@ -53,9 +53,9 @@ final readonly class EreignisPrerequisiteChecker
 
     }
 
-    private function hasPlayerPlayedALoan(PlayerId $playerId): bool
+    private function hasPlayerAnOpenLoan(PlayerId $playerId): bool
     {
-        $currentLoansForPlayer = MoneySheetState::getLoansForPlayer($this->gameEvents, $playerId);
+        $currentLoansForPlayer = MoneySheetState::getOpenLoansForPlayer($this->gameEvents, $playerId);
         return count($currentLoansForPlayer) > 0;
     }
 }
