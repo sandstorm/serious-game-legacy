@@ -1,9 +1,11 @@
 <?php
 declare(strict_types=1);
 
+use App\Livewire\Forms\TakeOutALoanForm;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
+use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
@@ -12,6 +14,9 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\FileInsolvenzForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasRepaidForPlayerInCaseOfInsolvenz;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasTakenOutForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasFiledForInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
@@ -22,6 +27,7 @@ use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
+use Tests\ComponentWithForm;
 use Tests\TestCase;
 
 beforeEach(function () {
@@ -257,5 +263,79 @@ describe('FileInsolvenzForPlayer', function () {
         expect($playerFiledForInsolvenzEvent->getPlayerId()->equals($this->getPlayers()[0]))->toBeTrue()
             ->and($playerFiledForInsolvenzEvent->getYear()->equals(KonjunkturphaseState::getCurrentYear($eventsAfterInsolvenz)))
             ->and($playerFiledForInsolvenzEvent->getResourceChanges($this->getPlayers()[0])->guthabenChange->value)->toEqual($guthabenBeforeInsolvenz->negate()->value);
+    });
+
+    it('repays all open loans for player in case of Insolvenz', function() {
+        /** @var TestCase $this */
+        // first player needs to take out a loan
+        $takeoutLoanFormComponent = new ComponentWithForm();
+        $takeoutLoanFormComponent->mount(TakeOutALoanForm::class);
+
+        $loanAmount = 10000;
+
+        /** @var TakeOutALoanForm $takeoutLoanForm */
+        $takeoutLoanForm = $takeoutLoanFormComponent->form;
+        $takeoutLoanForm->loanAmount = $loanAmount;
+        $takeoutLoanForm->totalRepayment = 12500;
+        $takeoutLoanForm->repaymentPerKonjunkturphase = 625; // correct value
+        $takeoutLoanForm->sumOfAllAssets = Configuration::STARTKAPITAL_VALUE;
+        $takeoutLoanForm->zinssatz = 5;
+        $takeoutLoanForm->loanId = LoanId::unique()->value;
+
+        // player 0 takes out a loan
+        $this->handle(TakeOutALoanForPlayer::create(
+            $this->players[0],
+            $takeoutLoanForm
+        ));
+
+        $gameEvents = $this->getGameEvents();
+
+        /** @var LoanWasTakenOutForPlayer $loanWasTakenOut */
+        $loanWasTakenOut = $gameEvents->findLast(LoanWasTakenOutForPlayer::class);
+        expect($loanWasTakenOut->getResourceChanges($this->players[0])->guthabenChange)->toEqual(new MoneyAmount(10000))
+            ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))
+            ->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE + $loanAmount));
+        $loanId = $loanWasTakenOut->loanId;
+
+        $initialGuthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->getPlayers()[0]);
+        $cardsForTesting = [
+            new KategorieCardDefinition(
+                id: CardId::fromString("removeZeitsteine1"),
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                title: "RemoveZeitsteine1",
+                description: "RemoveZeitsteine1",
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: $initialGuthaben->negate(),
+                    zeitsteineChange: -1 * $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
+                ),
+            ),
+            new KategorieCardDefinition(
+                id: CardId::fromString("removeZeitsteine2"),
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                title: "RemoveZeitsteine2",
+                description: "RemoveZeitsteine2",
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -1 * $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
+                ),
+            ),
+        ];
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+
+        $this->handle(ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->handle(new EndSpielzug($this->getPlayers()[0]));
+
+        $this->handle(ActivateCard::create($this->getPlayers()[1], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->handle(new EndSpielzug($this->getPlayers()[1]));
+
+        $this->handle(EnterLebenshaltungskostenForPlayer::create($this->getPlayers()[0], new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)));
+        $this->handle(CompleteMoneysheetForPlayer::create($this->getPlayers()[0]));
+        $this->handle(FileInsolvenzForPlayer::create($this->getPlayers()[0]));
+
+        $loanWasRepaidInCaseOfInsolvenzEvent = $this->getGameEvents()->findLastOrNullWhere(fn ($event) => $event instanceof LoanWasRepaidForPlayerInCaseOfInsolvenz);
+        $gameEvents = $this->getGameEvents();
+
+        expect($loanWasRepaidInCaseOfInsolvenzEvent)->not()->toBeNull()
+            ->and(MoneySheetState::getAnnualExpensesForAllLoans($gameEvents, $this->getPlayers()[0])->value)->toEqual(0)
+            ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->getPlayers()[0])->value)->toEqual(0);
     });
 });

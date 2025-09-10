@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
+use Domain\CoreGameLogic\EventStore\DecoratedEvent;
+use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
+use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerANegativeBalanceValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerCompletedMoneySheetValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerNoInsuranceValidator;
@@ -45,13 +48,30 @@ class FileInsolvenzForPlayerAktion extends Aktion
 
         $currentGuthaben = PlayerState::getGuthabenForPlayer($gameEvents, $playerId);
 
+        // repay loans for player
+        $allOpenLoansForPlayer = MoneySheetState::getOpenLoansForPlayer($gameEvents, $playerId);
+        /** @var GameEventInterface[] $allMyLoanGameEvents */
+        $allMyLoanGameEvents = [];
+
+        foreach ($allOpenLoansForPlayer as $loan) {
+            $repayLoanAktion = new RepayLoanForPlayerInCaseOfInsolvenzAktion($loan->loanId);
+            $allMyLoanGameEvents = [
+                ...$allMyLoanGameEvents,
+                ...array_map(
+                    fn($event) => $event instanceof DecoratedEvent ? $event->innerEvent : $event,
+                    $repayLoanAktion->execute($playerId, $gameEvents)->events
+                )
+            ];
+        }
+
         return GameEventsToPersist::with(
             new PlayerHasFiledForInsolvenz(
                 playerId: $playerId,
                 playerTurn: PlayerState::getCurrentTurnForPlayer($gameEvents, $playerId),
                 year: KonjunkturphaseState::getCurrentYear($gameEvents),
                 resourceChanges: new ResourceChanges()->setGuthabenChange($currentGuthaben->negate()),
-            )
+            ),
+            ...$allMyLoanGameEvents,
         );
     }
 }
