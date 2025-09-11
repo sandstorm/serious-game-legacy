@@ -15,6 +15,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerAPositiveBal
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerCompletedMoneySheetValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerWasMarkedAsReadyForKonjunkturphaseChange;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 
 class MarkPlayerAsReadyForKonjunkturphaseChangeAktion extends Aktion
@@ -24,8 +25,16 @@ class MarkPlayerAsReadyForKonjunkturphaseChangeAktion extends Aktion
     {
         $validatorChain = new HasKonjunkturphaseEndedValidator();
         $validatorChain
-            ->setNext(new HasPlayerCompletedMoneySheetValidator())
-            ->setNext(new HasPlayerAPositiveBalanceValidator());
+            ->setNext(new HasPlayerCompletedMoneySheetValidator());
+
+        if (!PlayerState::isPlayerInsolvent($gameEvents, $playerId)) {
+            /**
+             * If a player is insolvent they are allowed to change the Konjunkturphase even if they have a negative balance,
+             * as they should not have to file for Insolvenz again. So only not insolvent players need to have a positive balance.
+             */
+            $validatorChain
+                ->setNext(new HasPlayerAPositiveBalanceValidator());
+        }
         return $validatorChain->validate($gameEvents, $playerId);
     }
 
