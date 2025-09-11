@@ -43,13 +43,20 @@
         </tr>
         <tr>
             <td class="konjunkturphase-summary-table__empty-column"></td>
-            <td class="konjunkturphase-summary-table__name-column">Lebenshaltungskosten</td>
-            <td class="konjunkturphase-summary-table__value-column">{!! $moneySheet->lebenshaltungskosten->formatWithIcon() !!}</td>
-        </tr>
-        <tr>
-            <td class="konjunkturphase-summary-table__empty-column"></td>
             <td class="konjunkturphase-summary-table__name-column">Steuern und Abgaben</td>
             <td class="konjunkturphase-summary-table__value-column">{!! $moneySheet->steuernUndAbgaben->formatWithIcon() !!}</td>
+        </tr>
+        @if ($moneySheet->insolvenzabgaben->value < 0)
+        <tr>
+            <td class="konjunkturphase-summary-table__empty-column"></td>
+            <td class="konjunkturphase-summary-table__name-column">Insolvenzabgaben</td>
+            <td class="konjunkturphase-summary-table__value-column">{!! $moneySheet->insolvenzabgaben->formatWithIcon() !!}</td>
+        </tr>
+        @endif
+        <tr>
+            <td class="konjunkturphase-summary-table__empty-column"></td>
+            <td class="konjunkturphase-summary-table__name-column">Lebenshaltungskosten</td>
+            <td class="konjunkturphase-summary-table__value-column">{!! $moneySheet->lebenshaltungskosten->formatWithIcon() !!}</td>
         </tr>
         <tr class="konjunkturphase-summary-table__bottom-row">
             <td class="konjunkturphase-summary-table__empty-column"></td>

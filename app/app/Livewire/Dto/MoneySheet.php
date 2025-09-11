@@ -23,5 +23,6 @@ class MoneySheet
         public MoneyAMount $annualExpensesFromPlayerInput,
         public MoneyAmount $guthabenBeforeKonjunkturphaseChange,
         public MoneyAmount $guthabenAfterKonjunkturphaseChange,
+        public MoneyAmount $insolvenzabgaben,
     ) {}
 }

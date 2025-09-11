@@ -54,12 +54,6 @@
                 </td>
             </tr>
             <tr>
-                <td>Versicherungen</td>
-                <td class="text-align--right">
-                    {!! $moneySheet->totalInsuranceCost->formatWithIcon() !!}
-                </td>
-            </tr>
-            <tr>
                 <td>Steuern und Abgaben</td>
                 <td class="text-align--right">
                     {!! $moneySheet->steuernUndAbgaben->formatWithIcon() !!}
@@ -68,6 +62,14 @@
                     @endif
                 </td>
             </tr>
+            @if($moneySheet->insolvenzabgaben->value < 0)
+            <tr>
+                <td>Insolvenzabgaben</td>
+                <td class="text-align--right">
+                    {!! $moneySheet->insolvenzabgaben->formatWithIcon() !!}
+                </td>
+            </tr>
+            @endif
             <tr>
                 <td>Lebenshaltungskosten</td>
                 <td class="text-align--right">
@@ -75,6 +77,12 @@
                     @if($moneySheet->doesLebenshaltungskostenRequirePlayerAction)
                         <div class="moneysheet__action-required"><span class="sr-only">Berechnung erforderlich</span></div>
                     @endif
+                </td>
+            </tr>
+            <tr>
+                <td>Versicherungen</td>
+                <td class="text-align--right">
+                    {!! $moneySheet->totalInsuranceCost->formatWithIcon() !!}
                 </td>
             </tr>
             </tbody>

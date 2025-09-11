@@ -189,6 +189,7 @@ trait HasMoneySheet
             annualExpensesFromPlayerInput: new MoneyAmount (-1 * MoneySheetState::calculateAnnualExpensesFromPlayerInput($this->getGameEvents(), $playerId)->value),
             guthabenBeforeKonjunkturphaseChange: $guthabenBeforeKonjunkturphaseChange,
             guthabenAfterKonjunkturphaseChange: $guthabenAfterKonjunkturphaseChange,
+            insolvenzabgaben: MoneySheetState::calculateInsolvenzabgabenForPlayer($this->getGameEvents(), $playerId)->negate(),
         );
     }
 
