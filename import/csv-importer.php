@@ -450,8 +450,8 @@ function importKonjunkturphasen(): void
 //importJobCards();
 //importWeiterbildungCards();
 //importKategorieCards();
-//importEreignisCards();
-importImmobilienCards();
+importEreignisCards();
+//importInvestitionenCards();
 //importKonjunkturphasen();
 
 
