@@ -5219,10 +5219,8 @@ final class CardFinder
                     guthabenChange: new MoneyAmount(3000),
                 ),
                 modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
                 ],
                 modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:50,
                 ),
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
@@ -5278,10 +5276,8 @@ final class CardFinder
                     bildungKompetenzsteinChange: +1,
                 ),
                 modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
                 ],
                 modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:130,
                 ),
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
@@ -6313,10 +6309,8 @@ final class CardFinder
                     guthabenChange: new MoneyAmount(10000),
                 ),
                 modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
                 ],
                 modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:50,
                 ),
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
@@ -6861,6 +6855,26 @@ final class CardFinder
                 ],
                 gewichtung: 1,
             ),
+            "e104" => new EreignisCardDefinition(
+                id: new CardId('e104'),
+                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+                title: 'Berufsunfähigkeitsversicherung',
+                description: '"Du erleidest durch eine Hirnverletzung bleibende Einschränkungen, die eine Berufsausübung unmöglich machen. Mit Berufsunfähigkeitsversicherung erhältst du dein Jahresgehalt (brutto) weiter. Ab dem neuen Jahr kannst du einen neuen Job beginnen."',
+                phaseId: LebenszielPhaseId::PHASE_3,
+                year: new Year(3),
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: 1,
+                ),
+                modifierIds: [
+                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
+                ],
+                modifierParameters: new ModifierParameters(
+                ),
+                ereignisRequirementIds: [
+                    EreignisPrerequisitesId::HAS_JOB,
+                ],
+                gewichtung: 1,
+            ),
             "e105" => new EreignisCardDefinition(
                 id: new CardId('e105'),
                 categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
@@ -7172,7 +7186,7 @@ final class CardFinder
                 id: new CardId('e121'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
                 title: 'Haftpflichtversicherung',
-                description: '"Beim Grillen auf dem Balkon deines Mietshauses entsteht Rußschaden an der Fassade.Im Falle einer abgeschlossenen Haftpflichtversicherung werden die Kosten für den Sachschaden übernommen."',
+                description: '"Beim Grillen auf dem Balkon deines Mietshauses entsteht Rußschaden an der Fassade. Im Falle einer abgeschlossenen Haftpflichtversicherung werden die Kosten für den Sachschaden übernommen."',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(3),
                 resourceChanges: new ResourceChanges(
@@ -7529,9 +7543,10 @@ final class CardFinder
                     freizeitKompetenzsteinChange: +2,
                 ),
                 modifierIds: [
-                    ModifierId::JOBVERLUST,
+                    ModifierId::GEHALT_CHANGE,
                 ],
                 modifierParameters: new ModifierParameters(
+                    modifyGehaltPercent:0,
                 ),
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
@@ -7750,8 +7765,8 @@ final class CardFinder
                     ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
                 ],
                 modifierParameters: new ModifierParameters(
-                    modifyAdditionalLebenshaltungskostenPercentage:10,
                     modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
+                    modifyLebenshaltungskostenMultiplier: 10,
                 ),
                 ereignisRequirementIds: [
                 ],
@@ -7773,8 +7788,8 @@ final class CardFinder
                     ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
                 ],
                 modifierParameters: new ModifierParameters(
-                    modifyAdditionalLebenshaltungskostenPercentage:10,
                     modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
+                    modifyLebenshaltungskostenMultiplier: 10,
                 ),
                 ereignisRequirementIds: [
                 ],
@@ -7953,7 +7968,7 @@ final class CardFinder
                 id: new CardId('e161'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
                 title: 'Krankheit',
-                description: 'Du bekommst eine Magen-Darm-Grippe und kannst für eine Weile nichts essen. Du pausierst, um dich zu erholen, bevor du wieder weitermachen kannst.',
+                description: 'Du bekommst eine Magen-Darm-Grippe und kannst für eine Weile nichts essen.Um dich wieder zu erholen, setzt du eine Runde aus.',
                 phaseId: LebenszielPhaseId::PHASE_1,
                 year: new Year(3),
                 resourceChanges: new ResourceChanges(
@@ -8332,13 +8347,12 @@ final class CardFinder
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(3),
                 resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(-2000),
                     freizeitKompetenzsteinChange: +1,
                 ),
                 modifierIds: [
-                    ModifierId::GEHALT_CHANGE,
                 ],
                 modifierParameters: new ModifierParameters(
-                    modifyGehaltPercent:70,
                 ),
                 ereignisRequirementIds: [
                     EreignisPrerequisitesId::HAS_JOB,
@@ -8418,8 +8432,8 @@ final class CardFinder
                     ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
                 ],
                 modifierParameters: new ModifierParameters(
-                    modifyAdditionalLebenshaltungskostenPercentage:10,
                     modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
+                    modifyLebenshaltungskostenMultiplier: 10,
                 ),
                 ereignisRequirementIds: [
                 ],
@@ -8441,8 +8455,8 @@ final class CardFinder
                     ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
                 ],
                 modifierParameters: new ModifierParameters(
-                    modifyAdditionalLebenshaltungskostenPercentage:10,
                     modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
+                    modifyLebenshaltungskostenMultiplier: 10,
                 ),
                 ereignisRequirementIds: [
                 ],
@@ -8696,7 +8710,7 @@ final class CardFinder
                 id: new CardId('e199'),
                 categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
                 title: 'Jobverlust',
-                description: 'Du wirst wegen unentschuldigtem Fehlen fristlos gekündigt und verlierst dadurch dein Einkommen. Deine Arbeitslosigkeit verschafft dir nun mehr freie Zeit.',
+                description: 'Du wirst wegen unentschuldigtem Fehlen fristlos gekündigt und verlierst dadurch dein Einkommen. ',
                 phaseId: LebenszielPhaseId::PHASE_2,
                 year: new Year(3),
                 resourceChanges: new ResourceChanges(
@@ -9116,6 +9130,7 @@ final class CardFinder
                     modifyGehaltPercent:80,
                 ),
                 ereignisRequirementIds: [
+                    EreignisPrerequisitesId::HAS_CHILD,
                     EreignisPrerequisitesId::HAS_JOB,
                 ],
                 gewichtung: 1,
@@ -9238,8 +9253,8 @@ final class CardFinder
                     ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
                 ],
                 modifierParameters: new ModifierParameters(
-                    modifyAdditionalLebenshaltungskostenPercentage:10,
                     modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
+                    modifyLebenshaltungskostenMultiplier: 10,
                 ),
                 ereignisRequirementIds: [
                 ],
@@ -9261,8 +9276,8 @@ final class CardFinder
                     ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
                 ],
                 modifierParameters: new ModifierParameters(
-                    modifyAdditionalLebenshaltungskostenPercentage:10,
                     modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
+                    modifyLebenshaltungskostenMultiplier: 10,
                 ),
                 ereignisRequirementIds: [
                 ],
