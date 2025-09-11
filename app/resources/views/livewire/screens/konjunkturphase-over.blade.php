@@ -5,6 +5,8 @@
     @if (MoneySheetState::hasPlayerCompletedMoneysheet($this->getGameEvents(), $this->myself))
         @if($this->isSellInvestmentsToAvoidInsolvenzModalVisible)
             <x-konjunkturphase.konjunkturphase-sell-investments-to-avoid-insolvenz :game-events="$this->getGameEvents()" :player-id="$this->myself" />
+        @elseif($this->isShowInformationForFiledInsolvenzModalVisible)
+            <x-konjunkturphase.konjunkturphase-show-information-for-filed-insolvenz-modal />
         @else
             <x-konjunkturphase.konjunkturphase-summary-modal :game-events="$this->getGameEvents()" :player-id="$this->myself" />
         @endif

@@ -51,6 +51,20 @@
 @endsection
 
 @section('footer')
+    @if(PlayerState::isPlayerInsolvent($gameEvents, $playerId))
+        <button
+            wire:click="toggleShowInformationForFiledInsolvenzModal()"
+            type="button"
+            @class([
+                "button",
+                "button--type-primary",
+                $this->getPlayerColorClass(),
+            ])
+        >
+            Informationen zur Privatinsolvenz
+        </button>
+    @endif
+
     @if($this->canFileInsolvenzForPlayer()->canExecute)
         <button
             wire:click="fileInsolvenzForPlayer()"
