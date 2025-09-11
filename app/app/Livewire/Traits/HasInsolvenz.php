@@ -24,6 +24,7 @@ use Domain\Definitions\Investments\ValueObject\InvestmentId;
 trait HasInsolvenz
 {
     public bool $isSellInvestmentsToAvoidInsolvenzModalVisible = false;
+    public bool $isShowInformationForFiledInsolvenzModalVisible = false;
     public SellInvestmentsForm $sellInvestmentsForm;
     public ?InvestmentId $sellInvestmentOfType = null;
 
@@ -145,6 +146,12 @@ trait HasInsolvenz
             return;
         }
         $this->handleCommand(FileInsolvenzForPlayer::create($this->myself));
+        $this->isShowInformationForFiledInsolvenzModalVisible = true;
         $this->broadcastNotify();
+    }
+
+    public function toggleShowInformationForFiledInsolvenzModal(): void
+    {
+        $this->isShowInformationForFiledInsolvenzModalVisible = !$this->isShowInformationForFiledInsolvenzModalVisible;
     }
 }
