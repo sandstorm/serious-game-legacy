@@ -1,3 +1,5 @@
+@use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
+
 @props([
     'moneySheet' => null,
 ])
@@ -8,6 +10,13 @@
             Dazu zählen Nahrung, Wohnen, Krankenversicherung, ... <br />
             Pro Jahr gibst Du <strong>{{$livingCostPercent}}%</strong> Deines Gehaltes für Lebenshaltungskosten aus. Jedoch mindestens <strong>{!! $livingCostMinValue->format() !!}</strong>
         </p>
+
+        @if(PlayerState::isPlayerInsolvent($gameEvents, $playerId))
+            <p>
+                Wenn Du insolvent bist und Deine Lebenshaltungskosten nicht decken kannst übernimmt die Insolvenzverwaltung Deine gesamten Lebenshaltungskosten.
+                Du selbst zahlst dann <strong>0,00 €</strong>.
+            </p>
+        @endif
 
         @if ($this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled)
             <p class="text--success">
