@@ -185,7 +185,7 @@ class KonjunkturphaseFinder
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    value: 5
+                    value: 4.5
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::STOCKS_BONUS,
@@ -353,7 +353,7 @@ class KonjunkturphaseFinder
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    value: 6
+                    value: 5.5
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::STOCKS_BONUS,
@@ -928,7 +928,7 @@ class KonjunkturphaseFinder
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    value: 4
+                    value: 3.75
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::STOCKS_BONUS,
@@ -1014,7 +1014,7 @@ class KonjunkturphaseFinder
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    value: 4
+                    value: 3.5
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::STOCKS_BONUS,
@@ -1100,7 +1100,7 @@ class KonjunkturphaseFinder
             auswirkungen: [
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
-                    value: 3
+                    value: 3.25
                 ),
                 new AuswirkungDefinition(
                     scope: AuswirkungScopeEnum::STOCKS_BONUS,
@@ -1211,7 +1211,7 @@ class KonjunkturphaseFinder
             id: KonjunkturphasenId::create(15),
             type: KonjunkturphaseTypeEnum::DEPRESSION,
             name: 'Depression III – Stagnationstal',
-            description: 'Die Wirtschaft scheint am tiefsten Punkt einer Krise angekommen zu sein. Unternehmen zögern mit Investitionen und die Menschen sparen, statt ihr Geld auszugeben. Trotz massiver geldpolitischer Maßnahmen der Zentralbank und der Senkung des Leitzins auf 0 % bleibt die Stimmung gedrückt. Um die Nachfrage kurzfristig anzukurbeln, verteilt der Staat eine einmalige finanzielle Unterstützung an alle Bürger. ',
+            description: 'Die Wirtschaft scheint am tiefsten Punkt einer Krise angekommen zu sein. Unternehmen zögern mit Investitionen und die Menschen sparen, statt ihr Geld auszugeben. Trotz massiver geldpolitischer Maßnahmen der Zentralbank und der Senkung des Leitzins auf 0 % bleibt die Stimmung gedrückt. Um die Nachfrage kurzfristig anzukurbeln, verteilt der Staat eine einmalige finanzielle Unterstützung an alle Bürger.',
             additionalEvents: '',
             zeitsteine: new Zeitsteine([
                 new ZeitsteinePerPlayer(2, 5),
