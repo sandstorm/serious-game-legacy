@@ -4,7 +4,7 @@ on:
   # manual triggering - currently disabled
   #workflow_dispatch: {}
   push:
-    branches: [ main ]
+    branches: [ staging ]
 
 jobs:
   build_assets:
