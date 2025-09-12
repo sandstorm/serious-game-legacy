@@ -26,7 +26,7 @@
 
         @if ($closeModal)
             <div class="modal__close-button">
-                <button type="button" class="button button--type-borderless" wire:click={{$closeModal}}>
+                <button type="button" class="button button--type-borderless button--type-icon" wire:click={{$closeModal}}>
                     <span class="sr-only">Modal schließen</span>
                     <i class="icon-close" aria-hidden="true"></i>
                 </button>
