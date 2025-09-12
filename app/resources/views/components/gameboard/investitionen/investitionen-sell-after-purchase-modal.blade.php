@@ -19,9 +19,11 @@
 
 @section('content_mandatory')
     <h4>{{ $this->sellInvestmentsForm->playerName }} hat in {{ $this->sellInvestmentsForm->investmentId }} investiert!</h4>
-    <p>
-        Du kannst jetzt deine Anteile verkaufen.
-    </p>
+    @if ($this->sellInvestmentsForm->amountOwned > 0)
+        <p>
+            Du kannst jetzt deine Anteile verkaufen.
+        </p>
+    @endif
 
     <x-gameboard.investitionen.investitionen-sell-form
         :game-events="$gameEvents"

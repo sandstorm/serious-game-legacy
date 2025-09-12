@@ -39,6 +39,27 @@ class InvestmentPriceHelper
     }
 
     /**
+     * Calculates new price for a specific investment. This function is
+     * non-deterministic and will return a different result everytime it is called
+     * due to a random factor in the calculation.
+     *
+     * @param GameEvents $gameEvents
+     * @param InvestmentId $investmentId
+     * @return InvestmentPrice[]
+     * @throws RandomException
+     */
+    public static function calculateInvestmentPriceFor(GameEvents $gameEvents, InvestmentId $investmentId): array
+    {
+        $currentInvestmentPrices = InvestmentPriceState::getCurrentInvestmentPrices($gameEvents);
+        return array_map(
+            fn(InvestmentPrice $investmentPrice) => $investmentPrice->investmentId === $investmentId
+                ? self::calculatePriceGTMWithJumpDiffusion($investmentId, $gameEvents)
+                : $investmentPrice,
+            $currentInvestmentPrices
+        );
+    }
+
+    /**
      * Get new price based on Geometrische Brownsche Bewegung (GBM) model with Jump Diffusion.
      *
      * @param InvestmentId $investmentType

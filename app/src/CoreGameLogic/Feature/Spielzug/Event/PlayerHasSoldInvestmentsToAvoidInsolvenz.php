@@ -13,7 +13,7 @@ use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
-class InvestmentsWereSoldToAvoidInsolvenzForPlayer implements GameEventInterface, ProvidesResourceChanges, ProvidesInvestmentAmountChanges
+class PlayerHasSoldInvestmentsToAvoidInsolvenz implements GameEventInterface, ProvidesResourceChanges, ProvidesInvestmentAmountChanges
 {
     /**
      * @param PlayerId $playerId
@@ -80,5 +80,10 @@ class InvestmentsWereSoldToAvoidInsolvenzForPlayer implements GameEventInterface
     public function getAmount(): int
     {
         return $this->amount;
+    }
+
+    public function getInvestmentId(): InvestmentId
+    {
+        return $this->investmentId;
     }
 }

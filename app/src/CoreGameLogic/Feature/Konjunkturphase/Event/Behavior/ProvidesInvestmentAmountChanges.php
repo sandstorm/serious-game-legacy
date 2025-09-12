@@ -11,4 +11,6 @@ use Domain\CoreGameLogic\PlayerId;
 interface ProvidesInvestmentAmountChanges
 {
     public function getInvestmentAmountChanges(PlayerId $playerId, InvestmentId $investmentId): InvestmentAmountChanges;
+
+    public function getInvestmentId(): InvestmentId;
 }
