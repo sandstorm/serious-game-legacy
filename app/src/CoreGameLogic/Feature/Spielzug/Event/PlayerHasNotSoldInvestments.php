@@ -10,7 +10,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Dto\LogEntry;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\Loggable;
 use Domain\CoreGameLogic\PlayerId;
 
-class InvestmentsWereNotSoldForPlayer implements GameEventInterface, CommandInterface, Loggable
+class PlayerHasNotSoldInvestments implements GameEventInterface, CommandInterface, Loggable
 {
     /**
      * @param PlayerId $playerId

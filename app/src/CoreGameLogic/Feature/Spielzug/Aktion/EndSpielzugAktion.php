@@ -14,6 +14,8 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerDoneAtLeastO
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\NoPlayerNeedsToSellInvestmentsValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasBoughtInvestment;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasSoldInvestment;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
@@ -40,9 +42,14 @@ class EndSpielzugAktion extends Aktion
 
         // Provide new prices for investments, if player has bought/sold investments this turn
         $playerSoldOrBoughtInvestmentsThisTurn = GamePhaseState::playerBoughtOrSoldInvestmentsThisTurn($gameEvents, $playerId);
+        $investmentEvent = null;
         $investmentPrices = InvestmentPriceState::getCurrentInvestmentPrices($gameEvents);
         if ($playerSoldOrBoughtInvestmentsThisTurn) {
-            $investmentPrices = InvestmentPriceHelper::calculateInvestmentPrices($gameEvents);
+            /** @var PlayerHasBoughtInvestment|PlayerHasSoldInvestment $investmentEvent */
+            $investmentEvent = $gameEvents->findLastOrNullWhere(
+                fn($event) => ($event instanceof PlayerHasBoughtInvestment || $event instanceof PlayerHasSoldInvestment)
+                    && $event->getPlayerId()->equals($playerId));
+            $investmentPrices = InvestmentPriceHelper::calculateInvestmentPriceFor($gameEvents, $investmentEvent->getInvestmentId());
         }
 
         return GameEventsToPersist::with(
@@ -50,7 +57,7 @@ class EndSpielzugAktion extends Aktion
                 playerId: $playerId,
                 playerTurn: PlayerState::getCurrentTurnForPlayer($gameEvents, $playerId),
                 investmentPrices: $investmentPrices,
-                haveInvestmentPricesChanged: $playerSoldOrBoughtInvestmentsThisTurn,
+                idOfUpdatedInvestmentOrNull: $investmentEvent?->getInvestmentId(),
             )
         );
     }

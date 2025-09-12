@@ -12,8 +12,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\ImmobilieId;
 use Domain\CoreGameLogic\PlayerId;
-use Domain\Definitions\Card\CardFinder;
-use Domain\Definitions\Card\Dto\ImmobilienCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;

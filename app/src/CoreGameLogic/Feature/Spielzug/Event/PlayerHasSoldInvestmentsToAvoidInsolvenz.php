@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesInvestmentAmountChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\InvestmentAmountChanges;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesInvestmentAmountChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
-use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
+use Domain\Definitions\Investments\ValueObject\InvestmentId;
 
-class InvestmentsWereSoldToAvoidInsolvenzForPlayer implements GameEventInterface, ProvidesResourceChanges, ProvidesInvestmentAmountChanges
+class PlayerHasSoldInvestmentsToAvoidInsolvenz implements GameEventInterface, ProvidesResourceChanges, ProvidesInvestmentAmountChanges
 {
     /**
      * @param PlayerId $playerId
@@ -80,5 +80,10 @@ class InvestmentsWereSoldToAvoidInsolvenzForPlayer implements GameEventInterface
     public function getAmount(): int
     {
         return $this->amount;
+    }
+
+    public function getInvestmentId(): InvestmentId
+    {
+        return $this->investmentId;
     }
 }

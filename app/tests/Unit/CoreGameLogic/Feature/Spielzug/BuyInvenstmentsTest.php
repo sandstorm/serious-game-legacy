@@ -1,35 +1,18 @@
 <?php
 declare(strict_types=1);
 
-use App\Livewire\Forms\TakeOutALoanForm;
-
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesInvestmentPriceChanges;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
-use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\FileInsolvenzForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Dto\LoanData;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasCorrected;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
-use Domain\Definitions\Card\Dto\KategorieCardDefinition;
-use Domain\Definitions\Card\Dto\ResourceChanges;
-use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
-use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
-use Tests\ComponentWithForm;
 use Tests\TestCase;
 
 beforeEach(function () {
@@ -41,7 +24,6 @@ beforeEach(function () {
 describe('handleBuyInvestmentsForPlayer', function () {
     it('works as expected when buying investments', function () {
         /** @var TestCase $this */
-
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $currentPriceLowRisk = InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MERFEDES_PENZ);
         expect($currentPriceLowRisk)->toEqual(new MoneyAmount(Configuration::INITIAL_INVESTMENT_PRICE));
@@ -68,7 +50,7 @@ describe('handleBuyInvestmentsForPlayer', function () {
             ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual($expectedGuthaben)
             ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[1]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE))
             ->and(count($gameEvents->findAllOfType(ProvidesInvestmentPriceChanges::class)))->toEqual(1)
-            ->and(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MERFEDES_PENZ))->toEqual($currentPriceLowRisk);
+            ->and(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MERFEDES_PENZ))->toEqual(new MoneyAmount(Configuration::INITIAL_INVESTMENT_PRICE));
 
         // other player does not sell any stocks
         $this->coreGameLogic->handle(
@@ -77,7 +59,7 @@ describe('handleBuyInvestmentsForPlayer', function () {
         );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MERFEDES_PENZ))->toEqual($currentPriceLowRisk)
+        expect(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MERFEDES_PENZ))->toEqual(new MoneyAmount(Configuration::INITIAL_INVESTMENT_PRICE))
             ->and(GamePhaseState::playerBoughtOrSoldInvestmentsThisTurn($gameEvents, $this->players[0]))->toBeTrue()
             ->and(GamePhaseState::playerBoughtOrSoldInvestmentsThisTurn($gameEvents, $this->players[1]))->toBeFalse();
 
@@ -88,7 +70,15 @@ describe('handleBuyInvestmentsForPlayer', function () {
         );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect($gameEvents->findLast(SpielzugWasEnded::class)->haveInvestmentPricesChanged)->toBeTrue();
+        expect($gameEvents->findLast(SpielzugWasEnded::class)->idOfUpdatedInvestmentOrNull)->toEqual(InvestmentId::MERFEDES_PENZ)
+            ->and($gameEvents->findLast(SpielzugWasEnded::class)->getLogEntry()->getText())->toEqual('beendet den Spielzug und der Kurs für Merfedes-Penz hat sich geändert')
+            ->and(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MERFEDES_PENZ)->value)->not->toEqual(Configuration::INITIAL_INVESTMENT_PRICE)
+            // other prices are still the same
+            ->and(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::BETA_PEAR)->value)->toEqual(Configuration::INITIAL_INVESTMENT_PRICE)
+            ->and(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MEME_COIN)->value)->toEqual(Configuration::INITIAL_INVESTMENT_PRICE)
+            ->and(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::BAT_COIN)->value)->toEqual(Configuration::INITIAL_INVESTMENT_PRICE)
+            ->and(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::ETF_MSCI_WORLD)->value)->toEqual(Configuration::INITIAL_INVESTMENT_PRICE)
+            ->and(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::ETF_CLEAN_ENERGY)->value)->toEqual(Configuration::INITIAL_INVESTMENT_PRICE);
         $currentPriceLowRisk = InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MERFEDES_PENZ);
 
         // player 1 does mini job
@@ -107,7 +97,8 @@ describe('handleBuyInvestmentsForPlayer', function () {
         // after the end of spielzug for player 1, the price has not changed because no one sold/bought stocks
         expect(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MERFEDES_PENZ))->toEqual($currentPriceLowRisk)
             ->and(count($gameEvents->findAllOfType(ProvidesInvestmentPriceChanges::class)))->toEqual(3)
-            ->and($gameEvents->findLast(SpielzugWasEnded::class)->haveInvestmentPricesChanged)->toBeFalse()
+            ->and($gameEvents->findLast(SpielzugWasEnded::class)->idOfUpdatedInvestmentOrNull)->toEqual(null)
+            ->and($gameEvents->findLast(SpielzugWasEnded::class)->getLogEntry()->getText())->toEqual('beendet den Spielzug')
             ->and(GamePhaseState::playerBoughtOrSoldInvestmentsThisTurn($gameEvents, $this->players[0]))->toBeFalse()
             ->and(GamePhaseState::playerBoughtOrSoldInvestmentsThisTurn($gameEvents, $this->players[1]))->toBeFalse();
 
@@ -124,7 +115,29 @@ describe('handleBuyInvestmentsForPlayer', function () {
             )
         );
 
+        // other player does not sell any stocks
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            DontSellInvestmentsForPlayer::create($this->players[1], InvestmentId::BETA_PEAR)
+        );
+
+        // end zug for player 0
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[0])
+        );
+
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        // check that the prices for stocks != initial price (the calculation has random factors in it, it could happen that the price is the same as initial price, but very unlikely)
+        expect(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MERFEDES_PENZ)->value)->not->toEqual(Configuration::INITIAL_INVESTMENT_PRICE)
+            ->and(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::BETA_PEAR)->value)->not->toEqual(Configuration::INITIAL_INVESTMENT_PRICE)
+            // other prices are still the same
+            ->and(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MEME_COIN)->value)->toEqual(Configuration::INITIAL_INVESTMENT_PRICE)
+            ->and(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::BAT_COIN)->value)->toEqual(Configuration::INITIAL_INVESTMENT_PRICE)
+            ->and(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::ETF_MSCI_WORLD)->value)->toEqual(Configuration::INITIAL_INVESTMENT_PRICE)
+            ->and(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::ETF_CLEAN_ENERGY)->value)->toEqual(Configuration::INITIAL_INVESTMENT_PRICE);
+
+
         $currentPriceLowRisk = InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MERFEDES_PENZ);
         $currentPriceHighRisk = InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::BETA_PEAR);
         $expectedSumOfAllStocks = new MoneyAmount($currentPriceLowRisk->value * $amountOfStocks + $currentPriceHighRisk->value * $amountOfStocksHighRisk);
@@ -140,7 +153,7 @@ describe('handleBuyInvestmentsForPlayer', function () {
                 InvestmentId::BETA_PEAR))->toEqual($amountOfStocksHighRisk)
             ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual($expectedGuthaben)
             ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[1]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE + 5000))
-            ->and(count($gameEvents->findAllOfType(ProvidesInvestmentPriceChanges::class)))->toEqual(3);
+            ->and(count($gameEvents->findAllOfType(ProvidesInvestmentPriceChanges::class)))->toEqual(4);
     });
 
     it('throws exception if player tries to end spielzug before other players sold their investments', function () {

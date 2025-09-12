@@ -12,7 +12,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughInvest
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerInteractedWithInvestmentsModalThisTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerAllowedToInvestValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayerAfterInvestmentByAnotherPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasSoldInvestmentsAfterInvestmentByAnotherPlayer;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\CoreGameLogic\PlayerId;
@@ -50,7 +50,7 @@ class SellInvestmentsForPlayerAfterInvestmentByAnotherPlayerAktion extends Aktio
         );
 
         return GameEventsToPersist::with(
-            new InvestmentsWereSoldForPlayerAfterInvestmentByAnotherPlayer(
+            new PlayerHasSoldInvestmentsAfterInvestmentByAnotherPlayer(
                 playerId: $playerId,
                 investmentId: $this->investmentId,
                 price: $this->price,

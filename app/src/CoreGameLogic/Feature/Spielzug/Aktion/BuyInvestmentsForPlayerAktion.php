@@ -15,7 +15,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerAllowedToInve
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerNotInsolventValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereBoughtForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasBoughtInvestment;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
@@ -61,7 +61,7 @@ class BuyInvestmentsForPlayerAktion extends Aktion
         );
 
         return GameEventsToPersist::with(
-            new InvestmentsWereBoughtForPlayer(
+            new PlayerHasBoughtInvestment(
                 playerId: $playerId,
                 investmentId: $this->investmentId,
                 price: $this->price,
