@@ -17,11 +17,27 @@ use Domain\CoreGameLogic\PlayerId;
 interface Validator
 {
     /**
-     * This function is used to add a Validator to the chain.
+     * This function is used to add the next Validator, that gets called after this Validator.
      * @param Validator $validator
      * @return Validator
      */
     public function setNext(Validator $validator): Validator;
+
+    /**
+     * Use this to append a validator to the end of the chain, when you don't have the last element of that
+     * chain.
+     *
+     * @param Validator $validator
+     * @return Validator
+     * @example
+     * $firstValidatorInChain = new HasKonjunkturphaseEndedValidator();
+     * $firstValidatorInChain->setNext(new HasPlayerCompletedMoneySheetValidator());
+     *
+     * if ($someCondition) {
+     *     $firstValidatorInChain->append(new HasPlayerAPositiveBalanceValidator());
+     * }
+     */
+    public function append(Validator $validator): Validator;
 
     /**
      * This function handles the validation. If the validation fails, it will return an AktionValidationResult with

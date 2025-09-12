@@ -23,8 +23,8 @@ class MarkPlayerAsReadyForKonjunkturphaseChangeAktion extends Aktion
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
-        $validatorChain = new HasKonjunkturphaseEndedValidator();
-        $validatorChain
+        $firstValidatorInChain = new HasKonjunkturphaseEndedValidator();
+        $firstValidatorInChain
             ->setNext(new HasPlayerCompletedMoneySheetValidator());
 
         if (!PlayerState::isPlayerInsolvent($gameEvents, $playerId)) {
@@ -32,10 +32,10 @@ class MarkPlayerAsReadyForKonjunkturphaseChangeAktion extends Aktion
              * If a player is insolvent they are allowed to change the Konjunkturphase even if they have a negative balance,
              * as they should not have to file for Insolvenz again. So only not insolvent players need to have a positive balance.
              */
-            $validatorChain
-                ->setNext(new HasPlayerAPositiveBalanceValidator());
+            $firstValidatorInChain
+                ->append(new HasPlayerAPositiveBalanceValidator());
         }
-        return $validatorChain->validate($gameEvents, $playerId);
+        return $firstValidatorInChain->validate($gameEvents, $playerId);
     }
 
     public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist
