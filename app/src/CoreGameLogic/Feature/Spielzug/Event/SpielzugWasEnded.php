@@ -11,6 +11,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Dto\LogEntry;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\Loggable;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Investments\ValueObject\InvestmentId;
 
 final readonly class SpielzugWasEnded implements GameEventInterface, Loggable, ProvidesInvestmentPriceChanges
 {
@@ -18,10 +19,10 @@ final readonly class SpielzugWasEnded implements GameEventInterface, Loggable, P
      * @param InvestmentPrice[] $investmentPrices
      */
     public function __construct(
-        public PlayerId   $playerId,
-        public PlayerTurn $playerTurn,
-        public array      $investmentPrices,
-        public bool       $haveInvestmentPricesChanged = false,
+        public PlayerId      $playerId,
+        public PlayerTurn    $playerTurn,
+        public array         $investmentPrices,
+        public ?InvestmentId $hasInvestmentPriceChanged = null,
     )
     {
     }
@@ -35,7 +36,7 @@ final readonly class SpielzugWasEnded implements GameEventInterface, Loggable, P
                 static fn($investmentPrice) => InvestmentPrice::fromArray($investmentPrice),
                 $values['investmentPrices']
             ),
-            haveInvestmentPricesChanged: $values['haveInvestmentPricesChanged'],
+            hasInvestmentPriceChanged: $values['haveInvestmentPricesChanged'] !== null ? InvestmentId::from($values['haveInvestmentPricesChanged']) : null,
         );
     }
 
@@ -45,14 +46,14 @@ final readonly class SpielzugWasEnded implements GameEventInterface, Loggable, P
             'playerId' => $this->playerId,
             'playerTurn' => $this->playerTurn,
             'investmentPrices' => $this->investmentPrices,
-            'haveInvestmentPricesChanged' => $this->haveInvestmentPricesChanged,
+            'haveInvestmentPricesChanged' => $this->hasInvestmentPriceChanged->value ?? null,
         ];
     }
 
     public function getLogEntry(): LogEntry
     {
-        $text = $this->haveInvestmentPricesChanged
-            ? "beendet den Spielzug und die Kurse für Investments haben sich geändert"
+        $text = $this->hasInvestmentPriceChanged !== null
+            ? "beendet den Spielzug und der Kurs für {$this->hasInvestmentPriceChanged->value} hat sich geändert"
             : "beendet den Spielzug";
 
         return new LogEntry(

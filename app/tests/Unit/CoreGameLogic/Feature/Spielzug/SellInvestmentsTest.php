@@ -106,6 +106,13 @@ describe('handleSellInvestmentsForPlayer', function () {
             $this->gameId,
             new EndSpielzug($this->players[0])
         );
+
+        // other prices are still the same
+        expect(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::BETA_PEAR)->value)->toEqual(Configuration::INITIAL_INVESTMENT_PRICE)
+            ->and(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MEME_COIN)->value)->toEqual(Configuration::INITIAL_INVESTMENT_PRICE)
+            ->and(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::BAT_COIN)->value)->toEqual(Configuration::INITIAL_INVESTMENT_PRICE)
+            ->and(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::ETF_MSCI_WORLD)->value)->toEqual(Configuration::INITIAL_INVESTMENT_PRICE)
+            ->and(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::ETF_CLEAN_ENERGY)->value)->toEqual(Configuration::INITIAL_INVESTMENT_PRICE);
     });
 
     it('throws exception if you try to sell investments you do not have', function () {
