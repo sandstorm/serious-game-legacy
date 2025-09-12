@@ -10,7 +10,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 
 /**
- * Succeeds if the player if no player needs to sell stocks this turn.
+ * Succeeds if no player needs to interact with the investments modal (i.e. sell investments)
  */
 final class NoPlayerNeedsToSellInvestmentsValidator extends AbstractValidator
 {

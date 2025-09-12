@@ -9,3 +9,6 @@
 
 # xml files in runConfigurations
 /runConfigurations/*.xml
+
+# copilot migrations
+/copilot.data.migration*

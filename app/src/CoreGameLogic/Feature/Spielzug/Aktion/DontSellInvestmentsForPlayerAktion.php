@@ -8,7 +8,7 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasAnotherPlayerInvestedThisTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereNotSoldForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasNotSoldInvestments;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 
@@ -33,7 +33,7 @@ class DontSellInvestmentsForPlayerAktion extends Aktion
         }
 
         return GameEventsToPersist::with(
-            new InvestmentsWereNotSoldForPlayer(
+            new PlayerHasNotSoldInvestments(
                 playerId: $playerId,
             )
         );

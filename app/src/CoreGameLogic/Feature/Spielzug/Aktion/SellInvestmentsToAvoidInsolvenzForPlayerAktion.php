@@ -10,7 +10,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerANegativeBal
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerCompletedMoneySheetValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughInvestmentsToSellValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldToAvoidInsolvenzForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasSoldInvestmentsToAvoidInsolvenz;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\CoreGameLogic\PlayerId;
@@ -42,7 +42,7 @@ class SellInvestmentsToAvoidInsolvenzForPlayerAktion extends Aktion
         }
 
         return GameEventsToPersist::with(
-            new InvestmentsWereSoldToAvoidInsolvenzForPlayer(
+            new PlayerHasSoldInvestmentsToAvoidInsolvenz(
                 playerId: $playerId,
                 investmentId: $this->investmentId,
                 price: $this->price,

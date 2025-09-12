@@ -15,7 +15,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelAllInsurancesToAvoidInso
 use Domain\CoreGameLogic\Feature\Spielzug\Command\FileInsolvenzForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsToAvoidInsolvenzForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldToAvoidInsolvenzForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasSoldInvestmentsToAvoidInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
@@ -123,9 +123,9 @@ trait HasInsolvenz
         $this->closeInvestmentModals();
         $this->broadcastNotify();
 
-        /** @var InvestmentsWereSoldToAvoidInsolvenzForPlayer|null $event */
+        /** @var PlayerHasSoldInvestmentsToAvoidInsolvenz|null $event */
         $event = $this->getGameEvents()->findLastOrNullWhere(
-            fn($e) => $e instanceof InvestmentsWereSoldToAvoidInsolvenzForPlayer && $e->getPlayerId()->equals($this->myself)
+            fn($e) => $e instanceof PlayerHasSoldInvestmentsToAvoidInsolvenz && $e->getPlayerId()->equals($this->myself)
         );
         if ($event !== null) {
             $this->showBanner($event->getAmount() . ' Anteile von ' . $investmentId->value . ' wurden erfolgreich verkauft.', $event->getResourceChanges($this->myself));

@@ -6,7 +6,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereBoughtForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasBoughtInvestment;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\CoreGameLogic\PlayerId;
 
@@ -27,7 +27,7 @@ final class HasAnotherPlayerInvestedThisTurnValidator extends AbstractValidator
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
         $anotherPlayerHasInvestedThisTurn = GamePhaseState::anotherPlayerHasInvestedThisTurn($gameEvents, $playerId);
-        $investmentsBought = $gameEvents->findLastOrNull(InvestmentsWereBoughtForPlayer::class)?->investmentId;
+        $investmentsBought = $gameEvents->findLastOrNull(PlayerHasBoughtInvestment::class)?->getInvestmentId();
 
         if (!$anotherPlayerHasInvestedThisTurn || $investmentsBought !== $this->investmentId) {
             return new AktionValidationResult(
