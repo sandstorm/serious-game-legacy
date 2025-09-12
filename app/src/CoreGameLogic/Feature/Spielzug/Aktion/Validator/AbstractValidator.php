@@ -26,6 +26,14 @@ abstract class AbstractValidator implements Validator
         return $validator;
     }
 
+    public final function append(Validator $validator): Validator
+    {
+        if ($this->nextValidator === null) {
+            return $this->setNext($validator);
+        }
+        return $this->nextValidator->append($validator);
+    }
+
     /**
      * This function must be overridden by your validator. If the validation fails your should return an
      * AktionValidationResult with the reason. If the validation is successful you should always return
