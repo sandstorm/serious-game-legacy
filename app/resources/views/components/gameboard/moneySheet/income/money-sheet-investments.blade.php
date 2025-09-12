@@ -8,7 +8,7 @@
 ])
 
 <div class="tabs__upper-content">
-    @if (count($immobilienOwnedByPlayer) > 0 || count($immobilien) > 0)
+    @if (count($immobilienOwnedByPlayer) > 0 || count($investments) > 0)
         <table>
             <thead>
             <tr>
@@ -60,6 +60,6 @@
             </tbody>
         </table>
     @else
-        <h4>Keine Aktien oder Immobilien vorhanden.</h4>
+        <h4>Keine Investitionen vorhanden.</h4>
     @endif
 </div>
