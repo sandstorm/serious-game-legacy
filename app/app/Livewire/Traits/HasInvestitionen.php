@@ -23,9 +23,9 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayerAfterI
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasBoughtImmobilie;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereBoughtForPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayerAfterInvestmentByAnotherPlayer;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasBoughtInvestment;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasSoldInvestmentsAfterInvestmentByAnotherPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasSoldInvestment;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasSoldImmobilie;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\ImmobilieId;
 use Domain\Definitions\Card\ValueObject\CardId;
@@ -64,14 +64,15 @@ trait HasInvestitionen
         if (GamePhaseState::anotherPlayerHasInvestedThisTurn($this->getGameEvents(), $this->myself) &&
             !PlayerState::hasPlayerInteractedWithInvestmentsModalThisTurn($this->getGameEvents(), $this->myself)) {
 
-            $investmentsBoughtEvent = $this->getGameEvents()->findLast(InvestmentsWereBoughtForPlayer::class);
+            /** @var PlayerHasBoughtInvestment $investmentsBoughtEvent */
+            $investmentsBoughtEvent = $this->getGameEvents()->findLast(PlayerHasBoughtInvestment::class);
             $this->sellInvestmentsForm->playerName = PlayerState::getNameForPlayer($this->getGameEvents(), $investmentsBoughtEvent->playerId);
-            $this->sellInvestmentsForm->investmentId = $investmentsBoughtEvent->investmentId;
-            $this->sellInvestmentsForm->sharePrice = InvestmentPriceState::getCurrentInvestmentPrice($this->getGameEvents(), $investmentsBoughtEvent->investmentId)->value;
+            $this->sellInvestmentsForm->investmentId = $investmentsBoughtEvent->getInvestmentId();
+            $this->sellInvestmentsForm->sharePrice = InvestmentPriceState::getCurrentInvestmentPrice($this->getGameEvents(), $investmentsBoughtEvent->getInvestmentId())->value;
             $this->sellInvestmentsForm->amountOwned = PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer(
                 $this->getGameEvents(),
                 $this->myself,
-                $investmentsBoughtEvent->investmentId
+                $investmentsBoughtEvent->getInvestmentId()
             );
 
             $this->sellInvestmentsModalIsVisible = true;
@@ -194,17 +195,18 @@ trait HasInvestitionen
         $this->closeInvestmentModals();
         $this->broadcastNotify();
 
-        /** @var InvestmentsWereBoughtForPlayer $event */
-        $event = $this->getGameEvents()->findLast(InvestmentsWereBoughtForPlayer::class);
+        /** @var PlayerHasBoughtInvestment $event */
+        $event = $this->getGameEvents()->findLast(PlayerHasBoughtInvestment::class);
         $this->showBanner($event->amount . ' Anteile von ' . $investmentId->value . ' wurden erfolgreich gekauft. Alle anderen Spieler:innen haben jetzt die Möglichkeit ihre Anteile zu verkaufen.', $event->getResourceChanges($this->myself));
     }
 
     public function closeSellInvestmentsModal(): void
     {
-        $stocksBoughtEvent = $this->getGameEvents()->findLast(InvestmentsWereBoughtForPlayer::class);
+        /** @var PlayerHasBoughtInvestment $stocksBoughtEvent */
+        $stocksBoughtEvent = $this->getGameEvents()->findLast(PlayerHasBoughtInvestment::class);
         $this->handleCommand(DontSellInvestmentsForPlayer::create(
             $this->myself,
-            $stocksBoughtEvent->investmentId
+            $stocksBoughtEvent->getInvestmentId()
         ));
         $this->broadcastNotify();
         $this->sellInvestmentsModalIsVisible = false;
@@ -250,9 +252,9 @@ trait HasInvestitionen
         $this->sellInvestmentsForm->resetValidation();
         $this->broadcastNotify();
 
-        /** @var InvestmentsWereSoldForPlayerAfterInvestmentByAnotherPlayer|null $event */
+        /** @var PlayerHasSoldInvestmentsAfterInvestmentByAnotherPlayer|null $event */
         $event = $this->getGameEvents()->findLastOrNullWhere(
-            fn($e) => $e instanceof InvestmentsWereSoldForPlayerAfterInvestmentByAnotherPlayer && $e->playerId->equals($this->myself)
+            fn($e) => $e instanceof PlayerHasSoldInvestmentsAfterInvestmentByAnotherPlayer && $e->playerId->equals($this->myself)
         );
         if ($event !== null) {
             $this->showBanner($event->amount . ' Anteile von ' . $investmentId->value . ' wurden erfolgreich verkauft.', $event->getResourceChanges($this->myself));
@@ -323,8 +325,8 @@ trait HasInvestitionen
         $this->closeInvestmentModals();
         $this->broadcastNotify();
 
-        /** @var InvestmentsWereSoldForPlayer $event */
-        $event = $this->getGameEvents()->findLast(InvestmentsWereSoldForPlayer::class);
+        /** @var PlayerHasSoldInvestment $event */
+        $event = $this->getGameEvents()->findLast(PlayerHasSoldInvestment::class);
         $this->showBanner($event->amount . ' Anteile von ' . $investmentId->value . ' wurden erfolgreich verkauft. Alle anderen Spieler:innen haben jetzt die Möglichkeit ihre Anteile zu verkaufen', $event->getResourceChanges($this->myself));
     }
 

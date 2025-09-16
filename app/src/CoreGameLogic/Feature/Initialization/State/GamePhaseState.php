@@ -7,11 +7,11 @@ namespace Domain\CoreGameLogic\Feature\Initialization\State;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereSoldForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasSoldInvestment;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasFinishedLebensziel;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasStarted;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\InvestmentsWereBoughtForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasBoughtInvestment;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
@@ -88,16 +88,15 @@ class GamePhaseState
         $eventsThisTurn = $gameEvents->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class)
             ?? $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
 
-        $investmentsWereBought = $eventsThisTurn->findLastOrNullWhere(
-            fn($event) => $event instanceof InvestmentsWereBoughtForPlayer
+        $investmentEvent = $eventsThisTurn->findLastOrNullWhere(
+            fn($event) => ($event instanceof PlayerHasBoughtInvestment || $event instanceof PlayerHasSoldInvestment)
                 && !$event->getPlayerId()->equals($playerId));
-        $investmentsWereSold = $eventsThisTurn->findLastOrNullWhere(
-            fn($event) => $event instanceof InvestmentsWereSoldForPlayer
-                && !$event->getPlayerId()->equals($playerId));
-        return $investmentsWereBought !== null || $investmentsWereSold !== null;
+        return $investmentEvent !== null;
     }
 
     /**
+     * Returns true if the given player has bought or sold investments this turn.
+     *
      * @param GameEvents $gameEvents
      * @param PlayerId $playerId
      * @return bool
@@ -107,13 +106,10 @@ class GamePhaseState
         $eventsThisTurn = $gameEvents->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class)
             ?? $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
 
-        $investmentsWereBought = $eventsThisTurn->findLastOrNullWhere(
-            fn($event) => $event instanceof InvestmentsWereBoughtForPlayer
+        $investmentEvent = $eventsThisTurn->findLastOrNullWhere(
+            fn($event) => ($event instanceof PlayerHasBoughtInvestment || $event instanceof PlayerHasSoldInvestment)
                 && $event->getPlayerId()->equals($playerId));
-        $investmentsWereSold = $eventsThisTurn->findLastOrNullWhere(
-            fn($event) => $event instanceof InvestmentsWereSoldForPlayer
-                && $event->getPlayerId()->equals($playerId));
-        return $investmentsWereBought !== null || $investmentsWereSold !== null;
+        return $investmentEvent !== null;
     }
 
     public static function hasPlayerStartedTurn(GameEvents $gameEvents, PlayerId $playerId): bool

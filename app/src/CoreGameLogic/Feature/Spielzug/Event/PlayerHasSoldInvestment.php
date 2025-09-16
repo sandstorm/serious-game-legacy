@@ -17,7 +17,7 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
-class InvestmentsWereSoldForPlayer implements GameEventInterface, ZeitsteinAktion, ProvidesResourceChanges, ProvidesInvestmentAmountChanges, Loggable
+class PlayerHasSoldInvestment implements GameEventInterface, ZeitsteinAktion, ProvidesResourceChanges, ProvidesInvestmentAmountChanges, Loggable
 {
     /**
      * @param PlayerId $playerId
@@ -28,7 +28,7 @@ class InvestmentsWereSoldForPlayer implements GameEventInterface, ZeitsteinAktio
      */
     public function __construct(
         public PlayerId     $playerId,
-        public InvestmentId $investmentId,
+        protected InvestmentId $investmentId,
         public MoneyAmount  $price,
         public int          $amount,
         public ResourceChanges $resourceChanges,
@@ -98,5 +98,10 @@ class InvestmentsWereSoldForPlayer implements GameEventInterface, ZeitsteinAktio
     public function getNumberOfZeitsteinslotsUsed(): int
     {
         return 1; // Selling investments uses one Zeitsteinslot
+    }
+
+    public function getInvestmentId(): InvestmentId
+    {
+        return $this->investmentId;
     }
 }
