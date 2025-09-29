@@ -5,15 +5,20 @@ declare(strict_types=1);
 namespace Tests\CoreGameLogic\Feature\Spielzug;
 
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\ImmobilienPriceState;
+use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyImmobilieForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellImmobilieForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SellImmobilieForPlayerToAvoidInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasBoughtImmobilie;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\ImmobilieId;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
 use Domain\Definitions\Card\Dto\ImmobilienCardDefinition;
+use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\ImmobilienType;
@@ -65,7 +70,7 @@ describe('handleBuyImmoblie', function () {
             ->and(PlayerState::getZeitsteineForPlayer($gameEvents, $this->players[1]))->toEqual($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
     });
 
-    it('works if a player buys the same immobilie twice and sells one', function() {
+    it('works if a player buys the same immobilie twice and sells one', function () {
         /** @var TestCase $this */
         $purchasePrice = 5000;
         $cardForTesting = new ImmobilienCardDefinition(
@@ -256,6 +261,7 @@ describe('handleBuyImmoblie', function () {
 
 describe('handleSellImmobilie', function () {
     it('can sell Immobilie', function () {
+        /** @var TestCase $this */
         $purchasePrice = 20000;
         $cardForTesting = new ImmobilienCardDefinition(
             id: new CardId('inv1'),
@@ -324,10 +330,10 @@ describe('handleSellImmobilie', function () {
         expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE - $purchasePrice + $currentPriceForImmobilie->value))
             ->and(PlayerState::getImmoblienOwnedByPlayer($gameEvents, $this->players[0]))->toHaveCount(0)
             ->and(PlayerState::getAnnualRentIncomeForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(0));
-
     });
 
     it('throws an error if the player tries to sell an immobilie that is not for sale', function () {
+        /** @var TestCase $this */
         $cardsForTesting = [
             new ImmobilienCardDefinition(
                 id: new CardId('inv1'),
@@ -355,5 +361,197 @@ describe('handleSellImmobilie', function () {
             )
         );
     })->throws(\RuntimeException::class, 'Diese Immobilie befindet sich nicht in deinem Besitz', 1754909475);
+});
 
+describe('Sell Immoblien to Avoid insolvenz', function () {
+    it('throws an error if the player is not insolvent', function () {
+        /** @var TestCase $this */
+        $purchasePrice = 2000;
+        $initialGuthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->getPlayers()[0]);
+        $cardsForTesting = [
+            new ImmobilienCardDefinition(
+                id: new CardId('immo1'),
+                title: 'Kauf Wohnung',
+                description: 'Eine Wohnung in einem neuen Sudierendenwohnheim steht zum Verkauf.',
+                phaseId: LebenszielPhaseId::PHASE_1,
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount($purchasePrice)->negate(),
+                ),
+                annualRent: new MoneyAmount(1500),
+                immobilienTyp: ImmobilienType::WOHNUNG
+            ),
+            new MinijobCardDefinition(
+                id: CardId::fromString("forTesting"),
+                title: "forTesting",
+                description: "forTesting",
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -1 * $this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
+                )
+            ),
+            new MinijobCardDefinition(
+                id: CardId::fromString("removeZeitsteine1"),
+                title: "RemoveZeitsteine1",
+                description: "RemoveZeitsteine1",
+                resourceChanges: new ResourceChanges(
+                    /* guthabenChange: $initialGuthaben->negate(), */
+                    zeitsteineChange: -1 * $this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 2,
+                ),
+            ),
+        ];
+
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+
+        $turn = PlayerState::getCurrentTurnForPlayer($this->getGameEvents(), $this->getPlayers()[0]);
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            BuyImmobilieForPlayer::create(
+                $this->players[0],
+                new CardId('immo1'),
+            )
+        );
+
+        // end zug for player 0
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[0])
+        );
+
+        // player 1 does mini job
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            DoMinijob::create($this->players[1])
+        );
+
+        // end zug for player 1
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[1])
+        );
+
+        // player 0 does mini job
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            DoMinijob::create($this->players[0])
+        );
+
+        // end zug for player 0
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[0])
+        );
+
+        $lebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[0]);
+        $this->handle(EnterLebenshaltungskostenForPlayer::create($this->getPlayers()[0], $lebenshaltungskosten));
+        $this->handle(CompleteMoneysheetForPlayer::create($this->getPlayers()[0]));
+        $this->handle(
+            SellImmobilieForPlayerToAvoidInsolvenz::create(
+                $this->getPlayers()[0],
+                new ImmobilieId(new CardId('immo1'), $turn)
+            )
+        );
+    })->throws(\RuntimeException::class, 'Dein Kontostand ist positiv', 1754909475);
+
+    it('works if the player is insolvent and has an immobilie to sell', function () {
+        /** @var TestCase $this */
+        // purchasePrice and rent amount to 5000 (which is the same as the default Lebenshaltungskosten)
+        // they will get added to the Guthaben at the end of the Konjunkturphase/after selling the immobilie
+        // so at the end the player should come out at 0.
+        $purchasePrice = new MoneyAmount(4000);
+        $rent = new MoneyAmount(1000);
+        $initialGuthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->getPlayers()[0]);
+        $cardsForTesting = [
+            new ImmobilienCardDefinition(
+                id: new CardId('immo1'),
+                title: 'Kauf Wohnung',
+                description: 'Eine Wohnung in einem neuen Sudierendenwohnheim steht zum Verkauf.',
+                phaseId: LebenszielPhaseId::PHASE_1,
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: $purchasePrice->negate(),
+                ),
+                annualRent: $rent,
+                immobilienTyp: ImmobilienType::WOHNUNG
+            ),
+            new MinijobCardDefinition(
+                id: CardId::fromString("forTesting"),
+                title: "forTesting",
+                description: "forTesting",
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: -1 * $this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
+                )
+            ),
+            new MinijobCardDefinition(
+                id: CardId::fromString("removeZeitsteine1"),
+                title: "RemoveZeitsteine1",
+                description: "RemoveZeitsteine1",
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: $initialGuthaben
+                        ->add($rent)
+                        ->subtract(MoneySheetState::calculateLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[0]))
+                        ->negate(),
+                    zeitsteineChange: -1 * $this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 2,
+                ),
+            ),
+        ];
+
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+
+        $turn = PlayerState::getCurrentTurnForPlayer($this->getGameEvents(), $this->getPlayers()[0]);
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            BuyImmobilieForPlayer::create(
+                $this->players[0],
+                new CardId('immo1'),
+            )
+        );
+
+        // end zug for player 0
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[0])
+        );
+
+        // player 1 does mini job
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            DoMinijob::create($this->players[1])
+        );
+
+        // end zug for player 1
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[1])
+        );
+
+        // player 0 does mini job
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            DoMinijob::create($this->players[0])
+        );
+
+        // end zug for player 0
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            new EndSpielzug($this->players[0])
+        );
+
+        $gameEvents = $this->getGameEvents();
+        $guthaben = PlayerState::getGuthabenForPlayer($gameEvents, $this->getPlayers()[0]);
+        expect($guthaben->value)->toEqual(0);
+
+        $lebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[0]);
+        $this->handle(EnterLebenshaltungskostenForPlayer::create($this->getPlayers()[0], $lebenshaltungskosten));
+        $this->handle(CompleteMoneysheetForPlayer::create($this->getPlayers()[0]));
+        $this->handle(
+            SellImmobilieForPlayerToAvoidInsolvenz::create(
+                $this->getPlayers()[0],
+                new ImmobilieId(new CardId('immo1'), $turn)
+            )
+        );
+
+        $gameEvents = $this->getGameEvents();
+        $guthaben = PlayerState::getGuthabenForPlayer($gameEvents, $this->getPlayers()[0]);
+        $immobilien = PlayerState::getImmoblienOwnedByPlayer($gameEvents, $this->getPlayers()[0]);
+        expect($guthaben->value)->toEqual(0)
+            ->and(count($immobilien))->toBe(0);
+    });
 });

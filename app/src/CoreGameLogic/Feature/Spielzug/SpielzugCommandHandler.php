@@ -32,6 +32,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\QuitJobAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\RepayLoanForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\RepayLoanForPlayerInCaseOfInsolvenzAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellImmobilieAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellImmobilieToAvoidInsolvenzAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellInvestmentsForPlayerAfterInvestmentByAnotherPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellInvestmentsForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellInvestmentsToAvoidInsolvenzForPlayerAktion;
@@ -59,6 +60,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPl
 use Domain\CoreGameLogic\Feature\Spielzug\Command\RepayLoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellImmobilieForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\RepayLoanForPlayerInCaseOfInsolvenz;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SellImmobilieForPlayerToAvoidInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsToAvoidInsolvenzForPlayer;
@@ -108,6 +110,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             || $command instanceof SellImmobilieForPlayer
             || $command instanceof FileInsolvenzForPlayer
             || $command instanceof CancelAllInsurancesToAvoidInsolvenzForPlayer
+            || $command instanceof SellImmobilieForPlayerToAvoidInsolvenz
             || $command instanceof SellInvestmentsToAvoidInsolvenzForPlayer;
     }
 
@@ -121,24 +124,32 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             EndSpielzug::class => $this->handleEndSpielzug($command, $gameEvents),
             StartSpielzug::class => $this->handleStartSpielzug($command, $gameEvents),
             CompleteMoneysheetForPlayer::class => $this->handleCompleteMoneysheetForPlayer($command, $gameEvents),
-            MarkPlayerAsReadyForKonjunkturphaseChange::class => $this->handleMarkPlayerAsReadyForKonjunkturphaseChange($command,
-                $gameEvents),
+            MarkPlayerAsReadyForKonjunkturphaseChange::class => $this->handleMarkPlayerAsReadyForKonjunkturphaseChange(
+                $command,
+                $gameEvents
+            ),
             StartKonjunkturphaseForPlayer::class => $this->handleStartKonjunkturphaseForPlayer($command, $gameEvents),
             EnterSteuernUndAbgabenForPlayer::class => $this->handleEnterSteuernUndAbgabenForPlayer(
-                $command, $gameEvents),
+                $command,
+                $gameEvents
+            ),
             EnterLebenshaltungskostenForPlayer::class => $this->handleEnterLebenshaltungskostenForPlayer(
-                $command, $gameEvents),
+                $command,
+                $gameEvents
+            ),
             ConcludeInsuranceForPlayer::class => $this->handleConcludeInsuranceForPlayer(
-                $command, $gameEvents),
+                $command,
+                $gameEvents
+            ),
             CancelInsuranceForPlayer::class => $this->handleCancelInsuranceForPlayer(
-                $command, $gameEvents),
+                $command,
+                $gameEvents
+            ),
             TakeOutALoanForPlayer::class => $this->handleTakeOutALoanForPlayer($command, $gameEvents),
             RepayLoanForPlayer::class => $this->handleRepayLoanForPlayer($command, $gameEvents),
             RepayLoanForPlayerInCaseOfInsolvenz::class => $this->handleRepayLoanForPlayerInCaseOfInsolvenz($command, $gameEvents),
-            DoMinijob::class => $this->handleDoMinijob
-                ($command, $gameEvents),
-            QuitJob::class => $this->handleQuitJob
-                ($command, $gameEvents),
+            DoMinijob::class => $this->handleDoMinijob($command, $gameEvents),
+            QuitJob::class => $this->handleQuitJob($command, $gameEvents),
             BuyInvestmentsForPlayer::class => $this->handleBuyInvestments($command, $gameEvents),
             SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer::class => $this->handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer($command, $gameEvents),
             SellInvestmentsForPlayer::class => $this->handleSellInvestments($command, $gameEvents),
@@ -151,6 +162,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             SellImmobilieForPlayer::class => $this->handleSellImmoblie($command, $gameEvents),
             FileInsolvenzForPlayer::class => $this->handleFileInsolvenzForPlayer($command, $gameEvents),
             CancelAllInsurancesToAvoidInsolvenzForPlayer::class => $this->handleCancelAllInsurancesToAvoidInsolvenzForPlayer($command, $gameEvents),
+            SellImmobilieForPlayerToAvoidInsolvenz::class => $this->handleSellImmobilieToAvoidInsolvenz($command, $gameEvents),
             SellInvestmentsToAvoidInsolvenzForPlayer::class => $this->handleSellInvestmentsToAvoidInsolvenzForPlayer($command, $gameEvents),
         };
     }
@@ -364,7 +376,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
      * @param GameEvents $gameEvents
      * @return GameEventsToPersist
      */
-    private function handleSubmitAnswerWeiterbildung(SubmitAnswerForWeiterbildung $command, GameEvents $gameEvents):GameEventsToPersist
+    private function handleSubmitAnswerWeiterbildung(SubmitAnswerForWeiterbildung $command, GameEvents $gameEvents): GameEventsToPersist
     {
         $aktion = new SubmitAnswerForWeiterbildungAktion($command->selectedAnswer);
         return $aktion->execute($command->playerId, $gameEvents);
@@ -421,6 +433,14 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
             $command->investmentId,
             InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, $command->investmentId),
             $command->amount,
+        );
+        return $aktion->execute($command->playerId, $gameEvents);
+    }
+
+    private function handleSellImmobilieToAvoidInsolvenz(SellImmobilieForPlayerToAvoidInsolvenz $command, GameEvents $gameEvents): GameEventsToPersist
+    {
+        $aktion = new SellImmobilieToAvoidInsolvenzAktion(
+            immobilieId: $command->immobilieId
         );
         return $aktion->execute($command->playerId, $gameEvents);
     }
