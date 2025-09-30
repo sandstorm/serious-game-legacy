@@ -11,11 +11,11 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\DoesPlayerOwnImmobili
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerANegativeBalanceValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerCompletedMoneySheetValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasSoldImmobilie;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasSoldImmobilieToAvoidInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\ImmobilieId;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
 class SellImmobilieToAvoidInsolvenzAktion extends Aktion
 {
@@ -40,8 +40,11 @@ class SellImmobilieToAvoidInsolvenzAktion extends Aktion
             throw new \RuntimeException('' . $result->reason, 1754909475);
         }
 
+        // Selling an Immobilie to avoid Insolvenz will not return the full value
+        $reducedValue = new MoneyAmount(ImmobilienPriceState::getCurrentPriceForImmobilie($gameEvents, $this->immobilieId)->value * 0.8);
+
         $resourceChanges = new ResourceChanges(
-            guthabenChange: ImmobilienPriceState::getCurrentPriceForImmobilie($gameEvents, $this->immobilieId),
+            guthabenChange: $reducedValue,
             zeitsteineChange: -1,
         );
 
