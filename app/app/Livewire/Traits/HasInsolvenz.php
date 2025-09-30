@@ -74,7 +74,7 @@ trait HasInsolvenz
         return $aktion->validate($this->myself, $this->getGameEvents());
     }
 
-    public function sellImmobilieToAvoidInsolvenz(ImmobilieId $immobilie): void
+    public function sellImmobilieToAvoidInsolvenz(ImmobilieId $immobilieId): void
     {
         $aktion = new SellImmobilieToAvoidInsolvenzAktion(
             immobilieId: $immobilieId,
@@ -87,11 +87,6 @@ trait HasInsolvenz
                 "Immobilien verkaufen nicht möglich: " . $validationResult->reason,
                 NotificationTypeEnum::ERROR
             );
-            return;
-        }
-
-        // Amount should not ever be null, but just in case and to fix phpstan errors
-        if ($this->sellImmobilienForm->amount === null) {
             return;
         }
     }
