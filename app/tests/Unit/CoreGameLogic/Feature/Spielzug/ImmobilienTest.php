@@ -451,7 +451,7 @@ describe('Sell Immoblien to Avoid insolvenz', function () {
         );
     })->throws(\RuntimeException::class, 'Dein Kontostand ist positiv', 1754909475);
 
-    it('works if the player is insolvent and has an immobilie to sell', function () {
+    it('returns 80 percent of the purchase price if the player has a negative balance and has an immobilie to sell', function () {
         /** @var TestCase $this */
         // purchasePrice and rent amount to 5000 (which is the same as the default Lebenshaltungskosten)
         // they will get added to the Guthaben at the end of the Konjunkturphase/after selling the immobilie
@@ -484,10 +484,10 @@ describe('Sell Immoblien to Avoid insolvenz', function () {
                 title: "RemoveZeitsteine1",
                 description: "RemoveZeitsteine1",
                 resourceChanges: new ResourceChanges(
-                    guthabenChange: $initialGuthaben
-                        ->add($rent)
-                        ->subtract(MoneySheetState::calculateLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[0]))
-                        ->negate(),
+                    guthabenChange: $initialGuthaben->negate()
+                        ->subtract($rent)
+                        ->add(new MoneyAmount($purchasePrice->value * 0.2)) // selling the Immobilie will not return the full price
+                        ->add(MoneySheetState::calculateLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[0])),
                     zeitsteineChange: -1 * $this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 2,
                 ),
             ),
@@ -536,7 +536,7 @@ describe('Sell Immoblien to Avoid insolvenz', function () {
 
         $gameEvents = $this->getGameEvents();
         $guthaben = PlayerState::getGuthabenForPlayer($gameEvents, $this->getPlayers()[0]);
-        expect($guthaben->value)->toEqual(0);
+        expect($guthaben->value)->toEqual(800);
 
         $lebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[0]);
         $this->handle(EnterLebenshaltungskostenForPlayer::create($this->getPlayers()[0], $lebenshaltungskosten));
