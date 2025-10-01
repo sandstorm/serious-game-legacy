@@ -36,7 +36,6 @@ final class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
-            ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -93,7 +92,7 @@ final class AdminPanelProvider extends PanelProvider
             ->plugin(
                 FilamentDeveloperLoginsPlugin::make()
                     ->enabled((bool) $this->app->environment('local'))
-                    ->users(fn () => User::where('email', 'LIKE', '%@example.com')->pluck('email', 'email')->toArray())
+                    ->users(fn() => User::where('email', 'LIKE', '%@example.com')->pluck('email', 'email')->toArray())
             )
             ->plugin(
                 BreezyCore::make()
