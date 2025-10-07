@@ -4,6 +4,7 @@
     'moneySheet' => null,
     'gameEvents' => null,
     'playerId' => null,
+    'myself' => null,
 ])
 
 <div class="konjunkturphase-summary__money-sheet">
@@ -77,7 +78,7 @@
             <td class="konjunkturphase-summary-table__heading-column">Neuer Kontostand</td>
             <td class="konjunkturphase-summary-table__value-column">{!! $moneySheet->guthabenAfterKonjunkturphaseChange->formatWithIcon() !!}</td>
         </tr>
-        @if($moneySheet->guthabenAfterKonjunkturphaseChange->value < 0)
+        @if($this->playerIsMyself($playerId) && $moneySheet->guthabenAfterKonjunkturphaseChange->value < 0)
             <tr class="konjunkturphase-summary-tabe__total-row">
                 <td class="konjunkturphase-summary-table__icon-column">
                     <i class="icon-insolvent text--danger" aria-hidden="true"></i>
@@ -105,7 +106,7 @@
                     </td>
                 </tr>
             @endif
-            @if(PlayerState::getTotalValueOfAllInvestmentsForPlayer($gameEvents, $playerId)->value > 0)
+            @if(PlayerState::getTotalValueOfAllInvestmentsForPlayer($gameEvents, $myself)->value > 0)
                 <tr class="konjunkturphase-summary-tabe__total-row">
                     <td class="konjunkturphase-summary-table__icon-column"></td>
                     <td class="konjunkturphase-summary-table__heading-column">Du hast nicht genügend Geld auf dem Konto. Verkaufe deine Investitionen, um deine Kosten decken zu können.</td>
@@ -121,6 +122,26 @@
                             ])
                         >
                             Investitionen verkaufen
+                        </button>
+                    </td>
+                </tr>
+            @endif
+            @if(PlayerState::getTotalValueOfAllImmobilienForPlayer($gameEvents, $myself)->value > 0)
+                <tr class="konjunkturphase-summary-tabe__total-row">
+                    <td class="konjunkturphase-summary-table__icon-column"></td>
+                    <td class="konjunkturphase-summary-table__heading-column">Du hast nicht genügend Geld auf dem Konto. Verkaufe deine Immobilien, um deine Kosten decken zu können.</td>
+                    <td class="konjunkturphase-summary-table__value-column">
+                        <button
+                            wire:click="toggleSellImmobilienToAvoidInsolvenzModal()"
+                            type="button"
+                            @class([
+                                "button",
+                                "button--type-primary",
+                                "button--size-small",
+                                $this->getPlayerColorClass(),
+                            ])
+                        >
+                            Immobilien verkaufen
                         </button>
                     </td>
                 </tr>

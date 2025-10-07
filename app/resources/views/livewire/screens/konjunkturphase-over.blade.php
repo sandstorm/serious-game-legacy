@@ -7,8 +7,10 @@
             <x-konjunkturphase.konjunkturphase-sell-investments-to-avoid-insolvenz :game-events="$this->getGameEvents()" :player-id="$this->myself" />
         @elseif($this->isShowInformationForFiledInsolvenzModalVisible)
             <x-konjunkturphase.konjunkturphase-show-information-for-filed-insolvenz-modal />
+        @elseif($this->isSellImmobilienToAvoidInsolvenzModalVisible)
+            <x-konjunkturphase.konjunkturphase-sell-immobilien-to-avoid-insolvenz :game-events="$this->getGameEvents()" :player-id="$this->myself" />
         @else
-            <x-konjunkturphase.konjunkturphase-summary-modal :game-events="$this->getGameEvents()" :player-id="$this->myself" />
+            <x-konjunkturphase.konjunkturphase-summary-modal :game-events="$this->getGameEvents()" :myself="$this->myself" />
         @endif
     @elseif ($this->moneySheetIsVisible)
         <x-konjunkturphase.konjunkturphase-moneysheet-modal :player-id="$this->myself" :game-events="$this->getGameEvents()" :money-sheet="$this->getMoneysheetForPlayerId($this->myself)" />

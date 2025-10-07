@@ -40,7 +40,7 @@
                                     "button",
                                     "button--type-primary",
                                     "button--size-small",
-                                    "button--disabled" => !$this->canSellInvestmentsToAvoidInsolvenz($investment->investmentId)->canExecute,
+                                    "button--disabled" => !$this->canSellInvestmentToAvoidInsolvenz($investment->investmentId)->canExecute,
                                     $this->getPlayerColorClass(),
                                 ])
                             >
@@ -53,7 +53,7 @@
                             @if ($this->sellInvestmentOfType && $this->sellInvestmentOfType === $investment->investmentId)
                                 <x-gameboard.investitionen.investitionen-sell-form
                                     :game-events="$gameEvents"
-                                    action="sellInvestmentsToAvoidInsolvenz('{{ $this->sellInvestmentOfType }}')"
+                                    action="sellInvestmentToAvoidInsolvenz('{{ $this->sellInvestmentOfType }}')"
                                 />
                             @endif
                         </td>
@@ -63,7 +63,7 @@
             </tbody>
         </table>
     @else
-        <h4>Keine Aktien oder Immobilien vorhanden.</h4>
+        <h4>Keine Investitionen vorhanden.</h4>
     @endif
 
 
