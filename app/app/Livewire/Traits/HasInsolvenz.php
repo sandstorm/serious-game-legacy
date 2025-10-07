@@ -10,13 +10,17 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\CancelAllInsurancesToAvoidInsolvenzForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\FileInsolvenzForPlayerAktion;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellImmobilieToAvoidInsolvenzAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellInvestmentsToAvoidInsolvenzForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelAllInsurancesToAvoidInsolvenzForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\FileInsolvenzForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SellImmobilieForPlayerToAvoidInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsToAvoidInsolvenzForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasSoldImmobilieToAvoidInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasSoldInvestmentsToAvoidInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\ImmobilieId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 
@@ -24,6 +28,7 @@ trait HasInsolvenz
 {
     public bool $isSellInvestmentsToAvoidInsolvenzModalVisible = false;
     public bool $isShowInformationForFiledInsolvenzModalVisible = false;
+    public bool $isSellImmobilienToAvoidInsolvenzModalVisible = false;
     public SellInvestmentsForm $sellInvestmentsForm;
     public ?InvestmentId $sellInvestmentOfType = null;
 
@@ -54,6 +59,46 @@ trait HasInsolvenz
         );
     }
 
+    public function toggleSellImmobilienToAvoidInsolvenzModal(): void
+    {
+        $this->isSellImmobilienToAvoidInsolvenzModalVisible = !$this->isSellImmobilienToAvoidInsolvenzModalVisible;
+    }
+
+    public function canSellImmobilieToAvoidInsolvenz(ImmobilieId $immobilieId): AktionValidationResult
+    {
+        $aktion = new SellImmobilieToAvoidInsolvenzAktion(
+            immobilieId: $immobilieId,
+        );
+        return $aktion->validate($this->myself, $this->getGameEvents());
+    }
+
+    public function sellImmobilieToAvoidInsolvenz(string $immobilieId): void
+    {
+        $immobilieId = ImmobilieId::fromString($immobilieId);
+        $validationResult = self::canSellImmobilieToAvoidInsolvenz($immobilieId);
+        if (!$validationResult->canExecute) {
+            $this->showNotification(
+                "Immobilien verkaufen nicht möglich: " . $validationResult->reason,
+                NotificationTypeEnum::ERROR
+            );
+        }
+
+        $this->handleCommand(SellImmobilieForPlayerToAvoidInsolvenz::create(
+            $this->myself,
+            $immobilieId,
+        ));
+
+        $this->broadcastNotify();
+
+        /** @var PlayerHasSoldImmobilieToAvoidInsolvenz|null $event */
+        $event = $this->getGameEvents()->findLastOrNullWhere(
+            fn($e) => $e instanceof PlayerHasSoldImmobilieToAvoidInsolvenz && $e->getPlayerId()->equals($this->myself)
+        );
+        if ($event !== null) {
+            $this->showBanner('Immobilie wurden erfolgreich verkauft.', $event->getResourceChanges($this->myself));
+        }
+    }
+
     public function toggleSellInvestmentsToAvoidInsolvenzModal(): void
     {
         $this->isSellInvestmentsToAvoidInsolvenzModalVisible = !$this->isSellInvestmentsToAvoidInsolvenzModalVisible;
@@ -66,10 +111,10 @@ trait HasInsolvenz
 
         $investmentId = InvestmentId::from($investmentId);
 
-        $validationResult = self::canSellInvestmentsToAvoidInsolvenz($investmentId);
+        $validationResult = self::canSellInvestmentToAvoidInsolvenz($investmentId);
         if (!$validationResult->canExecute) {
             $this->showNotification(
-                "Aktien verkaufen nicht möglich: " . $validationResult->reason,
+                "Investitionen verkaufen nicht möglich: " . $validationResult->reason,
                 NotificationTypeEnum::ERROR
             );
             return;
@@ -85,7 +130,7 @@ trait HasInsolvenz
         );
     }
 
-    public function canSellInvestmentsToAvoidInsolvenz(InvestmentId $investmentId): AktionValidationResult
+    public function canSellInvestmentToAvoidInsolvenz(InvestmentId $investmentId): AktionValidationResult
     {
         $aktion = new SellInvestmentsToAvoidInsolvenzForPlayerAktion(
             $investmentId,
@@ -95,15 +140,15 @@ trait HasInsolvenz
         return $aktion->validate($this->myself, $this->getGameEvents());
     }
 
-    public function sellInvestmentsToAvoidInsolvenz(string $investmentId): void
+    public function sellInvestmentToAvoidInsolvenz(string $investmentId): void
     {
         $this->sellInvestmentsForm->validate();
         $investmentId = InvestmentId::from($investmentId);
 
-        $validationResult = self::canSellInvestmentsToAvoidInsolvenz($investmentId);
+        $validationResult = self::canSellInvestmentToAvoidInsolvenz($investmentId);
         if (!$validationResult->canExecute) {
             $this->showNotification(
-                "Aktien verkaufen nicht möglich: " . $validationResult->reason,
+                "Investitionen verkaufen nicht möglich: " . $validationResult->reason,
                 NotificationTypeEnum::ERROR
             );
             return;
@@ -120,7 +165,6 @@ trait HasInsolvenz
             $this->sellInvestmentsForm->amount
         ));
 
-        $this->closeInvestmentModals();
         $this->broadcastNotify();
 
         /** @var PlayerHasSoldInvestmentsToAvoidInsolvenz|null $event */
@@ -141,7 +185,7 @@ trait HasInsolvenz
     public function fileInsolvenzForPlayer(): void
     {
         $validationResult = self::canFileInsolvenzForPlayer();
-        if(!$validationResult->canExecute) {
+        if (!$validationResult->canExecute) {
             $this->showNotification(
                 $validationResult->reason,
                 NotificationTypeEnum::ERROR

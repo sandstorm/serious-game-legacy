@@ -27,6 +27,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasBoughtImmobilie;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasFiledForInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasFinishedLebensziel;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasSoldImmobilie;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasSoldImmobilieToAvoidInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasNotSoldInvestments;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\WeiterbildungWasStarted;
@@ -73,8 +74,7 @@ final readonly class EventNormalizer
          * @var array<string,class-string<GameEventInterface>>
          */
         private array $shortEventTypeToFullClassName,
-    ) {
-    }
+    ) {}
 
     /**
      * @internal never instantiate this object yourself
@@ -120,6 +120,7 @@ final readonly class EventNormalizer
             PlayerHasFiledForInsolvenz::class,
             PlayerHasFinishedLebensziel::class,
             PlayerHasSoldImmobilie::class,
+            PlayerHasSoldImmobilieToAvoidInsolvenz::class,
             PlayerHasStartedKonjunkturphase::class,
             PlayerWasMarkedAsReadyForKonjunkturphaseChange::class,
             PreGameStarted::class,
