@@ -24,7 +24,8 @@
         "laravel/tinker": "^2.9",
         "neos/eventstore": "^1.0",
         "ramsey/uuid": "^4.9",
-        "sandstorm/eventstore-laraveladapter": "@dev"
+        "sandstorm/eventstore-laraveladapter": "@dev",
+        "ext-curl": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.4",
