@@ -8,7 +8,7 @@
 
 @props([
     'gameEvents' => null,
-    'playerId' => null,
+    'myself' => null,
 ])
 
 @section('icon')
@@ -40,18 +40,18 @@
         </ul>
 
         <div class="tabs__upper-content">
-            {{$this->summaryActiveTabId}}
             <x-konjunkturphase.konjunkurphase-summary
                 :money-sheet="$this->getMoneysheetForPlayerId(PlayerId::fromString($this->summaryActiveTabId))"
                 :game-events="$gameEvents"
-                :player-id="$playerId"
+                :player-id="PlayerId::fromString($this->summaryActiveTabId)"
+                :myself="$myself"
             />
         </div>
     </div>
 @endsection
 
 @section('footer')
-    @if(PlayerState::isPlayerInsolvent($gameEvents, $playerId))
+    @if(PlayerState::isPlayerInsolvent($gameEvents, $myself))
         <button
             wire:click="toggleShowInformationForFiledInsolvenzModal()"
             type="button"
@@ -77,7 +77,7 @@
         >
             Insolvenz anmelden
         </button>
-    @elseif(KonjunkturphaseState::isPlayerReadyForKonjunkturphaseChange($gameEvents, $playerId) === false)
+    @elseif(KonjunkturphaseState::isPlayerReadyForKonjunkturphaseChange($gameEvents, $myself) === false)
         <button
             wire:click="markPlayerAsReady()"
             type="button"

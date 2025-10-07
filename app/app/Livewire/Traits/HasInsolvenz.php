@@ -14,8 +14,10 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellImmobilieToAvoidInsolvenzAk
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\SellInvestmentsToAvoidInsolvenzForPlayerAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelAllInsurancesToAvoidInsolvenzForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\FileInsolvenzForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SellImmobilieForPlayerToAvoidInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsToAvoidInsolvenzForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasSoldImmobilieToAvoidInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasSoldInvestmentsToAvoidInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\ImmobilieId;
@@ -26,6 +28,7 @@ trait HasInsolvenz
 {
     public bool $isSellInvestmentsToAvoidInsolvenzModalVisible = false;
     public bool $isShowInformationForFiledInsolvenzModalVisible = false;
+    public bool $isSellImmobilienToAvoidInsolvenzModalVisible = false;
     public SellInvestmentsForm $sellInvestmentsForm;
     public ?InvestmentId $sellInvestmentOfType = null;
 
@@ -58,12 +61,7 @@ trait HasInsolvenz
 
     public function toggleSellImmobilienToAvoidInsolvenzModal(): void
     {
-        /** TODO implement */
-    }
-
-    public function setFormToSellImmobilienToAvoidInsolvenz(): void
-    {
-        /** TODO implement */
+        $this->isSellImmobilienToAvoidInsolvenzModalVisible = !$this->isSellImmobilienToAvoidInsolvenzModalVisible;
     }
 
     public function canSellImmobilieToAvoidInsolvenz(ImmobilieId $immobilieId): AktionValidationResult
@@ -74,20 +72,30 @@ trait HasInsolvenz
         return $aktion->validate($this->myself, $this->getGameEvents());
     }
 
-    public function sellImmobilieToAvoidInsolvenz(ImmobilieId $immobilieId): void
+    public function sellImmobilieToAvoidInsolvenz(string $immobilieId): void
     {
-        $aktion = new SellImmobilieToAvoidInsolvenzAktion(
-            immobilieId: $immobilieId,
-        );
-
-        $validationResult = $aktion->validate($this->myself, $this->getGameEvents());
-
+        $immobilieId = ImmobilieId::fromString($immobilieId);
+        $validationResult = self::canSellImmobilieToAvoidInsolvenz($immobilieId);
         if (!$validationResult->canExecute) {
             $this->showNotification(
                 "Immobilien verkaufen nicht möglich: " . $validationResult->reason,
                 NotificationTypeEnum::ERROR
             );
-            return;
+        }
+
+        $this->handleCommand(SellImmobilieForPlayerToAvoidInsolvenz::create(
+            $this->myself,
+            $immobilieId,
+        ));
+
+        $this->broadcastNotify();
+
+        /** @var PlayerHasSoldImmobilieToAvoidInsolvenz|null $event */
+        $event = $this->getGameEvents()->findLastOrNullWhere(
+            fn($e) => $e instanceof PlayerHasSoldImmobilieToAvoidInsolvenz && $e->getPlayerId()->equals($this->myself)
+        );
+        if ($event !== null) {
+            $this->showBanner('Immobilie wurden erfolgreich verkauft.', $event->getResourceChanges($this->myself));
         }
     }
 
@@ -103,7 +111,7 @@ trait HasInsolvenz
 
         $investmentId = InvestmentId::from($investmentId);
 
-        $validationResult = self::canSellInvestmentsToAvoidInsolvenz($investmentId);
+        $validationResult = self::canSellInvestmentToAvoidInsolvenz($investmentId);
         if (!$validationResult->canExecute) {
             $this->showNotification(
                 "Investitionen verkaufen nicht möglich: " . $validationResult->reason,
@@ -122,7 +130,7 @@ trait HasInsolvenz
         );
     }
 
-    public function canSellInvestmentsToAvoidInsolvenz(InvestmentId $investmentId): AktionValidationResult
+    public function canSellInvestmentToAvoidInsolvenz(InvestmentId $investmentId): AktionValidationResult
     {
         $aktion = new SellInvestmentsToAvoidInsolvenzForPlayerAktion(
             $investmentId,
@@ -132,12 +140,12 @@ trait HasInsolvenz
         return $aktion->validate($this->myself, $this->getGameEvents());
     }
 
-    public function sellInvestmentsToAvoidInsolvenz(string $investmentId): void
+    public function sellInvestmentToAvoidInsolvenz(string $investmentId): void
     {
         $this->sellInvestmentsForm->validate();
         $investmentId = InvestmentId::from($investmentId);
 
-        $validationResult = self::canSellInvestmentsToAvoidInsolvenz($investmentId);
+        $validationResult = self::canSellInvestmentToAvoidInsolvenz($investmentId);
         if (!$validationResult->canExecute) {
             $this->showNotification(
                 "Investitionen verkaufen nicht möglich: " . $validationResult->reason,
@@ -157,7 +165,6 @@ trait HasInsolvenz
             $this->sellInvestmentsForm->amount
         ));
 
-        $this->closeInvestmentModals();
         $this->broadcastNotify();
 
         /** @var PlayerHasSoldInvestmentsToAvoidInsolvenz|null $event */
