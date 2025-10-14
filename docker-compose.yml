@@ -43,6 +43,11 @@ services:
       IGNITION_EDITOR: idea
       # IGNITION_OPEN_AI_KEY: TRY OUT for openai suggestions
 
+      # performance profiling (using open source vector agent)
+      PROFILING_VECTOR_URL: http://vector:8234
+      PROFILING_VECTOR_USER: ${VECTOR_AGENT_USERNAME}
+      PROFILING_VECTOR_PASSWORD: ${VECTOR_AGENT_PASSWORD}
+
     volumes:
       - ./app/:/app/:cached
       - laravel-storage:/app/storage
