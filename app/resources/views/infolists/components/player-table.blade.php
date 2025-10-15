@@ -1,20 +1,20 @@
 <x-dynamic-component :component="$getEntryWrapperView()" :entry="$entry">
-    <div>
-        <table class="table-auto">
+    @if ($getState() !== null)
+        <table class="table-auto border-collapse border border-slate-400 w-full">
             <thead>
                 <tr>
-                    <th>SoSciSurvey ID</th>
-                    <th>Password</th>
+                    <th class="border border-slate-300 p-1 text-left font-semibold">SoSciSurvey ID</th>
+                    <th class="border border-slate-300 p-1 text-left font-semibold">Password</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($getState() as $player)
                     <tr>
-                        <td>{{ $player->soscisurvey_id }}</td>
-                        <td>{{ $player->password }}</td>
+                        <td class="border border-slate-300 p-1">{{ $player->soscisurvey_id }}</td>
+                        <td class="border border-slate-300 p-1">{{ $player->password }}</td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
-    </div>
+    @endif
 </x-dynamic-component>

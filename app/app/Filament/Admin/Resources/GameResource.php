@@ -1,20 +1,19 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Resources\PlayerResource\Pages;
-use App\Models\Player;
+use App\Filament\Admin\Resources\GameResource\Pages;
+use App\Models\Game;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
-class PlayerResource extends Resource
+class GameResource extends Resource
 {
-    protected static ?string $model = Player::class;
+    protected static ?string $model = Game::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -22,11 +21,6 @@ class PlayerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('soscisurvey_id')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('password')
-                    ->maxLength(255)
-                    ->required(),
                 Forms\Components\Select::make('course_id')
                     ->relationship('course', 'name')
                     ->preload(),
@@ -40,16 +34,7 @@ class PlayerResource extends Resource
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
                     ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('soscisurvey_id')
-                    ->label('SoSciSurvey ID')
-                    ->searchable()
-                    ->toggleable(),
-                Tables\Columns\TextColumn::make('course.name')
-                    ->label('Kurs')
-                    ->searchable()
-                    ->toggleable(),
-
+                    ->toggleable(isToggledHiddenByDefault: false),
             ])
             ->filters([
                 //
@@ -74,9 +59,9 @@ class PlayerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPlayers::route('/'),
-            'create' => Pages\CreatePlayer::route('/create'),
-            'edit' => Pages\EditPlayer::route('/{record}/edit'),
+            'index' => Pages\ListGames::route('/'),
+            'create' => Pages\CreateGame::route('/create'),
+            'edit' => Pages\EditGame::route('/{record}/edit'),
         ];
     }
 }

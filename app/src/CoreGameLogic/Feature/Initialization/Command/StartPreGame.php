@@ -22,6 +22,12 @@ readonly class StartPreGame implements CommandInterface
         assert($this->numberOfPlayers > 0, 'Number of players must be greater than 0');
     }
 
+    public function withFixedPlayerIds(PlayerId ...$playerIds): self
+    {
+        assert(count($playerIds) === $this->numberOfPlayers, 'incorrect number of PlayerIds given');
+        return new self($this->numberOfPlayers, $playerIds);
+    }
+
     public function withFixedPlayerIdsForTesting(PlayerId ...$playerIds): self
     {
         assert(count($playerIds) === $this->numberOfPlayers, 'incorrect number of PlayerIds given');

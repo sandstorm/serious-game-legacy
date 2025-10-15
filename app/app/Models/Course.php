@@ -36,4 +36,12 @@ class Course extends Model
     {
         return $this->hasMany(Player::class);
     }
+
+    /**
+     * @return HasMany<Game, $this>
+     */
+    public function games(): HasMany
+    {
+        return $this->hasMany(Game::class);
+    }
 }
