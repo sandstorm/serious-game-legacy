@@ -16,38 +16,13 @@
             <p class="font-size--xl">
                 {{ $konjunkturphase->description }}
             </p>
-        @elseif ($currentPage === 2)
-            <h2><strong>{{$konjunkturphase->type->value}}</strong></h2>
-            <p class="font-size--xl">
-                {{ $konjunkturphase->additionalEvents }}
-            </p>
-        @elseif ($currentPage === 3)
-            <h2><strong>{{$konjunkturphase->type->value}}</strong> - Auswirkung Zusammenfassung</h2>
-            <p class="font-size--xl">
-                <ul>
-                    @foreach ($konjunkturphase->auswirkungen as $auswirkung)
-                        <li>
-                            <strong>{{ $auswirkung->scope }}</strong>: {{ $auswirkung->value }}
-                        </li>
-                    @endforeach
-                </ul>
-            </p>
         @endif
     </div>
 
     <footer class="konjunkturphase-start__actions">
-        @if ($currentPage > 0)
-            <button wire:click="prevKonjunkturphaseStartScreenPage()"
-                    type="button"
-                    class="button button--type-borderless">
-                Zurück
-            </button>
-            <span>{{$currentPage}}/3</span>
-        @else
-            <div></div>
-        @endif
+        <div></div>
 
-        @if ($currentPage === 3)
+        @if ($currentPage >= 1)
             <button wire:click="startKonjunkturphaseForPlayer()"
                     type="button"
                     class="button button--type-borderless">
