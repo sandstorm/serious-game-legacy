@@ -5,20 +5,16 @@ declare(strict_types=1);
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\CourseResource\Pages;
-use App\Filament\Admin\Resources\CourseResource\RelationManagers;
+use App\Infolists\Components\GamesWithPlayers;
 use App\Infolists\Components\PlayerTable;
 use App\Models\Course;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CourseResource extends Resource
 {
@@ -80,8 +76,9 @@ class CourseResource extends Resource
             ->schema([
                 TextEntry::make('name'),
                 TextEntry::make('teacher.name')->label('Lehrer'),
-                PlayerTable::make('players')->label('Spieler in diesem Kurs')
-            ]);
+                PlayerTable::make('players')->label('Spieler in diesem Kurs'),
+                GamesWithPlayers::make('games')->label('Spiele')
+            ])->columns(2);
     }
 
     public static function getRelations(): array
