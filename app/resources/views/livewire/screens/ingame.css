@@ -8,6 +8,7 @@
         "header header"
         "content aside";
     grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+    height: 100%;
 }
 
 .game__header {
