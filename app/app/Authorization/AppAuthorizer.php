@@ -62,10 +62,8 @@ final class AppAuthorizer
     ];
 
     private const OBJECT_GROUPS = [
-        User::class => User::class,
+        User::class => User::class
     ];
-
-    public const OBJECT_GROUP_STAMMDATEN = 'STAMMDATEN';
 
     public function __construct(
         private readonly Connection $connection,

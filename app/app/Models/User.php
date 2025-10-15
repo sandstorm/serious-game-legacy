@@ -21,6 +21,14 @@ class User extends \Illuminate\Foundation\Auth\User implements FilamentUser
     use Notifiable;
     use TwoFactorAuthenticatable;
 
+    protected static function booted():void
+    {
+        // add global scope to only get users with role_player = false
+        static::addGlobalScope('role_player', function ($query) {
+            $query->where('role_player', false);
+        });
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -30,6 +38,7 @@ class User extends \Illuminate\Foundation\Auth\User implements FilamentUser
         'name',
         'email',
         'role_superadmin',
+        'password'
     ];
 
     /**
