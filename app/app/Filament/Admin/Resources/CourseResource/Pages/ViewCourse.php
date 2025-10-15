@@ -21,6 +21,8 @@ class ViewCourse extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('Spieler:innen importieren')
+                ->model('todo'),
             Action::make('Spiele erstellen')
                 ->action(function (ForCoreGameLogic $coreGameLogic) {
                     /** @var Course $course */
@@ -49,7 +51,7 @@ class ViewCourse extends ViewRecord
                         $coreGameLogic->handle(GameId::fromString($game->id->toString()), StartPreGame::create(
                             numberOfPlayers: count($game->players)
                         )->withFixedPlayerIds(
-                            ...array_map(fn($p) => PlayerId::fromString($p->soscisurvey_id), $game->players->all())
+                            ...array_map(fn($user) => PlayerId::fromString($user->email), $game->players->all())
                         ));
                     }
                     $this->redirect($this::getResource()::getUrl('view', ['record' => $course]));

@@ -8,6 +8,7 @@ use App\Filament\Admin\Resources\CourseResource\Pages;
 use App\Infolists\Components\GamesWithPlayers;
 use App\Infolists\Components\PlayerTable;
 use App\Models\Course;
+use App\Models\Player;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\TextEntry;
@@ -32,6 +33,13 @@ class CourseResource extends Resource
                 Forms\Components\Select::make('teacher_id')
                     ->relationship('teacher', 'name')
                     ->preload(),
+                Forms\Components\Select::make('players')
+                    ->label('Spieler:innen')
+                    // email = ScoSciSurvey-ID
+                    ->relationship('players', 'email')
+                    ->multiple()
+                    ->preload()
+                    ->searchable(),
             ]);
     }
 
@@ -52,7 +60,7 @@ class CourseResource extends Resource
                     ->searchable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('players_count')
-                    ->label('Spieler')
+                    ->label('Spieler:innen')
                     ->counts('players')
                     ->toggleable(),
             ])
@@ -76,7 +84,7 @@ class CourseResource extends Resource
             ->schema([
                 TextEntry::make('name'),
                 TextEntry::make('teacher.name')->label('Lehrer'),
-                PlayerTable::make('players')->label('Spieler in diesem Kurs'),
+                PlayerTable::make('players')->label('Spieler:innen in diesem Kurs'),
                 GamesWithPlayers::make('games')->label('Spiele')
             ])->columns(2);
     }

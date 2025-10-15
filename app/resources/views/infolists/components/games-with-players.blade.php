@@ -11,14 +11,14 @@
             @foreach ($getState() as $game)
                 <tr>
                     <td class="border border-slate-300 p-1">
-                        <a href="{{ route('game-play.player-links', $game->id) }}?numberOfPlayers=2" class="text-blue-600 underline" target="_blank">{{ $game->id }}</a>
+                        <a href="{{ route('game-play.player-links', $game->id) }}?numberOfPlayers={{count($game->players)}}" class="text-blue-600 underline" target="_blank">{{ $game->id }}</a>
                     </td>
                     <td class="border border-slate-300 p-0">
                         <table class="table-auto border-collapse w-full">
                             @foreach ($game->players as $player)
                                 <tr>
                                     <td class="border border-slate-300 p-1">
-                                        {{ $player->soscisurvey_id }}
+                                        {{ $player->email }}
                                     </td>
                                 </tr>
                             @endforeach

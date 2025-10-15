@@ -40,12 +40,10 @@ class Game extends Model
     }
 
     /**
-     * The categories that belong to the post.
-     *
      * @return BelongsToMany<Player, $this>
      */
     public function players(): BelongsToMany
     {
-        return $this->belongsToMany(Player::class,  'game_player');
+        return $this->belongsToMany(Player::class,  'game_user', 'game_id', 'user_id');
     }
 }

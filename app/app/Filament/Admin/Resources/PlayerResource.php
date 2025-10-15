@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources;
@@ -22,14 +21,14 @@ class PlayerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('soscisurvey_id')
+                // we use email of the user model for the representation of the SoSciSurvey ID
+                Forms\Components\TextInput::make('email')
+                    ->label('SoSciSurvey ID')
+                    ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('password')
-                    ->maxLength(255)
-                    ->required(),
-                Forms\Components\Select::make('course_id')
-                    ->relationship('course', 'name')
-                    ->preload(),
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -41,15 +40,13 @@ class PlayerResource extends Resource
                     ->label('ID')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('soscisurvey_id')
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('email')
                     ->label('SoSciSurvey ID')
                     ->searchable()
                     ->toggleable(),
-                Tables\Columns\TextColumn::make('course.name')
-                    ->label('Kurs')
-                    ->searchable()
-                    ->toggleable(),
-
             ])
             ->filters([
                 //
