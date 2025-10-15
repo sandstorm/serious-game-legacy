@@ -34,7 +34,7 @@ class Player extends Model
      *
      * @return BelongsToMany<Game, $this>
      */
-    public function categories(): BelongsToMany
+    public function games(): BelongsToMany
     {
         return $this->belongsToMany(Game::class,  'game_player');
     }
