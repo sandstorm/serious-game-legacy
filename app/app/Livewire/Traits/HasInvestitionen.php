@@ -7,6 +7,7 @@ namespace App\Livewire\Traits;
 use App\Livewire\Forms\BuyInvestmentsForm;
 use App\Livewire\Forms\SellInvestmentsForm;
 use App\Livewire\ValueObject\NotificationTypeEnum;
+use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
@@ -61,18 +62,25 @@ trait HasInvestitionen
         }
 
         $this->sellInvestmentsModalIsVisible = false;
-        if (GamePhaseState::anotherPlayerHasInvestedThisTurn($this->getGameEvents(), $this->myself) &&
-            !PlayerState::hasPlayerInteractedWithInvestmentsModalThisTurn($this->getGameEvents(), $this->myself)) {
+        if (
+            GamePhaseState::anotherPlayerHasInvestedThisTurn($this->getGameEvents(), $this->myself) &&
+            !PlayerState::hasPlayerInteractedWithInvestmentsModalThisTurn($this->getGameEvents(), $this->myself)
+        ) {
 
-            /** @var PlayerHasBoughtInvestment $investmentsBoughtEvent */
-            $investmentsBoughtEvent = $this->getGameEvents()->findLast(PlayerHasBoughtInvestment::class);
-            $this->sellInvestmentsForm->playerName = PlayerState::getNameForPlayer($this->getGameEvents(), $investmentsBoughtEvent->playerId);
-            $this->sellInvestmentsForm->investmentId = $investmentsBoughtEvent->getInvestmentId();
-            $this->sellInvestmentsForm->sharePrice = InvestmentPriceState::getCurrentInvestmentPrice($this->getGameEvents(), $investmentsBoughtEvent->getInvestmentId())->value;
+            /** @var PlayerHasBoughtInvestment|PlayerHasSoldInvestment $investmentEvent */
+            $investmentEvent = $this->getGameEvents()->findLastOrNullWhere(
+                fn(GameEventInterface $event) => $event instanceof PlayerHasBoughtInvestment || $event instanceof PlayerHasSoldInvestment
+            );
+            if ($investmentEvent === null) {
+                return; // Should not happen, ignore if it does.
+            }
+            $this->sellInvestmentsForm->playerName = PlayerState::getNameForPlayer($this->getGameEvents(), $investmentEvent->playerId);
+            $this->sellInvestmentsForm->investmentId = $investmentEvent->getInvestmentId();
+            $this->sellInvestmentsForm->sharePrice = InvestmentPriceState::getCurrentInvestmentPrice($this->getGameEvents(), $investmentEvent->getInvestmentId())->value;
             $this->sellInvestmentsForm->amountOwned = PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer(
                 $this->getGameEvents(),
                 $this->myself,
-                $investmentsBoughtEvent->getInvestmentId()
+                $investmentEvent->getInvestmentId()
             );
 
             $this->sellInvestmentsModalIsVisible = true;
@@ -360,7 +368,8 @@ trait HasInvestitionen
 
         $this->toggleImmobilienModal();
         $this->showBanner(
-            'Immoblie wurde erfolgreich gekauft.', $event->getResourceChanges($this->myself),
+            'Immoblie wurde erfolgreich gekauft.',
+            $event->getResourceChanges($this->myself),
         );
         $this->broadcastNotify();
     }
