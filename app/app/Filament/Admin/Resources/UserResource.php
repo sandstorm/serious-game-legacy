@@ -36,6 +36,9 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('password')
+                    ->required()
+                    ->maxLength(255),
                 Forms\Components\DateTimePicker::make('email_verified_at')
                     ->disabled(),
                 Forms\Components\Toggle::make('role_superadmin')
@@ -75,8 +78,7 @@ class UserResource extends Resource
                     ->toggleable(),
             ])
             ->filters([
-                /*AdvancedFilter::make()
-                    ->includeColumns(),*/
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

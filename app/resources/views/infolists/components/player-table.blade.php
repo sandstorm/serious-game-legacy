@@ -4,14 +4,12 @@
             <thead>
                 <tr>
                     <th class="border border-slate-300 p-1 text-left font-semibold">SoSciSurvey ID</th>
-                    <th class="border border-slate-300 p-1 text-left font-semibold">Password</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($getState() as $player)
                     <tr>
-                        <td class="border border-slate-300 p-1">{{ $player->soscisurvey_id }}</td>
-                        <td class="border border-slate-300 p-1">{{ $player->password }}</td>
+                        <td class="border border-slate-300 p-1">{{ $player->email }}</td>
                     </tr>
                 @endforeach
             </tbody>
