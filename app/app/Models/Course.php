@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Course extends Model
 {
@@ -26,5 +27,13 @@ class Course extends Model
     public function teacher(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return HasMany<Player, $this>
+     */
+    public function players(): HasMany
+    {
+        return $this->hasMany(Player::class);
     }
 }

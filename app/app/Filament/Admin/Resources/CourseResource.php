@@ -6,9 +6,11 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\CourseResource\Pages;
 use App\Filament\Admin\Resources\CourseResource\RelationManagers;
+use App\Infolists\Components\PlayerTable;
 use App\Models\Course;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
@@ -50,8 +52,12 @@ class CourseResource extends Resource
                     ->searchable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('teacher.name')
-                    ->label('Teacher')
+                    ->label('Lehrer')
                     ->searchable()
+                    ->toggleable(),
+                Tables\Columns\TextColumn::make('players_count')
+                    ->label('Spieler')
+                    ->counts('players')
                     ->toggleable(),
             ])
             ->filters([
@@ -60,8 +66,6 @@ class CourseResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
-                //Action::make('show')
-                //->url(fn(Course $record): string => CourseResource::getUrl('show', ['record' => $record]))
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -74,7 +78,9 @@ class CourseResource extends Resource
     {
         return $infolist
             ->schema([
-                TextEntry::make('name')
+                TextEntry::make('name'),
+                TextEntry::make('teacher.name')->label('Lehrer'),
+                PlayerTable::make('players')->label('Spieler in diesem Kurs')
             ]);
     }
 
@@ -90,7 +96,6 @@ class CourseResource extends Resource
         return [
             'index' => Pages\ListCourses::route('/'),
             'create' => Pages\CreateCourse::route('/create'),
-            //'show' => Pages\ShowCourse::route('/{record}/show'),
             'view' => Pages\ViewCourse::route('/{record}'),
             'edit' => Pages\EditCourse::route('/{record}/edit'),
         ];

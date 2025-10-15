@@ -1,9 +1,9 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources\CourseResource\Pages;
 
 use App\Filament\Admin\Resources\CourseResource;
-use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\ViewRecord;
 
