@@ -6,6 +6,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Modifier;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
+use Domain\Definitions\Card\ValueObject\ModifierId;
 use Traversable;
 
 /**
@@ -17,9 +18,7 @@ readonly class ModifierCollection implements \IteratorAggregate
     /**
      * @param Modifier[] $modifiers
      */
-    public function __construct(private array $modifiers)
-    {
-    }
+    public function __construct(private array $modifiers) {}
 
     /**
      * @return Modifier[]
@@ -82,6 +81,6 @@ readonly class ModifierCollection implements \IteratorAggregate
 
     public function getActiveModifiersForHook(HookEnum $hookEnum, GameEvents $gameEvents): self
     {
-        return $this->filter(fn (Modifier $modifier) => $modifier->canModify($hookEnum) && $modifier->isActive($gameEvents));
+        return $this->filter(fn(Modifier $modifier) => $modifier->canModify($hookEnum) && $modifier->isActive($gameEvents));
     }
 }

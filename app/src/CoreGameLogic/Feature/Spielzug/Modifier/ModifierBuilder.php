@@ -34,7 +34,8 @@ readonly final class ModifierBuilder
                 new GehaltModifier(
                     playerTurn: $playerTurn,
                     description: $description,
-                    percentage: $modifierParameters->modifyGehaltPercent ?? throw new \RuntimeException("missing parameter"),// TODO better error message
+                    year: $year,
+                    percentage: $modifierParameters->modifyGehaltPercent ?? throw new \RuntimeException("missing parameter"), // TODO better error message
                 ),
             ],
             ModifierId::AUSSETZEN => [
@@ -86,6 +87,7 @@ readonly final class ModifierBuilder
                 new BildungUndKarriereCostModifier(
                     playerTurn: $playerTurn,
                     description: $description,
+                    year: $year,
                     percentage: $modifierParameters->modifyKostenBildungUndKarrierePercent ?? throw new \RuntimeException("missing parameter"),
                 ),
             ],
@@ -93,6 +95,7 @@ readonly final class ModifierBuilder
                 new SozialesUndFreizeitCostModifier(
                     playerTurn: $playerTurn,
                     description: $description,
+                    year: $year,
                     percentage: $modifierParameters->modifyKostenSozialesUndFreizeitPercent ?? throw new \RuntimeException("missing parameter"),
                 ),
             ],
@@ -100,6 +103,7 @@ readonly final class ModifierBuilder
                 new LebenshaltungskostenKonjunkturphaseModifier(
                     playerTurn: $playerTurn,
                     description: $description,
+                    year: $year,
                     percentage: $modifierParameters->modifyLebenshaltungskostenMultiplier ?? throw new \RuntimeException("missing parameter"),
                 ),
             ],
@@ -114,6 +118,7 @@ readonly final class ModifierBuilder
                 new IncreasedChanceForRezessionModifier(
                     playerTurn: $playerTurn,
                     description: $description,
+                    year: $year,
                 ),
             ],
             ModifierId::FOR_TESTING_ONLY_NEVER_TRIGGER_EREIGNIS => [
@@ -133,5 +138,4 @@ readonly final class ModifierBuilder
             default => [],
         };
     }
-
 }

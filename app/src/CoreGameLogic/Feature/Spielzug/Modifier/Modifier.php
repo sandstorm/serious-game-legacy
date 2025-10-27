@@ -17,8 +17,7 @@ readonly abstract class Modifier
         public ModifierId $id,
         public PlayerTurn $startingTurn,
         public string     $description,
-    ) {
-    }
+    ) {}
 
     public function __toString(): string
     {
@@ -51,5 +50,4 @@ readonly abstract class Modifier
      * @return T
      */
     public abstract function modify(mixed $value): mixed;
-
 }

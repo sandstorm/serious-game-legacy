@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Modifier;
 
+use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
 use Domain\Definitions\Card\ValueObject\ModifierId;
-use Domain\Definitions\Configuration\Configuration;
+use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 
 /**
  * A Konjunkturphase can increase/decrease the Lebenshaltungskosten. This change will be applied multiplicative
@@ -27,7 +29,8 @@ readonly final class LebenshaltungskostenKonjunkturphaseModifier extends Modifie
     public function __construct(
         public PlayerTurn $playerTurn,
         string $description,
-        public float $percentage,
+        protected Year $year,
+        protected float $percentage,
     ) {
         parent::__construct(ModifierId::LEBENSHALTUNGSKOSTEN_KONJUNKTURPHASE_MULTIPLIER, $playerTurn, $description);
     }
@@ -35,6 +38,15 @@ readonly final class LebenshaltungskostenKonjunkturphaseModifier extends Modifie
     public function __toString(): string
     {
         return '[ModifierId: ' . $this->id->value . ']';
+    }
+
+    public function isActive(GameEvents $gameEvents): bool
+    {
+        $konjunkturphaseChangesAfterSperre = $gameEvents->findLastOrNullWhere(
+            fn($event) => $event instanceof KonjunkturphaseWasChanged && $event->year->equals(new Year($this->year->value + 1))
+        );
+
+        return $konjunkturphaseChangesAfterSperre === null;
     }
 
     public function canModify(HookEnum $hook): bool
@@ -51,7 +63,6 @@ readonly final class LebenshaltungskostenKonjunkturphaseModifier extends Modifie
     {
         assert(is_float($value));
 
-        return $value * $this->percentage/100;
+        return $value * $this->percentage / 100;
     }
-
 }

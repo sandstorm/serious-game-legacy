@@ -37,7 +37,7 @@ readonly final class KreditsperreModifier extends Modifier
     public function isActive(GameEvents $gameEvents): bool
     {
         $konjunkturphaseChangesAfterSperre = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof KonjunkturphaseWasChanged && $event->year->equals($this->year)
+            fn($event) => $event instanceof KonjunkturphaseWasChanged && $event->year->equals(new Year($this->year->value + 1))
         );
 
         return $konjunkturphaseChangesAfterSperre === null;
@@ -52,5 +52,4 @@ readonly final class KreditsperreModifier extends Modifier
         assert(is_bool($value));
         return true;
     }
-
 }
