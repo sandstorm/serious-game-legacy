@@ -26,6 +26,7 @@
     padding: var(--spacing-100);
     min-height: calc(100dvh - var(--header-height));
     overflow: hidden;
+    height: 100%;
 
     background-image: radial-gradient(75% 75% at 50% 50%, #ECEEF6 0%, #ECF5F4 100%);
 }
