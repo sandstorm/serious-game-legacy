@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Modifier;
 
+use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\ModifierId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
+use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 
 /**
  * A Konjunkturphase may modify the (money-) cost of Cards in the "Soziales und Freizeit" pile. The base price is
@@ -21,7 +24,8 @@ readonly final class SozialesUndFreizeitCostModifier extends Modifier
     public function __construct(
         public PlayerTurn $playerTurn,
         string $description,
-        public int $percentage,
+        protected Year $year,
+        protected int $percentage,
     ) {
         parent::__construct(ModifierId::SOZIALES_UND_FREIZEIT_COST, $playerTurn, $description);
     }
@@ -29,6 +33,15 @@ readonly final class SozialesUndFreizeitCostModifier extends Modifier
     public function __toString(): string
     {
         return '[ModifierId: ' . $this->id->value . ']';
+    }
+
+    public function isActive(GameEvents $gameEvents): bool
+    {
+        $konjunkturphaseChangesAfterSperre = $gameEvents->findLastOrNullWhere(
+            fn($event) => $event instanceof KonjunkturphaseWasChanged && $event->year->equals(new Year($this->year->value + 1))
+        );
+
+        return $konjunkturphaseChangesAfterSperre === null;
     }
 
     public function canModify(HookEnum $hook): bool
@@ -42,5 +55,4 @@ readonly final class SozialesUndFreizeitCostModifier extends Modifier
 
         return $value->setGuthabenChange(new MoneyAmount($value->guthabenChange->value * $this->percentage / 100));
     }
-
 }

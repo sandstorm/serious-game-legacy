@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\CoreGameLogic\Feature\Player\State;
@@ -20,14 +21,29 @@ use Domain\Definitions\Card\Dto\AnswerOption;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
+use Domain\Definitions\Card\Dto\ModifierParameters;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\ValueObject\AnswerId;
 use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
+use Domain\Definitions\Card\ValueObject\ModifierId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
+use Domain\Definitions\Konjunkturphase\Dto\ConditionalResourceChange;
+use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
 use Domain\Definitions\Configuration\Configuration;
+use Domain\Definitions\Konjunkturphase\Dto\ZeitslotsPerPlayer;
+use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
+use Domain\Definitions\Konjunkturphase\Dto\Zeitslots;
+use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
+use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
+use Domain\Definitions\Konjunkturphase\Dto\Zeitsteine;
+use Domain\Definitions\Konjunkturphase\Dto\ZeitsteinePerPlayer;
+use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
+use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
+use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use RuntimeException;
 use Tests\TestCase;
 
@@ -78,8 +94,10 @@ describe('getJobForPlayer', function () {
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getJobForPlayer($stream, $this->players[1]))->toBeNull()
-            ->and(PlayerState::getJobForPlayer($stream,
-                $this->players[0]))->toBe(CardFinder::getInstance()->getCardById(CardId::fromString('testJob')));
+            ->and(PlayerState::getJobForPlayer(
+                $stream,
+                $this->players[0]
+            ))->toBe(CardFinder::getInstance()->getCardById(CardId::fromString('testJob')));
     });
 
     it('returns null if Player accepted a job and then quit', function () {
@@ -168,10 +186,14 @@ describe('getCurrentLebenszielphaseDefinitionForPlayer', function () {
     it('returns 1 when nothing happend', function () {
         /** @var TestCase $this */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getCurrentLebenszielphaseIdForPlayer($stream,
-            $this->players[0]))->toEqual(LebenszielPhaseId::PHASE_1)
-            ->and(PlayerState::getCurrentLebenszielphaseIdForPlayer($stream,
-                $this->players[1]))->toEqual(LebenszielPhaseId::PHASE_1);
+        expect(PlayerState::getCurrentLebenszielphaseIdForPlayer(
+            $stream,
+            $this->players[0]
+        ))->toEqual(LebenszielPhaseId::PHASE_1)
+            ->and(PlayerState::getCurrentLebenszielphaseIdForPlayer(
+                $stream,
+                $this->players[1]
+            ))->toEqual(LebenszielPhaseId::PHASE_1);
     });
 
     it('returns 2 for Player 1 after switching the phase and 1 for Player 2', function () {
@@ -208,15 +230,19 @@ describe('getCurrentLebenszielphaseDefinitionForPlayer', function () {
 
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[1]));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
-        $this->coreGameLogic->handle($this->gameId,
-            ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE)
+        );
         $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create(playerId: $this->players[0]));
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
 
         expect(PlayerState::getCurrentLebenszielphaseIdForPlayer($stream, $this->players[0]))->toEqual(LebenszielPhaseId::PHASE_2)
-            ->and(PlayerState::getCurrentLebenszielphaseIdForPlayer($stream,
-                $this->players[1]))->toEqual(LebenszielPhaseId::PHASE_1);
+            ->and(PlayerState::getCurrentLebenszielphaseIdForPlayer(
+                $stream,
+                $this->players[1]
+            ))->toEqual(LebenszielPhaseId::PHASE_1);
     });
 });
 
@@ -224,10 +250,14 @@ describe('getZeitsteineForPlayer', function () {
     it('returns the correct number', function () {
         $this->coreGameLogic->handle($this->gameId, new SkipCard($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getZeitsteineForPlayer($stream,
-            $this->players[0]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1)
-            ->and(PlayerState::getZeitsteineForPlayer($stream,
-                $this->players[1]))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
+        expect(PlayerState::getZeitsteineForPlayer(
+            $stream,
+            $this->players[0]
+        ))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) - 1)
+            ->and(PlayerState::getZeitsteineForPlayer(
+                $stream,
+                $this->players[1]
+            ))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
     });
 
     it('Throws an exception if the player does not exist', function () {
@@ -292,19 +322,25 @@ describe('getGuthabenForPlayer', function () {
 
         $this->coreGameLogic->handle(
             $this->gameId,
-            ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+            ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
+        );
 
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
 
         $this->coreGameLogic->handle(
             $this->gameId,
-            ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE));
+            ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE)
+        );
 
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(PlayerState::getGuthabenForPlayer($stream,
-            $this->players[0])->value)->toEqual(Configuration::STARTKAPITAL_VALUE - 1000)
-            ->and(PlayerState::getGuthabenForPlayer($stream,
-                $this->players[1])->value)->toEqual(Configuration::STARTKAPITAL_VALUE - 100);
+        expect(PlayerState::getGuthabenForPlayer(
+            $stream,
+            $this->players[0]
+        )->value)->toEqual(Configuration::STARTKAPITAL_VALUE - 1000)
+            ->and(PlayerState::getGuthabenForPlayer(
+                $stream,
+                $this->players[1]
+            )->value)->toEqual(Configuration::STARTKAPITAL_VALUE - 100);
     });
 
     it('Throws an exception if the player does not exist', function () {
@@ -335,7 +371,8 @@ describe('getKompetenzenForPlayer', function () {
         // player 1 activates a card that gives them a bildungs kompetenzstein
         $this->coreGameLogic->handle(
             $this->gameId,
-            ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+            ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
+        );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
@@ -350,7 +387,8 @@ describe('getKompetenzenForPlayer', function () {
         // change konjunkturphase
         $this->coreGameLogic->handle(
             $this->gameId,
-            ChangeKonjunkturphase::create());
+            ChangeKonjunkturphase::create()
+        );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         // kompetenzen are saved for the lebensziel
@@ -384,8 +422,10 @@ describe('getKompetenzenForPlayer', function () {
 
         $this->startNewKonjunkturphaseWithCardsOnTop($setupCards);
 
-        $this->coreGameLogic->handle($this->gameId,
-            ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE)
+        );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getBildungsKompetenzsteine($gameEvents, $this->players[0]))->toEqual(5)
@@ -419,18 +459,148 @@ describe("getCurrentTurnForPlayer", function () {
 });
 
 describe("isPlayerInsolvent", function () {
-   it('returns true for the duration of Insolvenz and false after', function () {
-       /** @var TestCase $this */
-       $this->setupInsolvenz();
+    it('returns true for the duration of Insolvenz and false after', function () {
+        /** @var TestCase $this */
+        $this->setupInsolvenz();
 
-       for ($i = 1; $i <= Configuration::INSOLVENZ_DURATION; $i++) {
-           expect(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[0]))->toBeTrue()
-               ->and(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[1]))->toBeFalse();
-           $this->startNewKonjunkturphaseWithCardsOnTop([]);
-       }
+        for ($i = 1; $i <= Configuration::INSOLVENZ_DURATION; $i++) {
+            expect(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[0]))->toBeTrue()
+                ->and(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[1]))->toBeFalse();
+            $this->startNewKonjunkturphaseWithCardsOnTop([]);
+        }
 
-       //first year after Insolvenz for player 1
-       expect(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[0]))->toBeFalse()
-           ->and(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[1]))->toBeFalse();
-   });
+        //first year after Insolvenz for player 1
+        expect(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[0]))->toBeFalse()
+            ->and(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->getPlayers()[1]))->toBeFalse();
+    });
+});
+
+describe("getCurrentGehaltForPlayer", function () {
+    it('returns the modified value when a modifier is active', function () {
+        /** @var TestCase $this */
+        $this->setupBasicGameWithoutKonjunkturphase();
+        $konjunkturphase = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(1),
+            type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
+            name: 'Erste Erholung',
+            description: 'Nachdem eine globale Krise die internationalen Lieferketten stark gestört hatte, ist der Konsum jedoch noch verhalten, da Haushalte und Unternehmen vorsichtig agieren. Unternehmen beginnen, ihre Lager aufzufüllen und Neueinstellungen zu tätigen. Die Zentralbank hält den Leitzins daher mit 1 % niedrig, um günstige Kredite zu ermöglichen und Investitionen sowie Konsumausgaben zu begünstigen. Dadurch bleiben Kredite günstig und die Unternehmen sowie Haushalte können leichter investieren und konsumieren.',
+            additionalEvents: '',
+            zeitsteine: new Zeitsteine(
+                [
+                    new ZeitsteinePerPlayer(2, 6),
+                    new ZeitsteinePerPlayer(3, 5),
+                    new ZeitsteinePerPlayer(4, 5),
+                ]
+            ),
+            kompetenzbereiche: [
+                new KompetenzbereichDefinition(
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 2),
+                        new ZeitslotsPerPlayer(4, 2),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::INVESTITIONEN,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::JOBS,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
+                ),
+            ],
+            modifierIds: [
+                ModifierId::GEHALT_CHANGE
+            ],
+            modifierParameters: new ModifierParameters(
+                modifyGehaltPercent: 90
+            ),
+            auswirkungen: [
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    value: 4
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    value: 1.40
+                ),
+            ],
+            conditionalResourceChanges: [
+                new ConditionalResourceChange( // This should be applied
+                    prerequisite: EreignisPrerequisitesId::HAS_NO_CHILD,
+                    resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(+2000)),
+                ),
+                new ConditionalResourceChange( // This should be applied
+                    prerequisite: EreignisPrerequisitesId::HAS_NO_CHILD,
+                    resourceChanges: new ResourceChanges(zeitsteineChange: -1, bildungKompetenzsteinChange: +2),
+                ),
+                new ConditionalResourceChange( // This should **not** be applied
+                    prerequisite: EreignisPrerequisitesId::HAS_CHILD,
+                    resourceChanges: new ResourceChanges(freizeitKompetenzsteinChange: +2),
+                ),
+            ]
+        );
+        $regularKonjunkturphase = $this->getKonjunkturphaseDefinition();
+        $this->setKonjunkturphaseDefinition($konjunkturphase);
+        KonjunkturphaseFinder::getInstance()->overrideKonjunkturphaseDefinitionsForTesting([
+            $konjunkturphase
+        ]);
+
+        //$this->coreGameLogic->handle($this->gameId, StartKonjunkturPhaseForPlayer::create($this->players[0]));
+
+        $testJobs = [
+            new JobCardDefinition(
+                id: new CardId('testJob'),
+                title: 'testtestetest',
+                description: 'Du hast nun wegen deines Jobs weniger Zeit und kannst pro Jahr einen Zeitstein weniger setzen.',
+                gehalt: new MoneyAmount(100000),
+                requirements: new JobRequirements(
+                    zeitsteine: 1,
+                ),
+            ),
+        ];
+        $this->startNewKonjunkturphaseWithCardsOnTop($testJobs);
+
+        $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('testJob')));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getCurrentGehaltForPlayer($gameEvents, $this->players[1])->value)->toEqual(0)
+            ->and(PlayerState::getCurrentGehaltForPlayer(
+                $gameEvents,
+                $this->players[0]
+            )->value)->toEqual(90000);
+
+
+        // Make sure the modifier is inactive in the next konjunkturphase (see #519)
+        $this->setKonjunkturphaseDefinition($regularKonjunkturphase);
+        KonjunkturphaseFinder::getInstance()->overrideKonjunkturphaseDefinitionsForTesting([
+            $regularKonjunkturphase
+        ]);
+        $this->startNewKonjunkturphaseWithCardsOnTop($testJobs);
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getCurrentGehaltForPlayer($gameEvents, $this->players[1])->value)->toEqual(0)
+            ->and(PlayerState::getCurrentGehaltForPlayer(
+                $gameEvents,
+                $this->players[0]
+            )->value)->toEqual(100000);
+    });
 });

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests;
@@ -99,14 +100,14 @@ abstract class TestCase extends BaseTestCase
         $this->players = $this->generatePlayerIds($numberOfPlayers);
         CardFinder::getInstance()->overrideCardsForTesting(
             $cards !== null
-            ? [...$cards]
-            : [
-                ...$this->getCardsForBildungAndKarriere(),
-                ...$this->getCardsForSozialesAndFreizeit(),
-                ...$this->getCardsForJobs(),
-                ...$this->getCardsForMinijobs(),
-                ...$this->getCardsForWeiterbildung(),
-            ]
+                ? [...$cards]
+                : [
+                    ...$this->getCardsForBildungAndKarriere(),
+                    ...$this->getCardsForSozialesAndFreizeit(),
+                    ...$this->getCardsForJobs(),
+                    ...$this->getCardsForMinijobs(),
+                    ...$this->getCardsForWeiterbildung(),
+                ]
         );
 
         InsuranceFinder::getInstance()->overrideInsurancesForTesting([
@@ -268,13 +269,17 @@ abstract class TestCase extends BaseTestCase
         foreach ($this->players as $player) {
             $this->coreGameLogic->handle(
                 $this->gameId,
-                EnterLebenshaltungskostenForPlayer::create($player,
-                    MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $player))
+                EnterLebenshaltungskostenForPlayer::create(
+                    $player,
+                    MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $player)
+                )
             );
             $this->coreGameLogic->handle(
                 $this->gameId,
-                EnterSteuernUndAbgabenForPlayer::create($player,
-                    MoneySheetState::calculateSteuernUndAbgabenForPlayer($gameEvents, $player))
+                EnterSteuernUndAbgabenForPlayer::create(
+                    $player,
+                    MoneySheetState::calculateSteuernUndAbgabenForPlayer($gameEvents, $player)
+                )
             );
             $this->coreGameLogic->handle(
                 $this->gameId,
@@ -302,13 +307,17 @@ abstract class TestCase extends BaseTestCase
         foreach ($this->players as $player) {
             $this->coreGameLogic->handle(
                 $this->gameId,
-                EnterLebenshaltungskostenForPlayer::create($player,
-                    MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $player))
+                EnterLebenshaltungskostenForPlayer::create(
+                    $player,
+                    MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $player)
+                )
             );
             $this->coreGameLogic->handle(
                 $this->gameId,
-                EnterSteuernUndAbgabenForPlayer::create($player,
-                    MoneySheetState::calculateSteuernUndAbgabenForPlayer($gameEvents, $player))
+                EnterSteuernUndAbgabenForPlayer::create(
+                    $player,
+                    MoneySheetState::calculateSteuernUndAbgabenForPlayer($gameEvents, $player)
+                )
             );
             $this->coreGameLogic->handle(
                 $this->gameId,
@@ -511,6 +520,11 @@ abstract class TestCase extends BaseTestCase
         return $this->konjunkturphaseDefinition;
     }
 
+    public function setKonjunkturphaseDefinition(KonjunkturphaseDefinition $newKonjunkturphaseDefinition)
+    {
+        $this->konjunkturphaseDefinition = $newKonjunkturphaseDefinition;
+    }
+
     public function handle(CommandInterface $command): void
     {
         $this->coreGameLogic->handle($this->gameId, $command);
@@ -554,7 +568,8 @@ abstract class TestCase extends BaseTestCase
 
         $this->handle(EnterLebenshaltungskostenForPlayer::create(
             $this->getPlayers()[0],
-            MoneySheetState::calculateMinimumValueForLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[0])));
+            MoneySheetState::calculateMinimumValueForLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[0])
+        ));
 
         $this->handle(CompleteMoneysheetForPlayer::create($this->getPlayers()[0]));
         $this->handle(FileInsolvenzForPlayer::create($this->getPlayers()[0]));
