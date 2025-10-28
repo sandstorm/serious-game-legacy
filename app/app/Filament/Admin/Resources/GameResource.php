@@ -15,6 +15,14 @@ class GameResource extends Resource
 {
     protected static ?string $model = Game::class;
 
+    // --- Customize resource names here ---
+    // The name in the navigation sidebar
+    protected static ?string $navigationLabel = 'Spiele';
+    // The singular name displayed on pages and in breadcrumbs
+    protected static ?string $label = 'Spiel';
+    // The plural name displayed in the sidebar and table headers
+    protected static ?string $pluralModelLabel = 'Spiele';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -24,6 +32,13 @@ class GameResource extends Resource
                 Forms\Components\Select::make('course_id')
                     ->relationship('course', 'name')
                     ->preload(),
+                Forms\Components\Select::make('players')
+                    ->label('Spieler:innen')
+                    // email = ScoSciSurvey-ID
+                    ->relationship('players', 'email')
+                    ->multiple()
+                    ->preload()
+                    ->searchable(),
             ]);
     }
 
@@ -37,8 +52,9 @@ class GameResource extends Resource
                 Tables\Columns\TextColumn::make('course.name')
                     ->label('Kurs')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('creator.name')
+                Tables\Columns\TextColumn::make('creator_name')
                     ->label('Erstellt von')
+                    ->getStateUsing(fn (Game $record): string => $record->getCreatorName())
                     ->searchable(),
             ])
             ->filters([

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\Game;
+use App\Models\Player;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
@@ -18,6 +20,7 @@ use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class GamePlayController extends Controller
@@ -62,43 +65,29 @@ class GamePlayController extends Controller
     public function createGame(Request $request): RedirectResponse
     {
         $loggedInPlayer = $request->user('game');
-        if ($loggedInPlayer === null) {
+        if ($loggedInPlayer === null || !$loggedInPlayer->can_create_games) {
             abort(403);
         }
-
-        $gameId = GameId::random();
 
         $validated = Validator::make($request->all(), [
             'numberOfPlayers' => 'required|integer|gte:1',
         ])->validate();
 
-        $playerIds = [
-            /** @phpstan-ignore argument.type */
-            PlayerId::fromString($loggedInPlayer->id),
-        ];
-        // add random player ids for the other players
-        for ($i = 1; $i < intval($validated['numberOfPlayers']); $i++) {
-            $playerIds[] = PlayerId::unique();
-        }
-
-        $this->coreGameLogic->handle($gameId, StartPreGame::create(
-            numberOfPlayers: intval($validated['numberOfPlayers'])
-        )->withFixedPlayerIds(
-            $playerIds
-        ));
+        $gameId = $this->startGame($loggedInPlayer, intval($validated['numberOfPlayers']));
 
         return redirect()->route('game-play.player-links', [
-            'gameId' => $gameId->value,
+            'gameId' => $gameId
         ]);
     }
 
     // TODO remove this method in the future - only for quick testing
     public function quickStart(Request $request, int $amountOfPlayers): RedirectResponse
     {
-        $gameId = GameId::random();
-        $this->coreGameLogic->handle($gameId, StartPreGame::create(
-            numberOfPlayers: $amountOfPlayers
-        ));
+        $loggedInPlayer = $request->user('game');
+        if ($loggedInPlayer === null) {
+            abort(403);
+        }
+        $gameId = $this->startGame($loggedInPlayer, $amountOfPlayers);
 
         $gameEvents = $this->coreGameLogic->getGameEvents($gameId);
         $playerIds = PreGameState::playerIds($gameEvents);
@@ -121,20 +110,24 @@ class GamePlayController extends Controller
             $this->coreGameLogic->handle($gameId, StartKonjunkturphaseForPlayer::create($playerIds[$index]));
         }
 
-        // redirect to the game page
         return redirect()->route('game-play.game', [
             'gameId' => $gameId->value,
             'playerId' => $playerIds[0]->value,
         ]);
     }
 
-    public function playerLinks(Request $request, string $gameId): View
+    public function playerLinks(Request $request, string $gameId): View|RedirectResponse
     {
         $gameId = GameId::fromString($gameId);
+        if (Game::find($gameId->value) === null) {
+            abort(404);
+        }
+
         $gameEvents = $this->coreGameLogic->getGameEvents($gameId);
         return view('controllers.gameplay.player-links', [
             'gameId' => $gameId,
-            'playerIds' => PreGameState::playerIds($gameEvents)
+            'playerIds' => PreGameState::playerIds($gameEvents),
+            'player' => $request->user('game'),
         ]);
     }
 
@@ -144,7 +137,23 @@ class GamePlayController extends Controller
         $playerId = PlayerId::fromString($playerId);
         $loggedInPlayer = $request->user('game');
 
-        if ($loggedInPlayer !== null && $playerId->value !== $loggedInPlayer->id) {
+        $game = Game::find($gameId->value);
+
+        if ($game === null) {
+            abort(404);
+        }
+
+        // check if player matches player id when the game is not created by a player
+        if (!$game->isCreatedByPlayer() && $loggedInPlayer !== null && $playerId->value !== $loggedInPlayer->id) {
+            abort(403);
+        }
+
+        // check if player id is part of the game
+        $isPlayerInGame = $game->players->contains(function (Player $player) use ($playerId) {
+            return $player->id === $playerId->value;
+        });
+
+        if (!$isPlayerInGame) {
             abort(403);
         }
 
@@ -156,5 +165,36 @@ class GamePlayController extends Controller
             'gameId' => $gameId,
             'myself' => $playerId,
         ]);
+    }
+
+    private function startGame(Player $player, int $numberOfPlayers): GameId
+    {
+        // create game in database
+        $game = new Game();
+        /** @phpstan-ignore assign.propertyType */
+        $game->id = Str::ulid();
+        $game->creator()->associate($player);
+        $game->course()->associate($player->courses()->first());
+        $game->save();
+        $game->players()->attach($player);
+
+        // start game in core game logic
+        /** @phpstan-ignore method.nonObject */
+        $gameId = GameId::fromString($game->id->toString());
+        $playerIds = [
+            /** @phpstan-ignore argument.type */
+            PlayerId::fromString($player->id),
+        ];
+        // add random player ids for the other players
+        for ($i = 1; $i < $numberOfPlayers; $i++) {
+            $playerIds[] = PlayerId::unique();
+        }
+        $this->coreGameLogic->handle($gameId, StartPreGame::create(
+            numberOfPlayers: $numberOfPlayers
+        )->withFixedPlayerIds(
+            $playerIds
+        ));
+
+        return $gameId;
     }
 }

@@ -4,12 +4,18 @@
             <thead>
                 <tr>
                     <th class="border border-slate-300 p-1 text-left font-semibold">SoSciSurvey ID</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($getState() as $player)
                     <tr>
                         <td class="border border-slate-300 p-1">{{ $player->email }}</td>
+                        <td class="border border-slate-300 p-1">
+                            <a href="{{ \App\Filament\Admin\Resources\PlayerResource::getUrl('edit', ['record' => $player->id]) }}">
+                                bearbeiten
+                            </a>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

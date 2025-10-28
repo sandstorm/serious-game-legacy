@@ -43,9 +43,8 @@
                 </form>
             @else
                 <div>
-                    Deine ID: {{$nameAndLebensziel->playerId->value }}<br/>
-                    Du hast folgendes Lebensziel ausgewählt:
-                    {{$nameAndLebensziel->name}} - {{$nameAndLebensziel->lebensziel?->name}}
+                    Dein Name: <strong>{{$nameAndLebensziel->name}}</strong><br/>
+                    Dein Lebensziel: <strong>{{$nameAndLebensziel->lebensziel?->name}}</strong>
                 </div>
                 <hr/>
             @endif

@@ -8,7 +8,6 @@ use App\Filament\Admin\Resources\CourseResource\Pages;
 use App\Infolists\Components\GamesWithPlayers;
 use App\Infolists\Components\PlayerTable;
 use App\Models\Course;
-use App\Models\Player;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\TextEntry;
@@ -20,6 +19,14 @@ use Filament\Tables\Table;
 class CourseResource extends Resource
 {
     protected static ?string $model = Course::class;
+
+    // --- Customize resource names here ---
+    // The name in the navigation sidebar
+    protected static ?string $navigationLabel = 'Kurse';
+    // The singular name displayed on pages and in breadcrumbs
+    protected static ?string $label = 'Kurs';
+    // The plural name displayed in the sidebar and table headers
+    protected static ?string $pluralModelLabel = 'Kurse';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
