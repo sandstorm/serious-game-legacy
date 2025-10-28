@@ -57,8 +57,6 @@ ADD /deployment/config-files/crontab /crontab
 
 # application entrypoint
 ADD /deployment/config-files/s6-rc.d/ /etc/s6-overlay/s6-rc.d/
-# do not run composer install on production!
-RUN rm -rf /etc/s6-overlay/s6-rc.d/oneshot-composer-install /etc/s6-overlay/s6-rc.d/user/contents.d/oneshot-composer-install
 ADD /deployment/config-files/memory-limit-php.ini /usr/local/etc/php/conf.d/memory-limit-php.ini
 ADD /deployment/config-files/upload-limit-php.ini /usr/local/etc/php/conf.d/upload-limit-php.ini
 
