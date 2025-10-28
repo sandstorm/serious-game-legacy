@@ -1,8 +1,9 @@
-<!-- resources/views/components/layout.blade.php -->
-
 <html lang="de">
 <head>
-    <title>{{ $title ?? 'Game' }}</title>
+    <title>
+        Legacy
+        @if (isset($title)) - {{ $title }} @endif
+    </title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="app-config-js" content="{{ json_encode([

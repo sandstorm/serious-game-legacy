@@ -1,4 +1,8 @@
-@use(Domain\CoreGameLogic\GameId)
+@props([
+    'gameId' => null,
+    'playerIds' => [],
+])
+
 <x-layout>
     <h2>Spiel {{$gameId->value}}</h2>
 

@@ -33,8 +33,13 @@ class GameResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('course.name')
+                    ->label('Kurs')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('creator.name')
+                    ->label('Erstellt von')
+                    ->searchable(),
             ])
             ->filters([
                 //
