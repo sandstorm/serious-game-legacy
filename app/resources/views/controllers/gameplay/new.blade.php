@@ -1,7 +1,10 @@
 @use(Domain\CoreGameLogic\GameId)
 <x-layout>
+    <x-slot:title>Neues Spiel</x-slot:title>
+
     <h2>Neues Spiel</h2>
-    <form method="get" action={{ route('game-play.player-links', ['gameId' => GameId::random()->value]) }}>
+    <form method="post" action={{ route('game-play.create-game') }}>
+        @csrf
         <div class="form__group">
             <label for="numberOfPlayers">Anzahl Spieler:</label>
             <input class="form__textfield" type="number" id="numberOfPlayers" name="numberOfPlayers" required="required" min="2" max="4" />

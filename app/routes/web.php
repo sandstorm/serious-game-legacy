@@ -7,13 +7,10 @@ use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:game', 'auth.session'])->group(function () {
-    Route::get('/', function () {
-        return view('controllers.welcome');
-    });
-
+    Route::get('/', [GamePlayController::class, 'index'])->name('game-play.index');
     Route::get('/quick-start/{players}', [GamePlayController::class, 'quickStart'])->name('game-play.quick-start');
-
-    Route::get('/play', [GamePlayController::class, 'newGame'])->name('game-play.new-game');
+    Route::get('/new-game', [GamePlayController::class, 'newGame'])->name('game-play.new-game');
+    Route::post('/new-game', [GamePlayController::class, 'createGame'])->name('game-play.create-game');
     Route::get('/play/{gameId}', [GamePlayController::class, 'playerLinks'])->name('game-play.player-links');
     Route::get('/play/{gameId}/{playerId}', [GamePlayController::class, 'game'])->name('game-play.game');
 });

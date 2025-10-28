@@ -98,3 +98,10 @@ input[type="submit"],
 select {
     cursor: pointer;
 }
+
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}

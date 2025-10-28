@@ -49,15 +49,12 @@
                 </div>
                 <hr/>
             @endif
-        @else
-            <div>
-                Spieler {{$nameAndLebensziel->playerId->value }}: {{$nameAndLebensziel->name}}
-                - {{$nameAndLebensziel->lebensziel?->name}}
-            </div>
-            <hr/>
         @endif
     @endforeach
+
     @if(PreGameState::isReadyForGame($this->getGameEvents()))
         <button type="button" class="button button--type-primary" wire:click="startGame">Spiel starten</button>
+    @else
+        <button type="button" class="button button--type-primary" disabled="disabled">Warte auf andere Spieler...</button>
     @endif
 </div>

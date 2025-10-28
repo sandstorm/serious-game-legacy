@@ -16,7 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('name');
             $table->string('teacher_id')->nullable();
-            $table->foreign('teacher_id')->references('id')->on('users')->nullOnDelete();
+            $table->foreignUlid('teacher_id')->references('id')->on('users')->nullOnDelete();
         });
     }
 
