@@ -12,10 +12,19 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Facades\Hash;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
+
+    // --- Customize resource names here ---
+    // The name in the navigation sidebar
+    protected static ?string $navigationLabel = 'Benutzer:innen';
+    // The singular name displayed on pages and in breadcrumbs
+    protected static ?string $label = 'Benutzer:in';
+    // The plural name displayed in the sidebar and table headers
+    protected static ?string $pluralModelLabel = 'Benutzer:innen';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -37,8 +46,16 @@ class UserResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('password')
-                    ->required()
-                    ->maxLength(255),
+                    ->label('Passwort')
+                    ->password()
+                    ->maxLength(255)
+                    // only update password when a new password is set
+                    ->afterStateHydrated(function (Forms\Components\TextInput $component, $state) {
+                        $component->state('');
+                    })
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->required(fn (string $context): bool => $context === 'create'),
                 Forms\Components\DateTimePicker::make('email_verified_at')
                     ->disabled(),
                 Forms\Components\Toggle::make('role_superadmin')
@@ -64,7 +81,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()
                     ->sortable()
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -75,7 +92,7 @@ class UserResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\IconColumn::make('role_superadmin')
                     ->boolean()
-                    ->toggleable(),
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
 

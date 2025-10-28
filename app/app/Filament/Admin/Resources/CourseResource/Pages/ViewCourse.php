@@ -39,6 +39,7 @@ class ViewCourse extends ViewRecord
 
                     $allPlayers = $course->players;
                     $players = [];
+                    // TODO players who created their own game are not included at this point
                     foreach ($allPlayers as $player) {
                         // check if player is already in a game for this course
                         /** @phpstan-ignore staticMethod.dynamicCall, staticMethod.dynamicCall */

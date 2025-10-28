@@ -29,6 +29,8 @@ class Game extends Model
      */
     protected $with = [
         'players',
+        'creator',
+        'creatorPlayer'
     ];
 
     /**
@@ -48,10 +50,37 @@ class Game extends Model
     }
 
     /**
+     * If a player created the game, this relation points to the player.
+     * Creator is empty in this case.
+     *
+     * @return BelongsTo<Player, $this>
+     */
+    public function creatorPlayer(): BelongsTo
+    {
+        return $this->belongsTo(Player::class, 'creator_id');
+    }
+
+    /**
      * @return BelongsToMany<Player, $this>
      */
     public function players(): BelongsToMany
     {
         return $this->belongsToMany(Player::class,  'game_user', 'game_id', 'user_id');
+    }
+
+    public function getCreatorName(): string
+    {
+        if ($this->creator !== null) {
+            return $this->creator->name;
+        } elseif ($this->creatorPlayer !== null) {
+            return $this->creatorPlayer->name;
+        } else {
+            return 'Unbekannt';
+        }
+    }
+
+    public function isCreatedByPlayer(): bool
+    {
+        return $this->creatorPlayer !== null;
     }
 }

@@ -1,3 +1,5 @@
+@props(['gameUi' => false])
+
 <html lang="de">
 <head>
     <title>
@@ -13,7 +15,7 @@
     @vite(['resources/js/app.js'])
 </head>
 <body>
-<main class="container">
+<main class="container {{ $gameUi ? 'container--without-margin' : '' }}">
     {{ $slot }}
 </main>
 

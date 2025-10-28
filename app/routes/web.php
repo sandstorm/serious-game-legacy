@@ -12,12 +12,14 @@ Route::middleware(['auth:game', 'auth.session'])->group(function () {
     Route::get('/new-game', [GamePlayController::class, 'newGame'])->name('game-play.new-game');
     Route::post('/new-game', [GamePlayController::class, 'createGame'])->name('game-play.create-game');
     Route::get('/play/{gameId}', [GamePlayController::class, 'playerLinks'])->name('game-play.player-links');
-    Route::get('/play/{gameId}/{playerId}', [GamePlayController::class, 'game'])->name('game-play.game');
 });
 
 // login and auth routes for players
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate']);
+
+// the game play route, no auth middleware here, auth is done inside the controller
+Route::get('/play/{gameId}/{playerId}', [GamePlayController::class, 'game'])->name('game-play.game');
 
 if (app()->isLocal()) {
     Route::get('/preview-application-unavailable', function () {
