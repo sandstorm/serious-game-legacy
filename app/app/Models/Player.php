@@ -49,6 +49,14 @@ class Player extends User
         return $this->belongsToMany(Game::class,  'game_user', 'user_id', 'game_id');
     }
 
+    /**
+     * @return BelongsToMany<Course, $this>
+     */
+    public function courses(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class,  'course_user', 'user_id', 'course_id');
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         return false;

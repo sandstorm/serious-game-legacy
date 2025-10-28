@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Filament\Admin\Resources\CourseResource\Pages;
 
 use App\Filament\Admin\Resources\CourseResource;
+use App\Filament\Imports\PlayerImporter;
 use App\Models\Course;
 use App\Models\Game;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
@@ -11,6 +12,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
 use Filament\Actions\Action;
+use Filament\Actions\ImportAction;
 use Filament\Resources\Pages\ViewRecord;
 use Illuminate\Support\Str;
 
@@ -21,8 +23,13 @@ class ViewCourse extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Action::make('Spieler:innen importieren')
-                ->model('todo'),
+            ImportAction::make()
+                ->label('Spieler:innen importieren')
+                ->importer(PlayerImporter::class)
+                ->csvDelimiter(';')
+                ->options([
+                    'course' => $this->record
+                ]),
             Action::make('Spiele erstellen')
                 ->action(function (ForCoreGameLogic $coreGameLogic) {
                     /** @var Course $course */
