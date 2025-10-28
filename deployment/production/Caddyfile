@@ -1,0 +1,5 @@
+legacy-project.sandstorm.dev {
+    log
+
+    reverse_proxy laravel:8081
+}
