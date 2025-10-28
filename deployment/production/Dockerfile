@@ -31,16 +31,13 @@ RUN apt-get update -y && \
     pecl install redis && docker-php-ext-enable redis excimer && \
     pecl install channel://pecl.php.net/uv-0.3.0 && docker-php-ext-enable uv
 
-# for PHP 8.1, disable deprecations to temporarily make Neos/Flow work
-RUN echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT" >> /usr/local/etc/php/conf.d/error_reporting.ini
-
 # install composer
 RUN curl --silent --show-error https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
 RUN composer config --global cache-dir /composer_cache
 
 # add colored shell env to distinguish environments properly
-ENV SHELL_ENV_DISPLAY=production
+ENV SHELL_ENV_DISPLAY=production-serious-game
 ADD deployment/config-files/bash.colorprompt.sh /etc/bash.colorprompt.sh
 RUN echo '. /etc/bash.colorprompt.sh' >>  /etc/bash.bashrc
 
@@ -60,6 +57,8 @@ ADD /deployment/config-files/crontab /crontab
 
 # application entrypoint
 ADD /deployment/config-files/s6-rc.d/ /etc/s6-overlay/s6-rc.d/
+# do not run composer install on production!
+RUN rm -rf /etc/s6-overlay/s6-rc.d/oneshot-composer-install
 ADD /deployment/config-files/memory-limit-php.ini /usr/local/etc/php/conf.d/memory-limit-php.ini
 ADD /deployment/config-files/upload-limit-php.ini /usr/local/etc/php/conf.d/upload-limit-php.ini
 

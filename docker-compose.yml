@@ -32,10 +32,6 @@ services:
       REDIS_PORT: 6379
       QUEUE_CONNECTION: redis
 
-      IMAGOR_SECRET: iruendwsmacki9gu8hdewijsochudjsiuhu
-      IMAGOR_SIGNER_TYPE: sha256
-      IMAGOR_SIGNER_TRUNCATE: 40
-
       PHPSTAN_PRO_WEB_PORT: 11111
 
       # DEV: spatie/ignition: config for exception screen

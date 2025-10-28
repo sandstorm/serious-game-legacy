@@ -1,0 +1,82 @@
+##################################################
+##### PRODUCTION ENVIRONMENT            ##########
+# this file is deployed on the prod server to /home/deploy/[project-name]/
+# (so all paths are relative to this folder)
+##################################################
+
+services:
+
+  caddy:
+    image: caddy:2.10-alpine
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./caddy_files:/etc/caddy
+      - ./caddy_data:/data
+      - ./caddy_config:/config
+
+  #####
+  # Laravel (php-fpm)
+  laravel:
+    # the DOCKER_IMAGE_VERSION is replaced with the actual tagged version during deployment by the `sed` command
+    image: ghcr.io/sandstorm/serious-game-legacy/laravel:${IMAGE_TAG}
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      # DB connection
+      DB_CONNECTION: mariadb
+      DB_HOST: 'mariadb'
+      DB_PORT: 3306
+      DB_PASSWORD: '${DB_PASSWORD}'
+      DB_USERNAME: 'laravel'
+      DB_DATABASE: 'laravel'
+
+      APP_ENV: production
+      APP_URL: https://legacy-project.sandstorm.dev
+      APP_KEY: ${APP_KEY}
+      CACHE_STORE: redis
+      REDIS_HOST: 'redis-cache'
+      REDIS_PORT: 6379
+      QUEUE_CONNECTION: redis
+      SHELL_ENV_DISPLAY: 'production-serious-game'
+
+      REVERB_APP_ID: ${REVERB_APP_ID}
+      REVERB_APP_KEY: ${REVERB_APP_KEY}
+      REVERB_APP_SECRET: ${REVERB_APP_SECRET}
+
+    volumes:
+      - ./app_logs/:/app/storage/logs/
+    depends_on:
+      - mariadb
+      - redis
+
+  #####
+  # Maria DB
+  mariadb:
+    image: mariadb:10.11
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: '${DB_ROOT_PASSWORD}'
+      MARIADB_DATABASE: laravel
+      MARIADB_USER: laravel
+      MARIADB_PASSWORD: '${DB_PASSWORD}'
+      MARIADB_AUTO_UPGRADE: 1
+    volumes:
+      - ./db:/var/lib/mysql
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  redis:
+    image: redis:7
+    restart: unless-stopped
