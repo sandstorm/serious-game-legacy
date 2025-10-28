@@ -2,7 +2,13 @@
     max-width: 1200px;
     margin: 0 auto;
     height: 100%;
+    margin-top: var(--spacing-200);
 }
+
+.container.container--without-margin {
+    margin-top: 0;
+}
+
 
 .dev-bar {
     position: fixed;

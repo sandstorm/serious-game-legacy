@@ -20,6 +20,7 @@ class Player extends User
     protected $fillable = [
         'email',
         'password',
+        'can_create_games',
     ];
 
     protected static function booted():void
