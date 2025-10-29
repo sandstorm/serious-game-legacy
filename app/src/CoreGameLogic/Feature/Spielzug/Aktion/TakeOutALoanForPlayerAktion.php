@@ -32,8 +32,7 @@ class TakeOutALoanForPlayerAktion extends Aktion
      */
     public function __construct(
         private readonly TakeOutALoanForm|null $takeOutALoanForm = null
-    ) {
-    }
+    ) {}
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
@@ -62,6 +61,15 @@ class TakeOutALoanForPlayerAktion extends Aktion
         $validationResult = $this->validate($playerId, $gameEvents);
         if (!$validationResult->canExecute) {
             throw new RuntimeException('Cannot take out a loan: ' . $validationResult->reason, 1756200359);
+        }
+
+        if (
+            $this->takeOutALoanForm->loanAmount === null ||
+            $this->takeOutALoanForm->totalRepayment === null ||
+            $this->takeOutALoanForm->repaymentPerKonjunkturphase === null
+        ) {
+            // This should never happen, since $this->takeOutALoanForm->validate() should catch this
+            throw new \RuntimeException("Required fields must not be empty");
         }
 
         $inputLoanData = new LoanData(
