@@ -48,10 +48,13 @@ RUN apt-get update -y && \
         vim \
         less \
         gettext \
+        libpng-dev \
+        libjpeg-dev \
         && \
     mkdir -p /var/log/supervisor && \
     rm -rf /var/lib/apt/lists/* && \
-    docker-php-ext-install intl bcmath opcache pdo pdo_mysql xsl zip pcntl && \
+    docker-php-ext-configure gd --with-jpeg && \
+    docker-php-ext-install intl bcmath opcache pdo pdo_mysql xsl zip pcntl gd && \
     pecl install excimer && \
     pecl install xdebug && \
     pecl install redis && docker-php-ext-enable redis excimer && \

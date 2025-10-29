@@ -1,3 +1,5 @@
+@use(tbQuar\Facades\Quar);
+
 @props([
     'gameId' => null,
     'playerIds' => [],
@@ -20,6 +22,7 @@
             @endif
             <li>
                 Spieler {{ $k+1 }}: <a href={{route('game-play.game', ['gameId' => $gameId, 'playerId' => $playerId])}}>{{$playerId->value}}</a>
+                {{ Quar::generate(route('game-play.game', ['gameId' => $gameId, 'playerId' => $playerId])) }}
             </li>
         @endforeach
     </ul>

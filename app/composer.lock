@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dbfaaab93904405b9918fc01f7a94d20",
+    "content-hash": "0358147f922bbbdc67dfd355f5ae3186",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -6606,7 +6606,7 @@
         },
         {
             "name": "sandstorm/eventstore-laraveladapter",
-            "version": "dev-34b31c93bfd2d881f5eda950b640b20a4f6fbd50",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./DistributionPackages/eventstore-laraveladapter",
@@ -9430,6 +9430,80 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/v2.3.0"
             },
             "time": "2024-12-21T16:25:41+00:00"
+        },
+        {
+            "name": "tuncaybahadir/quar",
+            "version": "1.5.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tuncaybahadir/quar.git",
+                "reference": "52833024788dbfa868d55bcf43627f9be6dfd32c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tuncaybahadir/quar/zipball/52833024788dbfa868d55bcf43627f9be6dfd32c",
+                "reference": "52833024788dbfa868d55bcf43627f9be6dfd32c",
+                "shasum": ""
+            },
+            "require": {
+                "bacon/bacon-qr-code": "^3.0",
+                "ext-gd": "*",
+                "php": ">=8.3"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.24",
+                "roave/security-advisories": "dev-latest"
+            },
+            "suggest": {
+                "ext-imagick": "Allows the generation of PNG QrCodes.",
+                "illuminate/support": "Allows for use within Laravel."
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Quar": "tbQuar\\Facades\\Quar"
+                    },
+                    "providers": [
+                        "tbQuar\\QuarServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "tbQuar\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tuncay Bahadır",
+                    "email": "tuncaybahadir@protonmail.com"
+                }
+            ],
+            "description": "A simple QR Code generation tool for your projects with Laravel 10, 11, 12 versions, php 8.3 and 8.4",
+            "homepage": "https://github.com/tuncaybahadir/quar",
+            "keywords": [
+                "generator",
+                "laravel",
+                "laravel 10",
+                "laravel 11",
+                "laravel 12",
+                "php",
+                "php 8.3",
+                "php 8.4",
+                "qr",
+                "qrcode",
+                "quar"
+            ],
+            "support": {
+                "issues": "https://github.com/tuncaybahadir/quar/issues",
+                "source": "https://github.com/tuncaybahadir/quar/tree/1.5.4"
+            },
+            "time": "2025-07-24T19:08:42+00:00"
         },
         {
             "name": "ueberdosis/tiptap-php",
