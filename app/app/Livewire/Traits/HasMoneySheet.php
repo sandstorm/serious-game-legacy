@@ -105,7 +105,7 @@ trait HasMoneySheet
         $this->takeOutALoanIsVisible = false;
         $this->repaymentFormForLoanId = null;
 
-        match($tab) {
+        match ($tab) {
             ExpensesTabEnum::LIVING_COSTS => $this->initializeLivingCostsForm(),
             ExpensesTabEnum::TAXES => $this->initializeTaxesForm(),
             ExpensesTabEnum::INSURANCES => $this->initializeInsurancesForm(),
@@ -186,7 +186,7 @@ trait HasMoneySheet
             annualIncomeForAllAssets: MoneySheetState::getAnnualIncomeForAllInvestments($this->getGameEvents(), $playerId),
             annualIncome: MoneySheetState::getAnnualIncomeForPlayer($this->getGameEvents(), $playerId),
             annualExpenses: new MoneyAmount(-1 * MoneySheetState::getAnnualExpensesForPlayer($this->getGameEvents(), $playerId)->value),
-            annualExpensesFromPlayerInput: new MoneyAmount (-1 * MoneySheetState::calculateAnnualExpensesFromPlayerInput($this->getGameEvents(), $playerId)->value),
+            annualExpensesFromPlayerInput: new MoneyAmount(-1 * MoneySheetState::calculateAnnualExpensesFromPlayerInput($this->getGameEvents(), $playerId)->value),
             guthabenBeforeKonjunkturphaseChange: $guthabenBeforeKonjunkturphaseChange,
             guthabenAfterKonjunkturphaseChange: $guthabenAfterKonjunkturphaseChange,
             insolvenzabgaben: MoneySheetState::calculateInsolvenzabgabenForPlayer($this->getGameEvents(), $playerId)->negate(),
@@ -198,18 +198,22 @@ trait HasMoneySheet
         $this->moneySheetLebenshaltungskostenForm->validate();
         $this->handleCommand(EnterLebenshaltungskostenForPlayer::create(
             $this->myself,
-            new MoneyAmount($this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten)
+            new MoneyAmount($this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten ?? 0)
         ));
 
         $updatedEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $resultOfLastInput = MoneySheetState::getResultOfLastLebenshaltungskostenInput($updatedEvents, $this->myself);
 
         if (!$resultOfLastInput->wasSuccessful && $resultOfLastInput->fine->value > 0) {
-            $this->moneySheetLebenshaltungskostenForm->addError('lebenshaltungskosten',
-                "Du hast einen falschen Wert für die Lebenshaltungskosten eingegeben. Dir wurden {$resultOfLastInput->fine->value} € abgezogen. Wir haben den Wert für dich korrigiert.");
+            $this->moneySheetLebenshaltungskostenForm->addError(
+                'lebenshaltungskosten',
+                "Du hast einen falschen Wert für die Lebenshaltungskosten eingegeben. Dir wurden {$resultOfLastInput->fine->value} € abgezogen. Wir haben den Wert für dich korrigiert."
+            );
         } elseif (!$resultOfLastInput->wasSuccessful) {
-            $this->moneySheetLebenshaltungskostenForm->addError('lebenshaltungskosten',
-                "Du hast einen falschen Wert für die Lebenshaltungskosten eingegeben.");
+            $this->moneySheetLebenshaltungskostenForm->addError(
+                'lebenshaltungskosten',
+                "Du hast einen falschen Wert für die Lebenshaltungskosten eingegeben."
+            );
         }
 
         $this->initializeLivingCostsForm();
@@ -221,18 +225,22 @@ trait HasMoneySheet
         $this->moneySheetSteuernUndAbgabenForm->validate();
         $this->handleCommand(EnterSteuernUndAbgabenForPlayer::create(
             $this->myself,
-            new MoneyAmount($this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben)
+            new MoneyAmount($this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben ?? 0)
         ));
 
         $updatedEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $resultOfLastInput = MoneySheetState::getResultOfLastSteuernUndAbgabenInput($updatedEvents, $this->myself);
 
         if (!$resultOfLastInput->wasSuccessful && $resultOfLastInput->fine->value > 0) {
-            $this->moneySheetSteuernUndAbgabenForm->addError('steuernUndAbgaben',
-                "Du hast einen falschen Wert für die Steuern und Abgaben eingegeben. Dir wurden {$resultOfLastInput->fine->value} € abgezogen. Wir haben den Wert für dich korrigiert.");
+            $this->moneySheetSteuernUndAbgabenForm->addError(
+                'steuernUndAbgaben',
+                "Du hast einen falschen Wert für die Steuern und Abgaben eingegeben. Dir wurden {$resultOfLastInput->fine->value} € abgezogen. Wir haben den Wert für dich korrigiert."
+            );
         } elseif (!$resultOfLastInput->wasSuccessful) {
-            $this->moneySheetSteuernUndAbgabenForm->addError('steuernUndAbgaben',
-                "Du hast einen falschen Wert für die Steuern und Abgaben eingegeben.");
+            $this->moneySheetSteuernUndAbgabenForm->addError(
+                'steuernUndAbgaben',
+                "Du hast einen falschen Wert für die Steuern und Abgaben eingegeben."
+            );
         }
 
         $this->initializeTaxesForm();
@@ -241,7 +249,7 @@ trait HasMoneySheet
 
     public function setInsurances(): void
     {
-        foreach($this->moneySheetInsurancesForm->insurances as $insuranceFromForm) {
+        foreach ($this->moneySheetInsurancesForm->insurances as $insuranceFromForm) {
             $insuranceId = InsuranceId::create($insuranceFromForm['id']);
             $shouldBeConcluded = $insuranceFromForm['value'] === true;
             $currentlyConcluded = MoneySheetState::doesPlayerHaveThisInsurance($this->getGameEvents(), $this->myself, $insuranceId);
@@ -262,7 +270,7 @@ trait HasMoneySheet
                 $cancelInsuranceValidationResult = new CancelInsuranceForPlayerAktion($insuranceId)->validate($this->myself, $this->getGameEvents());
                 if ($cancelInsuranceValidationResult->canExecute) {
                     $this->handleCommand(CancelInsuranceForPlayer::create($this->myself, $insuranceId));
-                }else {
+                } else {
                     $insuranceName = InsuranceFinder::getInstance()->findInsuranceById($insuranceId)->description;
                     $this->showBanner('Du kannst die ' . $insuranceName . ' nicht kündigen: ' . $cancelInsuranceValidationResult->reason);
                 }
@@ -297,7 +305,7 @@ trait HasMoneySheet
             $this->takeOutALoanForm->generalError = "Du hast falsche Werte für den Kredit eingegeben.";
         } else {
             $this->takeOutALoanForm->resetValidation();
-            $loanAmount = new MoneyAmount($this->takeOutALoanForm->loanAmount);
+            $loanAmount = new MoneyAmount($this->takeOutALoanForm->loanAmount ?? 0);
             $this->showBanner("Du hast einen Kredit über {$loanAmount->formatWithoutHtml()} aufgenommen.");
             $this->closeTakeOutALoan();
         }
