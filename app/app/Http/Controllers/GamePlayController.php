@@ -134,31 +134,36 @@ class GamePlayController extends Controller
     public function game(Request $request, string $gameId, string $playerId): View|RedirectResponse
     {
         $gameId = GameId::fromString($gameId);
+        if (!$this->coreGameLogic->hasGame($gameId)) {
+            return redirect()->route('game-play.new-game');
+        }
+
         $playerId = PlayerId::fromString($playerId);
         $loggedInPlayer = $request->user('game');
-
         $game = Game::find($gameId->value);
 
         if ($game === null) {
             abort(404);
         }
 
-        // check if player matches player id when the game is not created by a player
-        if (!$game->isCreatedByPlayer() && $loggedInPlayer !== null && $playerId->value !== $loggedInPlayer->id) {
-            abort(403);
+        // check if player is part of the game
+        $gameEvents = $this->coreGameLogic->getGameEvents($gameId);
+        $players = PreGameState::playerIds($gameEvents);
+        $isPlayerInGame = false;
+        foreach ($players as $playerInGame) {
+            if ($playerInGame->equals($playerId)) {
+                $isPlayerInGame = true;
+                break;
+            }
         }
-
-        // check if player id is part of the game
-        $isPlayerInGame = $game->players->contains(function (Player $player) use ($playerId) {
-            return $player->id === $playerId->value;
-        });
 
         if (!$isPlayerInGame) {
             abort(403);
         }
 
-        if (!$this->coreGameLogic->hasGame($gameId)) {
-            return redirect()->route('game-play.new-game');
+        // check if logged in player matches player id when the game is not created by a player
+        if (!$game->isCreatedByPlayer() && $loggedInPlayer !== null && $playerId->value !== $loggedInPlayer->id) {
+            abort(403);
         }
 
         return view('controllers.gameplay.game-play', [
