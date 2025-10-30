@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\GameResource\Pages;
+use App\Infolists\Components\PlayerTable;
 use App\Models\Game;
-use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -24,23 +25,6 @@ class GameResource extends Resource
     protected static ?string $pluralModelLabel = 'Spiele';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Forms\Components\Select::make('course_id')
-                    ->relationship('course', 'name')
-                    ->preload(),
-                Forms\Components\Select::make('players')
-                    ->label('Spieler:innen')
-                    // email = ScoSciSurvey-ID
-                    ->relationship('players', 'email')
-                    ->multiple()
-                    ->preload()
-                    ->searchable(),
-            ]);
-    }
 
     public static function table(Table $table): Table
     {
@@ -61,7 +45,7 @@ class GameResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -72,17 +56,29 @@ class GameResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                TextEntry::make('id')->label('Spiel ID'),
+                TextEntry::make('course.name')->label('Kurs'),
+                PlayerTable::make('players')->label('Spieler:innen in diesem Spiel'),
+            ])->columns(2);
     }
 
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListGames::route('/'),
-            'create' => Pages\CreateGame::route('/create'),
-            'edit' => Pages\EditGame::route('/{record}/edit'),
+            'view' => Pages\ViewGame::route('/{record}'),
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 }
