@@ -377,6 +377,7 @@
       <path value="$PROJECT_DIR$/app/vendor/vlucas/phpdotenv" />
       <path value="$PROJECT_DIR$/app/vendor/voku/portable-ascii" />
       <path value="$PROJECT_DIR$/app/vendor/webmozart/assert" />
+      <path value="$PROJECT_DIR$/app/vendor/phpmyadmin/sql-parser" />
     </include_path>
   </component>
   <component name="PhpInterpreters">
