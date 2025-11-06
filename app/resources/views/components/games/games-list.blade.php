@@ -8,40 +8,37 @@
     @if (count($games) === 0)
         <p>Du hast aktuell keine aktiven Spiele.</p>
     @else
-        <table>
-            <thead>
-                <tr>
-                    <th>Datum</th>
-                    <th>Kurs</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach ($games as $game)
-                <tr>
-                    <td>
-                        {{ $game->created_at->format('d.m.Y H:i') }}
-                    </td>
-                    <td>
-                        {{ $game->course->name }}
-                        @if($game->isCreatedByPlayer()) (von dir erstellt) @endif
-                    </td>
-                    <td>
-                        @if($game->isCreatedByPlayer())
-                            <a class="button button--type-primary" href={{route('game-play.player-links', ['gameId' => $game->id])}}>
-                                Spiel beitreten
-                            </a>
-                        @else
-                            <a class="button button--type-primary" href={{route('game-play.game', ['gameId' => $game->id, 'playerId' => $player->id])}}>
-                                Spiel beitreten
-                            </a>
+        @foreach ($games as $game)
+            <div class="games-list__game">
+                <div class="games-list__game-date">
+                    <strong>Erstellt am:</strong> {{ $game->game->created_at->format('d.m.Y H:i') }}
+                </div>
+                <div class="games-list__game-course">
+                    <strong>Kurs:</strong> {{ $game->game->course->name }} @if($game->game->isCreatedByPlayer()) (von dir erstellt) @endif
+                </div>
+                <div class="games-list__game-players">
+                    <strong>Mitspielende: </strong>
+                    @foreach ($game->playerNames as $playerName)
+                        @if ($playerName)
+                            {{ $playerName }}@if(!$loop->last), @endif
                         @endif
-                    </td>
-
-                </tr>
-            @endforeach
-            </tbody>
-
-        </table>
+                    @endforeach
+                </div>
+                <div class="games-list__game-status">
+                    <strong>Status:</strong> @if ($game->isInGamePhase) Gestartet @else Vorbereitung @endif
+                </div>
+                <div class="games-list__game-action">
+                    @if($game->game->isCreatedByPlayer())
+                        <a class="button button--type-primary" href={{route('game-play.player-links', ['gameId' => $game->game->id])}}>
+                            Spiel beitreten
+                        </a>
+                    @else
+                        <a class="button button--type-primary" href={{route('game-play.game', ['gameId' => $game->game->id, 'playerId' => $player->id])}}>
+                            Spiel beitreten
+                        </a>
+                    @endif
+                </div>
+            </div>
+        @endforeach
     @endif
 </div>

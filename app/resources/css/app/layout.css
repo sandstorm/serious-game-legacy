@@ -2,17 +2,15 @@
     max-width: 1200px;
     margin: 0 auto;
     min-height: 100%;
-    padding-top: var(--spacing-200);
-    padding-inline: var(--spacing-200);
+    padding: var(--spacing-200);
 }
 
 .container.container--no-padding {
-    padding-top: 0;
-    padding-inline: 0;
+    padding: 0;
 }
 
 .container.container--with-footer {
-    padding-bottom: 50px;
+    padding-bottom: calc(50px + var(--spacing-200));
 }
 
 .dev-bar {

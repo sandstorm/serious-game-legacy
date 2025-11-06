@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:game', 'auth.session'])->group(function () {
     Route::get('/', [GamePlayController::class, 'index'])->name('game-play.index');
-    Route::get('/quick-start/{players}', [GamePlayController::class, 'quickStart'])->name('game-play.quick-start');
     Route::get('/new-game', [GamePlayController::class, 'newGame'])->name('game-play.new-game');
     Route::post('/new-game', [GamePlayController::class, 'createGame'])->name('game-play.create-game');
     Route::get('/play/{gameId}', [GamePlayController::class, 'playerLinks'])->name('game-play.player-links');

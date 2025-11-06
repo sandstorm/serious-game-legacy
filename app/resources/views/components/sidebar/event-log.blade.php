@@ -8,7 +8,7 @@
     :class="eventLogOpen ? 'event-log--open' : ''"
 >
     @if ($this->currentPlayerIsMyself())
-        <button class="event-log__toggle button button--type-icon" :aria-expanded="eventLogOpen" id="event-log-trigger" aria-controls="event-log-entries" x-on:click="eventLogOpen = !eventLogOpen">
+        <button class="event-log__toggle button button--type-secondary button--type-icon" :aria-expanded="eventLogOpen" id="event-log-trigger" aria-controls="event-log-entries" x-on:click="eventLogOpen = !eventLogOpen">
             <i :class="eventLogOpen ? 'icon-close' : 'icon-log-ausklappen'" aria-hidden="true"></i>
             <span class="sr-only">Ereignisprotokoll ausklappen/einklappen</span>
         </button>

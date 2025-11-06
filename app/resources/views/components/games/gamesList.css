@@ -1,8 +1,38 @@
 .games-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-200);
+}
 
-    ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
+.games-list__game {
+    display: grid;
+    grid-template-areas:
+        "date course"
+        "players players"
+        "status action";
+
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--spacing-50);
+}
+
+.games-list__game-date {
+    grid-area: date;
+}
+
+.games-list__game-course {
+    grid-area: course;
+}
+
+.games-list__game-players {
+    grid-area: players;
+}
+
+.games-list__game-status {
+    grid-area: status;
+}
+
+.games-list__game-action {
+    grid-area: action;
+    display: flex;
+    justify-content: flex-end;
 }
