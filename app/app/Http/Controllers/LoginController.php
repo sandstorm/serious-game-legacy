@@ -24,13 +24,18 @@ class LoginController extends Controller
         $this->auth = $auth;
     }
 
+    /**
+     * @param Request $request
+     * @return View
+     */
     public function login(Request $request): View
     {
         return view('auth.login');
     }
 
     /**
-     * Handle an authentication attempt.
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function authenticate(Request $request): RedirectResponse
     {
@@ -51,6 +56,21 @@ class LoginController extends Controller
         return back()->withErrors([
             'soscisurveyId' => 'Anmeldung fehlgeschlagen.',
         ])->onlyInput('soscisurveyId');
+    }
+
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function logout(Request $request): RedirectResponse
+    {
+        /** @phpstan-ignore staticMethod.dynamicCall */
+        $this->auth->guard('game')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
 
 }

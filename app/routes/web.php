@@ -18,6 +18,9 @@ Route::middleware(['auth:game', 'auth.session'])->group(function () {
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate']);
 
+// logout route for players
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
 // the game play route, no auth middleware here, auth is done inside the controller
 Route::get('/play/{gameId}/{playerId}', [GamePlayController::class, 'game'])->name('game-play.game');
 

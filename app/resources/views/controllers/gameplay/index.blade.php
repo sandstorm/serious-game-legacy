@@ -7,6 +7,9 @@
     <x-slot:title>Willkommen</x-slot:title>
 
     <h1>Willkommen bei LeGacy</h1>
+    <a href="{{ route('logout') }}" class="button button--type-primary">
+        Logout
+    </a>
     <h3>Deine Spiele:</h3>
 
     @if (count($games) === 0)
