@@ -34,7 +34,7 @@
 @endsection
 
 @section('footer')
-    <button type="button" class="button button--type-primary" wire:click="closeKonjunkturphaseDetails()">
+    <button type="button" class="button button--type-secondary" wire:click="closeKonjunkturphaseDetails()">
         Schließen
     </button>
 @endsection

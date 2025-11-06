@@ -40,7 +40,8 @@ class GamePlayController extends Controller
     public function index(Request $request): View
     {
         $loggedInPlayer = $request->user('game');
-        $games = $loggedInPlayer?->games()->get() ?? [];
+        // get games sorted by created at desc
+        $games = $loggedInPlayer?->games()->orderBy('created_at', 'desc')->get() ?? [];
 
         // TODO DTO for games with additional info (like game started, current phase, etc.)
         // $this->coreGameLogic->getGameEvents($this->gameId)

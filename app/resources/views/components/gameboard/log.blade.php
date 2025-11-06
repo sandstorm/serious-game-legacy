@@ -22,5 +22,5 @@
 @endsection
 
 @section('footer')
-    <button type="button" class="button button--type-primary" wire:click="closeLog()">Schließen</button>
+    <button type="button" class="button button--type-secondary" wire:click="closeLog()">Schließen</button>
 @endsection

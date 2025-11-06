@@ -1,4 +1,4 @@
-@props(['gameUi' => false])
+@props(['removePadding' => false])
 
 <html lang="de">
 <head>
@@ -15,9 +15,13 @@
     @vite(['resources/js/app.js'])
 </head>
 <body>
-<main class="container {{ $gameUi ? 'container--without-margin' : '' }}">
+<main class="container {{ $removePadding ? 'container--no-padding' : '' }} {{ isset($footer) ? 'container--with-footer' : '' }}">
     {{ $slot }}
 </main>
+
+@if (isset($footer))
+    {{ $footer }}
+@endif
 
 @livewireScriptConfig
 </body>

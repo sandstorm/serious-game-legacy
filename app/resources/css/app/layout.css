@@ -1,14 +1,19 @@
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    height: 100%;
-    margin-top: var(--spacing-200);
+    min-height: 100%;
+    padding-top: var(--spacing-200);
+    padding-inline: var(--spacing-200);
 }
 
-.container.container--without-margin {
-    margin-top: 0;
+.container.container--no-padding {
+    padding-top: 0;
+    padding-inline: 0;
 }
 
+.container.container--with-footer {
+    padding-bottom: 50px;
+}
 
 .dev-bar {
     position: fixed;

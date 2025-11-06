@@ -49,7 +49,6 @@ class LoginController extends Controller
         if ($this->auth->guard('game')->attempt(['email' => $credentials['soscisurveyId'], 'password' => $credentials['password']], true)) {
             $request->session()->regenerate();
 
-            // TODO redirect to your games
             return redirect()->intended('/');
         }
 

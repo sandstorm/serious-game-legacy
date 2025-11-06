@@ -23,7 +23,7 @@
             </div>
 
             <footer class="notification__actions">
-                <button type="button" class="button button--type-primary" wire:click="closeNotification()">Ok</button>
+                <button type="button" class="button button--type-secondary" wire:click="closeNotification()">Ok</button>
             </footer>
         </div>
     </div>

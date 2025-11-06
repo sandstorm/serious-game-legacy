@@ -1,4 +1,5 @@
 :root {
+    --z-index-footer: 5000;
     --z-index-modal: 9000;
     --z-index-mandatory-modal: 9400;
     --z-index-notification: 9500;

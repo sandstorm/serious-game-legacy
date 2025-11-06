@@ -22,7 +22,7 @@
                 @if ($phase->lebenszielPhaseId->value === PlayerState::getCurrentLebenszielphaseIdForPlayer($gameEvents, $playerId)->value)
                     <div class="lebensziel__phase-balance">
                         <small>Kontostand</small>
-                        <div class="button button--type-primary">
+                        <div class="button button--type-secondary">
                             {!! PlayerState::getGuthabenForPlayer($gameEvents, $playerId)->format() !!}
                         </div>
                     </div>

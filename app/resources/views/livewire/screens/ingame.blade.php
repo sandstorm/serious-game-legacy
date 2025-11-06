@@ -30,7 +30,7 @@
     </aside>
 
     <div class="dev-bar">
-        <button type="button" class="button button--type-primary" wire:click="showLog()">Log</button>
+        <button type="button" class="button button--type-secondary" wire:click="showLog()">Log</button>
         @if ($isLogVisible)
             <x-gameboard.log/>
         @endif
