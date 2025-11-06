@@ -1,0 +1,36 @@
+.login {
+    max-width: 600px;
+    min-height: 100%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.login__header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding-bottom: var(--spacing-100);
+
+    border-bottom: 1px solid var(--color-grey);
+}
+
+.login__form {
+    width: 100%;
+    margin-top: var(--spacing-200);
+    display: flex;
+    gap: var(--spacing-100);
+    flex-direction: column;
+
+    .button {
+        justify-content: center;
+    }
+}
+
+.logout {
+    display: flex;
+    justify-content: flex-end;
+}

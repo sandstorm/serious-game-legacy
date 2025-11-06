@@ -1,3 +1,3 @@
-<x-layout :game-ui="true">
+<x-layout :remove-padding="true">
     <livewire:game-ui :gameId="$gameId" :myself="$myself" />
 </x-layout>

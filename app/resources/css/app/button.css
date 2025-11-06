@@ -2,11 +2,6 @@ button {
     line-height: inherit;
     color: var(--color-primary-dark);
 
-    &:focus-visible {
-        outline: 2px solid var(--color-focus);
-        outline-offset: 2px;
-    }
-
     i {
         color: var(--color-primary-dark);
     }
@@ -34,6 +29,10 @@ button {
                 color 0.3s ease-in,
                 border-color 0.3s ease-in;
 
+    &:focus-visible {
+        outline: 2px solid var(--color-focus);
+        outline-offset: 2px;
+    }
 }
 
 .button__suffix {
@@ -74,6 +73,13 @@ button {
 }
 
 .button--type-primary {
+    background: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
+
+    color: var(--color-primary-fg);
+}
+
+.button--type-secondary {
     background: var(--color-primary-fg);
     border-color: var(--color-grey);
 
@@ -83,6 +89,8 @@ button {
 .button--type-primary.player-color-1 {
     background: var(--color-player-1--light);
     border-color: var(--color-player-1--dark);
+
+    color: var(--color-primary-dark);
 
     &:hover:not(&.button--disabled) {
         background: var(--color-player-1);
@@ -94,6 +102,8 @@ button {
     background: var(--color-player-2--light);
     border-color: var(--color-player-2--dark);
 
+    color: var(--color-primary-dark);
+
     &:hover:not(&.button--disabled) {
         background: var(--color-player-2);
         box-shadow: 0 0 4px var(--color-player-2--dark);
@@ -103,6 +113,8 @@ button {
 .button--type-primary.player-color-3 {
     background: var(--color-player-3--light);
     border-color: var(--color-player-3--dark);
+
+    color: var(--color-primary-dark);
 
     &:hover:not(&.button--disabled) {
         background: var(--color-player-3);
@@ -114,6 +126,8 @@ button {
     background: var(--color-player-4--light);
     border-color: var(--color-player-4--dark);
 
+    color: var(--color-primary-dark);
+
     &:hover:not(&.button--disabled) {
         background: var(--color-player-4);
         box-shadow: 0 0 4px var(--color-player-4--dark);
@@ -123,6 +137,7 @@ button {
 .button--type-outline-primary {
     background: var(--color-primary-fg);
     border: 1px solid var(--color-grey);
+
     color: var(--color-primary-dark);
 
     &:hover:not(&.button--disabled) {
@@ -174,14 +189,18 @@ button {
 .button--type-text {
     display: inline;
     padding: 0;
+    min-height: auto;
 
     background: transparent;
     border: none;
     box-shadow: none;
     border-radius: 0;
+    text-decoration: underline;
+    text-underline-offset: 4px;
 
     text-align: left;
     white-space: normal;
+    color: var(--color-primary-dark);
 }
 
 .button--size-small {

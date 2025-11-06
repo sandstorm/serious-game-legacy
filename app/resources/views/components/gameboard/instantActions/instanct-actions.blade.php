@@ -4,7 +4,7 @@
             type="button"
             @class([
                 "button",
-                "button--type-primary",
+                "button--type-secondary",
                 "button--disabled" => !$this->canStartWeiterbildung(),
             ])
             wire:click="showWeiterbildung()"
@@ -28,7 +28,7 @@
             type="button"
             @class([
                 "button",
-                "button--type-primary",
+                "button--type-secondary",
                 "button--disabled" => !$this->canDoMinijob(),
             ])
             wire:click="doMinijob()"

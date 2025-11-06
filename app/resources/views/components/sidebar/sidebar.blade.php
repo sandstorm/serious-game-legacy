@@ -14,7 +14,7 @@
             <i class="icon-info" aria-hidden="true"></i>
         </button>
         <div class="sidebar__menu">
-            <button class="button button--type-primary button--type-icon">
+            <button class="button button--type-secondary button--type-icon">
                 <i class="icon-burger" aria-hidden="true"></i>
                 <span class="sr-only">Menü öffnen</span>
             </button>
@@ -28,7 +28,7 @@
     @if ($this->currentPlayerIsMyself())
         <div class="sidebar__actions" x-show="!eventLogOpen">
             @if (PlayerState::getJobForPlayer($this->gameEvents, $playerId) !== null)
-                <button class="button button--type-primary" wire:click="showIncomeTab('salary')">
+                <button class="button button--type-secondary" wire:click="showIncomeTab('salary')">
                     <span>Mein Job: {!! PlayerState::getCurrentGehaltForPlayer($this->gameEvents, $playerId)->format() !!}</span>
                 </button>
             @endif
@@ -36,13 +36,13 @@
             <button
                 @class([
                     "button",
-                    "button--type-primary",
+                    "button--type-secondary",
                     $this->isPlayerAllowedToTakeOutALoan() ? "" : "button--disabled",
                 ])
                 wire:click="showTakeOutALoan()">
                     <span>Kredit aufnehmen</span> <i class="icon-dots" aria-hidden="true"></i>
             </button>
-            <button class="button button--type-primary" wire:click="showExpensesTab('{{ ExpensesTabEnum::INSURANCES }}')">
+            <button class="button button--type-secondary" wire:click="showExpensesTab('{{ ExpensesTabEnum::INSURANCES }}')">
                 <span>Versicherung abschließen</span> <i class="icon-dots" aria-hidden="true"></i>
             </button>
             <button

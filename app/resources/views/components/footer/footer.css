@@ -1,0 +1,21 @@
+.game-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: var(--spacing-100) 0;
+
+    background-color: var(--color-primary-fg);
+    z-index: var(--z-index-footer);
+}
+
+.game-footer__content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding-inline: var(--spacing-100);
+    gap: var(--spacing-100);
+}

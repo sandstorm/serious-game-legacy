@@ -29,6 +29,7 @@ class Game extends Model
      */
     protected $with = [
         'players',
+        'course',
         'creator',
         'creatorPlayer'
     ];
