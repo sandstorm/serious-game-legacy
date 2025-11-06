@@ -7,7 +7,6 @@
                 <th class="border border-slate-300 p-1 text-left font-semibold">Spiel</th>
                 <th class="border border-slate-300 p-1 text-left font-semibold">Von Spieler erstellt</th>
                 <th class="border border-slate-300 p-1 text-left font-semibold">Spieler:innen</th>
-                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -30,12 +29,6 @@
                             </li>
                         @endforeach
                         </ul>
-                    </td>
-                    <td class="border border-slate-300 p-1">
-                        <a href="{{ \App\Filament\Admin\Resources\GameResource::getUrl('edit', ['record' => $game->id]) }}">
-                            bearbeiten
-                        </a>
-
                     </td>
                 </tr>
             @endforeach

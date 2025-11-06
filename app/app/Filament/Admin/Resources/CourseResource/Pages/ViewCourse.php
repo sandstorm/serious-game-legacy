@@ -52,6 +52,7 @@ class ViewCourse extends ViewRecord
                     $panel = Filament::getCurrentPanel();
                     $user = $panel?->auth()->user();
 
+                    // TODO add min players check (2)
                     $playersPerGame = 4;
                     $numberOfGames = (int) ceil(count($players) / $playersPerGame);
                     for ($i = 0; $i < $numberOfGames; $i++) {
