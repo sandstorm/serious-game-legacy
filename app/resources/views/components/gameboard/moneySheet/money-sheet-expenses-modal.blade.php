@@ -7,7 +7,7 @@
 ])
 
 @section('icon')
-    <button type="button" class="button button--type-icon" wire:click="toggleEditExpenses()">
+    <button type="button" class="button button--type-secondary button--type-icon" wire:click="toggleEditExpenses()">
         <i class="icon-lupe-2" aria-hidden="true"></i>
         <span class="sr-only">Zurück zur <span lang="en">Moneysheet</span> Übersicht</span>
     </button>

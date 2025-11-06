@@ -4,19 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Livewire\Dto\Games;
 use App\Models\Game;
 use App\Models\Player;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
-use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
-use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
-use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
-use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -43,26 +38,37 @@ class GamePlayController extends Controller
         // get games sorted by created at desc
         $games = $loggedInPlayer?->games()->orderBy('created_at', 'desc')->get() ?? [];
 
-        // TODO DTO for games with additional info (like game started, current phase, etc.)
-        // $this->coreGameLogic->getGameEvents($this->gameId)
+        $gamesDto = [];
+        foreach ($games as $game) {
+            $gameEvents = $this->coreGameLogic->getGameEvents(GameId::fromString((string) $game->id));
+            $gamesDto[] = new Games(
+                game: $game,
+                playerNames: array_values(
+                    array_map(function ($playerWithnameAndLebensziel) { return $playerWithnameAndLebensziel->name ?? null; }, PreGameState::playersWithNameAndLebensziel($gameEvents))
+                ),
+                isInGamePhase: !PreGameState::isInPreGamePhase($gameEvents),
+            );
+        }
 
         return view('controllers.gameplay.index', [
-            'games' => $games,
+            'games' => $gamesDto,
             'player' => $loggedInPlayer,
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @return View
+     */
     public function newGame(Request $request): View
     {
         return view('controllers.gameplay.new');
     }
 
-    // TODO game creation is not done at this point
-    // * game should be created in the database and the player associated with it
-    // * game needs special flag to indicate its a player created game
-    // * only players with flag to create own games should be allowed to create games
-    // * create link for other people to join the game
-    // * disable auth for joining the game via link
+    /**
+     * @param Request $request
+     * @return RedirectResponse
+     */
     public function createGame(Request $request): RedirectResponse
     {
         $loggedInPlayer = $request->user('game');
@@ -71,7 +77,7 @@ class GamePlayController extends Controller
         }
 
         $validated = Validator::make($request->all(), [
-            'numberOfPlayers' => 'required|integer|gte:1',
+            'numberOfPlayers' => 'required|integer|gte:2',
         ])->validate();
 
         $gameId = $this->startGame($loggedInPlayer, intval($validated['numberOfPlayers']));
@@ -81,42 +87,11 @@ class GamePlayController extends Controller
         ]);
     }
 
-    // TODO remove this method in the future - only for quick testing
-    public function quickStart(Request $request, int $amountOfPlayers): RedirectResponse
-    {
-        $loggedInPlayer = $request->user('game');
-        if ($loggedInPlayer === null) {
-            abort(403);
-        }
-        $gameId = $this->startGame($loggedInPlayer, $amountOfPlayers);
-
-        $gameEvents = $this->coreGameLogic->getGameEvents($gameId);
-        $playerIds = PreGameState::playerIds($gameEvents);
-
-        for ($index = 0; $index < $amountOfPlayers; $index++) {
-            $this->coreGameLogic->handle($gameId, new SetNameForPlayer(
-                playerId: $playerIds[$index],
-                name: 'Player ' . $index + 1,
-            ));
-            $this->coreGameLogic->handle($gameId, new SelectLebensziel(
-                playerId: $playerIds[$index],
-                lebenszielId: LebenszielId::create($index % 2 + 1),
-            ));
-        }
-
-        $this->coreGameLogic->handle($gameId, StartGame::create());
-        $this->coreGameLogic->handle($gameId, ChangeKonjunkturphase::create());
-
-        for ($index = 0; $index < $amountOfPlayers; $index++) {
-            $this->coreGameLogic->handle($gameId, StartKonjunkturphaseForPlayer::create($playerIds[$index]));
-        }
-
-        return redirect()->route('game-play.game', [
-            'gameId' => $gameId->value,
-            'playerId' => $playerIds[0]->value,
-        ]);
-    }
-
+    /**
+     * @param Request $request
+     * @param string $gameId
+     * @return View|RedirectResponse
+     */
     public function playerLinks(Request $request, string $gameId): View|RedirectResponse
     {
         $gameId = GameId::fromString($gameId);
@@ -132,6 +107,12 @@ class GamePlayController extends Controller
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param string $gameId
+     * @param string $playerId
+     * @return View|RedirectResponse
+     */
     public function game(Request $request, string $gameId, string $playerId): View|RedirectResponse
     {
         $gameId = GameId::fromString($gameId);
@@ -173,6 +154,11 @@ class GamePlayController extends Controller
         ]);
     }
 
+    /**
+     * @param Player $player
+     * @param int $numberOfPlayers
+     * @return GameId
+     */
     private function startGame(Player $player, int $numberOfPlayers): GameId
     {
         // create game in database
@@ -185,8 +171,7 @@ class GamePlayController extends Controller
         $game->players()->attach($player);
 
         // start game in core game logic
-        /** @phpstan-ignore method.nonObject */
-        $gameId = GameId::fromString($game->id->toString());
+        $gameId = GameId::fromString((string) $game->id);
         $playerIds = [
             /** @phpstan-ignore argument.type */
             PlayerId::fromString($player->id),

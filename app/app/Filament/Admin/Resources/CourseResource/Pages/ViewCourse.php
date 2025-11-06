@@ -63,8 +63,7 @@ class ViewCourse extends ViewRecord
                         $game->creator()->associate($user); // no creator
                         $game->save();
                         $game->players()->attach(array_slice($players, $i * $playersPerGame, $playersPerGame));
-                        /** @phpstan-ignore method.nonObject */
-                        $coreGameLogic->handle(GameId::fromString($game->id->toString()), StartPreGame::create(
+                        $coreGameLogic->handle(GameId::fromString((string) $game->id), StartPreGame::create(
                             numberOfPlayers: count($game->players)
                         )->withFixedPlayerIds(
                             /** @phpstan-ignore argument.type */

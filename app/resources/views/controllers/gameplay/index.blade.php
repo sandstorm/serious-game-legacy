@@ -10,10 +10,10 @@
     </x-slot:footer>
     <x-header.header title="Spielübersicht" />
 
-    <x-games.games-list :games="$games" :player="$player" />
-
-    <hr />
     @if($player->can_create_games)
         <a type="button" class="button button--type-primary" href={{ @route("game-play.new-game") }}>Neues Spiel erstellen</a>
+        <hr />
     @endif
+
+    <x-games.games-list :games="$games" :player="$player" />
 </x-layout>

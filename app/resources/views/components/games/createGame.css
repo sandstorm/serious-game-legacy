@@ -1,0 +1,20 @@
+.create-game {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-200);
+    padding-top: var(--spacing-200);
+
+    h1 {
+        text-align: center;
+    }
+}
+
+.create-game__players {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-100);
+}
