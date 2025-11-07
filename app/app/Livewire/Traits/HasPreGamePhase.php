@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Livewire\Traits;
 
-use App\Livewire\Forms\PreGameNameLebenszielForm;
+use App\Livewire\Forms\PreGameLebenszielForm;
+use App\Livewire\Forms\PreGameNameForm;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
@@ -16,7 +17,8 @@ use Illuminate\View\View;
 
 trait HasPreGamePhase
 {
-    public PreGameNameLebenszielForm $nameLebenszielForm;
+    public PreGameNameForm $nameForm;
+    public PreGameLebenszielForm $lebenszielForm;
 
     /**
      * Prefixed with "mount" to avoid conflicts with Livewire's mount method.
@@ -27,33 +29,40 @@ trait HasPreGamePhase
      */
     public function mountHasPreGamePhase(): void
     {
-        $this->nameLebenszielForm->name = PlayerState::getNameForPlayerOrNull($this->getGameEvents(), $this->myself) ?? '';
-        $this->nameLebenszielForm->lebensziel = PlayerState::getLebenszielDefinitionForPlayerOrNull($this->getGameEvents(), $this->myself)->id->value ?? null;
+        $this->nameForm->name = PlayerState::getNameForPlayerOrNull($this->getGameEvents(), $this->myself) ?? '';
+        $this->lebenszielForm->lebensziel = PlayerState::getLebenszielDefinitionForPlayerOrNull($this->getGameEvents(), $this->myself)->id->value ?? LebenszielFinder::getAllLebensziele()[0]->id->value;
     }
 
     public function renderPreGamePhase(): View
     {
-        $lebensziele = LebenszielFinder::getAllLebensziele();
-
         return view('livewire.screens.pregame', [
-            'lebensziele' => $lebensziele,
+            'lebensziele' => LebenszielFinder::getAllLebensziele(),
         ]);
     }
 
-    public function preGameSetNameAndLebensziel(): void
+    public function preGameSetName(): void
     {
-        $this->nameLebenszielForm->validate();
-        $this->handleCommand(new SetNameForPlayer($this->myself, $this->nameLebenszielForm->name));
-        if ($this->nameLebenszielForm->lebensziel !== null) {
-            $this->handleCommand(new SelectLebensziel($this->myself, LebenszielId::create($this->nameLebenszielForm->lebensziel)));
+        $this->nameForm->validate();
+        $this->handleCommand(new SetNameForPlayer($this->myself, $this->nameForm->name));
+        $this->broadcastNotify();
+    }
+
+    public function preGameSetLebensziel(): void
+    {
+        $this->lebenszielForm->validate();
+
+        // Extra safety check, should never happen due to validation
+        if($this->lebenszielForm->lebensziel === null) {
+            throw new \InvalidArgumentException('Lebensziel must not be null');
         }
 
+        $this->handleCommand(new SelectLebensziel($this->myself, LebenszielId::create($this->lebenszielForm->lebensziel)));
         $this->broadcastNotify();
     }
 
     public function selectLebensZiel(int $lebensziel): void
     {
-        $this->nameLebenszielForm->lebensziel = $lebensziel;
+        $this->lebenszielForm->lebensziel = $lebensziel;
     }
 
     public function startGame(): void

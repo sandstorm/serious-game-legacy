@@ -63,6 +63,26 @@ class PreGameState
 
     /**
      * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return bool
+     */
+    public static function hasPlayerName(GameEvents $gameEvents, PlayerId $playerId): bool
+    {
+        return PlayerState::getNameForPlayerOrNull($gameEvents, $playerId) !== null;
+    }
+
+    /**
+     * @param GameEvents $gameEvents
+     * @param PlayerId $playerId
+     * @return bool
+     */
+    public static function hasPlayerLebensziel(GameEvents $gameEvents, PlayerId $playerId): bool
+    {
+        return PlayerState::getLebenszielDefinitionForPlayerOrNull($gameEvents, $playerId) !== null;
+    }
+
+    /**
+     * @param GameEvents $gameEvents
      * @return PlayerId[]
      */
     public static function playerIds(GameEvents $gameEvents): array

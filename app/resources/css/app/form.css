@@ -11,6 +11,7 @@ fieldset {
 }
 
 .form-group {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: var(--spacing-50);
@@ -26,7 +27,22 @@ fieldset {
     flex-direction: row;
     align-items: center;
     gap: var(--spacing-100);
+    padding-inline: var(--spacing-100);
+
+    border: 1px solid var(--color-grey);
+    border-radius: 9999px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+
     font-size: var(--font-size-xl);
+
+    transition: background-color 0.3s ease-in,
+        box-shadow 0.3s ease-in,
+        color 0.3s ease-in,
+        border-color 0.3s ease-in;
+
+    &:disabled {
+        opacity: .7;
+    }
 }
 
 .form__error {
