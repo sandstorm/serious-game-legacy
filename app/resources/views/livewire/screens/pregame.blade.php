@@ -1,59 +1,24 @@
 @use('Domain\CoreGameLogic\Feature\Initialization\State\PreGameState')
 
 {{-- !!! Livewire components MUST have a single root element !!! --}}
-<div>
-    <h2>Spiel ID: {{ $gameId }}</h2>
-    <h3>Vorbereitung des Spiels</h3>
+<div class="pregame">
+    <header class="game-header">
+        <a class="button button--type-text" href={{route('game-play.index')}}>Zurück zur Übersicht</a>
+    </header>
 
-    @foreach(PreGameState::playersWithNameAndLebensziel($this->getGameEvents()) as $nameAndLebensziel)
-        @if($nameAndLebensziel->playerId->equals($myself))
-            @if(!$nameAndLebensziel->hasNameAndLebensziel())
-                <form wire:submit="preGameSetNameAndLebensziel">
-                    <div class="form__group">
-                        <label for="name">Dein Name:</label>
-                        <x-form.textfield wire:model="nameLebenszielForm.name" id="name" name="name" type="text"/>
-                        @error('nameLebenszielForm.name') <span class="form__error">{{ $message }}</span> @enderror
-                    </div>
-                    <div class="form__group">
-                        <h4>Wähle ein Lebensziel aus</h4>
-                        @error('nameLebenszielForm.lebensziel') <span
-                                class="form__error">{{ $message }}</span> @enderror
-
-                        <ul class="lebensziele-selector">
-                            @foreach($lebensziele as $lebensziel)
-                                <li @class([
-                                    'lebensziel-to-select',
-                                    'lebensziel-to-select--is-selected' => $nameLebenszielForm->lebensziel == $lebensziel->id->value
-                                ])>
-                                    <x-lebensziel.lebensziel-preview :lebensziel="$lebensziel"/>
-                                    <button type="button" class="button button--type-secondary"
-                                            wire:click="selectLebensZiel({{ $lebensziel->id->value }})">
-                                        @if($nameLebenszielForm->lebensziel != $lebensziel->id->value)
-                                            Dieses Lebensziel auswählen
-                                        @else
-                                            Lebensziel ausgewählt
-                                        @endif
-                                    </button>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-
-                    <x-form.submit>Speichern</x-form.submit>
-                </form>
-            @else
-                <div>
-                    Dein Name: <strong>{{$nameAndLebensziel->name}}</strong><br/>
-                    Dein Lebensziel: <strong>{{$nameAndLebensziel->lebensziel?->name}}</strong>
-                </div>
-                <hr/>
-            @endif
-        @endif
-    @endforeach
-
-    @if(PreGameState::isReadyForGame($this->getGameEvents()))
-        <button type="button" class="button button--type-primary" wire:click="startGame">Spiel starten</button>
+    @if(!PreGameState::hasPlayerName($this->getGameEvents(), $myself))
+        <h1>Trage Deinen Namen ein</h1>
+        <x-pregame.selectName />
+    @elseif(!PreGameState::hasPlayerLebensziel($this->getGameEvents(), $myself))
+        <h1>Wähle Dein Lebensziel</h1>
+        <x-pregame.selectLebensziel :lebensziele="$lebensziele" :lebensziel-form="$lebenszielForm" />
     @else
-        <button type="button" class="button button--type-primary" disabled="disabled">Warte auf andere Spieler...</button>
+        <div class="pregame__start"
+            @if(PreGameState::isReadyForGame($this->getGameEvents()))
+                <button type="button" class="button button--type-primary" wire:click="startGame">Spiel starten</button>
+            @else
+                <button type="button" class="button button--type-primary" disabled="disabled">Warte auf andere Spieler...</button>
+            @endif
+        </div>
     @endif
 </div>

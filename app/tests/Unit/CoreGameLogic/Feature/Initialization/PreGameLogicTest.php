@@ -31,7 +31,11 @@ test('PreGameLogic normal flow', function () {
 
     expect(PreGameState::isReadyForGame($gameEvents))->toBeFalse()
         ->and(PreGameState::playersWithNameAndLebensziel($gameEvents)[$this->p1->value]->name)->toEqual(null)
-        ->and(PreGameState::playersWithNameAndLebensziel($gameEvents)[$this->p2->value]->name)->toEqual(null);
+        ->and(PreGameState::hasPlayerName($gameEvents, $this->p1))->toBeFalse()
+        ->and(PreGameState::hasPlayerLebensziel($gameEvents, $this->p1))->toBeFalse()
+        ->and(PreGameState::playersWithNameAndLebensziel($gameEvents)[$this->p2->value]->name)->toEqual(null)
+        ->and(PreGameState::hasPlayerName($gameEvents, $this->p2))->toBeFalse()
+        ->and(PreGameState::hasPlayerLebensziel($gameEvents, $this->p2))->toBeFalse();
 
     $this->coreGameLogic->handle($this->gameId, new SetNameForPlayer(
         playerId: $this->p1,
@@ -41,7 +45,9 @@ test('PreGameLogic normal flow', function () {
 
     expect(PreGameState::isReadyForGame($gameEvents))->toBeFalse()
         ->and(PreGameState::playersWithNameAndLebensziel($gameEvents)[$this->p1->value]->name)->toEqual('Player 1')
-        ->and(PreGameState::playersWithNameAndLebensziel($gameEvents)[$this->p2->value]->name)->toEqual(null);
+        ->and(PreGameState::hasPlayerName($gameEvents, $this->p1))->toBeTrue()
+        ->and(PreGameState::playersWithNameAndLebensziel($gameEvents)[$this->p2->value]->name)->toEqual(null)
+        ->and(PreGameState::hasPlayerName($gameEvents, $this->p2))->toBeFalse();
 
     $this->coreGameLogic->handle($this->gameId, new SetNameForPlayer(
         playerId: $this->p1,
@@ -51,6 +57,7 @@ test('PreGameLogic normal flow', function () {
 
     expect(PreGameState::isReadyForGame($gameEvents))->toBeFalse()
         ->and(PreGameState::playersWithNameAndLebensziel($gameEvents)[$this->p1->value]->name)->toEqual('Player 1a')
+        ->and(PreGameState::hasPlayerName($gameEvents, $this->p1))->toBeTrue()
         ->and(PreGameState::playersWithNameAndLebensziel($gameEvents)[$this->p2->value]->name)->toEqual(null);
 
     $this->coreGameLogic->handle($this->gameId, new SetNameForPlayer(
@@ -61,7 +68,9 @@ test('PreGameLogic normal flow', function () {
 
     expect(PreGameState::isReadyForGame($gameEvents))->toBeFalse()
         ->and(PreGameState::playersWithNameAndLebensziel($gameEvents)[$this->p1->value]->name)->toEqual('Player 1a')
-        ->and(PreGameState::playersWithNameAndLebensziel($gameEvents)[$this->p2->value]->name)->toEqual('Player 2');
+        ->and(PreGameState::hasPlayerName($gameEvents, $this->p1))->toBeTrue()
+        ->and(PreGameState::playersWithNameAndLebensziel($gameEvents)[$this->p2->value]->name)->toEqual('Player 2')
+        ->and(PreGameState::hasPlayerName($gameEvents, $this->p2))->toBeTrue();
 
     $this->coreGameLogic->handle($this->gameId, new SelectLebensziel(
         playerId: $this->p1,
@@ -78,7 +87,9 @@ test('PreGameLogic normal flow', function () {
 
     expect(PreGameState::isReadyForGame($gameEvents))->toBeTrue()
         ->and(PreGameState::playersWithNameAndLebensziel($gameEvents)[$this->p1->value]->lebensziel->name)->toEqual($expectedLebenszielForP1->name)
+        ->and(PreGameState::hasPlayerLebensziel($gameEvents, $this->p1))->toBeTrue()
         ->and(PreGameState::playersWithNameAndLebensziel($gameEvents)[$this->p2->value]->lebensziel->name)->toEqual($expectedLebenszielForP2->name)
+        ->and(PreGameState::hasPlayerLebensziel($gameEvents, $this->p2))->toBeTrue()
         ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->p1))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE));
 });
 

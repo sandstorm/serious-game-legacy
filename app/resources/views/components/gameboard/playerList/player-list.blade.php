@@ -49,7 +49,6 @@
             </button>
 
             <div class="player-list__player-details" id="player-details-{{ $key }}" aria-labelledby="player-details-trigger-{{ $key }}" x-cloak x-show="playerListOpen">
-                <small><a href={{ @route("game-play.game", ['gameId' => $this->gameId, 'playerId' => $player->playerId]) }}>{{ $player->playerId }}</a></small>
                 <div>
                     <strong>Lebensziel:</strong> {{ $player->lebenszielDefinition->name }}
                 </div>

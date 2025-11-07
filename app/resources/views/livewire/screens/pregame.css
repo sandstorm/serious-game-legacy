@@ -1,0 +1,46 @@
+.pregame {
+    padding: var(--spacing-200);
+
+    h1 {
+        display: block;
+        width: 100%;
+
+        text-align: center;
+    }
+}
+
+.pregame__select-name {
+    margin-top: var(--spacing-200);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-200);
+    justify-content: center;
+    align-items: center;
+}
+
+.pregame__select-lebensziel {
+    margin-top: var(--spacing-200);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-200);
+    justify-content: center;
+    align-items: center;
+
+    .lebensziel__phase-kompetenzen {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: var(--spacing-100);
+    }
+
+    .lebensziel__phase-kompetenzsteine {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-100);
+    }
+}
+
+.pregame__start {
+    margin-top: var(--spacing-300);
+    display: flex;
+    justify-content: center;
+}
