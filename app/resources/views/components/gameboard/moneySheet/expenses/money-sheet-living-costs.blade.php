@@ -53,7 +53,7 @@
     </div>
 
     <div class="tabs__lower-content taxes__actions">
-        @error('moneySheetLebenshaltungskostenForm.lebenshaltungskosten') <span class="form__error badge-with-background">{{ $message }}</span> @enderror
+        @error('moneySheetLebenshaltungskostenForm.lebenshaltungskosten') <span class="form-error badge-with-background">{{ $message }}</span> @enderror
         <x-form.submit :disabled="$this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled">Änderungen speichern</x-form.submit>
     </div>
 </form>

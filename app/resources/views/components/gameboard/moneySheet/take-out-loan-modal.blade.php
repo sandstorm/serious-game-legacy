@@ -39,10 +39,10 @@
                 </span>
             </div>
         </div>
-        <div class="form__group take-out-loan__amount">
+        <div class="form-group take-out-loan__amount">
             <label for="loanAmount">Kredithöhe</label>
             <x-form.textfield wire:model="takeOutALoanForm.loanAmount" id="loanAmount" name="loanAmount" type="number" min="1" />
-            @error('takeOutALoanForm.loanAmount') <span class="form__error">{{ $message }}</span> @enderror
+            @error('takeOutALoanForm.loanAmount') <span class="form-error">{{ $message }}</span> @enderror
             <p>
                 <strong>Kreditlimit: </strong> {!! LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->sumOfAllAssets, $this->takeOutALoanForm->salary, $this->takeOutALoanForm->obligations, $this->takeOutALoanForm->wasPlayerInsolventInThePast)->format() !!}
                 <br />
@@ -67,10 +67,10 @@
             </p>
         </div>
 
-        <div class="form__group take-out-loan__sum">
+        <div class="form-group take-out-loan__sum">
             <label for="totalRepayment">Rückzahlungssumme</label>
             <x-form.textfield wire:model="takeOutALoanForm.totalRepayment" id="totalRepayment" name="totalRepayment" type="number" min="1" step="0.01" />
-            @error('takeOutALoanForm.totalRepayment') <span class="form__error">{{ $message }}</span> @enderror
+            @error('takeOutALoanForm.totalRepayment') <span class="form-error">{{ $message }}</span> @enderror
             <p>
                 Rückzahlungssumme = <br />
                 <strong>Kreditsumme * (1 + Zinssatz / {{ Configuration::REPAYMENT_PERIOD }}).</strong><br />
@@ -78,10 +78,10 @@
             </p>
         </div>
 
-        <div class="form__group take-out-loan__repayment">
+        <div class="form-group take-out-loan__repayment">
             <label for="repaymentPerKonjunkturphase">Rückzahlung pro Runde</label>
             <x-form.textfield wire:model="takeOutALoanForm.repaymentPerKonjunkturphase" id="repaymentPerKonjunkturphase" name="repaymentPerKonjunkturphase" type="number" min="1" step="0.01" />
-            @error('takeOutALoanForm.repaymentPerKonjunkturphase') <span class="form__error">{{ $message }}</span> @enderror
+            @error('takeOutALoanForm.repaymentPerKonjunkturphase') <span class="form-error">{{ $message }}</span> @enderror
             <p>
                 Der Kredit wird innerhalb von <strong>{{ Configuration::REPAYMENT_PERIOD }}</strong> Jahren abbezahlt!
             </p>
@@ -89,7 +89,7 @@
 
         <div class="take-out-loan__actions">
             @if ($this->takeOutALoanForm->generalError)
-                <span class="form__error">{{ $this->takeOutALoanForm->generalError }}</span>
+                <span class="form-error">{{ $this->takeOutALoanForm->generalError }}</span>
             @endif
             <button type="button" class="button button--type-outline-primary" wire:click="closeTakeOutALoan()">
                 Abbrechen

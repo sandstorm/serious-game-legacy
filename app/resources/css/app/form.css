@@ -1,6 +1,8 @@
 form {
     label {
         line-height: inherit;
+        word-break: break-word;
+        hyphens: auto;
     }
 }
 
@@ -45,7 +47,7 @@ fieldset {
     }
 }
 
-.form__error {
+.form-error {
     color: var(--color-error);
 }
 

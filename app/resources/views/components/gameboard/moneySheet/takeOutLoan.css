@@ -11,6 +11,17 @@
     gap: var(--spacing-100);
 }
 
+@media (max-width: 600px) {
+    .take-out-loan {
+        grid-template-areas:
+        "info info info"
+        "amount sum repayment"
+        "action action action";
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+    }
+}
+
+
 .take-out-loan__info-box {
     grid-area: info;
     padding: var(--spacing-100);
@@ -24,6 +35,13 @@
     i {
         font-size: var(--font-size-xl);
         color: var(--color-grey);
+    }
+}
+
+@media (max-width: 600px) {
+    .take-out-loan__info-box {
+        flex-direction: row;
+        justify-content: space-between;
     }
 }
 
@@ -67,7 +85,7 @@
         padding-inline: var(--spacing-100);
     }
 
-    .form__error {
+    .form-error {
         display: block;
         padding-inline: var(--spacing-100);
         font-size: var(--font-size-sm);
