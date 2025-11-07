@@ -29,13 +29,6 @@
         <x-sidebar.sidebar :game-events="$this->getGameEvents()" :player-id="$myself" />
     </aside>
 
-    <div class="dev-bar">
-        <button type="button" class="button button--type-secondary" wire:click="showLog()">Log</button>
-        @if ($isLogVisible)
-            <x-gameboard.log/>
-        @endif
-    </div>
-
     <x-notification.notification/>
     <x-banner.banner/>
 
