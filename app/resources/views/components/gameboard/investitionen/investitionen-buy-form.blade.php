@@ -39,7 +39,7 @@
         </div>
     </x-form.submit>
 </form>
-@error('buyInvestmentsForm.amount') <span class="form__error">{{ $message }}</span> @enderror
+@error('buyInvestmentsForm.amount') <span class="form-error">{{ $message }}</span> @enderror
 
 <div class="investitionen-form__hints">
     <ul>

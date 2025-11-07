@@ -3,7 +3,7 @@
 ])
 
 <form class="insurances" wire:submit="setInsurances">
-    <fieldset class="tabs__upper-content form__group">
+    <fieldset class="tabs__upper-content form-group">
         <legend class="sr-only">Auswahl an Versicherungen: </legend>
         @foreach ($this->moneySheetInsurancesForm->insurances as $key => $insurance)
             <label @class(["switch", $this->getPlayerColorClass()])>

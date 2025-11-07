@@ -31,7 +31,7 @@
         </div>
     </div>
     <div class="tabs__lower-content taxes__actions">
-        @error('moneySheetSteuernUndAbgabenForm.steuernUndAbgaben') <span class="form__error badge-with-background">{{ $message }}</span> @enderror
+        @error('moneySheetSteuernUndAbgabenForm.steuernUndAbgaben') <span class="form-error badge-with-background">{{ $message }}</span> @enderror
         <x-form.submit :disabled="$this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled">Änderungen speichern</x-form.submit>
     </div>
 </form>

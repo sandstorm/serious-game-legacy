@@ -43,7 +43,7 @@
             @endif
         </x-form.submit>
     </form>
-    @error('sellInvestmentsForm.amount') <span class="form__error">{{ $message }}</span> @enderror
+    @error('sellInvestmentsForm.amount') <span class="form-error">{{ $message }}</span> @enderror
 @else
     <p>
         Du hast keine Anteile vom Typ {{ $this->sellInvestmentsForm->investmentId }}.

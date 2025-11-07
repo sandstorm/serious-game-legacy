@@ -21,8 +21,8 @@
                 <label class="form-group__label" for="password">Passwort</label>
                 <input class="form-group__input form__textfield" id="password" type="password" name="password" required>
             </div>
-            @error('soscisurveyId') <span class="form__error">{{ $message }}</span> @enderror
-            @error('password') <span class="form__error">{{ $message }}</span> @enderror
+            @error('soscisurveyId') <span class="form-error">{{ $message }}</span> @enderror
+            @error('password') <span class="form-error">{{ $message }}</span> @enderror
 
             <button type="submit" class="button button--type-primary">Anmelden</button>
         </form>

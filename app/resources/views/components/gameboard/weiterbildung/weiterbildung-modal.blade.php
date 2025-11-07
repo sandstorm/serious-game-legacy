@@ -51,7 +51,7 @@
                     </label>
                 @endforeach
             </div>
-            @error('weiterbildungForm.answer') <span class="form__error">{{ $message }}</span> @enderror
+            @error('weiterbildungForm.answer') <span class="form-error">{{ $message }}</span> @enderror
 
             <div class="weiterbildung__footer">
                 <div @class([
