@@ -1,4 +1,5 @@
-legacy-project.sandstorm.dev {
+legacy-project.sandstorm.dev,
+spiel.legacy-finanzbildung.de {
     log
 
     reverse_proxy laravel:8081
