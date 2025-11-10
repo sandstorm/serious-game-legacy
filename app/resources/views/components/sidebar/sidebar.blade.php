@@ -14,12 +14,16 @@
             <i class="icon-info" aria-hidden="true"></i>
         </button>
         <div class="sidebar__menu">
-            <button class="button button--type-secondary button--type-icon">
+            <button class="button button--type-secondary button--type-icon" wire:click="toggleSidebarMenu()">
                 <i class="icon-burger" aria-hidden="true"></i>
                 <span class="sr-only">Menü öffnen</span>
             </button>
         </div>
     </div>
+
+    @if ($this->isSidebarMenuVisible)
+        <x-sidebar.sidebar-menu-modal />
+    @endif
 
     <div class="sidebar__eventlog">
         <x-sidebar.event-log />
