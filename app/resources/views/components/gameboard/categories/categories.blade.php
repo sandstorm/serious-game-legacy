@@ -4,6 +4,7 @@
 
 <div class="categories">
     @foreach($categories as $category)
+        <span class="sr-only">{{ $category->title }}</span>
         <div class="category">
             <span class="sr-only">{{ $category->zeitsteine->ariaLabel }}</span>
             <ul class="zeitsteine">

@@ -33,6 +33,10 @@
         flex-shrink: 0;
     }
 
+    .zeitsteine__label-mobile {
+        margin-left: auto;
+    }
+
     > .button {
         padding: var(--spacing-50);
         padding-top: var(--spacing-25);
@@ -47,7 +51,10 @@
     }
 }
 
-.player-list__player.player-list__player--is-active {
+@media (max-width: 768px) {
+    .player-list__player .zeitsteine {
+        display: none;
+    }
 }
 
 .player-list__player-turn-indicator {

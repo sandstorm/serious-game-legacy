@@ -93,6 +93,14 @@
     transition: width 250ms ease-in, max-width 250ms ease-in;
 }
 
+@media (max-width: 768px) {
+    .modal__content {
+        padding: var(--spacing-100);
+        padding-top: var(--spacing-250);
+    }
+}
+
+
 .modal__header {
     flex-shrink: 0;
     display: flex;

@@ -28,7 +28,7 @@
                     </div>
                 @endif
                 <div class="lebensziel__phase-cost">
-                    <small>Phasenwechsel</small> <br />
+                    <small>Phasenwechsel</small>
                     <div>{!! $getCostForPhaseChange($phase->investitionen->value)->formatWithIcon() !!}</div>
                 </div>
 

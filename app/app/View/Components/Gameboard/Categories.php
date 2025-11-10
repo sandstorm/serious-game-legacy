@@ -100,6 +100,7 @@ class Categories extends Component
 
         return new Zeitsteine(
             ariaLabel: $usedSlots . ' von ' . $availableSlots . ' Zeitsteinen wurden platziert. ' . implode(', ', $ariaLabelsForPlayers),
+            mobileLabel: $usedSlots . '/' . $availableSlots,
             zeitsteine: $zeitsteine
         );
     }

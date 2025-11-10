@@ -116,6 +116,7 @@ class PlayerList extends Component
 
         return new Zeitsteine(
             ariaLabel: $playerName. ' hat noch ' . $availableZeitsteine . ' von ' . $initialZeitsteine . ' Zeitsteinen übrig.',
+            mobileLabel: $availableZeitsteine . '/' . $initialZeitsteine,
             zeitsteine: $zeitsteine
         );
     }

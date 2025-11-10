@@ -6,6 +6,20 @@
     padding-bottom: var(--spacing-100);
 }
 
+@media (max-width: 768px) {
+    .instant-actions {
+        gap: var(--spacing-100);
+    }
+}
+
+@media (max-width: 700px) {
+    .instant-actions {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-100);
+    }
+}
+
+
 .instant-action {
     .button {
         width: 100%;

@@ -33,6 +33,12 @@
     transform-origin: bottom left;
 }
 
+@media (max-width: 768px) {
+    .shadow-card-1, .shadow-card-2 {
+        display: none;
+    }
+}
+
 .shadow-card-1 {
     z-index: -1;
     transform: rotate(-4deg) scale(0.9) translateY(-3px);
