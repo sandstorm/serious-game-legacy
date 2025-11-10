@@ -19,3 +19,15 @@
         width: 100%;
     }
 }
+
+.zeitsteine__label-mobile {
+    display: none;
+    align-items: center;
+    gap: var(--spacing-50);
+}
+
+@media (max-width: 768px) {
+    .zeitsteine__label-mobile {
+        display: flex;
+    }
+}

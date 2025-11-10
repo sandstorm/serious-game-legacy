@@ -8,10 +8,12 @@ class Zeitsteine
 {
     /**
      * @param string $ariaLabel
+     * @param string $mobileLabel
      * @param ZeitsteinWithColor[] $zeitsteine
      */
     public function __construct(
         public string $ariaLabel,
+        public string $mobileLabel,
         public array $zeitsteine
     ) {
     }

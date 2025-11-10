@@ -9,8 +9,7 @@
 <div class="sidebar" x-data="{ eventLogOpen: false }" :class="eventLogOpen ? 'sidebar--event-log-open' : ''">
     <div class="sidebar__header">
         <button class="sidebar__lebensziel button button--type-text" title="Lebensziel anzeigen" wire:click="showPlayerLebensziel('{{ $playerId }}')">
-            <strong>Lebensziel:</strong>
-            {{ PlayerState::getLebenszielDefinitionForPlayer($gameEvents, $playerId)->name }}
+            <strong>Dein Lebensziel</strong>
             <i class="icon-info" aria-hidden="true"></i>
         </button>
         <div class="sidebar__menu">

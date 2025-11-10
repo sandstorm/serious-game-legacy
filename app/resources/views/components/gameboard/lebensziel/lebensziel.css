@@ -6,6 +6,13 @@
     gap: var(--spacing-100);
 }
 
+@media (max-width: 768px) {
+    .lebensziel__phasen {
+        grid-template-columns: 1fr;
+        padding: 0;
+    }
+}
+
 .lebensziel__phase {
     position: relative;
     z-index: 10;
@@ -56,6 +63,32 @@
     }
 }
 
+@media (max-width: 768px) {
+    .lebensziel__phase {
+        flex-direction: unset;
+        flex-wrap: wrap;
+        gap: var(--spacing-100);
+
+        .lebensziel__phase-switch {
+            right: 40px;
+            bottom: -33px;
+        }
+
+        &:last-of-type {
+            z-index: 5;
+
+            .lebensziel__phase-switch {
+                right: 40px;
+                bottom: 20px;
+            }
+        }
+
+        .lebensziel__phase-cost {
+            padding: 0;
+        }
+    }
+}
+
 .lebensziel__phase-kompetenzen {
     margin-bottom: auto;
 }
@@ -77,6 +110,19 @@
         display: inline-block;
         width: 100%;
         margin-bottom: var(--spacing-25);
+    }
+}
+
+@media (max-width: 768px) {
+    .lebensziel__phase-balance, .lebensziel__phase-cost {
+        width: auto;
+        margin-top: 0;
+        display: flex;
+        flex-direction: column;
+
+        > small {
+            width: auto;
+        }
     }
 }
 

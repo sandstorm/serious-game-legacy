@@ -41,7 +41,7 @@ trait HasGamePhase
             $konjunkturphasenId
         );
 
-        return view('livewire.screens.ingame', [
+        return view('livewire.screens.game', [
             'year' => GamePhaseState::currentKonjunkturphasenYear($this->getGameEvents()),
             'konjunkturphasenDefinition' => $konjunkturphasenDefinition,
         ]);
