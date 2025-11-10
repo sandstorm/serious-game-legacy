@@ -8,6 +8,7 @@ use App\Events\GameStateUpdated;
 use App\Livewire\Traits\HasBanner;
 use App\Livewire\Traits\HasCard;
 use App\Livewire\Traits\HasInsolvenz;
+use App\Livewire\Traits\HasSidebar;
 use App\Livewire\Traits\HasWeiterbildung;
 use App\Livewire\Traits\HasGamePhase;
 use App\Livewire\Traits\HasInvestitionen;
@@ -52,6 +53,7 @@ class GameUi extends Component
     use HasWeiterbildung;
     use HasBanner;
     use HasInsolvenz;
+    use HasSidebar;
 
     // injected from outside -> game-play.blade.php
     // Not the current player, but the player connected to THIS SESSION

@@ -3,7 +3,7 @@
 {{-- !!! Livewire components MUST have a single root element !!! --}}
 <div class="pregame">
     <header class="game-header">
-        <a class="button button--type-text" href={{route('game-play.index')}}>Zurück zur Übersicht</a>
+        <a href={{route('game-play.index')}}>Zurück zur Übersicht</a>
     </header>
 
     @if(!PreGameState::hasPlayerName($this->getGameEvents(), $myself))
