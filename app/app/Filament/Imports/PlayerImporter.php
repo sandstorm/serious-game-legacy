@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Filament\Imports;
@@ -18,12 +19,18 @@ class PlayerImporter extends Importer
         return [
             ImportColumn::make('email')
                 ->label('SoSciSurvey ID')
+                ->guess(['SoSciSurveyId'])
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
             ImportColumn::make('password')
                 ->label('Passwort')
                 ->requiredMapping()
-                ->rules(['required', 'max:255'])
+                ->rules(['required', 'max:255']),
+            ImportColumn::make('can_create_games')
+                ->label('Kann Spiele erstellen')
+                ->boolean()
+                ->requiredMapping()
+                ->rules(['required']),
         ];
     }
 
