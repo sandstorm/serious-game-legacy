@@ -11,6 +11,17 @@
     }
 }
 
+@media (max-width: 600px) {
+    .taxes {
+        flex-direction: column;
+
+        .form-group {
+            align-items: stretch;
+        }
+    }
+}
+
+
 .taxes__actions {
     display: flex;
     flex-direction: row;
@@ -24,5 +35,11 @@
         text-align: left;
         justify-content: flex-start;
         font-size: var(--font-size-sm);
+    }
+}
+
+@media (max-width: 600px) {
+    .taxes__actions {
+        align-items: center;
     }
 }

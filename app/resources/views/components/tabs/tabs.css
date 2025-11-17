@@ -5,12 +5,16 @@
 .tabs__list {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     width: 100%;
     padding: 0;
-    padding-left: 40px;
+    padding-left: var(--spacing-200);
     margin: 0;
 
     list-style: none;
+}
+
+@media (max-width: 600px) {
 }
 
 .tabs__list-item {
@@ -39,4 +43,14 @@
 
 .tabs__lower-content {
     padding: var(--spacing-200);
+}
+
+@media (max-width: 600px) {
+    .tabs__upper-content {
+        padding: var(--spacing-100);
+    }
+
+    .tabs__lower-content {
+        padding-inline: 0;
+    }
 }
