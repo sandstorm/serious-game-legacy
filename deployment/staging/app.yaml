@@ -42,8 +42,7 @@ spec:
     #- sandstorm-maps-api-key
 
   httpBasicPasswordProtection:
-    enabled: true
-    secretName: basic-auth
+    enabled: false
 
   healthChecks:
     readinessProbe:
