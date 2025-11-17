@@ -8,7 +8,13 @@
 }
 
 .konjunkturphase-summary-table__name-column {
-    padding-left: 20px;
+    padding-left: var(--spacing-150);
+}
+
+@media (max-width: 600px) {
+    .konjunkturphase-summary-table__name-column {
+        padding-left: var(--spacing-50);
+    }
 }
 
 .konjunkturphase-summary-table__value-column {

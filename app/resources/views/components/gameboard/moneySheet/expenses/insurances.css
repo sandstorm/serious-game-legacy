@@ -10,12 +10,27 @@
     }
 }
 
+@media (max-width: 600px) {
+    .insurances .form-group {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-100);
+    }
+}
+
+
 .insurances__actions {
     display: flex;
     flex-direction: row;
     gap: var(--spacing-200);
     align-items: flex-start;
     justify-content: flex-end;
+}
+
+@media (max-width: 600px) {
+    .insurances__actions {
+        flex-direction: column;
+        align-items: center;
+    }
 }
 
 .insurances__total-cost {

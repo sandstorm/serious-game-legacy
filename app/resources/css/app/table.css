@@ -1,6 +1,10 @@
 table {
+    display: block;
     width: 100%;
+
     border-collapse: collapse;
+    overflow-x: scroll;
+
     font-size: var(--font-size-base);
 
     th {

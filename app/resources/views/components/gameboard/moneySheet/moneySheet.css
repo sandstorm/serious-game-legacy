@@ -21,6 +21,21 @@
     }
 }
 
+@media (max-width: 768px) {
+    .moneysheet {
+        grid-template-areas:
+            "information"
+            "income"
+            "income-sum"
+            "expenses"
+            "expenses-sum"
+            "sum";
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+}
+
+
 .moneysheet__income {
     grid-area: income;
 }
@@ -96,6 +111,12 @@
     gap: var(--spacing-50);
 
     font-size: var(--font-size-xl);
+}
+
+@media (max-width: 768px) {
+    .moneysheet__sum .badge-with-background {
+        justify-content: flex-end;
+    }
 }
 
 .moneysheet__action-required {

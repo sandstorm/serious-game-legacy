@@ -4,9 +4,20 @@
 
 .loans__summary {
     display: flex;
+    align-items: flex-start;
     flex-direction: row;
     gap: var(--spacing-200);
 }
+
+@media (max-width: 600px) {
+    .loans__summary {
+        flex-direction: column;
+        padding-inline: 0;
+        align-items: center;
+        gap: var(--spacing-100);
+    }
+}
+
 
 .loans__summary-column {
     display: flex;
@@ -19,3 +30,5 @@
 
     }
 }
+
+
