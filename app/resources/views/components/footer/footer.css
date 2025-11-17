@@ -19,3 +19,14 @@
     padding-inline: var(--spacing-100);
     gap: var(--spacing-100);
 }
+
+
+@media (max-width: 768px) {
+    .game-footer {
+        position: relative;
+    }
+
+    .game-footer__content {
+        flex-direction: column;
+    }
+}

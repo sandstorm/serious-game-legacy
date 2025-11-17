@@ -1,4 +1,4 @@
-<x-layout :remove-padding="true">
+<x-layout>
     <x-slot:title>Anmelden</x-slot:title>
     <x-slot:footer>
         <x-footer.footer />
