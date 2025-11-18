@@ -73,7 +73,7 @@
     flex-direction: column;
     gap: var(--spacing-50);
 
-    label {
+    label, > strong {
         display: block;
         padding-inline: var(--spacing-100);
 
@@ -89,6 +89,17 @@
         display: block;
         padding-inline: var(--spacing-100);
         font-size: var(--font-size-sm);
+    }
+}
+
+.take-out-loan__sum,
+.take-out-loan__repayment {
+    span {
+        display: inline-flex;
+        align-items: center;
+        width: 100%;
+        height: var(--button-height);
+        padding-inline: var(--spacing-100);
     }
 }
 

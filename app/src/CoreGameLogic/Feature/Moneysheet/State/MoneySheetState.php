@@ -10,15 +10,12 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\InputResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\UpdatesInputForLebenshaltungskosten;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\UpdatesInputForLoan;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\UpdatesInputForSteuernUndAbgaben;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereEntered;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasCorrected;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasRepaidForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasRepaidForPlayerInCaseOfInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasTakenOutForPlayer;
@@ -144,17 +141,6 @@ class MoneySheetState
         return count($tries);
     }
 
-    public static function getNumberOfTriesForLoanInput(GameEvents $gameEvents, PlayerId $playerId, LoanId $loanId): int
-    {
-        $tries = $gameEvents->findAllOfType(LoanForPlayerWasEntered::class)
-            ->filter(fn(LoanForPlayerWasEntered $event) =>
-                $event->playerId->equals($playerId)
-                && $event->loanId->equals($loanId)
-            );
-
-        return count($tries);
-    }
-
     public static function getResultOfLastSteuernUndAbgabenInput(
         GameEvents $gameEvents,
         PlayerId $playerId
@@ -196,36 +182,6 @@ class MoneySheetState
         } // after this we know that the input was NOT successful
 
         if ($lastInputEventForPlayer instanceof LebenshaltungskostenForPlayerWereCorrected) {
-            // multiply resource change with -1 to get a positive value
-            return new InputResult(
-                false,
-                new MoneyAmount(-1 * $lastInputEventForPlayer->getResourceChanges($playerId)->guthabenChange->value)
-            );
-        }
-        throw new \RuntimeException("Unknown Event type " . $lastInputEventForPlayer::class);
-    }
-
-    public static function getResultOfLastLoanInput(
-        GameEvents $gameEvents,
-        PlayerId $playerId,
-        LoanId $loanId
-    ): InputResult {
-        $lastInputEventForPlayer = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof UpdatesInputForLoan
-                && $event->getPlayerId()->equals($playerId)
-                && $event->getLoanId()->equals($loanId)
-        );
-
-        if ($lastInputEventForPlayer === null) {
-            // No error message before first input
-            return new InputResult(wasSuccessful: true);
-        }
-
-        if ($lastInputEventForPlayer instanceof LoanForPlayerWasEntered) {
-            return new InputResult($lastInputEventForPlayer->wasInputCorrect());
-        } // after this we know that the input was NOT successful
-
-        if ($lastInputEventForPlayer instanceof LoanForPlayerWasCorrected) {
             // multiply resource change with -1 to get a positive value
             return new InputResult(
                 false,

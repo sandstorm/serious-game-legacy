@@ -281,34 +281,27 @@ trait HasMoneySheet
 
     public function takeOutALoan(): void
     {
-        $loanId = new LoanId($this->takeOutALoanForm->loanId);
+        $this->takeOutALoanForm->validate();
+
+        $takeOutLoanAktion = new TakeOutALoanForPlayerAktion($this->takeOutALoanForm->loanAmount);
+        $validationResult = $takeOutLoanAktion->validate($this->myself, $this->getGameEvents());
+        if (!$validationResult->canExecute) {
+            $this->showNotification(
+                $validationResult->reason,
+                NotificationTypeEnum::ERROR
+            );
+            return;
+        }
+
         $this->handleCommand(TakeOutALoanForPlayer::create(
             $this->myself,
-            $this->takeOutALoanForm
+            $this->takeOutALoanForm->loanAmount
         ));
 
-        $updatedEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        $resultOfLastInput = MoneySheetState::getResultOfLastLoanInput($updatedEvents, $this->myself, $loanId);
-
-        if (!$resultOfLastInput->wasSuccessful && $resultOfLastInput->fine->value > 0) {
-            $this->takeOutALoanForm->loanAmount = intval(min(
-                $this->takeOutALoanForm->loanAmount,
-                LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->sumOfAllAssets, $this->takeOutALoanForm->salary, $this->takeOutALoanForm->obligations, $this->takeOutALoanForm->wasPlayerInsolventInThePast)->value
-            ));
-            $this->takeOutALoanForm->totalRepayment = LoanCalculator::getCalculatedTotalRepayment($this->takeOutALoanForm->loanAmount, $this->takeOutALoanForm->zinssatz);
-            $this->takeOutALoanForm->repaymentPerKonjunkturphase = $this->takeOutALoanForm->getCalculatedRepaymentPerKonjunkturphase();
-
-            // reset old validation errors when correcting the input
-            $this->takeOutALoanForm->resetValidation();
-            $this->takeOutALoanForm->generalError = "Du hast falsche Werte für den Kredit eingegeben. Dir wurden {$resultOfLastInput->fine->value} € abgezogen. Wir haben die Werte für dich korrigiert.";
-        } elseif (!$resultOfLastInput->wasSuccessful) {
-            $this->takeOutALoanForm->generalError = "Du hast falsche Werte für den Kredit eingegeben.";
-        } else {
-            $this->takeOutALoanForm->resetValidation();
-            $loanAmount = new MoneyAmount($this->takeOutALoanForm->loanAmount ?? 0);
-            $this->showBanner("Du hast einen Kredit über {$loanAmount->formatWithoutHtml()} aufgenommen.");
-            $this->closeTakeOutALoan();
-        }
+        $this->takeOutALoanForm->resetValidation();
+        $loanAmount = new MoneyAmount($this->takeOutALoanForm->loanAmount ?? 0);
+        $this->showBanner("Du hast einen Kredit über {$loanAmount->formatWithoutHtml()} aufgenommen.");
+        $this->closeTakeOutALoan();
 
         $this->broadcastNotify();
     }
@@ -340,7 +333,6 @@ trait HasMoneySheet
     {
         $this->takeOutALoanForm->reset();
         $this->takeOutALoanForm->resetValidation();
-        $this->takeOutALoanForm->loanId = LoanId::unique()->value;
         $this->takeOutALoanForm->sumOfAllAssets = PlayerState::getTotalValueOfAllAssetsForPlayer($this->getGameEvents(), $this->myself)->value + PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->myself)->value;
         $this->takeOutALoanForm->salary = PlayerState::getCurrentGehaltForPlayer($this->getGameEvents(), $this->myself)->value;
         $this->takeOutALoanForm->zinssatz = KonjunkturphaseState::getCurrentKonjunkturphase($this->getGameEvents())->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->value;

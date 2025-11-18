@@ -5,7 +5,6 @@ use App\Livewire\Forms\TakeOutALoanForm;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
-use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
@@ -276,16 +275,13 @@ describe('FileInsolvenzForPlayer', function () {
         /** @var TakeOutALoanForm $takeoutLoanForm */
         $takeoutLoanForm = $takeoutLoanFormComponent->form;
         $takeoutLoanForm->loanAmount = $loanAmount;
-        $takeoutLoanForm->totalRepayment = 12500;
-        $takeoutLoanForm->repaymentPerKonjunkturphase = 625; // correct value
         $takeoutLoanForm->sumOfAllAssets = Configuration::STARTKAPITAL_VALUE;
-        $takeoutLoanForm->zinssatz = 5;
-        $takeoutLoanForm->loanId = LoanId::unique()->value;
+        $takeoutLoanForm->zinssatz = 4;
 
         // player 0 takes out a loan
         $this->handle(TakeOutALoanForPlayer::create(
             $this->players[0],
-            $takeoutLoanForm
+            $takeoutLoanForm->loanAmount
         ));
 
         $gameEvents = $this->getGameEvents();
@@ -295,7 +291,6 @@ describe('FileInsolvenzForPlayer', function () {
         expect($loanWasTakenOut->getResourceChanges($this->players[0])->guthabenChange)->toEqual(new MoneyAmount(10000))
             ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))
             ->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE + $loanAmount));
-        $loanId = $loanWasTakenOut->loanId;
 
         $initialGuthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->getPlayers()[0]);
         $cardsForTesting = [

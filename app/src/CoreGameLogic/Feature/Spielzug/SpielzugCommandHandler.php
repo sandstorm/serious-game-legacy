@@ -285,7 +285,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
     private function handleTakeOutALoanForPlayer(TakeOutALoanForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
     {
         $aktion = new TakeOutALoanForPlayerAktion(
-            $command->takeOutLoanForm
+            $command->loanAmount,
         );
         return $aktion->execute($command->playerId, $gameEvents);
     }
