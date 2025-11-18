@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Authorization;
 
+use App\Models\Course;
 use App\Models\User;
 use Illuminate\Auth\Access\Events\GateEvaluated;
 use Illuminate\Auth\Access\Response;
@@ -68,8 +69,7 @@ final class AppAuthorizer
     public function __construct(
         private readonly Connection $connection,
         private readonly Dispatcher $dispatcher,
-    ) {
-    }
+    ) {}
 
     /**
      * @param  string[][]  $objectAndOtherArguments
@@ -114,17 +114,27 @@ final class AppAuthorizer
         // //////////////////
         // Specific Roles
         // //////////////////
-        // for each role, specify the permissions here.
-        // if ($user->role_foo) {
-        //    switch ($objectGroup) {
-        //        case self::OBJECT_GROUP_STAMMDATEN:
-        //            // add new cases here if necessary to allow access
-        //            return Response::allow('role_foo');
-        //    }
-        //    // if needed, add more complex logic here
-        // }
+
+        if ($user->role_lehrperson) {
+            switch ($object) {
+                case Course::class:
+                    return $this->handleCoursePermissionsForLehrpersonRole($ability);
+            }
+        }
 
         return Response::deny('deny by default');
+    }
+
+    private function handleCoursePermissionsForLehrpersonRole(string $ability): Response
+    {
+        switch ($ability) {
+            case 'view':
+            case 'update':
+            case 'viewAny':
+            case 'reorder':
+                return Response::allow('role_lehrperson');
+        }
+        return Response::deny('not allowed for role_lehrperson');
     }
 
     private function logUnknownAbilitiesAndObjects(string $ability, string $object): void

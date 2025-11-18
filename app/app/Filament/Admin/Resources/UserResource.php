@@ -53,14 +53,16 @@ class UserResource extends Resource
                     ->afterStateHydrated(function (Forms\Components\TextInput $component, $state) {
                         $component->state('');
                     })
-                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                    ->dehydrated(fn ($state) => filled($state))
-                    ->required(fn (string $context): bool => $context === 'create'),
+                    ->dehydrateStateUsing(fn($state) => Hash::make($state))
+                    ->dehydrated(fn($state) => filled($state))
+                    ->required(fn(string $context): bool => $context === 'create'),
                 Forms\Components\DateTimePicker::make('email_verified_at')
                     ->disabled(),
                 Forms\Components\Toggle::make('role_superadmin')
                     ->required()
                     ->disabled($isLoggedInUser),
+                Forms\Components\Toggle::make('role_lehrperson')
+                    ->required(),
             ]);
     }
 
@@ -93,10 +95,12 @@ class UserResource extends Resource
                 Tables\Columns\IconColumn::make('role_superadmin')
                     ->boolean()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\IconColumn::make('role_lehrperson')
+                    ->label('Rolle Lehrperson')
+                    ->boolean()
+                    ->toggleable(),
             ])
-            ->filters([
-
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
