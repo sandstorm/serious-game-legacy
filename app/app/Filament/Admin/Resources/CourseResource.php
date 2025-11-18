@@ -8,6 +8,7 @@ use App\Filament\Admin\Resources\CourseResource\Pages;
 use App\Infolists\Components\GamesWithPlayers;
 use App\Infolists\Components\PlayerTable;
 use App\Models\Course;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\TextEntry;
@@ -15,6 +16,8 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Builder;
 
 class CourseResource extends Resource
 {
@@ -30,16 +33,41 @@ class CourseResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    /**
+     * Override the eloquent query for users with the role_lehrperson. They should only
+     * see their own courses.
+     * @return Builder<Course>
+     */
+    public static function getEloquentQuery(): Builder
+    {
+        /** @phpstan-ignore disallowed.function */
+        $user = request()->user();
+        if ($user !== null && $user->role_lehrperson) {
+            /** @phpstan-ignore argument.type */
+            return parent::getEloquentQuery()->where('teacher_id', '=', $user->id);
+        }
+        return parent::getEloquentQuery();
+    }
+
     public static function form(Form $form): Form
     {
+        $isSuperAdminUser = function (?Course $record, Authenticatable $loggedInUser) {
+            assert($loggedInUser instanceof User);
+
+            return $loggedInUser->role_superadmin;
+        };
+
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('teacher_id')
+                    ->label('Lehrer:in')
                     ->relationship('teacher', 'name')
-                    ->preload(),
+                    ->preload()
+                    // only admins can change the teacher, so no teacher can remove themselves from their own course
+                    ->visible($isSuperAdminUser),
                 Forms\Components\Select::make('players')
                     ->label('Spieler:innen')
                     // email = ScoSciSurvey-ID
@@ -63,7 +91,7 @@ class CourseResource extends Resource
                     ->searchable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('teacher.name')
-                    ->label('Lehrer')
+                    ->label('Lehrer:in')
                     ->searchable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('players_count')
@@ -90,7 +118,7 @@ class CourseResource extends Resource
         return $infolist
             ->schema([
                 TextEntry::make('name'),
-                TextEntry::make('teacher.name')->label('Lehrer'),
+                TextEntry::make('teacher.name')->label('Lehrer:in'),
                 PlayerTable::make('players')->label('Spieler:innen in diesem Kurs'),
                 GamesWithPlayers::make('games')->label('Spiele')
             ])->columns(2);
