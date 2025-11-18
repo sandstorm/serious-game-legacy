@@ -911,17 +911,13 @@ describe('getLoansForPlayer', function () {
         /** @var TakeOutALoanForm $takeoutLoanForm */
         $takeoutLoanForm = $takeoutLoanFormComponent->form;
         $takeoutLoanForm->loanAmount = 10000;
-        $takeoutLoanForm->totalRepayment = 12500;
-        $takeoutLoanForm->repaymentPerKonjunkturphase = 625;
         $takeoutLoanForm->sumOfAllAssets = Configuration::STARTKAPITAL_VALUE;
-        $takeoutLoanForm->zinssatz = 5;
-        $loanId = LoanId::unique();
-        $takeoutLoanForm->loanId = $loanId->value;
+        $takeoutLoanForm->zinssatz = 4;
 
         // player 0 takes out a loan
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
             $this->players[0],
-            $takeoutLoanForm
+            $takeoutLoanForm->loanAmount
         ));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -929,10 +925,9 @@ describe('getLoansForPlayer', function () {
 
         expect($loans)->toHaveCount(1)
             ->and($loans[0]->year->value)->toEqual(1)
-            ->and($loans[0]->loanId)->toEqual($loanId)
             ->and($loans[0]->loanData->loanAmount->value)->toEqual(10000)
-            ->and($loans[0]->loanData->totalRepayment->value)->toEqual(12500)
-            ->and($loans[0]->loanData->repaymentPerKonjunkturphase->value)->toEqual(625)
+            ->and($loans[0]->loanData->totalRepayment->value)->toEqual(12000)
+            ->and($loans[0]->loanData->repaymentPerKonjunkturphase->value)->toEqual(600)
             ->and(PlayerState::getGuthabenForPlayer(
                 $gameEvents,
                 $this->players[0]
@@ -1016,8 +1011,7 @@ describe('getOpenRatesForLoan', function () {
 
         $initialGuthaben = Configuration::STARTKAPITAL_VALUE;
         $loanAmount = 10000;
-        $repayment = 12500;
-        $rate = 625;
+        $rate = 600;
 
         $takeoutLoanFormComponent = new ComponentWithForm();
         $takeoutLoanFormComponent->mount(TakeOutALoanForm::class);
@@ -1025,16 +1019,13 @@ describe('getOpenRatesForLoan', function () {
         /** @var TakeOutALoanForm $takeoutLoanForm */
         $takeoutLoanForm = $takeoutLoanFormComponent->form;
         $takeoutLoanForm->loanAmount = $loanAmount;
-        $takeoutLoanForm->totalRepayment = $repayment;
-        $takeoutLoanForm->repaymentPerKonjunkturphase = $rate;
         $takeoutLoanForm->sumOfAllAssets = $initialGuthaben;
-        $takeoutLoanForm->zinssatz = 5;
-        $takeoutLoanForm->loanId = LoanId::unique()->value;
+        $takeoutLoanForm->zinssatz = 4;
 
         // player 0 takes out a loan
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
             $this->players[0],
-            $takeoutLoanForm
+            $takeoutLoanForm->loanAmount
         ));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -1115,20 +1106,17 @@ describe("getAnnualExpensesForPlayer", function () {
         /** @var TakeOutALoanForm $takeoutLoanForm */
         $takeoutLoanForm = $takeoutLoanFormComponent->form;
         $takeoutLoanForm->loanAmount = 10000;
-        $takeoutLoanForm->totalRepayment = 12500;
-        $takeoutLoanForm->repaymentPerKonjunkturphase = 625;
         $takeoutLoanForm->sumOfAllAssets = Configuration::STARTKAPITAL_VALUE;
-        $takeoutLoanForm->zinssatz = 5;
-        $takeoutLoanForm->loanId = LoanId::unique()->value;
+        $takeoutLoanForm->zinssatz = 4;
 
         // player 0 takes out a loan
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
             $this->players[0],
-            $takeoutLoanForm
+            $takeoutLoanForm->loanAmount
         ));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        $expectedAnnualExpenses = Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE + 625; // 5000 Lebenshaltungskosten + 625 loan repayment
+        $expectedAnnualExpenses = Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE + 600; // 5000 Lebenshaltungskosten + 600 loan repayment
         expect(MoneySheetState::getAnnualExpensesForPlayer(
             $gameEvents,
             $this->players[0]
@@ -1136,18 +1124,15 @@ describe("getAnnualExpensesForPlayer", function () {
 
         // player 0 takes out a second loan
         $takeoutLoanForm->loanAmount = 1000;
-        $takeoutLoanForm->totalRepayment = 1250;
-        $takeoutLoanForm->repaymentPerKonjunkturphase = 62.5;
-        $takeoutLoanForm->loanId = LoanId::unique()->value;
 
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
             $this->players[0],
-            $takeoutLoanForm
+            $takeoutLoanForm->loanAmount
         ));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
-        $expectedAnnualExpenses += 62.5; // add second loan repayment
+        $expectedAnnualExpenses += 60; // add second loan repayment
         expect(MoneySheetState::getAnnualExpensesForPlayer(
             $gameEvents,
             $this->players[0]

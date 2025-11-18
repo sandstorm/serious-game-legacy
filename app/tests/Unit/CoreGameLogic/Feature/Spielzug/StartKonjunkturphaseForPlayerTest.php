@@ -399,22 +399,19 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
         /** @var TakeOutALoanForm $takeoutLoanForm */
         $takeoutLoanForm = $takeoutLoanFormComponent->form;
         $takeoutLoanForm->loanAmount = 10000;
-        $takeoutLoanForm->totalRepayment = 12500;
-        $takeoutLoanForm->repaymentPerKonjunkturphase = 625;
         $takeoutLoanForm->sumOfAllAssets = Configuration::STARTKAPITAL_VALUE;
-        $takeoutLoanForm->zinssatz = 5;
-        $takeoutLoanForm->loanId = LoanId::unique()->value;
+        $takeoutLoanForm->zinssatz = 4;
 
         // player 0 takes out a loan
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
             $this->players[0],
-            $takeoutLoanForm
+            $takeoutLoanForm->loanAmount
         ));
 
         // player 0 takes out another loan
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
             $this->players[0],
-            $takeoutLoanForm
+            $takeoutLoanForm->loanAmount
         ));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);

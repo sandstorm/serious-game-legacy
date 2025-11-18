@@ -23,12 +23,25 @@ class LoanCalculator
         }
     }
 
+    /**
+     * !! Important we use the logic of this method inside take-out-loan-modal-blade.php as well. If you change something here, change it there too !!
+     *
+     * @param float $loanAmount
+     * @param float $zinssatz
+     * @return float
+     */
     public static function getCalculatedTotalRepayment(float $loanAmount, float $zinssatz): float
     {
-        $repaymentPeriod = Configuration::REPAYMENT_PERIOD;
-        return round($loanAmount * (1 + $zinssatz / $repaymentPeriod), 2);
+        return round($loanAmount * (1 + $zinssatz / Configuration::REPAYMENT_PERIOD), 2);
     }
 
+    /**
+     * !! Important we use the logic of this method inside take-out-loan-modal-blade.php as well. If you change something here, change it there too !!
+     *
+     * @param float $loanAmount
+     * @param float $zinssatz
+     * @return float
+     */
     public static function getCalculatedRepaymentPerKonjunkturphase(float $loanAmount, float $zinssatz): float
     {
         return round(self::getCalculatedTotalRepayment($loanAmount, $zinssatz) / Configuration::REPAYMENT_PERIOD, 2);

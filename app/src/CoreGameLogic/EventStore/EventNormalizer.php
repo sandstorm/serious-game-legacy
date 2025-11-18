@@ -107,8 +107,6 @@ final readonly class EventNormalizer
             LebenshaltungskostenForPlayerWereEntered::class,
             LebenszielphaseWasChanged::class,
             LebenszielWasSelected::class,
-            LoanForPlayerWasCorrected::class,
-            LoanForPlayerWasEntered::class,
             LoanWasRepaidForPlayer::class,
             LoanWasRepaidForPlayerInCaseOfInsolvenz::class,
             LoanWasTakenOutForPlayer::class,

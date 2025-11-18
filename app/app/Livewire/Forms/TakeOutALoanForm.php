@@ -11,17 +11,10 @@ use Livewire\Form;
 
 class TakeOutALoanForm extends Form
 {
-    public string $loanId = '';
-    public string $generalError = '';
-
     #[Validate]
     public ?int $loanAmount = 0;
 
-    #[Validate]
-    public ?float $totalRepayment = 0;
-
-    #[Validate]
-    public ?float $repaymentPerKonjunkturphase = 0;
+    public float $repaymentPeriod = Configuration::REPAYMENT_PERIOD;
 
     // public properties needed for validation
     public float $sumOfAllAssets = 0;
@@ -37,7 +30,6 @@ class TakeOutALoanForm extends Form
      */
     protected function rules(): array
     {
-        $repaymentPeriod = Configuration::REPAYMENT_PERIOD;
         return [
             'loanAmount' => [
                 'required',
@@ -48,43 +40,7 @@ class TakeOutALoanForm extends Form
                         $fail("Du kannst keinen Kredit aufnehmen, der höher ist als das Kreditlimit.");
                     }
                 }
-            ],
-            'totalRepayment' => [
-                'required',
-                'numeric',
-                function ($attribute, $value, $fail) use ($repaymentPeriod) {
-                    /** @phpstan-ignore argument.type, argument.type */
-                    if (!LoanCalculator::equals($this->totalRepayment, LoanCalculator::getCalculatedTotalRepayment($this->loanAmount, $this->zinssatz))) {
-                        $fail("Die Rückzahlung muss dem Kreditbetrag multipliziert mit dem Zinssatz geteilt durch $repaymentPeriod entsprechen.");
-                    }
-                }
-            ],
-            'repaymentPerKonjunkturphase' => [
-                'required',
-                'numeric',
-                function ($attribute, $value, $fail) use ($repaymentPeriod) {
-                    /** @phpstan-ignore argument.type, argument.type */
-                    if (!LoanCalculator::equals($this->repaymentPerKonjunkturphase, LoanCalculator::getCalculatedRepaymentPerKonjunkturphase($this->loanAmount, $this->zinssatz))) {
-                        $fail("Die Rückzahlung pro Runde muss der Rückzahlungssumme geteilt durch $repaymentPeriod entsprechen.");
-                    }
-                }
-            ],
+            ]
         ];
-    }
-
-    /**
-     * @param mixed $field
-     * @return void
-     */
-    public function resetValidation(mixed $field = null): void
-    {
-        parent::resetValidation($field);
-        $this->generalError = '';
-    }
-
-
-    public function getCalculatedRepaymentPerKonjunkturphase(): float
-    {
-        return LoanCalculator::getCalculatedRepaymentPerKonjunkturphase($this->loanAmount ?? 0, $this->zinssatz);
     }
 }

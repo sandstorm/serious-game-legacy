@@ -14,7 +14,6 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
-use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
