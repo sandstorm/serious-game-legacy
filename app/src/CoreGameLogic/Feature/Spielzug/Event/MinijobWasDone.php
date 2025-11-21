@@ -80,8 +80,8 @@ final readonly class MinijobWasDone implements GameEventInterface, ProvidesResou
     {
         $cardDefinition = CardFinder::getInstance()->getCardById($this->minijobCardId, MinijobCardDefinition::class);
         return new LogEntry(
-            playerId: $this->playerId,
             text: "macht Minijob '" . $cardDefinition->getTitle() . "'",
+            playerId: $this->playerId,
             resourceChanges: $this->resourceChanges,
         );
     }

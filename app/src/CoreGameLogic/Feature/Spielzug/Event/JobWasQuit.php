@@ -37,8 +37,8 @@ final readonly class JobWasQuit implements GameEventInterface, Loggable
     public function getLogEntry(): LogEntry
     {
         return new LogEntry(
-            playerId: $this->playerId,
             text: "ist jetzt arbeitslos",
+            playerId: $this->playerId,
         );
     }
 }

@@ -26,8 +26,7 @@ final readonly class BerufsunfaehigkeitsversicherungWasActivated implements Game
         public PlayerId $playerId,
         public Year $year,
         public MoneyAmount $gehalt,
-    ) {
-    }
+    ) {}
 
     public static function fromArray(array $values): GameEventInterface
     {
@@ -50,8 +49,8 @@ final readonly class BerufsunfaehigkeitsversicherungWasActivated implements Game
     public function getLogEntry(): LogEntry
     {
         return new LogEntry(
+            text: "bekommt zum Jahresende " . $this->gehalt->value . " € von der Berufsunfähigkeitsversicherung",
             playerId: $this->playerId,
-            text: "bekommt zum Jahresende " . $this->gehalt->value . " € von der Berufsunfähigkeitsversicherung"
         );
     }
 }

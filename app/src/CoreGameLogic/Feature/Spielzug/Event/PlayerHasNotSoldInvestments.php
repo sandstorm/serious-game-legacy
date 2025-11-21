@@ -42,8 +42,8 @@ class PlayerHasNotSoldInvestments implements GameEventInterface, CommandInterfac
     public function getLogEntry(): LogEntry
     {
         return new LogEntry(
-            playerId: $this->playerId,
             text: "verkauft keine Investitionen",
+            playerId: $this->playerId,
         );
     }
 }

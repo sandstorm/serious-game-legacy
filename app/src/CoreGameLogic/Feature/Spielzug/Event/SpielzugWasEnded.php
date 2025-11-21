@@ -57,8 +57,8 @@ final readonly class SpielzugWasEnded implements GameEventInterface, Loggable, P
             : "beendet den Spielzug";
 
         return new LogEntry(
+            text: $text,
             playerId: $this->playerId,
-            text: $text
         );
     }
 

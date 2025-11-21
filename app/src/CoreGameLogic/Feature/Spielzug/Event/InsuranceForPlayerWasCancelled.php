@@ -43,8 +43,8 @@ final readonly class InsuranceForPlayerWasCancelled implements GameEventInterfac
     public function getLogEntry(): LogEntry
     {
         return new LogEntry(
-            playerId: $this->playerId,
             text: "kündigt '" . InsuranceFinder::getInstance()->findInsuranceById($this->insuranceId)->description . "'",
+            playerId: $this->playerId,
             resourceChanges: $this->resourceChanges,
         );
     }

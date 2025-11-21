@@ -54,8 +54,8 @@ final readonly class EreignisProfitWasReducedBecauseOfInsolvenz implements GameE
     public function getLogEntry(): LogEntry
     {
         return new LogEntry(
-            playerId: $this->playerId,
             text: "zahlt Insolvenzabgaben",
+            playerId: $this->playerId,
             resourceChanges: $this->resourceChanges,
         );
     }

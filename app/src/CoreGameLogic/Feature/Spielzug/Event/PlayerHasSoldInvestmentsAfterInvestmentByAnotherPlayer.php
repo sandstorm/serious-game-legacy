@@ -82,8 +82,8 @@ class PlayerHasSoldInvestmentsAfterInvestmentByAnotherPlayer implements GameEven
     public function getLogEntry(): LogEntry
     {
         return new LogEntry(
-            playerId: $this->playerId,
             text: "Verkauft " . $this->amount . " Anteile von '" . $this->investmentId->value . "' für " . $this->price->formatWithoutHtml(),
+            playerId: $this->playerId,
             resourceChanges: $this->resourceChanges,
         );
     }

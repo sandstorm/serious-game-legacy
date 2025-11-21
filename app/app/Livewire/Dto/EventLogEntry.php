@@ -9,9 +9,9 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 class EventLogEntry
 {
     public function __construct(
-        public string $playerName,
         public string $text,
-        public string $colorClass,
+        public ?string $colorClass = null,
+        public ?string $playerName = null,
         public ?ResourceChanges $resourceChanges = null,
     ) {}
 }

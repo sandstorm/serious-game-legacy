@@ -55,8 +55,8 @@ final readonly class PlayerHasFinishedLebensziel implements GameEventInterface, 
     public function getLogEntry(): LogEntry
     {
         return new LogEntry(
-            playerId: $this->playerId,
             text: "erreicht Lebensziel '" . $this->lebenszielName . "'",
+            playerId: $this->playerId,
             resourceChanges: $this->resourceChanges,
         );
     }

@@ -106,8 +106,8 @@ final readonly class EreignisWasTriggered implements ProvidesModifiers, Provides
     {
         $cardDefinition = CardFinder::getInstance()->getCardById($this->ereignisCardId, EreignisCardDefinition::class);
         return new LogEntry(
-            playerId: $this->playerId,
             text: "zieht Ereignis '" . $cardDefinition->getTitle() . "'",
+            playerId: $this->playerId,
             resourceChanges: $this->resourceChanges,
         );
     }

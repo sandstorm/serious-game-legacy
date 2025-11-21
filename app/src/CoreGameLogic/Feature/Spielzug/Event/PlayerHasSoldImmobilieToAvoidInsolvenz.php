@@ -73,8 +73,8 @@ class PlayerHasSoldImmobilieToAvoidInsolvenz implements GameEventInterface, Prov
     {
         $kaufpreis = CardFinder::getInstance()->getCardById($this->getCardId(), ImmobilienCardDefinition::class)->getPurchasePrice();
         return new LogEntry(
-            playerId: $this->playerId,
             text: "Verkauft Immobilie (Kaufpreis: {$kaufpreis->formatWithoutHtml()})",
+            playerId: $this->playerId,
             resourceChanges: $this->resourceChanges,
         );
     }

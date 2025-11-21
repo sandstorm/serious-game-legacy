@@ -17,10 +17,17 @@
     <ul class="event-log__entries" id="event-log-entries" aria-labelledby="event-log-trigger">
         @forelse(array_reverse($this->getLogEntriesForPlayerLog()) as $logEntry)
             <li class="event-log__entry">
-                <strong @class(["event-log__entry-player-name", $logEntry->colorClass])>{{$logEntry->playerName}}</strong>
+                @if ($logEntry->playerName && $logEntry->colorClass)
+                    <strong @class(["event-log__entry-player-name", $logEntry->colorClass])>{{$logEntry->playerName}}</strong>
+                @else
+                    <strong>
+                @endif
                 <span class="event-log__entry-text">
                     {{ $logEntry->text }}
                 </span>
+                @if ($logEntry->playerName === null || $logEntry->colorClass === null)
+                    </strong>
+                @endif
                 @if($logEntry->resourceChanges !== null)
                     <x-gameboard.resourceChanges.resource-changes :resource-changes="$logEntry->resourceChanges" style-class="horizontal" />
                 @endif

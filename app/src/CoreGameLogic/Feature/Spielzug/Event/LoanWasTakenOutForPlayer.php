@@ -58,8 +58,8 @@ class LoanWasTakenOutForPlayer implements GameEventInterface, ProvidesResourceCh
     public function getLogEntry(): LogEntry
     {
         return new LogEntry(
-            playerId: $this->playerId,
             text: "nimmt einen Kredit auf",
+            playerId: $this->playerId,
             resourceChanges: $this->getResourceChanges($this->playerId),
         );
     }

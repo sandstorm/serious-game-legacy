@@ -99,8 +99,8 @@ class PlayerHasBoughtImmobilie implements GameEventInterface, ProvidesResourceCh
     public function getLogEntry(): LogEntry
     {
         return new LogEntry(
-            playerId: $this->playerId,
             text: "Kauft Immobilie",
+            playerId: $this->playerId,
             resourceChanges: $this->resourceChanges,
         );
     }

@@ -38,8 +38,8 @@ final readonly class CardWasPutBackOnTopOfPile implements GameEventInterface, Lo
     public function getLogEntry(): LogEntry
     {
         return new LogEntry(
+            text: "kann die nächste Karte nicht spielen",
             playerId: $this->playerId,
-            text: "kann die nächste Karte nicht spielen"
         );
     }
 }

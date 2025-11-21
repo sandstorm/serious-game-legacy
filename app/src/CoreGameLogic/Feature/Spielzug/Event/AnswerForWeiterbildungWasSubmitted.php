@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
@@ -19,15 +20,13 @@ final readonly class AnswerForWeiterbildungWasSubmitted implements GameEventInte
         public CardId          $cardId,
         public AnswerId        $selectedAnswerId,
         public bool            $wasCorrect,
-    )
-    {
-    }
+    ) {}
 
     public static function fromArray(array $values): GameEventInterface
     {
         return new self(
             playerId: PlayerId::fromString($values['playerId']),
-            cardId:  CardId::fromString($values['cardId']),
+            cardId: CardId::fromString($values['cardId']),
             selectedAnswerId: AnswerId::fromString($values['selectedAnswerId']),
             wasCorrect: $values['wasCorrect'],
         );
@@ -59,8 +58,8 @@ final readonly class AnswerForWeiterbildungWasSubmitted implements GameEventInte
     public function getLogEntry(): LogEntry
     {
         return new LogEntry(
-            playerId: $this->playerId,
             text: "hat die Weiterbildung " . ($this->wasCorrect ? "richtig" : "falsch") . " beantwortet",
+            playerId: $this->playerId,
             resourceChanges: $this->getResourceChanges($this->playerId),
         );
     }

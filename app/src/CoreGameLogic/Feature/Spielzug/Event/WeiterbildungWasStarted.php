@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
@@ -30,9 +31,7 @@ final readonly class WeiterbildungWasStarted implements GameEventInterface, Prov
         public CardId          $weiterbildungCardId,
         public ResourceChanges $resourceChanges,
         public array           $shuffeldAnswerOptions
-    )
-    {
-    }
+    ) {}
 
     public static function fromArray(array $values): GameEventInterface
     {
@@ -85,8 +84,8 @@ final readonly class WeiterbildungWasStarted implements GameEventInterface, Prov
     public function getLogEntry(): LogEntry
     {
         return new LogEntry(
-            playerId: $this->playerId,
             text: "macht eine Weiterbildung",
+            playerId: $this->playerId,
             resourceChanges: $this->resourceChanges,
         );
     }

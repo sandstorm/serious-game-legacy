@@ -56,8 +56,8 @@ final readonly class LebenszielphaseWasChanged implements GameEventInterface, Pr
     public function getLogEntry(): LogEntry
     {
         return new LogEntry(
-            playerId: $this->playerId,
             text: "wechselt zu Lebenszielphase '" . $this->currentPhase->value . "'",
+            playerId: $this->playerId,
             resourceChanges: $this->resourceChanges,
         );
     }
