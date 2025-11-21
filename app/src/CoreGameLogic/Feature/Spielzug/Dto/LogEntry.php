@@ -10,11 +10,10 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 final readonly class LogEntry
 {
     public function __construct(
-        private PlayerId $playerId,
         private string $text,
+        private ?PlayerId $playerId = null,
         private ?ResourceChanges $resourceChanges = null,
-    ) {
-    }
+    ) {}
 
 
     /**
@@ -24,8 +23,8 @@ final readonly class LogEntry
     public static function fromArray(array $values): self
     {
         return new self(
-            playerId: PlayerId::fromString($values['playerId']),
             text: $values['text'],
+            playerId: PlayerId::fromString($values['playerId']),
             resourceChanges: ResourceChanges::fromArray($values['resourceChanges'])
         );
     }
@@ -42,7 +41,7 @@ final readonly class LogEntry
         ];
     }
 
-    public function getPlayerId(): PlayerId
+    public function getPlayerId(): PlayerId|null
     {
         return $this->playerId;
     }

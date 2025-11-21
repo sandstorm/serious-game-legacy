@@ -84,8 +84,8 @@ class PlayerHasSoldInvestment implements GameEventInterface, ZeitsteinAktion, Pr
     public function getLogEntry(): LogEntry
     {
         return new LogEntry(
-            playerId: $this->playerId,
             text: "Verkauft " . $this->amount . " Anteile von '" . $this->investmentId->value . "' für " . $this->price->formatWithoutHtml(),
+            playerId: $this->playerId,
             resourceChanges: $this->resourceChanges,
         );
     }

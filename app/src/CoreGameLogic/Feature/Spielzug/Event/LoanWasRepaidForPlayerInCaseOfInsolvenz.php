@@ -38,8 +38,8 @@ class LoanWasRepaidForPlayerInCaseOfInsolvenz implements GameEventInterface, Log
     public function getLogEntry(): LogEntry
     {
         return new LogEntry(
-            playerId: $this->playerId,
             text: "bekommt Kredit von Insolvenzverwaltung getilgt",
+            playerId: $this->playerId,
         );
     }
 }

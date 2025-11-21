@@ -28,8 +28,7 @@ final readonly class CardWasActivated implements ZeitsteinAktion, ProvidesResour
         public CardId          $cardId,
         public ResourceChanges $resourceChanges,
         public int             $numberOfZeitsteinslotsUsed,
-    ) {
-    }
+    ) {}
 
     public function getResourceChanges(PlayerId $playerId): ResourceChanges
     {
@@ -86,8 +85,8 @@ final readonly class CardWasActivated implements ZeitsteinAktion, ProvidesResour
         /** @var KategorieCardDefinition $cardDefinition */
         $cardDefinition = CardFinder::getInstance()->getCardById($this->cardId);
         return new LogEntry(
-            playerId: $this->playerId,
             text: "spielt Karte '" . $cardDefinition->getTitle() . "'",
+            playerId: $this->playerId,
             resourceChanges: $this->resourceChanges,
         );
     }

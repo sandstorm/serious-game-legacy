@@ -92,8 +92,8 @@ class PlayerHasSoldImmobilie implements GameEventInterface, ProvidesResourceChan
     {
         $kaufpreis = CardFinder::getInstance()->getCardById($this->cardId, ImmobilienCardDefinition::class)->getPurchasePrice();
         return new LogEntry(
-            playerId: $this->playerId,
             text: "Verkauft Immobilie (Kaufpreis: {$kaufpreis->formatWithoutHtml()})",
+            playerId: $this->playerId,
             resourceChanges: $this->resourceChanges,
         );
     }

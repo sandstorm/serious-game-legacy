@@ -9,6 +9,8 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\ImmobilienPrice;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\InvestmentPrice;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesImmobilienPriceChanges;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\ProvidesInvestmentPriceChanges;
+use Domain\CoreGameLogic\Feature\Spielzug\Dto\LogEntry;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\Loggable;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
 use Domain\CoreGameLogic\Feature\Spielzug\Modifier\ModifierBuilder;
 use Domain\CoreGameLogic\Feature\Spielzug\Modifier\ModifierCollection;
@@ -19,7 +21,7 @@ use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 
-final readonly class KonjunkturphaseWasChanged implements GameEventInterface, ProvidesInvestmentPriceChanges, ProvidesModifiers, ProvidesImmobilienPriceChanges
+final readonly class KonjunkturphaseWasChanged implements GameEventInterface, ProvidesInvestmentPriceChanges, ProvidesModifiers, ProvidesImmobilienPriceChanges, Loggable
 {
     /**
      * @param InvestmentPrice[] $investmentPrices
@@ -31,8 +33,7 @@ final readonly class KonjunkturphaseWasChanged implements GameEventInterface, Pr
         public KonjunkturphaseTypeEnum $type,
         public array $investmentPrices,
         public array $immobilienPrices
-    ) {
-    }
+    ) {}
 
     public static function fromArray(array $values): GameEventInterface
     {
@@ -105,5 +106,13 @@ final readonly class KonjunkturphaseWasChanged implements GameEventInterface, Pr
     public function getImmobilienPrices(): array
     {
         return $this->immobilienPrices;
+    }
+
+    public function getLogEntry(): LogEntry
+    {
+        $konjunkturphaseName = KonjunkturphaseFinder::findKonjunkturphaseById($this->id)->name;
+        return new LogEntry(
+            text: "Eine neue Konjunkturphase '" . $konjunkturphaseName .  "' beginnt.",
+        );
     }
 }

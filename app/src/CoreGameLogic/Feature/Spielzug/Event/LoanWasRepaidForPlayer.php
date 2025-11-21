@@ -51,8 +51,8 @@ class LoanWasRepaidForPlayer implements GameEventInterface, ProvidesResourceChan
     public function getLogEntry(): LogEntry
     {
         return new LogEntry(
-            playerId: $this->playerId,
             text: "tilgt Kredit",
+            playerId: $this->playerId,
             resourceChanges: $this->getResourceChanges($this->playerId),
         );
     }

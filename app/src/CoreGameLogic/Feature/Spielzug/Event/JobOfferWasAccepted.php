@@ -101,8 +101,8 @@ final readonly class JobOfferWasAccepted implements GameEventInterface, Provides
     {
         $cardDefinition = CardFinder::getInstance()->getCardById($this->cardId);
         return new LogEntry(
-            playerId: $this->playerId,
             text: "nimmt Job '" . $cardDefinition->getTitle() . "' an",
+            playerId: $this->playerId,
             resourceChanges: $this->resourceChanges,
         );
     }

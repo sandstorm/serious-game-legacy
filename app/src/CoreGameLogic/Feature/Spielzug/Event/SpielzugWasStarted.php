@@ -37,8 +37,8 @@ final readonly class SpielzugWasStarted implements GameEventInterface, Loggable
     public function getLogEntry(): LogEntry
     {
         return new LogEntry(
+            text: "ist jetzt dran",
             playerId: $this->playerId,
-            text: "ist jetzt dran"
         );
     }
 }

@@ -81,8 +81,8 @@ final readonly class CardWasSkipped implements ZeitsteinAktion, DrawsCard, GameE
         /** @var KategorieCardDefinition $cardDefinition */
         $cardDefinition = CardFinder::getInstance()->getCardById($this->cardId);
         return new LogEntry(
-            playerId: $this->playerId,
             text: "skippt Karte '" . $cardDefinition->getTitle() . "'",
+            playerId: $this->playerId,
             resourceChanges: $this->resourceChanges,
         );
     }

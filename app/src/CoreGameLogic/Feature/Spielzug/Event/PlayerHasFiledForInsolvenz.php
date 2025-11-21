@@ -47,8 +47,8 @@ final readonly class PlayerHasFiledForInsolvenz implements GameEventInterface, L
     public function getLogEntry(): LogEntry
     {
         return new LogEntry(
-            playerId: $this->playerId,
             text: "hat Insolvenz angemeldet",
+            playerId: $this->playerId,
             resourceChanges: $this->resourceChanges,
         );
     }

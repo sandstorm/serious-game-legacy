@@ -93,8 +93,8 @@ class PlayerHasBoughtInvestment implements GameEventInterface, ProvidesResourceC
     public function getLogEntry(): LogEntry
     {
         return new LogEntry(
-            playerId: $this->playerId,
             text: "Investiert in '" . $this->investmentId->value . "' und kauft " . $this->amount . " Anteile zum Preis von " . $this->price->formatWithoutHtml(),
+            playerId: $this->playerId,
             resourceChanges: $this->resourceChanges,
         );
     }
