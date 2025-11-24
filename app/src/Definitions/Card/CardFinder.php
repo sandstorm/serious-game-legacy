@@ -7765,8 +7765,8 @@ final class CardFinder
                     ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
                 ],
                 modifierParameters: new ModifierParameters(
+                    modifyAdditionalLebenshaltungskostenPercentage:10,
                     modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
-                    modifyLebenshaltungskostenMultiplier: 10,
                 ),
                 ereignisRequirementIds: [
                 ],
@@ -7788,8 +7788,8 @@ final class CardFinder
                     ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
                 ],
                 modifierParameters: new ModifierParameters(
+                    modifyAdditionalLebenshaltungskostenPercentage:10,
                     modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
-                    modifyLebenshaltungskostenMultiplier: 10,
                 ),
                 ereignisRequirementIds: [
                 ],
@@ -8432,8 +8432,8 @@ final class CardFinder
                     ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
                 ],
                 modifierParameters: new ModifierParameters(
+                    modifyAdditionalLebenshaltungskostenPercentage:10,
                     modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
-                    modifyLebenshaltungskostenMultiplier: 10,
                 ),
                 ereignisRequirementIds: [
                 ],
@@ -8455,8 +8455,8 @@ final class CardFinder
                     ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
                 ],
                 modifierParameters: new ModifierParameters(
+                    modifyAdditionalLebenshaltungskostenPercentage:10,
                     modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
-                    modifyLebenshaltungskostenMultiplier: 10,
                 ),
                 ereignisRequirementIds: [
                 ],
@@ -9253,8 +9253,8 @@ final class CardFinder
                     ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
                 ],
                 modifierParameters: new ModifierParameters(
+                    modifyAdditionalLebenshaltungskostenPercentage:10,
                     modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
-                    modifyLebenshaltungskostenMultiplier: 10,
                 ),
                 ereignisRequirementIds: [
                 ],
@@ -9276,8 +9276,8 @@ final class CardFinder
                     ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE,
                 ],
                 modifierParameters: new ModifierParameters(
+                    modifyAdditionalLebenshaltungskostenPercentage:10,
                     modifyLebenshaltungskostenMinValue: new MoneyAmount(1000),
-                    modifyLebenshaltungskostenMultiplier: 10,
                 ),
                 ereignisRequirementIds: [
                 ],
