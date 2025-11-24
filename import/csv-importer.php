@@ -1,6 +1,11 @@
 <?php
 declare(strict_types=1);
 
+use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
+use Domain\Definitions\Lebensziel\Dto\LebenszielDefinition;
+use Domain\Definitions\Lebensziel\Dto\LebenszielPhaseDefinition;
+use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
+
 class ModifierMapping {
     public function __construct(public string $modifierId, public string $parameterName)
     {
@@ -445,14 +450,71 @@ function importKonjunkturphasen(): void
     }
 }
 
+/**
+ * Function imports Lebensziele from csv file and echoes them in the console.
+ *
+ * Exported the xlsx file in Numbers to csv with default settings.
+ *
+ * @return void
+ */
+function importLebensziele(): void
+{
+
+    $handle = fopen(__DIR__ . "/Lebensziele.csv", "r");
+    $data = [];
+    $index = 0;
+    while (($row = fgetcsv($handle, 1000, ';', '"', '\\')) !== FALSE) {
+        // do something with row values
+        if ($index >= 2) {
+            $data[] = $row;
+        }
+        $index++;
+    }
+
+    foreach ($data as $index => $row) {
+        echo "\$lebensziel" . $index + 1 . " = new LebenszielDefinition(\n";
+        echo "\t" . "id: LebenszielId::create(" . $index + 1 . "),\n";
+        echo "\t" . "name: '" . $row[0] . "',\n";
+        echo "\t" . "description: '" . $row[1] . "',\n";
+        echo "\t" . "phaseDefinitions: [\n";
+        echo "\t\t" . "new LebenszielPhaseDefinition(\n";
+        echo "\t\t\t" . "lebenszielPhaseId: LebenszielPhaseId::PHASE_1,\n";
+        echo "\t\t\t" . "description: '" . $row[2] . "',\n";
+        echo "\t\t\t" . "investitionen: new MoneyAmount(" . floatval(str_replace(".", "", $row[3])) . "),\n";
+        echo "\t\t\t" . "bildungsKompetenzSlots: " . intval($row[4]) . ",\n";
+        echo "\t\t\t" . "freizeitKompetenzSlots: " . intval($row[5]) . ",\n";
+        echo "\t\t" . "),\n";
+        echo "\t\t" . "new LebenszielPhaseDefinition(\n";
+        echo "\t\t\t" . "lebenszielPhaseId: LebenszielPhaseId::PHASE_2,\n";
+        echo "\t\t\t" . "description: '" . $row[6] . "',\n";
+        echo "\t\t\t" . "investitionen: new MoneyAmount(" . floatval(str_replace(".", "", $row[7])) . "),\n";
+        echo "\t\t\t" . "bildungsKompetenzSlots: " . intval($row[8]) . ",\n";
+        echo "\t\t\t" . "freizeitKompetenzSlots: " . intval($row[9]) . ",\n";
+        echo "\t\t" . "),\n";
+        echo "\t\t" . "new LebenszielPhaseDefinition(\n";
+        echo "\t\t\t" . "lebenszielPhaseId: LebenszielPhaseId::PHASE_3,\n";
+        echo "\t\t\t" . "description: '" . $row[10] . "',\n";
+        echo "\t\t\t" . "investitionen: new MoneyAmount(" . floatval(str_replace(".", "", $row[11])) . "),\n";
+        echo "\t\t\t" . "bildungsKompetenzSlots: " . intval($row[12]) . ",\n";
+        echo "\t\t\t" . "freizeitKompetenzSlots: " . intval($row[13]) . ",\n";
+        echo "\t\t" . "),\n";
+        echo "\t" . "],\n";
+        echo ");\n\n";
+    }
+
+    fclose($handle);
+
+}
+
 
 //importMiniJobCards();
 //importJobCards();
 //importWeiterbildungCards();
 //importKategorieCards();
-importEreignisCards();
+//importEreignisCards();
 //importInvestitionenCards();
 //importKonjunkturphasen();
+importLebensziele();
 
 
 
