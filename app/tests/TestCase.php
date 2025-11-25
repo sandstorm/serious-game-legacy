@@ -62,11 +62,11 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 abstract class TestCase extends BaseTestCase
 {
     protected ForCoreGameLogic $coreGameLogic;
-    protected GameId $gameId;
+    public GameId $gameId;
     /**
      * @var PlayerId[]
      */
-    protected array $players;
+    public array $players;
 
     /**
      * @var InsuranceDefinition[]
