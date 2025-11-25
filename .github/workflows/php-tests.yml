@@ -87,6 +87,9 @@ jobs:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       QUEUE_CONNECTION: redis
+      REVERB_APP_ID: 947194
+      REVERB_APP_KEY: 2ofhoauraj89vrhshauc
+      REVERB_APP_SECRET: lt98ud8yco2g3imt5b3y
 
     steps:
       - name: Checkout code
@@ -105,11 +108,14 @@ jobs:
         run: |
           cd app
           COMPOSER_CACHE_DIR=.composer-cache composer install --ignore-platform-reqs
+          # for reverb to function, process-control php extension is required
+          docker-php-ext-install pcntl
 
       # Run tests
       - name: Run Pest tests
         run: |
           cd app
+          ./artisan reverb:start --port=8899 &
           ./vendor/bin/pest --ci --log-junit=test-results/pest.xml
           echo "CI tests finished"
 
