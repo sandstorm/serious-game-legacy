@@ -87,6 +87,9 @@ jobs:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       QUEUE_CONNECTION: redis
+      REVERB_APP_ID: 947194
+      REVERB_APP_KEY: 2ofhoauraj89vrhshauc
+      REVERB_APP_SECRET: lt98ud8yco2g3imt5b3y
 
     steps:
       - name: Checkout code
