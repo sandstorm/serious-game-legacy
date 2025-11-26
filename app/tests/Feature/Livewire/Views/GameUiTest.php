@@ -12,6 +12,7 @@ uses(RefreshDatabase::class);
 beforeEach(function () {
     /** @var TestCase $this */
     $this->setupBasicGame();
+    $this->app->instance(ForCoreGameLogic::class, $this->coreGameLogic);
 });
 
 describe('GameUi', function () {
@@ -25,33 +26,52 @@ describe('GameUi', function () {
     });
 
     it('plays a card from Bildung & Karriere and finishes turn', function () {
-        $this->app->instance(ForCoreGameLogic::class, $this->coreGameLogic);
 
         /** @var TestCase $this */
         Livewire::test(GameUi::class, [
             'gameId' => $this->gameId,
             'myself' => $this->players[0],
         ])
+            ->assertSee(['Eine neue Konjunkturphase beginnt.', 'Das nächste Szenario ist:', $this->konjunkturphaseDefinition->type->value])
             ->call('nextKonjunkturphaseStartScreenPage')
+            ->assertSee([$this->konjunkturphaseDefinition->type->value, $this->konjunkturphaseDefinition->description])
             ->call('startKonjunkturphaseForPlayer')
-            ->assertSee('Konjunktur')
+            ->assertSee([
+                'Konjunktur',
+                $this->konjunkturphaseDefinition->type->value,
+                'Bildung & Karriere',
+                'Freizeit & Soziales',
+                'Beruf',
+                'Finanzen',
+                'Dein Lebensziel',
+                'Ereignisprotokoll:',
+                "Eine neue Konjunkturphase 'Erste Erholung' beginnt.",
+                'Sprachkurs',
+                'Ehrenamtliches Engagement',
+                'Jobbörse',
+                'Investitionen',
+                'Weiterbildung',
+                'Minijob'
+            ])
             // draw a card
-            ->call("showCardActions", 'buk0', 'Bildung & Karriere')
-            ->assertSee('Karte spielen')
+            ->call('showCardActions', 'buk0', 'Bildung & Karriere')
+            ->assertSee(['Sprachkurs', 'Mache einen Sprachkurs über drei Monate im Ausland.', 'Karte spielen'])
             // check that message is not in Ereignisprotokoll
             ->assertDontSee("spielt Karte 'Sprachkurs'")
+            // check that player has all of his Zeitsteine
+            ->assertSeeHtml('Player 0 hat noch 6 von 6 Zeitsteinen übrig.')
             // play card
             ->call('activateCard', 'Bildung & Karriere')
             // check that message is now logged
-            ->assertSee("spielt Karte 'Sprachkurs'")
+            ->assertSee(['Player 0', "spielt Karte 'Sprachkurs'"])
             // finish turn
             ->call('spielzugAbschliessen')
-            ->assertDontSee('Du musst erst einen Zeitstein für eine Aktion ausgeben');
+            ->assertDontSee('Du musst erst einen Zeitstein für eine Aktion ausgeben')
+            // check that player has used 1 Zeitstein
+            ->assertSeeHtml('Player 0 hat noch 5 von 6 Zeitsteinen übrig.');
     });
 
     it('displays error message when trying to finish turn without using a Zeitstein', function () {
-        $this->app->instance(ForCoreGameLogic::class, $this->coreGameLogic);
-
         /** @var TestCase $this */
         Livewire::test(GameUi::class, [
             'gameId' => $this->gameId,
@@ -59,7 +79,6 @@ describe('GameUi', function () {
         ])
             ->call('nextKonjunkturphaseStartScreenPage')
             ->call('startKonjunkturphaseForPlayer')
-            ->assertSee('Konjunktur')
             // finish turn without playing a card
             ->call('spielzugAbschliessen')
             // check that error message is displayed
@@ -67,8 +86,6 @@ describe('GameUi', function () {
     });
 
     it('tries to finish turn without using a Zeitstein, closes error message, plays a card and finishes turn', function () {
-        $this->app->instance(ForCoreGameLogic::class, $this->coreGameLogic);
-
         /** @var TestCase $this */
         Livewire::test(GameUi::class, [
             'gameId' => $this->gameId,
@@ -76,21 +93,20 @@ describe('GameUi', function () {
         ])
             ->call('nextKonjunkturphaseStartScreenPage')
             ->call('startKonjunkturphaseForPlayer')
-            ->assertSee('Konjunktur')
             // finish turn without playing a card
             ->call('spielzugAbschliessen')
             ->assertSee('Du musst erst einen Zeitstein für eine Aktion ausgeben')
             // close error message
             ->call('closeNotification')
             // draw a card
-            ->call("showCardActions", 'buk0', 'Bildung & Karriere')
-            ->assertSee('Karte spielen')
+            ->call('showCardActions', 'buk0', 'Bildung & Karriere')
+            ->assertSee(['Sprachkurs', 'Mache einen Sprachkurs über drei Monate im Ausland.', 'Karte spielen'])
             // check that message is not in Ereignisprotokoll
             ->assertDontSee("spielt Karte 'Sprachkurs'")
             // play card
             ->call('activateCard', 'Bildung & Karriere')
             // check that message is now logged
-            ->assertSee("spielt Karte 'Sprachkurs'")
+            ->assertSee(['Player 0', "spielt Karte 'Sprachkurs'"])
             // finish turn
             ->call('spielzugAbschliessen')
             ->assertDontSee('Du musst erst einen Zeitstein für eine Aktion ausgeben');
