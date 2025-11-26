@@ -108,6 +108,8 @@ jobs:
         run: |
           cd app
           COMPOSER_CACHE_DIR=.composer-cache composer install --ignore-platform-reqs
+          # for reverb to function, process-control php extension is required
+          docker-php-ext-install pcntl
 
       # Run tests
       - name: Run Pest tests
