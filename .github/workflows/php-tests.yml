@@ -113,6 +113,7 @@ jobs:
       - name: Run Pest tests
         run: |
           cd app
+          ./artisan reverb:start --port=8899 &
           ./vendor/bin/pest --ci --log-junit=test-results/pest.xml
           echo "CI tests finished"
 
