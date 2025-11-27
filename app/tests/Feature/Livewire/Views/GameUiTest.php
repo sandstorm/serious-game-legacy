@@ -51,11 +51,14 @@ describe('GameUi', function () {
                 'Jobbörse',
                 'Investitionen',
                 'Weiterbildung',
-                'Minijob'
+                'Minijob',
+                'Kredit aufnehmen',
+                'Versicherung abschließen',
+                'Spielzug beenden'
             ])
             // draw a card
             ->call('showCardActions', 'buk0', 'Bildung & Karriere')
-            ->assertSee(['Sprachkurs', 'Mache einen Sprachkurs über drei Monate im Ausland.', 'Karte spielen'])
+            ->assertSee(['Sprachkurs', 'Mache einen Sprachkurs über drei Monate im Ausland.', '11.000,00', 'Karte spielen'])
             // check that message is not in Ereignisprotokoll
             ->assertDontSee("spielt Karte 'Sprachkurs'")
             // check that player has all of his Zeitsteine
@@ -64,11 +67,24 @@ describe('GameUi', function () {
             ->call('activateCard', 'Bildung & Karriere')
             // check that message is now logged
             ->assertSee(['Player 0', "spielt Karte 'Sprachkurs'"])
+            // check that player has used 1 Zeitstein
+            ->assertSeeHtml('Player 0 hat noch 5 von 6 Zeitsteinen übrig.')
+            // check that 1 Zeitstein is used for category Bildung & Karriere
+            ->assertSeeHtml('1 von 3 Zeitsteinen wurden platziert. Player 0: 1, Player 1: 0')
+            // check that player got 1 Kompetenzstein for Bildung & Karriere
+            ->assertSeeHtml('Deine Kompetenzsteine im Bereich Bildung &amp; Karriere: 1 von 1')
             // finish turn
             ->call('spielzugAbschliessen')
-            ->assertDontSee('Du musst erst einen Zeitstein für eine Aktion ausgeben')
-            // check that player has used 1 Zeitstein
-            ->assertSeeHtml('Player 0 hat noch 5 von 6 Zeitsteinen übrig.');
+            ->assertDontSee('Du musst erst einen Zeitstein für eine Aktion ausgeben');
+
+        // check that opponent player receives a message that it is his turn
+        Livewire::test(GameUi::class, [
+            'gameId' => $this->gameId,
+            'myself' => $this->players[1],
+        ])
+            ->call('nextKonjunkturphaseStartScreenPage')
+            ->call('startKonjunkturphaseForPlayer')
+            ->assertSee('Du bist am Zug');
     });
 
     it('displays error message when trying to finish turn without using a Zeitstein', function () {
