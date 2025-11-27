@@ -97,6 +97,8 @@ describe('GameUi', function () {
             ->call('startKonjunkturphaseForPlayer')
             // finish turn without playing a card
             ->call('spielzugAbschliessen')
+            // check that player has all of his Zeitsteine
+            ->assertSeeHtml('Player 0 hat noch 6 von 6 Zeitsteinen übrig.')
             // check that error message is displayed
             ->assertSee('Du musst erst einen Zeitstein für eine Aktion ausgeben');
     });
@@ -116,7 +118,7 @@ describe('GameUi', function () {
             ->call('closeNotification')
             // draw a card
             ->call('showCardActions', 'buk0', 'Bildung & Karriere')
-            ->assertSee(['Sprachkurs', 'Mache einen Sprachkurs über drei Monate im Ausland.', 'Karte spielen'])
+            ->assertSee(['Sprachkurs', 'Mache einen Sprachkurs über drei Monate im Ausland.', '11.000,00', 'Karte spielen'])
             // check that message is not in Ereignisprotokoll
             ->assertDontSee("spielt Karte 'Sprachkurs'")
             // play card
