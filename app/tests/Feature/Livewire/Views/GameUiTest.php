@@ -87,6 +87,54 @@ describe('GameUi', function () {
             ->assertSee('Du bist am Zug');
     });
 
+    it('plays a card from Freizeit & Soziales and finishes turn', function () {
+        /** @var TestCase $this */
+        Livewire::test(GameUi::class, [
+            'gameId' => $this->gameId,
+            'myself' => $this->players[0],
+        ])
+            ->call('nextKonjunkturphaseStartScreenPage')
+            ->call('startKonjunkturphaseForPlayer')
+            // draw a card
+            ->call('showCardActions', 'suf0', 'Freizeit & Soziales')
+            ->assertSee([
+                'Ehrenamtliches Engagement',
+                'Du engagierst dich ehrenamtlich für eine Organisation, die es Menschen mit Behinderung ermöglicht einen genialen Urlaub mit Sonne, Strand und Meer zu erleben. Du musst die Kosten dafür allerdings selbst tragen.',
+                '1.200,00',
+                'Karte spielen'
+            ])
+            // check that message is not in Ereignisprotokoll
+            ->assertDontSee("spielt Karte 'Ehrenamtliches Engagement'")
+            // check that player has all of his Zeitsteine
+            ->assertSeeHtml('Player 0 hat noch 6 von 6 Zeitsteinen übrig.')
+            // play card
+            ->call('activateCard', 'Freizeit & Soziales')
+            // check that message is now logged
+            ->assertSee(['Player 0', "spielt Karte 'Ehrenamtliches Engagement'"])
+            // check that player has used 1 Zeitstein
+            ->assertSeeHtml('Player 0 hat noch 5 von 6 Zeitsteinen übrig.')
+            // check that 1 Zeitstein is used for category Freizeit & Soziales
+            ->assertSeeHtml('1 von 4 Zeitsteinen wurden platziert. Player 0: 1, Player 1: 0')
+            // check that player got 1 Kompetenzstein for Freizeit & Soziales
+            ->assertSeeHtml('Deine Kompetenzsteine im Bereich Freizeit &amp; Soziales: 1 von 2')
+            // finish turn
+            ->call('spielzugAbschliessen')
+            ->assertDontSee('Du musst erst einen Zeitstein für eine Aktion ausgeben')
+            // check that player can not play a card after finishing turn
+            ->call('showCardActions', 'suf0', 'Freizeit & Soziales')
+            ->call('activateCard', 'Bildung & Karriere')
+            ->assertSee('Du bist gerade nicht dran');
+
+        // check that opponent player receives a message that it is his turn
+        Livewire::test(GameUi::class, [
+            'gameId' => $this->gameId,
+            'myself' => $this->players[1],
+        ])
+            ->call('nextKonjunkturphaseStartScreenPage')
+            ->call('startKonjunkturphaseForPlayer')
+            ->assertSee('Du bist am Zug');
+    });
+
     it('displays error message when trying to finish turn without using a Zeitstein', function () {
         /** @var TestCase $this */
         Livewire::test(GameUi::class, [
