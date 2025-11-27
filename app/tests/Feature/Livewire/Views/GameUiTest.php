@@ -135,6 +135,121 @@ describe('GameUi', function () {
             ->assertSee('Du bist am Zug');
     });
 
+    it('get enough abilities and accept a job offer', function () {
+        /** @var TestCase $this */
+
+        // first player plays first card for Bildung & Karriere and finishes turn
+        Livewire::test(GameUi::class, [
+            'gameId' => $this->gameId,
+            'myself' => $this->players[0],
+        ])
+            ->call('nextKonjunkturphaseStartScreenPage')
+            ->call('startKonjunkturphaseForPlayer')
+            // draw a card from Bildung & Karriere
+            ->call('showCardActions', 'buk0', 'Bildung & Karriere')
+            // play card
+            ->call('activateCard', 'Bildung & Karriere')
+            // check that first player has used 1 Zeitstein
+            ->assertSeeHtml('Player 0 hat noch 5 von 6 Zeitsteinen übrig.')
+            // check that first player got 1 Kompetenzstein for Bildung & Karriere
+            ->assertSeeHtml('Deine Kompetenzsteine im Bereich Bildung &amp; Karriere: 1 von 1')
+            // finish turn
+            ->call('spielzugAbschliessen');
+
+        // second player uses 1 Zeitstein and finishes turn
+        Livewire::test(GameUi::class, [
+            'gameId' => $this->gameId,
+            'myself' => $this->players[1],
+        ])
+            ->call('nextKonjunkturphaseStartScreenPage')
+            ->call('startKonjunkturphaseForPlayer')
+            ->assertSee('Du bist am Zug')
+            // draw a card from Bildung & Karriere
+            ->call('showCardActions', 'suf0', 'Freizeit & Soziales')
+            // play card
+            ->call('activateCard', 'Freizeit & Soziales')
+            // check that second player has used 1 Zeitstein
+            ->assertSeeHtml('Player 1 hat noch 5 von 6 Zeitsteinen übrig.')
+            // check that second player got 1 Kompetenzstein for Freizeit & Soziales
+            ->assertSeeHtml('Deine Kompetenzsteine im Bereich Freizeit &amp; Soziales: 1 von 2')
+            // finish turn
+            ->call('spielzugAbschliessen');
+
+        // first player plays second card for Bildung & Karriere and finishes turn
+        Livewire::test(GameUi::class, [
+            'gameId' => $this->gameId,
+            'myself' => $this->players[0],
+        ])
+            ->assertSee('Du bist am Zug')
+            // draw a card from Bildung & Karriere
+            ->call('showCardActions', 'buk1', 'Bildung & Karriere')
+            // play card
+            ->call('activateCard', 'Bildung & Karriere')
+            // check that first player has used 1 Zeitstein
+            ->assertSeeHtml('Player 0 hat noch 4 von 6 Zeitsteinen übrig.')
+            // check that first player got 2 Kompetenzstein for Bildung & Karriere
+            ->assertSeeHtml('Deine Kompetenzsteine im Bereich Bildung &amp; Karriere: 2 von 1')
+            // finish turn
+            ->call('spielzugAbschliessen');;
+
+        // second player uses 1 Zeitstein and finishes turn
+        Livewire::test(GameUi::class, [
+            'gameId' => $this->gameId,
+            'myself' => $this->players[1],
+        ])
+            ->assertSee('Du bist am Zug')
+            // draw a card from Bildung & Karriere
+            ->call('showCardActions', 'suf0', 'Freizeit & Soziales')
+            // play card
+            ->call('activateCard', 'Freizeit & Soziales')
+            // check that second player has used 1 Zeitstein
+            ->assertSeeHtml('Player 1 hat noch 4 von 6 Zeitsteinen übrig.')
+            // check that second player got 1 Kompetenzstein for Freizeit & Soziales
+            ->assertSeeHtml('Deine Kompetenzsteine im Bereich Freizeit &amp; Soziales: 0 von 2')
+            // finish turn
+            ->call('spielzugAbschliessen');
+
+        // first player accepts a job and finishes turn
+        Livewire::test(GameUi::class, [
+            'gameId' => $this->gameId,
+            'myself' => $this->players[0],
+        ])
+            ->assertSee('Du bist am Zug')
+            ->call('showJobOffers')
+            ->assertSee([
+                'Ein Job kostet Zeit. Pro Jahr bleibt dir ein Zeitstein weniger.',
+                'Deine bisher erworbenen Kompetenzen:',
+                'Fachinformatikerin',
+                '34.000,00',
+                'Das mache ich!',
+                'Voraussetzungen:'
+            ])
+            ->assertSeeHtml([
+                'Deine Kompetenzsteine im Bereich Bildung &amp; Karriere: 2 von 1',
+                'Deine Kompetenzsteine im Bereich Freizeit &amp; Soziales: 2 von 2'
+            ])
+            ->call('applyForJob', 'j100')
+            // check that first player has used 1 Zeitstein
+            ->assertSeeHtml('Player 0 hat noch 2 von 6 Zeitsteinen übrig.')
+            // check that 1 Zeitstein is used for category Beruf
+            ->assertSeeHtml('1 von 3 Zeitsteinen wurden platziert. Player 0: 1, Player 1: 0')
+            // check that first player activates Kompetenzstein Beruf
+            ->assertSeeHtml('Du hast einen Job (Ein Zeitstein ist dauerhaft gebunden)')
+            // check that message is now logged
+            ->assertSee("nimmt Job 'Fachinformatikerin' an")
+            // ToDo: Mein Job: XX €
+            // finish turn
+            ->call('spielzugAbschliessen')
+            ->assertDontSee('Du musst erst einen Zeitstein für eine Aktion ausgeben');
+
+        // check that second player receives a message that it is his turn
+        Livewire::test(GameUi::class, [
+            'gameId' => $this->gameId,
+            'myself' => $this->players[1],
+        ])
+            ->assertSee('Du bist am Zug');
+    });
+
     it('displays error message when trying to finish turn without using a Zeitstein', function () {
         /** @var TestCase $this */
         Livewire::test(GameUi::class, [
