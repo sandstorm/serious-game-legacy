@@ -253,6 +253,55 @@ describe('GameUi', function () {
             ->assertSee('Du bist am Zug');
     });
 
+    it('does a Minijob', function () {
+        /** @var TestCase $this */
+        Livewire::test(GameUi::class, [
+            'gameId' => $this->gameId,
+            'myself' => $this->players[0],
+        ])
+            ->call('nextKonjunkturphaseStartScreenPage')
+            ->call('startKonjunkturphaseForPlayer')
+            // check that message is not in Ereignisprotokoll
+            ->assertDontSee(["macht Minijob 'Minijob", '5.000,00'])
+            // check that player has all of his Zeitsteine
+            ->assertSeeHtml('Player 0 hat noch 6 von 6 Zeitsteinen übrig.')
+            ->call('doMinijob')
+            ->assertSee([
+                'Minijob',
+                'Kellnerin im Ausland. Einmalzahlung 5.000 €.',
+                '5.000,00',
+                'Akzeptieren'
+            ])
+            ->call('closeMinijob')
+            // check that message is now logged
+            ->assertSee(["macht Minijob 'Minijob", '5.000,00'])
+            // check that player has used 1 Zeitstein
+            ->assertSeeHtml('Player 0 hat noch 5 von 6 Zeitsteinen übrig.')
+            // check that player can not draw card
+            ->call('activateCard', 'Bildung & Karriere')
+            ->assertSee('Du hast bereits eine andere Aktion ausgeführt')
+            ->call('activateCard', 'Freizeit & Soziales')
+            ->assertSee('Du hast bereits eine andere Aktion ausgeführt')
+            // check that player can not do a Weiterbildung
+            ->call('showWeiterbildung')
+            ->assertSee('Du kannst nur eine Zeitsteinaktion pro Runde ausführen')
+            // check that player can not do another Minijob
+            ->call('doMinijob')
+            ->assertSee('Du kannst nur eine Zeitsteinaktion pro Runde ausführen')
+            // finish turn
+            ->call('spielzugAbschliessen')
+            ->assertDontSee('Du musst erst einen Zeitstein für eine Aktion ausgeben');
+
+        // check that opponent player receives a message that it is his turn
+        Livewire::test(GameUi::class, [
+            'gameId' => $this->gameId,
+            'myself' => $this->players[1],
+        ])
+            ->call('nextKonjunkturphaseStartScreenPage')
+            ->call('startKonjunkturphaseForPlayer')
+            ->assertSee('Du bist am Zug');
+    });
+
     it('displays error message when trying to finish turn without using a Zeitstein', function () {
         /** @var TestCase $this */
         Livewire::test(GameUi::class, [
