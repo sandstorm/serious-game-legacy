@@ -302,6 +302,42 @@ describe('GameUi', function () {
             ->assertSee('Du bist am Zug');
     });
 
+    it('shows Lebensziel of current player', function () {
+        /** @var TestCase $this */
+        Livewire::test(GameUi::class, [
+            'gameId' => $this->gameId,
+            'myself' => $this->players[0],
+        ])
+            ->call('nextKonjunkturphaseStartScreenPage')
+            ->call('startKonjunkturphaseForPlayer')
+            ->call('showPlayerLebensziel', $this->players[0])
+            ->assertSee([
+                'Dein Lebensziel',
+                'Aufbau einer Selbstversorger Farm in Kanada',
+                'Phase 1',
+                'Um deinem nachhaltigen Traum näherzukommen, steht nun die internationale Ausbildung in ökologischer',
+                'Landwirtschaft an, während du parallel die Formalitäten für eine dauerhafte Aufenthaltsgenehmigung in Kanada erledigst.',
+                '50.000,00',
+                'Phase 2',
+                'Nach dem Abschluss planst du, am World Wide Opportunities on Organic Farms teilzunehmen und um die Welt zu reisen.',
+                'Dabei möchtest du verschiedenste Selbstversorger-Projekte kennenlernen und Kontakte mit Gleichgesinnten knüpfen. Gestärkt',
+                'durch dieses Netzwerk wirst du dich schließlich entscheiden, in Kanada deine eigene Farm zu gründen.',
+                '200.000,00',
+                'Phase 3',
+                'Deine Farm läuft erfolgreich und du nimmst internationale Freiwillige auf, die deinen ressourcenschonenden Lebensstil',
+                'kennenlernen möchten. Durch Führungen und Vorträge verbreitet sich dein Konzept. Wird es dir gelingen, mehr Menschen für ein',
+                'nachhaltiges, konsumreduziertes Leben zu begeistern?',
+                '500.000,00',
+                'Phasenwechsel',
+                'Kontostand',
+                '30.000,00'
+            ])
+            ->assertSeeHtml([
+                'Deine Kompetenzsteine im Bereich Freizeit &amp; Soziales: 0 von 2',
+                'Deine Kompetenzsteine im Bereich Bildung &amp; Karriere: 0 von 1'
+            ]);
+    });
+
     it('displays error message when trying to finish turn without using a Zeitstein', function () {
         /** @var TestCase $this */
         Livewire::test(GameUi::class, [
