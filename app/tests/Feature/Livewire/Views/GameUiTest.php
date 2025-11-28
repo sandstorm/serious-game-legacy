@@ -236,8 +236,11 @@ describe('GameUi', function () {
             // check that first player activates Kompetenzstein Beruf
             ->assertSeeHtml('Du hast einen Job (Ein Zeitstein ist dauerhaft gebunden)')
             // check that message is now logged
-            ->assertSee("nimmt Job 'Fachinformatikerin' an")
-            // ToDo: Mein Job: XX €
+            ->assertSee([
+                "nimmt Job 'Fachinformatikerin' an",
+                'Mein Job: ',
+                '34.000,00 €'
+            ])
             // finish turn
             ->call('spielzugAbschliessen')
             ->assertDontSee('Du musst erst einen Zeitstein für eine Aktion ausgeben');
