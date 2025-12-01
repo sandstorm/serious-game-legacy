@@ -4,8 +4,10 @@ namespace Tests\Feature\Livewire;
 
 use App\Livewire\GameUi;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use Tests\Feature\Livewire\Views\Helpers\GameUiTester;
 use Tests\TestCase;
 
 uses(RefreshDatabase::class);
@@ -138,11 +140,31 @@ describe('GameUi', function () {
     it('get enough abilities and accept a job offer', function () {
         /** @var TestCase $this */
 
+
+        // Auslesen der aktuellen Kompetenzsteine
+        // Auslesen der akt. Zeitsteine
+        // setzen der Karte
+        // checken dass Kompetenzsteine um 1 reduziert
+        // checken dass Zeitsteine um 1 reduziert
+        $gameUiTester = new GameUiTester($this->gameId, $this->players[0], 'Player 0');
+        $gameUiTester
+            ->drawAndPlayCard('buk0', 'Bildung & Karriere')
+            ->spielzugAbschliessen();
+
+        $gameUiTester->testableGameUi
+            ->call('nextKonjunkturphaseStartScreenPage');
+
+
+
         // first player plays first card for Bildung & Karriere and finishes turn
-        Livewire::test(GameUi::class, [
+        $testableGameUi = Livewire::test(GameUi::class, [
             'gameId' => $this->gameId,
             'myself' => $this->players[0],
-        ])
+        ]);
+
+
+
+        $testableGameUi
             ->call('nextKonjunkturphaseStartScreenPage')
             ->call('startKonjunkturphaseForPlayer')
             // draw a card from Bildung & Karriere
