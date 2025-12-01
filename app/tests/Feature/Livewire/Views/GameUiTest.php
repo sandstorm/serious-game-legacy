@@ -6,6 +6,7 @@ use App\Livewire\GameUi;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
+use Tests\Feature\Livewire\Views\Helpers\GameUiTester;
 use Tests\TestCase;
 
 uses(RefreshDatabase::class);
@@ -18,11 +19,8 @@ beforeEach(function () {
 describe('GameUi', function () {
     it('renders GameUi', function () {
         /** @var TestCase $this */
-        Livewire::test(GameUi::class, [
-            'gameId' => $this->gameId,
-            'myself' => $this->players[0]
-        ])
-            ->assertStatus(200);
+        $gameUiTester = new GameUiTester($this->gameId, $this->players[0], 'Player 0');
+        $gameUiTester->testableGameUi->assertStatus(200);
     });
 
     it('plays a card from Bildung & Karriere and finishes turn', function () {
