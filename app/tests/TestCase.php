@@ -333,7 +333,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * @return JobCardDefinition[]
      */
-    protected function getCardsForJobs(): array
+    public function getCardsForJobs(): array
     {
         return [
             "j100" => new JobCardDefinition(
@@ -352,7 +352,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * @return KategorieCardDefinition[]
      */
-    protected function getCardsForSozialesAndFreizeit(): array
+    public function getCardsForSozialesAndFreizeit(): array
     {
         return [
             "suf0" => new KategorieCardDefinition(
@@ -391,7 +391,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * @return KategorieCardDefinition[]
      */
-    protected function getCardsForBildungAndKarriere(): array
+    public function getCardsForBildungAndKarriere(): array
     {
         return [
             "buk0" => new KategorieCardDefinition(
