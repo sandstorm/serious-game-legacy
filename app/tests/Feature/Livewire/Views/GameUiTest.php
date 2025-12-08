@@ -162,14 +162,17 @@ describe('GameUi', function () {
 
         new GameUiTester($this->gameId, $this->players[1], 'Player 1')
             ->startGame($testCase)
+            ->startTurn()
             ->drawAndPlayCard($testCase, CategoryId::SOZIALES_UND_FREIZEIT)
             ->finishTurn();
 
         new GameUiTester($this->gameId, $this->players[0], 'Player 0')
+            ->startTurn()
             ->drawAndPlayCard($testCase, CategoryId::BILDUNG_UND_KARRIERE)
             ->finishTurn();
 
         new GameUiTester($this->gameId, $this->players[1], 'Player 1')
+            ->startTurn()
             ->drawAndPlayCard($testCase, CategoryId::SOZIALES_UND_FREIZEIT)
             ->finishTurn();
 
