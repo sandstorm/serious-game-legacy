@@ -153,26 +153,24 @@ describe('GameUi', function () {
 
     it('gets enough abilities and accept a job offer', function () {
         /** @var TestCase $this */
-        $firstGameUiTester = new GameUiTester($this->gameId, $this->players[0], 'Player 0');
-        $secondGameUiTester = new GameUiTester($this->gameId, $this->players[1], 'Player 1');
         $testCase = $this;
 
-        $firstGameUiTester
+        new GameUiTester($this->gameId, $this->players[0], 'Player 0')
             ->startGame($testCase)
             ->drawAndPlayCard($testCase, CategoryId::BILDUNG_UND_KARRIERE)
             ->finishTurn();
 
-        $secondGameUiTester
+        new GameUiTester($this->gameId, $this->players[1], 'Player 1')
             ->startGame($testCase)
             ->drawAndPlayCard($testCase, CategoryId::SOZIALES_UND_FREIZEIT)
             ->finishTurn();
 
-        $firstGameUiTester
+        new GameUiTester($this->gameId, $this->players[0], 'Player 0')
             ->drawAndPlayCard($testCase, CategoryId::BILDUNG_UND_KARRIERE)
             ->finishTurn();
 
-        $secondGameUiTester
-            ->drawAndPlayCard($testCase, CategoryId::BILDUNG_UND_KARRIERE)
+        new GameUiTester($this->gameId, $this->players[1], 'Player 1')
+            ->drawAndPlayCard($testCase, CategoryId::SOZIALES_UND_FREIZEIT)
             ->finishTurn();
 
         /*

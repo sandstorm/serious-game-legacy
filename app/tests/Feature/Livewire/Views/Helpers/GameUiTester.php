@@ -100,13 +100,12 @@ readonly class GameUiTester {
         dump($this->playerName);
         */
 
-        $zeitsteineInCategoriesBeforeAction = $this->zeitsteineInCategories($testCase, $categoryId);
 
-        dump('...........................................');
-
-        // check that player has all of his Zeitsteine
+        // check that players amount of Zeitsteine is unchanged
         $zeitsteineBeforeAction = $this->remainingZeitsteine($testCase);
-        dump($zeitsteineBeforeAction);
+
+        // check that Zeitsteine in categories are unchanged
+        $categoryInfoBeforeAction = $this->getCategoryInfo($testCase, $categoryId);
 
         $this->testableGameUi
             // draw a card
@@ -124,40 +123,26 @@ readonly class GameUiTester {
             // check that message is now logged
             ->assertSee("spielt Karte '$topCardTitle'");
 
-        // ToDo
-        // check that 1 Zeitstein is used for responding category
-//            ->assertSeeHtml('1 von 3 Zeitsteinen wurden platziert. Player 0: 1, Player 1: 0')
-        // check that player got 1 Kompetenzstein for responding category
-//            ->assertSeeHtml('Deine Kompetenzsteine im Bereich Bildung &amp; Karriere: 1 von 1');
-
-        // check that player has used 1 Zeitstein
+        // check that player has used 1 or more Zeitstein
         $zeitsteineAfterAction = $this->remainingZeitsteine($testCase);
-        dump($zeitsteineAfterAction);
-
-        dump('...........................................');
         Assert::assertEquals($zeitsteineBeforeAction - 1 + $topCardZeitstein, $zeitsteineAfterAction, 'Zeitsteine um 1 reduziert');
 
-        // ----------------------------------------------------------------------------------
-        $zeitsteineInCategoriesAfterAction = $this->zeitsteineInCategories($testCase, $categoryId);
+        // check that 1 Zeitstein is used for corresponding category
+        $categoryInfoAfterAction = $this->getCategoryInfo($testCase, $categoryId);
+        foreach ($categoryInfoAfterAction as $name => $category) {
+            $categoryInfoAfterAction[$name]['playedThisTurn'] = $category['categoryId'] === $categoryId;
+        }
+        array_map([$this, 'compareUsedSlots'], $categoryInfoAfterAction, $categoryInfoBeforeAction);
 
-
-
-        array_map([$this,'compareUsedSlots'], $zeitsteineInCategoriesAfterAction, $zeitsteineInCategoriesBeforeAction);
-
+        // ToDo
+        // check that player got 1 Kompetenzstein for responding category
+//            ->assertSeeHtml('Deine Kompetenzsteine im Bereich Bildung &amp; Karriere: 1 von 1');
 
         return $this;
 
     }
 
-    private function compareUsedSlots($amountZeitsteineAfter, $amountZeitsteineBefore): void {
-        dump('compare: ',$amountZeitsteineAfter['amount'], $amountZeitsteineBefore['amount']);
-        return;
-    }
-
-
-
-    private function zeitsteineInCategories(TestCase $testCase, CategoryId $categoryId): array {
-
+    private function getCategoryInfo(TestCase $testCase, CategoryId $categoryId): array {
         $categories = [
             CategoryId::BILDUNG_UND_KARRIERE->name => ['categoryId' => CategoryId::BILDUNG_UND_KARRIERE],
             CategoryId::SOZIALES_UND_FREIZEIT->name => ['categoryId' => CategoryId::SOZIALES_UND_FREIZEIT],
@@ -173,8 +158,7 @@ readonly class GameUiTester {
                 ->getKonjunkturphaseDefinition()
                 ->getKompetenzbereichByCategory($categoryId)
                 ->zeitslots
-                ->getAmountOfZeitslotsForPlayerCount(2);
-
+                ->getAmountOfZeitslotsForPlayerCount(count($players));
 
             $zeitsteinePerPlayer = [];
             $usedSlots = 0;
@@ -185,13 +169,11 @@ readonly class GameUiTester {
                 $zeitsteinePerPlayer[] = $playerName . ': ' . $placedZeitsteineByPlayer;
             }
 
-            $categories[$name]['amount'] = $usedSlots;
+            $categories[$name]['usedSlots'] = $usedSlots;
 
-            dump($usedSlots . ' von ' . $availableSlots . ' Zeitsteinen wurden platziert. ' . implode(', ', $zeitsteinePerPlayer));
-
-
+            $this->testableGameUi->assertSeeHtml($usedSlots . ' von ' . $availableSlots . ' Zeitsteinen wurden platziert. ' . implode(', ', $zeitsteinePerPlayer));
         }
-        dump($categories);
+
         return $categories;
     }
 
@@ -199,9 +181,8 @@ readonly class GameUiTester {
         $totalAmountOfZeitsteineForPlayer = $testCase
             ->getKonjunkturphaseDefinition()
             ->zeitsteine
-            ->getAmountOfZeitsteineForPlayer(2);
+            ->getAmountOfZeitsteineForPlayer(count($testCase->players));
         $playerResources = PlayerState::getResourcesForPlayer($testCase->getGameEvents(), $this->playerId);
-        dump($playerResources);
         $currentZeitsteine = $playerResources->zeitsteineChange;
         $this->testableGameUi->assertSeeHtml(
             $this->playerName . ' hat noch ' . $currentZeitsteine . ' von ' . $totalAmountOfZeitsteineForPlayer . ' Zeitsteinen übrig.'
@@ -214,13 +195,16 @@ readonly class GameUiTester {
         $this->testableGameUi->call('spielzugAbschliessen');
     }
 
+    private function compareUsedSlots($categoryInfoAfterAction, $categoryInfoBeforeAction): void {
+        $category = $categoryInfoAfterAction['categoryId']->name;
+        if ($categoryInfoAfterAction['playedThisTurn']) {
+            Assert::assertEquals($categoryInfoAfterAction['usedSlots'] - 1, $categoryInfoBeforeAction['usedSlots'], "Zeitstein in $category um 1 erhöht");
+        } else {
+            Assert::assertEquals($categoryInfoAfterAction['usedSlots'], $categoryInfoBeforeAction['usedSlots'], "Zeitstein in $category gleich");
+        }
+    }
+
     private function zeitsteineInCategories2(TestCase $testCase, CategoryId $categoryId) {
-        $konjunkturphaseDefinition = $testCase->getKonjunkturphaseDefinition();
-        $availableSlots = $testCase
-            ->getKonjunkturphaseDefinition()
-            ->getKompetenzbereichByCategory($categoryId)
-            ->zeitslots
-            ->getAmountOfZeitslotsForPlayerCount(2);
 
         $playerResources = PlayerState::getResourcesForPlayer($testCase->getGameEvents(), $this->playerId);
         $fusKompetenz = $playerResources->freizeitKompetenzsteinChange;
@@ -229,20 +213,7 @@ readonly class GameUiTester {
 //        $players = $testCase->players;
         dump('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
 //        $players = GamePhaseState::getOrderedPlayers($testCase->getGameEvents());
-        $players = [];
-        foreach ($testCase->players as $player) {
-//            $players['id'] = $player->value;
-//            dump($player->value);
-//            $test=['name'=>'abc'];
-            $players[$player->value] = [
-                'name' => PlayerState::getNameForPlayer($testCase->getGameEvents(), $player),
-                CategoryId::BILDUNG_UND_KARRIERE->value => PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($testCase->getGameEvents(), $player, CategoryId::BILDUNG_UND_KARRIERE),
-                CategoryId::BILDUNG_UND_KARRIERE->name => PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($testCase->getGameEvents(), $player, CategoryId::BILDUNG_UND_KARRIERE),
-                CategoryId::SOZIALES_UND_FREIZEIT->name => PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($testCase->getGameEvents(), $player, CategoryId::SOZIALES_UND_FREIZEIT)
-            ];
-        }
-        dump('players: ', $players, $testCase->players);
-//        dump($players);
+
         dump('bla',
 //            GameboardInformationForCategory::class->getZeitsteineForCategory(CategoryId::BILDUNG_UND_KARRIERE)
 //            Categories::class,
@@ -255,11 +226,8 @@ readonly class GameUiTester {
 
         dump('Kompetenzbereich by category', $testCase->getKonjunkturphaseDefinition()->getKompetenzbereichByCategory($categoryId));
 
-        dump('category id: ', $categoryId, 'total amount of Zeitslots: ', $availableSlots);
         dump('player resources: ', $playerResources);
         dump($fusKompetenz, $busKompetenz);
-
-        $this->testableGameUi->assertSeeHtml(" von $availableSlots Zeitsteinen wurden platziert.");
 
     }
 
