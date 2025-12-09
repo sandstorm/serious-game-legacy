@@ -31,7 +31,6 @@ readonly class GameUiTester {
     }
 
     public function startGame(TestCase $testCase): static {
-
         $this->testableGameUi
             ->assertSee([
                 'Eine neue Konjunkturphase beginnt.',
@@ -43,7 +42,15 @@ readonly class GameUiTester {
                 $testCase->getKonjunkturphaseDefinition()->type->value,
                 $testCase->getKonjunkturphaseDefinition()->description
             ])
-            ->call('startKonjunkturphaseForPlayer')
+            ->call('startKonjunkturphaseForPlayer');
+
+        $this->seeUpdatedGameboard($testCase);
+
+        return $this;
+    }
+
+    private function seeUpdatedGameboard(TestCase $testCase): void {
+        $this->testableGameUi
             ->assertSee([
                 'Bildung & Karriere',
                 'Freizeit & Soziales',
@@ -54,8 +61,8 @@ readonly class GameUiTester {
                 'Dein Lebensziel',
                 'Ereignisprotokoll:',
                 'Eine neue Konjunkturphase \'' . $testCase->getKonjunkturphaseDefinition()->name . '\' beginnt.',
-                $testCase->getCardsForBildungAndKarriere()['buk0']->getTitle(),
-                $testCase->getCardsForSozialesAndFreizeit()['suf0']->getTitle(),
+                $this->getTopCardFromCategory($testCase, CategoryId::BILDUNG_UND_KARRIERE)->getTitle(),
+                $this->getTopCardFromCategory($testCase, CategoryId::SOZIALES_UND_FREIZEIT)->getTitle(),
                 'Jobbörse',
                 'Investitionen',
                 'Weiterbildung',
@@ -64,58 +71,40 @@ readonly class GameUiTester {
                 'Versicherung abschließen',
                 'Spielzug beenden'
             ]);
+    }
 
-        return $this;
+    private function getTopCardFromCategory(TestCase $testCase, CategoryId $categoryId) {
+        $playerState = PlayerState::getCurrentLebenszielphaseIdForPlayer($testCase->getGameEvents(), $this->playerId);
+        $pileId = new PileId($categoryId, $playerState);
+        $topCardIdForPile = PileState::topCardIdForPile($testCase->getGameEvents(), $pileId);
+        return CardFinder::getInstance()->getCardById(new CardId($topCardIdForPile->value), KategorieCardDefinition::class);
     }
 
     public function drawAndPlayCard(TestCase $testCase, CategoryId $categoryId) {
         // get top card from category
-        $playerState = PlayerState::getCurrentLebenszielphaseIdForPlayer($testCase->getGameEvents(), $this->playerId);
-        $pileId = new PileId($categoryId, $playerState);
-        $topCardIdForPile = PileState::topCardIdForPile($testCase->getGameEvents(), $pileId);
-        $topCard = CardFinder::getInstance()->getCardById(new CardId($topCardIdForPile->value), KategorieCardDefinition::class);
-
-        /*
-        dump('pile id: ', $pileId);
-        dump('id top card: ', $topCardIdForPile->value);
-        dump('top card: ', $topCard);
-        */
+        $topCard = $this->getTopCardFromCategory($testCase, $categoryId);
 
         // get properties from top card
         $topCardTitle = $topCard->getTitle();
         $topCardGuthabenChange = $topCard->getResourceChanges()->guthabenChange->value;
         $topCardZeitstein = $topCard->getResourceChanges()->zeitsteineChange;
 
-        dump('ressourcen: ', $topCard->getResourceChanges());
-
-        /*
-        dump('title: ', $topCardTitle);
-        dump('description: ', $topCard->getDescription());
-        dump(
-            'guthaben: ',
-            $topCardGuthabenChange,
-            number_format(abs($topCardGuthabenChange), 2, ',', '.')
-        );
-        dump('fus: ', $topCard->getResourceChanges()->freizeitKompetenzsteinChange);
-        dump('buk: ', $topCard->getResourceChanges()->bildungKompetenzsteinChange);
-        dump('category: ', $topCard->getCategory()->value);
-        dump($this->playerName);
-        */
-
         // check that players amount of Zeitsteine is unchanged
-        $zeitsteineBeforeAction = $this->remainingZeitsteine($testCase);
+        $playersZeitsteineBeforeAction = $this->remainingZeitsteine($testCase);
 
         // check that Zeitsteine in categories are unchanged
         $categoryInfoBeforeAction = $this->getCategoryInfo($testCase);
 
-        // ToDo
         // check that Kompetenzsteine are unchanged
         $playersKompetenzsteineBeforeAction = $this->getPlayersKompetenzsteine($testCase);
+
+        // check that players balance remains the same
+        $playersBalanceBeforeAction = $this->getPlayersBalance($testCase);
 
         // draw and play card
         $this->testableGameUi
             // draw a card
-            ->call('showCardActions', $topCardIdForPile->value, $topCard->getCategory()->value)
+            ->call('showCardActions', $topCard->getId()->value, $categoryId->value)
             ->assertSee([
                 $topCardTitle,
                 $topCard->getDescription(),
@@ -125,13 +114,13 @@ readonly class GameUiTester {
             // check that message is not in Ereignisprotokoll
             ->assertDontSee("spielt Karte '$topCardTitle'")
             // play card
-            ->call('activateCard', $topCard->getCategory()->value)
+            ->call('activateCard', $categoryId->value)
             // check that message is now logged
             ->assertSee("spielt Karte '$topCardTitle'");
 
         // check that player has used Zeitsteine
-        $zeitsteineAfterAction = $this->remainingZeitsteine($testCase);
-        Assert::assertEquals($zeitsteineBeforeAction - 1 + $topCardZeitstein, $zeitsteineAfterAction, 'Zeitsteine um 1 reduziert');
+        $playersZeitsteineAfterAction = $this->remainingZeitsteine($testCase);
+        Assert::assertEquals($playersZeitsteineBeforeAction - 1 + $topCardZeitstein, $playersZeitsteineAfterAction, 'Zeitsteine um 1 reduziert');
 
         // check that 1 Zeitstein is used for corresponding category
         $categoryInfoAfterAction = $this->getCategoryInfo($testCase);
@@ -140,18 +129,17 @@ readonly class GameUiTester {
         }
         array_map([$this, 'compareUsedSlots'], $categoryInfoAfterAction, $categoryInfoBeforeAction);
 
-        // ToDo
         // check that player got Kompetenzstein for corresponding category
-//            ->assertSeeHtml('Deine Kompetenzsteine im Bereich Bildung &amp; Karriere: 1 von 1');
         $playersKompetenzsteineAfterAction = $this->getPlayersKompetenzsteine($testCase);
         foreach ($playersKompetenzsteineAfterAction as $category => $kompetenzstein) {
             $playersKompetenzsteineAfterAction[$category]['changedThisTurn'] = $category === $categoryId->name;
+            $playersKompetenzsteineAfterAction[$category]['kompetenzsteinChange'] = $category === CategoryId::BILDUNG_UND_KARRIERE->name ? $topCard->getResourceChanges()->bildungKompetenzsteinChange : $topCard->getResourceChanges()->freizeitKompetenzsteinChange;
         }
-
         array_map([$this, 'compareKompetenzsteine'], $playersKompetenzsteineAfterAction, $playersKompetenzsteineBeforeAction);
 
-        // ToDo
-        // check that player paid corresponding
+        // check that player has paid
+        $playersBalanceAfterAction = $this->getPlayersBalance($testCase);
+        Assert::assertEquals($playersBalanceBeforeAction + $topCardGuthabenChange, $playersBalanceAfterAction, "Saldo um $topCardGuthabenChange reduziert");
 
         return $this;
 
@@ -206,34 +194,70 @@ readonly class GameUiTester {
         return $categories;
     }
 
-    private function getPlayersKompetenzsteine($testCase): array {
+    private function getPlayersKompetenzsteine(TestCase $testCase): array {
         $playerResources = PlayerState::getResourcesForPlayer($testCase->getGameEvents(), $this->playerId);
+        $currentLebenszielphaseDefinition = PlayerState::getCurrentLebenszielphaseDefinitionForPlayer(
+            $testCase->getGameEvents(),
+            $this->playerId
+        );
         $categories = [
             CategoryId::BILDUNG_UND_KARRIERE->name => [
                 'amount' => $playerResources->bildungKompetenzsteinChange,
+                'availableSlots' => $currentLebenszielphaseDefinition->bildungsKompetenzSlots,
                 'categoryId' => CategoryId::BILDUNG_UND_KARRIERE
             ],
             CategoryId::SOZIALES_UND_FREIZEIT->name => [
                 'amount' => $playerResources->freizeitKompetenzsteinChange,
+                'availableSlots' => $currentLebenszielphaseDefinition->freizeitKompetenzSlots,
                 'categoryId' => CategoryId::SOZIALES_UND_FREIZEIT
             ]];
 
         foreach ($categories as $category) {
             $categoryNameArray = explode(' & ', $category['categoryId']->value);
             $achievedAmount = $category['amount'];
-            $availableAmount = 1;
-            dump();
-            dump("Deine Kompetenzsteine im Bereich $categoryNameArray[0] &amp; $categoryNameArray[1]: $achievedAmount von $availableAmount");
-            // ToDo: max vorhandene Slots für Kompetenzstein ermitteln (von 1, etc.)
-//            $this->testableGameUi->assertSeeHtml("Deine Kompetenzsteine im Bereich Bildung &amp; Karriere: 1 von 1");
-            $this->testableGameUi->assertSeeHtml("Deine Kompetenzsteine im Bereich $categoryNameArray[0] &amp; $categoryNameArray[1]");
+            $availableAmount = $category['availableSlots'];
+
+            $this->testableGameUi->assertSeeHtml(
+                "Deine Kompetenzsteine im Bereich $categoryNameArray[0] &amp; $categoryNameArray[1]: $achievedAmount von $availableAmount"
+            );
         }
 
         return $categories;
 
     }
 
-    public function startTurn(): static {
+    private function getPlayersBalance(TestCase $testCase): float {
+        $playerResources = PlayerState::getResourcesForPlayer($testCase->getGameEvents(), $this->playerId);
+        $balance = $playerResources->guthabenChange->value;
+        $this->testableGameUi->assertSee(number_format($balance, 2, ',', '.'));
+
+        return $balance;
+    }
+
+    public function tryToPlayCardOnWrongTurn(TestCase $testCase, CategoryId $categoryId): void {
+        // get top card from category
+        $topCard = $this->getTopCardFromCategory($testCase, $categoryId);
+
+        // get properties from top card
+        $topCardTitle = $topCard->getTitle();
+        $topCardGuthabenChange = $topCard->getResourceChanges()->guthabenChange->value;
+
+        $this->testableGameUi
+            // draw a card
+            ->call('showCardActions', $topCard->getId()->value, $categoryId->value)
+            ->assertSee([
+                $topCardTitle,
+                $topCard->getDescription(),
+                $topCardGuthabenChange === 0 ? '' : number_format(abs($topCardGuthabenChange), 2, ',', '.'),
+                'Karte spielen'
+            ])
+            // play card
+            ->call('activateCard', $categoryId->value)
+            // show error message
+            ->assertSee('Du bist gerade nicht dran');
+    }
+
+    public function startTurn(TestCase $testCase): static {
         // check that modal is visible
         $this->testableGameUi->assertSee('Du bist am Zug');
         $this->testableGameUi->assertSeeHtml('startSpielzug');
@@ -245,18 +269,32 @@ readonly class GameUiTester {
         $this->testableGameUi->assertDontSee('Du bist am Zug');
         $this->testableGameUi->assertDontSeeHtml('startSpielzug');
 
+        // check that player sees updated gameboard
+        $this->seeUpdatedGameboard($testCase);
+
         return $this;
     }
 
-    public function finishTurn() {
+    public function finishTurn(): static {
         $this->testableGameUi->call('spielzugAbschliessen');
+        $this->testableGameUi->assertDontSeeHtml('Du musst erst einen Zeitstein für eine Aktion ausgeben');
+        return $this;
+    }
+
+    public function openJobBoard() {
+        //ToDo: Funktion implementieren
+        return $this;
+    }
+
+    public function acceptJob() {
+        //ToDo: Funktion implementieren
+        return $this;
     }
 
     private function compareKompetenzsteine($kompetenzsteinAfterAction, $kompetenzsteinBeforeAction): void {
         $category = $kompetenzsteinAfterAction['categoryId']->name;
         if ($kompetenzsteinAfterAction['changedThisTurn']) {
-            // ToDo: Änderung (-1, -2, etc.) ermitteln
-            Assert::assertEquals($kompetenzsteinAfterAction['amount'] - 1, $kompetenzsteinBeforeAction['amount'], "Kompetenzsteine in $category um 1 erhöht");
+            Assert::assertEquals($kompetenzsteinAfterAction['amount'] - $kompetenzsteinAfterAction['kompetenzsteinChange'], $kompetenzsteinBeforeAction['amount'], "Kompetenzsteine in $category erhöht");
         } else {
             Assert::assertEquals($kompetenzsteinAfterAction['amount'], $kompetenzsteinBeforeAction['amount'], "Kompetenzsteine in $category sind gleich geblieben");
         }
@@ -270,6 +308,5 @@ readonly class GameUiTester {
             Assert::assertEquals($categoryInfoAfterAction['usedSlots'], $categoryInfoBeforeAction['usedSlots'], "Zeitsteine in $category sind gleich geblieben");
         }
     }
-
 }
 

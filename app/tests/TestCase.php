@@ -352,7 +352,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * @return KategorieCardDefinition[]
      */
-    public function getCardsForSozialesAndFreizeit(): array
+    protected function getCardsForSozialesAndFreizeit(): array
     {
         return [
             "suf0" => new KategorieCardDefinition(
@@ -391,7 +391,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * @return KategorieCardDefinition[]
      */
-    public function getCardsForBildungAndKarriere(): array
+    protected function getCardsForBildungAndKarriere(): array
     {
         return [
             "buk0" => new KategorieCardDefinition(
