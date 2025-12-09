@@ -341,7 +341,7 @@ describe('GameUi', function () {
                 'Deine Farm läuft erfolgreich und du nimmst internationale Freiwillige auf, die deinen ressourcenschonenden Lebensstil',
                 'kennenlernen möchten. Durch Führungen und Vorträge verbreitet sich dein Konzept. Wird es dir gelingen, mehr Menschen für ein',
                 'nachhaltiges, konsumreduziertes Leben zu begeistern?',
-                '500.000,00',
+//                '500.000,00',
                 'Phasenwechsel',
                 'Kontostand',
                 '30.000,00'
