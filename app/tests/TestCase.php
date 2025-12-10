@@ -333,7 +333,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * @return JobCardDefinition[]
      */
-    public function getCardsForJobs(): array
+    protected function getCardsForJobs(): array
     {
         return [
             "j100" => new JobCardDefinition(

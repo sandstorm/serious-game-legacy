@@ -90,53 +90,13 @@ describe('GameUi', function () {
         // first player accepts a job and finishes turn
         new GameUiTester($this->gameId, $this->players[0], 'Player 0')
             ->startTurn($testCase)
-            ->openJobBoard()
-            ->acceptJob();
+            ->openJobBoard($testCase)
+            ->acceptJob($testCase)
+            ->finishTurn();
 
-        /*
-        // first player accepts a job and finishes turn
-        Livewire::test(GameUi::class, [
-            'gameId' => $this->gameId,
-            'myself' => $this->players[0],
-        ])
-
-            ->call('showJobOffers')
-            ->assertSee([
-                'Ein Job kostet Zeit. Pro Jahr bleibt dir ein Zeitstein weniger.',
-                'Deine bisher erworbenen Kompetenzen:',
-                'Fachinformatikerin',
-                '34.000,00',
-                'Das mache ich!',
-                'Voraussetzungen:'
-            ])
-            ->assertSeeHtml([
-                'Deine Kompetenzsteine im Bereich Bildung &amp; Karriere: 2 von 1',
-                'Deine Kompetenzsteine im Bereich Freizeit &amp; Soziales: 2 von 2'
-            ])
-            ->call('applyForJob', 'j100')
-            // check that first player has used 1 Zeitstein
-            ->assertSeeHtml('Player 0 hat noch 2 von 6 Zeitsteinen übrig.')
-            // check that 1 Zeitstein is used for category Beruf
-            ->assertSeeHtml('1 von 3 Zeitsteinen wurden platziert. Player 0: 1, Player 1: 0')
-            // check that first player activates Kompetenzstein Beruf
-            ->assertSeeHtml('Du hast einen Job (Ein Zeitstein ist dauerhaft gebunden)')
-            // check that message is now logged
-            ->assertSee([
-                "nimmt Job 'Fachinformatikerin' an",
-                'Mein Job: ',
-                '34.000,00 €'
-            ])
-            // finish turn
-            ->call('spielzugAbschliessen')
-            ->assertDontSee('Du musst erst einen Zeitstein für eine Aktion ausgeben');
-
-        // check that second player receives a message that it is his turn
-        Livewire::test(GameUi::class, [
-            'gameId' => $this->gameId,
-            'myself' => $this->players[1],
-        ])
-            ->assertSee('Du bist am Zug');
-        */
+        // check that opponent player receives a message that it is his turn
+        new GameUiTester($this->gameId, $this->players[1], 'Player 1')
+            ->startTurn($testCase);
     });
 
     it('invests in Aktien', function () {
