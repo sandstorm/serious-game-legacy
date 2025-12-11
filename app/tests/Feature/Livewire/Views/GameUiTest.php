@@ -24,41 +24,24 @@ describe('GameUi', function () {
         $gameUiTester->testableGameUi->assertStatus(200);
     });
 
-    it('plays a card from Bildung & Karriere and finishes turn', function () {
+    it('plays a card and finishes turn', function (CategoryId $categoryId) {
         /** @var TestCase $this */
         $testCase = $this;
 
         new GameUiTester($this->gameId, $this->players[0], 'Player 0')
             ->startGame($testCase)
-            ->drawAndPlayCard($testCase, CategoryId::BILDUNG_UND_KARRIERE)
+            ->drawAndPlayCard($testCase, $categoryId)
             ->finishTurn()
             // check that player can not play a card after finishing turn
-            ->tryToPlayCardOnWrongTurn($testCase, CategoryId::BILDUNG_UND_KARRIERE);
+            ->tryToPlayCardOnWrongTurn($testCase, $categoryId);
 
         // check that opponent player receives a message that it is his turn
         new GameUiTester($this->gameId, $this->players[1], 'Player 1')
             ->startGame($testCase)
             ->startTurn($testCase);
-    });
+    })->with([CategoryId::BILDUNG_UND_KARRIERE, CategoryId::SOZIALES_UND_FREIZEIT]);
 
-    it('plays a card from Freizeit & Soziales and finishes turn', function () {
-        /** @var TestCase $this */
-        $testCase = $this;
-
-        new GameUiTester($this->gameId, $this->players[0], 'Player 0')
-            ->startGame($testCase)
-            ->drawAndPlayCard($testCase, CategoryId::SOZIALES_UND_FREIZEIT)
-            ->finishTurn()
-            // check that player can not play a card after finishing turn
-            ->tryToPlayCardOnWrongTurn($testCase, CategoryId::SOZIALES_UND_FREIZEIT);
-
-        // check that opponent player receives a message that it is his turn
-        new GameUiTester($this->gameId, $this->players[1], 'Player 1')
-            ->startGame($testCase)
-            ->startTurn($testCase);
-    });
-
-    it('gets enough abilities and accept a job offer', function () {
+    it('gets enough Kompetenzsteine and accepts a job offer', function () {
         /** @var TestCase $this */
         $testCase = $this;
 
@@ -101,15 +84,23 @@ describe('GameUi', function () {
 
     it('invests in Aktien', function () {
         /** @var TestCase $this */
+        $testCase = $this;
+
+        new GameUiTester($this->gameId, $this->players[0], 'Player 0')
+            ->startGame($testCase)
+            ->openInvestmentsOverview()
+            ->buyStocks();
+
+        /*
         Livewire::test(GameUi::class, [
             'gameId' => $this->gameId,
             'myself' => $this->players[0],
         ])
-            ->call('nextKonjunkturphaseStartScreenPage')
-            ->call('startKonjunkturphaseForPlayer')
+
             // player chooses Investments
             ->call('toggleInvestitionenSelectionModal')
             ->assertSee(['Investitionen', 'Aktien', 'ETF', 'Krypto', 'Immobilien'])
+
             // player chooses stocks
             ->call('toggleStocksModal')
             ->assertSee([
@@ -122,6 +113,7 @@ describe('GameUi', function () {
                 'kaufen',
                 'verkaufen'
             ])
+
             ->call('showBuyInvestmentOfType', 'BetaPear')
             ->assertSee([
                 'Kauf - BetaPear',
@@ -139,6 +131,8 @@ describe('GameUi', function () {
             ->set("buyInvestmentsForm.amount", '456')
             ->call('buyInvestments', 'BetaPear')
             ->assertSee("Investiert in 'BetaPear' und kauft 456 Anteile zum Preis von 50,00 €");
+
+        //////////////////////////////////////////////////////////////////////////////
 
         Livewire::test(GameUi::class, [
             'gameId' => $this->gameId,
@@ -169,6 +163,7 @@ describe('GameUi', function () {
             'myself' => $this->players[1],
         ])
             ->assertSee('Du bist am Zug');
+        */
     });
 
     it('does a Weiterbildung', function () {
