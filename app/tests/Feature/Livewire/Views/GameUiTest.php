@@ -22,6 +22,7 @@ describe('GameUi', function () {
         /** @var TestCase $this */
         $gameUiTester = new GameUiTester($this->gameId, $this->players[0], 'Player 0');
         $gameUiTester->testableGameUi->assertStatus(200);
+        $gameUiTester->startGame($this);
     });
 
     it('plays a card and finishes turn', function (CategoryId $categoryId) {
@@ -33,7 +34,7 @@ describe('GameUi', function () {
             ->drawAndPlayCard($testCase, $categoryId)
             ->finishTurn()
             // check that player can not play a card after finishing turn
-            ->tryToPlayCardOnWrongTurn($testCase, $categoryId);
+            ->tryToPlayCardWhenItIsNotThePlayersTurn($testCase, $categoryId);
 
         // check that opponent player receives a message that it is his turn
         new GameUiTester($this->gameId, $this->players[1], 'Player 1')
@@ -74,7 +75,7 @@ describe('GameUi', function () {
         new GameUiTester($this->gameId, $this->players[0], 'Player 0')
             ->startTurn($testCase)
             ->openJobBoard($testCase)
-            ->acceptJob($testCase)
+            ->acceptJobWhenPlayerCurrentlyHasNoJob($testCase)
             ->finishTurn();
 
         // check that opponent player receives a message that it is his turn
