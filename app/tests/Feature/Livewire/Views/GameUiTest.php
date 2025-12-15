@@ -36,7 +36,7 @@ describe('GameUi', function () {
             // check that player can not play a card after finishing turn
             ->tryToPlayCardWhenItIsNotThePlayersTurn($testCase, $categoryId);
 
-        // check that opponent player receives a message that it is his turn
+        // check that opponent player receives a message that it is their turn
         new GameUiTester($this->gameId, $this->players[1], 'Player 1')
             ->startGame($testCase)
             ->startTurn($testCase);
@@ -78,7 +78,7 @@ describe('GameUi', function () {
             ->acceptJobWhenPlayerCurrentlyHasNoJob($testCase)
             ->finishTurn();
 
-        // check that opponent player receives a message that it is his turn
+        // check that opponent player receives a message that it is their turn
         new GameUiTester($this->gameId, $this->players[1], 'Player 1')
             ->startTurn($testCase);
     });
@@ -158,7 +158,7 @@ describe('GameUi', function () {
             ->call('spielzugAbschliessen')
             ->assertDontSee('Du musst erst einen Zeitstein für eine Aktion ausgeben');
 
-        // check that second player receives a message that it is his turn
+        // check that second player receives a message that it is their turn
         Livewire::test(GameUi::class, [
             'gameId' => $this->gameId,
             'myself' => $this->players[1],
@@ -207,7 +207,7 @@ describe('GameUi', function () {
             ->call('startKonjunkturphaseForPlayer')
             // check that message is not in Ereignisprotokoll
             ->assertDontSee(["macht Minijob 'Minijob", '5.000,00'])
-            // check that player has all of his Zeitsteine
+            // check that player has all of their Zeitsteine
             ->assertSeeHtml('Player 0 hat noch 6 von 6 Zeitsteinen übrig.')
             ->call('doMinijob')
             ->assertSee([
@@ -236,7 +236,7 @@ describe('GameUi', function () {
             ->call('spielzugAbschliessen')
             ->assertDontSee('Du musst erst einen Zeitstein für eine Aktion ausgeben');
 
-        // check that opponent player receives a message that it is his turn
+        // check that opponent player receives a message that it is their turn
         Livewire::test(GameUi::class, [
             'gameId' => $this->gameId,
             'myself' => $this->players[1],
@@ -318,7 +318,7 @@ describe('GameUi', function () {
             ->call('startKonjunkturphaseForPlayer')
             // finish turn without playing a card
             ->call('spielzugAbschliessen')
-            // check that player has all of his Zeitsteine
+            // check that player has all of their Zeitsteine
             ->assertSeeHtml('Player 0 hat noch 6 von 6 Zeitsteinen übrig.')
             // check that error message is displayed
             ->assertSee('Du musst erst einen Zeitstein für eine Aktion ausgeben');

@@ -134,9 +134,7 @@ readonly class GameUiTester {
             ->assertSee([
                 $topCardTitle,
                 $topCard->getDescription(),
-                // ToDo: Vorzeichen (icon-minus oder icon-plus)
-                // ToDo: Zahlenformat in separate function
-                $topCardGuthabenChange === 0 ? '' : number_format(abs($topCardGuthabenChange), 2, ',', '.'),
+                $topCardGuthabenChange === 0 ? '' : $this->numberFormatMoney(abs($topCardGuthabenChange)),
                 'Karte spielen'
             ])
             // check that message is not in Ereignisprotokoll
@@ -292,9 +290,13 @@ readonly class GameUiTester {
     private function getPlayersBalance(TestCase $testCase): float {
         $playerResources = PlayerState::getResourcesForPlayer($testCase->getGameEvents(), $this->playerId);
         $balance = $playerResources->guthabenChange->value;
-        $this->testableGameUi->assertSee(number_format($balance, 2, ',', '.'));
+        $this->testableGameUi->assertSee($this->numberFormatMoney($balance));
 
         return $balance;
+    }
+
+    private function numberFormatMoney($amount): string {
+        return number_format(($amount), 2, ',', '.');
     }
 
     private function compareUsedSlots($categoryId, $usedCategorySlotsBeforeAction, $usedCategorySlotsAfterAction): void {
@@ -383,7 +385,7 @@ readonly class GameUiTester {
                 'Ein Job kostet Zeit. Pro Jahr bleibt dir ein Zeitstein weniger.',
                 'Deine bisher erworbenen Kompetenzen:',
                 $topCard->getTitle(),
-                number_format($topCard->getGehalt()->value, 2, ',', '.'),
+                $this->numberFormatMoney($topCard->getGehalt()->value),
                 'Jahresgehalt brutto',
                 'Das mache ich!',
                 'Voraussetzungen:',
@@ -403,7 +405,7 @@ readonly class GameUiTester {
     public function acceptJobWhenPlayerCurrentlyHasNoJob(TestCase $testCase) {
         $topCard = $this->getTopCardFromCategory($testCase, CategoryId::JOBS);
         $topCardTitle = $topCard->getTitle();
-        $gehalt = number_format($topCard->getGehalt()->value, 2, ",", ".");
+        $gehalt = $this->numberFormatMoney($topCard->getGehalt()->value);
 
         // get players available Zeitsteine
         $availableZeitsteine = $this->getAvailableZeitsteine($testCase);
