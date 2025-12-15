@@ -4,6 +4,7 @@ namespace Tests\Feature\Livewire;
 
 use App\Livewire\GameUi;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
+use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
@@ -90,7 +91,12 @@ describe('GameUi', function () {
         new GameUiTester($this->gameId, $this->players[0], 'Player 0')
             ->startGame($testCase)
             ->openInvestmentsOverview()
-            ->buyStocks();
+            ->chooseStocks($testCase)
+            ->buyStocks($testCase, InvestmentId::BETA_PEAR, 10);
+
+        // opponent player has possibility to sell stocks
+        new GameUiTester($this->gameId, $this->players[1], 'Player 1')
+            ->startGame($testCase);
 
         /*
         Livewire::test(GameUi::class, [

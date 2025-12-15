@@ -3,7 +3,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire\Views\Helpers;
 
+use App\Livewire\Forms\BuyInvestmentsForm;
 use App\Livewire\GameUi;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\GameId;
@@ -13,6 +16,8 @@ use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\Definitions\Investments\InvestmentFinder;
+use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Livewire\Features\SupportTesting\Testable;
 use Livewire\Livewire;
@@ -352,10 +357,21 @@ readonly class GameUiTester {
     }
 
     public function startTurn(TestCase $testCase): static {
+        $playerColorClass = PlayerState::getPlayerColorClass($testCase->getGameEvents(), $this->playerId);
+
         $this->testableGameUi
             // check that modal is visible
-            ->assertSee('Du bist am Zug')
-            ->assertSeeHtml('startSpielzug')
+            ->assertSeeHtml([
+                '<div class="modal__backdrop"></div>',
+                '<div class="modal__body" id="mandatory-modal-content">',
+                '<h3>Du bist am Zug!</h3>',
+                "<button type=\"button\"
+        class=\"button button--type-primary $playerColorClass\"
+        wire:click=\"startSpielzug()\"
+    >
+        Ok
+    </button>"
+            ])
             // player confirms starting turn
             ->call('startSpielzug')
             // check that modal is not visible anymore
@@ -491,12 +507,12 @@ readonly class GameUiTester {
 
     public function openInvestmentsOverview(): static {
         $this->testableGameUi
-            // player opens investments overview
             ->call('toggleInvestitionenSelectionModal')
             ->assertSeeHtml([
                 '<div class="modal__backdrop" wire:click=toggleInvestitionenSelectionModal()></div>',
+                '<div class="modal__close-button">',
                 '<h2 class="modal__header" id="modal-headline">',
-//                '<h2 class="modal__body" id="modal-content">',
+                '<div class="modal__body" id="modal-content">',
                 '<div class="investitionen-overview">',
                 '<button class="card" wire:click="toggleStocksModal()">',
                 '<h4 class="card__title">Aktien</h4>',
@@ -506,30 +522,105 @@ readonly class GameUiTester {
                 '<h4 class="card__title">Krypto</h4>',
                 '<button class="card" wire:click="toggleImmobilienModal()">',
                 '<h4 class="card__title">Immobilien</h4>'
-            ])
-            // player chooses stocks
-            ->call('toggleStocksModal')
-            ->assertSee([
-                'Aktien sind Anteilsscheine an einzelnen Unternehmen. Ihr Wert schwankt abhängig von',
-                'Gewinnen, Management-Entscheidungen und aktuellen Nachrichten. Sie bieten Chancen auf',
-                'Dividenden und Kursgewinne, bergen jedoch auch das Risiko unternehmensspezifischer Rückschläge.',
-                'Merfedes-Penz',
-                'BetaPear',
-                '50,00 €',
-                'kaufen',
-                'verkaufen'
-            ])
-            ->assertSeeHtml([
-                '<div class="modal__backdrop" wire:click=toggleStocksModal()></div>',
-                '<div class="modal__close-button">',
-                '<h2 class="modal__header" id="modal-headline">',
-//                '<h2 class="modal__body" id="modal-content">',
             ]);
 
         return $this;
     }
 
-    public function buyStocks() {
+    public function chooseStocks(TestCase $testCase): static {
+        $playerColorClass = PlayerState::getPlayerColorClass($testCase->getGameEvents(), $this->playerId);
+        $firstStock = InvestmentId::MERFEDES_PENZ;
+        $secondStock = InvestmentId::BETA_PEAR;
+
+        $this->testableGameUi
+            ->call('toggleStocksModal')
+            ->assertSee([
+                'Aktien sind Anteilsscheine an einzelnen Unternehmen. Ihr Wert schwankt abhängig von',
+                'Gewinnen, Management-Entscheidungen und aktuellen Nachrichten. Sie bieten Chancen auf',
+                'Dividenden und Kursgewinne, bergen jedoch auch das Risiko unternehmensspezifischer Rückschläge.',
+            ])
+            ->assertSeeHtml([
+                '<div class="modal__backdrop" wire:click=toggleStocksModal()></div>',
+                '<div class="modal__close-button">',
+                '<h2 class="modal__header" id="modal-headline">',
+                '<div class="modal__body" id="modal-content">',
+                "<h4>$firstStock->value</h4>",
+                InvestmentPriceState::getCurrentInvestmentPrice($testCase->getGameEvents(), $firstStock)->format(),
+                "<button
+            type=\"button\"
+            class=\"button button--type-primary $playerColorClass\"
+            wire:click=\"showBuyInvestmentOfType('$firstStock->value')\"
+        >
+            kaufen
+        </button>",
+                "<button
+            type=\"button\"
+            class=\"button button--type-outline-primary button--disabled $playerColorClass\"
+            wire:click=\"showSellInvestmentOfType('$firstStock->value')\"
+        >
+            verkaufen
+        </button>",
+                "<h4>$secondStock->value</h4>",
+                InvestmentPriceState::getCurrentInvestmentPrice($testCase->getGameEvents(), $secondStock)->format(),
+                "<button
+            type=\"button\"
+            class=\"button button--type-primary $playerColorClass\"
+            wire:click=\"showBuyInvestmentOfType('$secondStock->value')\"
+        >
+            kaufen
+        </button>",
+                "<button
+            type=\"button\"
+            class=\"button button--type-outline-primary button--disabled $playerColorClass\"
+            wire:click=\"showSellInvestmentOfType('$secondStock->value')\"
+        >
+            verkaufen
+        </button>",
+            ]);
+        return $this;
+    }
+
+    public function buyStocks(TestCase $testCase, InvestmentId $investmentId, int $amount): static {
+        $investmentDefinition = InvestmentFinder::findInvestmentById($investmentId);
+        $currentInvestmentPrice = InvestmentPriceState::getCurrentInvestmentPrice($testCase->getGameEvents(), $investmentId);
+        $currentInvestmentPriceFormatted = $this->numberFormatMoney($currentInvestmentPrice->value);
+        $investedMoney = $this->numberFormatMoney($amount * $currentInvestmentPrice->value);
+        $dividende = $investmentId === InvestmentId::MERFEDES_PENZ
+            ? KonjunkturphaseState::getCurrentKonjunkturphase($testCase->getGameEvents())->getDividend()->format()
+            : "/";
+//        dump($investmentDefinition);
+//        dump($currentInvestmentPrice);
+//        dump($currentInvestmentPrice->format());
+//        dump($dividende);
+        dump($investedMoney);
+
+        $this->testableGameUi
+            ->call('showBuyInvestmentOfType', $investmentId->value)
+            ->assertSee([
+                InvestmentFinder::findInvestmentById($investmentId)->description,
+                'Stückzahl',
+                'Summe Kauf',
+                'Langfristige Tendenz:',
+                'Kursschwankungen:',
+                'Dividende pro Aktie:'
+            ])
+            ->assertSeeHtml([
+                '<div class="modal__backdrop" wire:click=toggleStocksModal()></div>',
+                '<div class="modal__close-button">',
+                '<h2 class="modal__header" id="modal-headline">',
+                "Kauf - $investmentId->value",
+                '<div class="modal__body" id="modal-content">',
+                $currentInvestmentPrice->format(),
+                '0,00 €',
+                "<strong>$investmentDefinition->longTermTrend%</strong>",
+                "<strong>$investmentDefinition->fluctuations%</strong>",
+                "<strong>$dividende</strong>"
+            ])
+            ->set('buyInvestmentsForm.amount', $amount)
+            ->call('buyInvestments', $investmentId->value)
+            ->assertSee(
+                "Investiert in '$investmentId->value' und kauft $amount Anteile zum Preis von $currentInvestmentPriceFormatted €"
+            );
 
         return $this;
     }
