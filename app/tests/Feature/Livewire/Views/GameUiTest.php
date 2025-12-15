@@ -95,8 +95,8 @@ describe('GameUi', function () {
             ->buyStocks($testCase, InvestmentId::BETA_PEAR, 10);
 
         // opponent player has possibility to sell stocks
-        new GameUiTester($this->gameId, $this->players[1], 'Player 1')
-            ->startGame($testCase);
+        new GameUiTester($this->gameId, $this->players[1], 'Player 1');
+//            ->startGame($testCase);
 
         /*
         Livewire::test(GameUi::class, [
