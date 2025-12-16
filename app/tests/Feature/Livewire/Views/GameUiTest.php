@@ -23,7 +23,7 @@ describe('GameUi', function () {
         /** @var TestCase $this */
         $gameUiTester = new GameUiTester($this->gameId, $this->players[0], 'Player 0');
         $gameUiTester->testableGameUi->assertStatus(200);
-        $gameUiTester->startGame($this);
+        $gameUiTester->startGame($this)->checkThatSidebarActionsAreVisible(true, $this);
     });
 
     it('plays a card and finishes turn', function (CategoryId $categoryId) {
@@ -32,6 +32,7 @@ describe('GameUi', function () {
 
         new GameUiTester($this->gameId, $this->players[0], 'Player 0')
             ->startGame($testCase)
+            ->checkThatSidebarActionsAreVisible(true, $testCase)
             ->drawAndPlayCard($testCase, $categoryId)
             ->finishTurn()
             // check that player can not play a card after finishing turn
@@ -40,7 +41,8 @@ describe('GameUi', function () {
         // check that opponent player receives a message that it is their turn
         new GameUiTester($this->gameId, $this->players[1], 'Player 1')
             ->startGame($testCase)
-            ->startTurn($testCase);
+            ->startTurn($testCase)
+            ->checkThatSidebarActionsAreVisible(true, $testCase);
     })->with([CategoryId::BILDUNG_UND_KARRIERE, CategoryId::SOZIALES_UND_FREIZEIT]);
 
     it('gets enough Kompetenzsteine and accepts a job offer', function () {
@@ -50,6 +52,7 @@ describe('GameUi', function () {
         // first player plays first card for Bildung & Karriere and finishes turn
         new GameUiTester($this->gameId, $this->players[0], 'Player 0')
             ->startGame($testCase)
+            ->checkThatSidebarActionsAreVisible(true, $testCase)
             ->drawAndPlayCard($testCase, CategoryId::BILDUNG_UND_KARRIERE)
             ->finishTurn();
 
@@ -57,31 +60,36 @@ describe('GameUi', function () {
         new GameUiTester($this->gameId, $this->players[1], 'Player 1')
             ->startGame($testCase)
             ->startTurn($testCase)
+            ->checkThatSidebarActionsAreVisible(true, $testCase)
             ->drawAndPlayCard($testCase, CategoryId::SOZIALES_UND_FREIZEIT)
             ->finishTurn();
 
         // first player plays second card for Bildung & Karriere and finishes turn
         new GameUiTester($this->gameId, $this->players[0], 'Player 0')
             ->startTurn($testCase)
+            ->checkThatSidebarActionsAreVisible(true, $testCase)
             ->drawAndPlayCard($testCase, CategoryId::BILDUNG_UND_KARRIERE)
             ->finishTurn();
 
         // second player uses 1 Zeitstein and finishes turn
         new GameUiTester($this->gameId, $this->players[1], 'Player 1')
             ->startTurn($testCase)
+            ->checkThatSidebarActionsAreVisible(true, $testCase)
             ->drawAndPlayCard($testCase, CategoryId::SOZIALES_UND_FREIZEIT)
             ->finishTurn();
 
         // first player accepts a job and finishes turn
         new GameUiTester($this->gameId, $this->players[0], 'Player 0')
             ->startTurn($testCase)
+            ->checkThatSidebarActionsAreVisible(true, $testCase)
             ->openJobBoard($testCase)
             ->acceptJobWhenPlayerCurrentlyHasNoJob($testCase)
             ->finishTurn();
 
         // check that opponent player receives a message that it is their turn
         new GameUiTester($this->gameId, $this->players[1], 'Player 1')
-            ->startTurn($testCase);
+            ->startTurn($testCase)
+            ->checkThatSidebarActionsAreVisible(true, $testCase);
     });
 
     it('invests in Aktien', function () {
@@ -90,13 +98,15 @@ describe('GameUi', function () {
 
         new GameUiTester($this->gameId, $this->players[0], 'Player 0')
             ->startGame($testCase)
+            ->checkThatSidebarActionsAreVisible(true, $testCase)
             ->openInvestmentsOverview()
             ->chooseStocks($testCase)
             ->buyStocks($testCase, InvestmentId::BETA_PEAR, 10);
 
         // opponent player has possibility to sell stocks
-        new GameUiTester($this->gameId, $this->players[1], 'Player 1');
-//            ->startGame($testCase);
+        new GameUiTester($this->gameId, $this->players[1], 'Player 1')
+            ->startGame($testCase)
+            ->checkThatSidebarActionsAreVisible(false, $testCase);
 
         /*
         Livewire::test(GameUi::class, [

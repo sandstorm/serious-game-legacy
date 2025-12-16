@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire\Views\Helpers;
 
-use App\Livewire\Forms\BuyInvestmentsForm;
 use App\Livewire\GameUi;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
@@ -55,6 +54,9 @@ readonly class GameUiTester {
     }
 
     private function seeUpdatedGameboard(TestCase $testCase): void {
+        $playerColorClass = PlayerState::getPlayerColorClass($testCase->getGameEvents(), $this->playerId);
+        $playersGuthabenFormatted = PlayerState::getGuthabenForPlayer($testCase->getGameEvents(), $this->playerId)->format();
+
         $this->testableGameUi
             ->assertSee([
                 'Bildung & Karriere',
@@ -72,10 +74,12 @@ readonly class GameUiTester {
                 'Investitionen',
                 'Weiterbildung',
                 'Minijob',
-                'Kredit aufnehmen',
-                'Versicherung abschließen',
-                'Spielzug beenden'
-            ]);
+
+            ])
+            ->assertSeeHtml(
+                "<button title=\"Moneysheet öffnen\" class=\"button button--type-primary $playerColorClass\" wire:click=\"showMoneySheet()\">
+                        $playersGuthabenFormatted"
+            );
     }
 
     /**
@@ -91,6 +95,50 @@ readonly class GameUiTester {
         $pileId = new PileId($categoryId, $lebenszielPhaseId);
         $topCardIdForPile = PileState::topCardIdForPile($testCase->getGameEvents(), $pileId);
         return CardFinder::getInstance()->getCardById(new CardId($topCardIdForPile->value));
+    }
+
+    public function checkThatSidebarActionsAreVisible(bool $actionsAreVisible, TestCase $testCase): static {
+        $playerColorClass = PlayerState::getPlayerColorClass($testCase->getGameEvents(), $this->playerId);
+
+        if ($actionsAreVisible) {
+            $this->testableGameUi
+                ->assertSeeHtml([
+                    "<button
+                class=\"button button--type-secondary \"
+                wire:click=\"showTakeOutALoan()\">
+                    <span>Kredit aufnehmen</span> <i class=\"icon-dots\" aria-hidden=\"true\"></i>
+            </button>",
+                    "<button class=\"button button--type-secondary\" wire:click=\"showExpensesTab('insurances')\">
+                <span>Versicherung abschließen</span> <i class=\"icon-dots\" aria-hidden=\"true\"></i>
+            </button>",
+                    " <button
+                type=\"button\"
+                class=\"button button--type-primary button--disabled $playerColorClass\"
+                wire:click=\"spielzugAbschliessen()\">
+                Spielzug beenden
+            </button>"
+                ]);
+        } else {
+            $this->testableGameUi
+                ->assertDontSeeHtml([
+                    "<button
+                class=\"button button--type-secondary \"
+                wire:click=\"showTakeOutALoan()\">
+                    <span>Kredit aufnehmen</span> <i class=\"icon-dots\" aria-hidden=\"true\"></i>
+            </button>",
+                    "<button class=\"button button--type-secondary\" wire:click=\"showExpensesTab('insurances')\">
+                <span>Versicherung abschließen</span> <i class=\"icon-dots\" aria-hidden=\"true\"></i>
+            </button>",
+                    " <button
+                type=\"button\"
+                class=\"button button--type-primary button--disabled $playerColorClass\"
+                wire:click=\"spielzugAbschliessen()\">
+                Spielzug beenden
+            </button>"
+                ]);
+        }
+
+        return $this;
     }
 
     public function drawAndPlayCard(TestCase $testCase, CategoryId $categoryId) {
