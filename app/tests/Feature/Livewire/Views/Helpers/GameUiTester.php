@@ -3,10 +3,14 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire\Views\Helpers;
 
+use App\Livewire\Forms\SellInvestmentsForm;
 use App\Livewire\GameUi;
+use App\Models\Game;
+use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasBoughtInvestment;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
@@ -179,6 +183,7 @@ readonly class GameUiTester {
 
         // get players balance before action
         $playersBalanceBeforeAction = $this->getPlayersBalance($testCase);
+        $this->assertVisibilityOfBalance($testCase);
 
         // draw and play card
         $this->testableGameUi
@@ -228,6 +233,7 @@ readonly class GameUiTester {
 
         // check that player has paid
         $playersBalanceAfterAction = $this->getPlayersBalance($testCase);
+        $this->assertVisibilityOfBalance($testCase);
         Assert::assertEquals(
             $playersBalanceBeforeAction + $topCardGuthabenChange,
             $playersBalanceAfterAction,
@@ -350,6 +356,16 @@ readonly class GameUiTester {
 
     private function numberFormatMoney($amount): string {
         return number_format(($amount), 2, ',', '.');
+    }
+
+    private function assertVisibilityOfBalance(TestCase $testCase): void {
+        $playerColorClass = PlayerState::getPlayerColorClass($testCase->getGameEvents(), $this->playerId);
+        $playersGuthabenFormatted = PlayerState::getGuthabenForPlayer($testCase->getGameEvents(), $this->playerId)->format();
+
+        $this->testableGameUi->assertSeeHtml(
+            "<button title=\"Moneysheet öffnen\" class=\"button button--type-primary $playerColorClass\" wire:click=\"showMoneySheet()\">
+                        $playersGuthabenFormatted"
+        );
     }
 
     private function compareUsedSlots($categoryId, $usedCategorySlotsBeforeAction, $usedCategorySlotsAfterAction): void {
@@ -632,15 +648,14 @@ readonly class GameUiTester {
         $investmentDefinition = InvestmentFinder::findInvestmentById($investmentId);
         $currentInvestmentPrice = InvestmentPriceState::getCurrentInvestmentPrice($testCase->getGameEvents(), $investmentId);
         $currentInvestmentPriceFormatted = $this->numberFormatMoney($currentInvestmentPrice->value);
-        $investedMoney = $this->numberFormatMoney($amount * $currentInvestmentPrice->value);
+        $investedMoney = $amount * $currentInvestmentPrice->value;
         $dividende = $investmentId === InvestmentId::MERFEDES_PENZ
             ? KonjunkturphaseState::getCurrentKonjunkturphase($testCase->getGameEvents())->getDividend()->format()
             : "/";
-//        dump($investmentDefinition);
-//        dump($currentInvestmentPrice);
-//        dump($currentInvestmentPrice->format());
-//        dump($dividende);
-        dump($investedMoney);
+
+        // get players balance before action
+        $playersBalanceBeforeAction = $this->getPlayersBalance($testCase);
+        $this->assertVisibilityOfBalance($testCase);
 
         $this->testableGameUi
             ->call('showBuyInvestmentOfType', $investmentId->value)
@@ -664,13 +679,102 @@ readonly class GameUiTester {
                 "<strong>$investmentDefinition->fluctuations%</strong>",
                 "<strong>$dividende</strong>"
             ])
+            // set amount
             ->set('buyInvestmentsForm.amount', $amount)
+            // buy stocks
             ->call('buyInvestments', $investmentId->value)
+            ->assertDontSeeHtml([
+                '<div class="modal__backdrop" wire:click=toggleStocksModal()></div>',
+                '<div class="modal__close-button">',
+                '<h2 class="modal__header" id="modal-headline">',
+                "Kauf - $investmentId->value",
+                '<div class="modal__body" id="modal-content">',
+                $currentInvestmentPrice->format(),
+                "<strong>$investmentDefinition->longTermTrend%</strong>",
+                "<strong>$investmentDefinition->fluctuations%</strong>",
+                "<strong>$dividende</strong>"
+            ])
             ->assertSee(
                 "Investiert in '$investmentId->value' und kauft $amount Anteile zum Preis von $currentInvestmentPriceFormatted €"
             );
 
+        // check that players balance has changed
+        $playersBalanceAfterAction = $this->getPlayersBalance($testCase);
+        $this->assertVisibilityOfBalance($testCase);
+        Assert::assertEquals(
+            $playersBalanceAfterAction,
+            $playersBalanceBeforeAction - $investedMoney,
+            "Balance has been changed by investment"
+        );
+
         return $this;
+    }
+
+    public function sellStocksThatOtherPlayerIsBuying(InvestmentId $stockId, TestCase $testCase): void {
+
+        $playerColorClass = PlayerState::getPlayerColorClass($testCase->getGameEvents(), $this->playerId);
+        $lastInvestmentBoughtByAPlayer = $testCase->getGameEvents()->findLast(PlayerHasBoughtInvestment::class);
+        $nameOfPlayerWhoBoughtInvestment = PlayerState::getNameForPlayer(
+            $testCase->getGameEvents(),
+            $lastInvestmentBoughtByAPlayer->playerId
+        );
+
+        $this->testableGameUi
+            ->assertSeeHtml([
+                '<div class="modal__backdrop"></div>',
+                "<h2 class=\"modal__header\" id=\"mandatory-modal-headline\">
+                    <span>
+        Verkauf - $stockId->value <i class=\"icon-aktien\" aria-hidden=\"true\"></i>
+    </span>
+            </h2>",
+                "<div class=\"modal__body\" id=\"mandatory-modal-content\">
+                <h4>$nameOfPlayerWhoBoughtInvestment hat in $stockId->value investiert!</h4>",
+                "<button type=\"button\"
+            class=\"button button--type-outline-primary $playerColorClass\"
+            wire:click=\"closeSellInvestmentsModal()\"
+    >
+        Ich möchte nichts verkaufen
+    </button>"
+            ])
+            ->assertDontSeeHtml([
+                '<div class="modal__close-button">'
+            ]);
+
+//        Todo: überprüfen, ob Player Aktien besitzt --> abhängig davon wird anderer Text gerendert (siehe unten)
+        $this->testableGameUi
+            ->assertSeeHtml(
+                "Du hast keine Anteile vom Typ $stockId->value."
+            );
+
+        $this->testableGameUi
+            ->call('closeSellInvestmentsModal');
+
+// ToDo: Wenn Spieler Aktien von diesem Typ besitzt (investitionen-sell-form.blade.php)
+//
+//        <p>
+//        Du hast aktuell <strong>{{ $this->sellInvestmentsForm->amountOwned }}</strong> Anteile vom Typ
+//        <strong>{{ $this->sellInvestmentsForm->investmentId }}</strong> in deinem Besitz.
+//    </p>
+
+//        ToDo: wenn Spieler mehr als 0 Aktien von dem Typ besitzt (investitionen-sell-after-purchase-modal.blade-php)
+//        <p>
+//        Du kannst jetzt deine Anteile verkaufen.
+//        </p>
+
+        // ToDo: Wenn Spieler keine Aktien diesen Types besitzt (investitionen-sell-form.blade.php)
+//        <p>
+//        Du hast keine Anteile vom Typ {{ $this->sellInvestmentsForm->investmentId }}.
+//    </p>
+
+//        ToDo: wenn Spieler Anteile verkaufen kann (submit.blade.php + investitionen-sell-form.blade.php + investitionen-sell-after-purchase-modal.blade-php)
+//        "<button
+//    type=\"submit\"
+//    class=\"button button--type-primary $playerColorClass\"
+//    disabled wire:dirty.remove.attr=\"disabled\"
+//>
+//    Anteile verkaufen
+//</button>",
+
     }
 
 }

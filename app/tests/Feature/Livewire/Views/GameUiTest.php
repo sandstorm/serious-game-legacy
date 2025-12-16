@@ -95,92 +95,29 @@ describe('GameUi', function () {
     it('invests in Aktien', function () {
         /** @var TestCase $this */
         $testCase = $this;
+        $stockId = InvestmentId::BETA_PEAR;
+        $amount = 15;
 
         new GameUiTester($this->gameId, $this->players[0], 'Player 0')
             ->startGame($testCase)
             ->checkThatSidebarActionsAreVisible(true, $testCase)
             ->openInvestmentsOverview()
             ->chooseStocks($testCase)
-            ->buyStocks($testCase, InvestmentId::BETA_PEAR, 10);
+            ->buyStocks($testCase, $stockId, $amount);
 
         // opponent player has possibility to sell stocks
         new GameUiTester($this->gameId, $this->players[1], 'Player 1')
             ->startGame($testCase)
-            ->checkThatSidebarActionsAreVisible(false, $testCase);
+            ->checkThatSidebarActionsAreVisible(false, $testCase)
+            ->sellStocksThatOtherPlayerIsBuying($stockId, $testCase);
 
-        /*
-        Livewire::test(GameUi::class, [
-            'gameId' => $this->gameId,
-            'myself' => $this->players[0],
-        ])
+        new GameUiTester($this->gameId, $this->players[0], 'Player 0')
+            ->finishTurn();
 
-            // player chooses Investments
-            ->call('toggleInvestitionenSelectionModal')
-            ->assertSee(['Investitionen', 'Aktien', 'ETF', 'Krypto', 'Immobilien'])
-
-            // player chooses stocks
-            ->call('toggleStocksModal')
-            ->assertSee([
-                'Aktien sind Anteilsscheine an einzelnen Unternehmen. Ihr Wert schwankt abhängig von',
-                'Gewinnen, Management-Entscheidungen und aktuellen Nachrichten. Sie bieten Chancen auf',
-                'Dividenden und Kursgewinne, bergen jedoch auch das Risiko unternehmensspezifischer Rückschläge.',
-                'Merfedes-Penz',
-                'BetaPear',
-                '50,00 €',
-                'kaufen',
-                'verkaufen'
-            ])
-
-            ->call('showBuyInvestmentOfType', 'BetaPear')
-            ->assertSee([
-                'Kauf - BetaPear',
-                'Ein junges, ambitioniertes Tech-Unternehmen mit Fokus auf Nachhaltigkeit, das auf die nächste große Innovation setzt. Die Aktie bietet hohe, aber stark schwankende Kurschancen und zahlt keine Dividenden.',
-                'Stückzahl',
-                'Summe Kauf',
-                '50,00 €',
-                '0,00 €',
-                'Langfristige Tendenz:',
-                '9%',
-                'Kursschwankungen:',
-                '40%',
-                'Dividende pro Aktie:'
-            ])
-            ->set("buyInvestmentsForm.amount", '456')
-            ->call('buyInvestments', 'BetaPear')
-            ->assertSee("Investiert in 'BetaPear' und kauft 456 Anteile zum Preis von 50,00 €");
-
-        //////////////////////////////////////////////////////////////////////////////
-
-        Livewire::test(GameUi::class, [
-            'gameId' => $this->gameId,
-            'myself' => $this->players[1],
-        ])
-            ->call('nextKonjunkturphaseStartScreenPage')
-            ->call('startKonjunkturphaseForPlayer')
-            // opponent player has possibility to sell stocks
-            ->assertSee([
-                'Verkauf - BetaPear',
-                'Player 0 hat in BetaPear investiert!',
-                'Du hast keine Anteile vom Typ BetaPear.',
-                'Ich möchte nichts verkaufen'
-            ])
-            ->call('closeSellInvestmentsModal');
-
-        Livewire::test(GameUi::class, [
-            'gameId' => $this->gameId,
-            'myself' => $this->players[0],
-        ])
-            // finish turn
-            ->call('spielzugAbschliessen')
-            ->assertDontSee('Du musst erst einen Zeitstein für eine Aktion ausgeben');
-
-        // check that second player receives a message that it is their turn
-        Livewire::test(GameUi::class, [
-            'gameId' => $this->gameId,
-            'myself' => $this->players[1],
-        ])
-            ->assertSee('Du bist am Zug');
-        */
+        // check that opponent player receives a message that it is their turn
+        new GameUiTester($this->gameId, $this->players[1], 'Player 1')
+            ->startTurn($testCase)
+            ->checkThatSidebarActionsAreVisible(true, $testCase);
     });
 
     it('does a Weiterbildung', function () {
