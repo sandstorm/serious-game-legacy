@@ -21,28 +21,28 @@ beforeEach(function () {
 describe('GameUi', function () {
     it('renders GameUi', function () {
         /** @var TestCase $this */
-        $gameUiTester = new GameUiTester($this->gameId, $this->players[0], 'Player 0');
+        $gameUiTester = new GameUiTester($this, $this->players[0], 'Player 0');
         $gameUiTester->testableGameUi->assertStatus(200);
-        $gameUiTester->startGame($this)->checkThatSidebarActionsAreVisible(true, $this);
+        $gameUiTester->startGame()->checkThatSidebarActionsAreVisible(true);
     });
 
     it('plays a card and finishes turn', function (CategoryId $categoryId) {
         /** @var TestCase $this */
         $testCase = $this;
 
-        new GameUiTester($this->gameId, $this->players[0], 'Player 0')
-            ->startGame($testCase)
-            ->checkThatSidebarActionsAreVisible(true, $testCase)
-            ->drawAndPlayCard($testCase, $categoryId)
+        new GameUiTester($testCase, $this->players[0], 'Player 0')
+            ->startGame()
+            ->checkThatSidebarActionsAreVisible(true)
+            ->drawAndPlayCard($categoryId)
             ->finishTurn()
             // check that player can not play a card after finishing turn
-            ->tryToPlayCardWhenItIsNotThePlayersTurn($testCase, $categoryId);
+            ->tryToPlayCardWhenItIsNotThePlayersTurn($categoryId);
 
         // check that opponent player receives a message that it is their turn
-        new GameUiTester($this->gameId, $this->players[1], 'Player 1')
-            ->startGame($testCase)
-            ->startTurn($testCase)
-            ->checkThatSidebarActionsAreVisible(true, $testCase);
+        new GameUiTester($testCase, $this->players[1], 'Player 1')
+            ->startGame()
+            ->startTurn()
+            ->checkThatSidebarActionsAreVisible(true);
     })->with([CategoryId::BILDUNG_UND_KARRIERE, CategoryId::SOZIALES_UND_FREIZEIT]);
 
     it('gets enough Kompetenzsteine and accepts a job offer', function () {
@@ -50,46 +50,46 @@ describe('GameUi', function () {
         $testCase = $this;
 
         // first player plays first card for Bildung & Karriere and finishes turn
-        new GameUiTester($this->gameId, $this->players[0], 'Player 0')
-            ->startGame($testCase)
-            ->checkThatSidebarActionsAreVisible(true, $testCase)
-            ->drawAndPlayCard($testCase, CategoryId::BILDUNG_UND_KARRIERE)
+        new GameUiTester($testCase, $this->players[0], 'Player 0')
+            ->startGame()
+            ->checkThatSidebarActionsAreVisible(true)
+            ->drawAndPlayCard(CategoryId::BILDUNG_UND_KARRIERE)
             ->finishTurn();
 
         // second player uses 1 Zeitstein and finishes turn
-        new GameUiTester($this->gameId, $this->players[1], 'Player 1')
-            ->startGame($testCase)
-            ->startTurn($testCase)
-            ->checkThatSidebarActionsAreVisible(true, $testCase)
-            ->drawAndPlayCard($testCase, CategoryId::SOZIALES_UND_FREIZEIT)
+        new GameUiTester($testCase, $this->players[1], 'Player 1')
+            ->startGame()
+            ->startTurn()
+            ->checkThatSidebarActionsAreVisible(true)
+            ->drawAndPlayCard(CategoryId::SOZIALES_UND_FREIZEIT)
             ->finishTurn();
 
         // first player plays second card for Bildung & Karriere and finishes turn
-        new GameUiTester($this->gameId, $this->players[0], 'Player 0')
-            ->startTurn($testCase)
-            ->checkThatSidebarActionsAreVisible(true, $testCase)
-            ->drawAndPlayCard($testCase, CategoryId::BILDUNG_UND_KARRIERE)
+        new GameUiTester($testCase, $this->players[0], 'Player 0')
+            ->startTurn()
+            ->checkThatSidebarActionsAreVisible(true)
+            ->drawAndPlayCard(CategoryId::BILDUNG_UND_KARRIERE)
             ->finishTurn();
 
         // second player uses 1 Zeitstein and finishes turn
-        new GameUiTester($this->gameId, $this->players[1], 'Player 1')
-            ->startTurn($testCase)
-            ->checkThatSidebarActionsAreVisible(true, $testCase)
-            ->drawAndPlayCard($testCase, CategoryId::SOZIALES_UND_FREIZEIT)
+        new GameUiTester($testCase, $this->players[1], 'Player 1')
+            ->startTurn()
+            ->checkThatSidebarActionsAreVisible(true)
+            ->drawAndPlayCard(CategoryId::SOZIALES_UND_FREIZEIT)
             ->finishTurn();
 
         // first player accepts a job and finishes turn
-        new GameUiTester($this->gameId, $this->players[0], 'Player 0')
-            ->startTurn($testCase)
-            ->checkThatSidebarActionsAreVisible(true, $testCase)
-            ->openJobBoard($testCase)
-            ->acceptJobWhenPlayerCurrentlyHasNoJob($testCase)
+        new GameUiTester($testCase, $this->players[0], 'Player 0')
+            ->startTurn()
+            ->checkThatSidebarActionsAreVisible(true)
+            ->openJobBoard()
+            ->acceptJobWhenPlayerCurrentlyHasNoJob()
             ->finishTurn();
 
         // check that opponent player receives a message that it is their turn
-        new GameUiTester($this->gameId, $this->players[1], 'Player 1')
-            ->startTurn($testCase)
-            ->checkThatSidebarActionsAreVisible(true, $testCase);
+        new GameUiTester($testCase, $this->players[1], 'Player 1')
+            ->startTurn()
+            ->checkThatSidebarActionsAreVisible(true);
     });
 
     it('invests in Aktien', function () {
@@ -98,26 +98,26 @@ describe('GameUi', function () {
         $stockId = InvestmentId::BETA_PEAR;
         $amount = 15;
 
-        new GameUiTester($this->gameId, $this->players[0], 'Player 0')
-            ->startGame($testCase)
-            ->checkThatSidebarActionsAreVisible(true, $testCase)
+        new GameUiTester($testCase, $this->players[0], 'Player 0')
+            ->startGame()
+            ->checkThatSidebarActionsAreVisible(true)
             ->openInvestmentsOverview()
-            ->chooseStocks($testCase)
-            ->buyStocks($testCase, $stockId, $amount);
+            ->chooseStocks()
+            ->buyStocks($stockId, $amount);
 
         // opponent player has possibility to sell stocks
-        new GameUiTester($this->gameId, $this->players[1], 'Player 1')
-            ->startGame($testCase)
-            ->checkThatSidebarActionsAreVisible(false, $testCase)
-            ->sellStocksThatOtherPlayerIsBuying($stockId, $testCase);
+        new GameUiTester($testCase, $this->players[1], 'Player 1')
+            ->startGame()
+            ->checkThatSidebarActionsAreVisible(false)
+            ->sellStocksThatOtherPlayerIsBuying($stockId);
 
-        new GameUiTester($this->gameId, $this->players[0], 'Player 0')
+        new GameUiTester($testCase, $this->players[0], 'Player 0')
             ->finishTurn();
 
         // check that opponent player receives a message that it is their turn
-        new GameUiTester($this->gameId, $this->players[1], 'Player 1')
-            ->startTurn($testCase)
-            ->checkThatSidebarActionsAreVisible(true, $testCase);
+        new GameUiTester($testCase, $this->players[1], 'Player 1')
+            ->startTurn()
+            ->checkThatSidebarActionsAreVisible(true);
     });
 
     it('does a Weiterbildung', function () {
@@ -152,16 +152,28 @@ describe('GameUi', function () {
 
     it('does a Minijob', function () {
         /** @var TestCase $this */
+        $testCase = $this;
+
+        new GameUiTester($testCase, $this->players[0], 'Player 0')
+            ->startGame()
+            ->checkThatSidebarActionsAreVisible(true)
+            ->doMinijob();
+
+        /*
         Livewire::test(GameUi::class, [
             'gameId' => $this->gameId,
             'myself' => $this->players[0],
         ])
             ->call('nextKonjunkturphaseStartScreenPage')
             ->call('startKonjunkturphaseForPlayer')
+
+        ///////////////////////////////////////////////////////////////////////////
             // check that message is not in Ereignisprotokoll
             ->assertDontSee(["macht Minijob 'Minijob", '5.000,00'])
+
             // check that player has all of their Zeitsteine
             ->assertSeeHtml('Player 0 hat noch 6 von 6 Zeitsteinen übrig.')
+
             ->call('doMinijob')
             ->assertSee([
                 'Minijob',
@@ -169,9 +181,11 @@ describe('GameUi', function () {
                 '5.000,00',
                 'Akzeptieren'
             ])
+
             ->call('closeMinijob')
             // check that message is now logged
             ->assertSee(["macht Minijob 'Minijob", '5.000,00'])
+
             // check that player has used 1 Zeitstein
             ->assertSeeHtml('Player 0 hat noch 5 von 6 Zeitsteinen übrig.')
             // check that player can not draw card
@@ -197,6 +211,8 @@ describe('GameUi', function () {
             ->call('nextKonjunkturphaseStartScreenPage')
             ->call('startKonjunkturphaseForPlayer')
             ->assertSee('Du bist am Zug');
+        */
+
     });
 
     it('takes out an insurance', function () {
