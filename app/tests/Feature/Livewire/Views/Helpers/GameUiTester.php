@@ -3,10 +3,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire\Views\Helpers;
 
-use App\Livewire\Forms\SellInvestmentsForm;
 use App\Livewire\GameUi;
-use App\Models\Game;
-use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
@@ -79,11 +76,9 @@ readonly class GameUiTester {
                 'Weiterbildung',
                 'Minijob',
 
-            ])
-            ->assertSeeHtml(
-                "<button title=\"Moneysheet öffnen\" class=\"button button--type-primary $playerColorClass\" wire:click=\"showMoneySheet()\">
-                        $playersGuthabenFormatted"
-            );
+            ]);
+
+        $this->assertVisibilityOfBalance($testCase);
     }
 
     /**
@@ -99,6 +94,16 @@ readonly class GameUiTester {
         $pileId = new PileId($categoryId, $lebenszielPhaseId);
         $topCardIdForPile = PileState::topCardIdForPile($testCase->getGameEvents(), $pileId);
         return CardFinder::getInstance()->getCardById(new CardId($topCardIdForPile->value));
+    }
+
+    private function assertVisibilityOfBalance(TestCase $testCase): void {
+        $playerColorClass = PlayerState::getPlayerColorClass($testCase->getGameEvents(), $this->playerId);
+        $playersGuthabenFormatted = PlayerState::getGuthabenForPlayer($testCase->getGameEvents(), $this->playerId)->format();
+
+        $this->testableGameUi->assertSeeHtml(
+            "<button title=\"Moneysheet öffnen\" class=\"button button--type-primary $playerColorClass\" wire:click=\"showMoneySheet()\">
+                        $playersGuthabenFormatted"
+        );
     }
 
     public function checkThatSidebarActionsAreVisible(bool $actionsAreVisible, TestCase $testCase): static {
@@ -356,16 +361,6 @@ readonly class GameUiTester {
 
     private function numberFormatMoney($amount): string {
         return number_format(($amount), 2, ',', '.');
-    }
-
-    private function assertVisibilityOfBalance(TestCase $testCase): void {
-        $playerColorClass = PlayerState::getPlayerColorClass($testCase->getGameEvents(), $this->playerId);
-        $playersGuthabenFormatted = PlayerState::getGuthabenForPlayer($testCase->getGameEvents(), $this->playerId)->format();
-
-        $this->testableGameUi->assertSeeHtml(
-            "<button title=\"Moneysheet öffnen\" class=\"button button--type-primary $playerColorClass\" wire:click=\"showMoneySheet()\">
-                        $playersGuthabenFormatted"
-        );
     }
 
     private function compareUsedSlots($categoryId, $usedCategorySlotsBeforeAction, $usedCategorySlotsAfterAction): void {
