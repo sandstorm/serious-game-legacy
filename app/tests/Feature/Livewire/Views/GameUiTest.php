@@ -188,6 +188,9 @@ describe('GameUi', function () {
 
             // check that player has used 1 Zeitstein
             ->assertSeeHtml('Player 0 hat noch 5 von 6 Zeitsteinen übrig.')
+
+        ///////////////////////////////////////////////////////////////////////////
+
             // check that player can not draw card
             ->call('activateCard', 'Bildung & Karriere')
             ->assertSee('Du hast bereits eine andere Aktion ausgeführt')

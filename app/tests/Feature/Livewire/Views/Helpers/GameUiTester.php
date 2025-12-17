@@ -110,7 +110,6 @@ readonly class GameUiTester {
             "<button title=\"Moneysheet öffnen\" class=\"button button--type-primary $this->playerColorClass\" wire:click=\"showMoneySheet()\">
                         $playersGuthabenFormatted"
         );
-//        dump($playersGuthabenFormatted);
     }
 
     public function checkThatSidebarActionsAreVisible(bool $actionsAreVisible): static {
@@ -268,7 +267,6 @@ readonly class GameUiTester {
         $this->testableGameUi->assertSeeHtml(
             $this->playerName . ' hat noch ' . $currentZeitsteine . ' von ' . $availableZeitsteine . ' Zeitsteinen übrig.'
         );
-//        dump($this->playerName . ' hat noch ' . $currentZeitsteine . ' von ' . $availableZeitsteine . ' Zeitsteinen übrig.');
     }
 
     /**
@@ -776,13 +774,15 @@ readonly class GameUiTester {
     }
 
     public function doMinijob(): static {
-
         // get top card from Minijob
-        $topCardMinijob = $this->getTopCardFromCategory(CategoryId::MINIJOBS);
-        $topCardMinijobTitle = $topCardMinijob->getTitle();
-        $formattedGuthabenChange = $topCardMinijob->getResourceChanges()->guthabenChange->formatWithIcon();
+        $topCard = $this->getTopCardFromCategory(CategoryId::MINIJOBS);
 
-        dump($topCardMinijob);
+        // get properties from top card
+        $topCardTitle = $topCard->getTitle();
+        $topCardDescription = $topCard->getDescription();
+        $topCardZeitstein = $topCard->getResourceChanges()->zeitsteineChange;
+        $topCardGuthabenChange = $topCard->getResourceChanges()->guthabenChange->value;
+        $formattedGuthabenChange = $topCard->getResourceChanges()->guthabenChange->formatWithIcon();
 
         // get players available Zeitsteine
         $availableZeitsteine = $this->getAvailableZeitsteine();
@@ -791,8 +791,10 @@ readonly class GameUiTester {
         // check that Zeitsteine are rendered correctly
         $this->assertVisibilityOfZeitsteine($playersZeitsteineBeforeAction, $availableZeitsteine);
 
+        // ToDo
         // get available Slots for categories
 
+        // ToDo
         // get available Slots for Kompetenzen
 
         // get players balance before action
@@ -806,16 +808,52 @@ readonly class GameUiTester {
                 <!--[if BLOCK]><![endif]-->                    <strong class=\"event-log__entry-player-name $this->playerColorClass\">$this->playerName</strong>
                 <!--[if ENDBLOCK]><![endif]-->
                 <span class=\"event-log__entry-text\">
-                    macht Minijob &#039;$topCardMinijobTitle&#039;
+                    macht Minijob &#039;$topCardTitle&#039;
                 </span>
                 <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
                 <!--[if BLOCK]><![endif]-->                    <div class=\"resource-changes resource-changes--horizontal\">
     <span class=\"sr-only\">Du bekommst/verlierst: </span>
     <!--[if BLOCK]><![endif]-->        <div class=\"resource-change\">$formattedGuthabenChange</div>"
             ])
-            // play card
+            // do Minijob
             ->call('doMinijob')
-            ->assertSeeHtml([])
+            ->assertSeeHtml([
+                '<div class="modal__backdrop" wire:click=closeMinijob()></div>',
+                '<div class="modal__close-button">',
+                "<h2 class=\"modal__header\" id=\"modal-headline\">
+                    <div class=\"card__actions-header\">
+        <div>
+            $topCardTitle
+        </div>
+        <div class=\"card__actions-header-category\">
+            Minijob
+        </div>
+    </div>
+            </h2>",
+                "<div class=\"modal__body\" id=\"modal-content\">
+                <p>
+        $topCardDescription
+    </p>
+
+    <!--[if BLOCK]><![endif]-->        <div class=\"resource-changes resource-changes--horizontal\">
+    <span class=\"sr-only\">Du bekommst/verlierst: </span>
+    <!--[if BLOCK]><![endif]-->        <div class=\"resource-change\">$formattedGuthabenChange</div>
+    <!--[if ENDBLOCK]><![endif]-->
+    <!--[if BLOCK]><![endif]-->        <div class=\"resource-change\">
+    <!--[if BLOCK]><![endif]-->        <i class=\"text--danger icon-minus\" aria-hidden=\"true\"></i>
+        <!--[if BLOCK]><![endif]-->            <i class=\"icon-zeitstein\" aria-hidden=\"true\"></i>
+        <!--[if ENDBLOCK]><![endif]-->
+    <!--[if ENDBLOCK]><![endif]-->
+    <span class=\"sr-only\">-1 Zeitsteine </span>
+</div>",
+                "<button
+        type=\"button\"
+        class=\"button button--type-primary $this->playerColorClass\"
+        wire:click=\"closeMinijob()\"
+    >
+        Akzeptieren
+    </button>"
+            ])
             ->call('closeMinijob')
             // check that message is now logged
             ->assertSeeHtml([
@@ -823,13 +861,39 @@ readonly class GameUiTester {
                 <!--[if BLOCK]><![endif]-->                    <strong class=\"event-log__entry-player-name $this->playerColorClass\">$this->playerName</strong>
                 <!--[if ENDBLOCK]><![endif]-->
                 <span class=\"event-log__entry-text\">
-                    macht Minijob &#039;$topCardMinijobTitle&#039;
+                    macht Minijob &#039;$topCardTitle&#039;
                 </span>
                 <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
                 <!--[if BLOCK]><![endif]-->                    <div class=\"resource-changes resource-changes--horizontal\">
     <span class=\"sr-only\">Du bekommst/verlierst: </span>
     <!--[if BLOCK]><![endif]-->        <div class=\"resource-change\">$formattedGuthabenChange</div>"
             ]);
+
+        // get players remaining Zeitsteine after action
+        $playersZeitsteineAfterAction = $this->getPlayersZeitsteine();
+        // check that Zeitsteine are rendered correctly
+        $this->assertVisibilityOfZeitsteine($playersZeitsteineAfterAction, $availableZeitsteine);
+        // check that player has used Zeitsteine
+        Assert::assertEquals(
+            $playersZeitsteineBeforeAction - 1 + $topCardZeitstein,
+            $playersZeitsteineAfterAction,
+            'Zeitsteine have been reduced'
+        );
+
+        // ToDo
+        // get used Zeitsteinslots for categories after action
+
+        // ToDo
+        // get players Kompetenzen after action
+
+        // check that player got Guthaben from Minijob
+        $playersBalanceAfterAction = $this->getPlayersBalance();
+        $this->assertVisibilityOfBalance();
+        Assert::assertEquals(
+            $playersBalanceBeforeAction + $topCardGuthabenChange,
+            $playersBalanceAfterAction,
+            "Balance has been changed by $topCardGuthabenChange"
+        );
 
         return $this;
     }
