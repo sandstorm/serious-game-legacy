@@ -29,12 +29,14 @@ use Tests\TestCase;
 readonly class GameUiTester {
 
     public Testable $testableGameUi;
+    private string $playerColorClass;
 
     public function __construct(private TestCase $testCase, private PlayerId $playerId, private string $playerName) {
         $this->testableGameUi = Livewire::test(GameUi::class, [
             'gameId' => $this->testCase->gameId,
             'myself' => $this->playerId
         ]);
+        $this->playerColorClass = PlayerState::getPlayerColorClass($this->testCase->getGameEvents(), $this->playerId);
     }
 
     public function startGame(): static {
@@ -102,19 +104,16 @@ readonly class GameUiTester {
     }
 
     private function assertVisibilityOfBalance(): void {
-        $playerColorClass = PlayerState::getPlayerColorClass($this->testCase->getGameEvents(), $this->playerId);
         $playersGuthabenFormatted = PlayerState::getGuthabenForPlayer($this->testCase->getGameEvents(), $this->playerId)->format();
 
         $this->testableGameUi->assertSeeHtml(
-            "<button title=\"Moneysheet öffnen\" class=\"button button--type-primary $playerColorClass\" wire:click=\"showMoneySheet()\">
+            "<button title=\"Moneysheet öffnen\" class=\"button button--type-primary $this->playerColorClass\" wire:click=\"showMoneySheet()\">
                         $playersGuthabenFormatted"
         );
 //        dump($playersGuthabenFormatted);
     }
 
     public function checkThatSidebarActionsAreVisible(bool $actionsAreVisible): static {
-        $playerColorClass = PlayerState::getPlayerColorClass($this->testCase->getGameEvents(), $this->playerId);
-
         if ($actionsAreVisible) {
             $this->testableGameUi
                 ->assertSeeHtml([
@@ -128,7 +127,7 @@ readonly class GameUiTester {
             </button>",
                     " <button
                 type=\"button\"
-                class=\"button button--type-primary button--disabled $playerColorClass\"
+                class=\"button button--type-primary button--disabled $this->playerColorClass\"
                 wire:click=\"spielzugAbschliessen()\">
                 Spielzug beenden
             </button>"
@@ -146,7 +145,7 @@ readonly class GameUiTester {
             </button>",
                     " <button
                 type=\"button\"
-                class=\"button button--type-primary button--disabled $playerColorClass\"
+                class=\"button button--type-primary button--disabled $this->playerColorClass\"
                 wire:click=\"spielzugAbschliessen()\">
                 Spielzug beenden
             </button>"
@@ -425,8 +424,6 @@ readonly class GameUiTester {
     }
 
     public function startTurn(): static {
-        $playerColorClass = PlayerState::getPlayerColorClass($this->testCase->getGameEvents(), $this->playerId);
-
         $this->testableGameUi
             // check that modal is visible
             ->assertSeeHtml([
@@ -434,7 +431,7 @@ readonly class GameUiTester {
                 '<div class="modal__body" id="mandatory-modal-content">',
                 '<h3>Du bist am Zug!</h3>',
                 "<button type=\"button\"
-        class=\"button button--type-primary $playerColorClass\"
+        class=\"button button--type-primary $this->playerColorClass\"
         wire:click=\"startSpielzug()\"
     >
         Ok
@@ -596,7 +593,6 @@ readonly class GameUiTester {
     }
 
     public function chooseStocks(): static {
-        $playerColorClass = PlayerState::getPlayerColorClass($this->testCase->getGameEvents(), $this->playerId);
         $firstStock = InvestmentId::MERFEDES_PENZ;
         $secondStock = InvestmentId::BETA_PEAR;
 
@@ -616,14 +612,14 @@ readonly class GameUiTester {
                 InvestmentPriceState::getCurrentInvestmentPrice($this->testCase->getGameEvents(), $firstStock)->format(),
                 "<button
             type=\"button\"
-            class=\"button button--type-primary $playerColorClass\"
+            class=\"button button--type-primary $this->playerColorClass\"
             wire:click=\"showBuyInvestmentOfType('$firstStock->value')\"
         >
             kaufen
         </button>",
                 "<button
             type=\"button\"
-            class=\"button button--type-outline-primary button--disabled $playerColorClass\"
+            class=\"button button--type-outline-primary button--disabled $this->playerColorClass\"
             wire:click=\"showSellInvestmentOfType('$firstStock->value')\"
         >
             verkaufen
@@ -632,14 +628,14 @@ readonly class GameUiTester {
                 InvestmentPriceState::getCurrentInvestmentPrice($this->testCase->getGameEvents(), $secondStock)->format(),
                 "<button
             type=\"button\"
-            class=\"button button--type-primary $playerColorClass\"
+            class=\"button button--type-primary $this->playerColorClass\"
             wire:click=\"showBuyInvestmentOfType('$secondStock->value')\"
         >
             kaufen
         </button>",
                 "<button
             type=\"button\"
-            class=\"button button--type-outline-primary button--disabled $playerColorClass\"
+            class=\"button button--type-outline-primary button--disabled $this->playerColorClass\"
             wire:click=\"showSellInvestmentOfType('$secondStock->value')\"
         >
             verkaufen
@@ -715,7 +711,6 @@ readonly class GameUiTester {
     }
 
     public function sellStocksThatOtherPlayerIsBuying(InvestmentId $stockId): void {
-        $playerColorClass = PlayerState::getPlayerColorClass($this->testCase->getGameEvents(), $this->playerId);
         $lastInvestmentBoughtByAPlayer = $this->testCase->getGameEvents()->findLast(PlayerHasBoughtInvestment::class);
         $nameOfPlayerWhoBoughtInvestment = PlayerState::getNameForPlayer(
             $this->testCase->getGameEvents(),
@@ -733,7 +728,7 @@ readonly class GameUiTester {
                 "<div class=\"modal__body\" id=\"mandatory-modal-content\">
                 <h4>$nameOfPlayerWhoBoughtInvestment hat in $stockId->value investiert!</h4>",
                 "<button type=\"button\"
-            class=\"button button--type-outline-primary $playerColorClass\"
+            class=\"button button--type-outline-primary $this->playerColorClass\"
             wire:click=\"closeSellInvestmentsModal()\"
     >
         Ich möchte nichts verkaufen
@@ -772,7 +767,7 @@ readonly class GameUiTester {
 //        ToDo: wenn Spieler Anteile verkaufen kann (submit.blade.php + investitionen-sell-form.blade.php + investitionen-sell-after-purchase-modal.blade-php)
 //        "<button
 //    type=\"submit\"
-//    class=\"button button--type-primary $playerColorClass\"
+//    class=\"button button--type-primary $this->playerColorClass\"
 //    disabled wire:dirty.remove.attr=\"disabled\"
 //>
 //    Anteile verkaufen
@@ -781,7 +776,6 @@ readonly class GameUiTester {
     }
 
     public function doMinijob(): static {
-        $playerColorClass = PlayerState::getPlayerColorClass($this->testCase->getGameEvents(), $this->playerId);
 
         // get top card from Minijob
         $topCardMinijob = $this->getTopCardFromCategory(CategoryId::MINIJOBS);
@@ -809,7 +803,7 @@ readonly class GameUiTester {
             // check that message is not in Ereignisprotokoll
             ->assertDontSeeHtml([
                 "<!--[if BLOCK]><![endif]-->            <li class=\"event-log__entry\">
-                <!--[if BLOCK]><![endif]-->                    <strong class=\"event-log__entry-player-name $playerColorClass\">$this->playerName</strong>
+                <!--[if BLOCK]><![endif]-->                    <strong class=\"event-log__entry-player-name $this->playerColorClass\">$this->playerName</strong>
                 <!--[if ENDBLOCK]><![endif]-->
                 <span class=\"event-log__entry-text\">
                     macht Minijob &#039;$topCardMinijobTitle&#039;
@@ -826,7 +820,7 @@ readonly class GameUiTester {
             // check that message is now logged
             ->assertSeeHtml([
                 "<!--[if BLOCK]><![endif]-->            <li class=\"event-log__entry\">
-                <!--[if BLOCK]><![endif]-->                    <strong class=\"event-log__entry-player-name $playerColorClass\">$this->playerName</strong>
+                <!--[if BLOCK]><![endif]-->                    <strong class=\"event-log__entry-player-name $this->playerColorClass\">$this->playerName</strong>
                 <!--[if ENDBLOCK]><![endif]-->
                 <span class=\"event-log__entry-text\">
                     macht Minijob &#039;$topCardMinijobTitle&#039;
