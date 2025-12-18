@@ -14,6 +14,7 @@ use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\MinijobCardDefinition;
+use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Investments\InvestmentFinder;
@@ -82,15 +83,15 @@ readonly class GameUiTester {
 
     /**
      * @param CategoryId $categoryId
-     * @return KategorieCardDefinition | JobCardDefinition | MinijobCardDefinition
+     * @return KategorieCardDefinition | JobCardDefinition | MinijobCardDefinition | WeiterbildungCardDefinition
      */
-    private function getTopCardFromCategory(CategoryId $categoryId): KategorieCardDefinition|JobCardDefinition|MinijobCardDefinition {
+    private function getTopCardFromCategory(CategoryId $categoryId): KategorieCardDefinition|JobCardDefinition|MinijobCardDefinition|WeiterbildungCardDefinition {
         $lebenszielPhaseId = PlayerState::getCurrentLebenszielphaseIdForPlayer(
             $this->testCase->getGameEvents(),
             $this->playerId
         );
 
-        if ($categoryId === CategoryId::MINIJOBS) {
+        if ($categoryId === CategoryId::MINIJOBS || $categoryId === CategoryId::WEITERBILDUNG) {
             $pileId = new PileId($categoryId);
         } else {
             $pileId = new PileId($categoryId, $lebenszielPhaseId);
@@ -769,6 +770,194 @@ readonly class GameUiTester {
 //    Anteile verkaufen
 //</button>",
 
+    }
+
+    public function doWeiterbildung(): static {
+        // get top card from Weiterbildung
+        $topCard = $this->getTopCardFromCategory(CategoryId::WEITERBILDUNG);
+        dump($topCard);
+
+        // get properties from top card
+        $topCardTitle = $topCard->getTitle();
+        $topCardDescription = $topCard->getDescription();
+        $topCardAnswerOptions = $topCard->getAnswerOptions();
+
+        [$answerOptionsLetter, $answerOptionsDescription, $rightAnswerOption] = $this->getArrayForTestingAnswerOptionsFromWeiterbildung($topCardAnswerOptions);
+
+        // get players available Zeitsteine
+        $availableZeitsteine = $this->getAvailableZeitsteine();
+        // get players remaining Zeitsteine before action
+        $playersZeitsteineBeforeAction = $this->getPlayersZeitsteine();
+        // check that Zeitsteine are rendered correctly
+        $this->assertVisibilityOfZeitsteine($playersZeitsteineBeforeAction, $availableZeitsteine);
+
+        // ToDo
+        // get available Slots for categories
+
+        // ToDo
+        // get available Slots for Kompetenzen
+
+        // ToDo
+        // get players balance before action
+
+        $this->testableGameUi
+            ->call('showWeiterbildung')
+            ->assertSeeHtml([
+                // check that message is logged in Ereignisprotokoll
+                "<!--[if BLOCK]><![endif]-->            <li class=\"event-log__entry\">
+                <!--[if BLOCK]><![endif]-->                    <strong class=\"event-log__entry-player-name player-color-1\">Player 0</strong>
+                <!--[if ENDBLOCK]><![endif]-->
+                <span class=\"event-log__entry-text\">
+                    macht eine Weiterbildung
+                </span>
+                <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+                <!--[if BLOCK]><![endif]-->                    <div class=\"resource-changes resource-changes--horizontal\">
+    <span class=\"sr-only\">Du bekommst/verlierst: </span>
+    <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+    <!--[if BLOCK]><![endif]-->        <div class=\"resource-change\">
+    <!--[if BLOCK]><![endif]-->        <i class=\"text--danger icon-minus\" aria-hidden=\"true\"></i>
+        <!--[if BLOCK]><![endif]-->            <i class=\"icon-zeitstein\" aria-hidden=\"true\"></i>
+        <!--[if ENDBLOCK]><![endif]-->
+    <!--[if ENDBLOCK]><![endif]-->
+    <span class=\"sr-only\">-1 Zeitsteine </span",
+
+                // check that modal is visible
+                '<div class="modal__backdrop"></div>',
+                "<h2 class=\"modal__header\" id=\"modal-headline\">
+                    <div class=\"weiterbildung__header\">
+        <div>$topCardTitle</div>
+        <div class=\"weiterbildung__header-category\">Weiterbildung</div>
+    </div>
+            </h2>",
+                "<div class=\"modal__body\" id=\"modal-content\">
+                <!--[if BLOCK]><![endif]-->        $topCardDescription",
+
+                ...$answerOptionsLetter,
+                ...$answerOptionsDescription,
+
+                // ToDo icon & span
+                "<div class=\"weiterbildung__footer\">
+                <div class=\"weiterbildung__footer-icon\">
+                    <i class=\"icon-plus\" aria-hidden=\"true\"></i>
+                    <div class=\"kompetenz-icon \">",
+                "<span class=\"sr-only\">Du bekommst eine halbe Bildungskompetenz</span>",
+
+                // ToDo button
+                "<button
+    type=\"submit\"
+    class=\"button button--type-primary player-color-1\"",
+                ">
+    Auswahl bestätigen
+</button>"
+            ])
+            // log answer
+            ->set('weiterbildungForm.answer', $rightAnswerOption)
+            // submit answer
+            ->call('submitAnswerForWeiterbildung')
+            // show result of answer
+            ->assertSee('Super, richtig gelöst!')
+            // check that button has changed
+            ->assertSeeHtml("<button type=\"button\"
+                            class=\"button button--type-primary $this->playerColorClass\"
+                            wire:click=\"closeWeiterbildung()\"
+                    >
+                        Weiter
+                    </button>")
+            ->call('closeWeiterbildung')
+            // check that modal is no longer visible
+            ->assertDontSeeHtml([
+                '<h2 class=\"modal__header\" id=\"modal-headline\">',
+                '<div class=\"modal__body\" id=\"modal-content\">'
+            ])
+            // check that result of Weiterbildung is logged in Ereignisprotokoll
+            ->assertSeeHtml([
+                "<!--[if BLOCK]><![endif]-->            <li class=\"event-log__entry\">
+                <!--[if BLOCK]><![endif]-->                    <strong class=\"event-log__entry-player-name $this->playerColorClass\">$this->playerName</strong>
+                <!--[if ENDBLOCK]><![endif]-->
+                <span class=\"event-log__entry-text\">
+                    hat die Weiterbildung richtig beantwortet
+                </span>
+                <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+                <!--[if BLOCK]><![endif]-->                    <div class=\"resource-changes resource-changes--horizontal\">
+    <span class=\"sr-only\">Du bekommst/verlierst: </span>
+    <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+    <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+    <!--[if BLOCK]><![endif]-->        <div class=\"resource-change\">
+    <!--[if BLOCK]><![endif]-->        <i class=\"text--success icon-plus\" aria-hidden=\"true\"></i>
+        <!--[if BLOCK]><![endif]-->            <i class=\"icon-bildung-und-karriere\" aria-hidden=\"true\"></i>
+        <!--[if ENDBLOCK]><![endif]-->
+    <!--[if ENDBLOCK]><![endif]-->
+    <span class=\"sr-only\">0.5 Bildung &amp; Karriere Kompetenzsteine </span>"
+            ]);
+
+        // get players remaining Zeitsteine after action
+        $playersZeitsteineAfterAction = $this->getPlayersZeitsteine();
+        // check that Zeitsteine are rendered correctly
+        $this->assertVisibilityOfZeitsteine($playersZeitsteineAfterAction, $availableZeitsteine);
+        // check that player has used Zeitsteine
+        Assert::assertEquals(
+            $playersZeitsteineBeforeAction - 1,
+            $playersZeitsteineAfterAction,
+            'Zeitsteine have been reduced'
+        );
+
+        // ToDo
+        // get used Zeitsteinslots for categories after action
+
+        // ToDo
+        // get players Kompetenzen after action
+
+        // ToDo
+        // check that players Guthaben has not changed
+
+        return $this;
+    }
+
+    private function getArrayForTestingAnswerOptionsFromWeiterbildung($topCardAnswerOptions): array {
+        $answerOptionsLetter = [
+            "<div class=\"weiterbildung__answer-options\">
+                <!--[if BLOCK]><![endif]-->                    <label class=\"weiterbildung__answer-option $this->playerColorClass\">
+                        <strong>
+                            <!--[if BLOCK]><![endif]--> A)
+                            <!--[if ENDBLOCK]><![endif]-->
+                        </strong>"
+        ];
+
+        $answerOptionsDescription = [];
+
+        $rightAnswerOption = "";
+
+        foreach ($topCardAnswerOptions as $index => $answerOption) {
+            $letter = "A";
+            if ($index === 1) $letter = "B";
+            elseif ($index === 2) $letter = "C";
+            elseif ($index === 3) $letter = "D";
+
+            if ($index > 0) {
+                $answerOptionsLetter[$index] = "<label class=\"weiterbildung__answer-option $this->playerColorClass\">
+                        <strong>
+                            <!--[if BLOCK]><![endif]--> $letter)
+                            <!--[if ENDBLOCK]><![endif]-->
+                        </strong>";
+            }
+
+            $answerId = $answerOption->id->value;
+            $answerOptionsDescription[$index] = "$answerOption->text
+                        <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+                        <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
+                        <input
+    name=\"weiterbildung\"
+    id=\"$answerId\"
+    type=\"radio\"
+    value=\"$answerId\"
+    wire:model=\"weiterbildungForm.answer\" id=\"$answerId\" name=\"weiterbildung\" value=\"$answerId\"";
+
+            if ($answerOption->isCorrect) {
+                $rightAnswerOption = $answerOption->id->value;
+            }
+        }
+
+        return [$answerOptionsLetter, $answerOptionsDescription, $rightAnswerOption];
     }
 
     public function doMinijob(): static {

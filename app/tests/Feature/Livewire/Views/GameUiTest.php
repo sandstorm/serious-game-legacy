@@ -123,32 +123,19 @@ describe('GameUi', function () {
 
     it('does a Weiterbildung', function () {
         /** @var TestCase $this */
-        Livewire::test(GameUi::class, [
-            'gameId' => $this->gameId,
-            'myself' => $this->players[0],
-        ])
-            ->call('nextKonjunkturphaseStartScreenPage')
-            ->call('startKonjunkturphaseForPlayer')
-            ->call('showWeiterbildung')
-            ->assertSee([
-                'Quiz',
-                'Weiterbildung',
-                'Ich mache eine Weiterbildung. Warum machst du die Weiterbildung?',
-                'Tarifliche Entlohnung und Arbeitsplatzsicherheit',
-                'Angemessene Vergütung und soziale Absicherung',
-                'Maximale Kosteneffizienz und unternehmerische Flexibilität',
-                'Karriereförderung und Mitbestimmungsmöglichkeiten',
-                'Auswahl bestätigen',
-            ]);
-        // ToDo: Frage beantworten
+        $testCase = $this;
 
-//            ->set('weiterbildungsForm');
-//            ->call('submitAnswerForWeiterbildung')
-//            ->assertSee('Super, richtig gelöst!');
+        new GameUiTester($testCase, $this->players[0], 'Player 0')
+            ->startGame()
+            ->checkThatSidebarActionsAreVisible(true)
+            ->doWeiterbildung()
+            ->finishTurn();
 
-//        Schade, das war nicht die richtige Antwort!
-
-//        Livewire::test(HasWeiterbildung::class)->set('weiterbildungsForm', 'c');
+        // check that opponent player receives a message that it is their turn
+        new GameUiTester($testCase, $this->players[1], 'Player 1')
+            ->startGame()
+            ->startTurn()
+            ->checkThatSidebarActionsAreVisible(true);
     });
 
     it('does a Minijob', function () {
@@ -275,19 +262,6 @@ describe('GameUi', function () {
 
 });
 
-
-// Bildung und Karriere: 1 von 3 Zeitsteinen wurden platziert. Player 0: 1, Player 1: 0
-// Freizeit & Soziales: 0 von 4 Zeitsteinen wurden platziert. Player 0: 0, Player 1: 0
-// Beruf: 0 von 3 Zeitsteinen wurden platziert. Player 0: 0, Player 1: 0
-// Finanzen: 0 von 4 Zeitsteinen wurden platziert. Player 0: 0, Player 1: 0
-
-// Ehrenamtliches Engagement 1.200,00 €
-
-// Minijob
-// Weiterbildung
-// Kredit aufnehmen
-// Versicherung abschließen
-// Lebensziel ansehen
 
 /*
 
