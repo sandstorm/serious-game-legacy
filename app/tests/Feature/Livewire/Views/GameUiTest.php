@@ -43,6 +43,7 @@ describe('GameUi', function () {
             ->startGame()
             ->startTurn()
             ->checkThatSidebarActionsAreVisible(true);
+
     })->with([CategoryId::BILDUNG_UND_KARRIERE, CategoryId::SOZIALES_UND_FREIZEIT]);
 
     it('gets enough Kompetenzsteine and accepts a job offer', function () {
@@ -157,65 +158,14 @@ describe('GameUi', function () {
         new GameUiTester($testCase, $this->players[0], 'Player 0')
             ->startGame()
             ->checkThatSidebarActionsAreVisible(true)
-            ->doMinijob();
-
-        /*
-        Livewire::test(GameUi::class, [
-            'gameId' => $this->gameId,
-            'myself' => $this->players[0],
-        ])
-            ->call('nextKonjunkturphaseStartScreenPage')
-            ->call('startKonjunkturphaseForPlayer')
-
-        ///////////////////////////////////////////////////////////////////////////
-            // check that message is not in Ereignisprotokoll
-            ->assertDontSee(["macht Minijob 'Minijob", '5.000,00'])
-
-            // check that player has all of their Zeitsteine
-            ->assertSeeHtml('Player 0 hat noch 6 von 6 Zeitsteinen übrig.')
-
-            ->call('doMinijob')
-            ->assertSee([
-                'Minijob',
-                'Kellnerin im Ausland. Einmalzahlung 5.000 €.',
-                '5.000,00',
-                'Akzeptieren'
-            ])
-
-            ->call('closeMinijob')
-            // check that message is now logged
-            ->assertSee(["macht Minijob 'Minijob", '5.000,00'])
-
-            // check that player has used 1 Zeitstein
-            ->assertSeeHtml('Player 0 hat noch 5 von 6 Zeitsteinen übrig.')
-
-        ///////////////////////////////////////////////////////////////////////////
-
-            // check that player can not draw card
-            ->call('activateCard', 'Bildung & Karriere')
-            ->assertSee('Du hast bereits eine andere Aktion ausgeführt')
-            ->call('activateCard', 'Freizeit & Soziales')
-            ->assertSee('Du hast bereits eine andere Aktion ausgeführt')
-            // check that player can not do a Weiterbildung
-            ->call('showWeiterbildung')
-            ->assertSee('Du kannst nur eine Zeitsteinaktion pro Runde ausführen')
-            // check that player can not do another Minijob
-            ->call('doMinijob')
-            ->assertSee('Du kannst nur eine Zeitsteinaktion pro Runde ausführen')
-            // finish turn
-            ->call('spielzugAbschliessen')
-            ->assertDontSee('Du musst erst einen Zeitstein für eine Aktion ausgeben');
+            ->doMinijob()
+            ->finishTurn();
 
         // check that opponent player receives a message that it is their turn
-        Livewire::test(GameUi::class, [
-            'gameId' => $this->gameId,
-            'myself' => $this->players[1],
-        ])
-            ->call('nextKonjunkturphaseStartScreenPage')
-            ->call('startKonjunkturphaseForPlayer')
-            ->assertSee('Du bist am Zug');
-        */
-
+        new GameUiTester($testCase, $this->players[1], 'Player 1')
+            ->startGame()
+            ->startTurn()
+            ->checkThatSidebarActionsAreVisible(true);
     });
 
     it('takes out an insurance', function () {
@@ -338,3 +288,24 @@ describe('GameUi', function () {
 // Kredit aufnehmen
 // Versicherung abschließen
 // Lebensziel ansehen
+
+/*
+
+///////////////////////////////////////////////////////////////////////////
+
+    // check that player can not draw card
+    ->call('activateCard', 'Bildung & Karriere')
+    ->assertSee('Du hast bereits eine andere Aktion ausgeführt')
+    ->call('activateCard', 'Freizeit & Soziales')
+    ->assertSee('Du hast bereits eine andere Aktion ausgeführt')
+    // check that player can not do a Weiterbildung
+    ->call('showWeiterbildung')
+    ->assertSee('Du kannst nur eine Zeitsteinaktion pro Runde ausführen')
+    // check that player can not do another Minijob
+    ->call('doMinijob')
+    ->assertSee('Du kannst nur eine Zeitsteinaktion pro Runde ausführen')
+
+///////////////////////////////////////////////////////////////////////////
+
+*/
+
