@@ -3,10 +3,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire\Views\Helpers;
 
+use App\Livewire\Dto\MoneySheet;
 use App\Livewire\GameUi;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
+use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasBoughtInvestment;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
@@ -17,6 +19,9 @@ use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\PileId;
+use Domain\Definitions\Insurance\InsuranceDefinition;
+use Domain\Definitions\Insurance\InsuranceFinder;
+use Domain\Definitions\Insurance\ValueObject\InsuranceTypeEnum;
 use Domain\Definitions\Investments\InvestmentFinder;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
@@ -75,7 +80,6 @@ readonly class GameUiTester {
                 'Investitionen',
                 'Weiterbildung',
                 'Minijob',
-
             ]);
 
         $this->assertVisibilityOfBalance();
@@ -772,10 +776,9 @@ readonly class GameUiTester {
 
     }
 
-    public function doWeiterbildung(): static {
+    public function doWeiterbildungWithSuccess(): static {
         // get top card from Weiterbildung
         $topCard = $this->getTopCardFromCategory(CategoryId::WEITERBILDUNG);
-        dump($topCard);
 
         // get properties from top card
         $topCardTitle = $topCard->getTitle();
@@ -1082,6 +1085,111 @@ readonly class GameUiTester {
             "Balance has been changed by $topCardGuthabenChange"
         );
 
+        return $this;
+    }
+
+    public function openMoneySheetInsurance(): static {
+        $this->testableGameUi->call('showExpensesTab', 'insurances');
+        return $this;
+    }
+
+    public function seeMoneySheetInsurance(): static {
+        $allInsurances = InsuranceFinder::getInstance()->getAllInsurances();
+        [$insuranceNames, $insuranceCosts] = $this->getArrayForTestingVisibleValuesOnInsuranceSheet($allInsurances);
+
+        $this->testableGameUi->assertSee([
+            'Kredite',
+            'Versicherungen',
+            'Steuern und Abgaben',
+            'Lebenshaltungskosten',
+            ...$insuranceNames,
+            ...$insuranceCosts,
+            'Summe Versicherungen',
+            'Änderungen speichern'
+        ]);
+
+        return $this;
+    }
+
+    /**
+     * @param InsuranceDefinition[] $allInsurances
+     */
+    private function getArrayForTestingVisibleValuesOnInsuranceSheet(array $allInsurances): array {
+        $lebenszielPhase = PlayerState::getCurrentLebenszielphaseIdForPlayer(
+            $this->testCase->getGameEvents(),
+            $this->playerId
+        )->value;
+
+        $insuranceNames = [];
+        $insuranceCosts = [];
+
+        foreach ($allInsurances as $index => $insurance) {
+            $insuranceNames[$index] = $insurance->type->value;
+            $insuranceCosts[$index] = $this->numberFormatMoney($insurance->annualCost[$lebenszielPhase]->value) . " €";
+        }
+
+        return [$insuranceNames, $insuranceCosts];
+    }
+
+    public function seeAnnualInsurancesCost(): static {
+        $allInsurances = InsuranceFinder::getInstance()->getAllInsurances();
+        $lebenszielPhase = PlayerState::getCurrentLebenszielphaseIdForPlayer(
+            $this->testCase->getGameEvents(),
+            $this->playerId
+        )->value;
+        $annualInsurancesCost = 0;
+
+        foreach ($allInsurances as $insurance) {
+            $hasInsurance = MoneySheetState::doesPlayerHaveThisInsurance(
+                $this->testCase->getGameEvents(),
+                $this->playerId,
+                $insurance->id
+            );
+            if ($hasInsurance) {
+                $annualInsurancesCost += $insurance->annualCost[$lebenszielPhase]->value;
+            }
+        }
+
+        $this->testableGameUi
+            ->assertSee($this->numberFormatMoney($annualInsurancesCost));
+
+        return $this;
+    }
+
+    public function changeInsurance(array $insurancesToChange): static {
+        foreach ($insurancesToChange as $changedInsurance) {
+            $insuranceDefinition = InsuranceFinder::getInstance()->findInsuranceByType($changedInsurance['type']);
+            $insuranceIdValue = $insuranceDefinition->id->value;
+            $changedTo = $changedInsurance['changeTo'];
+
+            $this->testableGameUi
+                ->set("moneySheetInsurancesForm.insurances.$insuranceIdValue.value", $changedTo);
+        }
+
+        return $this;
+    }
+
+    public function confirmInsuranceChoice(): static {
+        $this->testableGameUi
+            ->call('setInsurances');
+
+        return $this;
+    }
+
+    public function seeInsuranceChangeInEreignisprotokoll($insurancesToChange): static {
+        foreach ($insurancesToChange as $changedInsurance) {
+            $insuranceValue = $changedInsurance['type']->value;
+            $loggedMessage = $changedInsurance['changeTo']
+                ? "schließt '$insuranceValue' ab"
+                : "kündigt '$insuranceValue'";
+            $this->testableGameUi->assertSee($loggedMessage);
+        }
+
+        return $this;
+    }
+
+    public function closeMoneySheet(): static {
+        $this->testableGameUi->call('closeMoneySheet');
         return $this;
     }
 

@@ -4,6 +4,7 @@ namespace Tests\Feature\Livewire;
 
 use App\Livewire\GameUi;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
+use Domain\Definitions\Insurance\ValueObject\InsuranceTypeEnum;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -128,7 +129,7 @@ describe('GameUi', function () {
         new GameUiTester($testCase, $this->players[0], 'Player 0')
             ->startGame()
             ->checkThatSidebarActionsAreVisible(true)
-            ->doWeiterbildung()
+            ->doWeiterbildungWithSuccess()
             ->finishTurn();
 
         // check that opponent player receives a message that it is their turn
@@ -157,32 +158,34 @@ describe('GameUi', function () {
 
     it('takes out an insurance', function () {
         /** @var TestCase $this */
-        Livewire::test(GameUi::class, [
-            'gameId' => $this->gameId,
-            'myself' => $this->players[0],
-        ])
-            ->call('nextKonjunkturphaseStartScreenPage')
-            ->call('startKonjunkturphaseForPlayer')
-            ->call('showExpensesTab', 'insurances')
-            ->assertSee([
-                'Kredite',
-                'Versicherungen',
-                'Steuern und Abgaben',
-                'Lebenshaltungskosten',
-                'Haftpflichtversicherung',
-                '100,00 €',
-                'Private Unfallversicherung',
-                '150,00 €',
-                'Berufsunfähigkeitsversicherung',
-                '500,00 €',
-                'Summe Versicherungen',
-                'Änderungen speichern'
-            ]);
-// ToDo: Versicherung abschließen
+        $testCase = $this;
+        $insurancesToChange = [
+            ['type' => InsuranceTypeEnum::HAFTPFLICHT, 'changeTo' => true],
+            ['type' => InsuranceTypeEnum::BERUFSUNFAEHIGKEITSVERSICHERUNG, 'changeTo' => true]
+        ];
+
+        // ToDo: Vergleich Zeitsteine vor und nach Aktion
+        // ToDo: Vergleich Kompetenzen vor und nach Aktion
+        // ToDo: Vergleich Zeitsteinslots vor und nach Aktion
+
+        new GameUiTester($testCase, $this->players[0], 'Player 0')
+            ->startGame()
+            ->checkThatSidebarActionsAreVisible(true)
+            ->openMoneySheetInsurance()
+            ->seeMoneySheetInsurance()
+            ->seeAnnualInsurancesCost()
+            ->changeInsurance($insurancesToChange)
+            ->confirmInsuranceChoice()
+            ->seeAnnualInsurancesCost()
+            ->seeInsuranceChangeInEreignisprotokoll($insurancesToChange)
+            ->closeMoneySheet();
     });
 
     it('shows Lebensziel of current player', function () {
         /** @var TestCase $this */
+
+        // ToDo: nice to have: aktueller Stand Kompetenzen in aktueller Phase
+
         Livewire::test(GameUi::class, [
             'gameId' => $this->gameId,
             'myself' => $this->players[0],
