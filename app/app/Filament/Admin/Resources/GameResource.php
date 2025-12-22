@@ -65,7 +65,7 @@ class GameResource extends Resource
                     ->label(__('Export'))
                     ->action(function ($record, ForCoreGameLogic $coreGameLogic) {
                         $gameId = Str::slug($record->id, '_');
-                        $course = Str::slug($record['course']->name, '_');
+                        $course = Str::slug($record['course']?->name, '_');
                         $date = Str::slug($record[$record->getCreatedAtColumn()]);
                         return response()->streamDownload(function () use ($record, $coreGameLogic) {
                             echo self::getLogs($record, $coreGameLogic);
