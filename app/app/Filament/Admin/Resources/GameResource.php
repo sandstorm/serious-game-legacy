@@ -6,11 +6,14 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\GameResource\Pages;
 use App\Infolists\Components\PlayerTable;
 use App\Models\Game;
+use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
+use Domain\CoreGameLogic\GameId;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Str;
 
 class GameResource extends Resource
 {
@@ -25,6 +28,18 @@ class GameResource extends Resource
     protected static ?string $pluralModelLabel = 'Spiele';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static function getLogs(Game $record, ForCoreGameLogic $coreGameLogic): string
+    {
+        $gameEvents = $coreGameLogic->getGameEvents(GameId::fromString($record['id']));
+        $list = [];
+        foreach ($gameEvents as $gameEvent) {
+            $explodedEventName = explode('\\', $gameEvent::class);
+            $eventName = $explodedEventName[array_key_last($explodedEventName)];
+            $list[$eventName] = $gameEvent;
+        }
+        return json_encode($list, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+    }
 
     public static function table(Table $table): Table
     {
@@ -46,6 +61,19 @@ class GameResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\Action::make('exportAsJson')
+                    ->label(__('Export'))
+                    ->action(function ($record, ForCoreGameLogic $coreGameLogic) {
+                        $gameId = Str::slug($record->id, '_');
+                        $course = Str::slug($record['course']->name, '_');
+                        $date = Str::slug($record[$record->getCreatedAtColumn()]);
+                        return response()->streamDownload(function () use ($record, $coreGameLogic) {
+                            echo self::getLogs($record, $coreGameLogic);
+                        }, $date . "_" . $course . "_" . $gameId . '.json');
+                    })
+                    ->tooltip(__('Export'))
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->color('primary'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

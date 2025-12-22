@@ -23,11 +23,6 @@
         <option name="artisanPrefix" value="dev artisan" />
       </RunConsoleSettings>
     </option>
-    <option name="translation">
-      <LaravelTranslation>
-        <option name="defaultLanguageFromConfig" value="de" />
-      </LaravelTranslation>
-    </option>
     <option name="userClassName" value="\App\Models\User" />
   </component>
 </project>
