@@ -36,7 +36,10 @@ class GameResource extends Resource
         foreach ($gameEvents as $gameEvent) {
             $explodedEventName = explode('\\', $gameEvent::class);
             $eventName = $explodedEventName[array_key_last($explodedEventName)];
-            $list[$eventName] = $gameEvent;
+            $list[] = [
+                "event" => $eventName,
+                "data" => $gameEvent,
+            ];
         }
         return json_encode($list, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
     }
