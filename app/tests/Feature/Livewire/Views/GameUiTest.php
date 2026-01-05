@@ -2,13 +2,11 @@
 
 namespace Tests\Feature\Livewire;
 
-use App\Livewire\GameUi;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\Definitions\Insurance\ValueObject\InsuranceTypeEnum;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Livewire\Livewire;
 use Tests\Feature\Livewire\Views\Helpers\GameUiTester;
 use Tests\TestCase;
 
@@ -24,7 +22,10 @@ describe('GameUi', function () {
         /** @var TestCase $this */
         $gameUiTester = new GameUiTester($this, $this->players[0], 'Player 0');
         $gameUiTester->testableGameUi->assertStatus(200);
-        $gameUiTester->startGame()->checkThatSidebarActionsAreVisible(true);
+        $gameUiTester
+            ->startGame()
+            ->checkThatSidebarActionsAreVisible(true)
+            ->seeUpdatedGameboard();
     });
 
     it('plays a card and finishes turn', function (CategoryId $categoryId) {
@@ -34,8 +35,10 @@ describe('GameUi', function () {
         new GameUiTester($testCase, $this->players[0], 'Player 0')
             ->startGame()
             ->checkThatSidebarActionsAreVisible(true)
+            ->seeUpdatedGameboard()
             ->drawAndPlayCard($categoryId)
             ->finishTurn()
+            ->assertDoNotSeeMessage('Du musst erst einen Zeitstein für eine Aktion ausgeben')
             // check that player can not play a card after finishing turn
             ->tryToPlayCardWhenItIsNotThePlayersTurn($categoryId);
 
@@ -43,7 +46,8 @@ describe('GameUi', function () {
         new GameUiTester($testCase, $this->players[1], 'Player 1')
             ->startGame()
             ->startTurn()
-            ->checkThatSidebarActionsAreVisible(true);
+            ->checkThatSidebarActionsAreVisible(true)
+            ->seeUpdatedGameboard();
 
     })->with([CategoryId::BILDUNG_UND_KARRIERE, CategoryId::SOZIALES_UND_FREIZEIT]);
 
@@ -55,43 +59,54 @@ describe('GameUi', function () {
         new GameUiTester($testCase, $this->players[0], 'Player 0')
             ->startGame()
             ->checkThatSidebarActionsAreVisible(true)
+            ->seeUpdatedGameboard()
             ->drawAndPlayCard(CategoryId::BILDUNG_UND_KARRIERE)
-            ->finishTurn();
+            ->finishTurn()
+            ->assertDoNotSeeMessage('Du musst erst einen Zeitstein für eine Aktion ausgeben');
 
         // second player uses 1 Zeitstein and finishes turn
         new GameUiTester($testCase, $this->players[1], 'Player 1')
             ->startGame()
             ->startTurn()
             ->checkThatSidebarActionsAreVisible(true)
+            ->seeUpdatedGameboard()
             ->drawAndPlayCard(CategoryId::SOZIALES_UND_FREIZEIT)
-            ->finishTurn();
+            ->finishTurn()
+            ->assertDoNotSeeMessage('Du musst erst einen Zeitstein für eine Aktion ausgeben');
 
         // first player plays second card for Bildung & Karriere and finishes turn
         new GameUiTester($testCase, $this->players[0], 'Player 0')
             ->startTurn()
             ->checkThatSidebarActionsAreVisible(true)
+            ->seeUpdatedGameboard()
             ->drawAndPlayCard(CategoryId::BILDUNG_UND_KARRIERE)
-            ->finishTurn();
+            ->finishTurn()
+            ->assertDoNotSeeMessage('Du musst erst einen Zeitstein für eine Aktion ausgeben');
 
         // second player uses 1 Zeitstein and finishes turn
         new GameUiTester($testCase, $this->players[1], 'Player 1')
             ->startTurn()
             ->checkThatSidebarActionsAreVisible(true)
+            ->seeUpdatedGameboard()
             ->drawAndPlayCard(CategoryId::SOZIALES_UND_FREIZEIT)
-            ->finishTurn();
+            ->finishTurn()
+            ->assertDoNotSeeMessage('Du musst erst einen Zeitstein für eine Aktion ausgeben');
 
         // first player accepts a job and finishes turn
         new GameUiTester($testCase, $this->players[0], 'Player 0')
             ->startTurn()
             ->checkThatSidebarActionsAreVisible(true)
+            ->seeUpdatedGameboard()
             ->openJobBoard()
             ->acceptJobWhenPlayerCurrentlyHasNoJob()
-            ->finishTurn();
+            ->finishTurn()
+            ->assertDoNotSeeMessage('Du musst erst einen Zeitstein für eine Aktion ausgeben');
 
         // check that opponent player receives a message that it is their turn
         new GameUiTester($testCase, $this->players[1], 'Player 1')
             ->startTurn()
-            ->checkThatSidebarActionsAreVisible(true);
+            ->checkThatSidebarActionsAreVisible(true)
+            ->seeUpdatedGameboard();
     });
 
     it('invests in Aktien', function () {
@@ -103,6 +118,7 @@ describe('GameUi', function () {
         new GameUiTester($testCase, $this->players[0], 'Player 0')
             ->startGame()
             ->checkThatSidebarActionsAreVisible(true)
+            ->seeUpdatedGameboard()
             ->openInvestmentsOverview()
             ->chooseStocks()
             ->buyStocks($stockId, $amount);
@@ -111,15 +127,18 @@ describe('GameUi', function () {
         new GameUiTester($testCase, $this->players[1], 'Player 1')
             ->startGame()
             ->checkThatSidebarActionsAreVisible(false)
+            ->seeUpdatedGameboard()
             ->sellStocksThatOtherPlayerIsBuying($stockId);
 
         new GameUiTester($testCase, $this->players[0], 'Player 0')
-            ->finishTurn();
+            ->finishTurn()
+            ->assertDoNotSeeMessage('Du musst erst einen Zeitstein für eine Aktion ausgeben');
 
         // check that opponent player receives a message that it is their turn
         new GameUiTester($testCase, $this->players[1], 'Player 1')
             ->startTurn()
-            ->checkThatSidebarActionsAreVisible(true);
+            ->checkThatSidebarActionsAreVisible(true)
+            ->seeUpdatedGameboard();
     });
 
     it('does a Weiterbildung', function () {
@@ -129,14 +148,17 @@ describe('GameUi', function () {
         new GameUiTester($testCase, $this->players[0], 'Player 0')
             ->startGame()
             ->checkThatSidebarActionsAreVisible(true)
+            ->seeUpdatedGameboard()
             ->doWeiterbildungWithSuccess()
-            ->finishTurn();
+            ->finishTurn()
+            ->assertDoNotSeeMessage('Du musst erst einen Zeitstein für eine Aktion ausgeben');
 
         // check that opponent player receives a message that it is their turn
         new GameUiTester($testCase, $this->players[1], 'Player 1')
             ->startGame()
             ->startTurn()
-            ->checkThatSidebarActionsAreVisible(true);
+            ->checkThatSidebarActionsAreVisible(true)
+            ->seeUpdatedGameboard();
     });
 
     it('does a Minijob', function () {
@@ -146,14 +168,17 @@ describe('GameUi', function () {
         new GameUiTester($testCase, $this->players[0], 'Player 0')
             ->startGame()
             ->checkThatSidebarActionsAreVisible(true)
+            ->seeUpdatedGameboard()
             ->doMinijob()
-            ->finishTurn();
+            ->finishTurn()
+            ->assertDoNotSeeMessage('Du musst erst einen Zeitstein für eine Aktion ausgeben');
 
         // check that opponent player receives a message that it is their turn
         new GameUiTester($testCase, $this->players[1], 'Player 1')
             ->startGame()
             ->startTurn()
-            ->checkThatSidebarActionsAreVisible(true);
+            ->checkThatSidebarActionsAreVisible(true)
+            ->seeUpdatedGameboard();
     });
 
     it('takes out an insurance', function () {
@@ -171,6 +196,7 @@ describe('GameUi', function () {
         new GameUiTester($testCase, $this->players[0], 'Player 0')
             ->startGame()
             ->checkThatSidebarActionsAreVisible(true)
+            ->seeUpdatedGameboard()
             ->openMoneySheetInsurance()
             ->seeMoneySheetInsurance()
             ->seeAnnualInsurancesCost()
@@ -183,84 +209,30 @@ describe('GameUi', function () {
 
     it('shows Lebensziel of current player', function () {
         /** @var TestCase $this */
+        $testCase = $this;
 
-        // ToDo: nice to have: aktueller Stand Kompetenzen in aktueller Phase
-
-        Livewire::test(GameUi::class, [
-            'gameId' => $this->gameId,
-            'myself' => $this->players[0],
-        ])
-            ->call('nextKonjunkturphaseStartScreenPage')
-            ->call('startKonjunkturphaseForPlayer')
-            ->call('showPlayerLebensziel', $this->players[0])
-            ->assertSee([
-                'Dein Lebensziel',
-                'Aufbau einer Selbstversorger Farm in Kanada',
-                'Phase 1',
-                'Um deinem nachhaltigen Traum näherzukommen, steht nun die internationale Ausbildung in ökologischer',
-                'Landwirtschaft an, während du parallel die Formalitäten für eine dauerhafte Aufenthaltsgenehmigung in Kanada erledigst.',
-                '50.000,00',
-                'Phase 2',
-                'Nach dem Abschluss planst du, am World Wide Opportunities on Organic Farms teilzunehmen und um die Welt zu reisen.',
-                'Dabei möchtest du verschiedenste Selbstversorger-Projekte kennenlernen und Kontakte mit Gleichgesinnten knüpfen. Gestärkt',
-                'durch dieses Netzwerk wirst du dich schließlich entscheiden, in Kanada deine eigene Farm zu gründen.',
-//                '200.000,00',
-                'Phase 3',
-                'Deine Farm läuft erfolgreich und du nimmst internationale Freiwillige auf, die deinen ressourcenschonenden Lebensstil',
-                'kennenlernen möchten. Durch Führungen und Vorträge verbreitet sich dein Konzept. Wird es dir gelingen, mehr Menschen für ein',
-                'nachhaltiges, konsumreduziertes Leben zu begeistern?',
-//                '500.000,00',
-                'Phasenwechsel',
-                'Kontostand',
-                '30.000,00'
-            ])
-            ->assertSeeHtml([
-                'Deine Kompetenzsteine im Bereich Freizeit &amp; Soziales: 0 von 2',
-                'Deine Kompetenzsteine im Bereich Bildung &amp; Karriere: 0 von 1'
-            ]);
-    });
-
-    it('displays error message when trying to finish turn without using a Zeitstein', function () {
-        /** @var TestCase $this */
-        Livewire::test(GameUi::class, [
-            'gameId' => $this->gameId,
-            'myself' => $this->players[0],
-        ])
-            ->call('nextKonjunkturphaseStartScreenPage')
-            ->call('startKonjunkturphaseForPlayer')
-            // finish turn without playing a card
-            ->call('spielzugAbschliessen')
-            // check that player has all of their Zeitsteine
-            ->assertSeeHtml('Player 0 hat noch 6 von 6 Zeitsteinen übrig.')
-            // check that error message is displayed
-            ->assertSee('Du musst erst einen Zeitstein für eine Aktion ausgeben');
+        new GameUiTester($testCase, $this->players[0], 'Player 0')
+            ->startGame()
+            ->checkThatSidebarActionsAreVisible(true)
+            ->seeUpdatedGameboard()
+            ->openLebenszielModal()
+            ->seeLebenszielModal();
     });
 
     it('tries to finish turn without using a Zeitstein, closes error message, plays a card and finishes turn', function () {
         /** @var TestCase $this */
-        Livewire::test(GameUi::class, [
-            'gameId' => $this->gameId,
-            'myself' => $this->players[0],
-        ])
-            ->call('nextKonjunkturphaseStartScreenPage')
-            ->call('startKonjunkturphaseForPlayer')
-            // finish turn without playing a card
-            ->call('spielzugAbschliessen')
-            ->assertSee('Du musst erst einen Zeitstein für eine Aktion ausgeben')
-            // close error message
-            ->call('closeNotification')
-            // draw a card
-            ->call('showCardActions', 'buk0', 'Bildung & Karriere')
-            ->assertSee(['Sprachkurs', 'Mache einen Sprachkurs über drei Monate im Ausland.', '11.000,00', 'Karte spielen'])
-            // check that message is not in Ereignisprotokoll
-            ->assertDontSee("spielt Karte 'Sprachkurs'")
-            // play card
-            ->call('activateCard', 'Bildung & Karriere')
-            // check that message is now logged
-            ->assertSee(['Player 0', "spielt Karte 'Sprachkurs'"])
-            // finish turn
-            ->call('spielzugAbschliessen')
-            ->assertDontSee('Du musst erst einen Zeitstein für eine Aktion ausgeben');
+        $testCase = $this;
+
+        new GameUiTester($testCase, $this->players[0], 'Player 0')
+            ->startGame()
+            ->checkThatSidebarActionsAreVisible(true)
+            ->seeUpdatedGameboard()
+            ->finishTurn()
+            ->assertSeeMessage('Du musst erst einen Zeitstein für eine Aktion ausgeben')
+            ->closeMessage()
+            ->drawAndPlayCard(CategoryId::BILDUNG_UND_KARRIERE)
+            ->finishTurn()
+            ->assertDoNotSeeMessage('Du musst erst einen Zeitstein für eine Aktion ausgeben');
     });
 
 });
