@@ -59,4 +59,9 @@ trait HasLebenszielphase
             $this->showBanner("Du bist jetzt in Phase: " . $event->currentPhase->name, $event->getResourceChanges($this->myself));
         }
     }
+
+    public function endGame(): void
+    {
+        redirect(route('game-play.index'));
+    }
 }
