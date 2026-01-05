@@ -14,7 +14,7 @@
                     <strong>Erstellt am:</strong> {{ $game->game->created_at->format('d.m.Y H:i') }}
                 </div>
                 <div class="games-list__game-course">
-                    <strong>Kurs:</strong> {{ $game->game->course->name }} @if($game->game->isCreatedByPlayer()) (von dir erstellt) @endif
+                    <strong>Kurs:</strong> {{ $game->game->course?->name }} @if($game->game->isCreatedByPlayer()) (von dir erstellt) @endif
                 </div>
                 <div class="games-list__game-players">
                     <strong>Mitspielende: </strong>
