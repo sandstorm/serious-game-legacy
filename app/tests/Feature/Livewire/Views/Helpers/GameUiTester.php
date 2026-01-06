@@ -32,8 +32,8 @@ use Tests\TestCase;
 readonly class GameUiTester {
 
     public Testable $testableGameUi;
+    public readonly array $categoryIds;
     private string $playerColorClass;
-    private array $categoryIds;
 
     public function __construct(private TestCase $testCase, private PlayerId $playerId, private string $playerName) {
         $this->testableGameUi = Livewire::test(GameUi::class, [
@@ -70,38 +70,22 @@ readonly class GameUiTester {
         if ($actionsAreVisible) {
             $this->testableGameUi
                 ->assertSeeHtml([
-                    "<button
-                class=\"button button--type-secondary \"
-                wire:click=\"showTakeOutALoan()\">
-                    <span>Kredit aufnehmen</span> <i class=\"icon-dots\" aria-hidden=\"true\"></i>
-            </button>",
-                    "<button class=\"button button--type-secondary\" wire:click=\"showExpensesTab('insurances')\">
-                <span>Versicherung abschließen</span> <i class=\"icon-dots\" aria-hidden=\"true\"></i>
-            </button>",
-                    " <button
-                type=\"button\"
-                class=\"button button--type-primary button--disabled $this->playerColorClass\"
-                wire:click=\"spielzugAbschliessen()\">
-                Spielzug beenden
-            </button>"
+                    'wire:click="showTakeOutALoan()"',
+                    '<span>Kredit aufnehmen</span>',
+                    "wire:click=\"showExpensesTab('insurances')\"",
+                    '<span>Versicherung abschließen</span>',
+                    'wire:click="spielzugAbschliessen()"',
+                    'Spielzug beenden',
                 ]);
         } else {
             $this->testableGameUi
                 ->assertDontSeeHtml([
-                    "<button
-                class=\"button button--type-secondary \"
-                wire:click=\"showTakeOutALoan()\">
-                    <span>Kredit aufnehmen</span> <i class=\"icon-dots\" aria-hidden=\"true\"></i>
-            </button>",
-                    "<button class=\"button button--type-secondary\" wire:click=\"showExpensesTab('insurances')\">
-                <span>Versicherung abschließen</span> <i class=\"icon-dots\" aria-hidden=\"true\"></i>
-            </button>",
-                    " <button
-                type=\"button\"
-                class=\"button button--type-primary button--disabled $this->playerColorClass\"
-                wire:click=\"spielzugAbschliessen()\">
-                Spielzug beenden
-            </button>"
+                    'wire:click="showTakeOutALoan()"',
+                    '<span>Kredit aufnehmen</span>',
+                    "wire:click=\"showExpensesTab('insurances')\"",
+                    '<span>Versicherung abschließen</span>',
+                    'wire:click="spielzugAbschliessen()"',
+                    'Spielzug beenden',
                 ]);
         }
 
@@ -117,27 +101,18 @@ readonly class GameUiTester {
         $topCardGuthabenChange = $topCard->getResourceChanges()->guthabenChange->value;
         $topCardZeitstein = $topCard->getResourceChanges()->zeitsteineChange;
 
-        // get players available Zeitsteine
         $availableZeitsteine = $this->getAvailableZeitsteine();
-        // get players remaining Zeitsteine before action
         $playersZeitsteineBeforeAction = $this->getPlayersZeitsteine();
-        // check that Zeitsteine are rendered correctly
         $this->assertVisibilityOfZeitsteine($playersZeitsteineBeforeAction, $availableZeitsteine);
 
-        // get available Slots for categories
         $availableCategorySlots = $this->getAvailableCategorySlots($this->categoryIds);
-        // get used Zeitsteinslots for categories before action
         $usedCategorySlotsBeforeAction = $this->getOccupiedCategorySlots($this->categoryIds);
-        // check that Zeitsteinslots are rendered correctly
-        $this->assertVisibilityOfSlots($availableCategorySlots, $usedCategorySlotsBeforeAction);
+        $this->assertVisibilityOfCategorySlots($availableCategorySlots, $usedCategorySlotsBeforeAction);
 
-        // get available Slots for Kompetenzen
         $availableKompetenzSlots = $this->getAvailableKompetenzSlots();
-        // get players Kompetenzen before action
         $playersKompetenzsteineBeforeAction = $this->getPlayersKompetenzsteine();
         $this->assertVisibilityOfKompetenzen($playersKompetenzsteineBeforeAction, $availableKompetenzSlots);
 
-        // get players balance before action
         $playersBalanceBeforeAction = $this->getPlayersBalance();
         $this->assertVisibilityOfBalance();
 
@@ -158,9 +133,7 @@ readonly class GameUiTester {
             // check that message is now logged
             ->assertSee("spielt Karte '$topCardTitle'");
 
-        // get players remaining Zeitsteine after action
         $playersZeitsteineAfterAction = $this->getPlayersZeitsteine();
-        // check that Zeitsteine are rendered correctly
         $this->assertVisibilityOfZeitsteine($playersZeitsteineAfterAction, $availableZeitsteine);
         // check that player has used Zeitsteine
         Assert::assertEquals(
@@ -169,14 +142,11 @@ readonly class GameUiTester {
             'Zeitsteine have been reduced'
         );
 
-        // get used Zeitsteinslots for categories after action
         $usedCategorySlotsAfterAction = $this->getOccupiedCategorySlots($this->categoryIds);
-        // check that Zeitsteinslots are rendered correctly
-        $this->assertVisibilityOfSlots($availableCategorySlots, $usedCategorySlotsAfterAction);
+        $this->assertVisibilityOfCategorySlots($availableCategorySlots, $usedCategorySlotsAfterAction);
         // check that 1 Zeitsteinslot is used in corresponding category
-        $this->compareUsedSlots($categoryId, $usedCategorySlotsBeforeAction, $usedCategorySlotsAfterAction);
+        $this->compareUsedSlots($categoryId->name, $usedCategorySlotsBeforeAction, $usedCategorySlotsAfterAction);
 
-        // get players Kompetenzen after action
         $playersKompetenzsteineAfterAction = $this->getPlayersKompetenzsteine();
         $this->assertVisibilityOfKompetenzen($playersKompetenzsteineAfterAction, $availableKompetenzSlots);
         // check that player got Kompetenzstein for corresponding category
@@ -220,28 +190,29 @@ readonly class GameUiTester {
         return CardFinder::getInstance()->getCardById(new CardId($topCardIdOnPile->value));
     }
 
-    private function getAvailableZeitsteine(): int {
+    public function getAvailableZeitsteine(): int {
         return $this->testCase
             ->getKonjunkturphaseDefinition()
             ->zeitsteine
             ->getAmountOfZeitsteineForPlayer(count($this->testCase->players));
     }
 
-    private function getPlayersZeitsteine(): int {
+    public function getPlayersZeitsteine(): int {
         return PlayerState::getResourcesForPlayer($this->testCase->getGameEvents(), $this->playerId)->zeitsteineChange;
     }
 
-    private function assertVisibilityOfZeitsteine($currentZeitsteine, $availableZeitsteine): void {
+    public function assertVisibilityOfZeitsteine($currentZeitsteine, $availableZeitsteine): static {
         $this->testableGameUi->assertSeeHtml(
             $this->playerName . ' hat noch ' . $currentZeitsteine . ' von ' . $availableZeitsteine . ' Zeitsteinen übrig.'
         );
+        return $this;
     }
 
     /**
      * @param CategoryId[] $categoryIds
      * @return array
      */
-    private function getAvailableCategorySlots(array $categoryIds): array {
+    public function getAvailableCategorySlots(array $categoryIds): array {
         $players = $this->testCase->players;
         $availableCategorySlots = [];
 
@@ -261,7 +232,7 @@ readonly class GameUiTester {
      * @param CategoryId[] $categoryIds
      * @return array
      */
-    private function getOccupiedCategorySlots(array $categoryIds): array {
+    public function getOccupiedCategorySlots(array $categoryIds): array {
         $players = $this->testCase->players;
         $usedCategorySlots = [];
 
@@ -283,7 +254,7 @@ readonly class GameUiTester {
         return $usedCategorySlots;
     }
 
-    private function assertVisibilityOfSlots($availableCategorySlots, $usedCategorySlots): void {
+    public function assertVisibilityOfCategorySlots($availableCategorySlots, $usedCategorySlots): static {
         foreach ($availableCategorySlots as $categoryName => $availableSlots) {
             $slotsUsedByPlayer = [];
             foreach ($usedCategorySlots[$categoryName]['players'] as $playerName => $amount) {
@@ -293,9 +264,10 @@ readonly class GameUiTester {
                 $usedCategorySlots[$categoryName]['total'] . ' von ' . $availableSlots . ' Zeitsteinen wurden platziert. ' . implode(', ', $slotsUsedByPlayer)
             );
         }
+        return $this;
     }
 
-    private function getAvailableKompetenzSlots(): array {
+    public function getAvailableKompetenzSlots(): array {
         $currentLebenszielphaseDefinition = PlayerState::getCurrentLebenszielphaseDefinitionForPlayer(
             $this->testCase->getGameEvents(),
             $this->playerId
@@ -306,7 +278,7 @@ readonly class GameUiTester {
         ];
     }
 
-    private function getPlayersKompetenzsteine(): array {
+    public function getPlayersKompetenzsteine(): array {
         $playerResources = PlayerState::getResourcesForPlayer($this->testCase->getGameEvents(), $this->playerId);
         return [
             CategoryId::BILDUNG_UND_KARRIERE->value => $playerResources->bildungKompetenzsteinChange,
@@ -314,7 +286,7 @@ readonly class GameUiTester {
         ];
     }
 
-    private function assertVisibilityOfKompetenzen($playersKompetenzsteine, $availableKompetenzSlots): void {
+    public function assertVisibilityOfKompetenzen($playersKompetenzsteine, $availableKompetenzSlots): static {
         foreach ($playersKompetenzsteine as $categoryName => $achievedAmount) {
             // replace '&' with '&amp;'
             $categoryNameAdapted = str_replace("&", "&amp;", $categoryName);
@@ -323,6 +295,7 @@ readonly class GameUiTester {
                 "Deine Kompetenzsteine im Bereich $categoryNameAdapted: $achievedAmount von $availableAmount"
             );
         }
+        return $this;
     }
 
     private function getPlayersBalance(): float {
@@ -346,22 +319,23 @@ readonly class GameUiTester {
         );
     }
 
-    private function compareUsedSlots($categoryId, $usedCategorySlotsBeforeAction, $usedCategorySlotsAfterAction): void {
-        foreach ($usedCategorySlotsAfterAction as $categoryName => $usedSlots) {
-            if ($categoryName === $categoryId->name) {
+    public function compareUsedSlots($categoryName, $usedCategorySlotsBeforeAction, $usedCategorySlotsAfterAction): static {
+        foreach ($usedCategorySlotsAfterAction as $name => $usedSlots) {
+            if ($name === $categoryName) {
                 Assert::assertEquals(
                     $usedSlots['total'] - 1,
-                    $usedCategorySlotsBeforeAction[$categoryName]['total'],
-                    "Zeitsteinslots in $categoryName have been increased by 1"
+                    $usedCategorySlotsBeforeAction[$name]['total'],
+                    "Zeitsteinslots in $name have been increased by 1"
                 );
             } else {
                 Assert::assertEquals(
                     $usedSlots['total'],
-                    $usedCategorySlotsBeforeAction[$categoryName]['total'],
-                    "Zeitsteinslots in $categoryName have not changed"
+                    $usedCategorySlotsBeforeAction[$name]['total'],
+                    "Zeitsteinslots in $name have not changed"
                 );
             }
         }
+        return $this;
     }
 
     private function getTopCardKompetenzsteinChange(KategorieCardDefinition $topCard): array {
@@ -386,7 +360,6 @@ readonly class GameUiTester {
     }
 
     public function tryToPlayCardWhenItIsNotThePlayersTurn(CategoryId $categoryId): void {
-        // get top card from category
         $topCard = $this->getTopCardFromCategory($categoryId);
 
         $this->testableGameUi
@@ -399,26 +372,59 @@ readonly class GameUiTester {
     }
 
     public function startTurn(): static {
+        $modalAttributes = [
+            'hasIcon' => true,
+            'hasTitle' => false,
+            'hasFooter' => true
+        ];
+        $additionalModalContent = [
+            '<h3>Du bist am Zug!</h3>',
+            'wire:click="startSpielzug()',
+            'Ok'
+        ];
+        // check that modal is visible
+        $this->assertSeeMandatoryModal($modalAttributes, $additionalModalContent);
+
+        // player confirms starting turn
         $this->testableGameUi
-            // check that modal is visible
-            ->assertSeeHtml([
-                '<div class="modal__backdrop"></div>',
-                '<div class="modal__body" id="mandatory-modal-content">',
-                '<h3>Du bist am Zug!</h3>',
-                "<button type=\"button\"
-        class=\"button button--type-primary $this->playerColorClass\"
-        wire:click=\"startSpielzug()\"
-    >
-        Ok
-    </button>"
-            ])
-            // player confirms starting turn
-            ->call('startSpielzug')
-            // check that modal is not visible anymore
-            ->assertDontSee('Du bist am Zug')
-            ->assertDontSeeHtml('startSpielzug');
+            ->call('startSpielzug');
+
+        // check that modal is not visible anymore
+        $this->assertDoNotSeeMandatoryModal($additionalModalContent);
 
         return $this;
+    }
+
+    private function assertSeeMandatoryModal(array $modalAttributes, array $additionalContent): void {
+        $this->testableGameUi
+            ->assertSeeHtml([
+                '<div class="modal__backdrop"></div>',
+                '<div class="modal__content">',
+                '<div class="modal__body" id="mandatory-modal-content">',
+                ...$additionalContent
+            ])
+            ->assertDontSeeHtml('<div class="modal__close-button">');
+
+        if ($modalAttributes['hasIcon']) {
+            $this->testableGameUi->assertSeeHtml('<div class="modal__icon">');
+        }
+
+        if ($modalAttributes['hasTitle']) {
+            $this->testableGameUi->assertSeeHtml('<h2 class="modal__header" id="mandatory-modal-headline">');
+        }
+
+        if ($modalAttributes['hasFooter']) {
+            $this->testableGameUi->assertSeeHtml('<footer class="modal__actions">');
+        }
+    }
+
+    private function assertDoNotSeeMandatoryModal(array $additionalContent): void {
+        $this->testableGameUi->assertDontSeeHtml([
+            '<div class="modal__backdrop"></div>',
+            '<div class="modal__content">',
+            '<div class="modal__body" id="mandatory-modal-content">',
+            ...$additionalContent
+        ]);
     }
 
     public function seeUpdatedGameboard(): static {
@@ -483,19 +489,13 @@ readonly class GameUiTester {
         $topCardTitle = $topCard->getTitle();
         $gehalt = $this->numberFormatMoney($topCard->getGehalt()->value);
 
-        // get players available Zeitsteine
         $availableZeitsteine = $this->getAvailableZeitsteine();
-        // get players remaining Zeitsteine before action
         $playersZeitsteineBeforeAction = $this->getPlayersZeitsteine();
-        // check that Zeitsteine are rendered correctly
         $this->assertVisibilityOfZeitsteine($playersZeitsteineBeforeAction, $availableZeitsteine);
 
-        // get available Slots for categories
         $availableCategorySlots = $this->getAvailableCategorySlots($this->categoryIds);
-        // get used Zeitsteinslots for categories before action
         $usedCategorySlotsBeforeAction = $this->getOccupiedCategorySlots($this->categoryIds);
-        // check that Zeitsteinslots are rendered correctly
-        $this->assertVisibilityOfSlots($availableCategorySlots, $usedCategorySlotsBeforeAction);
+        $this->assertVisibilityOfCategorySlots($availableCategorySlots, $usedCategorySlotsBeforeAction);
 
         // check that player has no job
         $playersJobStatusBeforeAction = $this->getPlayersJobStatus();
@@ -517,9 +517,7 @@ readonly class GameUiTester {
                 "$gehalt €"
             ]);
 
-        // get players remaining Zeitsteine after action
         $playersZeitsteineAfterAction = $this->getPlayersZeitsteine();
-        // check that Zeitsteine are rendered correctly
         $this->assertVisibilityOfZeitsteine($playersZeitsteineAfterAction, $availableZeitsteine);
         // check that player has used Zeitsteine
         Assert::assertEquals(
@@ -528,13 +526,11 @@ readonly class GameUiTester {
             'Zeitsteine have been reduced'
         );
 
-        // get used Zeitsteinslots for categories after action
         $usedCategorySlotsAfterAction = $this->getOccupiedCategorySlots($this->categoryIds);
-        // check that Zeitsteinslots are rendered correctly
-        $this->assertVisibilityOfSlots($availableCategorySlots, $usedCategorySlotsAfterAction);
+        $this->assertVisibilityOfCategorySlots($availableCategorySlots, $usedCategorySlotsAfterAction);
         // check that 1 Zeitsteinslot is used for category JOBS
         $this->compareUsedSlots(
-            CategoryId::JOBS,
+            CategoryId::JOBS->name,
             $usedCategorySlotsBeforeAction,
             $usedCategorySlotsAfterAction
         );
@@ -560,24 +556,57 @@ readonly class GameUiTester {
 
     public function openInvestmentsOverview(): static {
         $this->testableGameUi
-            ->call('toggleInvestitionenSelectionModal')
-            ->assertSeeHtml([
-                '<div class="modal__backdrop" wire:click=toggleInvestitionenSelectionModal()></div>',
-                '<div class="modal__close-button">',
-                '<h2 class="modal__header" id="modal-headline">',
-                '<div class="modal__body" id="modal-content">',
-                '<div class="investitionen-overview">',
-                '<button class="card" wire:click="toggleStocksModal()">',
-                '<h4 class="card__title">Aktien</h4>',
-                '<button class="card" wire:click="toggleETFModal()">',
-                '<h4 class="card__title">ETF</h4>',
-                '<button class="card" wire:click="toggleCryptoModal()">',
-                '<h4 class="card__title">Krypto</h4>',
-                '<button class="card" wire:click="toggleImmobilienModal()">',
-                '<h4 class="card__title">Immobilien</h4>'
-            ]);
+            ->call('toggleInvestitionenSelectionModal');
+
+        $modalAttributes = [
+            'isCloseable' => true,
+            'closeModalFunction' => "toggleInvestitionenSelectionModal()",
+            'hasTitle' => true,
+            'hasFooter' => false
+        ];
+        $additionalModalContent = [
+            '<div class="investitionen-overview">',
+            '<button class="card" wire:click="toggleStocksModal()">',
+            '<h4 class="card__title">Aktien</h4>',
+            '<button class="card" wire:click="toggleETFModal()">',
+            '<h4 class="card__title">ETF</h4>',
+            '<button class="card" wire:click="toggleCryptoModal()">',
+            '<h4 class="card__title">Krypto</h4>',
+            '<button class="card" wire:click="toggleImmobilienModal()">',
+            '<h4 class="card__title">Immobilien</h4>'
+        ];
+
+        $this->assertSeeModal($modalAttributes, $additionalModalContent);
 
         return $this;
+    }
+
+    private function assertSeeModal(array $modalAttributes, array $additionalContent): void {
+        $this->testableGameUi->assertSeeHtml([
+            '<div class="modal__content">',
+            '<div class="modal__body" id="modal-content">',
+            ...$additionalContent
+        ]);
+
+        if ($modalAttributes['isCloseable']) {
+            $closeModalFunction = $modalAttributes['closeModalFunction'];
+            $this->testableGameUi->assertSeeHtml([
+                "<div class=\"modal__backdrop\" wire:click=$closeModalFunction></div>",
+                '<div class="modal__close-button">'
+            ]);
+        } else {
+            $this->testableGameUi->assertSeeHtml([
+                '<div class="modal__backdrop"></div>'
+            ]);
+        }
+
+        if ($modalAttributes['hasTitle']) {
+            $this->testableGameUi->assertSeeHtml('<h2 class="modal__header" id="modal-headline">');
+        }
+
+        if ($modalAttributes['hasFooter']) {
+            $this->testableGameUi->assertSeeHtml('<footer class="modal__actions">');
+        }
     }
 
     public function chooseStocks(): static {
@@ -592,17 +621,22 @@ readonly class GameUiTester {
                 'Dividenden und Kursgewinne, bergen jedoch auch das Risiko unternehmensspezifischer Rückschläge.',
                 'kaufen',
                 'verkaufen'
-            ])
-            ->assertSeeHtml([
-                '<div class="modal__backdrop" wire:click=toggleStocksModal()></div>',
-                '<div class="modal__close-button">',
-                '<h2 class="modal__header" id="modal-headline">',
-                '<div class="modal__body" id="modal-content">',
-                "<h4>$firstStock->value</h4>",
-                InvestmentPriceState::getCurrentInvestmentPrice($this->testCase->getGameEvents(), $firstStock)->format(),
-                "<h4>$secondStock->value</h4>",
-                InvestmentPriceState::getCurrentInvestmentPrice($this->testCase->getGameEvents(), $secondStock)->format()
             ]);
+
+        $modalAttributes = [
+            'isCloseable' => true,
+            'closeModalFunction' => "toggleStocksModal()",
+            'hasTitle' => true,
+            'hasFooter' => false
+        ];
+        $additionalModalContent = [
+            "<h4>$firstStock->value</h4>",
+            InvestmentPriceState::getCurrentInvestmentPrice($this->testCase->getGameEvents(), $firstStock)->format(),
+            "<h4>$secondStock->value</h4>",
+            InvestmentPriceState::getCurrentInvestmentPrice($this->testCase->getGameEvents(), $secondStock)->format()
+        ];
+        $this->assertSeeModal($modalAttributes, $additionalModalContent);
+
         return $this;
     }
 
@@ -628,37 +662,34 @@ readonly class GameUiTester {
                 'Langfristige Tendenz:',
                 'Kursschwankungen:',
                 'Dividende pro Aktie:'
-            ])
-            ->assertSeeHtml([
-                '<div class="modal__backdrop" wire:click=toggleStocksModal()></div>',
-                '<div class="modal__close-button">',
-                '<h2 class="modal__header" id="modal-headline">',
-                "Kauf - $investmentId->value",
-                '<div class="modal__body" id="modal-content">',
-                $currentInvestmentPrice->format(),
-                '0,00 €',
-                "<strong>$investmentDefinition->longTermTrend%</strong>",
-                "<strong>$investmentDefinition->fluctuations%</strong>",
-                "<strong>$dividende</strong>"
-            ])
+            ]);
+
+        $modalAttributes = [
+            'isCloseable' => true,
+            'closeModalFunction' => "toggleStocksModal()",
+            'hasTitle' => true,
+            'hasFooter' => false
+        ];
+        $additionalModalContent = [
+            "Kauf - $investmentId->value",
+            $currentInvestmentPrice->format(),
+            "<strong>$investmentDefinition->longTermTrend%</strong>",
+            "<strong>$investmentDefinition->fluctuations%</strong>",
+            "<strong>$dividende</strong>"
+        ];
+        $this->assertSeeModal($modalAttributes, $additionalModalContent);
+
+        $this->testableGameUi
             // set amount
             ->set('buyInvestmentsForm.amount', $amount)
             // buy stocks
             ->call('buyInvestments', $investmentId->value)
-            ->assertDontSeeHtml([
-                '<div class="modal__backdrop" wire:click=toggleStocksModal()></div>',
-                '<div class="modal__close-button">',
-                '<h2 class="modal__header" id="modal-headline">',
-                "Kauf - $investmentId->value",
-                '<div class="modal__body" id="modal-content">',
-                $currentInvestmentPrice->format(),
-                "<strong>$investmentDefinition->longTermTrend%</strong>",
-                "<strong>$investmentDefinition->fluctuations%</strong>",
-                "<strong>$dividende</strong>"
-            ])
             ->assertSee(
                 "Investiert in '$investmentId->value' und kauft $amount Anteile zum Preis von $currentInvestmentPriceFormatted €"
             );
+
+        // check that modal is no longer visible
+        $this->assertDoNotSeeModal($modalAttributes, $additionalModalContent);
 
         // check that players balance has changed
         $playersBalanceAfterAction = $this->getPlayersBalance();
@@ -672,6 +703,26 @@ readonly class GameUiTester {
         return $this;
     }
 
+    private function assertDoNotSeeModal(array $modalAttributes, array $additionalContent): void {
+        $this->testableGameUi->assertDontSeeHtml([
+            '<div class="modal__content">',
+            '<div class="modal__body" id="modal-content">',
+            ...$additionalContent
+        ]);
+
+        if ($modalAttributes['isCloseable']) {
+            $closeModalFunction = $modalAttributes['closeModalFunction'];
+            $this->testableGameUi->assertDontSeeHtml([
+                "<div class=\"modal__backdrop\" wire:click=$closeModalFunction></div>",
+                '<div class="modal__close-button">',
+            ]);
+        }
+
+        if ($modalAttributes['hasTitle']) {
+            $this->testableGameUi->assertDontSeeHtml('<h2 class="modal__header" id="modal-headline">');
+        }
+    }
+
     public function sellStocksThatOtherPlayerIsBuying(InvestmentId $stockId): void {
         $lastInvestmentBoughtByAPlayer = $this->testCase->getGameEvents()->findLast(PlayerHasBoughtInvestment::class);
         $nameOfPlayerWhoBoughtInvestment = PlayerState::getNameForPlayer(
@@ -679,18 +730,17 @@ readonly class GameUiTester {
             $lastInvestmentBoughtByAPlayer->playerId
         );
 
-        $this->testableGameUi
-            ->assertSeeHtml([
-                '<div class="modal__backdrop"></div>',
-                "<h2 class=\"modal__header\" id=\"mandatory-modal-headline\">",
-                "Verkauf - $stockId->value <i class=\"icon-aktien\" aria-hidden=\"true\"></i>",
-                "<div class=\"modal__body\" id=\"mandatory-modal-content\">
-                <h4>$nameOfPlayerWhoBoughtInvestment hat in $stockId->value investiert!</h4>",
-                "Ich möchte nichts verkaufen"
-            ])
-            ->assertDontSeeHtml([
-                '<div class="modal__close-button">'
-            ]);
+        $modalAttributes = [
+            'hasIcon' => true,
+            'hasTitle' => true,
+            'hasFooter' => true
+        ];
+        $additionalModalContent = [
+            "Verkauf - $stockId->value <i class=\"icon-aktien\" aria-hidden=\"true\"></i>",
+            "<h4>$nameOfPlayerWhoBoughtInvestment hat in $stockId->value investiert!</h4>",
+            "Ich möchte nichts verkaufen"
+        ];
+        $this->assertSeeMandatoryModal($modalAttributes, $additionalModalContent);
 
 //        Todo: überprüfen, ob Player Aktien besitzt --> abhängig davon wird anderer Text gerendert (siehe unten)
         $this->testableGameUi
@@ -700,6 +750,8 @@ readonly class GameUiTester {
 
         $this->testableGameUi
             ->call('closeSellInvestmentsModal');
+
+        $this->assertDoNotSeeMandatoryModal($additionalModalContent);
 
 // ToDo: Wenn Spieler Aktien von diesem Typ besitzt (investitionen-sell-form.blade.php)
 //
@@ -730,7 +782,6 @@ readonly class GameUiTester {
     }
 
     public function doWeiterbildungWithSuccess(): static {
-        // get top card from Weiterbildung
         $topCard = $this->getTopCardFromCategory(CategoryId::WEITERBILDUNG);
 
         // get properties from top card
@@ -738,29 +789,20 @@ readonly class GameUiTester {
         $topCardDescription = $topCard->getDescription();
         $topCardAnswerOptions = $topCard->getAnswerOptions();
 
-        [$answerOptionsLetter, $answerOptionsDescription, $rightAnswerOption] = $this->getArrayForTestingAnswerOptionsFromWeiterbildung($topCardAnswerOptions);
+        [$answerOptionsDescription, $rightAnswerOption] = $this->getArrayForTestingAnswerOptionsFromWeiterbildung($topCardAnswerOptions);
 
-        // get players available Zeitsteine
         $availableZeitsteine = $this->getAvailableZeitsteine();
-        // get players remaining Zeitsteine before action
         $playersZeitsteineBeforeAction = $this->getPlayersZeitsteine();
-        // check that Zeitsteine are rendered correctly
         $this->assertVisibilityOfZeitsteine($playersZeitsteineBeforeAction, $availableZeitsteine);
 
-        // get available Slots for categories
         $availableCategorySlots = $this->getAvailableCategorySlots($this->categoryIds);
-        // get used Zeitsteinslots for categories before action
         $usedCategorySlotsBeforeAction = $this->getOccupiedCategorySlots($this->categoryIds);
-        // check that Zeitsteinslots are rendered correctly
-        $this->assertVisibilityOfSlots($availableCategorySlots, $usedCategorySlotsBeforeAction);
+        $this->assertVisibilityOfCategorySlots($availableCategorySlots, $usedCategorySlotsBeforeAction);
 
-        // get available Slots for Kompetenzen
         $availableKompetenzSlots = $this->getAvailableKompetenzSlots();
-        // get players Kompetenzen before action
         $playersKompetenzsteineBeforeAction = $this->getPlayersKompetenzsteine();
         $this->assertVisibilityOfKompetenzen($playersKompetenzsteineBeforeAction, $availableKompetenzSlots);
 
-        // get players balance before action
         $playersBalanceBeforeAction = $this->getPlayersBalance();
         $this->assertVisibilityOfBalance();
 
@@ -772,24 +814,28 @@ readonly class GameUiTester {
                     macht eine Weiterbildung
                 </span>",
                 "<span class=\"sr-only\">-1 Zeitsteine </span",
-                // check that modal is visible
-                '<div class="modal__backdrop"></div>',
-                "<h2 class=\"modal__header\" id=\"modal-headline\">",
-                "<div class=\"weiterbildung__header-category\">Weiterbildung</div>",
-                "<div class=\"modal__body\" id=\"modal-content\">",
-                $topCardTitle,
-                $topCardDescription,
-                ...$answerOptionsLetter,
-                ...$answerOptionsDescription,
+            ]);
 
-                "<div class=\"weiterbildung__footer\">
+        // check that modal is visible
+        $modalAttributes = [
+            'isCloseable' => false,
+            'hasTitle' => true,
+            'hasFooter' => false
+        ];
+        $additionalModalContent = [
+            "<div class=\"weiterbildung__header-category\">Weiterbildung</div>",
+            $topCardTitle,
+            $topCardDescription,
+            ...$answerOptionsDescription,
+            "<div class=\"weiterbildung__footer\">
                 <div class=\"weiterbildung__footer-icon\">
                     <i class=\"icon-plus\" aria-hidden=\"true\"></i>
                     <div class=\"kompetenz-icon \">",
-                "<span class=\"sr-only\">Du bekommst eine halbe Bildungskompetenz</span>",
+            "Auswahl bestätigen"
+        ];
+        $this->assertSeeModal($modalAttributes, $additionalModalContent);
 
-                "Auswahl bestätigen"
-            ])
+        $this->testableGameUi
             // log answer
             ->set('weiterbildungForm.answer', $rightAnswerOption)
             // submit answer
@@ -799,11 +845,6 @@ readonly class GameUiTester {
             // check that button has changed
             ->assertSeeHtml("Weiter")
             ->call('closeWeiterbildung')
-            // check that modal is no longer visible
-            ->assertDontSeeHtml([
-                '<h2 class=\"modal__header\" id=\"modal-headline\">',
-                '<div class=\"modal__body\" id=\"modal-content\">'
-            ])
             // check that result of Weiterbildung is logged in Ereignisprotokoll
             ->assertSeeHtml([
                 "<span class=\"event-log__entry-text\">
@@ -813,9 +854,10 @@ readonly class GameUiTester {
                 "<span class=\"sr-only\">0.5 Bildung &amp; Karriere Kompetenzsteine </span>"
             ]);
 
-        // get players remaining Zeitsteine after action
+        // check that modal is no longer visible
+        $this->assertDoNotSeeModal($modalAttributes, $additionalModalContent);
+
         $playersZeitsteineAfterAction = $this->getPlayersZeitsteine();
-        // check that Zeitsteine are rendered correctly
         $this->assertVisibilityOfZeitsteine($playersZeitsteineAfterAction, $availableZeitsteine);
         // check that player has used Zeitsteine
         Assert::assertEquals(
@@ -824,14 +866,11 @@ readonly class GameUiTester {
             'Zeitsteine have been reduced'
         );
 
-        // get used Zeitsteinslots for categories after action
         $usedCategorySlotsAfterAction = $this->getOccupiedCategorySlots($this->categoryIds);
-        // check that Zeitsteinslots are rendered correctly
-        $this->assertVisibilityOfSlots($availableCategorySlots, $usedCategorySlotsAfterAction);
+        $this->assertVisibilityOfCategorySlots($availableCategorySlots, $usedCategorySlotsAfterAction);
         // check that 1 Zeitsteinslot is used for Weiterbildung
-        $this->compareUsedSlots(CategoryId::WEITERBILDUNG, $usedCategorySlotsBeforeAction, $usedCategorySlotsAfterAction);
+        $this->compareUsedSlots(CategoryId::WEITERBILDUNG->name, $usedCategorySlotsBeforeAction, $usedCategorySlotsAfterAction);
 
-        // get players Kompetenzen after action
         $playersKompetenzsteineAfterAction = $this->getPlayersKompetenzsteine();
         $this->assertVisibilityOfKompetenzen($playersKompetenzsteineAfterAction, $availableKompetenzSlots);
         // check that player got half Kompetenzstein for Weiterbildung
@@ -854,54 +893,20 @@ readonly class GameUiTester {
     }
 
     private function getArrayForTestingAnswerOptionsFromWeiterbildung($topCardAnswerOptions): array {
-        $answerOptionsLetter = [
-            "<div class=\"weiterbildung__answer-options\">
-                <!--[if BLOCK]><![endif]-->                    <label class=\"weiterbildung__answer-option $this->playerColorClass\">
-                        <strong>
-                            <!--[if BLOCK]><![endif]--> A)
-                            <!--[if ENDBLOCK]><![endif]-->
-                        </strong>"
-        ];
-
         $answerOptionsDescription = [];
-
         $rightAnswerOption = "";
 
         foreach ($topCardAnswerOptions as $index => $answerOption) {
-            $letter = "A";
-            if ($index === 1) $letter = "B";
-            elseif ($index === 2) $letter = "C";
-            elseif ($index === 3) $letter = "D";
-
-            if ($index > 0) {
-                $answerOptionsLetter[$index] = "<label class=\"weiterbildung__answer-option $this->playerColorClass\">
-                        <strong>
-                            <!--[if BLOCK]><![endif]--> $letter)
-                            <!--[if ENDBLOCK]><![endif]-->
-                        </strong>";
-            }
-
-            $answerId = $answerOption->id->value;
-            $answerOptionsDescription[$index] = "$answerOption->text
-                        <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
-                        <!--[if BLOCK]><![endif]--><!--[if ENDBLOCK]><![endif]-->
-                        <input
-    name=\"weiterbildung\"
-    id=\"$answerId\"
-    type=\"radio\"
-    value=\"$answerId\"
-    wire:model=\"weiterbildungForm.answer\" id=\"$answerId\" name=\"weiterbildung\" value=\"$answerId\"";
-
+            $answerOptionsDescription[$index] = $answerOption->text;
             if ($answerOption->isCorrect) {
                 $rightAnswerOption = $answerOption->id->value;
             }
         }
 
-        return [$answerOptionsLetter, $answerOptionsDescription, $rightAnswerOption];
+        return [$answerOptionsDescription, $rightAnswerOption];
     }
 
     public function doMinijob(): static {
-        // get top card from Minijob
         $topCard = $this->getTopCardFromCategory(CategoryId::MINIJOBS);
 
         // get properties from top card
@@ -911,27 +916,18 @@ readonly class GameUiTester {
         $topCardGuthabenChange = $topCard->getResourceChanges()->guthabenChange->value;
         $formattedGuthabenChange = $topCard->getResourceChanges()->guthabenChange->formatWithIcon();
 
-        // get players available Zeitsteine
         $availableZeitsteine = $this->getAvailableZeitsteine();
-        // get players remaining Zeitsteine before action
         $playersZeitsteineBeforeAction = $this->getPlayersZeitsteine();
-        // check that Zeitsteine are rendered correctly
         $this->assertVisibilityOfZeitsteine($playersZeitsteineBeforeAction, $availableZeitsteine);
 
-        // get available Slots for categories
         $availableCategorySlots = $this->getAvailableCategorySlots($this->categoryIds);
-        // get used Zeitsteinslots for categories before action
         $usedCategorySlotsBeforeAction = $this->getOccupiedCategorySlots($this->categoryIds);
-        // check that Zeitsteinslots are rendered correctly
-        $this->assertVisibilityOfSlots($availableCategorySlots, $usedCategorySlotsBeforeAction);
+        $this->assertVisibilityOfCategorySlots($availableCategorySlots, $usedCategorySlotsBeforeAction);
 
-        // get available Slots for Kompetenzen
         $availableKompetenzSlots = $this->getAvailableKompetenzSlots();
-        // get players Kompetenzen before action
         $playersKompetenzsteineBeforeAction = $this->getPlayersKompetenzsteine();
         $this->assertVisibilityOfKompetenzen($playersKompetenzsteineBeforeAction, $availableKompetenzSlots);
 
-        // get players balance before action
         $playersBalanceBeforeAction = $this->getPlayersBalance();
         $this->assertVisibilityOfBalance();
 
@@ -944,20 +940,26 @@ readonly class GameUiTester {
                 "macht Minijob &#039;$topCardTitle&#039;",
             ])
             // do Minijob
-            ->call('doMinijob')
-            ->assertSeeHtml([
-                '<div class="modal__backdrop" wire:click=closeMinijob()></div>',
-                '<div class="modal__close-button">',
-                '<h2 class="modal__header" id="modal-headline">',
-                '<div class="modal__body" id="modal-content">',
-                $topCardTitle,
-                'Minijob',
-                $topCardDescription,
-                '<span class="sr-only">Du bekommst/verlierst: </span>',
-                $formattedGuthabenChange,
-                '<span class="sr-only">-1 Zeitsteine </span>',
-                'Akzeptieren'
-            ])
+            ->call('doMinijob');
+
+        $modalAttributes = [
+            'isCloseable' => true,
+            'closeModalFunction' => "closeMinijob()",
+            'hasTitle' => true,
+            'hasFooter' => false
+        ];
+        $additionalModalContent = [
+            $topCardTitle,
+            'Minijob',
+            $topCardDescription,
+            '<span class="sr-only">Du bekommst/verlierst: </span>',
+            $formattedGuthabenChange,
+            '<span class="sr-only">-1 Zeitsteine </span>',
+            'Akzeptieren'
+        ];
+        $this->assertSeeModal($modalAttributes, $additionalModalContent);
+
+        $this->testableGameUi
             ->call('closeMinijob')
             // check that message is now logged
             ->assertSeeHtml([
@@ -974,9 +976,7 @@ readonly class GameUiTester {
             'LogEntries have increased by 1'
         );
 
-        // get players remaining Zeitsteine after action
         $playersZeitsteineAfterAction = $this->getPlayersZeitsteine();
-        // check that Zeitsteine are rendered correctly
         $this->assertVisibilityOfZeitsteine($playersZeitsteineAfterAction, $availableZeitsteine);
         // check that player has used Zeitsteine
         Assert::assertEquals(
@@ -985,14 +985,11 @@ readonly class GameUiTester {
             'Zeitsteine have been reduced'
         );
 
-        // get used Zeitsteinslots for categories after action
         $usedCategorySlotsAfterAction = $this->getOccupiedCategorySlots($this->categoryIds);
-        // check that Zeitsteinslots are rendered correctly
-        $this->assertVisibilityOfSlots($availableCategorySlots, $usedCategorySlotsAfterAction);
+        $this->assertVisibilityOfCategorySlots($availableCategorySlots, $usedCategorySlotsAfterAction);
         // check that Zeitsteinslots remain the same
-        $this->compareUsedSlots(CategoryId::MINIJOBS, $usedCategorySlotsBeforeAction, $usedCategorySlotsAfterAction);
+        $this->compareUsedSlots(CategoryId::MINIJOBS->name, $usedCategorySlotsBeforeAction, $usedCategorySlotsAfterAction);
 
-        // get players Kompetenzen after action
         $playersKompetenzsteineAfterAction = $this->getPlayersKompetenzsteine();
         $this->assertVisibilityOfKompetenzen($playersKompetenzsteineAfterAction, $availableKompetenzSlots);
         // check that players Kompetenzsteine remain the same
@@ -1151,9 +1148,7 @@ readonly class GameUiTester {
             $this->numberFormatMoney($playersGuthaben)
         ]);
 
-        // get available Slots for Kompetenzen
         $availableKompetenzSlots = $this->getAvailableKompetenzSlots();
-        // get players Kompetenzen
         $playersKompetenzsteineBeforeAction = $this->getPlayersKompetenzsteine();
         $this->assertVisibilityOfKompetenzen($playersKompetenzsteineBeforeAction, $availableKompetenzSlots);
 

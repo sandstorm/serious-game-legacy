@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Tests\Feature\Livewire;
 
@@ -7,6 +8,7 @@ use Domain\Definitions\Insurance\ValueObject\InsuranceTypeEnum;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Assert;
 use Tests\Feature\Livewire\Views\Helpers\GameUiTester;
 use Tests\TestCase;
 
@@ -24,6 +26,7 @@ describe('GameUi', function () {
         $gameUiTester->testableGameUi->assertStatus(200);
         $gameUiTester
             ->startGame()
+            ->startTurn()
             ->checkThatSidebarActionsAreVisible(true)
             ->seeUpdatedGameboard();
     });
@@ -34,6 +37,7 @@ describe('GameUi', function () {
 
         new GameUiTester($testCase, $this->players[0], 'Player 0')
             ->startGame()
+            ->startTurn()
             ->checkThatSidebarActionsAreVisible(true)
             ->seeUpdatedGameboard()
             ->drawAndPlayCard($categoryId)
@@ -58,6 +62,7 @@ describe('GameUi', function () {
         // first player plays first card for Bildung & Karriere and finishes turn
         new GameUiTester($testCase, $this->players[0], 'Player 0')
             ->startGame()
+            ->startTurn()
             ->checkThatSidebarActionsAreVisible(true)
             ->seeUpdatedGameboard()
             ->drawAndPlayCard(CategoryId::BILDUNG_UND_KARRIERE)
@@ -117,6 +122,7 @@ describe('GameUi', function () {
 
         new GameUiTester($testCase, $this->players[0], 'Player 0')
             ->startGame()
+            ->startTurn()
             ->checkThatSidebarActionsAreVisible(true)
             ->seeUpdatedGameboard()
             ->openInvestmentsOverview()
@@ -147,6 +153,7 @@ describe('GameUi', function () {
 
         new GameUiTester($testCase, $this->players[0], 'Player 0')
             ->startGame()
+            ->startTurn()
             ->checkThatSidebarActionsAreVisible(true)
             ->seeUpdatedGameboard()
             ->doWeiterbildungWithSuccess()
@@ -167,6 +174,7 @@ describe('GameUi', function () {
 
         new GameUiTester($testCase, $this->players[0], 'Player 0')
             ->startGame()
+            ->startTurn()
             ->checkThatSidebarActionsAreVisible(true)
             ->seeUpdatedGameboard()
             ->doMinijob()
@@ -189,14 +197,26 @@ describe('GameUi', function () {
             ['type' => InsuranceTypeEnum::BERUFSUNFAEHIGKEITSVERSICHERUNG, 'changeTo' => true]
         ];
 
-        // ToDo: Vergleich Zeitsteine vor und nach Aktion
-        // ToDo: Vergleich Kompetenzen vor und nach Aktion
-        // ToDo: Vergleich Zeitsteinslots vor und nach Aktion
+        $gameUiTester = new GameUiTester($testCase, $this->players[0], 'Player 0');
 
-        new GameUiTester($testCase, $this->players[0], 'Player 0')
+        $availableZeitsteine = $gameUiTester->getAvailableZeitsteine();
+        $playersZeitsteineBeforeAction = $gameUiTester->getPlayersZeitsteine();
+        $availableCategorySlots = $gameUiTester->getAvailableCategorySlots($gameUiTester->categoryIds);
+        $usedCategorySlotsBeforeAction = $gameUiTester->getOccupiedCategorySlots($gameUiTester->categoryIds);
+        $availableKompetenzSlots = $gameUiTester->getAvailableKompetenzSlots();
+        $playersKompetenzsteineBeforeAction = $gameUiTester->getPlayersKompetenzsteine();
+
+        $gameUiTester
             ->startGame()
+            ->startTurn()
             ->checkThatSidebarActionsAreVisible(true)
             ->seeUpdatedGameboard()
+            // check that Zeitsteine are rendered correctly
+            ->assertVisibilityOfZeitsteine($playersZeitsteineBeforeAction, $availableZeitsteine)
+            // check that Zeitsteinslots are rendered correctly
+            ->assertVisibilityOfCategorySlots($availableCategorySlots, $usedCategorySlotsBeforeAction)
+            // check that Kompetenzen are rendered correctly
+            ->assertVisibilityOfKompetenzen($playersKompetenzsteineBeforeAction, $availableKompetenzSlots)
             ->openMoneySheetInsurance()
             ->seeMoneySheetInsurance()
             ->seeAnnualInsurancesCost()
@@ -205,6 +225,31 @@ describe('GameUi', function () {
             ->seeAnnualInsurancesCost()
             ->seeInsuranceChangeInEreignisprotokoll($insurancesToChange)
             ->closeMoneySheet();
+
+        $playersZeitsteineAfterAction = $gameUiTester->getPlayersZeitsteine();
+        $usedCategorySlotsAfterAction = $gameUiTester->getOccupiedCategorySlots($gameUiTester->categoryIds);
+        $playersKompetenzsteineAfterAction = $gameUiTester->getPlayersKompetenzsteine();
+
+        $gameUiTester
+            ->assertVisibilityOfZeitsteine($playersZeitsteineAfterAction, $availableZeitsteine)
+            ->assertVisibilityOfCategorySlots($availableCategorySlots, $usedCategorySlotsAfterAction)
+            ->compareUsedSlots(null, $usedCategorySlotsBeforeAction, $usedCategorySlotsAfterAction)
+            ->assertVisibilityOfKompetenzen($playersKompetenzsteineAfterAction, $availableKompetenzSlots);
+
+        Assert::assertEquals(
+            $playersZeitsteineBeforeAction,
+            $playersZeitsteineAfterAction,
+            'Amount of Zeitsteine has not changed'
+        );
+
+        foreach ($playersKompetenzsteineAfterAction as $categoryName => $amount) {
+            Assert::assertEquals(
+                $playersKompetenzsteineAfterAction[$categoryName],
+                $playersKompetenzsteineBeforeAction[$categoryName],
+                'Kompetenzsteine have not changed'
+            );
+        }
+
     });
 
     it('shows Lebensziel of current player', function () {
@@ -213,6 +258,7 @@ describe('GameUi', function () {
 
         new GameUiTester($testCase, $this->players[0], 'Player 0')
             ->startGame()
+            ->startTurn()
             ->checkThatSidebarActionsAreVisible(true)
             ->seeUpdatedGameboard()
             ->openLebenszielModal()
@@ -225,6 +271,7 @@ describe('GameUi', function () {
 
         new GameUiTester($testCase, $this->players[0], 'Player 0')
             ->startGame()
+            ->startTurn()
             ->checkThatSidebarActionsAreVisible(true)
             ->seeUpdatedGameboard()
             ->finishTurn()
@@ -233,6 +280,13 @@ describe('GameUi', function () {
             ->drawAndPlayCard(CategoryId::BILDUNG_UND_KARRIERE)
             ->finishTurn()
             ->assertDoNotSeeMessage('Du musst erst einen Zeitstein für eine Aktion ausgeben');
+
+        // check that opponent player receives a message that it is their turn
+        new GameUiTester($testCase, $this->players[1], 'Player 1')
+            ->startGame()
+            ->startTurn()
+            ->checkThatSidebarActionsAreVisible(true)
+            ->seeUpdatedGameboard();
     });
 
 });
