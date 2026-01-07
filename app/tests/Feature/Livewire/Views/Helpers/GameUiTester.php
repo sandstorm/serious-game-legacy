@@ -37,7 +37,7 @@ readonly class GameUiTester {
 
     public function __construct(private TestCase $testCase, private PlayerId $playerId, private string $playerName) {
         $this->testableGameUi = Livewire::test(GameUi::class, [
-            'gameId' => $this->testCase->gameId,
+            'gameId' => $this->testCase->getGameId(),
             'myself' => $this->playerId
         ]);
         $this->playerColorClass = PlayerState::getPlayerColorClass($this->testCase->getGameEvents(), $this->playerId);
@@ -66,7 +66,7 @@ readonly class GameUiTester {
         return $this;
     }
 
-    public function checkThatSidebarActionsAreVisible(bool $actionsAreVisible): static {
+    public function assertSidebarActionsAreVisible(bool $actionsAreVisible): static {
         if ($actionsAreVisible) {
             $this->testableGameUi
                 ->assertSeeHtml([
@@ -194,7 +194,7 @@ readonly class GameUiTester {
         return $this->testCase
             ->getKonjunkturphaseDefinition()
             ->zeitsteine
-            ->getAmountOfZeitsteineForPlayer(count($this->testCase->players));
+            ->getAmountOfZeitsteineForPlayer(count($this->testCase->getPlayers()));
     }
 
     public function getPlayersZeitsteine(): int {
@@ -213,7 +213,7 @@ readonly class GameUiTester {
      * @return array
      */
     public function getAvailableCategorySlots(array $categoryIds): array {
-        $players = $this->testCase->players;
+        $players = $this->testCase->getPlayers();
         $availableCategorySlots = [];
 
         foreach ($categoryIds as $categoryId) {
@@ -233,7 +233,7 @@ readonly class GameUiTester {
      * @return array
      */
     public function getOccupiedCategorySlots(array $categoryIds): array {
-        $players = $this->testCase->players;
+        $players = $this->testCase->getPlayers();
         $usedCategorySlots = [];
 
         foreach ($categoryIds as $categoryId) {
@@ -380,7 +380,6 @@ readonly class GameUiTester {
         $additionalModalContent = [
             '<h3>Du bist am Zug!</h3>',
             'wire:click="startSpielzug()',
-            'Ok'
         ];
         // check that modal is visible
         $this->assertSeeMandatoryModal($modalAttributes, $additionalModalContent);
@@ -549,7 +548,7 @@ readonly class GameUiTester {
     private function getPlayersJobStatus(): string {
         $playerHasJob = PlayerState::getJobForPlayer($this->testCase->getGameEvents(), $this->playerId);
         $jobStatus = $playerHasJob === null ? 'Du hast keinen Job' : 'Du hast einen Job (Ein Zeitstein ist dauerhaft gebunden)';
-        $this->testableGameUi->assertSeeHtml($jobStatus);
+        $this->testableGameUi->assertSee($jobStatus);
 
         return $jobStatus;
     }
@@ -723,11 +722,16 @@ readonly class GameUiTester {
         }
     }
 
-    public function sellStocksThatOtherPlayerIsBuying(InvestmentId $stockId): void {
+    public function sellStocksThatOtherPlayerIsBuying(InvestmentId $stockId, $amount): void {
         $lastInvestmentBoughtByAPlayer = $this->testCase->getGameEvents()->findLast(PlayerHasBoughtInvestment::class);
         $nameOfPlayerWhoBoughtInvestment = PlayerState::getNameForPlayer(
             $this->testCase->getGameEvents(),
             $lastInvestmentBoughtByAPlayer->playerId
+        );
+        $amountOfCurrentBoughtInvestmentsThatPlayerOwns = PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer(
+            $this->testCase->getGameEvents(),
+            $this->playerId,
+            $lastInvestmentBoughtByAPlayer->getInvestmentId()
         );
 
         $modalAttributes = [
@@ -742,43 +746,26 @@ readonly class GameUiTester {
         ];
         $this->assertSeeMandatoryModal($modalAttributes, $additionalModalContent);
 
-//        Todo: überprüfen, ob Player Aktien besitzt --> abhängig davon wird anderer Text gerendert (siehe unten)
-        $this->testableGameUi
-            ->assertSeeHtml(
-                "Du hast keine Anteile vom Typ $stockId->value."
-            );
+        $this->assertSeeInvestitionenSellAfterPurchaseModal($amountOfCurrentBoughtInvestmentsThatPlayerOwns, $stockId);
 
-        $this->testableGameUi
-            ->call('closeSellInvestmentsModal');
+        $this->testableGameUi->call('closeSellInvestmentsModal');
 
         $this->assertDoNotSeeMandatoryModal($additionalModalContent);
+    }
 
-// ToDo: Wenn Spieler Aktien von diesem Typ besitzt (investitionen-sell-form.blade.php)
-//
-//        <p>
-//        Du hast aktuell <strong>{{ $this->sellInvestmentsForm->amountOwned }}</strong> Anteile vom Typ
-//        <strong>{{ $this->sellInvestmentsForm->investmentId }}</strong> in deinem Besitz.
-//    </p>
-
-//        ToDo: wenn Spieler mehr als 0 Aktien von dem Typ besitzt (investitionen-sell-after-purchase-modal.blade-php)
-//        <p>
-//        Du kannst jetzt deine Anteile verkaufen.
-//        </p>
-
-        // ToDo: Wenn Spieler keine Aktien diesen Types besitzt (investitionen-sell-form.blade.php)
-//        <p>
-//        Du hast keine Anteile vom Typ {{ $this->sellInvestmentsForm->investmentId }}.
-//    </p>
-
-//        ToDo: wenn Spieler Anteile verkaufen kann (submit.blade.php + investitionen-sell-form.blade.php + investitionen-sell-after-purchase-modal.blade-php)
-//        "<button
-//    type=\"submit\"
-//    class=\"button button--type-primary $this->playerColorClass\"
-//    disabled wire:dirty.remove.attr=\"disabled\"
-//>
-//    Anteile verkaufen
-//</button>",
-
+    private function assertSeeInvestitionenSellAfterPurchaseModal($amountInvestment, $stockId): void {
+        if ($amountInvestment > 0) {
+            $this->testableGameUi->assertSeeHtml([
+                "Du kannst jetzt deine Anteile verkaufen.",
+                "Du hast aktuell <strong>$amountInvestment</strong> Anteile vom Typ",
+                "<strong>$stockId->value</strong> in deinem Besitz.",
+                "Anteile verkaufen"
+            ]);
+        } else {
+            $this->testableGameUi->assertSee(
+                "Du hast keine Anteile vom Typ $stockId->value."
+            );
+        }
     }
 
     public function doWeiterbildungWithSuccess(): static {
@@ -1016,7 +1003,7 @@ readonly class GameUiTester {
         return $this;
     }
 
-    public function seeMoneySheetInsurance(): static {
+    public function assertSeeMoneySheetInsurance(): static {
         $allInsurances = InsuranceFinder::getInstance()->getAllInsurances();
         [$insuranceNames, $insuranceCosts] = $this->getArrayForTestingVisibleValuesOnInsuranceSheet($allInsurances);
 
@@ -1054,7 +1041,7 @@ readonly class GameUiTester {
         return [$insuranceNames, $insuranceCosts];
     }
 
-    public function seeAnnualInsurancesCost(): static {
+    public function assertSeeAnnualInsurancesCost(): static {
         $allInsurances = InsuranceFinder::getInstance()->getAllInsurances();
         $lebenszielPhase = PlayerState::getCurrentLebenszielphaseIdForPlayer(
             $this->testCase->getGameEvents(),
@@ -1099,7 +1086,7 @@ readonly class GameUiTester {
         return $this;
     }
 
-    public function seeInsuranceChangeInEreignisprotokoll($insurancesToChange): static {
+    public function assertSeeInsuranceChangeInEreignisprotokoll($insurancesToChange): static {
         foreach ($insurancesToChange as $changedInsurance) {
             $insuranceValue = $changedInsurance['type']->value;
             $loggedMessage = $changedInsurance['changeTo']
@@ -1121,7 +1108,7 @@ readonly class GameUiTester {
         return $this;
     }
 
-    public function seeLebenszielModal(): static {
+    public function assertSeeLebenszielModal(): static {
         $playersGuthaben = PlayerState::getGuthabenForPlayer($this->testCase->getGameEvents(), $this->playerId)->value;
         $lebenszielDefinitionForPlayer = PlayerState::getLebenszielDefinitionForPlayer(
             $this->testCase->getGameEvents(),

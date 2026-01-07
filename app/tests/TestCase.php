@@ -62,11 +62,11 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 abstract class TestCase extends BaseTestCase
 {
     protected ForCoreGameLogic $coreGameLogic;
-    public GameId $gameId;
+    protected GameId $gameId;
     /**
      * @var PlayerId[]
      */
-    public array $players;
+    protected array $players;
 
     /**
      * @var InsuranceDefinition[]
@@ -533,6 +533,11 @@ abstract class TestCase extends BaseTestCase
     public function getPlayers(): array
     {
         return $this->players;
+    }
+
+    public function getGameId(): GameId
+    {
+        return $this->gameId;
     }
 
     public function setupInsolvenz(): void
