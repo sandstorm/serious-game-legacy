@@ -12,6 +12,10 @@
         'reverbAppKey' => config('broadcasting.connections.reverb.key'),
     ]) }}" />
 
+    <link rel="icon" type="image/svg+xml" href="{{asset('./images/legacy-favicon-dark.svg')}}">
+    <link rel="icon" type="image/svg+xml" href="{{asset('./images/legacy-favicon-light.svg')}}" media="(prefers-color-scheme: dark)">
+    <link rel="icon" type="image/svg+xml" href="{{asset('./images/legacy-favicon-dark.svg')}}" media="(prefers-color-scheme: light)">
+
     @vite(['resources/js/app.js'])
 </head>
 <body>

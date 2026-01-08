@@ -1,25 +1,39 @@
 .login {
-    max-width: 600px;
-    min-height: 100%;
+    max-width: 800px;
+    min-height: calc(100% - 50px - 2 * var(--spacing-200));
     margin: auto;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+
+    > a {
+        margin-top: var(--spacing-200);
+    }
 }
 
 .login__header {
     width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     flex-wrap: wrap;
     padding-bottom: var(--spacing-100);
 
-    border-bottom: 1px solid var(--color-grey);
+    > h1 {
+        font-size: 3.2rem;
+        line-height: 1.2;
+    }
+}
+
+.login__logo {
+    height: 7rem;
+    margin-bottom: var(--spacing-200);
 }
 
 .login__form {
     width: 100%;
+    max-width: 30rem;
     margin-top: var(--spacing-200);
     display: flex;
     gap: var(--spacing-100);
@@ -27,10 +41,24 @@
 
     .button {
         justify-content: center;
+        margin-top: 2rem;
+        height: var(--button-height--big);
+        font-size: var(--font-size-xl);
+    }
+
+    & .form-group__input {
+        height: var(--button-height--big);
+        text-align: center;
     }
 }
 
 .logout {
     display: flex;
     justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+    .login {
+        min-height: calc(100% - 2 * var(--spacing-200));
+    }
 }
