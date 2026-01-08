@@ -23,7 +23,7 @@ final readonly class Configuration
      * percent value for Lebenshaltungskosten (can be used to display)
      * @see LEBENSHALTUNGSKOSTEN_MULTIPLIER
      */
-    public final const LEBENSHALTUNGSKOSTEN_PERCENT = 35;
+    public final const float LEBENSHALTUNGSKOSTEN_PERCENT = 35;
 
     /**
      * percent value divided by 100 for easier use in calculations

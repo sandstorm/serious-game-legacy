@@ -14,9 +14,9 @@ readonly final class ModifierParameters implements \JsonSerializable
         public ?int $modifySteuernUndAbgabenPercent = null,
         public ?int $modifyKostenBildungUndKarrierePercent = null,
         public ?int $modifyKostenSozialesUndFreizeitPercent = null,
-        public ?float $modifyAdditionalLebenshaltungskostenPercentage = null,
+        public float|int|null $modifyAdditionalLebenshaltungskostenPercentage = null,
         public ?MoneyAmount $modifyLebenshaltungskostenMinValue = null,
-        public ?float $modifyLebenshaltungskostenMultiplier = null,
+        public float|int|null $modifyLebenshaltungskostenMultiplier = null,
     ) {
     }
 
