@@ -33,3 +33,9 @@ hr {
     padding-top: var(--spacing-200);
     padding-bottom: var(--spacing-200);
 }
+
+@media (max-width: 768px) {
+    .container.container--with-footer {
+        padding-bottom: var(--spacing-200);
+    }
+}

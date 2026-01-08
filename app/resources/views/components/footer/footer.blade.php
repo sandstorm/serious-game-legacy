@@ -1,9 +1,12 @@
 <footer class="game-footer">
     <div class="game-footer__content">
-        <a href="/admin">Login für Lehrpersonen</a>
-        <a href="{{route('pages.spielregeln')}}" target="_blank">Spielregeln</a>
-        <a href="{{route('pages.ueberUns')}}" target="_blank">Über uns</a>
-        <a href="{{route('pages.datenschutz')}}" target="_blank">Datenschutz</a>
-        <a href="{{route('pages.impressum')}}" target="_blank">Impressum</a>
+        <div>
+            <img src="{{asset('./images/heart.svg')}}" alt="Herz">
+            <span>developed by <a href="https://sandstorm.de/" target="_blank">sandstorm</a></span>
+        </div>
+        <a href="https://github.com/sandstorm/serious-game-legacy" target="_blank">Github</a>
+        <a href="https://www.legacy-finanzbildung.de/spielanleitung/" target="_blank">Spielregeln</a>
+        <a href="https://www.legacy-finanzbildung.de/zusatzmaterial/ " target="_blank">Datenschutz</a>
+        <a href="https://www.legacy-finanzbildung.de/sonstiges/impressum/" target="_blank">Impressum</a>
     </div>
 </footer>

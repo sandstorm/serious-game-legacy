@@ -77,6 +77,10 @@ button {
     border-color: var(--color-primary-dark);
 
     color: var(--color-primary-fg);
+
+    &:hover:not(&.button--disabled) {
+        background: var(--color-primary-semidark);
+    }
 }
 
 .button--type-secondary {
