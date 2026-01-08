@@ -57,7 +57,7 @@ readonly final class ModifierBuilder
                 new AdditionalLebenshaltungskostenKindModifier(
                     playerTurn: $playerTurn,
                     description: $description,
-                    additionalPercentage: $modifierParameters->modifyAdditionalLebenshaltungskostenPercentage ?? throw new \RuntimeException("missing parameter"),
+                    additionalPercentage: floatval($modifierParameters->modifyAdditionalLebenshaltungskostenPercentage ?? throw new \RuntimeException("missing parameter")),
                 ),
             ],
             ModifierId::LEBENSHALTUNGSKOSTEN_MIN_VALUE => [
@@ -104,7 +104,7 @@ readonly final class ModifierBuilder
                     playerTurn: $playerTurn,
                     description: $description,
                     year: $year,
-                    percentage: $modifierParameters->modifyLebenshaltungskostenMultiplier ?? throw new \RuntimeException("missing parameter"),
+                    percentage: floatval($modifierParameters->modifyLebenshaltungskostenMultiplier ?? throw new \RuntimeException("missing parameter")),
                 ),
             ],
             ModifierId::KREDITSPERRE => [
