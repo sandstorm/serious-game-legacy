@@ -6,7 +6,7 @@
     <div class="login">
         <div class="login__header">
             <img class="login__logo" src="{{asset('./images/legacy-logo.svg')}}" alt="LeGacy Logo">
-            <h1>Hallo bei LeGacy</h1>
+            <h1 class="text-align--center">Hallo bei LeGacy</h1>
             <p class="text-align--center font-size--xl">
                 LeGacy vermittelt finanzielle Bildung auf spielerische Weise. Das von der Universität Konstanz
                 entwickelte Spiel unterstützt Schülerinnen und Schüler dabei, finanzielle Entscheidungen zu verstehen
