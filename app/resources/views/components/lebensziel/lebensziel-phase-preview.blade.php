@@ -24,7 +24,7 @@
                                 :draw-empty="true" />
                         @endfor
                     </ul>
-                    <span class="font-size--sm">Bildung & Freizeit</span>
+                    <span class="font-size--sm">Bildung & Karriere</span>
                 </div>
                 <div>
                     <span class="sr-only">Benötigte Kompetenzsteine: {{ $lebenszielPhase->freizeitKompetenzSlots }}</span>
