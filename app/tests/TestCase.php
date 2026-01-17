@@ -535,6 +535,11 @@ abstract class TestCase extends BaseTestCase
         return $this->players;
     }
 
+    public function getGameId(): GameId
+    {
+        return $this->gameId;
+    }
+
     public function setupInsolvenz(): void
     {
         $initialGuthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->players[0]);
