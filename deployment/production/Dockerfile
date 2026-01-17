@@ -64,10 +64,10 @@ RUN rm -Rf /usr/local/etc/php-fpm.* && rm -Rf /etc/nginx/conf.d/*
 ADD deployment/config-files/php-fpm.conf /usr/local/etc/php-fpm.conf
 
 # performance profiling
+RUN pecl install excimer && docker-php-ext-enable excimer
 ADD /deployment/config-files/excimer.ini /usr/local/etc/php/conf.d/excimer.ini
-RUN mkdir -p /tracing/_traces/ \
-    && chown -R www-data:www-data /tracing
-ADD /deployment/config-files/auto_prepend_file.php /tracing/auto_prepend_file.php
+RUN mkdir -p /app/tracing/ && chown -R www-data:www-data /app/tracing
+ADD /deployment/config-files/auto_prepend_file.php /app/tracing/auto_prepend_file.php
 
 # nginx config
 ADD /deployment/config-files/nginx.conf /etc/nginx/
