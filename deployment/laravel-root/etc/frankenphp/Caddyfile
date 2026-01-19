@@ -1,0 +1,70 @@
+# The Caddyfile is an easy way to configure FrankenPHP and the Caddy web server.
+#
+# https://frankenphp.dev/docs/config
+# https://caddyserver.com/docs/caddyfile
+# https://github.com/php/frankenphp/blob/main/caddy/frankenphp/Caddyfile
+{
+	skip_install_trust
+
+	# debug
+
+	frankenphp {
+		# num_threads <num_threads> # Sets the number of PHP threads to start. Default: 2x the number of available CPUs.
+		#max_threads <num_threads> # Limits the number of additional PHP threads that can be started at runtime. Default: num_threads. Can be set to 'auto'.
+		#max_wait_time <duration> # Sets the maximum time a request may wait for a free PHP thread before timing out. Default: disabled.
+		#php_ini <key> <value> # Set a php.ini directive. Can be used several times to set multiple directives.
+	}
+}
+
+:8081 {
+	log
+
+	root /app/public
+	encode zstd br gzip
+
+	request_body {
+		max_size 256MB
+	}
+
+	# Block direct access to PHP files except index.php
+	@blockPhp {
+		path *.php
+		not path /index.php
+	}
+	handle @blockPhp {
+		respond 404
+	}
+
+	# Uncomment the following lines to enable Mercure and Vulcain modules
+	#mercure {
+	#	# Transport to use (default to Bolt)
+	#	transport_url {$MERCURE_TRANSPORT_URL:bolt:///data/mercure.db}
+	#	# Publisher JWT key
+	#	publisher_jwt {env.MERCURE_PUBLISHER_JWT_KEY} {env.MERCURE_PUBLISHER_JWT_ALG}
+	#	# Subscriber JWT key
+	#	subscriber_jwt {env.MERCURE_SUBSCRIBER_JWT_KEY} {env.MERCURE_SUBSCRIBER_JWT_ALG}
+	#	# Allow anonymous subscribers (double-check that it's what you want)
+	#	anonymous
+	#	# Enable the subscription API (double-check that it's what you want)
+	#	subscriptions
+	#	# Extra directives
+	#	{$MERCURE_EXTRA_DIRECTIVES}
+	#}
+	#vulcain
+
+	php_server
+
+	handle_path /_maptiles/* {
+		# Rewrite to add API key -> https://caddyserver.com/docs/caddyfile/directives/uri
+		uri query t {env.SANDSTORM_MAPS_API_KEY}
+		# strip /_maptiles/ prefix
+		uri strip_prefix /_maptiles/
+
+		reverse_proxy https://maps-api.sandstorm.de {
+			# Header forwarding
+			header_up Host {upstream_hostport}
+			header_up X-Forwarded-Host {host}
+			header_up X-Forwarded-Proto {scheme}
+		}
+	}
+}

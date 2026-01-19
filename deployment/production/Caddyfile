@@ -1,18 +1,28 @@
 legacy-project.sandstorm.dev,
 spiel.legacy-finanzbildung.de {
-    log {
-        format append {
-            wrap filter {
-                request>remote_ip ip_mask 16 32
-                request>client_ip ip_mask 16 32
+	log {
+		format append {
+			wrap filter {
+				request>remote_ip ip_mask 16 32
+				request>client_ip ip_mask 16 32
 
-                wrap json {
-                   time_key timestamp_rfc3339
-                   time_format rfc3339
-                }
-            }
-        }
-    }
+				wrap json {
+					time_key timestamp_rfc3339
+					time_format rfc3339
+				}
+			}
+		}
+	}
 
-    reverse_proxy laravel:8081
+	reverse_proxy laravel:8081 {
+		# enforce https
+		header_up X-Forwarded-Proto "https"
+
+		@error status 502
+		handle_response @error {
+			root * /etc/caddy/static
+			rewrite * /error_page.html
+			file_server
+		}
+	}
 }

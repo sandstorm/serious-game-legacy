@@ -1,0 +1,24 @@
+# DOCS: https://caretakerd.echocat.org/#configuration.structure
+
+rpc:
+  enabled: true
+
+services:
+  php:
+    type: master
+    command: ['frankenphp', 'run', '--config', '/etc/frankenphp/Caddyfile']
+  startup:
+    autoRestart: never
+    command: [ "/startup.sh" ]
+  horizon:
+    autoRestart: onFailures
+    command: [ "/usr/local/bin/php", "/app/artisan", "horizon" ]
+  pulseCheck:
+    autoRestart: onFailures
+    command: [ "/usr/local/bin/php", "/app/artisan", "pulse:check" ]
+  artisanSchedule:
+    cronExpression: "* * * * *"
+    command: [ "php", "/app/artisan", "schedule:run" ]
+  artisanReverbStart:
+    autoRestart: onFailures
+    command: [ "php", "/app/artisan", "reverb:start", "--port=8899" ]

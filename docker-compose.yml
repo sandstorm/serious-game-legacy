@@ -8,11 +8,11 @@
 
 services:
   #####
-  # Laravel (php-fpm)
+  # Laravel
   laravel:
     build:
       context: .
-      dockerfile: ./deployment/local-dev/laravel/Dockerfile
+      dockerfile: deployment/laravel.Dockerfile
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
@@ -92,7 +92,6 @@ services:
       - ${REDIS_PORT:-16379:6379}
 
 volumes:
-  neos-assets-node-modules:
   laravel-storage:
   laravel-composer-cache:
     external: true
