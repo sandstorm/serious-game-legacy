@@ -8,11 +8,12 @@
 
 services:
   #####
-  # Laravel (php-fpm)
+  # Laravel
   laravel:
     build:
       context: .
-      dockerfile: ./deployment/local-dev/laravel/Dockerfile
+      dockerfile: deployment/laravel.Dockerfile
+      target: php-dev
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:

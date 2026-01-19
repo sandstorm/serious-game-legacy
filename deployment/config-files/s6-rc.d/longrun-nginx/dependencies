@@ -1,5 +1,0 @@
-# always depend on base
-base
-
-# add additional dependencies here
-oneshot-nginx-conf
