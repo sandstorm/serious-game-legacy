@@ -19,7 +19,7 @@ deploy_ingress:
     # docker-compose up, followed by caddy reload (in case only Caddyfile changed)
     - ssh -p 29418 deploy@your-domain.de "export HOSTNAME &&
         cd ingress-caddy-proxy &&
-        mv docker-compose-prod.yml docker-compose.yml &&
+        mv compose.yml docker-compose.yml &&
         docker-compose build && docker-compose up -d &&
         docker-compose exec -T -w /etc/caddy caddy-ingress caddy reload
       "

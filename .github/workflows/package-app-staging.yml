@@ -132,7 +132,8 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: deployment/staging/Dockerfile
+          file: deployment/laravel.Dockerfile
+          target: php-prod
           push: true
           tags: ${{ vars.CI_REGISTRY_IMAGE || format('ghcr.io/{0}', github.repository) }}/laravel:${{ steps.get-ref-slug.outputs.REF_SLUG }}
 

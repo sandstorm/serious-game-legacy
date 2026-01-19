@@ -126,7 +126,8 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: deployment/production/Dockerfile
+          file: deployment/laravel.Dockerfile
+          target: php-prod
           push: true
           tags: ${{ vars.CI_REGISTRY_IMAGE || format('ghcr.io/{0}', github.repository) }}/laravel:${{ github.ref_name }}
 
@@ -164,7 +165,7 @@ jobs:
           ssh ${{ vars.PROD_SERVER_DOMAIN }} echo ssh connection working!
 
           echo "Finished ssh setup, going to deploy to production now!"
-          scp deployment/production/docker-compose.yml ${{ vars.PROD_SERVER_DOMAIN }}:deployments/serious-game/
+          scp deployment/production/compose.yml ${{ vars.PROD_SERVER_DOMAIN }}:deployments/serious-game/
           scp deployment/production/Caddyfile ${{ vars.PROD_SERVER_DOMAIN }}:deployments/serious-game/caddy_files
 
           echo "copied all files to prod server, applying changes now!"
