@@ -11,7 +11,6 @@ Entwickelt als Open Source von Sandstorm Media GmbH.
 * [Serious Game Legacy + Moonshot von Uni Konstanz](#serious-game-legacy--moonshot-von-uni-konstanz)
 * [Initial Setup (required once)](#initial-setup-required-once)
   * [Requirements](#requirements)
-  * [Install Dependencies](#install-dependencies)
   * [Setting up IntelliJ](#setting-up-intellij)
   * [Generate Helper Code](#generate-helper-code)
   * [Starting the Development Environment](#starting-the-development-environment)
@@ -44,12 +43,7 @@ Entwickelt als Open Source von Sandstorm Media GmbH.
 ## Requirements
 
 - docker for mac
-- Node.js / NPM
-
-## Install Dependencies
-
-- run `./dev.sh setup` to install the Dev Script Runner and other dependencies. You can now use `dev <some-taks>` from anywhere
-  inside the project.
+- [mise](https://mise.jdx.dev/getting-started.html)
 
 ## Setting up IntelliJ
 
@@ -81,14 +75,14 @@ This will generate (invisible) code which helps with autocompletion on Model pro
 git submodule init
 git submodule update
 
-dev setup
+mise setup
 
 # start everything
-dev start
+mise start
 
 # start JS/CSS watcher
 # may need to run `nvm use` inside /app 
-dev watch-js
+mise watch-js
 
 # now, access the frontend at http://127.0.0.1:8090
 # now, access the filament backend at http://127.0.0.1:8090/admin
@@ -96,19 +90,18 @@ dev watch-js
 
 # Local Development
 
-- run `dev start` to start all needed container of the project (see `docker-compose.yml` for details)
-- run `dev ps` to see if all containers start up correctly.
-- run `dev logs` to see the logs of all containers.
-- run `dev` to see all available development tasks
-- run `dev <sometaks> --help` to get detailed help for a task
-- run `dev open-site`
+- run `mise start` to start all needed container of the project (see `docker-compose.yml` for details)
+- run `mise ps` to see if all containers start up correctly.
+- run `mise logs` to see the logs of all containers.
+- run `mise tasks` to see the all available tasks.
+- run `mise open-site`
   - Frontend: http://127.0.0.1:8090/
   - Admin UI: http://127.0.0.1:8090/admin 
 - Have fun ;)
 
 ## Testing
 
-Run `dev pest` to run all unit tests.
+Run `mise pest` to run all unit tests.
 
 We use [Pest](https://pestphp.com/) as testing framework, which builds upon
 PHPUnit and looks as if it provides quite some nice benefits on top,
@@ -119,10 +112,10 @@ might be useful as well.
 
 ```bash
 # run the tests
-dev pest
+mise pest
 
 # run the tests - watching if something changes
-dev pest --watch
+mise pest --watch
 ```
 
 **Tests in IntelliJ IDEA**
@@ -144,7 +137,7 @@ You can run Pest tests directly in IntelliJ IDEA. This is configured by default.
 > - As extra env, add `DB_DATABASE=laravel_testing` so that the testing DB is used.
 > - on the top right, choose *Store as project file*
 
-Now, to run tests from your IDE, make sure the server is started via `dev start`; then press "play" on the gutter of a
+Now, to run tests from your IDE, make sure the server is started via `mise start`; then press "play" on the gutter of a
 PEST Test.
 
 **Tests are executed in CI.**
@@ -165,7 +158,7 @@ USAGE:
 
 ```bash
 # NOTE: we have a TEAM LICENSE for all of sandstorm - so feel free to use --watch // --pro web UI (all configured for it).
-dev phpstan --pro
+mise phpstan --pro
 ```
 
 We use PHPStan with a few addons:
@@ -204,10 +197,10 @@ PHP code style fixer for minimalists", which formats our code according to PSR-1
 
 ```bash
 # dry run - which files would change?
-dev pint --test
+mise pint --test
 
 # pretty-print the files
-dev pint
+mise pint
 ```
 
 We do NOT run Pint in CI; as this seems overly nitpicky.
@@ -253,7 +246,7 @@ via a `X-Request-Id` HTTP header to the client. This is implemented in the middl
 
 ## Staging
 
-run `dev open-staging` to open the staging url in the browser.
+run `mise open-staging` to open the staging url in the browser.
 
 Before you can use staging, you need to add a new namespace in rancher. 
 The namespace should be named like the project, e.g. `myvendor-awesomeneosproject-staging`.
@@ -279,21 +272,6 @@ kubectl create secret generic laravel-encryption-key --from-literal=APP_KEY=$ENC
 ## Production Setup
 
 TODO 
-
-### Error Page During Deployment
-
-During deployment, i.e. when the ingress-caddy-proxy is up and running, but the application is not responding,
-the `application-unavailable.html` page is shown. Its contents can be adjusted by modifying
-`app/resources/views/mail/application-unavailable.blade.php`, and then running:
-
-```bash
-# updates the application-unavailable.html page.
-./dev.sh render-application-unavailable
-
-# now, COMMIT AND DEPLOY!
-```
-
-The resulting page must be committed and deployed. This error page shows for 502 only.
 
 ### Important URLs
 
