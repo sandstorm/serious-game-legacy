@@ -1,0 +1,175 @@
+# MISE is an environment manager, used to install tools and software versions, as well as helpers..
+#
+# INITIAL SETUP
+# echo 'eval "$(mise activate zsh --shims)"' >> ~/.zprofile # this sets up non-interactive sessions
+# echo 'eval "$(mise activate zsh)"' >> ~/.zshrc    # this sets up interactive sessions
+#
+# mise trust # (trust the mise file in this folder)
+# mise i (mise install) -> like "composer install/update" install the tool versions specified here
+#
+# Diagnosis:
+# mise doctor -> check last line "No problems found"
+# mise cfg -> which config files are read
+#
+# Important commands:
+# mise use [package] - like "composer require [package]"
+# mise use -g [package] - global install (for the user)
+# mise unuse || mise rm [package] - like "composer remove [package]"
+# mise up --bump "to upgrade all software to the latest version and update mise.toml"
+
+[tools]
+"github:sandstorm/synco" = "latest"
+node = "24"
+# static-compiled PHP does not work in Flow, because of missing PHP_BIN set; so we cannot find the php CLI. BUT for composer it is enough
+"ubi:adwinying/php" = "8.4"
+"github:composer/composer" = { version = "latest", asset_pattern = "*.phar", bin = "composer" }
+yq = "latest"
+
+[tasks]
+# Short, single-command tasks migrated from dev.sh
+
+######################## Useful Docker Aliases ########################
+
+[tasks.nuke]
+description = "Remove all containers, images and volumes for this compose project"
+run = """
+source "$MISE_PROJECT_ROOT/.mise/tasks/_colors.sh"
+
+echo -e "${GREEN}Nuking docker containers, images and volumes...${RESET}"
+docker compose down --rmi all --volumes --remove-orphans
+"""
+
+[tasks.start]
+description = "Build and start all containers in detached mode"
+depends = ['build']
+run = '''
+  mise build-js
+  mise build
+  # create external volume "yarn-cache" and "neos-composer-cache" if not existing
+  # wont be removed on down and volume removal
+  docker volume create --name yarn-cache
+  docker volume create --name laravel-composer-cache
+  docker compose up -d
+'''
+
+[tasks.stop]
+description = "Stop containers (optionally pass service names)"
+run = "docker compose stop $@"
+
+[tasks.down]
+description = "Stop and remove containers, networks, volumes and orphans"
+run = "docker compose down -v --remove-orphans"
+
+[tasks.enter]
+usage = '''
+arg "<container>" default="laravel" {
+  choices "laravel" "maria-db" "imagor" "mailpit"
+}
+'''
+run = "docker compose exec ${usage_container} /bin/bash"
+
+
+######################### Enter Containers #########################
+
+# Enter neos container via bash
+[tasks.enter-laravel]
+run = "docker compose exec laravel /bin/bash"
+
+# Enter db container via bash
+[tasks.enter-db]
+run = "docker compose exec maria-db /bin/bash"
+
+# Enter node container via bash
+[tasks.enter-assets]
+run = "docker compose exec laravel-assets /bin/bash"
+
+
+######################## Frontend functions ########################
+
+[tasks.watch-js]
+run = '''
+  cd app
+  npm install
+  npm run dev
+'''
+
+[tasks.build]
+run = "docker compose build"
+
+[tasks.build-js]
+run = '''
+  cd app
+  npm install
+  npm run build
+'''
+
+######################## Testing ########################
+
+[tasks.php-stan]
+run = '''
+    docker run -v "$(pwd)":/app composer:2 bash -c \
+    'cd /app && composer install --ignore-platform-reqs  && ./bin/phpstan analyse --memory-limit 1G'
+'''
+
+[tasks.php-stan-json]
+run = '''
+    cd app
+    docker run -v "$(pwd)":/app composer:2 bash -c \
+    'cd /app && composer install --ignore-platform-reqs  && ./bin/phpstan analyse --error-format=prettyJson --memory-limit 1G'
+'''
+
+######################### Open Urls in Browser / UIs #########################
+
+# Open site and site/neos in browser
+[tasks.open-site ]
+run = 'open http://127.0.0.1:8090'
+
+# Open local db with your default UI
+[tasks.open-local-db ]
+run = 'open "mysql://laravel:laravel@localhost:13306/laravel"'
+
+######################### Logs #########################
+
+# All logs
+[tasks.logs]
+run = 'docker compose logs -f "$@"'
+
+# DB logs
+[tasks.logs-db]
+run = "docker compose logs -f maria-db"
+
+# Larvel logs
+[tasks.logs-laravel]
+run = "docker compose exec -it laravel /bin/bash -c 'tail -f  /app/storage/logs/laravel-*.log'"
+
+# SCSS/Js compiler logs
+[tasks.logs-assets]
+run = "docker compose logs -f neos-assets"
+
+[tasks.ps]
+run = "docker compose ps --all"
+
+
+######################### Laravel / Filament Specifics #########################
+
+[tasks.setup-laravel-autocomplete]
+run = '''
+docker compose exec laravel ./artisan  ide-helper:models --filename _ide_helper_models.php  -n
+docker compose exec laravel ./artisan  ide-helper:generate
+docker compose exec laravel ./artisan  ide-helper:meta
+'''
+
+# run Laravel Pint Code Style fixer
+[tasks.pint]
+run = "docker compose exec laravel /app/vendor/bin/pint --config /app/.pint.json $@"
+
+# run PHPSTAN
+[tasks.phpstan]
+run = "docker compose exec laravel /app/vendor/bin/phpstan $@"
+
+# run Pest (Unit Testing)
+[tasks.pest]
+run = "docker compose exec -e DB_DATABASE=laravel_testing -it laravel /app/vendor/bin/pest $@"
+
+[tasks.artisan]
+run = "docker compose exec laravel /app/artisan $@"
