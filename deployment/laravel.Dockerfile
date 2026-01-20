@@ -128,7 +128,7 @@ FROM    php-base AS php-prod
 ADD ./app /app
 RUN --mount=type=cache,target=/root/.composer composer install --working-dir /app/ --no-interaction --optimize-autoloader --no-dev
 
-ENV SHELL_ENV_DISPLAY=production-serious-game
+ENV SHELL_ENV_DISPLAY=production
 ADD deployment/laravel-root/etc/bash.colorprompt.sh /etc/bash.colorprompt.sh
 RUN echo '. /etc/bash.colorprompt.sh' >>  /etc/bash.bashrc
 
