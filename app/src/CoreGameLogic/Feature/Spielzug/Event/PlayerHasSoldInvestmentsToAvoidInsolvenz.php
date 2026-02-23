@@ -28,8 +28,7 @@ class PlayerHasSoldInvestmentsToAvoidInsolvenz implements GameEventInterface, Pr
         protected MoneyAmount  $price,
         protected int          $amount,
         protected ResourceChanges $resourceChanges,
-    )
-    {
+    ) {
     }
 
     public static function fromArray(array $values): GameEventInterface

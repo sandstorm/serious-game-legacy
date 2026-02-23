@@ -29,8 +29,8 @@ final readonly class CardsWereShuffled implements GameEventInterface
 
     public function jsonSerialize(): array
     {
-         return [
-            'piles' => array_map(fn(Pile $pile) => $pile->jsonSerialize(), $this->piles),
-         ];
+        return [
+           'piles' => array_map(fn (Pile $pile) => $pile->jsonSerialize(), $this->piles),
+        ];
     }
 }

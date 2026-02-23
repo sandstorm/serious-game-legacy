@@ -19,7 +19,8 @@ class MoneySheetIncome extends Component
         public MoneySheetDto $moneySheet,
         public PlayerId $playerId,
         public GameEvents $gameEvents,
-    ) {}
+    ) {
+    }
 
     /**
      * Get the view / contents that represent the component.

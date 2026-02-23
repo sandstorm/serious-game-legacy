@@ -16,7 +16,6 @@ final readonly class StartKonjunkturphaseForPlayer implements CommandInterface
 
     private function __construct(
         public PlayerId $playerId,
-    )
-    {
+    ) {
     }
 }

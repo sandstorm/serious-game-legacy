@@ -48,4 +48,3 @@ describe('canPlayerActivateCard', function () {
             ->and($actionsCalculatorUnderTest->canPlayerAffordAction($this->players[0], $costOfAction2))->toBeFalse();
     });
 });
-

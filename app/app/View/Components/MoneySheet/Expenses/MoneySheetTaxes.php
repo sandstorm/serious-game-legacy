@@ -15,7 +15,8 @@ class MoneySheetTaxes extends Component
      */
     public function __construct(
         public MoneySheetDto $moneySheet
-    ) {}
+    ) {
+    }
 
     /**
      * Get the view / contents that represent the component.

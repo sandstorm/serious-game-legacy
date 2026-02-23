@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
@@ -17,7 +18,6 @@ use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\ValueObject\AnswerId;
 use RuntimeException;
-
 
 class SubmitAnswerForWeiterbildungAktion extends Aktion
 {
@@ -40,7 +40,9 @@ class SubmitAnswerForWeiterbildungAktion extends Aktion
     {
         $result = $this->validate($playerId, $gameEvents);
         if (!$result->canExecute) {
-            throw new RuntimeException('Cannot submit weiterbildung: ' . $result->reason, 1753265973
+            throw new RuntimeException(
+                'Cannot submit weiterbildung: ' . $result->reason,
+                1753265973
             );
         }
 
@@ -60,4 +62,3 @@ class SubmitAnswerForWeiterbildungAktion extends Aktion
         );
     }
 }
-

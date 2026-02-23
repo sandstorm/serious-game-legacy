@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Command;
@@ -12,7 +13,7 @@ final readonly class SubmitAnswerForWeiterbildung implements CommandInterface
     public static function create(
         PlayerId $playerId,
         AnswerId $selectedAnswer,
-    ):SubmitAnswerForWeiterbildung {
+    ): SubmitAnswerForWeiterbildung {
         return new SubmitAnswerForWeiterbildung($playerId, $selectedAnswer);
     }
 

@@ -96,7 +96,7 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
              * prerequisite we want to avoid running into an error and assume that HAS_JOB should be checked.
              * The same is true for BERUFSUNFAEHIGKEITSVERSICHERUNG
              */
-            $modifierIdsAsString = array_map(fn ($modifierId) => $modifierId->value ,$cardDefinition->getModifierIds());
+            $modifierIdsAsString = array_map(fn ($modifierId) => $modifierId->value, $cardDefinition->getModifierIds());
             if (in_array(ModifierId::JOBVERLUST->value, $modifierIdsAsString, true)
                 || in_array(ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG->value, $modifierIdsAsString, true)) {
                 $hasPlayerAllPrerequisites = EreignisPrerequisiteChecker::forStream($gameEvents)
@@ -106,8 +106,10 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
         });
 
         if (count($filteredCards) === 0) {
-            throw new \RuntimeException("No EreignisCard matches the current requirements",
-                1753874959); // We should always have cards
+            throw new \RuntimeException(
+                "No EreignisCard matches the current requirements",
+                1753874959
+            ); // We should always have cards
         }
 
         $filteredAndIncreasedCards = $this->increaseAmountOfCardsMatchingGewichtung($filteredCards);
@@ -122,7 +124,7 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
     ): ResourceChanges {
         $resourceChanges = $ereignisCardDefinition->getResourceChanges();
 
-        $modifierIdsAsString = array_map(fn($id) => $id->value, $ereignisCardDefinition->getModifierIds());
+        $modifierIdsAsString = array_map(fn ($id) => $id->value, $ereignisCardDefinition->getModifierIds());
         // Check if Ereignis is insurable and player has the specific insurance -> if so: modify guthabenChange
         if (
             in_array(ModifierId::PRIVATE_UNFALLVERSICHERUNG->value, $modifierIdsAsString, true)
@@ -148,11 +150,13 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
         EreignisCardDefinition $ereignisCardDefinition
     ): GameEventsToPersist {
         $additionalEvents = GameEventsToPersist::empty();
-        $modifierIdsAsString = array_map(fn($id) => $id->value, $ereignisCardDefinition->getModifierIds());
+        $modifierIdsAsString = array_map(fn ($id) => $id->value, $ereignisCardDefinition->getModifierIds());
         if (in_array(ModifierId::JOBVERLUST->value, $modifierIdsAsString, true) ||
             in_array(ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG->value, $modifierIdsAsString, true)) {
-            $additionalEvents = new SpielzugCommandHandler()->handle(QuitJob::create($command->playerId),
-                $gameEvents);
+            $additionalEvents = new SpielzugCommandHandler()->handle(
+                QuitJob::create($command->playerId),
+                $gameEvents
+            );
         }
 
         if (in_array(ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG->value, $modifierIdsAsString, true)
@@ -179,8 +183,8 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
             $abgaben = new MoneyAmount($ereignisCardDefinition->getResourceChanges()->guthabenChange->value / 2);
             $additionalEvents = $additionalEvents
                 ->withAppendedEvents(new EreignisProfitWasReducedBecauseOfInsolvenz(
-                   playerId: $command->playerId,
-                   resourceChanges: new ResourceChanges()->setGuthabenChange($abgaben->negate()),
+                    playerId: $command->playerId,
+                    resourceChanges: new ResourceChanges()->setGuthabenChange($abgaben->negate()),
                 ));
         }
 
@@ -193,8 +197,11 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
             return GameEventsToPersist::empty();
         }
         $ereignisDefinition = $this->getRandomEreignisForCategory($gameEvents, $command);
-        $resourceChanges = $this->getGuthabenChangesBasedOnPlayersInsurances($gameEvents, $command,
-            $ereignisDefinition);
+        $resourceChanges = $this->getGuthabenChangesBasedOnPlayersInsurances(
+            $gameEvents,
+            $command,
+            $ereignisDefinition
+        );
 
         return GameEventsToPersist::with(
             new EreignisWasTriggered(
@@ -215,7 +222,7 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
      */
     private function increaseAmountOfCardsMatchingGewichtung(array $filteredCards): array
     {
-        $cardsWithGewichtung = array_filter($filteredCards, fn($card) => $card->getGewichtung() !== 1);
+        $cardsWithGewichtung = array_filter($filteredCards, fn ($card) => $card->getGewichtung() !== 1);
         foreach ($cardsWithGewichtung as $card) {
             for ($gewichtung = $card->getGewichtung(); $gewichtung > 1; $gewichtung--) {
                 $filteredCards[] = $card;

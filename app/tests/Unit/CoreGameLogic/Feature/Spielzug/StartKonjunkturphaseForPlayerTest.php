@@ -1,11 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 
 use App\Livewire\Forms\TakeOutALoanForm;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
-use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
@@ -49,8 +49,11 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
         /** @var TestCase $this */
         $this->coreGameLogic->handle($this->gameId, StartKonjunkturPhaseForPlayer::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, StartKonjunkturPhaseForPlayer::create($this->players[0]));
-    })->throws(RuntimeException::class,
-        'Cannot start Konjunkturphase: Du hast diese Konjunkturphase bereits gestartet', 1751373528);
+    })->throws(
+        RuntimeException::class,
+        'Cannot start Konjunkturphase: Du hast diese Konjunkturphase bereits gestartet',
+        1751373528
+    );
 
     it('works after a new Konjunkturphase has started', function () {
         /** @var TestCase $this */
@@ -78,33 +81,47 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
 
         $this->coreGameLogic->handle($this->gameId, StartKonjunkturPhaseForPlayer::create($this->players[1]));
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents,
-            $this->players[0]))->toBeFalse()
-            ->and(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents,
-                $this->players[1]))->toBeTrue();
+        expect(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase(
+            $gameEvents,
+            $this->players[0]
+        ))->toBeFalse()
+            ->and(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase(
+                $gameEvents,
+                $this->players[1]
+            ))->toBeTrue();
 
         $this->coreGameLogic->handle($this->gameId, StartKonjunkturPhaseForPlayer::create($this->players[0]));
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents, $this->players[0]))->toBeTrue()
-            ->and(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents,
-                $this->players[1]))->toBeTrue();
+            ->and(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase(
+                $gameEvents,
+                $this->players[1]
+            ))->toBeTrue();
 
-        $this->coreGameLogic->handle($this->gameId,
-            ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
+        );
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
 
-        $this->coreGameLogic->handle($this->gameId,
-            ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE)
+        );
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
 
         $this->coreGameLogic->handle($this->gameId, ChangeKonjunkturphase::create());
 
         $this->coreGameLogic->handle($this->gameId, StartKonjunkturPhaseForPlayer::create($this->players[1]));
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents,
-            $this->players[0]))->toBeFalse()
-            ->and(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents,
-                $this->players[1]))->toBeTrue();
+        expect(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase(
+            $gameEvents,
+            $this->players[0]
+        ))->toBeFalse()
+            ->and(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase(
+                $gameEvents,
+                $this->players[1]
+            ))->toBeTrue();
     });
 
     it('applies conditional ResourceChanges correctly', function () {

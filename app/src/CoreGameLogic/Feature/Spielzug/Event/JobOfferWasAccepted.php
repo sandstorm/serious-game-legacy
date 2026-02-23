@@ -61,7 +61,7 @@ final readonly class JobOfferWasAccepted implements GameEventInterface, Provides
 
     public function getModifiers(?PlayerId $playerId = null): ModifierCollection
     {
-        if (!$this->playerId->equals($playerId)){
+        if (!$this->playerId->equals($playerId)) {
             return new ModifierCollection([]);
         }
 

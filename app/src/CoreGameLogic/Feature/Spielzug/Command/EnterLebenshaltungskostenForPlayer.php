@@ -18,7 +18,6 @@ final readonly class EnterLebenshaltungskostenForPlayer implements CommandInterf
     private function __construct(
         public PlayerId    $playerId,
         public MoneyAmount $input,
-    )
-    {
+    ) {
     }
 }

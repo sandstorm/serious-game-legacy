@@ -26,7 +26,8 @@ class Categories extends Component
     public function __construct(
         public GameEvents $gameEvents,
         public PlayerId $playerId,
-    ) {}
+    ) {
+    }
 
     /**
      * Get the view / contents that represent the component.
@@ -82,7 +83,7 @@ class Categories extends Component
 
             $ariaLabelsForPlayers[] = PlayerState::getNameForPlayer($this->gameEvents, $player) . ': ' . $amountOfZeitsteinePlayerPlaced;
 
-            for($i = 0; $i < $amountOfZeitsteinePlayerPlaced; $i++) {
+            for ($i = 0; $i < $amountOfZeitsteinePlayerPlaced; $i++) {
                 $zeitsteine[] = new ZeitsteinWithColor(
                     drawEmpty: false,
                     colorClass: PlayerState::getPlayerColorClass($this->gameEvents, $player),

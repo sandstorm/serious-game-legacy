@@ -8,10 +8,8 @@ use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\Behavior\DrawsCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\LogEntry;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\Loggable;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ZeitsteinAktion;
-use Domain\CoreGameLogic\Feature\Spielzug\Modifier\ModifierCollection;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
@@ -28,7 +26,8 @@ final readonly class CardWasActivated implements ZeitsteinAktion, ProvidesResour
         public CardId          $cardId,
         public ResourceChanges $resourceChanges,
         public int             $numberOfZeitsteinslotsUsed,
-    ) {}
+    ) {
+    }
 
     public function getResourceChanges(PlayerId $playerId): ResourceChanges
     {

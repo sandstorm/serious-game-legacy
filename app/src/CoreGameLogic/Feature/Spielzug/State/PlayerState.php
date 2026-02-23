@@ -80,7 +80,7 @@ class PlayerState
     public static function getResourcesForPlayer(GameEvents $gameEvents, PlayerId $playerId): ResourceChanges
     {
         $accumulatedResources = $gameEvents->findAllOfType(ProvidesResourceChanges::class)
-            ->reduce(fn(
+            ->reduce(fn (
                 ResourceChanges $accumulator,
                 ProvidesResourceChanges $event
             ) => $accumulator->accumulate($event->getResourceChanges($playerId)), new ResourceChanges());
@@ -105,7 +105,7 @@ class PlayerState
             throw new RuntimeException('Player ' . $playerId . ' does not exist', 1748432811);
         }
         $accumulatedResourceChangesForPlayer = $gameEvents->findAllAfterLastOfType(KonjunkturphaseWasChanged::class)->findAllOfType(ProvidesResourceChanges::class)
-            ->reduce(fn(
+            ->reduce(fn (
                 ResourceChanges $accumulator,
                 ProvidesResourceChanges $event
             ) => $accumulator->accumulate($event->getResourceChanges($playerId)), new ResourceChanges());
@@ -125,7 +125,7 @@ class PlayerState
     {
         // TODO: wenig Typisierung hier -> gibt alles plain values etc zurück.
         $accumulatedResourceChangesForPlayer = $stream->findAllOfType(ProvidesResourceChanges::class)
-            ->reduce(fn(
+            ->reduce(fn (
                 ResourceChanges $accumulator,
                 ProvidesResourceChanges $event
             ) => $accumulator->accumulate($event->getResourceChanges($playerId)), new ResourceChanges());
@@ -171,7 +171,7 @@ class PlayerState
         CategoryId $category
     ): int {
         $zeitsteinAktionenForPlayerAndBildung = $stream->findAllAfterLastOfType(KonjunkturphaseWasChanged::class)->findAllOfType(ZeitsteinAktion::class)
-            ->filter(fn(
+            ->filter(fn (
                 ZeitsteinAktion $event
             ) => $event->getCategoryId() === $category && $event->getPlayerId()->equals($playerId));
 
@@ -195,7 +195,7 @@ class PlayerState
     {
         // Find all events AFTER the player accepted the last job (returns null, if player never accepted a job)
         $eventsAfterJobWasAccepted = $gameEvents->findAllAfterLastOrNullWhere(
-            fn($event) => $event instanceof JobOfferWasAccepted && $event->playerId->equals($playerId)
+            fn ($event) => $event instanceof JobOfferWasAccepted && $event->playerId->equals($playerId)
         );
 
         // player never accepted a job
@@ -203,7 +203,7 @@ class PlayerState
             return null;
         }
 
-        $jobWasQuitEvent = $eventsAfterJobWasAccepted->findLastOrNullWhere(fn(
+        $jobWasQuitEvent = $eventsAfterJobWasAccepted->findLastOrNullWhere(fn (
             $event
         ) => $event instanceof JobWasQuit && $event->playerId->equals($playerId));
 
@@ -213,7 +213,7 @@ class PlayerState
         }
 
         /** @var  JobOfferWasAccepted $jobOfferWasAcceptedEvent */
-        $jobOfferWasAcceptedEvent = $gameEvents->findLastOrNullWhere(fn(
+        $jobOfferWasAcceptedEvent = $gameEvents->findLastOrNullWhere(fn (
             $event
         ) => $event instanceof JobOfferWasAccepted && $event->playerId->equals($playerId));
         // Otherwise, return the active job definition
@@ -233,7 +233,7 @@ class PlayerState
     public static function getLastMinijobForPlayer(GameEvents $stream, PlayerId $playerId): ?MinijobCardDefinition
     {
         /** @var MinijobWasDone|null $minijobWasDoneEvent */
-        $minijobWasDoneEvent = $stream->findLastOrNullWhere(fn(
+        $minijobWasDoneEvent = $stream->findLastOrNullWhere(fn (
             $e
         ) => $e instanceof MinijobWasDone && $e->playerId->equals($playerId));
         if ($minijobWasDoneEvent === null) {
@@ -280,7 +280,7 @@ class PlayerState
 
         /** @var WeiterbildungWasStarted|null $weiterbildungEvent */
         $weiterbildungEvent = $eventsThisTurn->findLastOrNullWhere(
-            fn($e) => $e instanceof WeiterbildungWasStarted && $e->playerId->equals($playerId)
+            fn ($e) => $e instanceof WeiterbildungWasStarted && $e->playerId->equals($playerId)
         );
         return $weiterbildungEvent;
     }
@@ -299,7 +299,7 @@ class PlayerState
 
         /** @var AnswerForWeiterbildungWasSubmitted|null $submittedAnswerEvent */
         $submittedAnswerEvent = $eventsThisTurn->findLastOrNullWhere(
-            fn($e) => $e instanceof AnswerForWeiterbildungWasSubmitted
+            fn ($e) => $e instanceof AnswerForWeiterbildungWasSubmitted
                 && $e->playerId->equals($playerId)
         );
         return $submittedAnswerEvent;
@@ -328,7 +328,7 @@ class PlayerState
     {
         /** @var BerufsunfaehigkeitsversicherungWasActivated|null $berufsunfaehigkeitsversicherungWasActivatedOrNull */
         $berufsunfaehigkeitsversicherungWasActivatedOrNull = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof BerufsunfaehigkeitsversicherungWasActivated
+            fn ($event) => $event instanceof BerufsunfaehigkeitsversicherungWasActivated
                 && $event->playerId->equals($playerId)
         );
 
@@ -350,7 +350,7 @@ class PlayerState
     public static function getCurrentTurnForPlayer(GameEvents $gameEvents, PlayerId $playerId): PlayerTurn
     {
         $spielzugWasEndedEvents = $gameEvents->findAllOfType(SpielzugWasEnded::class)
-            ->filter(fn(SpielzugWasEnded $event) => $event->playerId->equals($playerId));
+            ->filter(fn (SpielzugWasEnded $event) => $event->playerId->equals($playerId));
         if ($spielzugWasEndedEvents === null) {
             return new PlayerTurn(1);
         }
@@ -370,7 +370,7 @@ class PlayerState
     ): int {
         $accumulatedInvestmentAmountChangesForPlayer = $stream->findAllOfType(ProvidesInvestmentAmountChanges::class)
             ->reduce(
-                fn(
+                fn (
                     InvestmentAmountChanges         $accumulator,
                     ProvidesInvestmentAmountChanges $event
                 ) => $accumulator->accumulate($event->getInvestmentAmountChanges($playerId, $investmentId)),
@@ -420,7 +420,7 @@ class PlayerState
         PlayerId $playerId
     ): LebenszielPhaseId {
         /** @var LebenszielphaseWasChanged|null $lastLebenszielWasChangedEvent */
-        $lastLebenszielWasChangedEvent = $gameEvents->findLastOrNullWhere(fn(
+        $lastLebenszielWasChangedEvent = $gameEvents->findLastOrNullWhere(fn (
             $event
         ) => $event instanceof LebenszielphaseWasChanged && $event->playerId->equals($playerId));
         if ($lastLebenszielWasChangedEvent === null) { // We know we are in Lebenszielphase 1
@@ -437,7 +437,7 @@ class PlayerState
         $lebenszielDefinition = self::getLebenszielDefinitionForPlayer($gameEvents, $playerId);
 
         /** @var LebenszielphaseWasChanged|null $lastLebenszielWasChangedEvent */
-        $lastLebenszielWasChangedEvent = $gameEvents->findLastOrNullWhere(fn(
+        $lastLebenszielWasChangedEvent = $gameEvents->findLastOrNullWhere(fn (
             $event
         ) => $event instanceof LebenszielphaseWasChanged && $event->playerId->equals($playerId));
         if ($lastLebenszielWasChangedEvent === null) { // We know we are in Lebenszielphase 1
@@ -469,7 +469,7 @@ class PlayerState
     public static function getNameForPlayerOrNull(GameEvents $gameEvents, PlayerId $playerId): ?string
     {
         // @phpstan-ignore property.notFound
-        return $gameEvents->findLastOrNullWhere(fn(
+        return $gameEvents->findLastOrNullWhere(fn (
             $e
         ) => $e instanceof NameForPlayerWasSet && $e->playerId->equals($playerId))?->name;
     }
@@ -501,7 +501,7 @@ class PlayerState
         PlayerId $playerId
     ): ?LebenszielDefinition {
         // @phpstan-ignore property.notFound
-        return $gameEvents->findLastOrNullWhere(fn(
+        return $gameEvents->findLastOrNullWhere(fn (
             $e
         ) => $e instanceof LebenszielWasSelected && $e->playerId->equals($playerId))?->lebenszielDefinition;
     }
@@ -529,9 +529,11 @@ class PlayerState
             ?? $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
 
         // Check if the player has sold investments this turn or decided not to sell investments this turn.
-        $investmentsWereSold = $eventsThisTurn->findLastOrNullWhere(fn($event
+        $investmentsWereSold = $eventsThisTurn->findLastOrNullWhere(fn (
+            $event
         ) => $event instanceof PlayerHasSoldInvestmentsAfterInvestmentByAnotherPlayer && $event->playerId->equals($playerId));
-        $investmentsWereNotSold = $eventsThisTurn->findLastOrNullWhere(fn($event
+        $investmentsWereNotSold = $eventsThisTurn->findLastOrNullWhere(fn (
+            $event
         ) => $event instanceof PlayerHasNotSoldInvestments && $event->playerId->equals($playerId));
 
         return $investmentsWereSold !== null || $investmentsWereNotSold !== null;
@@ -544,7 +546,7 @@ class PlayerState
      */
     public static function hasChild(GameEvents $gameEvents, PlayerId $playerId): bool
     {
-        return $gameEvents->findLastOrNullWhere(fn($event) => $event instanceof PlayerGotAChild && $playerId->equals($event->playerId)) !== null;
+        return $gameEvents->findLastOrNullWhere(fn ($event) => $event instanceof PlayerGotAChild && $playerId->equals($event->playerId)) !== null;
     }
 
     /**
@@ -555,13 +557,13 @@ class PlayerState
      */
     public static function hasPlayerPlayedSpecificCard(GameEvents $gameEvents, PlayerId $playerId, CardId $requiredCardId): bool
     {
-        $ereignisWasTriggeredForPlayer = $gameEvents->findLastOrNullWhere(fn(
+        $ereignisWasTriggeredForPlayer = $gameEvents->findLastOrNullWhere(fn (
             $event
         ) => $event instanceof EreignisWasTriggered && $event->playerId->equals($playerId) && $event->ereignisCardId->equals($requiredCardId));
-        $cardWasPlayedByPlayer = $gameEvents->findLastOrNullWhere(fn(
+        $cardWasPlayedByPlayer = $gameEvents->findLastOrNullWhere(fn (
             $event
         ) => $event instanceof CardWasActivated && $event->playerId->equals($playerId) && $event->cardId->equals($requiredCardId));
-        $jobOfferWasAcceptedByPlayer = $gameEvents->findLastOrNullWhere(fn(
+        $jobOfferWasAcceptedByPlayer = $gameEvents->findLastOrNullWhere(fn (
             $event
         ) => $event instanceof JobOfferWasAccepted && $event->playerId->equals($playerId) && $event->cardId->equals($requiredCardId));
         return (
@@ -575,7 +577,7 @@ class PlayerState
     {
         $currentYear = KonjunkturphaseState::getCurrentYear($gameEvents);
         $playerHasFiledForInsolvenzEventOrNull = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof PlayerHasFiledForInsolvenz &&
+            fn ($event) => $event instanceof PlayerHasFiledForInsolvenz &&
                 $playerId->equals($event->getPlayerId()) &&
                 // Insolvenz lasts Configuration::INSOLVENZ_DURATION years, but it starts at the end of the Konjunkturphase
                 // so we subtract one more
@@ -588,7 +590,7 @@ class PlayerState
     public static function wasPlayerInsolventInThePast(GameEvents $gameEvents, PlayerId $playerId): bool
     {
         $playerHasFiledForInsolvenzEventOrNull = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof PlayerHasFiledForInsolvenz &&
+            fn ($event) => $event instanceof PlayerHasFiledForInsolvenz &&
                 $playerId->equals($event->getPlayerId())
         );
 
@@ -604,13 +606,13 @@ class PlayerState
     {
         /** @var PlayerHasBoughtImmobilie[] $immobilienBoughtEvents */
         $immobilienBoughtEvents = $gameEvents->findAllOfType(PlayerHasBoughtImmobilie::class)
-            ->filter(fn($event) => $event instanceof PlayerHasBoughtImmobilie && $event->getPlayerId()->equals($playerId));
+            ->filter(fn ($event) => $event instanceof PlayerHasBoughtImmobilie && $event->getPlayerId()->equals($playerId));
 
         $immobilien = [];
         foreach ($immobilienBoughtEvents as $immobilienBoughtEvent) {
             // check if immobilie was sold
             $immobilieWasSold = $gameEvents->findLastOrNullWhere(
-                fn($immobilieSoldEvent) => ($immobilieSoldEvent instanceof PlayerHasSoldImmobilie || $immobilieSoldEvent instanceof PlayerHasSoldImmobilieToAvoidInsolvenz) &&
+                fn ($immobilieSoldEvent) => ($immobilieSoldEvent instanceof PlayerHasSoldImmobilie || $immobilieSoldEvent instanceof PlayerHasSoldImmobilieToAvoidInsolvenz) &&
                     $immobilieSoldEvent->getImmobilieId()->equals($immobilienBoughtEvent->getImmobilieId()) &&
                     $immobilieSoldEvent->getPlayerId()->equals($playerId)
             );

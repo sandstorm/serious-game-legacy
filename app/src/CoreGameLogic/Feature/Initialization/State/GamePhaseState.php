@@ -89,8 +89,9 @@ class GamePhaseState
             ?? $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
 
         $investmentEvent = $eventsThisTurn->findLastOrNullWhere(
-            fn($event) => ($event instanceof PlayerHasBoughtInvestment || $event instanceof PlayerHasSoldInvestment)
-                && !$event->getPlayerId()->equals($playerId));
+            fn ($event) => ($event instanceof PlayerHasBoughtInvestment || $event instanceof PlayerHasSoldInvestment)
+                && !$event->getPlayerId()->equals($playerId)
+        );
         return $investmentEvent !== null;
     }
 
@@ -107,8 +108,9 @@ class GamePhaseState
             ?? $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
 
         $investmentEvent = $eventsThisTurn->findLastOrNullWhere(
-            fn($event) => ($event instanceof PlayerHasBoughtInvestment || $event instanceof PlayerHasSoldInvestment)
-                && $event->getPlayerId()->equals($playerId));
+            fn ($event) => ($event instanceof PlayerHasBoughtInvestment || $event instanceof PlayerHasSoldInvestment)
+                && $event->getPlayerId()->equals($playerId)
+        );
         return $investmentEvent !== null;
     }
 

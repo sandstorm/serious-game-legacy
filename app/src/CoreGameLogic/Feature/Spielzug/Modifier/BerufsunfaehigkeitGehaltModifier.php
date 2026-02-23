@@ -6,7 +6,6 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Modifier;
 
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
-use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\ModifierId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
@@ -17,7 +16,7 @@ use Domain\Definitions\Card\ValueObject\MoneyAmount;
  * Konjunkturphase.
  * The modifier will stay active until the end of the current Konjunkturphase.
  */
-readonly final class BerufsunfaehigkeitGehaltModifier extends Modifier
+final readonly class BerufsunfaehigkeitGehaltModifier extends Modifier
 {
     public function __construct(
         public PlayerTurn $playerTurn,

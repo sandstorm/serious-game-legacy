@@ -43,7 +43,8 @@ class StartKonjunkturphaseForPlayerAktion extends Aktion
     private function getResourceChangesForPlayer(GameEvents $gameEvents, PlayerId $playerId): ResourceChanges
     {
         $conditionalResourceChangesForCurrentKonjunkturphase = KonjunkturphaseFinder::findKonjunkturphaseById(
-            $gameEvents->findLast(KonjunkturphaseWasChanged::class)->id)->getConditionalResourceChanges();
+            $gameEvents->findLast(KonjunkturphaseWasChanged::class)->id
+        )->getConditionalResourceChanges();
 
         $accumulatedResourceChanges = new ResourceChanges();
         foreach ($conditionalResourceChangesForCurrentKonjunkturphase as $conditionalResourceChange) {

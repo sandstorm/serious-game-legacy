@@ -124,7 +124,7 @@ class ViewCourse extends ViewRecord
                             numberOfPlayers: count($game->players)
                         )->withFixedPlayerIds(
                             /** @phpstan-ignore argument.type */
-                            array_map(fn(Player $user) => PlayerId::fromString($user->id), $game->players->all())
+                            array_map(fn (Player $user) => PlayerId::fromString($user->id), $game->players->all())
                         ));
                     }
                     $this->redirect($this::getResource()::getUrl('view', ['record' => $course]));

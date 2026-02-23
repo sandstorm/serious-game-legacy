@@ -16,7 +16,6 @@ final readonly class MarkPlayerAsReadyForKonjunkturphaseChange implements Comman
 
     private function __construct(
         public PlayerId $playerId,
-    )
-    {
+    ) {
     }
 }

@@ -23,7 +23,7 @@ class Player extends User
         'can_create_games',
     ];
 
-    protected static function booted():void
+    protected static function booted(): void
     {
         // set name while creating
         static::creating(function (Player $player) {
@@ -47,7 +47,7 @@ class Player extends User
      */
     public function games(): BelongsToMany
     {
-        return $this->belongsToMany(Game::class,  'game_user', 'user_id', 'game_id');
+        return $this->belongsToMany(Game::class, 'game_user', 'user_id', 'game_id');
     }
 
     /**
@@ -55,7 +55,7 @@ class Player extends User
      */
     public function courses(): BelongsToMany
     {
-        return $this->belongsToMany(Course::class,  'course_user', 'user_id', 'course_id');
+        return $this->belongsToMany(Course::class, 'course_user', 'user_id', 'course_id');
     }
 
     public function canAccessPanel(Panel $panel): bool

@@ -8,8 +8,7 @@ use Illuminate\Support\Facades\Schema;
  * We need a separate role for teachers. They can only see their own
  * courses.
  */
-return new class extends Migration
-{
+return new class () extends Migration {
     /**
      * Run the migrations.
      */

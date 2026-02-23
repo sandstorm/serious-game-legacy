@@ -25,8 +25,7 @@ class PlayerListPlayerDto
         public ?JobCardDefinition        $job,
         public MoneyAmount               $gehalt,
         public MoneyAmount               $guthaben,
-    )
-    {
+    ) {
     }
 
 }

@@ -98,7 +98,7 @@ final readonly class GameEvents implements \IteratorAggregate, \Countable
     public function findLastOrNull(string $className): ?object
     {
         // @phpstan-ignore return.type
-        return $this->findLastOrNullWhere(fn($event) => $event instanceof $className);
+        return $this->findLastOrNullWhere(fn ($event) => $event instanceof $className);
     }
 
     /**
@@ -155,7 +155,7 @@ final readonly class GameEvents implements \IteratorAggregate, \Countable
      */
     public function findAllOfType(string $className): self
     {
-        return self::fromArray(array_filter($this->events, fn($event) => $event instanceof $className));
+        return self::fromArray(array_filter($this->events, fn ($event) => $event instanceof $className));
     }
 
     /**
@@ -167,11 +167,11 @@ final readonly class GameEvents implements \IteratorAggregate, \Countable
      */
     public function findAllAfterLastOfType(string $className): self
     {
-       $result = $this->findAllAfterLastOfTypeOrNull($className);
+        $result = $this->findAllAfterLastOfTypeOrNull($className);
 
-       if ($result === null) {
+        if ($result === null) {
             throw new \RuntimeException('No element of type ' . $className . ' found', 1747412985);
-       }
+        }
 
         return $result;
     }

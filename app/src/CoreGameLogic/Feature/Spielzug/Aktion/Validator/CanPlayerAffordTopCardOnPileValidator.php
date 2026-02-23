@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator;
@@ -41,8 +42,10 @@ final class CanPlayerAffordTopCardOnPileValidator extends AbstractValidator
         $topCardOnPile = PileState::topCardIdForPile($gameEvents, $this->pileId);
         $cardDefinition = CardFinder::getInstance()->getCardById($topCardOnPile);
 
-        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction($playerId,
-            $this->getTotalCosts($playerId, $gameEvents, $cardDefinition))) {
+        if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction(
+            $playerId,
+            $this->getTotalCosts($playerId, $gameEvents, $cardDefinition)
+        )) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: 'Du hast nicht genug Ressourcen um die Karte zu spielen',

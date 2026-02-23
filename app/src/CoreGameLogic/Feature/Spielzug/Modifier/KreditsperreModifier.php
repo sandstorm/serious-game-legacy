@@ -14,7 +14,7 @@ use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 /**
  * Player cannot take out a loan. A Konjunkturphase may set this modifier.
  */
-readonly final class KreditsperreModifier extends Modifier
+final readonly class KreditsperreModifier extends Modifier
 {
     public function __construct(
         public PlayerTurn $playerTurn,
@@ -37,7 +37,7 @@ readonly final class KreditsperreModifier extends Modifier
     public function isActive(GameEvents $gameEvents): bool
     {
         $konjunkturphaseChangesAfterSperre = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof KonjunkturphaseWasChanged && $event->year->equals(new Year($this->year->value + 1))
+            fn ($event) => $event instanceof KonjunkturphaseWasChanged && $event->year->equals(new Year($this->year->value + 1))
         );
 
         return $konjunkturphaseChangesAfterSperre === null;

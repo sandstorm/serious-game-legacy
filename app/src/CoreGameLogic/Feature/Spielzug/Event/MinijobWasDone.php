@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
@@ -24,8 +25,7 @@ final readonly class MinijobWasDone implements GameEventInterface, ProvidesResou
         public PlayerId        $playerId,
         public CardId          $minijobCardId,
         public ResourceChanges $resourceChanges,
-    )
-    {
+    ) {
     }
 
     public static function fromArray(array $values): GameEventInterface

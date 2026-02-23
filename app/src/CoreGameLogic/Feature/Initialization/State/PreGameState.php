@@ -13,7 +13,6 @@ use Domain\CoreGameLogic\PlayerId;
 
 class PreGameState
 {
-
     /**
      * Ready for game if all players have chosen a Name and a Lebensziel
      * @param GameEvents $gameEvents

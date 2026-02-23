@@ -21,7 +21,7 @@ class Zeitsteine implements \JsonSerializable
     {
         return new self(
             zeitsteine: array_map(
-                static fn(array $slot) => ZeitsteinePerPlayer::fromArray($slot),
+                static fn (array $slot) => ZeitsteinePerPlayer::fromArray($slot),
                 $in['zeitsteine'] ?? []
             ),
         );
@@ -29,7 +29,7 @@ class Zeitsteine implements \JsonSerializable
 
     public function __toString(): string
     {
-        return '[Zeitsteine: ' . implode(', ', array_map(static fn(ZeitsteinePerPlayer $z) => (string)$z, $this->zeitsteine)) . ']';
+        return '[Zeitsteine: ' . implode(', ', array_map(static fn (ZeitsteinePerPlayer $z) => (string)$z, $this->zeitsteine)) . ']';
     }
 
     /**

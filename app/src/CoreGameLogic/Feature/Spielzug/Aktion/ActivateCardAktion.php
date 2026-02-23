@@ -86,7 +86,7 @@ class ActivateCardAktion extends Aktion
         // WHY: We need the lastest event (which has not yet been persisted) in the next handler
         $gameEventsWithNotYetPersistedChanges = GameEvents::fromArray([
             ...$gameEvents,
-            ...array_map(fn($event) => $event instanceof DecoratedEvent ? $event->innerEvent : $event, $eventsFromActivation->events)
+            ...array_map(fn ($event) => $event instanceof DecoratedEvent ? $event->innerEvent : $event, $eventsFromActivation->events)
         ]);
         // Append Ereignis-Events (this has a 25 percent chance to be triggered, otherwise nothing gets added)
         return $eventsFromActivation->withAppendedEvents(

@@ -21,7 +21,7 @@ use Domain\Definitions\Konjunkturphase\ValueObject\Year;
  * @see KonjunkturphaseFinder::getRandomKonjunkturphase()
  * @see KonjunkturphaseFinder::getListOfPossibleNextPhaseTypes()
  */
-readonly final class IncreasedChanceForRezessionModifier extends Modifier
+final readonly class IncreasedChanceForRezessionModifier extends Modifier
 {
     public function __construct(
         public PlayerTurn $playerTurn,
@@ -39,7 +39,7 @@ readonly final class IncreasedChanceForRezessionModifier extends Modifier
     public function isActive(GameEvents $gameEvents): bool
     {
         $konjunkturphaseChangesAfterSperre = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof KonjunkturphaseWasChanged && $event->year->equals(new Year($this->year->value + 1))
+            fn ($event) => $event instanceof KonjunkturphaseWasChanged && $event->year->equals(new Year($this->year->value + 1))
         );
 
         return $konjunkturphaseChangesAfterSperre === null;

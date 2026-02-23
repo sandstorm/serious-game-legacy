@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Tests\Unit\Definitions\Cards;
 
@@ -58,7 +58,7 @@ describe('MoneyAmountTest', function () {
         expect($amount->format())->toEqual("<span class='text--currency'>1.234,56 €</span>");
     });
 
-    it('can format with icon', function($amount, $expected) {
+    it('can format with icon', function ($amount, $expected) {
         $moneyAmount = new MoneyAmount($amount);
         expect($moneyAmount->formatWithIcon())->toEqual($expected);
     })->with([

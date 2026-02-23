@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 
@@ -31,8 +32,11 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
             $this->gameId,
             MarkPlayerAsReadyForKonjunkturphaseChange::create($this->players[0])
         );
-    })->throws(RuntimeException::class,
-        'Cannot mark player as ready: Die aktuelle Konjunkturphase ist noch nicht zu Ende', 1756798041);
+    })->throws(
+        RuntimeException::class,
+        'Cannot mark player as ready: Die aktuelle Konjunkturphase ist noch nicht zu Ende',
+        1756798041
+    );
 
     it('throws an error if the player has not completed the money sheet', function () {
         /** @var TestCase $this */
@@ -75,9 +79,13 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
             new EndSpielzug($this->players[1])
         );
 
-        $this->coreGameLogic->handle($this->gameId,
-            EnterLebenshaltungskostenForPlayer::create($this->players[0],
-                new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            EnterLebenshaltungskostenForPlayer::create(
+                $this->players[0],
+                new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)
+            )
+        );
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -86,7 +94,8 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
     })->throws(
         RuntimeException::class,
         "Cannot mark player as ready: Du musst erst das Money Sheet korrekt ausfüllen",
-        1756798041);
+        1756798041
+    );
 
     it('throws an error if the player has a negative balance', function () {
         /** @var TestCase $this */
@@ -132,9 +141,13 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
             new EndSpielzug($this->players[1])
         );
 
-        $this->coreGameLogic->handle($this->gameId,
-            EnterLebenshaltungskostenForPlayer::create($this->players[0],
-                new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            EnterLebenshaltungskostenForPlayer::create(
+                $this->players[0],
+                new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)
+            )
+        );
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -188,9 +201,13 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
             new EndSpielzug($this->players[1])
         );
 
-        $this->coreGameLogic->handle($this->gameId,
-            EnterLebenshaltungskostenForPlayer::create($this->players[0],
-                new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            EnterLebenshaltungskostenForPlayer::create(
+                $this->players[0],
+                new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)
+            )
+        );
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -204,10 +221,10 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect($gameEvents->findLastOrNullWhere(
-                fn($event) => $event instanceof PlayerWasMarkedAsReadyForKonjunkturphaseChange
+            fn ($event) => $event instanceof PlayerWasMarkedAsReadyForKonjunkturphaseChange
                     && $event->playerId->equals($this->players[0])
                     && $event->year->equals(KonjunkturphaseState::getCurrentYear($gameEvents))
-            ) !== null)
+        ) !== null)
             ->toBeTrue('The PlayerWasMarkedAsReadyForKonjunkturphaseChange event should exist for this player');
     });
 
@@ -256,9 +273,13 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
             new EndSpielzug($this->players[1])
         );
 
-        $this->coreGameLogic->handle($this->gameId,
-            EnterLebenshaltungskostenForPlayer::create($this->players[0],
-                new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            EnterLebenshaltungskostenForPlayer::create(
+                $this->players[0],
+                new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)
+            )
+        );
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -272,12 +293,11 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect($gameEvents->findLastOrNullWhere(
-                fn($event) => $event instanceof PlayerWasMarkedAsReadyForKonjunkturphaseChange
+            fn ($event) => $event instanceof PlayerWasMarkedAsReadyForKonjunkturphaseChange
                     && $event->playerId->equals($this->players[0])
                     && $event->year->equals(KonjunkturphaseState::getCurrentYear($gameEvents))
-            ) !== null)
+        ) !== null)
             ->toBeTrue('The PlayerWasMarkedAsReadyForKonjunkturphaseChange event should exist for this player');
     });
 
 });
-

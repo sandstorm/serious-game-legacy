@@ -43,7 +43,7 @@ class Course extends Model
      */
     public function players(): BelongsToMany
     {
-        return $this->belongsToMany(Player::class,  'course_user', 'course_id', 'user_id');
+        return $this->belongsToMany(Player::class, 'course_user', 'course_id', 'user_id');
     }
 
     /**

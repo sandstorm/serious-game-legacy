@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
-use Domain\CoreGameLogic\Feature\Konjunkturphase\State\ImmobilienPriceState;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\LogEntry;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\Loggable;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesResourceChanges;
@@ -31,8 +30,7 @@ class PlayerHasSoldImmobilie implements GameEventInterface, ProvidesResourceChan
         protected ImmobilieId     $immobilieId,
         protected CardId          $cardId,
         protected ResourceChanges $resourceChanges,
-    )
-    {
+    ) {
     }
 
     public static function fromArray(array $values): GameEventInterface

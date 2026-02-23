@@ -17,7 +17,7 @@ use Domain\Definitions\Card\ValueObject\ModifierId;
  * Make sure to use the @see DoesNotSkipTurnValidator in any Aktion that should not be allowed when the player
  * skips a turn.
  */
-readonly final class AussetzenModifier extends Modifier
+final readonly class AussetzenModifier extends Modifier
 {
     public function __construct(
         public PlayerId $playerId,

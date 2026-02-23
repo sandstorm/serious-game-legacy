@@ -23,5 +23,6 @@ final readonly class SellImmobilieForPlayerToAvoidInsolvenz implements CommandIn
     private function __construct(
         public PlayerId $playerId,
         public ImmobilieId $immobilieId,
-    ) {}
+    ) {
+    }
 }

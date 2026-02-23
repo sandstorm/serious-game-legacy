@@ -19,6 +19,7 @@ class GameboardInformationForCategory
         public CategoryId $title,
         public Zeitsteine $zeitsteine,
         public ?string $cardPile = null,
-    ) {}
+    ) {
+    }
 
 }

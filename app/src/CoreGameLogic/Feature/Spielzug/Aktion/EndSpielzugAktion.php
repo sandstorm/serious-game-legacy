@@ -47,8 +47,9 @@ class EndSpielzugAktion extends Aktion
         if ($playerSoldOrBoughtInvestmentsThisTurn) {
             /** @var PlayerHasBoughtInvestment|PlayerHasSoldInvestment $investmentEvent */
             $investmentEvent = $gameEvents->findLastOrNullWhere(
-                fn($event) => ($event instanceof PlayerHasBoughtInvestment || $event instanceof PlayerHasSoldInvestment)
-                    && $event->getPlayerId()->equals($playerId));
+                fn ($event) => ($event instanceof PlayerHasBoughtInvestment || $event instanceof PlayerHasSoldInvestment)
+                    && $event->getPlayerId()->equals($playerId)
+            );
             $investmentPrices = InvestmentPriceHelper::calculateInvestmentPriceFor($gameEvents, $investmentEvent->getInvestmentId());
         }
 

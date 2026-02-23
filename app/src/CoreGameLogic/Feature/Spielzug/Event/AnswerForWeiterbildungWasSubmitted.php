@@ -20,7 +20,8 @@ final readonly class AnswerForWeiterbildungWasSubmitted implements GameEventInte
         public CardId          $cardId,
         public AnswerId        $selectedAnswerId,
         public bool            $wasCorrect,
-    ) {}
+    ) {
+    }
 
     public static function fromArray(array $values): GameEventInterface
     {

@@ -18,8 +18,7 @@ class KompetenzbereichDefinition implements \JsonSerializable
     public function __construct(
         public CategoryId $name,
         public Zeitslots  $zeitslots,
-    )
-    {
+    ) {
     }
 
     /**

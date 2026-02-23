@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 use App\Livewire\Forms\TakeOutALoanForm;
-
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\RepayLoanForPlayer;
@@ -100,8 +100,10 @@ describe('handleRepayLoanForPlayer', function () {
         /** @var LoanWasTakenOutForPlayer $loanWasTakenOut */
         $loanWasTakenOut = $gameEvents->findLast(LoanWasTakenOutForPlayer::class);
         expect($loanWasTakenOut->getResourceChanges($this->players[0])->guthabenChange)->toEqual(new MoneyAmount(10000))
-            ->and(PlayerState::getGuthabenForPlayer($gameEvents,
-                $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE + $loanAmount));
+            ->and(PlayerState::getGuthabenForPlayer(
+                $gameEvents,
+                $this->players[0]
+            ))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE + $loanAmount));
         $loanId = $loanWasTakenOut->loanId;
 
         // player 0 repays the loan

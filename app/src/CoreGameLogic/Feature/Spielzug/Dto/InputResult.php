@@ -1,11 +1,12 @@
 <?php
-declare(strict_types=1);
-namespace Domain\CoreGameLogic\Feature\Spielzug\Dto;
 
+declare(strict_types=1);
+
+namespace Domain\CoreGameLogic\Feature\Spielzug\Dto;
 
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
-readonly final class InputResult //implements \JsonSerializable
+final readonly class InputResult //implements \JsonSerializable
 {
     public function __construct(public bool $wasSuccessful, public MoneyAmount $fine = new MoneyAmount(0))
     {

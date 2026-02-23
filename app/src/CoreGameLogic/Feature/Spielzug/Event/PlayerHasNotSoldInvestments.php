@@ -17,8 +17,7 @@ class PlayerHasNotSoldInvestments implements GameEventInterface, CommandInterfac
      */
     public function __construct(
         public PlayerId    $playerId,
-    )
-    {
+    ) {
     }
 
     public static function fromArray(array $values): GameEventInterface

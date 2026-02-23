@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator;
@@ -15,7 +16,6 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
  */
 final class HasCategoryFreeZeitsteinslotsValidator extends AbstractValidator
 {
-
     public function __construct(private readonly CategoryId $categoryId, private readonly bool $hasSpecialRulesForActivateCard = false)
     {
     }

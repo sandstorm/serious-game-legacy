@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator;
@@ -18,7 +19,8 @@ final class HasKonjunkturphaseNotStartedValidator extends AbstractValidator
     {
         /** @var PlayerHasStartedKonjunkturphase $lastStartKonjunkturphaseEvent */
         $lastStartKonjunkturphaseEvent = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof PlayerHasStartedKonjunkturphase && $event->playerId->equals($playerId));
+            fn ($event) => $event instanceof PlayerHasStartedKonjunkturphase && $event->playerId->equals($playerId)
+        );
         if ( // has player already started this Konjunkturphase?
             $lastStartKonjunkturphaseEvent !== null &&
             $lastStartKonjunkturphaseEvent->year->equals(KonjunkturphaseState::getCurrentYear($gameEvents))

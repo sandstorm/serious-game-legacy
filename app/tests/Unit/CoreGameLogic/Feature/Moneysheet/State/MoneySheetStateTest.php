@@ -1054,7 +1054,7 @@ describe('getOpenRatesForLoan', function () {
             $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
             /** @var null|MinijobWasDone $miniJob */
             $miniJob = $gameEvents->findLastOrNullWhere(
-                fn($e) => $e instanceof MinijobWasDone && $e->playerId->equals($this->players[0])
+                fn ($e) => $e instanceof MinijobWasDone && $e->playerId->equals($this->players[0])
             );
             $expectedGuthaben += $miniJob->getResourceChanges($this->players[0])->guthabenChange->value; // mini job income
 
@@ -1078,7 +1078,7 @@ describe('getOpenRatesForLoan', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         /** @var null|MinijobWasDone $miniJob */
         $miniJob = $gameEvents->findLastOrNullWhere(
-            fn($e) => $e instanceof MinijobWasDone && $e->playerId->equals($this->players[0])
+            fn ($e) => $e instanceof MinijobWasDone && $e->playerId->equals($this->players[0])
         );
         $expectedGuthaben += $miniJob->getResourceChanges($this->players[0])->guthabenChange->value; // mini job income
         $expectedGuthaben -= Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE;

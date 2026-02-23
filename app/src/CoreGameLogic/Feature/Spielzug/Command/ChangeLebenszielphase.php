@@ -11,15 +11,13 @@ final readonly class ChangeLebenszielphase implements CommandInterface
 {
     public static function create(
         PlayerId $playerId,
-    ): ChangeLebenszielphase
-    {
+    ): ChangeLebenszielphase {
         return new self($playerId);
     }
 
     private function __construct(
         public PlayerId $playerId
-    )
-    {
+    ) {
 
     }
 }

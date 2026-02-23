@@ -10,8 +10,7 @@ final readonly class JobRequirements
         public int $zeitsteine = 0,
         public int $bildungKompetenzsteine = 0,
         public int $freizeitKompetenzsteine = 0,
-    )
-    {
+    ) {
     }
 
     /**

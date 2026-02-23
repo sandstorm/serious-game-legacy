@@ -16,8 +16,7 @@ final readonly class Pile implements \JsonSerializable
     public function __construct(
         protected PileId $pileId,
         protected array $cardIds = [],
-    )
-    {
+    ) {
     }
 
     /**

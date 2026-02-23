@@ -31,7 +31,8 @@ final readonly class WeiterbildungWasStarted implements GameEventInterface, Prov
         public CardId          $weiterbildungCardId,
         public ResourceChanges $resourceChanges,
         public array           $shuffeldAnswerOptions
-    ) {}
+    ) {
+    }
 
     public static function fromArray(array $values): GameEventInterface
     {
@@ -39,7 +40,7 @@ final readonly class WeiterbildungWasStarted implements GameEventInterface, Prov
             playerId: PlayerId::fromString($values['playerId']),
             weiterbildungCardId: CardId::fromString($values['weiterbildungCardId']),
             resourceChanges: ResourceChanges::fromArray($values['resourceChanges']),
-            shuffeldAnswerOptions: array_map(fn($option) => AnswerOption::fromArray($option), $values['shuffeldAnswerOptions']),
+            shuffeldAnswerOptions: array_map(fn ($option) => AnswerOption::fromArray($option), $values['shuffeldAnswerOptions']),
         );
     }
 

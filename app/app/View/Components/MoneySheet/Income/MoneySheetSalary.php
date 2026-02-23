@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\View\Components\MoneySheet\Income;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\Feature\Spielzug\Modifier\Modifier;
 use Domain\CoreGameLogic\Feature\Spielzug\State\ModifierCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;

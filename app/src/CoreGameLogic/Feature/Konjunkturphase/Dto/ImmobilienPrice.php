@@ -1,11 +1,13 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Dto;
 
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\ImmobilieId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
-readonly final class ImmobilienPrice implements \JsonSerializable
+final readonly class ImmobilienPrice implements \JsonSerializable
 {
     public function __construct(public ImmobilieId $immobilieId, public MoneyAmount $price)
     {

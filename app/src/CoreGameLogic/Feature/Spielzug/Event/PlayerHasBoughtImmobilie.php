@@ -32,8 +32,7 @@ class PlayerHasBoughtImmobilie implements GameEventInterface, ProvidesResourceCh
         protected CardId          $cardId,
         protected PileId          $pileId,
         protected ResourceChanges $resourceChanges,
-    )
-    {
+    ) {
     }
 
     public static function fromArray(array $values): GameEventInterface

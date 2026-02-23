@@ -13,8 +13,7 @@ final readonly class RepayLoanForPlayerInCaseOfInsolvenz implements CommandInter
     public static function create(
         PlayerId $playerId,
         LoanId $loanId
-    ): RepayLoanForPlayerInCaseOfInsolvenz
-    {
+    ): RepayLoanForPlayerInCaseOfInsolvenz {
         return new self($playerId, $loanId);
     }
 

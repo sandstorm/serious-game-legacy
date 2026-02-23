@@ -13,5 +13,6 @@ class EventLogEntry
         public ?string $colorClass = null,
         public ?string $playerName = null,
         public ?ResourceChanges $resourceChanges = null,
-    ) {}
+    ) {
+    }
 }

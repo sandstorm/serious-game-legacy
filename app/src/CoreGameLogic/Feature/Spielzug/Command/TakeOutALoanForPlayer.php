@@ -12,8 +12,7 @@ final readonly class TakeOutALoanForPlayer implements CommandInterface
     public static function create(
         PlayerId $playerId,
         int|null $loanAmount
-    ): TakeOutALoanForPlayer
-    {
+    ): TakeOutALoanForPlayer {
         return new self($playerId, $loanAmount);
     }
 

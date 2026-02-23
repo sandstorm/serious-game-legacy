@@ -53,9 +53,9 @@ class UserResource extends Resource
                     ->afterStateHydrated(function (Forms\Components\TextInput $component, $state) {
                         $component->state('');
                     })
-                    ->dehydrateStateUsing(fn($state) => Hash::make($state))
-                    ->dehydrated(fn($state) => filled($state))
-                    ->required(fn(string $context): bool => $context === 'create'),
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->required(fn (string $context): bool => $context === 'create'),
                 Forms\Components\DateTimePicker::make('email_verified_at')
                     ->disabled(),
                 Forms\Components\Toggle::make('role_superadmin')

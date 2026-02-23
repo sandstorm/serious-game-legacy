@@ -13,8 +13,7 @@ final readonly class DontSellInvestmentsForPlayer implements CommandInterface
     public static function create(
         PlayerId     $playerId,
         InvestmentId $investmentId,
-    ): DontSellInvestmentsForPlayer
-    {
+    ): DontSellInvestmentsForPlayer {
         return new self(
             $playerId,
             $investmentId,
@@ -24,8 +23,7 @@ final readonly class DontSellInvestmentsForPlayer implements CommandInterface
     private function __construct(
         public PlayerId     $playerId,
         public InvestmentId $investmentId,
-    )
-    {
+    ) {
     }
 
 }

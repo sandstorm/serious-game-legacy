@@ -10133,8 +10133,10 @@ final class CardFinder
         $card = $this->cards[$cardId->value];
         assert($card instanceof $classString);
         if (!$card instanceof $classString) {
-            throw new \RuntimeException('Card ' . $cardId . ' expected to be of type ' . $classString . ' but was ' . get_class($card),
-                1752499517);
+            throw new \RuntimeException(
+                'Card ' . $cardId . ' expected to be of type ' . $classString . ' but was ' . get_class($card),
+                1752499517
+            );
         }
         return $card;
     }
@@ -10162,7 +10164,7 @@ final class CardFinder
      */
     public function getCardDefinitionsByCategoryAndPhase(CategoryId $categoryId, LebenszielPhaseId $phaseId): array
     {
-        return array_filter($this->cards, fn($card) => $card->getCategory()->value === $categoryId->value &&
+        return array_filter($this->cards, fn ($card) => $card->getCategory()->value === $categoryId->value &&
             $card->getPhase()->looselyEquals($phaseId));
     }
 

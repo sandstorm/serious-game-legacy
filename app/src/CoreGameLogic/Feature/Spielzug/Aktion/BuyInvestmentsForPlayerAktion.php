@@ -24,13 +24,11 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 class BuyInvestmentsForPlayerAktion extends Aktion
 {
-
     public function __construct(
         private readonly InvestmentId $investmentId,
         private readonly MoneyAmount  $price,
         private readonly int          $amount,
-    )
-    {
+    ) {
     }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult

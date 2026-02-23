@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator;
@@ -14,7 +15,7 @@ final class HasPlayerStartedAWeiterbildungThisTurnValidator extends AbstractVali
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
         $eventsAfterLastWeiterbildungWasStarted = $gameEvents->findAllAfterLastOrNullWhere(
-            fn($e) => $e instanceof WeiterbildungWasStarted && $e->playerId->equals($playerId)
+            fn ($e) => $e instanceof WeiterbildungWasStarted && $e->playerId->equals($playerId)
         );
 
         if (

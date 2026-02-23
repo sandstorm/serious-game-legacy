@@ -20,8 +20,7 @@ final readonly class PlayerHasFiledForInsolvenz implements GameEventInterface, L
         protected PlayerTurn      $playerTurn,
         protected Year            $year,
         protected ResourceChanges $resourceChanges,
-    )
-    {
+    ) {
     }
 
     public static function fromArray(array $values): GameEventInterface

@@ -58,7 +58,7 @@ class FileInsolvenzForPlayerAktion extends Aktion
             $allMyLoanGameEvents = [
                 ...$allMyLoanGameEvents,
                 ...array_map(
-                    fn($event) => $event instanceof DecoratedEvent ? $event->innerEvent : $event,
+                    fn ($event) => $event instanceof DecoratedEvent ? $event->innerEvent : $event,
                     $repayLoanAktion->execute($playerId, $gameEvents)->events
                 )
             ];

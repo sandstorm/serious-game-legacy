@@ -33,7 +33,7 @@ class MoneySheetLivingCosts extends Component
     {
         $modifiersForPlayer = ModifierCalculator::forStream($this->gameEvents)->forPlayer($this->playerId);
         $modifierDescriptions = array_map(
-            fn(Modifier $modifier) => $modifier->description,
+            fn (Modifier $modifier) => $modifier->description,
             $modifiersForPlayer
                 ->getActiveModifiersForHook(HookEnum::LEBENSHALTUNGSKOSTEN_PERCENT_INCREASE, $this->gameEvents)
                 ->getModifiers()

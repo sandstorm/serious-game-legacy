@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\Definitions\Card\Dto;
@@ -11,7 +12,6 @@ use RuntimeException;
 
 class WeiterbildungCardDefinition implements CardDefinition
 {
-
     /**
      * @param CardId $id
      * @param string $description
@@ -21,8 +21,7 @@ class WeiterbildungCardDefinition implements CardDefinition
         protected CardId     $id,
         protected string     $description,
         protected array      $answerOptions,
-    )
-    {
+    ) {
     }
 
     public function getId(): CardId

@@ -33,7 +33,8 @@ final readonly class KonjunkturphaseWasChanged implements GameEventInterface, Pr
         public KonjunkturphaseTypeEnum $type,
         public array $investmentPrices,
         public array $immobilienPrices
-    ) {}
+    ) {
+    }
 
     public static function fromArray(array $values): GameEventInterface
     {
@@ -42,11 +43,11 @@ final readonly class KonjunkturphaseWasChanged implements GameEventInterface, Pr
             year: new Year($values['year']),
             type: KonjunkturphaseTypeEnum::fromString($values['type']),
             investmentPrices: array_map(
-                static fn($investmentPrice) => InvestmentPrice::fromArray($investmentPrice),
+                static fn ($investmentPrice) => InvestmentPrice::fromArray($investmentPrice),
                 $values['investmentPrices']
             ),
             immobilienPrices: array_map(
-                static fn($immobilienPrice) => ImmobilienPrice::fromArray($immobilienPrice),
+                static fn ($immobilienPrice) => ImmobilienPrice::fromArray($immobilienPrice),
                 $values['immobilienPrices']
             ),
         );

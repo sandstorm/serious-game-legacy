@@ -46,8 +46,7 @@ class KonjunkturphaseDefinition
         public ModifierParameters      $modifierParameters,
         public array                   $auswirkungen = [],
         protected array                $conditionalResourceChanges = [],
-    )
-    {
+    ) {
     }
 
     /**

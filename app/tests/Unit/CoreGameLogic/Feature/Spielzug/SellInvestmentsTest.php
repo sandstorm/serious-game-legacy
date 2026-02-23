@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;

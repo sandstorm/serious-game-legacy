@@ -51,7 +51,7 @@ final readonly class InsuranceForPlayerWasConcluded implements GameEventInterfac
 
     public function getResourceChanges(PlayerId $playerId): ResourceChanges
     {
-        if($playerId->equals($this->playerId)) {
+        if ($playerId->equals($this->playerId)) {
             return $this->resourceChanges;
         }
         return new ResourceChanges();

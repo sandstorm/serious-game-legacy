@@ -17,7 +17,6 @@ class Games
         public Game  $game,
         public array $playerNames,
         public bool $isInGamePhase = false,
-    )
-    {
+    ) {
     }
 }

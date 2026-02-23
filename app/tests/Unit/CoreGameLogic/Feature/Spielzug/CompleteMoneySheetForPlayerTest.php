@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
@@ -79,17 +80,23 @@ describe('handleCompleteMoneysheetForPlayer', function () {
         );
 
         $this->handle(
-            EnterLebenshaltungskostenForPlayer::create($this->players[0],
-                new MoneyAmount(35000))
+            EnterLebenshaltungskostenForPlayer::create(
+                $this->players[0],
+                new MoneyAmount(35000)
+            )
         );
         $this->handle(
-            EnterSteuernUndAbgabenForPlayer::create($this->players[0],
-                new MoneyAmount(25000))
+            EnterSteuernUndAbgabenForPlayer::create(
+                $this->players[0],
+                new MoneyAmount(25000)
+            )
         );
 
         $this->handle(
-            EnterLebenshaltungskostenForPlayer::create($this->players[1],
-                new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE))
+            EnterLebenshaltungskostenForPlayer::create(
+                $this->players[1],
+                new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)
+            )
         );
         $initialBalanceForPlayer1 = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->getPlayers()[0]);
         $initialBalanceForPlayer2 = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->getPlayers()[1]);
@@ -102,8 +109,9 @@ describe('handleCompleteMoneysheetForPlayer', function () {
         );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect($gameEvents->findLastOrNullWhere(
-                fn($event) => $event instanceof PlayerHasCompletedMoneysheetForCurrentKonjunkturphase
+        expect(
+            $gameEvents->findLastOrNullWhere(
+                fn ($event) => $event instanceof PlayerHasCompletedMoneysheetForCurrentKonjunkturphase
                     && $event->playerId->equals($this->players[0])
                     && $event->year->equals(KonjunkturphaseState::getCurrentYear($gameEvents))
             ) === null
@@ -157,8 +165,11 @@ describe('handleCompleteMoneysheetForPlayer', function () {
             $this->gameId,
             CompleteMoneysheetForPlayer::create($this->players[0])
         );
-    })->throws(RuntimeException::class,
-        'Cannot complete money sheet: Du musst erst dein Money Sheet korrekt ausfüllen', 1751375431);
+    })->throws(
+        RuntimeException::class,
+        'Cannot complete money sheet: Du musst erst dein Money Sheet korrekt ausfüllen',
+        1751375431
+    );
 
     it('changes balance correctly when the player is insolvent', function () {
         /** @var TestCase $this */
@@ -213,17 +224,23 @@ describe('handleCompleteMoneysheetForPlayer', function () {
         );
 
         $this->handle(
-            EnterLebenshaltungskostenForPlayer::create($this->players[0],
-                MoneySheetState::calculateLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[0]))
+            EnterLebenshaltungskostenForPlayer::create(
+                $this->players[0],
+                MoneySheetState::calculateLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[0])
+            )
         );
         $this->handle(
-            EnterSteuernUndAbgabenForPlayer::create($this->players[0],
-                new MoneyAmount(25000))
+            EnterSteuernUndAbgabenForPlayer::create(
+                $this->players[0],
+                new MoneyAmount(25000)
+            )
         );
 
         $this->handle(
-            EnterLebenshaltungskostenForPlayer::create($this->players[1],
-                MoneySheetState::calculateLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[1]))
+            EnterLebenshaltungskostenForPlayer::create(
+                $this->players[1],
+                MoneySheetState::calculateLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[1])
+            )
         );
         $initialBalanceForPlayer1 = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->getPlayers()[0]);
         $initialBalanceForPlayer2 = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->getPlayers()[1]);
@@ -236,8 +253,9 @@ describe('handleCompleteMoneysheetForPlayer', function () {
         );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect($gameEvents->findLastOrNullWhere(
-                fn($event) => $event instanceof PlayerHasCompletedMoneysheetForCurrentKonjunkturphase
+        expect(
+            $gameEvents->findLastOrNullWhere(
+                fn ($event) => $event instanceof PlayerHasCompletedMoneysheetForCurrentKonjunkturphase
                     && $event->playerId->equals($this->players[0])
                     && $event->year->equals(KonjunkturphaseState::getCurrentYear($gameEvents))
             ) === null
@@ -285,13 +303,17 @@ describe('handleCompleteMoneysheetForPlayer', function () {
         );
 
         $this->handle(
-            EnterLebenshaltungskostenForPlayer::create($this->players[0],
-                MoneySheetState::calculateLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[0]))
+            EnterLebenshaltungskostenForPlayer::create(
+                $this->players[0],
+                MoneySheetState::calculateLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[0])
+            )
         );
 
         $this->handle(
-            EnterLebenshaltungskostenForPlayer::create($this->players[1],
-                MoneySheetState::calculateLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[1]))
+            EnterLebenshaltungskostenForPlayer::create(
+                $this->players[1],
+                MoneySheetState::calculateLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[1])
+            )
         );
         $initialBalanceForPlayer1 = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->getPlayers()[0]);
         $initialBalanceForPlayer2 = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->getPlayers()[1]);
@@ -304,8 +326,9 @@ describe('handleCompleteMoneysheetForPlayer', function () {
         );
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        expect($gameEvents->findLastOrNullWhere(
-                fn($event) => $event instanceof PlayerHasCompletedMoneysheetForCurrentKonjunkturphase
+        expect(
+            $gameEvents->findLastOrNullWhere(
+                fn ($event) => $event instanceof PlayerHasCompletedMoneysheetForCurrentKonjunkturphase
                     && $event->playerId->equals($this->players[0])
                     && $event->year->equals(KonjunkturphaseState::getCurrentYear($gameEvents))
             ) === null

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Konjunkturphase\State;
@@ -76,7 +77,8 @@ class KonjunkturphaseState
     {
         /** @var PlayerHasStartedKonjunkturphase $latestPlayerHasStartedKonjunkturphaseEvent */
         $latestPlayerHasStartedKonjunkturphaseEvent = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof PlayerHasStartedKonjunkturphase && $event->playerId->equals($playerId));
+            fn ($event) => $event instanceof PlayerHasStartedKonjunkturphase && $event->playerId->equals($playerId)
+        );
 
         if ($latestPlayerHasStartedKonjunkturphaseEvent === null) {
             return false;
@@ -88,9 +90,10 @@ class KonjunkturphaseState
     public static function isPlayerReadyForKonjunkturphaseChange(GameEvents $gameEvents, PlayerId $playerId): bool
     {
         return $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof PlayerWasMarkedAsReadyForKonjunkturphaseChange
+            fn ($event) => $event instanceof PlayerWasMarkedAsReadyForKonjunkturphaseChange
                 && $event->year->equals(KonjunkturphaseState::getCurrentYear($gameEvents))
-                && $event->playerId->equals($playerId)) !== null;
+                && $event->playerId->equals($playerId)
+        ) !== null;
     }
 
     public static function areAllPlayersMarkedAsReadyForKonjunkturphaseChange(GameEvents $gameEvents): bool

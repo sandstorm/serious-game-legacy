@@ -14,8 +14,7 @@ final readonly class ResourceChanges implements JsonSerializable
         public int $zeitsteineChange = 0,
         public float $bildungKompetenzsteinChange = 0,
         public int $freizeitKompetenzsteinChange = 0,
-    )
-    {
+    ) {
     }
 
     /**

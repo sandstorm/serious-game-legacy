@@ -17,7 +17,7 @@ use Domain\Definitions\Configuration\Configuration;
  *
  * This modifier will stay active until the end of the game.
  */
-readonly final class LebenshaltungskostenKindMinValueModifier extends Modifier
+final readonly class LebenshaltungskostenKindMinValueModifier extends Modifier
 {
     public function __construct(
         public PlayerTurn $playerTurn,

@@ -24,7 +24,7 @@ use Domain\Definitions\Konjunkturphase\ValueObject\Year;
  *
  * This Modifier will be applied after all other Modifiers for the Lebenshaltungskosten.
  */
-readonly final class LebenshaltungskostenKonjunkturphaseModifier extends Modifier
+final readonly class LebenshaltungskostenKonjunkturphaseModifier extends Modifier
 {
     public function __construct(
         public PlayerTurn $playerTurn,
@@ -43,7 +43,7 @@ readonly final class LebenshaltungskostenKonjunkturphaseModifier extends Modifie
     public function isActive(GameEvents $gameEvents): bool
     {
         $konjunkturphaseChangesAfterSperre = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof KonjunkturphaseWasChanged && $event->year->equals(new Year($this->year->value + 1))
+            fn ($event) => $event instanceof KonjunkturphaseWasChanged && $event->year->equals(new Year($this->year->value + 1))
         );
 
         return $konjunkturphaseChangesAfterSperre === null;
