@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Moneysheet\State;
@@ -54,7 +55,8 @@ class MoneySheetState
         }
 
         $gehalt = PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId);
-        return new MoneyAmount(max([
+        return new MoneyAmount(max(
+            [
             $gehalt->value * self::getPercentageForLebenshaltungskostenForPlayer($gameEvents, $playerId) / 100,
             self::calculateMinimumValueForLebenshaltungskostenForPlayer($gameEvents, $playerId)->value,
             ]
@@ -109,7 +111,8 @@ class MoneySheetState
         // TODO We may need to change this later (e.g. quit job, modifiers)
         // FIXME this needs to change now with the modifiers
         $eventsAfterLastGehaltChange = $gameEvents->findAllAfterLastOrNullWhere(
-            fn($event) => $event instanceof JobOfferWasAccepted && $event->playerId->equals($playerId));
+            fn ($event) => $event instanceof JobOfferWasAccepted && $event->playerId->equals($playerId)
+        );
         if ($eventsAfterLastGehaltChange === null) {
             $eventsAfterLastGehaltChange = $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
         }
@@ -127,7 +130,7 @@ class MoneySheetState
         $eventsAfterLastGehaltChange = self::getEventsSinceLastGehaltChangeForPlayer($gameEvents, $playerId);
         // Gather all relevant input events for the player
         $tries = $eventsAfterLastGehaltChange->findAllOfType(SteuernUndAbgabenForPlayerWereEntered::class)
-            ->filter(fn(SteuernUndAbgabenForPlayerWereEntered $event) => $event->playerId->equals($playerId));
+            ->filter(fn (SteuernUndAbgabenForPlayerWereEntered $event) => $event->playerId->equals($playerId));
 
         return count($tries);
     }
@@ -136,7 +139,7 @@ class MoneySheetState
     {
         $eventsAfterLastGehaltChange = self::getEventsSinceLastGehaltChangeForPlayer($gameEvents, $playerId);
         $tries = $eventsAfterLastGehaltChange->findAllOfType(LebenshaltungskostenForPlayerWereEntered::class)
-            ->filter(fn(LebenshaltungskostenForPlayerWereEntered $event) => $event->playerId->equals($playerId));
+            ->filter(fn (LebenshaltungskostenForPlayerWereEntered $event) => $event->playerId->equals($playerId));
 
         return count($tries);
     }
@@ -146,7 +149,8 @@ class MoneySheetState
         PlayerId $playerId
     ): InputResult {
         $lastInputEventForPlayer = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof UpdatesInputForSteuernUndAbgaben && $event->getPlayerId()->equals($playerId));
+            fn ($event) => $event instanceof UpdatesInputForSteuernUndAbgaben && $event->getPlayerId()->equals($playerId)
+        );
 
         if ($lastInputEventForPlayer === null) {
             // No error message before first input
@@ -169,8 +173,9 @@ class MoneySheetState
         PlayerId $playerId
     ): InputResult {
         $lastInputEventForPlayer = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof UpdatesInputForLebenshaltungskosten
-                && $event->getPlayerId()->equals($playerId));
+            fn ($event) => $event instanceof UpdatesInputForLebenshaltungskosten
+                && $event->getPlayerId()->equals($playerId)
+        );
 
         if ($lastInputEventForPlayer === null) {
             // No error message before first input
@@ -195,7 +200,8 @@ class MoneySheetState
     {
         /** @var UpdatesInputForSteuernUndAbgaben|null $lastInputEvent @phpstan-ignore varTag.type */
         $lastInputEvent = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof UpdatesInputForSteuernUndAbgaben && $event->getPlayerId()->equals($myself));
+            fn ($event) => $event instanceof UpdatesInputForSteuernUndAbgaben && $event->getPlayerId()->equals($myself)
+        );
         return $lastInputEvent === null ? new MoneyAmount(0) : $lastInputEvent->getUpdatedValue();
     }
 
@@ -203,8 +209,9 @@ class MoneySheetState
     {
         /** @var UpdatesInputForLebenshaltungskosten|null $lastInputEvent @phpstan-ignore varTag.type */
         $lastInputEvent = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof UpdatesInputForLebenshaltungskosten
-                && $event->getPlayerId()->equals($myself));
+            fn ($event) => $event instanceof UpdatesInputForLebenshaltungskosten
+                && $event->getPlayerId()->equals($myself)
+        );
         return $lastInputEvent === null ? new MoneyAmount(0) : $lastInputEvent->getUpdatedValue();
     }
 
@@ -218,8 +225,9 @@ class MoneySheetState
     {
         /** @var UpdatesInputForSteuernUndAbgaben|null $lastInputEvent @phpstan-ignore varTag.type */
         $lastInputEvent = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof UpdatesInputForSteuernUndAbgaben
-                && $event->getPlayerId()->equals($playerId));
+            fn ($event) => $event instanceof UpdatesInputForSteuernUndAbgaben
+                && $event->getPlayerId()->equals($playerId)
+        );
         if ($lastInputEvent === null) {
             // There has not been any player input for this field
             // -> the current value is the default value
@@ -243,8 +251,9 @@ class MoneySheetState
     {
         /** @var UpdatesInputForLebenshaltungskosten|null $lastInputEvent @phpstan-ignore varTag.type */
         $lastInputEvent = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof UpdatesInputForLebenshaltungskosten
-                && $event->getPlayerId()->equals($playerId));
+            fn ($event) => $event instanceof UpdatesInputForLebenshaltungskosten
+                && $event->getPlayerId()->equals($playerId)
+        );
         if ($lastInputEvent === null) {
             // There has not been any player input for this field
             // -> the current value is the default value
@@ -280,7 +289,7 @@ class MoneySheetState
         // if no conclusion event was found, it returns null
         // if no events after the conclusion event were found, it returns an empty array
         $eventsAfterInsuranceWasConcluded = $gameEvents->findAllAfterLastOrNullWhere(
-            fn($event) => $event instanceof InsuranceForPlayerWasConcluded &&
+            fn ($event) => $event instanceof InsuranceForPlayerWasConcluded &&
                 $event->playerId->equals($playerId) &&
                 $event->insuranceId === $insuranceId
         );
@@ -292,7 +301,7 @@ class MoneySheetState
         if (count($eventsAfterInsuranceWasConcluded->events) > 0) {
             // if there are any cancellation events after the conclusion event, the insurance is not active anymore
             $lastCancellationEvent = $eventsAfterInsuranceWasConcluded->findLastOrNullWhere(
-                fn($event) => $event instanceof InsuranceForPlayerWasCancelled &&
+                fn ($event) => $event instanceof InsuranceForPlayerWasCancelled &&
                     $event->getPlayerId()->equals($playerId) &&
                     $event->getInsuranceId() === $insuranceId
             );
@@ -369,7 +378,7 @@ class MoneySheetState
     {
         /** @var LoanWasTakenOutForPlayer|null $loan */
         $loan = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof LoanWasTakenOutForPlayer &&
+            fn ($event) => $event instanceof LoanWasTakenOutForPlayer &&
                 $event->playerId->equals($playerId) &&
                 $event->loanId->equals($loanId)
         );
@@ -380,7 +389,7 @@ class MoneySheetState
 
         // Check if loan was fully repaid
         $repaymentEvent = $gameEvents->findLastOrNullWhere(
-            fn($event) =>
+            fn ($event) =>
                 ($event instanceof LoanWasRepaidForPlayer || $event instanceof LoanWasRepaidForPlayerInCaseOfInsolvenz) &&
                 $event->playerId->equals($playerId) &&
                 $event->loanId->equals($loanId)
@@ -402,7 +411,7 @@ class MoneySheetState
     {
         /** @var LoanWasTakenOutForPlayer|null $loan */
         $loan = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof LoanWasTakenOutForPlayer &&
+            fn ($event) => $event instanceof LoanWasTakenOutForPlayer &&
                 $event->playerId->equals($playerId) &&
                 $event->loanId->equals($loanId)
         );

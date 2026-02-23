@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior;
 
-
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 

@@ -18,8 +18,7 @@ class LoanWasRepaidForPlayer implements GameEventInterface, ProvidesResourceChan
         public PlayerId $playerId,
         public LoanId $loanId,
         public ResourceChanges $resourceChanges,
-    )
-    {
+    ) {
     }
 
     public static function fromArray(array $values): GameEventInterface

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator;
@@ -18,7 +19,8 @@ final class HasKonjunkturphaseEndedValidator extends AbstractValidator
     {
         /** @var KonjunkturphaseHasEnded $lastKonjunkturphaseHasEndedEvent */
         $lastKonjunkturphaseHasEndedEvent = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof KonjunkturphaseHasEnded && $event->year->equals(KonjunkturphaseState::getCurrentYear($gameEvents)));
+            fn ($event) => $event instanceof KonjunkturphaseHasEnded && $event->year->equals(KonjunkturphaseState::getCurrentYear($gameEvents))
+        );
         if ($lastKonjunkturphaseHasEndedEvent === null) {
             return new AktionValidationResult(
                 canExecute: false,

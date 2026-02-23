@@ -19,7 +19,8 @@ class MoneySheetInsurances extends Component
     public function __construct(
         public PlayerId $playerId,
         public GameEvents $gameEvents,
-    ) {}
+    ) {
+    }
 
     /**
      * Get the view / contents that represent the component.

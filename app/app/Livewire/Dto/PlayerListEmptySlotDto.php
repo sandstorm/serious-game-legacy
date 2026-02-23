@@ -8,8 +8,7 @@ class PlayerListEmptySlotDto
 {
     public function __construct(
         public string  $playerColorClass,
-    )
-    {
+    ) {
     }
 
 }

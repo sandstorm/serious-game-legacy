@@ -14,8 +14,7 @@ final readonly class InvestmentAmountChanges implements JsonSerializable
      */
     public function __construct(
         public int $amountChange = 0,
-    )
-    {
+    ) {
     }
 
     /**

@@ -52,7 +52,7 @@ trait HasPreGamePhase
         $this->lebenszielForm->validate();
 
         // Extra safety check, should never happen due to validation
-        if($this->lebenszielForm->lebensziel === null) {
+        if ($this->lebenszielForm->lebensziel === null) {
             throw new \InvalidArgumentException('Lebensziel must not be null');
         }
 

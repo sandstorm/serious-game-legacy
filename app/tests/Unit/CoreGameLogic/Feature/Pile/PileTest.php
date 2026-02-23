@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
@@ -71,11 +72,12 @@ test('Shuffling resets draw counter', function () {
 
     $this->coreGameLogic->handle(
         $this->gameId,
-        ChangeKonjunkturphase::create()->withFixedCardOrderForTesting());
+        ChangeKonjunkturphase::create()->withFixedCardOrderForTesting()
+    );
 
     $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
     expect(PileState::topCardIdForPile($gameEvents, $this->pileIdBildungUndKarriere)->value)
-        ->toBe($this->cardIdsBildung[count($this->cardIdsBildung)-1]->value);
+        ->toBe($this->cardIdsBildung[count($this->cardIdsBildung) - 1]->value);
 })->todo('fix or remove');
 
 test('Test shuffle event', function () {

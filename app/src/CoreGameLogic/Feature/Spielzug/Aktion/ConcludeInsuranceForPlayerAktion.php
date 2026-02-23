@@ -6,7 +6,6 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
-use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughResourcesValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerNotInsolventValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\PlayerDoesNotYetHaveThisInsuranceValidator;
@@ -25,7 +24,6 @@ use Domain\Definitions\Insurance\ValueObject\InsuranceId;
  */
 class ConcludeInsuranceForPlayerAktion extends Aktion
 {
-
     private ResourceChanges $resourceChanges;
 
     public function __construct(private readonly InsuranceId $insuranceId)

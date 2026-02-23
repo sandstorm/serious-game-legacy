@@ -16,7 +16,7 @@ use Domain\Definitions\Configuration\Configuration;
  *
  * An additionalPercentage of 10 will result in a total percentage of 45 (assuming that the base percentage is 35)
  */
-readonly final class AdditionalLebenshaltungskostenKindModifier extends Modifier
+final readonly class AdditionalLebenshaltungskostenKindModifier extends Modifier
 {
     public function __construct(
         public PlayerTurn $playerTurn,

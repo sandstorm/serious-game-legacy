@@ -69,7 +69,8 @@ final class AppAuthorizer
     public function __construct(
         private readonly Connection $connection,
         private readonly Dispatcher $dispatcher,
-    ) {}
+    ) {
+    }
 
     /**
      * @param  string[][]  $objectAndOtherArguments

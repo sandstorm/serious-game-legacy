@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Konjunkturphase\State;
@@ -69,7 +70,7 @@ class PileState
         /** @var Pile[] $cardPiles */
         $cardPiles = $gameEvents->findLast(CardsWereShuffled::class)->piles;
         /** @var Pile $pile */
-        $pile = array_find($cardPiles, fn($pile) => $pile->getPileId()->equals($pileId));
+        $pile = array_find($cardPiles, fn ($pile) => $pile->getPileId()->equals($pileId));
         // each time a job offer was accepted we discard the two other job offers as well -> after accepting a
         // job three new cards get drawn from the job offer card pile
         $startIndex = self::numberOfCardDrawsSinceLastShuffle($gameEvents, $pileId) * $amount;

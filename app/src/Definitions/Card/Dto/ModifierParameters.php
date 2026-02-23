@@ -1,12 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\Definitions\Card\Dto;
 
-
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
-readonly final class ModifierParameters implements \JsonSerializable
+final readonly class ModifierParameters implements \JsonSerializable
 {
     public function __construct(
         public ?int $numberOfTurns = null,

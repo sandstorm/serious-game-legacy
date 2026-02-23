@@ -10,7 +10,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
 
 trait HasQuitJob
 {
-
     public function quitJob(): void
     {
         $aktion = new QuitJobAktion();

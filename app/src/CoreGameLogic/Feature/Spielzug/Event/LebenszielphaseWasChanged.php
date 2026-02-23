@@ -18,8 +18,7 @@ final readonly class LebenszielphaseWasChanged implements GameEventInterface, Pr
         public PlayerId          $playerId,
         public ResourceChanges   $resourceChanges,
         public LebenszielPhaseId           $currentPhase,
-    )
-    {
+    ) {
     }
 
     public static function fromArray(array $values): GameEventInterface
@@ -42,7 +41,7 @@ final readonly class LebenszielphaseWasChanged implements GameEventInterface, Pr
 
     public function getResourceChanges(PlayerId $playerId): ResourceChanges
     {
-        if($playerId->equals($this->playerId)) {
+        if ($playerId->equals($this->playerId)) {
             return $this->resourceChanges;
         }
         return new ResourceChanges();

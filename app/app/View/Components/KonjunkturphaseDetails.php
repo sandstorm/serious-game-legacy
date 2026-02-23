@@ -18,7 +18,8 @@ class KonjunkturphaseDetails extends Component
      */
     public function __construct(
         public GameEvents $gameEvents,
-    ) {}
+    ) {
+    }
 
     /**
      * Get the view / contents that represent the component.

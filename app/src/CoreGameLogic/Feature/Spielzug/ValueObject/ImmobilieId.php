@@ -17,8 +17,8 @@ readonly class ImmobilieId implements \JsonSerializable
 {
     public function __construct(
         public CardId $cardId,
-        public PlayerTurn $playerTurn)
-    {
+        public PlayerTurn $playerTurn
+    ) {
     }
 
     /**

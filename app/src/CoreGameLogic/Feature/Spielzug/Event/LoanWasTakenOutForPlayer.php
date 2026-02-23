@@ -21,8 +21,7 @@ class LoanWasTakenOutForPlayer implements GameEventInterface, ProvidesResourceCh
         public Year     $year,
         public LoanId   $loanId,
         public LoanData $loanData
-    )
-    {
+    ) {
     }
 
     public static function fromArray(array $values): GameEventInterface

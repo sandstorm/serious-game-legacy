@@ -20,7 +20,6 @@ use Domain\CoreGameLogic\PlayerId;
 
 class MarkPlayerAsReadyForKonjunkturphaseChangeAktion extends Aktion
 {
-
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
         $firstValidatorInChain = new HasKonjunkturphaseEndedValidator();
@@ -50,7 +49,6 @@ class MarkPlayerAsReadyForKonjunkturphaseChangeAktion extends Aktion
                 playerId: $playerId,
                 year: KonjunkturphaseState::getCurrentYear($gameEvents),
             ),
-
         );
 
         // We want to check if all players are ready now. Therefore we need all game events AND the new events that have
@@ -58,16 +56,20 @@ class MarkPlayerAsReadyForKonjunkturphaseChangeAktion extends Aktion
         // inner event for the check).
         $gameEventsAndEventsToPersist = GameEvents::fromArray([
             ...$gameEvents,
-            ...array_map(fn($event) => $event instanceof DecoratedEvent ? $event->innerEvent : $event,
-                $eventsToPersist->events)
+            ...array_map(
+                fn ($event) => $event instanceof DecoratedEvent ? $event->innerEvent : $event,
+                $eventsToPersist->events
+            )
         ]);
         if (KonjunkturphaseState::areAllPlayersMarkedAsReadyForKonjunkturphaseChange($gameEventsAndEventsToPersist)) {
             // If all players are ready -> change Konjunkturphase
             $konjunkturphaseCommandHandler = new KonjunkturphaseCommandHandler();
             return $eventsToPersist->withAppendedEvents(
                 // TODO direct call of command handler
-                ...$konjunkturphaseCommandHandler->handleChangeKonjunkturphase(ChangeKonjunkturphase::create(),
-                $gameEvents)->events
+                ...$konjunkturphaseCommandHandler->handleChangeKonjunkturphase(
+                    ChangeKonjunkturphase::create(),
+                    $gameEvents
+                )->events
             );
         }
 

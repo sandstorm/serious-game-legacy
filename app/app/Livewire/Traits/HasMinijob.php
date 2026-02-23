@@ -21,7 +21,7 @@ trait HasMinijob
     public function doMinijob(): void
     {
         $aktion = new DoMinijobAktion();
-        $validationResult = $aktion->validate($this->myself,$this->getGameEvents());
+        $validationResult = $aktion->validate($this->myself, $this->getGameEvents());
         if (!$validationResult->canExecute) {
             $this->showNotification(
                 $validationResult->reason,

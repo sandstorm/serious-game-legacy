@@ -21,7 +21,7 @@ class Zeitslots implements \JsonSerializable
     {
         return new self(
             zeitslotsPerPlayers: array_map(
-                static fn(array $slot) => ZeitslotsPerPlayer::fromArray($slot),
+                static fn (array $slot) => ZeitslotsPerPlayer::fromArray($slot),
                 $in['zeitslotsPerPlayers'] ?? []
             ),
         );
@@ -29,7 +29,7 @@ class Zeitslots implements \JsonSerializable
 
     public function __toString(): string
     {
-        return '[Zeitslots: ' . implode(', ', array_map(static fn(ZeitslotsPerPlayer $z) => (string)$z, $this->zeitslotsPerPlayers)) . ']';
+        return '[Zeitslots: ' . implode(', ', array_map(static fn (ZeitslotsPerPlayer $z) => (string)$z, $this->zeitslotsPerPlayers)) . ']';
     }
 
     /**

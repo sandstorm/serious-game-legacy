@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator;
@@ -8,7 +9,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasBoughtImmobilie;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\ImmobilieId;
 use Domain\CoreGameLogic\PlayerId;
-use Domain\Definitions\Card\ValueObject\CardId;
 
 /**
  * Succeeds if the player owns the specified Immobilie.
@@ -17,7 +17,8 @@ final class DoesPlayerOwnImmobilieValidator extends AbstractValidator
 {
     private ImmobilieId $immobilieId;
 
-    public function __construct(ImmobilieId $immobilieId) {
+    public function __construct(ImmobilieId $immobilieId)
+    {
         $this->immobilieId = $immobilieId;
     }
 

@@ -27,22 +27,28 @@ describe('build', function () {
         $allCards = [
             ...CardFinder::getInstance()->getCardDefinitionsByCategoryAndPhase(
                 CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                LebenszielPhaseId::PHASE_1),
+                LebenszielPhaseId::PHASE_1
+            ),
             ...CardFinder::getInstance()->getCardDefinitionsByCategoryAndPhase(
                 CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                LebenszielPhaseId::PHASE_2),
+                LebenszielPhaseId::PHASE_2
+            ),
             ...CardFinder::getInstance()->getCardDefinitionsByCategoryAndPhase(
                 CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                LebenszielPhaseId::PHASE_3),
+                LebenszielPhaseId::PHASE_3
+            ),
             ...CardFinder::getInstance()->getCardDefinitionsByCategoryAndPhase(
                 CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                LebenszielPhaseId::PHASE_1),
+                LebenszielPhaseId::PHASE_1
+            ),
             ...CardFinder::getInstance()->getCardDefinitionsByCategoryAndPhase(
                 CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                LebenszielPhaseId::PHASE_2),
+                LebenszielPhaseId::PHASE_2
+            ),
             ...CardFinder::getInstance()->getCardDefinitionsByCategoryAndPhase(
                 CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                LebenszielPhaseId::PHASE_3),
+                LebenszielPhaseId::PHASE_3
+            ),
         ];
 
         foreach ($allCards as $card) {
@@ -60,11 +66,10 @@ describe('build', function () {
                     year: new Year(1),
                     modifierParameters: $modifierParameters,
                     description: "for testing",
-                    );
+                );
             }
 
         }
     })->throwsNoExceptions();
 
 });
-

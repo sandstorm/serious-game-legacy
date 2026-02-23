@@ -1,11 +1,13 @@
 <?php
+
 declare(strict_types=1);
+
 namespace Domain\CoreGameLogic\Feature\Konjunkturphase\Dto;
 
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 
-readonly final class InvestmentPrice implements \JsonSerializable
+final readonly class InvestmentPrice implements \JsonSerializable
 {
     public function __construct(public InvestmentId $investmentId, public MoneyAmount $price)
     {

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Definitions\Cards;
@@ -125,7 +126,7 @@ describe('generatePilesFromCards', function () {
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-8000),
                     bildungKompetenzsteinChange: +2,
-                //TODO: Folgen -30% Gehalt einmalig (Option)
+                    //TODO: Folgen -30% Gehalt einmalig (Option)
                 ),
             ),
             "t01" => new KategorieCardDefinition(
@@ -205,7 +206,7 @@ describe('generatePilesFromCards', function () {
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(-8000),
                     bildungKompetenzsteinChange: +2,
-                //TODO: Folgen -30% Gehalt einmalig (Option)
+                    //TODO: Folgen -30% Gehalt einmalig (Option)
                 ),
             ),
             "t01" => new KategorieCardDefinition(

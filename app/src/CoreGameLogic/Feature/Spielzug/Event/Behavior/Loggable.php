@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior;
 
-
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\LogEntry;
 
 /**

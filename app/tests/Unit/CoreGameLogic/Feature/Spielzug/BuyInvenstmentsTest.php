@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
@@ -43,10 +44,15 @@ describe('handleBuyInvestmentsForPlayer', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $expectedSumOfAllStocks = new MoneyAmount($currentPriceLowRisk->value * $amountOfStocks);
         $expectedGuthaben = new MoneyAmount(Configuration::STARTKAPITAL_VALUE - Configuration::INITIAL_INVESTMENT_PRICE * $amountOfStocks);
-        expect(PlayerState::getTotalValueOfAllInvestmentsForPlayer($gameEvents,
-            $this->players[0]))->toEqual($expectedSumOfAllStocks)
-            ->and(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEvents, $this->players[0],
-                InvestmentId::MERFEDES_PENZ))->toEqual($amountOfStocks)
+        expect(PlayerState::getTotalValueOfAllInvestmentsForPlayer(
+            $gameEvents,
+            $this->players[0]
+        ))->toEqual($expectedSumOfAllStocks)
+            ->and(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer(
+                $gameEvents,
+                $this->players[0],
+                InvestmentId::MERFEDES_PENZ
+            ))->toEqual($amountOfStocks)
             ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual($expectedGuthaben)
             ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[1]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE))
             ->and(count($gameEvents->findAllOfType(ProvidesInvestmentPriceChanges::class)))->toEqual(1)
@@ -145,12 +151,20 @@ describe('handleBuyInvestmentsForPlayer', function () {
             new MoneyAmount($highRiskPriceBeforeFirstBuy->value * $amountOfStocksHighRisk * -1)
         );
 
-        expect(PlayerState::getTotalValueOfAllInvestmentsForPlayer($gameEvents,
-            $this->players[0]))->toEqual($expectedSumOfAllStocks)
-            ->and(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEvents, $this->players[0],
-                InvestmentId::MERFEDES_PENZ))->toEqual($amountOfStocks)
-            ->and(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEvents, $this->players[0],
-                InvestmentId::BETA_PEAR))->toEqual($amountOfStocksHighRisk)
+        expect(PlayerState::getTotalValueOfAllInvestmentsForPlayer(
+            $gameEvents,
+            $this->players[0]
+        ))->toEqual($expectedSumOfAllStocks)
+            ->and(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer(
+                $gameEvents,
+                $this->players[0],
+                InvestmentId::MERFEDES_PENZ
+            ))->toEqual($amountOfStocks)
+            ->and(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer(
+                $gameEvents,
+                $this->players[0],
+                InvestmentId::BETA_PEAR
+            ))->toEqual($amountOfStocksHighRisk)
             ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual($expectedGuthaben)
             ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[1]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE + 5000))
             ->and(count($gameEvents->findAllOfType(ProvidesInvestmentPriceChanges::class)))->toEqual(4);

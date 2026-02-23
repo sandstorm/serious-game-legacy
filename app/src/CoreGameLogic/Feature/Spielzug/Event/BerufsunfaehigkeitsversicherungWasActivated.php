@@ -7,8 +7,6 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\LogEntry;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\Loggable;
-use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
-use Domain\Definitions\Card\ValueObject\ModifierId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
@@ -26,7 +24,8 @@ final readonly class BerufsunfaehigkeitsversicherungWasActivated implements Game
         public PlayerId $playerId,
         public Year $year,
         public MoneyAmount $gehalt,
-    ) {}
+    ) {
+    }
 
     public static function fromArray(array $values): GameEventInterface
     {

@@ -1432,7 +1432,7 @@ class KonjunkturphaseFinder
     public static function getAllKonjunkturphasenByTypes(array $types): array
     {
         $allKonjunkturphasen = self::getAllKonjunkturphasen();
-        return array_filter($allKonjunkturphasen, static fn(KonjunkturphaseDefinition $konjunkturphase) => in_array($konjunkturphase->type, $types, true));
+        return array_filter($allKonjunkturphasen, static fn (KonjunkturphaseDefinition $konjunkturphase) => in_array($konjunkturphase->type, $types, true));
     }
 
     /**
@@ -1464,8 +1464,7 @@ class KonjunkturphaseFinder
     public static function getListOfPossibleNextPhaseTypes(
         ?KonjunkturphaseTypeEnum $konjunkturphaseType = null,
         bool $isChanceForRezessionIncreased = false
-    ): array
-    {
+    ): array {
         $unmodifiedList = match ($konjunkturphaseType) {
             KonjunkturphaseTypeEnum::AUFSCHWUNG => [
                 KonjunkturphaseTypeEnum::AUFSCHWUNG,

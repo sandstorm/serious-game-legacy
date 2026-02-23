@@ -23,8 +23,7 @@ final readonly class SpielzugWasEnded implements GameEventInterface, Loggable, P
         public PlayerTurn    $playerTurn,
         public array         $investmentPrices,
         public ?InvestmentId $idOfUpdatedInvestmentOrNull = null,
-    )
-    {
+    ) {
     }
 
     public static function fromArray(array $values): GameEventInterface
@@ -33,7 +32,7 @@ final readonly class SpielzugWasEnded implements GameEventInterface, Loggable, P
             playerId: PlayerId::fromString($values['playerId']),
             playerTurn: new PlayerTurn($values['playerTurn']),
             investmentPrices: array_map(
-                static fn($investmentPrice) => InvestmentPrice::fromArray($investmentPrice),
+                static fn ($investmentPrice) => InvestmentPrice::fromArray($investmentPrice),
                 $values['investmentPrices']
             ),
             idOfUpdatedInvestmentOrNull: $values['idOfUpdatedInvestmentOrNull'] !== null ? InvestmentId::from($values['idOfUpdatedInvestmentOrNull']) : null,

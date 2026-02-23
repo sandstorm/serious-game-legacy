@@ -11,8 +11,7 @@ final readonly class StartWeiterbildung implements CommandInterface
 {
     public static function create(
         PlayerId $playerId,
-    ): StartWeiterbildung
-    {
+    ): StartWeiterbildung {
         return new self($playerId);
     }
 

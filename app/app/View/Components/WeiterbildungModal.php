@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\View\Components;
@@ -17,7 +18,8 @@ class WeiterbildungModal extends Component
     public function __construct(
         public PlayerId $playerId,
         public GameEvents $gameEvents,
-    ) {}
+    ) {
+    }
 
     /**
      * Get the view / contents that represent the component.

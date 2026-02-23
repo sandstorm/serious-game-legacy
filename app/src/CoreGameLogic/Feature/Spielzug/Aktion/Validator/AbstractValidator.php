@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator;
-
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
@@ -17,16 +17,15 @@ use Domain\CoreGameLogic\PlayerId;
  */
 abstract class AbstractValidator implements Validator
 {
-
     private Validator|null $nextValidator = null;
 
-    public final function setNext(Validator $validator): Validator
+    final public function setNext(Validator $validator): Validator
     {
         $this->nextValidator = $validator;
         return $validator;
     }
 
-    public final function append(Validator $validator): Validator
+    final public function append(Validator $validator): Validator
     {
         if ($this->nextValidator === null) {
             return $this->setNext($validator);

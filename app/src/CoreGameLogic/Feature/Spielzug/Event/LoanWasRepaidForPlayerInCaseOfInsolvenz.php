@@ -15,8 +15,7 @@ class LoanWasRepaidForPlayerInCaseOfInsolvenz implements GameEventInterface, Log
     public function __construct(
         public PlayerId $playerId,
         public LoanId $loanId,
-    )
-    {
+    ) {
     }
 
     public static function fromArray(array $values): GameEventInterface

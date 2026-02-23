@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\CoreGameLogic\Feature\Konjunkturphase;
@@ -12,8 +13,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
-use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
@@ -67,7 +66,7 @@ describe('handleChangeKonjunkturphase', function () {
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe($expectedNumberOfZeitsteine);
     });
 
-    it('type of the next konjunkturphase after the first one has correct type', function() {
+    it('type of the next konjunkturphase after the first one has correct type', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $lastPhase = KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents);
         expect($lastPhase)->not()->toBeNull()
@@ -136,7 +135,7 @@ describe('getListOfPossibleNextPhaseTypes', function () {
                 konjunkturphaseType: $lastPhase->type,
                 isChanceForRezessionIncreased: true
             );
-            echo implode(", ", array_map(fn ($phase) => $phase->value ,$possibleNextPhases)) . "\n\n";
+            echo implode(", ", array_map(fn ($phase) => $phase->value, $possibleNextPhases)) . "\n\n";
         }
     })->skip("Un-skip this to debug increased chance for Rezession");
 });

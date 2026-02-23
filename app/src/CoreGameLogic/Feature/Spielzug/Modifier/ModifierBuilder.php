@@ -10,7 +10,7 @@ use Domain\Definitions\Card\Dto\ModifierParameters;
 use Domain\Definitions\Card\ValueObject\ModifierId;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 
-readonly final class ModifierBuilder
+final readonly class ModifierBuilder
 {
     /**
      * @param ModifierId $modifierId

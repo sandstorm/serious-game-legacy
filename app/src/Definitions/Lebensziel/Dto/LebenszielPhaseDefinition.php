@@ -15,8 +15,7 @@ readonly class LebenszielPhaseDefinition
         public MoneyAmount       $investitionen,
         public int               $bildungsKompetenzSlots,
         public int               $freizeitKompetenzSlots,
-    )
-    {
+    ) {
     }
 
     /**

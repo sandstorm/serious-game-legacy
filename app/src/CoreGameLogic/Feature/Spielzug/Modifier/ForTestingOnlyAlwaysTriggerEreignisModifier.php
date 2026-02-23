@@ -14,7 +14,7 @@ use Domain\Definitions\Card\ValueObject\ModifierId;
  * This will make sure an event will always be triggered.
  * This modifier can be set in KonjunkturphaseDefinition for testing.
  */
-readonly final class ForTestingOnlyAlwaysTriggerEreignisModifier extends Modifier
+final readonly class ForTestingOnlyAlwaysTriggerEreignisModifier extends Modifier
 {
     public function __construct(
         public PlayerTurn $playerTurn,

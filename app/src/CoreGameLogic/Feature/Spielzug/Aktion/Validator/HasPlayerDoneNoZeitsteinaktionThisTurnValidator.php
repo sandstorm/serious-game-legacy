@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator;
@@ -26,8 +27,7 @@ final class HasPlayerDoneNoZeitsteinaktionThisTurnValidator extends AbstractVali
     public function __construct(
         ?CategoryId $categoryId = null,
         bool $isActivateCardAktion = false,
-    )
-    {
+    ) {
         $this->categoryId = $categoryId;
         $this->isActivateCardAktion = $isActivateCardAktion;
     }

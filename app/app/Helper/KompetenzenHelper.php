@@ -26,8 +26,7 @@ class KompetenzenHelper
         int        $requiredNumberOfKompetenzSteine,
         string     $iconComponentName,
         CategoryId $categoryId,
-    ): KompetenzSteineForCategory
-    {
+    ): KompetenzSteineForCategory {
         $kompetenzSteine = [];
         for ($i = 0; $i < $numberOfkompetenzSteine; $i++) {
             $kompetenzSteine[] = new KompetenzSteinWithColor(

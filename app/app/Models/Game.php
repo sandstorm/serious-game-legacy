@@ -66,7 +66,7 @@ class Game extends Model
      */
     public function players(): BelongsToMany
     {
-        return $this->belongsToMany(Player::class,  'game_user', 'game_id', 'user_id');
+        return $this->belongsToMany(Player::class, 'game_user', 'game_id', 'user_id');
     }
 
     public function getCreatorName(): string

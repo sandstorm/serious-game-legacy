@@ -19,7 +19,7 @@ use Domain\Definitions\Konjunkturphase\ValueObject\Year;
  *
  * The modifier will stay active until the end of the current Konjunkturphase.
  */
-readonly final class SozialesUndFreizeitCostModifier extends Modifier
+final readonly class SozialesUndFreizeitCostModifier extends Modifier
 {
     public function __construct(
         public PlayerTurn $playerTurn,
@@ -38,7 +38,7 @@ readonly final class SozialesUndFreizeitCostModifier extends Modifier
     public function isActive(GameEvents $gameEvents): bool
     {
         $konjunkturphaseChangesAfterSperre = $gameEvents->findLastOrNullWhere(
-            fn($event) => $event instanceof KonjunkturphaseWasChanged && $event->year->equals(new Year($this->year->value + 1))
+            fn ($event) => $event instanceof KonjunkturphaseWasChanged && $event->year->equals(new Year($this->year->value + 1))
         );
 
         return $konjunkturphaseChangesAfterSperre === null;

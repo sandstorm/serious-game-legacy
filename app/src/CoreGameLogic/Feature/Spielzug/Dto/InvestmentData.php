@@ -7,7 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Dto;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
-readonly final class InvestmentData
+final readonly class InvestmentData
 {
     public function __construct(
         public InvestmentId $investmentId,

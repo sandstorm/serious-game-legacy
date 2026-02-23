@@ -20,7 +20,8 @@ class Lebensziel extends Component
         public GameEvents $gameEvents,
         public PlayerId $playerId,
         public LebenszielDefinition $lebensziel,
-    ) {}
+    ) {
+    }
 
     /**
      * Get the view / contents that represent the component.

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
@@ -83,7 +84,8 @@ describe('handleCancelAllInsurancesToAvoidInsolvenzForPlayer', function () {
 
         $this->handle(EnterLebenshaltungskostenForPlayer::create(
             $this->getPlayers()[0],
-            MoneySheetState::calculateMinimumValueForLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[0])));
+            MoneySheetState::calculateMinimumValueForLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[0])
+        ));
         $this->handle(CompleteMoneysheetForPlayer::create($this->getPlayers()[0]));
         $this->handle(CancelAllInsurancesToAvoidInsolvenzForPlayer::create($this->getPlayers()[0]));
     })->throws(\RuntimeException::class, "Cannot cancel insurance: Du hast keine Versicherung", 1756987783);
@@ -122,7 +124,8 @@ describe('handleCancelAllInsurancesToAvoidInsolvenzForPlayer', function () {
 
         $this->handle(EnterLebenshaltungskostenForPlayer::create(
             $this->getPlayers()[0],
-            MoneySheetState::calculateMinimumValueForLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[0])));
+            MoneySheetState::calculateMinimumValueForLebenshaltungskostenForPlayer($this->getGameEvents(), $this->getPlayers()[0])
+        ));
 
         $this->handle(CompleteMoneysheetForPlayer::create($this->getPlayers()[0]));
         $guthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->getPlayers()[0]);

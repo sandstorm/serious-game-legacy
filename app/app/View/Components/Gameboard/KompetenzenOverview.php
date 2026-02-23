@@ -24,7 +24,8 @@ class KompetenzenOverview extends Component
     public function __construct(
         public GameEvents $gameEvents,
         public PlayerId $playerId,
-    ) {}
+    ) {
+    }
 
     /**
      * Get the view / contents that represent the component.

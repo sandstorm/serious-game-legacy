@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator;
@@ -14,8 +15,7 @@ final class SelectedAnswerForWeiterbildungExistsValidator extends AbstractValida
 {
     public function __construct(
         public AnswerId $selectedAnswer,
-    )
-    {
+    ) {
     }
 
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult

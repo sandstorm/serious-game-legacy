@@ -16,14 +16,13 @@ use Domain\Definitions\Card\ValueObject\ModifierId;
  * Taking a job will permanently bind a Zeitstein, as long as the player has the job. The Zeitstein will not be available
  * in the following Konjunkturphasen. Quitting/losing the job will return the Zeitstein to the player.
  */
-readonly final class BindZeitsteinForJobModifier extends Modifier
+final readonly class BindZeitsteinForJobModifier extends Modifier
 {
     public function __construct(
         public PlayerId $playerId,
         public PlayerTurn $playerTurn,
         string $description
-    )
-    {
+    ) {
         parent::__construct(ModifierId::BIND_ZEITSTEIN_FOR_JOB, $playerTurn, $description);
     }
 
@@ -42,12 +41,12 @@ readonly final class BindZeitsteinForJobModifier extends Modifier
         // Get all job events for this player, after the modifier was added
         $jobEventsAfterModifierStartingTurn = $gameEvents
             // all events after modifier the job was accepted (we use the playerTurn to find the correct event)
-            ->findAllAfterLastOrNullWhere(fn($event) => $event instanceof JobOfferWasAccepted
+            ->findAllAfterLastOrNullWhere(fn ($event) => $event instanceof JobOfferWasAccepted
                 && $event->playerId->equals($this->playerId)
                 && $event->playerTurn === $this->playerTurn)
             // filter the remaining events for JobOfferWasAccepted and JobWasQuit events (which would override or remove
             // the modifier) for the current player
-            ?->filter(fn($event) => ($event instanceof JobOfferWasAccepted || $event instanceof JobWasQuit)
+            ?->filter(fn ($event) => ($event instanceof JobOfferWasAccepted || $event instanceof JobWasQuit)
                 && $event->playerId->equals($this->playerId));
         // if at least one event is in the list of events after the initial Job offer was accepted, the modifier is not
         // relevant anymore -> return false

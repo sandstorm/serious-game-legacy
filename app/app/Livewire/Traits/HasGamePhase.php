@@ -17,7 +17,6 @@ use Illuminate\View\View;
 
 trait HasGamePhase
 {
-
     public bool $showItsYourTurnNotification = false;
 
     public function renderingHasGamePhase(): void

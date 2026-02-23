@@ -21,7 +21,8 @@ class SellImmobilieToAvoidInsolvenzAktion extends Aktion
 {
     public function __construct(
         public ImmobilieId $immobilieId,
-    ) {}
+    ) {
+    }
 
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {

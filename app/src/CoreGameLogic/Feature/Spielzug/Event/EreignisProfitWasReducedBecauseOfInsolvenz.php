@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Event;
@@ -18,8 +19,7 @@ final readonly class EreignisProfitWasReducedBecauseOfInsolvenz implements GameE
     public function __construct(
         protected PlayerId        $playerId,
         protected ResourceChanges $resourceChanges,
-    )
-    {
+    ) {
     }
 
     public static function fromArray(array $values): GameEventInterface

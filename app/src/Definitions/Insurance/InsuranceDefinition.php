@@ -22,8 +22,7 @@ class InsuranceDefinition
         public string            $description,
         public array             $annualCost,
         // TODO add field for benefits or coverage details
-    )
-    {
+    ) {
     }
 
     public function getAnnualCost(int $currentPhase = 1): MoneyAmount

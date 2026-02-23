@@ -52,7 +52,7 @@ class InvestmentPriceHelper
     {
         $currentInvestmentPrices = InvestmentPriceState::getCurrentInvestmentPrices($gameEvents);
         return array_map(
-            fn(InvestmentPrice $investmentPrice) => $investmentPrice->investmentId === $investmentId
+            fn (InvestmentPrice $investmentPrice) => $investmentPrice->investmentId === $investmentId
                 ? self::calculatePriceGTMWithJumpDiffusion($investmentId, $gameEvents)
                 : $investmentPrice,
             $currentInvestmentPrices

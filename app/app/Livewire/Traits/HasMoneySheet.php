@@ -13,7 +13,6 @@ use App\Livewire\ValueObject\ExpensesTabEnum;
 use App\Livewire\ValueObject\IncomeTabEnum;
 use App\Livewire\ValueObject\NotificationTypeEnum;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
-use Domain\CoreGameLogic\Feature\Moneysheet\State\LoanCalculator;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\RepayLoanForPlayerAktion;

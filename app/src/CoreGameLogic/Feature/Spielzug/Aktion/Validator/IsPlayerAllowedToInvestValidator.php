@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator;
@@ -28,8 +29,8 @@ final class IsPlayerAllowedToInvestValidator extends AbstractValidator
         $isInsolvent = PlayerState::isPlayerInsolvent($gameEvents, $playerId);
         if ($isInsolvent) {
             return new AktionValidationResult(
-              canExecute: false,
-              reason: "Du bist insolvent."
+                canExecute: false,
+                reason: "Du bist insolvent."
             );
         }
 

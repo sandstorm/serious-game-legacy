@@ -16,7 +16,6 @@ class AuswirkungDefinition
      * @param float $value
      */
     public function __construct(
-//        public string $title,
         public AuswirkungScopeEnum $scope,
         public float $value,
     ) {

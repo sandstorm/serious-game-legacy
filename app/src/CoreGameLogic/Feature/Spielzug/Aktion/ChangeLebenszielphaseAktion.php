@@ -63,4 +63,3 @@ class ChangeLebenszielphaseAktion extends Aktion
         );
     }
 }
-

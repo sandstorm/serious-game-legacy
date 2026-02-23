@@ -55,7 +55,7 @@ class MoneySheetInvestments extends Component
         }
 
         $immobilienOwnedByPlayer = [];
-        foreach(PlayerState::getImmoblienOwnedByPlayer($this->gameEvents, $this->playerId) as $immobilie) {
+        foreach (PlayerState::getImmoblienOwnedByPlayer($this->gameEvents, $this->playerId) as $immobilie) {
             $immoblienDefinition = CardFinder::getInstance()->getCardById($immobilie->getCardId(), ImmobilienCardDefinition::class);
             $immobilienOwnedByPlayer[] = new ImmoblienDto(
                 title: $immoblienDefinition->getTitle(),

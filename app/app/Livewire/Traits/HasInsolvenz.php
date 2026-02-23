@@ -92,7 +92,7 @@ trait HasInsolvenz
 
         /** @var PlayerHasSoldImmobilieToAvoidInsolvenz|null $event */
         $event = $this->getGameEvents()->findLastOrNullWhere(
-            fn($e) => $e instanceof PlayerHasSoldImmobilieToAvoidInsolvenz && $e->getPlayerId()->equals($this->myself)
+            fn ($e) => $e instanceof PlayerHasSoldImmobilieToAvoidInsolvenz && $e->getPlayerId()->equals($this->myself)
         );
         if ($event !== null) {
             $this->showBanner('Immobilie wurden erfolgreich verkauft.', $event->getResourceChanges($this->myself));
@@ -169,7 +169,7 @@ trait HasInsolvenz
 
         /** @var PlayerHasSoldInvestmentsToAvoidInsolvenz|null $event */
         $event = $this->getGameEvents()->findLastOrNullWhere(
-            fn($e) => $e instanceof PlayerHasSoldInvestmentsToAvoidInsolvenz && $e->getPlayerId()->equals($this->myself)
+            fn ($e) => $e instanceof PlayerHasSoldInvestmentsToAvoidInsolvenz && $e->getPlayerId()->equals($this->myself)
         );
         if ($event !== null) {
             $this->showBanner($event->getAmount() . ' Anteile von ' . $investmentId->value . ' wurden erfolgreich verkauft.', $event->getResourceChanges($this->myself));

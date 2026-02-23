@@ -40,8 +40,10 @@ final readonly class EreignisWasTriggered implements ProvidesModifiers, Provides
         public Year $year,
         public ResourceChanges $resourceChanges,
     ) {
-        $this->ereignisCardDefinition = CardFinder::getInstance()->getCardById($this->ereignisCardId,
-            EreignisCardDefinition::class);
+        $this->ereignisCardDefinition = CardFinder::getInstance()->getCardById(
+            $this->ereignisCardId,
+            EreignisCardDefinition::class
+        );
     }
 
     /**

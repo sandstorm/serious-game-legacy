@@ -38,8 +38,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereEntered;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasCorrected;
-use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanForPlayerWasEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasTakenOutForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
@@ -74,7 +72,8 @@ final readonly class EventNormalizer
          * @var array<string,class-string<GameEventInterface>>
          */
         private array $shortEventTypeToFullClassName,
-    ) {}
+    ) {
+    }
 
     /**
      * @internal never instantiate this object yourself

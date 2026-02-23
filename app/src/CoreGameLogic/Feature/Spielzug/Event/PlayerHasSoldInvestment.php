@@ -32,8 +32,7 @@ class PlayerHasSoldInvestment implements GameEventInterface, ZeitsteinAktion, Pr
         public MoneyAmount  $price,
         public int          $amount,
         public ResourceChanges $resourceChanges,
-    )
-    {
+    ) {
     }
 
     public static function fromArray(array $values): GameEventInterface

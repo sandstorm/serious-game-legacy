@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
@@ -149,19 +150,29 @@ describe('Ereignisse', function () {
         $this->handle(ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE));
         $gameEventsAfterEreignis = $this->getGameEvents();
         expect($gameEventsAfterEreignis->findLast(EreignisWasTriggered::class))->not()->toBeNull()
-            ->and(PlayerState::getGuthabenForPlayer($gameEventsAfterEreignis,
-                $this->getPlayers()[0])->value)->toEqual(Configuration::STARTKAPITAL_VALUE + 1000)
-            ->and(PlayerState::getZeitsteineForPlayer($gameEventsAfterEreignis,
-                $this->getPlayers()[0]))->toEqual($this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2))
+            ->and(PlayerState::getGuthabenForPlayer(
+                $gameEventsAfterEreignis,
+                $this->getPlayers()[0]
+            )->value)->toEqual(Configuration::STARTKAPITAL_VALUE + 1000)
+            ->and(PlayerState::getZeitsteineForPlayer(
+                $gameEventsAfterEreignis,
+                $this->getPlayers()[0]
+            ))->toEqual($this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2))
             ->and(PlayerState::getBildungsKompetenzsteine($gameEventsAfterEreignis, $this->getPlayers()[0]))->toEqual(1)
             ->and(PlayerState::getFreizeitKompetenzsteine($gameEventsAfterEreignis, $this->getPlayers()[0]))->toEqual(1)
-            ->and(PlayerState::getGuthabenForPlayer($gameEventsAfterEreignis,
-                $this->getPlayers()[1])->value)->toEqual(Configuration::STARTKAPITAL_VALUE)
-            ->and(PlayerState::getZeitsteineForPlayer($gameEventsAfterEreignis,
-                $this->getPlayers()[1]))->toEqual($this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2))
+            ->and(PlayerState::getGuthabenForPlayer(
+                $gameEventsAfterEreignis,
+                $this->getPlayers()[1]
+            )->value)->toEqual(Configuration::STARTKAPITAL_VALUE)
+            ->and(PlayerState::getZeitsteineForPlayer(
+                $gameEventsAfterEreignis,
+                $this->getPlayers()[1]
+            ))->toEqual($this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2))
             ->and(PlayerState::getBildungsKompetenzsteine($gameEventsAfterEreignis, $this->getPlayers()[1]))->toEqual(0)
-            ->and(PlayerState::getFreizeitKompetenzsteine($gameEventsAfterEreignis,
-                $this->getPlayers()[1]))->toEqual(0);
+            ->and(PlayerState::getFreizeitKompetenzsteine(
+                $gameEventsAfterEreignis,
+                $this->getPlayers()[1]
+            ))->toEqual(0);
     });
 
     it('will deduct 50% of any profit if the player is insolvent', function () {
@@ -198,19 +209,29 @@ describe('Ereignisse', function () {
         $this->handle(ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE));
         $gameEventsAfterEreignis = $this->getGameEvents();
         expect($gameEventsAfterEreignis->findLast(EreignisWasTriggered::class))->not()->toBeNull()
-            ->and(PlayerState::getGuthabenForPlayer($gameEventsAfterEreignis,
-                $this->getPlayers()[0])->value)->toEqual(5000)
-            ->and(PlayerState::getZeitsteineForPlayer($gameEventsAfterEreignis,
-                $this->getPlayers()[0]))->toEqual($this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2))
+            ->and(PlayerState::getGuthabenForPlayer(
+                $gameEventsAfterEreignis,
+                $this->getPlayers()[0]
+            )->value)->toEqual(5000)
+            ->and(PlayerState::getZeitsteineForPlayer(
+                $gameEventsAfterEreignis,
+                $this->getPlayers()[0]
+            ))->toEqual($this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2))
             ->and(PlayerState::getBildungsKompetenzsteine($gameEventsAfterEreignis, $this->getPlayers()[0]))->toEqual(2)
             ->and(PlayerState::getFreizeitKompetenzsteine($gameEventsAfterEreignis, $this->getPlayers()[0]))->toEqual(2)
-            ->and(PlayerState::getGuthabenForPlayer($gameEventsAfterEreignis,
-                $this->getPlayers()[1])->value)->toEqual(Configuration::STARTKAPITAL_VALUE)
-            ->and(PlayerState::getZeitsteineForPlayer($gameEventsAfterEreignis,
-                $this->getPlayers()[1]))->toEqual($this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2))
+            ->and(PlayerState::getGuthabenForPlayer(
+                $gameEventsAfterEreignis,
+                $this->getPlayers()[1]
+            )->value)->toEqual(Configuration::STARTKAPITAL_VALUE)
+            ->and(PlayerState::getZeitsteineForPlayer(
+                $gameEventsAfterEreignis,
+                $this->getPlayers()[1]
+            ))->toEqual($this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2))
             ->and(PlayerState::getBildungsKompetenzsteine($gameEventsAfterEreignis, $this->getPlayers()[1]))->toEqual(0)
-            ->and(PlayerState::getFreizeitKompetenzsteine($gameEventsAfterEreignis,
-                $this->getPlayers()[1]))->toEqual(0);
+            ->and(PlayerState::getFreizeitKompetenzsteine(
+                $gameEventsAfterEreignis,
+                $this->getPlayers()[1]
+            ))->toEqual(0);
     });
 
     it('will not modify negative resourceChanges if the player is insolvent', function () {
@@ -249,19 +270,29 @@ describe('Ereignisse', function () {
         $this->handle(ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE));
         $gameEventsAfterEreignis = $this->getGameEvents();
         expect($gameEventsAfterEreignis->findLast(EreignisWasTriggered::class))->not()->toBeNull()
-            ->and(PlayerState::getGuthabenForPlayer($gameEventsAfterEreignis,
-                $this->getPlayers()[0])->value)->toEqual(1000)
-            ->and(PlayerState::getZeitsteineForPlayer($gameEventsAfterEreignis,
-                $this->getPlayers()[0]))->toEqual($this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2))
+            ->and(PlayerState::getGuthabenForPlayer(
+                $gameEventsAfterEreignis,
+                $this->getPlayers()[0]
+            )->value)->toEqual(1000)
+            ->and(PlayerState::getZeitsteineForPlayer(
+                $gameEventsAfterEreignis,
+                $this->getPlayers()[0]
+            ))->toEqual($this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2))
             ->and(PlayerState::getBildungsKompetenzsteine($gameEventsAfterEreignis, $this->getPlayers()[0]))->toEqual(2)
             ->and(PlayerState::getFreizeitKompetenzsteine($gameEventsAfterEreignis, $this->getPlayers()[0]))->toEqual(2)
-            ->and(PlayerState::getGuthabenForPlayer($gameEventsAfterEreignis,
-                $this->getPlayers()[1])->value)->toEqual(Configuration::STARTKAPITAL_VALUE)
-            ->and(PlayerState::getZeitsteineForPlayer($gameEventsAfterEreignis,
-                $this->getPlayers()[1]))->toEqual($this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2))
+            ->and(PlayerState::getGuthabenForPlayer(
+                $gameEventsAfterEreignis,
+                $this->getPlayers()[1]
+            )->value)->toEqual(Configuration::STARTKAPITAL_VALUE)
+            ->and(PlayerState::getZeitsteineForPlayer(
+                $gameEventsAfterEreignis,
+                $this->getPlayers()[1]
+            ))->toEqual($this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2))
             ->and(PlayerState::getBildungsKompetenzsteine($gameEventsAfterEreignis, $this->getPlayers()[1]))->toEqual(0)
-            ->and(PlayerState::getFreizeitKompetenzsteine($gameEventsAfterEreignis,
-                $this->getPlayers()[1]))->toEqual(0);
+            ->and(PlayerState::getFreizeitKompetenzsteine(
+                $gameEventsAfterEreignis,
+                $this->getPlayers()[1]
+            ))->toEqual(0);
     });
 });
 
@@ -306,11 +337,15 @@ describe('Childbirth', function () {
         $this->handle(ActivateCard::create($this->getPlayers()[0], CategoryId::SOZIALES_UND_FREIZEIT));
         $gameEventsAfterEreignis = $this->getGameEvents();
         expect($gameEventsAfterEreignis->findLast(EreignisWasTriggered::class))->not()->toBeNull()
-            ->and(MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEventsAfterEreignis,
-                $this->getPlayers()[0])->value)
+            ->and(MoneySheetState::calculateLebenshaltungskostenForPlayer(
+                $gameEventsAfterEreignis,
+                $this->getPlayers()[0]
+            )->value)
             ->toEqual(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE + 1000)
-            ->and(MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEventsAfterEreignis,
-                $this->getPlayers()[1])->value)
+            ->and(MoneySheetState::calculateLebenshaltungskostenForPlayer(
+                $gameEventsAfterEreignis,
+                $this->getPlayers()[1]
+            )->value)
             ->toEqual(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE);
     });
 
@@ -368,8 +403,10 @@ describe('Childbirth', function () {
         $this->handle(ActivateCard::create($this->getPlayers()[0], CategoryId::SOZIALES_UND_FREIZEIT));
         $gameEventsAfterEreignis = $this->getGameEvents();
         expect($gameEventsAfterEreignis->findLast(EreignisWasTriggered::class))->not()->toBeNull()
-            ->and(MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEventsAfterEreignis,
-                $this->getPlayers()[0])->value)
+            ->and(MoneySheetState::calculateLebenshaltungskostenForPlayer(
+                $gameEventsAfterEreignis,
+                $this->getPlayers()[0]
+            )->value)
             ->toEqual(100000 * (Configuration::LEBENSHALTUNGSKOSTEN_PERCENT + 10) / 100)
             ->and(MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEventsAfterEreignis,
                 $this->getPlayers()[1])->value)

@@ -6,7 +6,9 @@ namespace Domain\Definitions\Konjunkturphase\ValueObject;
 
 readonly class Year implements \JsonSerializable
 {
-    public function __construct(public int $value) {}
+    public function __construct(public int $value)
+    {
+    }
 
     public function __toString(): string
     {

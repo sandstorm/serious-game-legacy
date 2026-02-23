@@ -22,7 +22,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPl
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\FileInsolvenzForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
-use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;

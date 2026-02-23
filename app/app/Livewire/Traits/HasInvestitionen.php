@@ -69,7 +69,7 @@ trait HasInvestitionen
 
             /** @var PlayerHasBoughtInvestment|PlayerHasSoldInvestment $investmentEvent */
             $investmentEvent = $this->getGameEvents()->findLastOrNullWhere(
-                fn(GameEventInterface $event) => $event instanceof PlayerHasBoughtInvestment || $event instanceof PlayerHasSoldInvestment
+                fn (GameEventInterface $event) => $event instanceof PlayerHasBoughtInvestment || $event instanceof PlayerHasSoldInvestment
             );
             if ($investmentEvent === null) {
                 return; // Should not happen, ignore if it does.
@@ -262,7 +262,7 @@ trait HasInvestitionen
 
         /** @var PlayerHasSoldInvestmentsAfterInvestmentByAnotherPlayer|null $event */
         $event = $this->getGameEvents()->findLastOrNullWhere(
-            fn($e) => $e instanceof PlayerHasSoldInvestmentsAfterInvestmentByAnotherPlayer && $e->playerId->equals($this->myself)
+            fn ($e) => $e instanceof PlayerHasSoldInvestmentsAfterInvestmentByAnotherPlayer && $e->playerId->equals($this->myself)
         );
         if ($event !== null) {
             $this->showBanner($event->amount . ' Anteile von ' . $investmentId->value . ' wurden erfolgreich verkauft.', $event->getResourceChanges($this->myself));

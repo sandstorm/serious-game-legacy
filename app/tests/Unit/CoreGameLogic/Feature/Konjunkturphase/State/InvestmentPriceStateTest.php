@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\CoreGameLogic\Feature\Konjunkturphase\State;
@@ -40,7 +41,7 @@ describe('getInvestmentPrice', function () {
     });
 
     it('works for all price functions', function () {
-        for($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $this->coreGameLogic->handle(
                 $this->gameId,
                 ChangeKonjunkturphase::create()
@@ -55,9 +56,9 @@ describe('getInvestmentPrice', function () {
 
             // remove comment to debug price calculations
 
-//            echo "Penz: " . $currentStockPriceLR . " | Beta: " . $currentStockPriceHR .
-//                " | ETF1: " . $currentStockPriceEtf1 . " | ETF2: " . $currentStockPriceEtf2 .
-//                " | BatCoin: " . $currentStockPriceBatCoin . " | MemeCoin: " . $currentStockPriceMemeCoin . "\n";
+            //            echo "Penz: " . $currentStockPriceLR . " | Beta: " . $currentStockPriceHR .
+            //                " | ETF1: " . $currentStockPriceEtf1 . " | ETF2: " . $currentStockPriceEtf2 .
+            //                " | BatCoin: " . $currentStockPriceBatCoin . " | MemeCoin: " . $currentStockPriceMemeCoin . "\n";
         }
 
 

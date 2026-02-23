@@ -26,7 +26,8 @@ class PlayerList extends Component
         public GameEvents $gameEvents,
         public PlayerId $myself,
         public PlayerId $activePlayer
-    ) {}
+    ) {
+    }
 
     /**
      * Get the view / contents that represent the component.

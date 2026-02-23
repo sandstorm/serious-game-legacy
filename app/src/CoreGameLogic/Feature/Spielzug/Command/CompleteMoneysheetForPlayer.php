@@ -16,7 +16,6 @@ final readonly class CompleteMoneysheetForPlayer implements CommandInterface
 
     private function __construct(
         public PlayerId $playerId,
-    )
-    {
+    ) {
     }
 }

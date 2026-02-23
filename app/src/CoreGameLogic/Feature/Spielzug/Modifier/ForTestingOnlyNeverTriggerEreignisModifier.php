@@ -14,7 +14,7 @@ use Domain\Definitions\Card\ValueObject\ModifierId;
  * This will make sure no events will be triggered.
  * This modifier will be set in the default KonjunkturphaseDefinition for testing.
  */
-readonly final class ForTestingOnlyNeverTriggerEreignisModifier extends Modifier
+final readonly class ForTestingOnlyNeverTriggerEreignisModifier extends Modifier
 {
     public function __construct(
         public PlayerTurn $playerTurn,

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Traits;
 
-
 use App\Livewire\Dto\EventLogEntry;
 use Domain\CoreGameLogic\Feature\Spielzug\State\LogState;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;

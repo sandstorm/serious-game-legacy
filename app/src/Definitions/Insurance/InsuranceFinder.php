@@ -85,7 +85,8 @@ class InsuranceFinder
      *
      * @return InsuranceDefinition[]
      */
-    public function getAllInsurances(): array {
+    public function getAllInsurances(): array
+    {
         return $this->insurances;
     }
 
@@ -93,7 +94,8 @@ class InsuranceFinder
      * @param InsuranceTypeEnum $type
      * @return InsuranceDefinition
      */
-    public function findInsuranceByType(InsuranceTypeEnum $type): InsuranceDefinition {
+    public function findInsuranceByType(InsuranceTypeEnum $type): InsuranceDefinition
+    {
         foreach ($this->insurances as $insurance) {
             if ($insurance->type === $type) {
                 return $insurance;

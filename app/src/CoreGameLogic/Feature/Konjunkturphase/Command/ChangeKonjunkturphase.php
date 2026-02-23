@@ -21,8 +21,7 @@ final readonly class ChangeKonjunkturphase implements CommandInterface
     private function __construct(
         public ?KonjunkturphaseDefinition $fixedKonjunkturphaseForTesting = null,
         public bool $hasFixedCardOrderForTesting = false
-    )
-    {
+    ) {
     }
 
 

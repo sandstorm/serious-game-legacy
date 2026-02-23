@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use App\Livewire\Forms\TakeOutALoanForm;
@@ -67,7 +68,8 @@ function setupRegularKonjunkturphaseEnd(TestCase $testCase): void
 
     $testCase->handle(EnterLebenshaltungskostenForPlayer::create(
         $testCase->getPlayers()[0],
-        new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)));
+        new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)
+    ));
 }
 
 describe('FileInsolvenzForPlayer', function () {
@@ -83,7 +85,8 @@ describe('FileInsolvenzForPlayer', function () {
     })->throws(
         RuntimeException::class,
         'Cannot file for Insolvenz: Dein Kontostand ist positiv',
-        1756801753);
+        1756801753
+    );
 
     it('throws an error if the player has not completed their money sheet', function () {
         /** @var TestCase $this */
@@ -93,7 +96,8 @@ describe('FileInsolvenzForPlayer', function () {
     })->throws(
         RuntimeException::class,
         'Cannot file for Insolvenz: Du musst erst das Money Sheet korrekt ausfüllen',
-        1756801753);
+        1756801753
+    );
 
     it('throws an error if the player has investments that can be sold', function () {
         /** @var TestCase $this */
@@ -121,30 +125,44 @@ describe('FileInsolvenzForPlayer', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
-        $this->coreGameLogic->handle($this->gameId,
-            ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE)
+        );
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->getPlayers()[0]));
 
-        $this->coreGameLogic->handle($this->gameId,
-            ActivateCard::create($this->getPlayers()[1], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create($this->getPlayers()[1], CategoryId::BILDUNG_UND_KARRIERE)
+        );
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->getPlayers()[1]));
 
         // Buy as many shares as we can with our Guthaben
         $this->coreGameLogic->handle($this->gameId, BuyInvestmentsForPlayer::create(
             $this->getPlayers()[0],
             InvestmentId::MERFEDES_PENZ,
-            intval(floor($initialGuthaben->value / InvestmentPriceState::getCurrentInvestmentPrice($this->getGameEvents(),
-                    InvestmentId::MERFEDES_PENZ)->value))));
-        $this->coreGameLogic->handle($this->gameId,
-            DontSellInvestmentsForPlayer::create($this->getPlayers()[1], InvestmentId::MERFEDES_PENZ));
+            intval(floor($initialGuthaben->value / InvestmentPriceState::getCurrentInvestmentPrice(
+                $this->getGameEvents(),
+                InvestmentId::MERFEDES_PENZ
+            )->value))
+        ));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            DontSellInvestmentsForPlayer::create($this->getPlayers()[1], InvestmentId::MERFEDES_PENZ)
+        );
 
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->getPlayers()[0]));
 
-        $this->coreGameLogic->handle($this->gameId,
+        $this->coreGameLogic->handle(
+            $this->gameId,
             EnterLebenshaltungskostenForPlayer::create(
                 $this->getPlayers()[0],
-                MoneySheetState::calculateMinimumValueForLebenshaltungskostenForPlayer($this->getGameEvents(),
-                    $this->getPlayers()[0])));
+                MoneySheetState::calculateMinimumValueForLebenshaltungskostenForPlayer(
+                    $this->getGameEvents(),
+                    $this->getPlayers()[0]
+                )
+            )
+        );
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -155,7 +173,8 @@ describe('FileInsolvenzForPlayer', function () {
     })->throws(
         RuntimeException::class,
         'Cannot file for Insolvenz: Du hast noch Geldanlagen, die du verkaufen kannst',
-        1756801753);
+        1756801753
+    );
 
     it('throws an error if the player has an active insurance that could be cancelled', function () {
         /** @var TestCase $this */
@@ -184,20 +203,30 @@ describe('FileInsolvenzForPlayer', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
-        $this->coreGameLogic->handle($this->gameId,
-            ConcludeInsuranceForPlayer::create($this->getPlayers()[0], InsuranceId::create(1)));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ConcludeInsuranceForPlayer::create($this->getPlayers()[0], InsuranceId::create(1))
+        );
 
-        $this->coreGameLogic->handle($this->gameId,
-            ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE)
+        );
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->getPlayers()[0]));
 
-        $this->coreGameLogic->handle($this->gameId,
-            ActivateCard::create($this->getPlayers()[1], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create($this->getPlayers()[1], CategoryId::BILDUNG_UND_KARRIERE)
+        );
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->getPlayers()[1]));
 
-        $this->coreGameLogic->handle($this->gameId,
-            EnterLebenshaltungskostenForPlayer::create($this->getPlayers()[0],
-                new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            EnterLebenshaltungskostenForPlayer::create(
+                $this->getPlayers()[0],
+                new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)
+            )
+        );
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -208,7 +237,8 @@ describe('FileInsolvenzForPlayer', function () {
     })->throws(
         RuntimeException::class,
         'Cannot file for Insolvenz: Du hast noch Versicherungen, die du kündigen kannst',
-        1756801753);
+        1756801753
+    );
 
     it('works if player fulfills all requirements', function () {
         /** @var TestCase $this */
@@ -237,17 +267,25 @@ describe('FileInsolvenzForPlayer', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
-        $this->coreGameLogic->handle($this->gameId,
-            ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE)
+        );
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->getPlayers()[0]));
 
-        $this->coreGameLogic->handle($this->gameId,
-            ActivateCard::create($this->getPlayers()[1], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            ActivateCard::create($this->getPlayers()[1], CategoryId::BILDUNG_UND_KARRIERE)
+        );
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->getPlayers()[1]));
 
-        $this->coreGameLogic->handle($this->gameId,
-            EnterLebenshaltungskostenForPlayer::create($this->getPlayers()[0],
-                new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            EnterLebenshaltungskostenForPlayer::create(
+                $this->getPlayers()[0],
+                new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)
+            )
+        );
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -264,7 +302,7 @@ describe('FileInsolvenzForPlayer', function () {
             ->and($playerFiledForInsolvenzEvent->getResourceChanges($this->getPlayers()[0])->guthabenChange->value)->toEqual($guthabenBeforeInsolvenz->negate()->value);
     });
 
-    it('repays all open loans for player in case of Insolvenz', function() {
+    it('repays all open loans for player in case of Insolvenz', function () {
         /** @var TestCase $this */
         // first player needs to take out a loan
         $takeoutLoanFormComponent = new ComponentWithForm();

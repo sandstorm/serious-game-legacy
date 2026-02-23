@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\CoreGameLogic\Feature\Konjunkturphase\State;
@@ -14,7 +15,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
@@ -65,7 +65,7 @@ describe('isConditionForEndOfKonjunkturphaseMet', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) +1,
+                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
             new KategorieCardDefinition(
@@ -74,7 +74,7 @@ describe('isConditionForEndOfKonjunkturphaseMet', function () {
                 title: 'for testing',
                 description: '...',
                 resourceChanges: new ResourceChanges(
-                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) +1,
+                    zeitsteineChange: -1 *  $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
         ];
@@ -374,8 +374,10 @@ describe('isPlayerReadyForKonjunkturphaseChange', function () {
             new EndSpielzug($this->players[1])
         );
 
-        $this->coreGameLogic->handle($this->gameId,
-            EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(5000)));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(5000))
+        );
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -428,8 +430,10 @@ describe('isPlayerReadyForKonjunkturphaseChange', function () {
             new EndSpielzug($this->players[1])
         );
 
-        $this->coreGameLogic->handle($this->gameId,
-            EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE)));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE))
+        );
 
         $this->coreGameLogic->handle(
             $this->gameId,

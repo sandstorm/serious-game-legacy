@@ -24,5 +24,6 @@ class MoneySheet
         public MoneyAmount $guthabenBeforeKonjunkturphaseChange,
         public MoneyAmount $guthabenAfterKonjunkturphaseChange,
         public MoneyAmount $insolvenzabgaben,
-    ) {}
+    ) {
+    }
 }

@@ -13,8 +13,7 @@ final readonly class RepayLoanForPlayer implements CommandInterface
     public static function create(
         PlayerId $playerId,
         LoanId $loanId
-    ): RepayLoanForPlayer
-    {
+    ): RepayLoanForPlayer {
         return new self($playerId, $loanId);
     }
 

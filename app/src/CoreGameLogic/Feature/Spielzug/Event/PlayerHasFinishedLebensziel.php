@@ -17,8 +17,7 @@ final readonly class PlayerHasFinishedLebensziel implements GameEventInterface, 
         public PlayerId        $playerId,
         public ResourceChanges $resourceChanges,
         public string          $lebenszielName,
-    )
-    {
+    ) {
     }
 
     public static function fromArray(array $values): GameEventInterface
@@ -41,7 +40,7 @@ final readonly class PlayerHasFinishedLebensziel implements GameEventInterface, 
 
     public function getResourceChanges(PlayerId $playerId): ResourceChanges
     {
-        if($playerId->equals($this->playerId)) {
+        if ($playerId->equals($this->playerId)) {
             return $this->resourceChanges;
         }
         return new ResourceChanges();

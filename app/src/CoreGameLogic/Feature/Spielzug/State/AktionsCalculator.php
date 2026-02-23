@@ -16,7 +16,6 @@ use Domain\Definitions\Card\Dto\CardDefinition;
 use Domain\Definitions\Card\Dto\CardWithResourceChanges;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
-use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
 final readonly class AktionsCalculator
@@ -55,15 +54,15 @@ final readonly class AktionsCalculator
     public function hasPlayerSkippedACardThisRound(PlayerId $playerId): bool
     {
         $eventsThisTurn = $this->getEventsThisTurn();
-        $cardWasSkipped = $eventsThisTurn->findLastOrNullWhere( fn($event) => $event instanceof CardWasSkipped && $event->getPlayerId()->equals($playerId));
+        $cardWasSkipped = $eventsThisTurn->findLastOrNullWhere(fn ($event) => $event instanceof CardWasSkipped && $event->getPlayerId()->equals($playerId));
         return $cardWasSkipped !== null;
     }
 
     public function hasPlayerPlayedACardOrPutOneBack(PlayerId $playerId): bool
     {
         $eventsThisTurn = $this->getEventsThisTurn();
-        $cardWasDiscarded = $eventsThisTurn->findLastOrNullWhere( fn($event) => $event instanceof CardWasPutBackOnTopOfPile && $event->getPlayerId()->equals($playerId));
-        $cardWasPlayed = $eventsThisTurn->findLastOrNullWhere( fn($event) => $event instanceof CardWasActivated && $event->getPlayerId()->equals($playerId));
+        $cardWasDiscarded = $eventsThisTurn->findLastOrNullWhere(fn ($event) => $event instanceof CardWasPutBackOnTopOfPile && $event->getPlayerId()->equals($playerId));
+        $cardWasPlayed = $eventsThisTurn->findLastOrNullWhere(fn ($event) => $event instanceof CardWasActivated && $event->getPlayerId()->equals($playerId));
 
         if ($cardWasDiscarded !== null || $cardWasPlayed !== null) {
             return true;
@@ -72,7 +71,7 @@ final readonly class AktionsCalculator
         return false;
     }
 
-    function canPlayerAffordJobCard(PlayerId $player, JobCardDefinition $card): bool
+    public function canPlayerAffordJobCard(PlayerId $player, JobCardDefinition $card): bool
     {
         $playerResources = PlayerState::getResourcesForPlayer($this->stream, $player);
         if (

@@ -22,7 +22,8 @@ class LebenszielKompetenzen extends Component
         public GameEvents $gameEvents,
         public PlayerId $playerId,
         public LebenszielPhaseDefinition $lebenszielPhase,
-    ) {}
+    ) {
+    }
 
     /**
      * Get the view / contents that represent the component.

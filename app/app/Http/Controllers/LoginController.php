@@ -17,10 +17,8 @@ class LoginController extends Controller
     private AuthManager $auth;
 
     public function __construct(
-
         AuthManager $auth,
-    )
-    {
+    ) {
         $this->auth = $auth;
     }
 

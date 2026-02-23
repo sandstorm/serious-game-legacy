@@ -15,6 +15,7 @@ class GameboardInformationForKompetenzenOverview
     public function __construct(
         public CategoryId                  $title,
         public ?KompetenzSteineForCategory $kompetenzen,
-    ) {}
+    ) {
+    }
 
 }

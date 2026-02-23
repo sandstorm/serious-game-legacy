@@ -13,7 +13,8 @@ final readonly class LogEntry
         private string $text,
         private ?PlayerId $playerId = null,
         private ?ResourceChanges $resourceChanges = null,
-    ) {}
+    ) {
+    }
 
 
     /**

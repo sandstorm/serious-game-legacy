@@ -39,7 +39,7 @@ describe('create random game groups', function () {
         $actualGameGroups = ViewCourse::createRandomGameGroupsForTesting($playerGroups);
         expect(count($actualGameGroups))->toBe(1, "actualGameGroups should containt 1 game group")
             ->and(count($actualGameGroups[0]))->toBe(2, "Game group should contain 2 players");
-        $actualPlayerIds = array_map(fn($player) => $player->name, $actualGameGroups[0]);
+        $actualPlayerIds = array_map(fn ($player) => $player->name, $actualGameGroups[0]);
         expect($actualPlayerIds)->toContainEqual($player1->name, $player2->name);
     });
 
@@ -51,7 +51,7 @@ describe('create random game groups', function () {
         $actualGameGroups = ViewCourse::createRandomGameGroupsForTesting($playerGroups);
         expect(count($actualGameGroups))->toBe(2, "actualGameGroups should containt 2 game groups");
 
-        $actualGroupSizes = array_map(fn($group) => count($group), $actualGameGroups);
+        $actualGroupSizes = array_map(fn ($group) => count($group), $actualGameGroups);
         expect($actualGroupSizes)->toContain(2, 3);
     });
 
@@ -63,7 +63,7 @@ describe('create random game groups', function () {
         $actualGameGroups = ViewCourse::createRandomGameGroupsForTesting($playerGroups);
         expect(count($actualGameGroups))->toBe(1, "actualGameGroups should containt 4 game groups");
 
-        $actualGroupSizes = array_map(fn($group) => count($group), $actualGameGroups);
+        $actualGroupSizes = array_map(fn ($group) => count($group), $actualGameGroups);
         expect($actualGroupSizes)->toEqual([4]);
     });
 
@@ -75,7 +75,7 @@ describe('create random game groups', function () {
         $actualGameGroups = ViewCourse::createRandomGameGroupsForTesting($playerGroups);
         expect(count($actualGameGroups))->toBe(4, "actualGameGroups should containt 4 game groups");
 
-        $actualGroupSizes = array_map(fn($group) => count($group), $actualGameGroups);
+        $actualGroupSizes = array_map(fn ($group) => count($group), $actualGameGroups);
         expect($actualGroupSizes)->toEqual([4, 4, 4, 4]);
     });
 
@@ -87,7 +87,7 @@ describe('create random game groups', function () {
         $actualGameGroups = ViewCourse::createRandomGameGroupsForTesting($playerGroups);
         expect(count($actualGameGroups))->toBe(5, "actualGameGroups should containt 4 game groups");
 
-        $actualGroupSizes = array_map(fn($group) => count($group), $actualGameGroups);
+        $actualGroupSizes = array_map(fn ($group) => count($group), $actualGameGroups);
         expect($actualGroupSizes)->toEqual([3, 2, 4, 4, 4]);
     });
 

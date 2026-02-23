@@ -292,7 +292,7 @@ final readonly class SpielzugCommandHandler implements CommandHandlerInterface
 
     private function handleRepayLoanForPlayer(RepayLoanForPlayer $command, GameEvents $gameEvents): GameEventsToPersist
     {
-        $aktion = new RepayLoanForPlayerAktion($command->loanId,);
+        $aktion = new RepayLoanForPlayerAktion($command->loanId);
         return $aktion->execute($command->playerId, $gameEvents);
     }
 

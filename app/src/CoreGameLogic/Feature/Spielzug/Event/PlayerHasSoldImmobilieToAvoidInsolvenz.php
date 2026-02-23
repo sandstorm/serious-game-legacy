@@ -26,7 +26,8 @@ class PlayerHasSoldImmobilieToAvoidInsolvenz implements GameEventInterface, Prov
         protected PlayerId        $playerId,
         protected ImmobilieId     $immobilieId,
         protected ResourceChanges $resourceChanges,
-    ) {}
+    ) {
+    }
 
     public static function fromArray(array $values): GameEventInterface
     {

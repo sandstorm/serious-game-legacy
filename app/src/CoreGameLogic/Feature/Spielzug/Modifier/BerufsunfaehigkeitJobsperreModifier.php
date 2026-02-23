@@ -6,7 +6,6 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Modifier;
 
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\HookEnum;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
-use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\ModifierId;
 
 /**
@@ -14,7 +13,7 @@ use Domain\Definitions\Card\ValueObject\ModifierId;
  * a Berufsunfähigkeitsversicherung to mitigate the consequences. In addition to losing their job, the player
  * will also not be allowed to take a new job until the end of the current Konjunkturphase.
  */
-readonly final class BerufsunfaehigkeitJobsperreModifier extends Modifier
+final readonly class BerufsunfaehigkeitJobsperreModifier extends Modifier
 {
     public function __construct(
         public PlayerTurn $playerTurn,

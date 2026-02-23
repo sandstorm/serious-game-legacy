@@ -6,7 +6,6 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
-use Domain\CoreGameLogic\Feature\Spielzug\State\CurrentPlayerAccessor;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 
