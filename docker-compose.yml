@@ -3,8 +3,8 @@
 ##################################################
 
 # Public ports:
-#  - 8081 -> Neos
-#  - 13306 -> maria db (used for Neos)
+#  - 8090 -> Laravel
+#  - 13306 -> maria db (used for Laravel)
 
 services:
   #####
@@ -92,7 +92,6 @@ services:
       - ${REDIS_PORT:-16379:6379}
 
 volumes:
-  neos-assets-node-modules:
   laravel-storage:
   laravel-composer-cache:
     external: true

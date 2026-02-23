@@ -18,7 +18,6 @@
 # mise up --bump "to upgrade all software to the latest version and update mise.toml"
 
 [tools]
-"github:sandstorm/synco" = "latest"
 node = "24"
 # static-compiled PHP does not work in Flow, because of missing PHP_BIN set; so we cannot find the php CLI. BUT for composer it is enough
 "ubi:adwinying/php" = "8.4"
@@ -45,7 +44,7 @@ depends = ['build']
 run = '''
   mise build-js
   mise build
-  # create external volume "yarn-cache" and "neos-composer-cache" if not existing
+  # create external volume "yarn-cache" and "laravel-composer-cache" if not existing
   # wont be removed on down and volume removal
   docker volume create --name yarn-cache
   docker volume create --name laravel-composer-cache
@@ -63,7 +62,7 @@ run = "docker compose down -v --remove-orphans"
 [tasks.enter]
 usage = '''
 arg "<container>" default="laravel" {
-  choices "laravel" "maria-db" "imagor" "mailpit"
+  choices "laravel" "maria-db" "redis-cache" "mailpit"
 }
 '''
 run = "docker compose exec ${usage_container} /bin/bash"
@@ -71,17 +70,13 @@ run = "docker compose exec ${usage_container} /bin/bash"
 
 ######################### Enter Containers #########################
 
-# Enter neos container via bash
+# Enter laravel container via bash
 [tasks.enter-laravel]
 run = "docker compose exec laravel /bin/bash"
 
 # Enter db container via bash
 [tasks.enter-db]
 run = "docker compose exec maria-db /bin/bash"
-
-# Enter node container via bash
-[tasks.enter-assets]
-run = "docker compose exec laravel-assets /bin/bash"
 
 
 ######################## Frontend functions ########################
@@ -103,30 +98,21 @@ run = '''
   npm run build
 '''
 
-######################## Testing ########################
-
-[tasks.php-stan]
-run = '''
-    docker run -v "$(pwd)":/app composer:2 bash -c \
-    'cd /app && composer install --ignore-platform-reqs  && ./bin/phpstan analyse --memory-limit 1G'
-'''
-
-[tasks.php-stan-json]
-run = '''
-    cd app
-    docker run -v "$(pwd)":/app composer:2 bash -c \
-    'cd /app && composer install --ignore-platform-reqs  && ./bin/phpstan analyse --error-format=prettyJson --memory-limit 1G'
-'''
-
 ######################### Open Urls in Browser / UIs #########################
 
-# Open site and site/neos in browser
-[tasks.open-site ]
+# Open site and site in browser
+[tasks.open-site]
 run = 'open http://127.0.0.1:8090'
 
 # Open local db with your default UI
-[tasks.open-local-db ]
+[tasks.open-local-db]
 run = 'open "mysql://laravel:laravel@localhost:13306/laravel"'
+
+[tasks.open-staging]
+run = 'open https://serious-game-staging.cloud.sandstorm.de/'
+
+[tasks.open-production]
+run = 'open https://spiel.legacy-finanzbildung.de/'
 
 ######################### Logs #########################
 
@@ -141,10 +127,6 @@ run = "docker compose logs -f maria-db"
 # Larvel logs
 [tasks.logs-laravel]
 run = "docker compose exec -it laravel /bin/bash -c 'tail -f  /app/storage/logs/laravel-*.log'"
-
-# SCSS/Js compiler logs
-[tasks.logs-assets]
-run = "docker compose logs -f neos-assets"
 
 [tasks.ps]
 run = "docker compose ps --all"
