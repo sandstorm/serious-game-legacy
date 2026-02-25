@@ -40,10 +40,8 @@ docker compose down --rmi all --volumes --remove-orphans
 
 [tasks.start]
 description = "Build and start all containers in detached mode"
-depends = ['build']
 run = '''
   mise build-js
-  mise build
   # create external volume "yarn-cache" and "laravel-composer-cache" if not existing
   # wont be removed on down and volume removal
   docker volume create --name yarn-cache

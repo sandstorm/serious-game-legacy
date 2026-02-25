@@ -7,6 +7,7 @@
 # crane ls caddy | grep builder | grep 2.10.2
 FROM dunglas/frankenphp:1.10-builder-php8.4-trixie AS builder
 # Copy xcaddy in the builder image
+# WHY: We want to build our own Caddy with specific plugins. We use xcaddy to do that.
 COPY --from=caddy:2.10.2-builder /usr/bin/xcaddy /usr/bin/xcaddy
 
 # CGO must be enabled to build FrankenPHP
@@ -20,7 +21,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked \
     CGO_LDFLAGS="$(php-config --ldflags) $(php-config --libs)" \
     GOMODCACHE=/go/pkg/mod \
     GOCACHE=/root/.cache/go-build \
-    xcaddy build \
+    xcaddy build v2.10.2 \
         --output /usr/local/bin/frankenphp \
         --with github.com/dunglas/frankenphp=./ \
         --with github.com/dunglas/frankenphp/caddy=./caddy/ \
@@ -121,7 +122,11 @@ RUN mkdir -p /tracing/_traces/ \
     && chown -R ${USER}:${USER} /tracing
 
 # cleanup & chown -> for DEV, the full /app dir is writable
+# cleanup & chown -> for DEV, the full /app dir is writable
 RUN mkdir -p /app/storage && \
+    mkdir -p /app/storage/framework/session && \
+    mkdir -p /app/storage/framework/cache && \
+    mkdir -p /app/storage/framework/views && \
     chown -R ${USER} /app /var/www /app/storage
 
 WORKDIR /app
