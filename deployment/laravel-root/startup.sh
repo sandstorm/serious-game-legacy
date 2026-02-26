@@ -3,4 +3,3 @@ set -ex
 
 #./artisan migrate:fresh --force
 ./artisan migrate --force
-./artisan db:seed
