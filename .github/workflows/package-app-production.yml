@@ -46,13 +46,6 @@ jobs:
           COMPOSER_CACHE_DIR=.composer-cache composer install --ignore-platform-reqs
         working-directory: ./app
 
-        # Uncomment if you need Font Awesome
-        # - name: Configure npm for Font Awesome
-        #   run: |
-        #     npm config set "@fortawesome:registry" https://npm.fontawesome.com/
-        #     npm config set "//npm.fontawesome.com/:_authToken" ${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}
-        #   working-directory: ./app
-
       # Install Node.js dependencies and build
       - name: Install Yarn dependencies
         run: yarn
