@@ -122,7 +122,6 @@ RUN mkdir -p /tracing/_traces/ \
     && chown -R ${USER}:${USER} /tracing
 
 # cleanup & chown -> for DEV, the full /app dir is writable
-# cleanup & chown -> for DEV, the full /app dir is writable
 RUN mkdir -p /app/storage && \
     mkdir -p /app/storage/framework/session && \
     mkdir -p /app/storage/framework/cache && \
