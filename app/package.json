@@ -21,5 +21,17 @@
     "dependencies": {
         "@alpinejs/focus": "^3.14.9",
         "alpinejs": "^3.14.9"
+    },
+    "devEngines": {
+        "runtime": {
+            "name": "node",
+            "version": "^24.14.0",
+            "onFail": "error"
+        },
+        "packageManager": {
+            "name": "yarn",
+            "version": "^4.12.0",
+            "onFail": "error"
+        }
     }
 }
