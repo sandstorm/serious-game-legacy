@@ -45,6 +45,10 @@ jobs:
           COMPOSER_CACHE_DIR=.composer-cache composer install --ignore-platform-reqs
         working-directory: ./app
 
+      - name: Enable Corepack
+        run: corepack enable
+        working-directory: ./app
+
       # Install Node.js dependencies and build
       - name: Install Yarn dependencies
         run: yarn
