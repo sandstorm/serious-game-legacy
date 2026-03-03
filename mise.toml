@@ -18,8 +18,9 @@
 # mise up --bump "to upgrade all software to the latest version and update mise.toml"
 
 [tools]
+# please keep node and yarn version in sync with what is specified in app/package.json
 node = "24"
-# static-compiled PHP does not work in Flow, because of missing PHP_BIN set; so we cannot find the php CLI. BUT for composer it is enough
+yarn = "4.12"
 "ubi:adwinying/php" = "8.4"
 "github:composer/composer" = { version = "latest", asset_pattern = "*.phar", bin = "composer" }
 yq = "latest"
@@ -80,20 +81,20 @@ run = "docker compose exec maria-db /bin/bash"
 ######################## Frontend functions ########################
 
 [tasks.watch-js]
+dir = "app"
 run = '''
-  cd app
-  npm install
-  npm run dev
+  yarn
+  yarn dev
 '''
 
 [tasks.build]
 run = "docker compose build"
 
 [tasks.build-js]
+dir = "app"
 run = '''
-  cd app
-  npm install
-  npm run build
+  yarn
+  yarn build
 '''
 
 ######################### Open Urls in Browser / UIs #########################
