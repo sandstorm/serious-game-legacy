@@ -11,12 +11,6 @@ git lfs install || true
 echo -e "${YELLOW}Touch your Yubikey...${RESET}"
 git lfs pull || true
 
-# Adding folders -> when using `docker compose` instead of `docker-compose`
-# folders must already be present
-echo -e "${GREEN}Creating cache folders${RESET}"
-mkdir -p ./tmp/composer_cache
-mkdir -p ./tmp/.yarn-cache
-
 echo -e "${GREEN}Running initial build${RESET}"
 mise build
 
