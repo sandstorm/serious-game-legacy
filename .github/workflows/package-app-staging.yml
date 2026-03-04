@@ -35,7 +35,7 @@ jobs:
       # Cache yarn/node dependencies
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
-        run: echo "dir=./.yarn/cache" >> $GITHUB_OUTPUT
+        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
         working-directory: ./app
 
       - name: Cache Node modules
