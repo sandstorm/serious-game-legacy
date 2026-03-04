@@ -12,6 +12,7 @@ jobs:
     runs-on: [self-hosted, linux]
     container:
       image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.4-v6
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -25,6 +26,11 @@ jobs:
           path: app/.composer-cache
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Mise tools
+        id: mise-install
+        run: mise install
+        working-directory: ./app
 
       # Cache yarn/node dependencies
       - name: Get yarn cache directory path
@@ -45,17 +51,9 @@ jobs:
           COMPOSER_CACHE_DIR=.composer-cache composer install --ignore-platform-reqs
         working-directory: ./app
 
-      - name: Enable Corepack
-        run: corepack enable
-        working-directory: ./app
-
-      # Install Node.js dependencies and build
-      - name: Install Yarn dependencies
-        run: yarn
-        working-directory: ./app
-
+      # Install yarn dependencies and build js
       - name: Build assets
-        run: yarn build
+        run: mise build-js
         working-directory: ./app
 
       # Upload build artifacts
