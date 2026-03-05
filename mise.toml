@@ -27,6 +27,7 @@ kubectl = "latest"
 
 [settings]
 auto_install = false
+lockfile = true
 
 [tasks]
 # Short, single-command tasks migrated from dev.sh

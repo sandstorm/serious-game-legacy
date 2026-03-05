@@ -27,6 +27,18 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
+      # Cache Mise dependencies
+      - name: Get mise cache directory path
+        id: mise-cache-dir-path
+        run: echo "dir=$(mise cache path)" >> $GITHUB_OUTPUT
+
+      - name: Cache Mise tools
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.mise-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-mise-${{ hashFiles('**/mise.lock') }}
+          restore-keys: ${{ runner.os }}-mise-
+
       - name: Install Mise tools
         id: mise-install
         run: |
