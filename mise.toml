@@ -23,6 +23,7 @@ node = "24"
 yarn = "4.12"
 "ubi:adwinying/php" = "8.4"
 "github:composer/composer" = { version = "latest", asset_pattern = "*.phar", bin = "composer" }
+kubectl = "latest"
 
 [settings]
 auto_install = false
