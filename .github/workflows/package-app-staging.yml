@@ -29,13 +29,15 @@ jobs:
 
       - name: Install Mise tools
         id: mise-install
-        run: mise install
+        run: |
+          mise install node
+          mise install yarn
         working-directory: ./app
 
       # Cache yarn/node dependencies
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
-        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+        run: echo "dir=$(mise x -- yarn config get cacheFolder)" >> $GITHUB_OUTPUT
         working-directory: ./app
 
       - name: Cache Node modules

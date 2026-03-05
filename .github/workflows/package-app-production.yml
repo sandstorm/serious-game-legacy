@@ -29,7 +29,9 @@ jobs:
 
       - name: Install Mise tools
         id: mise-install
-        run: mise install
+        run: |
+          mise install node
+          mise install yarn
         working-directory: ./app
 
       # Cache yarn/node dependencies
