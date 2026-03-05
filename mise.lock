@@ -1,0 +1,22 @@
+[[tools."github:composer/composer"]]
+version = "2.9.3"
+backend = "github:composer/composer"
+
+[tools."github:composer/composer".options]
+asset_pattern = "*.phar"
+
+[[tools.node]]
+version = "24.14.0"
+backend = "core:node"
+
+[[tools."ubi:adwinying/php"]]
+version = "8.4.16"
+backend = "ubi:adwinying/php"
+
+[[tools.yarn]]
+version = "4.12.0"
+backend = "vfox:mise-plugins/vfox-yarn"
+
+[[tools.yq]]
+version = "4.50.1"
+backend = "aqua:mikefarah/yq"

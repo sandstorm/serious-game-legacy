@@ -11,7 +11,7 @@ jobs:
     name: Build Assets
     runs-on: [self-hosted, linux]
     container:
-      image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.4-v6
+      image: docker-hub.sandstorm.de/docker-infrastructure/build-images/mise-php8.4:1.0.0
 
     steps:
       - name: Checkout code
@@ -68,7 +68,7 @@ jobs:
     name: Package App Staging
     runs-on: [self-hosted, linux]
     container:
-      image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.4-v6
+      image: docker-hub.sandstorm.de/docker-infrastructure/build-images/mise-php8.4:1.0.0
     needs: build_assets
     permissions:
       contents: read
@@ -142,7 +142,7 @@ jobs:
     needs: package_app_staging
     environment: staging
     container:
-      image: docker-hub.sandstorm.de/docker-infrastructure/php-app/build:8.4-v6
+      image: docker-hub.sandstorm.de/docker-infrastructure/build-images/mise-php8.4:1.0.0
 
     steps:
       - name: Checkout code
