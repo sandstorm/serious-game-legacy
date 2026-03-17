@@ -1,6 +1,11 @@
 [[tools."github:composer/composer"]]
 version = "2.9.3"
 backend = "github:composer/composer"
+"platforms.linux-arm64" = { checksum = "sha256:3b3f9503a2d46590170e45edd29734197e797cea545b396d0b2823cac8ef4643", url = "https://github.com/composer/composer/releases/download/2.9.3/composer.phar", url_api = "https://api.github.com/repos/composer/composer/releases/assets/334467317"}
+"platforms.linux-x64" = { checksum = "sha256:3b3f9503a2d46590170e45edd29734197e797cea545b396d0b2823cac8ef4643", url = "https://github.com/composer/composer/releases/download/2.9.3/composer.phar", url_api = "https://api.github.com/repos/composer/composer/releases/assets/334467317"}
+"platforms.macos-arm64" = { checksum = "sha256:3b3f9503a2d46590170e45edd29734197e797cea545b396d0b2823cac8ef4643", url = "https://github.com/composer/composer/releases/download/2.9.3/composer.phar", url_api = "https://api.github.com/repos/composer/composer/releases/assets/334467317"}
+"platforms.macos-x64" = { checksum = "sha256:3b3f9503a2d46590170e45edd29734197e797cea545b396d0b2823cac8ef4643", url = "https://github.com/composer/composer/releases/download/2.9.3/composer.phar", url_api = "https://api.github.com/repos/composer/composer/releases/assets/334467317"}
+"platforms.windows-x64" = { checksum = "sha256:3b3f9503a2d46590170e45edd29734197e797cea545b396d0b2823cac8ef4643", url = "https://github.com/composer/composer/releases/download/2.9.3/composer.phar", url_api = "https://api.github.com/repos/composer/composer/releases/assets/334467317"}
 
 [tools."github:composer/composer".options]
 asset_pattern = "*.phar"
@@ -21,6 +26,7 @@ backend = "core:node"
 [[tools."ubi:adwinying/php"]]
 version = "8.4.16"
 backend = "ubi:adwinying/php"
+"platforms.linux-x64-php" = { checksum = "blake3:f4413c742b1538f4881d390fc23a4c613d12ff5a22ac80b2c304b901652878f1"}
 
 [[tools.yarn]]
 version = "4.12.0"
