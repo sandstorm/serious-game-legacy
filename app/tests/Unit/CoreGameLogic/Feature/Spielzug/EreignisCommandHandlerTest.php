@@ -413,3 +413,96 @@ describe('Childbirth', function () {
             ->toEqual(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE);
     });
 });
+
+describe('Ereignis Modifier application', function () {
+    it('applies Investitionssperre modifier and prevents buying investments', function () {
+        /** @var TestCase $this */
+        $cardsForTesting = [
+            new EreignisCardDefinition(
+                id: new CardId('cardWithInvestitionssperre'),
+                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+                title: 'Investitionssperre',
+                description: 'Du darfst diese Konjunkturphase nicht investieren.',
+                year: new Year(1),
+                resourceChanges: new ResourceChanges(),
+                modifierIds: [
+                    ModifierId::INVESTITIONSSPERRE,
+                ],
+                modifierParameters: new ModifierParameters(),
+            ),
+            new KategorieCardDefinition(
+                id: new CardId('cardToTriggerEvent'),
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                title: 'for testing',
+                description: 'for testing',
+                resourceChanges: new ResourceChanges(),
+            ),
+        ];
+
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+
+        // activate card, which triggers the Ereignis with Investitionssperre
+        $this->handle(ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE));
+        $gameEvents = $this->getGameEvents();
+        expect($gameEvents->findLast(EreignisWasTriggered::class))->not()->toBeNull();
+
+        // end turn for player 0
+        $this->handle(new EndSpielzug($this->getPlayers()[0]));
+
+        // player 1 does mini job and ends turn
+        $this->handle(DoMinijob::create($this->getPlayers()[1]));
+        $this->handle(new EndSpielzug($this->getPlayers()[1]));
+
+        // player 0 tries to buy investments - should be blocked by Investitionssperre
+        $this->handle(\Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer::create(
+            $this->getPlayers()[0],
+            \Domain\Definitions\Investments\ValueObject\InvestmentId::MERFEDES_PENZ,
+            10
+        ));
+    })->throws(\RuntimeException::class, 'Du darfst diese Konjunkturphase keine Investitionen tätigen.', 1752066529);
+
+    it('applies Kreditsperre modifier and prevents taking out a loan', function () {
+        /** @var TestCase $this */
+        $cardsForTesting = [
+            new EreignisCardDefinition(
+                id: new CardId('cardWithKreditsperre'),
+                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+                title: 'Kreditsperre',
+                description: 'Du darfst diese Konjunkturphase keinen Kredit aufnehmen.',
+                year: new Year(1),
+                resourceChanges: new ResourceChanges(),
+                modifierIds: [
+                    ModifierId::KREDITSPERRE,
+                ],
+                modifierParameters: new ModifierParameters(),
+            ),
+            new KategorieCardDefinition(
+                id: new CardId('cardToTriggerEvent'),
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                title: 'for testing',
+                description: 'for testing',
+                resourceChanges: new ResourceChanges(),
+            ),
+        ];
+
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+
+        // activate card, which triggers the Ereignis with Kreditsperre
+        $this->handle(ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE));
+        $gameEvents = $this->getGameEvents();
+        expect($gameEvents->findLast(EreignisWasTriggered::class))->not()->toBeNull();
+
+        // end turn for player 0
+        $this->handle(new EndSpielzug($this->getPlayers()[0]));
+
+        // player 1 does mini job and ends turn
+        $this->handle(DoMinijob::create($this->getPlayers()[1]));
+        $this->handle(new EndSpielzug($this->getPlayers()[1]));
+
+        // player 0 tries to take out a loan - should be blocked by Kreditsperre
+        $this->handle(\Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer::create(
+            $this->getPlayers()[0],
+            5000
+        ));
+    })->throws(\RuntimeException::class, 'Du darfst diese Konjunkturphase keine Kredite aufnehmen.');
+});
