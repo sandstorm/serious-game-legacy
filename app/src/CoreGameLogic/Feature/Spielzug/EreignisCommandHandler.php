@@ -169,8 +169,7 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
                 ));
         }
 
-        // TODO don't use title -> use ModifierId
-        if ($ereignisCardDefinition->getTitle() === "Geburt") {
+        if (in_array(ModifierId::LEBENSHALTUNGSKOSTEN_KIND_INCREASE->value, $modifierIdsAsString, true)) {
             $additionalEvents = $additionalEvents
                 ->withAppendedEvents(new PlayerGotAChild(
                     playerId: $command->playerId,
