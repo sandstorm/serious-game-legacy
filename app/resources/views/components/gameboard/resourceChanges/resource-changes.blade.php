@@ -6,7 +6,7 @@
 <div @class(["resource-changes", "resource-changes--$styleClass"])>
     <span class="sr-only">Du bekommst/verlierst: </span>
     @if ($resourceChanges->guthabenChange->value != 0)
-        <div class="resource-change">{!! $resourceChanges->guthabenChange->formatWithIcon() !!}</div>
+        <div class="resource-change"><x-money-amount :value="$resourceChanges->guthabenChange" with-icon /></div>
     @endif
     @if ($resourceChanges->zeitsteineChange)
         <x-gameboard.resourceChanges.resource-change sr-label="Zeitsteine" :change="$resourceChanges->zeitsteineChange" iconClass="icon-zeitstein" />

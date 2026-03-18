@@ -27,16 +27,16 @@
                     <td><i class="icon-aktien" aria-hidden="true"></i></td>
                     <td>{{ $investment->investmentId }}</td>
                     <td>{{ $investment->amount }}</td>
-                    <td>{!! $investment->price->format() !!}</td>
+                    <td><x-money-amount :value="$investment->price" /></td>
                     <td>
                         @if ($investment->investmentId === InvestmentId::MERFEDES_PENZ)
-                            {!! KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->getDividend()->format() !!}
+                            <x-money-amount :value="KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->getDividend()" />
                         @else
                             keine
                         @endif
                     </td>
                     <td>
-                        {!! $investment->totalDividend->formatWithIcon() !!}
+                        <x-money-amount :value="$investment->totalDividend" with-icon />
                     </td>
                 </tr>
                 @endif
@@ -46,16 +46,16 @@
                     <td><i class="icon-immobilien" aria-hidden="true"></i></td>
                     <td>{{ $immobilie->getTitle() }}</td>
                     <td>1</td>
-                    <td>{!! $immobilie->getPurchasePrice()->format() !!}</td>
-                    <td>{!! $immobilie->getAnnualRent()->format() !!}</td>
+                    <td><x-money-amount :value="$immobilie->getPurchasePrice()" /></td>
+                    <td><x-money-amount :value="$immobilie->getAnnualRent()" /></td>
                     <td>
-                        {!! $immobilie->getAnnualRent()->formatWithIcon() !!}
+                        <x-money-amount :value="$immobilie->getAnnualRent()" with-icon />
                     </td>
                 </tr>
             @endforeach
             <tr>
                 <td colspan="5" class="text-align--right">Einnahmen gesamt</td>
-                <td>{!! MoneySheetState::getAnnualIncomeForAllInvestments($gameEvents, $playerId)->formatWithIcon() !!}</td>
+                <td><x-money-amount :value="MoneySheetState::getAnnualIncomeForAllInvestments($gameEvents, $playerId)" with-icon /></td>
             </tr>
             </tbody>
         </table>

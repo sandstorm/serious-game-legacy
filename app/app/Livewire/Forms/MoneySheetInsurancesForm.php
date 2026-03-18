@@ -20,7 +20,7 @@ class MoneySheetInsurancesForm extends Form
             'label' => $insuranceDefinition->type->value,
             'id' => $insuranceDefinition->id->value,
             'value' => $checked,
-            'annualCost' => $insuranceDefinition->getAnnualCost($currentPlayerPhase)->format(),
+            'annualCost' => $insuranceDefinition->getAnnualCost($currentPlayerPhase)->value,
         ];
     }
 }

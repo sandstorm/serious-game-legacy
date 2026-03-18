@@ -3,6 +3,8 @@
 .DS_Store
 .npmrc
 .env
+/app/.yarn/cache
+.idea
 
 # Devenv
 .devenv*

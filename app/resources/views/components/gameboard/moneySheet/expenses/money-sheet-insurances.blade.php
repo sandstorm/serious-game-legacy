@@ -11,7 +11,7 @@
                 <div class="slider"></div>
                 <div>
                     <strong>{{ $insurance['label'] }}</strong> <br />
-                    {!! $insurance['annualCost'] !!} / Jahr
+                    <x-money-amount :value="new \Domain\Definitions\Card\ValueObject\MoneyAmount($insurance['annualCost'])" /> / Jahr
                 </div>
             </label>
         @endforeach
@@ -19,7 +19,7 @@
 
     <div class="tabs__lower-content insurances__actions">
         <div class="insurances__total-cost">
-            {!! $totalCost->formatWithIcon() !!}
+            <x-money-amount :value="$totalCost" with-icon />
             <span>Summe Versicherungen</span>
         </div>
         <x-form.submit disabled wire:dirty.remove.attr="disabled">Änderungen speichern</x-form.submit>

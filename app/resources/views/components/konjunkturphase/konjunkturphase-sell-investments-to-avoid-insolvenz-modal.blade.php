@@ -12,7 +12,7 @@
 @endsection
 
 @section('content')
-    <p>Dein aktueller Kontostand: {!! PlayerState::getGuthabenForPlayer($gameEvents, $playerId)->formatWithIcon() !!}</p>
+    <p>Dein aktueller Kontostand: <x-money-amount :value="PlayerState::getGuthabenForPlayer($gameEvents, $playerId)" with-icon /></p>
     @if ($investments)
         <table>
             <thead>
@@ -31,7 +31,7 @@
                         <td><i class="icon-aktien" aria-hidden="true"></i></td>
                         <td>{{ $investment->investmentId }}</td>
                         <td>{{ $investment->amount }}</td>
-                        <td>{!! $investment->price->format() !!}</td>
+                        <td><x-money-amount :value="$investment->price" /></td>
                         <td>
                             <button
                                 wire:click="showSellInvestmentOfTypeToAvoidInsolvenz('{{ $investment->investmentId }}')"

@@ -10,7 +10,7 @@
         @if($lebenszielPhase->investitionen->value > 0)
             <div>
                 <h5>Für einen Phasenwechsel benötigst Du </h5>
-                {!! $lebenszielPhase->investitionen->format() !!}
+                <x-money-amount :value="$lebenszielPhase->investitionen" />
             </div>
         @endif
         <div>

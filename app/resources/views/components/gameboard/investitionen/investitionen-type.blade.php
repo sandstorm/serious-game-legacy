@@ -11,7 +11,7 @@
     <div>
         <h4>{{ $investmentType }}</h4>
         <div class="resource-change">
-            {!! InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, $investmentType)->format() !!} / {{ $unit }}
+            <x-money-amount :value="InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, $investmentType)" /> / {{ $unit }}
         </div>
     </div>
     <div class="investitionen-type__actions">

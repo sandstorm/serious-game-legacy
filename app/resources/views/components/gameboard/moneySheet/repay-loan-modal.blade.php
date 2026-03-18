@@ -21,7 +21,7 @@
             <div class="take-out-loan__info-section">
                 <small>Dein Guthaben</small>
                 <span class="badge-with-background">
-                    {!! PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->myself)->format() !!}
+                    <x-money-amount :value="PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->myself)" />
                 </span>
             </div>
         </div>
@@ -29,9 +29,9 @@
         <div class="repay-loan__amount">
             <strong>Rückzahlungssumme</strong>
             <span class="badge-with-background">
-                {!! LoanCalculator::getCostsForLoanRepayment(
+                <x-money-amount :value="LoanCalculator::getCostsForLoanRepayment(
                     MoneySheetState::getOpenRepaymentValueForLoan($gameEvents, $playerId, new LoanId($this->repaymentFormForLoanId))->value,
-                )->format() !!}
+                )" />
             </span>
             <p>
                 Rückzahlungssumme = <br />

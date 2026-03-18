@@ -22,9 +22,9 @@
             <tr>
                 <td><i class="icon-immobilien" aria-hidden="true"></i></td>
                 <td>{{ $immobilieOwnedByPlayer->getTitle() }}</td>
-                <td>{!! $immobilieOwnedByPlayer->getPurchasePrice()->format() !!}</td>
-                <td>{!! $immobilieOwnedByPlayer->getAnnualRent()->format() !!}</td>
-                <td>{!! ImmobilienPriceState::getCurrentPriceForImmobilie($gameEvents, $immobilieOwnedByPlayer->getImmobilieId())->formatWithIcon() !!}</td>
+                <td><x-money-amount :value="$immobilieOwnedByPlayer->getPurchasePrice()" /></td>
+                <td><x-money-amount :value="$immobilieOwnedByPlayer->getAnnualRent()" /></td>
+                <td><x-money-amount :value="ImmobilienPriceState::getCurrentPriceForImmobilie($gameEvents, $immobilieOwnedByPlayer->getImmobilieId())" with-icon /></td>
                 <td>
                     <button
                         type="button"
