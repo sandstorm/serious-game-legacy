@@ -25,9 +25,9 @@
             @foreach($loans as $key => $loan)
                 <tr>
                     <td>{{ $key + 1 }}</td>
-                    <td class="text-align--right">{!! $loan->loanData->loanAmount->format() !!}</td>
-                    <td class="text-align--right">{!! MoneySheetState::getOpenRepaymentValueForLoan($gameEvents, $playerId, $loan->loanId)->format() !!}</td>
-                    <td class="text-align--right">{!! $loan->loanData->repaymentPerKonjunkturphase->format() !!}</td>
+                    <td class="text-align--right"><x-money-amount :value="$loan->loanData->loanAmount" /></td>
+                    <td class="text-align--right"><x-money-amount :value="MoneySheetState::getOpenRepaymentValueForLoan($gameEvents, $playerId, $loan->loanId)" /></td>
+                    <td class="text-align--right"><x-money-amount :value="$loan->loanData->repaymentPerKonjunkturphase" /></td>
                     <td class="text-align--right">{{ MoneySheetState::getOpenRatesForLoan($gameEvents, $playerId, $loan->loanId) }}</td>
                     <td>
                         @if (MoneySheetState::getOpenRatesForLoan($gameEvents, $playerId, $loan->loanId) > 0)
@@ -67,11 +67,11 @@
         <span>Aktueller Zinssatz: {{ KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->value }}%</span>
     </div>
     <div class="loans__summary-column">
-        <span class="badge-with-background">{!! $totalRepaymentValue->formatWithIcon() !!}</span>
+        <span class="badge-with-background"><x-money-amount :value="$totalRepaymentValue" with-icon /></span>
         <span>Summe Rückzahlungen</span>
     </div>
     <div class="loans__summary-column">
-        <span class="badge-with-background">{!! $sumOfRepaymentsPerRound->formatWithIcon() !!}</span>
+        <span class="badge-with-background"><x-money-amount :value="$sumOfRepaymentsPerRound" with-icon /></span>
         <span>Summe Rückzahlungen pro Runde</span>
     </div>
 </div>

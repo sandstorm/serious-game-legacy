@@ -32,7 +32,7 @@
         <div class="sidebar__actions" x-show="!eventLogOpen">
             @if (PlayerState::getJobForPlayer($this->gameEvents, $playerId) !== null)
                 <button class="button button--type-secondary" wire:click="showIncomeTab('salary')">
-                    <span>Mein Job: {!! PlayerState::getCurrentGehaltForPlayer($this->gameEvents, $playerId)->format() !!}</span>
+                    <span>Mein Job: <x-money-amount :value="PlayerState::getCurrentGehaltForPlayer($this->gameEvents, $playerId)" /></span>
                 </button>
             @endif
 

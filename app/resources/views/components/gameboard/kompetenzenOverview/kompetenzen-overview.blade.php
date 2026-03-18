@@ -33,7 +33,7 @@
                         'button--type-primary',
                         $this->getPlayerColorClass()
                     ]) wire:click="showMoneySheet()">
-                        {!! PlayerState::getGuthabenForPlayer($gameEvents, $playerId)->format() !!}
+                        <x-money-amount :value="PlayerState::getGuthabenForPlayer($gameEvents, $playerId)" />
 
                         <div @class([
                                 'kompetenzen-overview__action-required',
@@ -50,7 +50,7 @@
 
                 <div class="kompetenzen-overview__investitionen-target"
                      title="Benötigte Investitionen für die nächste Phase">
-                    <i class="icon-phasenwechsel" aria-hidden="true"></i> {!! $investitionen->format() !!}
+                    <i class="icon-phasenwechsel" aria-hidden="true"></i> <x-money-amount :value="$investitionen" />
                 </div>
             @endif
         </div>

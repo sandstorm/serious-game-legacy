@@ -53,17 +53,8 @@ describe('MoneyAmountTest', function () {
         expect($amount1->equals($amount2))->toBeTrue();
     });
 
-    it('can format the value as a string', function () {
+    it('can format the value without html', function () {
         $amount = new MoneyAmount(1234.564);
-        expect($amount->format())->toEqual("<span class='text--currency'>1.234,56 €</span>");
+        expect($amount->formatWithoutHtml())->toEqual("1.234,56 €");
     });
-
-    it('can format with icon', function ($amount, $expected) {
-        $moneyAmount = new MoneyAmount($amount);
-        expect($moneyAmount->formatWithIcon())->toEqual($expected);
-    })->with([
-        [10000, "<span class='text--currency'><i aria-hidden='true' class='text--success icon-plus'></i><span class='sr-only'>+</span> 10.000,00 <i aria-hidden='true' class='icon-euro'></i><span class='sr-only'>€</span></span>"],
-        [-10000, "<span class='text--currency'><i aria-hidden='true' class='text--danger icon-minus'></i><span class='sr-only'>-</span> 10.000,00 <i aria-hidden='true' class='icon-euro'></i><span class='sr-only'>€</span></span>"],
-        [0, "<span class='text--currency'> 0,00 <i aria-hidden='true' class='icon-euro'></i><span class='sr-only'>€</span></span>"],
-    ]);
 });

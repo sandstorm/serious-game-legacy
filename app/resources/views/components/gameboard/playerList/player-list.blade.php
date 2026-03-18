@@ -67,19 +67,19 @@
                         />
                         <div>
                             {{ $player->job->getTitle() }} <br />
-                            {!! $player->gehalt->format() !!} p.a.
+                            <x-money-amount :value="$player->gehalt" /> p.a.
                         </div>
                     </div>
                 @endif
 
                 @if ($player->sumOfAllLoans->value > 0)
                     <div>
-                        Kreditsumme {!! $player->sumOfAllLoans->format() !!}
+                        Kreditsumme <x-money-amount :value="$player->sumOfAllLoans" />
                     </div>
                 @endif
                 @if ($player->sumOfAllAssets->value > 0)
                     <div>
-                        Summe Investitionen {!! $player->sumOfAllAssets->format() !!}
+                        Summe Investitionen <x-money-amount :value="$player->sumOfAllAssets" />
                     </div>
                 @endif
 
@@ -88,10 +88,10 @@
                         <x-gameboard.lebensziel.lebensziel-switch :lebensziel-phase="$player->phaseDefinition->lebenszielPhaseId->value" :current-phase="$player->phaseDefinition->lebenszielPhaseId->value" />
                     @endif
                     <div>
-                        <i class="icon-phasenwechsel" aria-hidden="true"></i> {!! $player->phaseDefinition->investitionen->format() !!}
+                        <i class="icon-phasenwechsel" aria-hidden="true"></i> <x-money-amount :value="$player->phaseDefinition->investitionen" />
                     </div>
                     <div class="player-list__player-details-guthaben">
-                        {!! $player->guthaben->format() !!}
+                        <x-money-amount :value="$player->guthaben" />
                     </div>
                 </div>
 

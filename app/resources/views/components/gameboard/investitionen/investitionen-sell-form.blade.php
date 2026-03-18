@@ -18,7 +18,7 @@
     </p>
     <form class="investitionen-form" wire:submit={{$action}}>
         <div class="investitionen-form__price">
-            {!! InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, $this->sellInvestmentsForm->investmentId)->format() !!} /
+            <x-money-amount :value="InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, $this->sellInvestmentsForm->investmentId)" /> /
             {{ $unit }}
         </div>
         <div class="investitionen-form__amount">

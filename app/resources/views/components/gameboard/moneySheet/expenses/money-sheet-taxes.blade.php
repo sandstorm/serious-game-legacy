@@ -20,7 +20,7 @@
                 <span class="form-group__label">Dein Jahreseinkommen brutto</span>
                 <div class="form-group__input">
                     <i class="icon-erwerbseinkommen" aria-hidden="true"></i>
-                    {!! $moneySheet->gehalt->format() !!}
+                    <x-money-amount :value="$moneySheet->gehalt" />
                 </div>
             </div>
 

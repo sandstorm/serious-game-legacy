@@ -327,9 +327,35 @@ readonly class GameUiTester
         return number_format(($amount), 2, ',', '.');
     }
 
+    /**
+     * Builds the expected HTML output for a MoneyAmount, matching the <x-money-amount> Blade component.
+     * Used in test assertions to verify rendered Livewire views contain the correct formatted currency.
+     */
+    private function formatMoneyAsHtml(\Domain\Definitions\Card\ValueObject\MoneyAmount $money): string
+    {
+        $value = number_format($money->value, 2, ',', '.');
+        return "<span class='text--currency'>" . $value . " €</span>";
+    }
+
+    /**
+     * Builds the expected HTML output for a MoneyAmount with +/- icon, matching the <x-money-amount with-icon> Blade component.
+     * Used in test assertions to verify rendered Livewire views contain the correct formatted currency with sign indicators.
+     */
+    private function formatMoneyWithIconAsHtml(\Domain\Definitions\Card\ValueObject\MoneyAmount $money): string
+    {
+        $mathSignIcon = match (true) {
+            $money->value < 0 => "<i aria-hidden='true' class='text--danger icon-minus'></i><span class='sr-only'>-</span>",
+            $money->value > 0 => "<i aria-hidden='true' class='text--success icon-plus'></i><span class='sr-only'>+</span>",
+            default => ''
+        };
+        $valueNormalized = number_format(abs($money->value), 2, ',', '.');
+        return "<span class='text--currency'>" . $mathSignIcon . " " . $valueNormalized .
+            " <i aria-hidden='true' class='icon-euro'></i><span class='sr-only'>€</span></span>";
+    }
+
     private function assertVisibilityOfBalance(): void
     {
-        $playersGuthabenFormatted = PlayerState::getGuthabenForPlayer($this->testCase->getGameEvents(), $this->playerId)->format();
+        $playersGuthabenFormatted = $this->formatMoneyAsHtml(PlayerState::getGuthabenForPlayer($this->testCase->getGameEvents(), $this->playerId));
 
         $this->testableGameUi->assertSeeHtml(
             "<button title=\"Moneysheet öffnen\" class=\"button button--type-primary $this->playerColorClass\" wire:click=\"showMoneySheet()\">
@@ -662,9 +688,9 @@ readonly class GameUiTester
         ];
         $additionalModalContent = [
             "<h4>$firstStock->value</h4>",
-            InvestmentPriceState::getCurrentInvestmentPrice($this->testCase->getGameEvents(), $firstStock)->format(),
+            $this->formatMoneyAsHtml(InvestmentPriceState::getCurrentInvestmentPrice($this->testCase->getGameEvents(), $firstStock)),
             "<h4>$secondStock->value</h4>",
-            InvestmentPriceState::getCurrentInvestmentPrice($this->testCase->getGameEvents(), $secondStock)->format()
+            $this->formatMoneyAsHtml(InvestmentPriceState::getCurrentInvestmentPrice($this->testCase->getGameEvents(), $secondStock))
         ];
         $this->assertSeeModal($modalAttributes, $additionalModalContent);
 
@@ -678,7 +704,7 @@ readonly class GameUiTester
         $currentInvestmentPriceFormatted = $this->numberFormatMoney($currentInvestmentPrice->value);
         $investedMoney = $amount * $currentInvestmentPrice->value;
         $dividende = $investmentId === InvestmentId::MERFEDES_PENZ
-            ? KonjunkturphaseState::getCurrentKonjunkturphase($this->testCase->getGameEvents())->getDividend()->format()
+            ? $this->formatMoneyAsHtml(KonjunkturphaseState::getCurrentKonjunkturphase($this->testCase->getGameEvents())->getDividend())
             : "/";
 
         // get players balance before action
@@ -704,7 +730,7 @@ readonly class GameUiTester
         ];
         $additionalModalContent = [
             "Kauf - $investmentId->value",
-            $currentInvestmentPrice->format(),
+            $this->formatMoneyAsHtml($currentInvestmentPrice),
             "<strong>$investmentDefinition->longTermTrend%</strong>",
             "<strong>$investmentDefinition->fluctuations%</strong>",
             "<strong>$dividende</strong>"
@@ -940,7 +966,7 @@ readonly class GameUiTester
         $topCardDescription = $topCard->getDescription();
         $topCardZeitstein = $topCard->getResourceChanges()->zeitsteineChange;
         $topCardGuthabenChange = $topCard->getResourceChanges()->guthabenChange->value;
-        $formattedGuthabenChange = $topCard->getResourceChanges()->guthabenChange->formatWithIcon();
+        $formattedGuthabenChange = $this->formatMoneyWithIconAsHtml($topCard->getResourceChanges()->guthabenChange);
 
         $availableZeitsteine = $this->getAvailableZeitsteine();
         $playersZeitsteineBeforeAction = $this->getPlayersZeitsteine();

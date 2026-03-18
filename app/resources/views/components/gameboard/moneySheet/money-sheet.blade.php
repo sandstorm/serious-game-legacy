@@ -19,11 +19,11 @@
             <tbody>
             <tr>
                 <td>Finanzanlagen und Vermögenswerte</td>
-                <td class="text-align--right">{!! $moneySheet->annualIncomeForAllAssets->formatWithIcon() !!}</td>
+                <td class="text-align--right"><x-money-amount :value="$moneySheet->annualIncomeForAllAssets" with-icon /></td>
             </tr>
             <tr>
                 <td>Gehalt</td>
-                <td class="text-align--right">{!! $moneySheet->gehalt->formatWithIcon() !!}</td>
+                <td class="text-align--right"><x-money-amount :value="$moneySheet->gehalt" with-icon /></td>
             </tr>
             </tbody>
         </table>
@@ -50,13 +50,13 @@
             <tr>
                 <td>Kredite</td>
                 <td class="text-align--right">
-                    {!! $moneySheet->annualExpensesForAllLoans->formatWithIcon() !!}
+                    <x-money-amount :value="$moneySheet->annualExpensesForAllLoans" with-icon />
                 </td>
             </tr>
             <tr>
                 <td>Steuern und Abgaben</td>
                 <td class="text-align--right">
-                    {!! $moneySheet->steuernUndAbgaben->formatWithIcon() !!}
+                    <x-money-amount :value="$moneySheet->steuernUndAbgaben" with-icon />
                     @if($moneySheet->doesSteuernUndAbgabenRequirePlayerAction)
                         <div class="moneysheet__action-required"><span class="sr-only">Berechnung erforderlich</span></div>
                     @endif
@@ -66,14 +66,14 @@
             <tr>
                 <td>Insolvenzabgaben</td>
                 <td class="text-align--right">
-                    {!! $moneySheet->insolvenzabgaben->formatWithIcon() !!}
+                    <x-money-amount :value="$moneySheet->insolvenzabgaben" with-icon />
                 </td>
             </tr>
             @endif
             <tr>
                 <td>Lebenshaltungskosten</td>
                 <td class="text-align--right">
-                    {!! $moneySheet->lebenshaltungskosten->formatWithIcon() !!}
+                    <x-money-amount :value="$moneySheet->lebenshaltungskosten" with-icon />
                     @if($moneySheet->doesLebenshaltungskostenRequirePlayerAction)
                         <div class="moneysheet__action-required"><span class="sr-only">Berechnung erforderlich</span></div>
                     @endif
@@ -82,7 +82,7 @@
             <tr>
                 <td>Versicherungen</td>
                 <td class="text-align--right">
-                    {!! $moneySheet->totalInsuranceCost->formatWithIcon() !!}
+                    <x-money-amount :value="$moneySheet->totalInsuranceCost" with-icon />
                 </td>
             </tr>
             </tbody>
@@ -92,7 +92,7 @@
     <div class="moneysheet__information">
         <div class="text-align--center font-size--sm">Dein Kontostand</div>
         <div class="badge-with-background font-size--lg">
-            {!! PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->myself)->format() !!}
+            <x-money-amount :value="PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->myself)" />
         </div>
         <table>
             <thead>
@@ -116,12 +116,12 @@
     </div>
 
     <div class="moneysheet__income-sum">
-        <span class="badge-with-background">{!! $moneySheet->annualIncome->formatWithIcon() !!}</span>
+        <span class="badge-with-background"><x-money-amount :value="$moneySheet->annualIncome" with-icon /></span>
     </div>
     <div class="moneysheet__expenses-sum">
-        <span class="badge-with-background">{!! $moneySheet->annualExpensesFromPlayerInput->formatWithIcon() !!}</span>
+        <span class="badge-with-background"><x-money-amount :value="$moneySheet->annualExpensesFromPlayerInput" with-icon /></span>
     </div>
     <div class="moneysheet__sum">
-        <span class="badge-with-background">= {!! $moneySheet->totalFromPlayerInput->formatWithIcon() !!}</span>
+        <span class="badge-with-background">= <x-money-amount :value="$moneySheet->totalFromPlayerInput" with-icon /></span>
     </div>
 </div>

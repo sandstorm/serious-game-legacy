@@ -34,7 +34,7 @@
                 <div class="card__content card__content--center">
                     <div class="resource-changes">
                         <div class="resource-change">
-                            {!! $jobOffer->getGehalt()->formatWithIcon() !!}
+                            <x-money-amount :value="$jobOffer->getGehalt()" with-icon />
                         </div>
                     </div>
                     <span class="font-size--sm">Jahresgehalt brutto</span>

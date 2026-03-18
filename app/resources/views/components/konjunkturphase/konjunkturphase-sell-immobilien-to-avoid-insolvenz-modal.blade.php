@@ -11,7 +11,7 @@
 @endsection
 
 @section('content')
-    <p>Dein aktueller Kontostand: {!! PlayerState::getGuthabenForPlayer($gameEvents, $playerId)->formatWithIcon() !!}</p>
+    <p>Dein aktueller Kontostand: <x-money-amount :value="PlayerState::getGuthabenForPlayer($gameEvents, $playerId)" with-icon /></p>
     @if ($immobilienOwnedByPlayer)
         <table>
             <thead>
@@ -29,9 +29,9 @@
                 <tr>
                     <td><i class="icon-immobilien" aria-hidden="true"></i></td>
                     <td>{{ $immobilieOwnedByPlayer->getTitle() }}</td>
-                    <td>{!! $immobilieOwnedByPlayer->getPurchasePrice()->format() !!}</td>
-                    <td>{!! $immobilieOwnedByPlayer->getAnnualRent()->format() !!}</td>
-                    <td>{!! ImmobilienPriceState::getCurrentPriceForImmobilie($gameEvents, $immobilieOwnedByPlayer->getImmobilieId())->formatWithIcon() !!}</td>
+                    <td><x-money-amount :value="$immobilieOwnedByPlayer->getPurchasePrice()" /></td>
+                    <td><x-money-amount :value="$immobilieOwnedByPlayer->getAnnualRent()" /></td>
+                    <td><x-money-amount :value="ImmobilienPriceState::getCurrentPriceForImmobilie($gameEvents, $immobilieOwnedByPlayer->getImmobilieId())" with-icon /></td>
                     <td>
                         <button
                             type="button"

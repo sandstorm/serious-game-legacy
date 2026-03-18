@@ -23,19 +23,19 @@
             <div class="take-out-loan__info-section">
                 <small>Dein Gehalt</small>
                 <span class="badge-with-background">
-                    {!! new MoneyAmount($this->takeOutALoanForm->salary)->format() !!}
+                    <x-money-amount :value="new MoneyAmount($this->takeOutALoanForm->salary)" />
                 </span>
             </div>
             <div class="take-out-loan__info-section">
                 <small>Deine Vermögenswerte</small>
                 <span class="badge-with-background">
-                    {!! new MoneyAmount($this->takeOutALoanForm->sumOfAllAssets)->format() !!}
+                    <x-money-amount :value="new MoneyAmount($this->takeOutALoanForm->sumOfAllAssets)" />
                 </span>
             </div>
             <div class="take-out-loan__info-section">
                 <small>Deine Verbindlichkeiten</small>
                 <span class="badge-with-background">
-                    {!! new MoneyAmount($this->takeOutALoanForm->obligations)->format() !!}
+                    <x-money-amount :value="new MoneyAmount($this->takeOutALoanForm->obligations)" />
                 </span>
             </div>
         </div>
@@ -44,7 +44,7 @@
             <x-form.textfield wire:model="takeOutALoanForm.loanAmount" id="loanAmount" name="loanAmount" type="number" min="1" step="1" />
             @error('takeOutALoanForm.loanAmount') <span class="form-error">{{ $message }}</span> @enderror
             <p>
-                <strong>Kreditlimit: </strong> {!! LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->sumOfAllAssets, $this->takeOutALoanForm->salary, $this->takeOutALoanForm->obligations, $this->takeOutALoanForm->wasPlayerInsolventInThePast)->format() !!}
+                <strong>Kreditlimit: </strong> <x-money-amount :value="LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->sumOfAllAssets, $this->takeOutALoanForm->salary, $this->takeOutALoanForm->obligations, $this->takeOutALoanForm->wasPlayerInsolventInThePast)" />
                 <br />
                 @if (PlayerState::getJobForPlayer($gameEvents, $playerId) !== null)
                     @if (PlayerState::wasPlayerInsolventInThePast($gameEvents, $playerId))

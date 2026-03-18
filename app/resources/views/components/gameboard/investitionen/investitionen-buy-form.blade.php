@@ -16,7 +16,7 @@
 
 <form class="investitionen-form" wire:submit="buyInvestments('{{ $this->buyInvestmentOfType }}')">
     <div class="investitionen-form__price">
-        {!! InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, $this->buyInvestmentOfType)->format() !!} /
+        <x-money-amount :value="InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, $this->buyInvestmentOfType)" /> /
         {{ $unit }}
     </div>
     <div class="investitionen-form__amount">
@@ -47,7 +47,7 @@
         <li>Kursschwankungen: <strong>{{ $investment->fluctuations }}%</strong></li>
         <li>Dividende pro {{ $unit }}:
             @if ($this->buyInvestmentOfType === InvestmentId::MERFEDES_PENZ)
-                <strong>{!! KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->getDividend()->format() !!}</strong>
+                <strong><x-money-amount :value="KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->getDividend()" /></strong>
             @else
                 <strong>/</strong>
             @endif
