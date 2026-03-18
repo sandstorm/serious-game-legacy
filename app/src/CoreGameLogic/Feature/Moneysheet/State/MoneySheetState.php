@@ -14,7 +14,10 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\UpdatesInputForLebensha
 use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\UpdatesInputForSteuernUndAbgaben;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\Behavior\ProvidesModifiers;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
+use Domain\CoreGameLogic\Feature\Spielzug\Modifier\GehaltModifier;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereCorrected;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasRepaidForPlayer;
@@ -108,15 +111,26 @@ class MoneySheetState
         GameEvents $gameEvents,
         PlayerId $playerId
     ): GameEvents {
-        // TODO We may need to change this later (e.g. quit job, modifiers)
-        // FIXME this needs to change now with the modifiers
         $eventsAfterLastGehaltChange = $gameEvents->findAllAfterLastOrNullWhere(
-            fn ($event) => $event instanceof JobOfferWasAccepted && $event->playerId->equals($playerId)
+            fn ($event) =>
+                ($event instanceof JobOfferWasAccepted && $event->playerId->equals($playerId))
+                || ($event instanceof JobWasQuit && $event->playerId->equals($playerId))
+                || ($event instanceof ProvidesModifiers && self::eventProvidesGehaltModifier($event, $playerId))
         );
         if ($eventsAfterLastGehaltChange === null) {
             $eventsAfterLastGehaltChange = $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
         }
         return $eventsAfterLastGehaltChange;
+    }
+
+    private static function eventProvidesGehaltModifier(ProvidesModifiers $event, PlayerId $playerId): bool
+    {
+        foreach ($event->getModifiers($playerId)->getModifiers() as $modifier) {
+            if ($modifier instanceof GehaltModifier) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

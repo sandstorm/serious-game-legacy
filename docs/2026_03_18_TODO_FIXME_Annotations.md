@@ -6,7 +6,7 @@ Generated on 2026-03-18. This list covers source code annotations only (excludin
 
 ## FIXME (high priority)
 
-### 1. MoneySheetState: Gehalt calculation ignores modifiers
+### ~~1. MoneySheetState: Gehalt calculation ignores modifiers~~ FIXED 2026-03-18
 
 **File:** `app/src/CoreGameLogic/Feature/Moneysheet/State/MoneySheetState.php:112`
 
