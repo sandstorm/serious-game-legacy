@@ -10,17 +10,26 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\Definitions\Card\Dto\EreignisCardDefinition;
+use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ModifierParameters;
+use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
 use Domain\Definitions\Card\ValueObject\ModifierId;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
@@ -40,6 +49,7 @@ use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
+use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 use Tests\ComponentWithForm;
 use Tests\TestCase;
 
@@ -310,6 +320,255 @@ describe('getNumberOfTriesForSteuernUndAbgabenInput', function () {
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j0')));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(MoneySheetState::getNumberOfTriesForSteuernUndAbgabenInput($gameEvents, $this->players[0]))->toBe(0);
+    });
+
+    it('resets tries when player quits job', function () {
+        /** @var TestCase $this */
+        $cardsForTesting = [
+            new JobCardDefinition(
+                id: new CardId('j0'),
+                title: 'offered 1',
+                description: 'test job',
+                gehalt: new MoneyAmount(34000),
+                requirements: new JobRequirements(
+                    zeitsteine: 1,
+                ),
+            ),
+        ];
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+
+        $this->handle(AcceptJobOffer::create($this->players[0], new CardId('j0')));
+        $this->handle(EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(200)));
+
+        $gameEvents = $this->getGameEvents();
+        expect(MoneySheetState::getNumberOfTriesForSteuernUndAbgabenInput($gameEvents, $this->players[0]))->toBe(1);
+
+        $this->handle(QuitJob::create($this->players[0]));
+
+        $gameEvents = $this->getGameEvents();
+        expect(MoneySheetState::getNumberOfTriesForSteuernUndAbgabenInput($gameEvents, $this->players[0]))->toBe(0);
+    });
+
+    it('resets tries when Konjunkturphase with Gehalt modifier changes', function () {
+        /** @var TestCase $this */
+        $cardsForTesting = [
+            new JobCardDefinition(
+                id: new CardId('j0'),
+                title: 'offered 1',
+                description: 'test job',
+                gehalt: new MoneyAmount(34000),
+                requirements: new JobRequirements(
+                    zeitsteine: 1,
+                ),
+            ),
+        ];
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+
+        $this->handle(AcceptJobOffer::create($this->players[0], new CardId('j0')));
+        $this->handle(EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(200)));
+
+        $gameEvents = $this->getGameEvents();
+        expect(MoneySheetState::getNumberOfTriesForSteuernUndAbgabenInput($gameEvents, $this->players[0]))->toBe(1);
+
+        // Trigger a Konjunkturphase change with GEHALT_CHANGE modifier
+        $konjunkturphaseWithGehaltChange = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(2),
+            type: KonjunkturphaseTypeEnum::BOOM,
+            name: 'Boom mit Gehaltsänderung',
+            description: 'test',
+            additionalEvents: '',
+            zeitsteine: new Zeitsteine([
+                new ZeitsteinePerPlayer(2, 6),
+                new ZeitsteinePerPlayer(3, 5),
+                new ZeitsteinePerPlayer(4, 5),
+            ]),
+            kompetenzbereiche: [
+                new KompetenzbereichDefinition(
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 2),
+                        new ZeitslotsPerPlayer(4, 2),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::INVESTITIONEN,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::JOBS,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
+                ),
+            ],
+            modifierIds: [
+                ModifierId::GEHALT_CHANGE,
+            ],
+            modifierParameters: new ModifierParameters(
+                modifyGehaltPercent: 90,
+            ),
+            auswirkungen: [
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    value: 4
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    value: 1.40
+                ),
+            ],
+        );
+        KonjunkturphaseFinder::getInstance()->overrideKonjunkturphaseDefinitionsForTesting([
+            $this->getKonjunkturphaseDefinition(),
+            $konjunkturphaseWithGehaltChange,
+        ]);
+        $this->handle(
+            ChangeKonjunkturphase::create()
+                ->withFixedKonjunkturphaseForTesting($konjunkturphaseWithGehaltChange)
+                ->withFixedCardOrderForTesting()
+        );
+
+        $gameEvents = $this->getGameEvents();
+        expect(MoneySheetState::getNumberOfTriesForSteuernUndAbgabenInput($gameEvents, $this->players[0]))->toBe(0);
+    });
+
+    it('resets tries when Ereignis with Gehalt modifier is triggered', function () {
+        /** @var TestCase $this */
+
+        // Set up Konjunkturphase that always triggers Ereignis
+        $konjunkturphaseWithEreignis = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(1),
+            type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
+            name: 'Erste Erholung',
+            description: 'test',
+            additionalEvents: '',
+            zeitsteine: new Zeitsteine([
+                new ZeitsteinePerPlayer(2, 6),
+                new ZeitsteinePerPlayer(3, 5),
+                new ZeitsteinePerPlayer(4, 5),
+            ]),
+            kompetenzbereiche: [
+                new KompetenzbereichDefinition(
+                    name: CategoryId::BILDUNG_UND_KARRIERE,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 2),
+                        new ZeitslotsPerPlayer(4, 2),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::SOZIALES_UND_FREIZEIT,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::INVESTITIONEN,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 4),
+                        new ZeitslotsPerPlayer(3, 5),
+                        new ZeitslotsPerPlayer(4, 5),
+                    ])
+                ),
+                new KompetenzbereichDefinition(
+                    name: CategoryId::JOBS,
+                    zeitslots: new Zeitslots([
+                        new ZeitslotsPerPlayer(2, 3),
+                        new ZeitslotsPerPlayer(3, 4),
+                        new ZeitslotsPerPlayer(4, 4),
+                    ])
+                ),
+            ],
+            modifierIds: [
+                ModifierId::FOR_TESTING_ONLY_ALWAYS_TRIGGER_EREIGNIS,
+            ],
+            modifierParameters: new ModifierParameters(),
+            auswirkungen: [
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::LOANS_INTEREST_RATE,
+                    value: 4
+                ),
+                new AuswirkungDefinition(
+                    scope: AuswirkungScopeEnum::DIVIDEND,
+                    value: 1.40
+                ),
+            ],
+        );
+        KonjunkturphaseFinder::getInstance()->overrideKonjunkturphaseDefinitionsForTesting([
+            $konjunkturphaseWithEreignis,
+        ]);
+        $this->setKonjunkturphaseDefinition($konjunkturphaseWithEreignis);
+
+        // Ereignis card with GEHALT_CHANGE modifier + a Kategorie card to trigger it
+        $cardsForTesting = [
+            new EreignisCardDefinition(
+                id: new CardId('ereignisGehalt'),
+                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+                title: 'Gehaltsänderung Ereignis',
+                description: 'test',
+                year: new Year(1),
+                resourceChanges: new ResourceChanges(),
+                modifierIds: [ModifierId::GEHALT_CHANGE],
+                modifierParameters: new ModifierParameters(modifyGehaltPercent: 80),
+                ereignisRequirementIds: [EreignisPrerequisitesId::HAS_JOB],
+            ),
+            new KategorieCardDefinition(
+                id: new CardId('triggerCard'),
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                title: 'trigger',
+                description: 'test',
+                resourceChanges: new ResourceChanges(),
+            ),
+            new JobCardDefinition(
+                id: new CardId('j0'),
+                title: 'offered 1',
+                description: 'test job',
+                gehalt: new MoneyAmount(34000),
+                requirements: new JobRequirements(
+                    zeitsteine: 1,
+                ),
+            ),
+        ];
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+
+        // Turn 1: Player 0 accepts job
+        $this->handle(AcceptJobOffer::create($this->players[0], new CardId('j0')));
+        $this->handle(new EndSpielzug($this->players[0]));
+
+        // Turn 1: Player 1 does minijob
+        $this->handle(DoMinijob::create($this->players[1]));
+        $this->handle(new EndSpielzug($this->players[1]));
+
+        // Between turns: enter Steuern/Abgaben
+        $this->handle(EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(200)));
+
+        $gameEvents = $this->getGameEvents();
+        expect(MoneySheetState::getNumberOfTriesForSteuernUndAbgabenInput($gameEvents, $this->players[0]))->toBe(1);
+
+        // Turn 2: Player 0 activates card -> triggers Ereignis with GEHALT_CHANGE modifier
+        $this->handle(ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+
+        $gameEvents = $this->getGameEvents();
+        // Verify the Ereignis was actually triggered
+        expect($gameEvents->findLast(EreignisWasTriggered::class))->not()->toBeNull();
         expect(MoneySheetState::getNumberOfTriesForSteuernUndAbgabenInput($gameEvents, $this->players[0]))->toBe(0);
     });
 });
