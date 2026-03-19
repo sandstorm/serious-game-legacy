@@ -24,6 +24,9 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartWeiterbildung;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SubmitAnswerForWeiterbildung;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\RepayLoanForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasTakenOutForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasPutBackOnTopOfPile;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobOfferWasAccepted;
@@ -1311,6 +1314,151 @@ describe('handleChangeLebenszielphase', function () {
         expect(PlayerState::getCurrentLebenszielphaseIdForPlayer($gameEventsAfterPhaseThree, $this->players[0]))
             ->toEqual(LebenszielPhaseId::PHASE_3)
             ->and(GamePhaseState::hasAnyPlayerFinishedLebensziel($gameEventsAfterPhaseThree))->toBeTrue();
+    });
+
+    it('throws an exception when the player tries to finish the Lebensziel while having open loans', function () {
+        /** @var TestCase $this */
+        $cardsForTesting = [
+            new KategorieCardDefinition(
+                id: new CardId('phase1'),
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+2000000),
+                    zeitsteineChange: +1,
+                    bildungKompetenzsteinChange: +5,
+                    freizeitKompetenzsteinChange: +5,
+                ),
+            ),
+            new KategorieCardDefinition(
+                id: new CardId('phase2'),
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                title: 'for testing',
+                description: '...',
+                phaseId: LebenszielPhaseId::PHASE_2,
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: +1,
+                    bildungKompetenzsteinChange: +5,
+                    freizeitKompetenzsteinChange: +5,
+                ),
+            ),
+            new KategorieCardDefinition(
+                id: new CardId('phase3'),
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                title: 'for testing',
+                description: '...',
+                phaseId: LebenszielPhaseId::PHASE_3,
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: +1,
+                    bildungKompetenzsteinChange: +5,
+                    freizeitKompetenzsteinChange: +5,
+                ),
+            ),
+        ];
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+
+        // Progress through PHASE_1 -> PHASE_2
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[1]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
+
+        // Progress through PHASE_2 -> PHASE_3
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[1]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
+
+        // Now in PHASE_3, take out a loan to create debt
+        $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create($this->players[0], 10000));
+
+        // Activate the phase 3 card to get resources
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+
+        // Attempt to finish - should fail because the player has an open loan
+        $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create($this->players[0]));
+    })->throws(
+        RuntimeException::class,
+        'Cannot Change Lebensphase: Du kannst das Spiel nicht beenden, solange du noch offene Kredite hast',
+        1751619852
+    );
+
+    it('allows finishing the Lebensziel after the player has repaid all open loans', function () {
+        /** @var TestCase $this */
+        $cardsForTesting = [
+            new KategorieCardDefinition(
+                id: new CardId('phase1'),
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                title: 'for testing',
+                description: '...',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+2000000),
+                    zeitsteineChange: +1,
+                    bildungKompetenzsteinChange: +5,
+                    freizeitKompetenzsteinChange: +5,
+                ),
+            ),
+            new KategorieCardDefinition(
+                id: new CardId('phase2'),
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                title: 'for testing',
+                description: '...',
+                phaseId: LebenszielPhaseId::PHASE_2,
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: +1,
+                    bildungKompetenzsteinChange: +5,
+                    freizeitKompetenzsteinChange: +5,
+                ),
+            ),
+            new KategorieCardDefinition(
+                id: new CardId('phase3'),
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                title: 'for testing',
+                description: '...',
+                phaseId: LebenszielPhaseId::PHASE_3,
+                resourceChanges: new ResourceChanges(
+                    zeitsteineChange: +1,
+                    bildungKompetenzsteinChange: +5,
+                    freizeitKompetenzsteinChange: +5,
+                ),
+            ),
+        ];
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+
+        // Progress through PHASE_1 -> PHASE_2
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[1]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
+
+        // Progress through PHASE_2 -> PHASE_3
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+        $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+        $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[1]));
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
+
+        // Now in PHASE_3, take out a loan to create debt
+        $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create($this->players[0], 10000));
+
+        // Repay the loan
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        /** @var LoanWasTakenOutForPlayer $loanEvent */
+        $loanEvent = $gameEvents->findLast(LoanWasTakenOutForPlayer::class);
+        $this->coreGameLogic->handle($this->gameId, RepayLoanForPlayer::create($this->players[0], $loanEvent->loanId));
+
+        // Activate the phase 3 card to get resources
+        $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+
+        // Finish the game - should succeed because the loan has been repaid
+        $this->coreGameLogic->handle($this->gameId, ChangeLebenszielphase::create($this->players[0]));
+
+        $gameEventsAfterFinish = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(GamePhaseState::hasAnyPlayerFinishedLebensziel($gameEventsAfterFinish))->toBeTrue();
     });
 });
 

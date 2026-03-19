@@ -8,6 +8,7 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\DoesNotSkipTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughResourcesForLebenszielphasenChangeValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerNoOpenLoansWhenFinishingValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
@@ -26,7 +27,8 @@ class ChangeLebenszielphaseAktion extends Aktion
         $validatorChain = new IsPlayersTurnValidator();
         $validatorChain
             ->setNext(new DoesNotSkipTurnValidator())
-            ->setNext(new HasPlayerEnoughResourcesForLebenszielphasenChangeValidator());
+            ->setNext(new HasPlayerEnoughResourcesForLebenszielphasenChangeValidator())
+            ->setNext(new HasPlayerNoOpenLoansWhenFinishingValidator());
 
         return $validatorChain->validate($gameEvents, $playerId);
     }
