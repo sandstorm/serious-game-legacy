@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Tests\Feature\Livewire\Views\Helpers;
@@ -29,13 +30,14 @@ use Livewire\Livewire;
 use PHPUnit\Framework\Assert;
 use Tests\TestCase;
 
-readonly class GameUiTester {
-
+readonly class GameUiTester
+{
     public Testable $testableGameUi;
     public readonly array $categoryIds;
     private string $playerColorClass;
 
-    public function __construct(private TestCase $testCase, private PlayerId $playerId, private string $playerName) {
+    public function __construct(private TestCase $testCase, private PlayerId $playerId, private string $playerName)
+    {
         $this->testableGameUi = Livewire::test(GameUi::class, [
             'gameId' => $this->testCase->getGameId(),
             'myself' => $this->playerId
@@ -49,7 +51,8 @@ readonly class GameUiTester {
         ];
     }
 
-    public function startGame(): static {
+    public function startGame(): static
+    {
         $this->testableGameUi
             ->assertSee([
                 'Eine neue Konjunkturphase beginnt.',
@@ -66,7 +69,8 @@ readonly class GameUiTester {
         return $this;
     }
 
-    public function assertSidebarActionsAreVisible(bool $actionsAreVisible): static {
+    public function assertSidebarActionsAreVisible(bool $actionsAreVisible): static
+    {
         if ($actionsAreVisible) {
             $this->testableGameUi
                 ->assertSeeHtml([
@@ -92,7 +96,8 @@ readonly class GameUiTester {
         return $this;
     }
 
-    public function drawAndPlayCard(CategoryId $categoryId) {
+    public function drawAndPlayCard(CategoryId $categoryId)
+    {
         // get top card from category
         $topCard = $this->getTopCardFromCategory($categoryId);
 
@@ -173,7 +178,8 @@ readonly class GameUiTester {
      * @param CategoryId $categoryId
      * @return KategorieCardDefinition | JobCardDefinition | MinijobCardDefinition | WeiterbildungCardDefinition
      */
-    private function getTopCardFromCategory(CategoryId $categoryId): KategorieCardDefinition|JobCardDefinition|MinijobCardDefinition|WeiterbildungCardDefinition {
+    private function getTopCardFromCategory(CategoryId $categoryId): KategorieCardDefinition|JobCardDefinition|MinijobCardDefinition|WeiterbildungCardDefinition
+    {
         $lebenszielPhaseId = PlayerState::getCurrentLebenszielphaseIdForPlayer(
             $this->testCase->getGameEvents(),
             $this->playerId
@@ -190,18 +196,21 @@ readonly class GameUiTester {
         return CardFinder::getInstance()->getCardById(new CardId($topCardIdOnPile->value));
     }
 
-    public function getAvailableZeitsteine(): int {
+    public function getAvailableZeitsteine(): int
+    {
         return $this->testCase
             ->getKonjunkturphaseDefinition()
             ->zeitsteine
             ->getAmountOfZeitsteineForPlayer(count($this->testCase->getPlayers()));
     }
 
-    public function getPlayersZeitsteine(): int {
+    public function getPlayersZeitsteine(): int
+    {
         return PlayerState::getResourcesForPlayer($this->testCase->getGameEvents(), $this->playerId)->zeitsteineChange;
     }
 
-    public function assertVisibilityOfZeitsteine($currentZeitsteine, $availableZeitsteine): static {
+    public function assertVisibilityOfZeitsteine($currentZeitsteine, $availableZeitsteine): static
+    {
         $this->testableGameUi->assertSeeHtml(
             $this->playerName . ' hat noch ' . $currentZeitsteine . ' von ' . $availableZeitsteine . ' Zeitsteinen übrig.'
         );
@@ -212,7 +221,8 @@ readonly class GameUiTester {
      * @param CategoryId[] $categoryIds
      * @return array
      */
-    public function getAvailableCategorySlots(array $categoryIds): array {
+    public function getAvailableCategorySlots(array $categoryIds): array
+    {
         $players = $this->testCase->getPlayers();
         $availableCategorySlots = [];
 
@@ -232,7 +242,8 @@ readonly class GameUiTester {
      * @param CategoryId[] $categoryIds
      * @return array
      */
-    public function getOccupiedCategorySlots(array $categoryIds): array {
+    public function getOccupiedCategorySlots(array $categoryIds): array
+    {
         $players = $this->testCase->getPlayers();
         $usedCategorySlots = [];
 
@@ -254,7 +265,8 @@ readonly class GameUiTester {
         return $usedCategorySlots;
     }
 
-    public function assertVisibilityOfCategorySlots($availableCategorySlots, $usedCategorySlots): static {
+    public function assertVisibilityOfCategorySlots($availableCategorySlots, $usedCategorySlots): static
+    {
         foreach ($availableCategorySlots as $categoryName => $availableSlots) {
             $slotsUsedByPlayer = [];
             foreach ($usedCategorySlots[$categoryName]['players'] as $playerName => $amount) {
@@ -267,7 +279,8 @@ readonly class GameUiTester {
         return $this;
     }
 
-    public function getAvailableKompetenzSlots(): array {
+    public function getAvailableKompetenzSlots(): array
+    {
         $currentLebenszielphaseDefinition = PlayerState::getCurrentLebenszielphaseDefinitionForPlayer(
             $this->testCase->getGameEvents(),
             $this->playerId
@@ -278,7 +291,8 @@ readonly class GameUiTester {
         ];
     }
 
-    public function getPlayersKompetenzsteine(): array {
+    public function getPlayersKompetenzsteine(): array
+    {
         $playerResources = PlayerState::getResourcesForPlayer($this->testCase->getGameEvents(), $this->playerId);
         return [
             CategoryId::BILDUNG_UND_KARRIERE->value => $playerResources->bildungKompetenzsteinChange,
@@ -286,7 +300,8 @@ readonly class GameUiTester {
         ];
     }
 
-    public function assertVisibilityOfKompetenzen($playersKompetenzsteine, $availableKompetenzSlots): static {
+    public function assertVisibilityOfKompetenzen($playersKompetenzsteine, $availableKompetenzSlots): static
+    {
         foreach ($playersKompetenzsteine as $categoryName => $achievedAmount) {
             // replace '&' with '&amp;'
             $categoryNameAdapted = str_replace("&", "&amp;", $categoryName);
@@ -298,7 +313,8 @@ readonly class GameUiTester {
         return $this;
     }
 
-    private function getPlayersBalance(): float {
+    private function getPlayersBalance(): float
+    {
         $playerResources = PlayerState::getResourcesForPlayer($this->testCase->getGameEvents(), $this->playerId);
         $balance = $playerResources->guthabenChange->value;
         $this->testableGameUi->assertSee($this->numberFormatMoney($balance));
@@ -306,11 +322,13 @@ readonly class GameUiTester {
         return $balance;
     }
 
-    private function numberFormatMoney($amount): string {
+    private function numberFormatMoney($amount): string
+    {
         return number_format(($amount), 2, ',', '.');
     }
 
-    private function assertVisibilityOfBalance(): void {
+    private function assertVisibilityOfBalance(): void
+    {
         $playersGuthabenFormatted = PlayerState::getGuthabenForPlayer($this->testCase->getGameEvents(), $this->playerId)->format();
 
         $this->testableGameUi->assertSeeHtml(
@@ -319,7 +337,8 @@ readonly class GameUiTester {
         );
     }
 
-    public function compareUsedSlots($categoryName, $usedCategorySlotsBeforeAction, $usedCategorySlotsAfterAction): static {
+    public function compareUsedSlots($categoryName, $usedCategorySlotsBeforeAction, $usedCategorySlotsAfterAction): static
+    {
         foreach ($usedCategorySlotsAfterAction as $name => $usedSlots) {
             if ($name === $categoryName) {
                 Assert::assertEquals(
@@ -338,7 +357,8 @@ readonly class GameUiTester {
         return $this;
     }
 
-    private function getTopCardKompetenzsteinChange(KategorieCardDefinition $topCard): array {
+    private function getTopCardKompetenzsteinChange(KategorieCardDefinition $topCard): array
+    {
         return [
             CategoryId::BILDUNG_UND_KARRIERE->value => $topCard->getResourceChanges()->bildungKompetenzsteinChange,
             CategoryId::SOZIALES_UND_FREIZEIT->value => $topCard->getResourceChanges()->freizeitKompetenzsteinChange
@@ -359,7 +379,8 @@ readonly class GameUiTester {
         }
     }
 
-    public function tryToPlayCardWhenItIsNotThePlayersTurn(CategoryId $categoryId): void {
+    public function tryToPlayCardWhenItIsNotThePlayersTurn(CategoryId $categoryId): void
+    {
         $topCard = $this->getTopCardFromCategory($categoryId);
 
         $this->testableGameUi
@@ -371,7 +392,8 @@ readonly class GameUiTester {
             ->assertSee('Du bist gerade nicht dran');
     }
 
-    public function startTurn(): static {
+    public function startTurn(): static
+    {
         $modalAttributes = [
             'hasIcon' => true,
             'hasTitle' => false,
@@ -394,7 +416,8 @@ readonly class GameUiTester {
         return $this;
     }
 
-    private function assertSeeMandatoryModal(array $modalAttributes, array $additionalContent): void {
+    private function assertSeeMandatoryModal(array $modalAttributes, array $additionalContent): void
+    {
         $this->testableGameUi
             ->assertSeeHtml([
                 '<div class="modal__backdrop"></div>',
@@ -417,7 +440,8 @@ readonly class GameUiTester {
         }
     }
 
-    private function assertDoNotSeeMandatoryModal(array $additionalContent): void {
+    private function assertDoNotSeeMandatoryModal(array $additionalContent): void
+    {
         $this->testableGameUi->assertDontSeeHtml([
             '<div class="modal__backdrop"></div>',
             '<div class="modal__content">',
@@ -426,7 +450,8 @@ readonly class GameUiTester {
         ]);
     }
 
-    public function seeUpdatedGameboard(): static {
+    public function seeUpdatedGameboard(): static
+    {
         $this->testableGameUi
             ->assertSee([
                 'Bildung & Karriere',
@@ -451,12 +476,14 @@ readonly class GameUiTester {
         return $this;
     }
 
-    public function finishTurn(): static {
+    public function finishTurn(): static
+    {
         $this->testableGameUi->call('spielzugAbschliessen');
         return $this;
     }
 
-    public function openJobBoard(): static {
+    public function openJobBoard(): static
+    {
         $topCard = $this->getTopCardFromCategory(CategoryId::JOBS);
         $topCardRequirements = $topCard->getRequirements();
 
@@ -483,7 +510,8 @@ readonly class GameUiTester {
         return $this;
     }
 
-    public function acceptJobWhenPlayerCurrentlyHasNoJob() {
+    public function acceptJobWhenPlayerCurrentlyHasNoJob()
+    {
         $topCard = $this->getTopCardFromCategory(CategoryId::JOBS);
         $topCardTitle = $topCard->getTitle();
         $gehalt = $this->numberFormatMoney($topCard->getGehalt()->value);
@@ -545,7 +573,8 @@ readonly class GameUiTester {
         return $this;
     }
 
-    private function getPlayersJobStatus(): string {
+    private function getPlayersJobStatus(): string
+    {
         $playerHasJob = PlayerState::getJobForPlayer($this->testCase->getGameEvents(), $this->playerId);
         $jobStatus = $playerHasJob === null ? 'Du hast keinen Job' : 'Du hast einen Job (Ein Zeitstein ist dauerhaft gebunden)';
         $this->testableGameUi->assertSee($jobStatus);
@@ -553,7 +582,8 @@ readonly class GameUiTester {
         return $jobStatus;
     }
 
-    public function openInvestmentsOverview(): static {
+    public function openInvestmentsOverview(): static
+    {
         $this->testableGameUi
             ->call('toggleInvestitionenSelectionModal');
 
@@ -580,7 +610,8 @@ readonly class GameUiTester {
         return $this;
     }
 
-    private function assertSeeModal(array $modalAttributes, array $additionalContent): void {
+    private function assertSeeModal(array $modalAttributes, array $additionalContent): void
+    {
         $this->testableGameUi->assertSeeHtml([
             '<div class="modal__content">',
             '<div class="modal__body" id="modal-content">',
@@ -608,7 +639,8 @@ readonly class GameUiTester {
         }
     }
 
-    public function chooseStocks(): static {
+    public function chooseStocks(): static
+    {
         $firstStock = InvestmentId::MERFEDES_PENZ;
         $secondStock = InvestmentId::BETA_PEAR;
 
@@ -639,7 +671,8 @@ readonly class GameUiTester {
         return $this;
     }
 
-    public function buyStocks(InvestmentId $investmentId, int $amount): static {
+    public function buyStocks(InvestmentId $investmentId, int $amount): static
+    {
         $investmentDefinition = InvestmentFinder::findInvestmentById($investmentId);
         $currentInvestmentPrice = InvestmentPriceState::getCurrentInvestmentPrice($this->testCase->getGameEvents(), $investmentId);
         $currentInvestmentPriceFormatted = $this->numberFormatMoney($currentInvestmentPrice->value);
@@ -702,7 +735,8 @@ readonly class GameUiTester {
         return $this;
     }
 
-    private function assertDoNotSeeModal(array $modalAttributes, array $additionalContent): void {
+    private function assertDoNotSeeModal(array $modalAttributes, array $additionalContent): void
+    {
         $this->testableGameUi->assertDontSeeHtml([
             '<div class="modal__content">',
             '<div class="modal__body" id="modal-content">',
@@ -722,7 +756,8 @@ readonly class GameUiTester {
         }
     }
 
-    public function sellStocksThatOtherPlayerIsBuying(InvestmentId $stockId, $amount): void {
+    public function sellStocksThatOtherPlayerIsBuying(InvestmentId $stockId, $amount): void
+    {
         $lastInvestmentBoughtByAPlayer = $this->testCase->getGameEvents()->findLast(PlayerHasBoughtInvestment::class);
         $nameOfPlayerWhoBoughtInvestment = PlayerState::getNameForPlayer(
             $this->testCase->getGameEvents(),
@@ -753,7 +788,8 @@ readonly class GameUiTester {
         $this->assertDoNotSeeMandatoryModal($additionalModalContent);
     }
 
-    private function assertSeeInvestitionenSellAfterPurchaseModal($amountInvestment, $stockId): void {
+    private function assertSeeInvestitionenSellAfterPurchaseModal($amountInvestment, $stockId): void
+    {
         if ($amountInvestment > 0) {
             $this->testableGameUi->assertSeeHtml([
                 "Du kannst jetzt deine Anteile verkaufen.",
@@ -768,7 +804,8 @@ readonly class GameUiTester {
         }
     }
 
-    public function doWeiterbildungWithSuccess(): static {
+    public function doWeiterbildungWithSuccess(): static
+    {
         $topCard = $this->getTopCardFromCategory(CategoryId::WEITERBILDUNG);
 
         // get properties from top card
@@ -879,7 +916,8 @@ readonly class GameUiTester {
         return $this;
     }
 
-    private function getArrayForTestingAnswerOptionsFromWeiterbildung($topCardAnswerOptions): array {
+    private function getArrayForTestingAnswerOptionsFromWeiterbildung($topCardAnswerOptions): array
+    {
         $answerOptionsDescription = [];
         $rightAnswerOption = "";
 
@@ -893,7 +931,8 @@ readonly class GameUiTester {
         return [$answerOptionsDescription, $rightAnswerOption];
     }
 
-    public function doMinijob(): static {
+    public function doMinijob(): static
+    {
         $topCard = $this->getTopCardFromCategory(CategoryId::MINIJOBS);
 
         // get properties from top card
@@ -998,12 +1037,14 @@ readonly class GameUiTester {
         return $this;
     }
 
-    public function openMoneySheetInsurance(): static {
+    public function openMoneySheetInsurance(): static
+    {
         $this->testableGameUi->call('showExpensesTab', 'insurances');
         return $this;
     }
 
-    public function assertSeeMoneySheetInsurance(): static {
+    public function assertSeeMoneySheetInsurance(): static
+    {
         $allInsurances = InsuranceFinder::getInstance()->getAllInsurances();
         [$insuranceNames, $insuranceCosts] = $this->getArrayForTestingVisibleValuesOnInsuranceSheet($allInsurances);
 
@@ -1024,7 +1065,8 @@ readonly class GameUiTester {
     /**
      * @param InsuranceDefinition[] $allInsurances
      */
-    private function getArrayForTestingVisibleValuesOnInsuranceSheet(array $allInsurances): array {
+    private function getArrayForTestingVisibleValuesOnInsuranceSheet(array $allInsurances): array
+    {
         $lebenszielPhase = PlayerState::getCurrentLebenszielphaseIdForPlayer(
             $this->testCase->getGameEvents(),
             $this->playerId
@@ -1041,7 +1083,8 @@ readonly class GameUiTester {
         return [$insuranceNames, $insuranceCosts];
     }
 
-    public function assertSeeAnnualInsurancesCost(): static {
+    public function assertSeeAnnualInsurancesCost(): static
+    {
         $allInsurances = InsuranceFinder::getInstance()->getAllInsurances();
         $lebenszielPhase = PlayerState::getCurrentLebenszielphaseIdForPlayer(
             $this->testCase->getGameEvents(),
@@ -1066,7 +1109,8 @@ readonly class GameUiTester {
         return $this;
     }
 
-    public function changeInsurance(array $insurancesToChange): static {
+    public function changeInsurance(array $insurancesToChange): static
+    {
         foreach ($insurancesToChange as $changedInsurance) {
             $insuranceDefinition = InsuranceFinder::getInstance()->findInsuranceByType($changedInsurance['type']);
             $insuranceIdValue = $insuranceDefinition->id->value;
@@ -1079,14 +1123,16 @@ readonly class GameUiTester {
         return $this;
     }
 
-    public function confirmInsuranceChoice(): static {
+    public function confirmInsuranceChoice(): static
+    {
         $this->testableGameUi
             ->call('setInsurances');
 
         return $this;
     }
 
-    public function assertSeeInsuranceChangeInEreignisprotokoll($insurancesToChange): static {
+    public function assertSeeInsuranceChangeInEreignisprotokoll($insurancesToChange): static
+    {
         foreach ($insurancesToChange as $changedInsurance) {
             $insuranceValue = $changedInsurance['type']->value;
             $loggedMessage = $changedInsurance['changeTo']
@@ -1098,17 +1144,20 @@ readonly class GameUiTester {
         return $this;
     }
 
-    public function closeMoneySheet(): static {
+    public function closeMoneySheet(): static
+    {
         $this->testableGameUi->call('closeMoneySheet');
         return $this;
     }
 
-    public function openLebenszielModal(): static {
+    public function openLebenszielModal(): static
+    {
         $this->testableGameUi->call('showPlayerLebensziel', $this->playerId);
         return $this;
     }
 
-    public function assertSeeLebenszielModal(): static {
+    public function assertSeeLebenszielModal(): static
+    {
         $playersGuthaben = PlayerState::getGuthabenForPlayer($this->testCase->getGameEvents(), $this->playerId)->value;
         $lebenszielDefinitionForPlayer = PlayerState::getLebenszielDefinitionForPlayer(
             $this->testCase->getGameEvents(),
@@ -1142,17 +1191,20 @@ readonly class GameUiTester {
         return $this;
     }
 
-    public function assertDoNotSeeMessage($message): static {
+    public function assertDoNotSeeMessage($message): static
+    {
         $this->testableGameUi->assertDontSeeHtml($message);
         return $this;
     }
 
-    public function assertSeeMessage($message): static {
+    public function assertSeeMessage($message): static
+    {
         $this->testableGameUi->assertSee($message);
         return $this;
     }
 
-    public function closeMessage(): static {
+    public function closeMessage(): static
+    {
         $this->testableGameUi->call('closeNotification');
         return $this;
     }

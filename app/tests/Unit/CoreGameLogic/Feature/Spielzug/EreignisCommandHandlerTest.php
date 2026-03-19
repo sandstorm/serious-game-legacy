@@ -408,8 +408,10 @@ describe('Childbirth', function () {
                 $this->getPlayers()[0]
             )->value)
             ->toEqual(100000 * (Configuration::LEBENSHALTUNGSKOSTEN_PERCENT + 10) / 100)
-            ->and(MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEventsAfterEreignis,
-                $this->getPlayers()[1])->value)
+            ->and(MoneySheetState::calculateLebenshaltungskostenForPlayer(
+                $gameEventsAfterEreignis,
+                $this->getPlayers()[1]
+            )->value)
             ->toEqual(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE);
     });
 });
