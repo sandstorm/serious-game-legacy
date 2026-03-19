@@ -216,7 +216,9 @@ describe('handleSkipCard', function () {
             playerId: $this->players[1],
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
-    })->throws(RuntimeException::class,
+    })->throws(
+        RuntimeException::class,
         'Cannot skip card: Es gibt keine freien Zeitsteinslots mehr',
-        1747325793);
+        1747325793
+    );
 });
