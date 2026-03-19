@@ -52,5 +52,11 @@
 	#}
 	#vulcain
 
+	# Proxy WebSocket connections to Reverb
+	@reverb {
+		path /app/*
+	}
+	reverse_proxy @reverb 127.0.0.1:8899
+
 	php_server
 }

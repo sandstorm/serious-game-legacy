@@ -14,5 +14,11 @@ spiel.legacy-finanzbildung.de {
 		}
 	}
 
+	# Proxy WebSocket connections to Reverb
+	@reverb {
+		path /app/*
+	}
+	reverse_proxy @reverb laravel:8899
+
 	reverse_proxy laravel:8081
 }
