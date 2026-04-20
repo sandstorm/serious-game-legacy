@@ -49,10 +49,10 @@ jobs:
       # Cache yarn/node dependencies
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
-        run: echo "dir=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+        run: echo "dir=$(mise x -- yarn config get cacheFolder)" >> $GITHUB_OUTPUT
         working-directory: ./app
 
-      - name: Cache Node modules
+      - name: Cache Node packages
         uses: actions/cache@v4
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -65,13 +65,9 @@ jobs:
           COMPOSER_CACHE_DIR=.composer-cache composer install --ignore-platform-reqs
         working-directory: ./app
 
-      # Install Node.js dependencies and build
-      - name: Install Yarn dependencies
-        run: yarn
-        working-directory: ./app
-
+      # Install yarn dependencies and build js
       - name: Build assets
-        run: yarn build
+        run: mise build-js
         working-directory: ./app
 
       # Upload build artifacts
@@ -125,7 +121,7 @@ jobs:
           driver: docker-container
           buildkitd-flags: --allow-insecure-entitlement security.insecure
 
-    # Login to GitHub Container Registry
+      # Login to GitHub Container Registry
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
         with:
