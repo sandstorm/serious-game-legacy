@@ -26,6 +26,12 @@
     justify-content: center;
     align-items: center;
 
+    > .button {
+        z-index: var(--z-index-footer);
+        position: sticky;
+        bottom: var(--spacing-200);
+    }
+
     .lebensziel__phase-kompetenzen {
         display: grid;
         grid-template-columns: 1fr 2fr;
