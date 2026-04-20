@@ -39,4 +39,7 @@
     justify-content: space-between;
     align-items: center;
     border-top: 1px solid var(--color-primary);
+    position: sticky;
+    bottom: 0;
+    z-index: var(--z-index-footer);
 }

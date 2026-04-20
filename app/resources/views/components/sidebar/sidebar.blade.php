@@ -30,6 +30,17 @@
 
     @if ($this->currentPlayerIsMyself())
         <div class="sidebar__actions" x-show="!eventLogOpen">
+            <button
+                type="button"
+                @class([
+                    "button",
+                    "button--type-primary",
+                    "button--disabled" => !$this->canEndSpielzug()->canExecute,
+                    $this->getPlayerColorClass()
+                ])
+                wire:click="spielzugAbschliessen()">
+                Spielzug beenden
+            </button>
             @if (PlayerState::getJobForPlayer($this->gameEvents, $playerId) !== null)
                 <button class="button button--type-secondary" wire:click="showIncomeTab('salary')">
                     <span>Mein Job: <x-money-amount :value="PlayerState::getCurrentGehaltForPlayer($this->gameEvents, $playerId)" /></span>
@@ -47,17 +58,6 @@
             </button>
             <button class="button button--type-secondary" wire:click="showExpensesTab('{{ ExpensesTabEnum::INSURANCES }}')">
                 <span>Versicherung abschließen</span> <i class="icon-dots" aria-hidden="true"></i>
-            </button>
-            <button
-                type="button"
-                @class([
-                    "button",
-                    "button--type-primary",
-                    "button--disabled" => !$this->canEndSpielzug()->canExecute,
-                    $this->getPlayerColorClass()
-                ])
-                wire:click="spielzugAbschliessen()">
-                Spielzug beenden
             </button>
         </div>
     @endif
