@@ -6,7 +6,7 @@
     <div class="form-group">
         <label class="sr-only" for="lebensziel">Lebensziele</label>
         <select id="lebensziel" name="lebensziel" class="form-group__input" wire:model="lebenszielForm.lebensziel" wire:change="selectLebensZiel($event.target.value)">
-            <option value="" disabled>-- Wähle Dein Lebensziel --</option>
+            <option value="">-- Wähle Dein Lebensziel --</option>
             @foreach($lebensziele as $lebensziel)
                 <option value="{{ $lebensziel->id->value }}">{{ $lebensziel->name }}</option>
             @endforeach
@@ -23,5 +23,8 @@
     @endforeach
 
     @error('lebenszielForm.lebensziel') <span class="form__error">{{ $message }}</span> @enderror
-    <x-form.submit>Weiter</x-form.submit>
+    <x-form.submit
+        :class="$lebenszielForm->lebensziel === null ? 'button--disabled' : ''"
+        :disabled="$lebenszielForm->lebensziel === null"
+    >Weiter</x-form.submit>
 </form>
