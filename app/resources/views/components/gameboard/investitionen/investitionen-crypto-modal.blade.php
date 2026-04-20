@@ -63,5 +63,6 @@
                 unit="Coin"
             />
         </div>
+        <x-gameboard.investitionen.transaction-history :game-events="$gameEvents" :player-id="$this->myself" />
     @endif
 @endsection

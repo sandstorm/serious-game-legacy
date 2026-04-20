@@ -1,0 +1,41 @@
+.transaction-history {
+    border-radius: 10px;
+    background-color: var(--color-cards-bg);
+    padding: var(--spacing-100);
+    margin-top: var(--spacing-100);
+}
+
+.transaction-history__title {
+    margin-bottom: var(--spacing-100);
+}
+
+.transaction-history__empty {
+    color: var(--color-grey);
+    font-style: italic;
+}
+
+.transaction-history__table-wrapper {
+    overflow-x: auto;
+}
+
+.transaction-history__table {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-sm);
+
+    th, td {
+        padding: var(--spacing-50) var(--spacing-100);
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    th {
+        border-bottom: 2px solid var(--color-primary);
+        font-weight: var(--font-weight-bold);
+    }
+
+    td {
+        border-bottom: 1px solid var(--color-grey);
+    }
+}
