@@ -16,6 +16,7 @@ use Domain\CoreGameLogic\PlayerId;
 use Filament\Actions\Action;
 use Filament\Actions\ImportAction;
 use Filament\Facades\Filament;
+use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use Illuminate\Database\Eloquent\Collection;
@@ -26,10 +27,75 @@ class ViewCourse extends ViewRecord
     protected static string $resource = CourseResource::class;
 
     /**
+     * @return int[] Array of group sizes (e.g. [4, 4, 3] for 11 players preferring 4er groups)
+     */
+    private static function calculateGroupSizes(int $n, int $preferGroupsOf): array
+    {
+        if ($n < 2) {
+            return [];
+        }
+        if ($n <= 4) {
+            return [$n];
+        }
+        if ($n === 5) {
+            return [3, 2];
+        }
+
+        if ($preferGroupsOf === 3) {
+            return self::calculateGroupSizesPrefer3($n);
+        }
+
+        return self::calculateGroupSizesPrefer4($n);
+    }
+
+    /**
+     * @return int[]
+     */
+    private static function calculateGroupSizesPrefer4(int $n): array
+    {
+        $remainder = $n % 4;
+
+        if ($remainder === 0) {
+            return array_fill(0, intdiv($n, 4), 4);
+        }
+
+        if ($remainder === 3) {
+            return [...array_fill(0, intdiv($n, 4), 4), 3];
+        }
+
+        if ($remainder === 2) {
+            return [...array_fill(0, intdiv($n - 6, 4), 4), 3, 3];
+        }
+
+        // remainder === 1: subtract 9 (three 3er groups), rest fills with 4er
+        return [...array_fill(0, intdiv($n - 9, 4), 4), 3, 3, 3];
+    }
+
+    /**
+     * @return int[]
+     */
+    private static function calculateGroupSizesPrefer3(int $n): array
+    {
+        $remainder = $n % 3;
+
+        if ($remainder === 0) {
+            return array_fill(0, intdiv($n, 3), 3);
+        }
+
+        if ($remainder === 1) {
+            // one 4er group, rest 3er
+            return [...array_fill(0, intdiv($n - 4, 3), 3), 4];
+        }
+
+        // remainder === 2: two 4er groups, rest 3er
+        return [...array_fill(0, intdiv($n - 8, 3), 3), 4, 4];
+    }
+
+    /**
      * @param Collection<int, Player> $playersCollection
      * @return array<array<Player>>
      */
-    private static function createRandomGameGroups(Collection $playersCollection): array
+    private static function createRandomGameGroups(Collection $playersCollection, int $preferGroupsOf = 4): array
     {
         $allPlayers = [];
 
@@ -37,39 +103,30 @@ class ViewCourse extends ViewRecord
             $allPlayers[] = $player;
         }
 
-        // We need at least two players
-        if (count($allPlayers) < 2) {
+        $groupSizes = self::calculateGroupSizes(count($allPlayers), $preferGroupsOf);
+
+        if ($groupSizes === []) {
             return [];
         }
 
-        // we want random groups, so we shuffle all players before slicing the array into groups
         shuffle($allPlayers);
 
         $gameGroups = [];
-
-        /**
-         * WHY:
-         * We need at least 2 players in a game. If we fill all games with four players we may end up
-         * with one group that only has 1 player. That is the case when playerCount % 4 === 1. In that
-         * case we can simply create one group with 2 players and one group with 3 players. The remaining
-         * players can be put in full groups.
-         */
-        if (count($allPlayers) > 4 && count($allPlayers) % 4 === 1) {
-            $gameGroups[] = array_slice($allPlayers, 0, 3);
-            $gameGroups[] = array_slice($allPlayers, 3, 2);
-            $allPlayers = array_slice($allPlayers, 5);
-        }
-
-        /**
-         * Fill the remaining games with up to 4 players (unless there are less than 4 left)
-         */
-        $playersPerGame = 4;
-        $numberOfGames = (int) ceil(count($allPlayers) / $playersPerGame);
-        for ($i = 0; $i < $numberOfGames; $i++) {
-            $gameGroups[] = array_slice($allPlayers, $i * $playersPerGame, $playersPerGame);
+        $offset = 0;
+        foreach ($groupSizes as $size) {
+            $gameGroups[] = array_slice($allPlayers, $offset, $size);
+            $offset += $size;
         }
 
         return $gameGroups;
+    }
+
+    /**
+     * @return int[]
+     */
+    public static function calculateGroupSizesForTesting(int $n, int $preferGroupsOf): array
+    {
+        return self::calculateGroupSizes($n, $preferGroupsOf);
     }
 
     /**
@@ -78,9 +135,9 @@ class ViewCourse extends ViewRecord
      * @param Collection<int, Player> $playersCollection
      * @return array<array<Player>>
      */
-    public static function createRandomGameGroupsForTesting(Collection $playersCollection): array
+    public static function createRandomGameGroupsForTesting(Collection $playersCollection, int $preferGroupsOf = 4): array
     {
-        return self::createRandomGameGroups($playersCollection);
+        return self::createRandomGameGroups($playersCollection, $preferGroupsOf);
     }
 
     protected function getHeaderActions(): array
@@ -94,7 +151,17 @@ class ViewCourse extends ViewRecord
                     'course' => $this->record
                 ]),
             Action::make('Spiele erstellen')
-                ->action(function (ForCoreGameLogic $coreGameLogic) {
+                ->form([
+                    Select::make('preferGroupsOf')
+                        ->label('Gruppengröße bevorzugen')
+                        ->options([
+                            4 => 'Bevorzugt 4er-Gruppen',
+                            3 => 'Bevorzugt 3er-Gruppen',
+                        ])
+                        ->default(4)
+                        ->required(),
+                ])
+                ->action(function (array $data, ForCoreGameLogic $coreGameLogic) {
 
                     /** @var Course $course */
                     $course = $this->record;
@@ -102,7 +169,7 @@ class ViewCourse extends ViewRecord
                     $panel = Filament::getCurrentPanel();
                     $user = $panel?->auth()->user();
 
-                    $gameGroups = self::createRandomGameGroups($course->players);
+                    $gameGroups = self::createRandomGameGroups($course->players, (int) $data['preferGroupsOf']);
 
                     if (count($gameGroups) === 0) {
                         Notification::make()
