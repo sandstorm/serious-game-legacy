@@ -23,6 +23,7 @@ use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Insurance\InsuranceDefinition;
 use Domain\Definitions\Insurance\InsuranceFinder;
 use Domain\Definitions\Investments\InvestmentFinder;
+use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Livewire\Features\SupportTesting\Testable;
@@ -62,7 +63,20 @@ readonly class GameUiTester
             ->call('nextKonjunkturphaseStartScreenPage')
             ->assertSee([
                 $this->testCase->getKonjunkturphaseDefinition()->type->value,
-                $this->testCase->getKonjunkturphaseDefinition()->description
+                'Auswirkungen',
+                ...array_map(
+                    fn (AuswirkungScopeEnum $scope) => $scope->value,
+                    AuswirkungScopeEnum::cases()
+                ),
+                ...array_map(
+                    fn (AuswirkungScopeEnum $scope) => rtrim(rtrim(number_format(
+                        $this->testCase->getKonjunkturphaseDefinition()->getAuswirkungByScope($scope)->value,
+                        10,
+                        ',',
+                        '.'
+                    ), '0'), ','),
+                    AuswirkungScopeEnum::cases()
+                ),
             ])
             ->call('startKonjunkturphaseForPlayer');
 

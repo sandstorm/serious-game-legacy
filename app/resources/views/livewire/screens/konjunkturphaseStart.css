@@ -33,6 +33,12 @@
     }
 }
 
+.konjunkturphase-start__image {
+    max-width: 100%;
+    margin-top: var(--spacing-200);
+    border-radius: 10px;
+}
+
 .konjunkturphase-start__actions {
     grid-area: actions;
     display: flex;
@@ -42,4 +48,25 @@
     position: sticky;
     bottom: 0;
     z-index: var(--z-index-footer);
+}
+
+.konjunkturphase-comparison {
+    display: table;
+    width: unset;
+    border-collapse: collapse;
+    margin-top: var(--spacing-200);
+
+    th, td {
+        padding: var(--spacing-50) var(--spacing-100);
+        text-align: left;
+    }
+
+    th {
+        border-bottom: 2px solid var(--color-primary);
+        font-weight: var(--font-weight-bold);
+    }
+
+    td {
+        border-bottom: 1px solid var(--color-grey);
+    }
 }

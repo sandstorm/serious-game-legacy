@@ -27,6 +27,7 @@ trait HasKonjunkturphase
     {
         return view('livewire.screens.konjunkturphase-start', [
             'konjunkturphase' => KonjunkturphaseState::getCurrentKonjunkturphase($this->getGameEvents()),
+            'previousKonjunkturphase' => KonjunkturphaseState::getPreviousKonjunkturphaseOrNull($this->getGameEvents()),
             'currentPage' => $this->konjunkturphaseStartScreenPage,
         ]);
     }
