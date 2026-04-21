@@ -8,11 +8,13 @@ use App\Livewire\Forms\PreGameLebenszielForm;
 use App\Livewire\Forms\PreGameNameForm;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
+use Domain\CoreGameLogic\Feature\Initialization\Command\SetRoleForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Lebensziel\LebenszielFinder;
 use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
+use Domain\Definitions\PlayerRole\PlayerRole;
 use Illuminate\View\View;
 
 trait HasPreGamePhase
@@ -30,6 +32,7 @@ trait HasPreGamePhase
     public function mountHasPreGamePhase(): void
     {
         $this->nameForm->name = PlayerState::getNameForPlayerOrNull($this->getGameEvents(), $this->myself) ?? '';
+        $this->nameForm->role = PlayerState::getRoleForPlayerOrNull($this->getGameEvents(), $this->myself)?->value;
         $this->lebenszielForm->lebensziel = PlayerState::getLebenszielDefinitionForPlayerOrNull($this->getGameEvents(), $this->myself)?->id->value;
     }
 
@@ -43,7 +46,23 @@ trait HasPreGamePhase
     public function preGameSetName(): void
     {
         $this->nameForm->validate();
-        $this->handleCommand(new SetNameForPlayer($this->myself, $this->nameForm->name));
+
+        if ($this->showRoleSelection) {
+            $this->validate([
+                'nameForm.role' => ['required'],
+            ], [
+                'nameForm.role.required' => 'Bitte wähle eine Rolle aus.',
+            ]);
+            $this->handleCommand(new SetNameForPlayer($this->myself, $this->nameForm->name));
+
+            if ($this->nameForm->role === null) {
+                throw new \InvalidArgumentException('Role must not be null');
+            }
+            $this->handleCommand(new SetRoleForPlayer($this->myself, PlayerRole::from($this->nameForm->role)));
+        } else {
+            $this->handleCommand(new SetNameForPlayer($this->myself, $this->nameForm->name));
+        }
+
         $this->broadcastNotify();
     }
 

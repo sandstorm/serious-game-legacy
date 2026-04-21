@@ -8,6 +8,8 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
+use Domain\CoreGameLogic\Feature\Initialization\Event\RoleForPlayerWasSet;
+use Domain\Definitions\PlayerRole\PlayerRole;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
@@ -472,6 +474,14 @@ class PlayerState
         return $gameEvents->findLastOrNullWhere(fn (
             $e
         ) => $e instanceof NameForPlayerWasSet && $e->playerId->equals($playerId))?->name;
+    }
+
+    public static function getRoleForPlayerOrNull(GameEvents $gameEvents, PlayerId $playerId): ?PlayerRole
+    {
+        // @phpstan-ignore property.notFound
+        return $gameEvents->findLastOrNullWhere(fn (
+            $e
+        ) => $e instanceof RoleForPlayerWasSet && $e->playerId->equals($playerId))?->role;
     }
 
     /**

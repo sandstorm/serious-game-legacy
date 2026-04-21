@@ -147,9 +147,14 @@ class GamePlayController extends Controller
             abort(403);
         }
 
+        $showRoleSelection = $game->isCreatedByPlayer()
+            && $game->creatorPlayer !== null
+            && $playerId->value !== $game->creatorPlayer->id;
+
         return view('controllers.gameplay.game-play', [
             'gameId' => $gameId,
             'myself' => $playerId,
+            'showRoleSelection' => $showRoleSelection,
         ]);
     }
 

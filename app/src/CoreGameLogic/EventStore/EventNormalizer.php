@@ -8,6 +8,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
+use Domain\CoreGameLogic\Feature\Initialization\Event\RoleForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\CardsWereShuffled;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
@@ -111,6 +112,7 @@ final readonly class EventNormalizer
             LoanWasTakenOutForPlayer::class,
             MinijobWasDone::class,
             NameForPlayerWasSet::class,
+            RoleForPlayerWasSet::class,
             PlayerGotAChild::class,
             PlayerHasBoughtImmobilie::class,
             PlayerHasCompletedMoneysheetForCurrentKonjunkturphase::class,

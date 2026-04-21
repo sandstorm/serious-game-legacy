@@ -11,12 +11,14 @@ use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
+use Domain\CoreGameLogic\Feature\Initialization\Command\SetRoleForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartGame;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\Event\LebenszielWasSelected;
 use Domain\CoreGameLogic\Feature\Initialization\Event\NameForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
+use Domain\CoreGameLogic\Feature\Initialization\Event\RoleForPlayerWasSet;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
@@ -37,7 +39,8 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
             || $command instanceof SelectLebensziel
             || $command instanceof StartGame
             || $command instanceof StartPreGame
-            || $command instanceof SetNameForPlayer;
+            || $command instanceof SetNameForPlayer
+            || $command instanceof SetRoleForPlayer;
     }
 
     public function handle(CommandInterface $command, GameEvents $gameEvents): GameEventsToPersist
@@ -49,6 +52,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
             StartGame::class => $this->handleStartGame($command, $gameEvents),
             StartPreGame::class => $this->handleStartPreGame($command, $gameEvents),
             SetNameForPlayer::class => $this->handleSetNameForPlayer($command, $gameEvents),
+            SetRoleForPlayer::class => $this->handleSetRoleForPlayer($command, $gameEvents),
         };
     }
 
@@ -136,6 +140,20 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
             new NameForPlayerWasSet(
                 playerId: $command->playerId,
                 name: $command->name
+            ),
+        );
+    }
+
+    private function handleSetRoleForPlayer(SetRoleForPlayer $command, GameEvents $gameState): GameEventsToPersist
+    {
+        if (!in_array($command->playerId, PreGameState::playerIds($gameState), true)) {
+            throw new \RuntimeException('Player does not exist in current game', 1776771836);
+        }
+
+        return GameEventsToPersist::with(
+            new RoleForPlayerWasSet(
+                playerId: $command->playerId,
+                role: $command->role,
             ),
         );
     }

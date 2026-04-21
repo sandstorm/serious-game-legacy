@@ -59,6 +59,7 @@ class GameUi extends Component
     // Not the current player, but the player connected to THIS SESSION
     public PlayerId $myself;
     public GameId $gameId;
+    public bool $showRoleSelection = false;
 
     private Dispatcher $eventDispatcher;
     private GameEvents $gameEvents;
