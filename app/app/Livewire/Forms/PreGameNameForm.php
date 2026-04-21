@@ -13,4 +13,6 @@ class PreGameNameForm extends Form
     #[Validate('min:2', message: 'Der Name muss mindestens 2 Zeichen lang sein.')]
     #[Validate('max:12', message: 'Der Name darf maximal 12 Zeichen lang sein.')]
     public string $name = '';
+
+    public ?string $role = null;
 }

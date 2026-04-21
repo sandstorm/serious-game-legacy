@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
+use Domain\CoreGameLogic\Feature\Initialization\Command\SetRoleForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
@@ -14,6 +15,7 @@ use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Lebensziel\LebenszielFinder;
 use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
+use Domain\Definitions\PlayerRole\PlayerRole;
 use Tests\TestCase;
 
 beforeEach(function () {
@@ -111,3 +113,41 @@ test('SetNameForPlayer throws if unknown PlayerId', function () {
 
     $this->coreGameLogic->handle($this->gameId, new SetNameForPlayer(playerId: PlayerId::fromString('UNKNOWN'), name: 'Player FOO'));
 })->throws(RuntimeException::class);
+
+// NOTE: The domain allows any player to set a role. The restriction that only
+// guests (not the game creator) see the role selection is enforced in the UI layer.
+
+test('SetRoleForPlayer sets and retrieves role for guest players', function () {
+    $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
+        numberOfPlayers: 2,
+    )->withFixedPlayerIdsForTesting($this->p1, $this->p2));
+
+    $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+    expect(PlayerState::getRoleForPlayerOrNull($gameEvents, $this->p2))->toBeNull();
+
+    $this->coreGameLogic->handle($this->gameId, new SetRoleForPlayer($this->p2, PlayerRole::VATER));
+
+    $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+    expect(PlayerState::getRoleForPlayerOrNull($gameEvents, $this->p2))->toBe(PlayerRole::VATER)
+        ->and(PlayerState::getRoleForPlayerOrNull($gameEvents, $this->p1))->toBeNull();
+});
+
+test('SetRoleForPlayer can overwrite role', function () {
+    $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
+        numberOfPlayers: 2,
+    )->withFixedPlayerIdsForTesting($this->p1, $this->p2));
+
+    $this->coreGameLogic->handle($this->gameId, new SetRoleForPlayer($this->p2, PlayerRole::VATER));
+    $this->coreGameLogic->handle($this->gameId, new SetRoleForPlayer($this->p2, PlayerRole::GROSSELTERN));
+
+    $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+    expect(PlayerState::getRoleForPlayerOrNull($gameEvents, $this->p2))->toBe(PlayerRole::GROSSELTERN);
+});
+
+test('SetRoleForPlayer throws if unknown PlayerId', function () {
+    $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
+        numberOfPlayers: 2,
+    ));
+
+    $this->coreGameLogic->handle($this->gameId, new SetRoleForPlayer(PlayerId::fromString('UNKNOWN'), PlayerRole::FREUNDE));
+})->throws(RuntimeException::class, 'Player does not exist in current game', 1776771836);
