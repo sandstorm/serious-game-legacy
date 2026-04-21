@@ -8,7 +8,7 @@
     <div class="tabs__upper-content">
         <p>
             Dazu zählen Nahrung, Wohnen, Krankenversicherung, ... <br />
-            Pro Jahr gibst Du <strong>{{$livingCostPercent}}%</strong> Deines Gehaltes für Lebenshaltungskosten aus. Jedoch mindestens <strong><x-money-amount :value="$livingCostMinValue" /></strong>
+            Pro Jahr gibst Du <strong><x-formatted-number :value="$livingCostPercent" suffix="%" /></strong> Deines Gehaltes für Lebenshaltungskosten aus. Jedoch mindestens <strong><x-money-amount :value="$livingCostMinValue" /></strong>
         </p>
 
         @if(PlayerState::isPlayerInsolvent($gameEvents, $playerId))
@@ -34,7 +34,7 @@
             </div>
 
             <div class="form-group">
-                <label class="form-group__label" for="lebenshaltungskosten">{{$livingCostPercent}}% Deines Gehalts</label>
+                <label class="form-group__label" for="lebenshaltungskosten"><x-formatted-number :value="$livingCostPercent" suffix="%" /> Deines Gehalts</label>
                 <x-form.textfield wire:model="moneySheetLebenshaltungskostenForm.lebenshaltungskosten" id="lebenshaltungskosten" name="lebenshaltungskosten" type="number" step="0.01" :disabled="$this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled" />
             </div>
         </div>

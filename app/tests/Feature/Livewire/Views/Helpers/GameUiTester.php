@@ -731,8 +731,8 @@ readonly class GameUiTester
         $additionalModalContent = [
             "Kauf - $investmentId->value",
             $this->formatMoneyAsHtml($currentInvestmentPrice),
-            "<strong>$investmentDefinition->longTermTrend%</strong>",
-            "<strong>$investmentDefinition->fluctuations%</strong>",
+            "$investmentDefinition->longTermTrend%",
+            "$investmentDefinition->fluctuations%",
             "<strong>$dividende</strong>"
         ];
         $this->assertSeeModal($modalAttributes, $additionalModalContent);

@@ -74,7 +74,7 @@
             <p>
                 Rückzahlungssumme = <br />
                 <strong>Kreditsumme * (1 + Zinssatz / {{ Configuration::REPAYMENT_PERIOD }}).</strong><br />
-                <strong>Aktueller Zinssatz: {{ KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->value }}%</strong>
+                <strong>Aktueller Zinssatz: <x-formatted-number :value="KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->value" suffix="%" /></strong>
             </p>
         </div>
 
