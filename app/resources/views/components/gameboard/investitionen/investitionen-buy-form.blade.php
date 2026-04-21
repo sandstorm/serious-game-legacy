@@ -43,8 +43,8 @@
 
 <div class="investitionen-form__hints">
     <ul>
-        <li>Langfristige Tendenz: <strong>{{ $investment->longTermTrend }}%</strong></li>
-        <li>Kursschwankungen: <strong>{{ $investment->fluctuations }}%</strong></li>
+        <li>Langfristige Tendenz: <strong><x-formatted-number :value="$investment->longTermTrend" suffix="%" /></strong></li>
+        <li>Kursschwankungen: <strong><x-formatted-number :value="$investment->fluctuations" suffix="%" /></strong></li>
         <li>Dividende pro {{ $unit }}:
             @if ($this->buyInvestmentOfType === InvestmentId::MERFEDES_PENZ)
                 <strong><x-money-amount :value="KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->getDividend()" /></strong>
