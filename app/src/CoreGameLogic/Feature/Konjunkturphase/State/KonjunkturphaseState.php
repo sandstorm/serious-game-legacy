@@ -62,6 +62,22 @@ class KonjunkturphaseState
         return KonjunkturphaseFinder::findKonjunkturphaseById($gameEvents->findLast(KonjunkturphaseWasChanged::class)->id);
     }
 
+    public static function getPreviousKonjunkturphaseOrNull(GameEvents $gameEvents): ?KonjunkturphaseDefinition
+    {
+        $currentYear = self::getCurrentYear($gameEvents);
+
+        /** @var KonjunkturphaseWasChanged|null $previousEvent */
+        $previousEvent = $gameEvents->findLastOrNullWhere(
+            fn ($event) => $event instanceof KonjunkturphaseWasChanged && $event->year->value < $currentYear->value
+        );
+
+        if ($previousEvent === null) {
+            return null;
+        }
+
+        return KonjunkturphaseFinder::findKonjunkturphaseById($previousEvent->id);
+    }
+
     public static function getCurrentYear(GameEvents $gameEvents): Year
     {
         $lastKonjunkturphaseWasChangedEvent = $gameEvents->findLastOrNull(KonjunkturphaseWasChanged::class);

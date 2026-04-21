@@ -1,144 +1,153 @@
 @font-face {
-    font-family: 'icomoon';
-    src:
-        url('/fonts/icomoon.woff2?qs0g7r') format('woff2'),
-        url('/fonts/icomoon.ttf?qs0g7r') format('truetype'),
-        url('/fonts/icomoon.woff?qs0g7r') format('woff'),
-        url('/fonts/icomoon.svg?qs0g7r#icomoon') format('svg');
-    font-weight: normal;
-    font-style: normal;
-    font-display: block;
+  font-family: 'icomoon';
+  src:
+    url('/fonts/icomoon.woff2?nftzwl') format('woff2'),
+    url('/fonts/icomoon.ttf?nftzwl') format('truetype'),
+    url('/fonts/icomoon.woff?nftzwl') format('woff'),
+    url('/fonts/icomoon.svg?nftzwl#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
 }
 
 [class^="icon-"], [class*=" icon-"] {
-    /* use !important to prevent issues with browser extensions that change fonts */
-    font-family: 'icomoon' !important;
-    speak: never;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
 
-    /* Better Font Rendering =========== */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-trend-up:before {
+  content: "\e927";
+}
+.icon-trend-down:before {
+  content: "\e928";
+}
+.icon-trend-same:before {
+  content: "\e929";
+}
 .icon-share:before {
-    content: "\e909";
+  content: "\e909";
 }
 .icon-lock-closed:before {
-    content: "\e91f";
+  content: "\e91f";
 }
 .icon-lock-open:before {
-    content: "\e920";
+  content: "\e920";
 }
 .icon-fertig:before {
-    content: "\e925";
+  content: "\e925";
 }
 .icon-arrow-up:before {
-    content: "\e922";
+  content: "\e922";
 }
 .icon-log-ausklappen:before {
-    content: "\e913";
+  content: "\e913";
 }
 .icon-skippen:before {
-    content: "\e919";
+  content: "\e919";
 }
 .icon-minus:before {
-    content: "\e916";
+  content: "\e916";
 }
 .icon-plus:before {
-    content: "\e90a";
+  content: "\e90a";
 }
 .icon-ist-gleich:before {
-    content: "\e926";
+  content: "\e926";
 }
 .icon-burger:before {
-    content: "\e91a";
+  content: "\e91a";
 }
 .icon-dots:before {
-    content: "\e90d";
+  content: "\e90d";
 }
 .icon-close:before {
-    content: "\e91b";
+  content: "\e91b";
 }
 .icon-close-round:before {
-    content: "\e91c";
+  content: "\e91c";
 }
 .icon-pencil:before {
-    content: "\e923";
+  content: "\e923";
 }
 .icon-pencil-2:before {
-    content: "\e924";
+  content: "\e924";
 }
 .icon-euro:before {
-    content: "\e91d";
+  content: "\e91d";
 }
 .icon-lupe:before {
-    content: "\e904";
+  content: "\e904";
 }
 .icon-lupe-2:before {
-    content: "\e900";
+  content: "\e900";
 }
 .icon-fehler:before {
-    content: "\e912";
+  content: "\e912";
 }
 .icon-info-2:before {
-    content: "\e921";
+  content: "\e921";
 }
 .icon-insolvent:before {
-    content: "\e910";
+  content: "\e910";
 }
 .icon-info:before {
-    content: "\e908";
+  content: "\e908";
 }
 .icon-ereignis:before {
-    content: "\e901";
+  content: "\e901";
 }
 .icon-immobilien:before {
-    content: "\e902";
+  content: "\e902";
 }
 .icon-phasenwechsel:before {
-    content: "\e911";
+  content: "\e911";
 }
 .icon-phase-1:before {
-    content: "\e903";
+  content: "\e903";
 }
 .icon-phase-3:before {
-    content: "\e905";
+  content: "\e905";
 }
 .icon-phase-2:before {
-    content: "\e907";
+  content: "\e907";
 }
 .icon-zeitstein:before {
-    content: "\e91e";
+  content: "\e91e";
 }
 .icon-jobboerse:before {
-    content: "\e918";
+  content: "\e918";
 }
 .icon-bildung-und-karriere:before {
-    content: "\e906";
+  content: "\e906";
 }
 .icon-freizeit-und-soziales:before {
-    content: "\e917";
+  content: "\e917";
 }
 .icon-erwerbseinkommen:before {
-    content: "\e90e";
+  content: "\e90e";
 }
 .icon-weiterbildung:before {
-    content: "\e90b";
+  content: "\e90b";
 }
 .icon-sanduhr:before {
-    content: "\e90c";
+  content: "\e90c";
 }
 .icon-aktien:before {
-    content: "\e90f";
+  content: "\e90f";
 }
 .icon-ETF:before {
-    content: "\e914";
+  content: "\e914";
 }
 .icon-krypto:before {
-    content: "\e915";
+  content: "\e915";
 }
