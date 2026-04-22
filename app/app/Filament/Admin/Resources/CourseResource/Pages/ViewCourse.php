@@ -190,7 +190,6 @@ class ViewCourse extends ViewRecord
                         $coreGameLogic->handle(GameId::fromString((string) $game->id), StartPreGame::create(
                             numberOfPlayers: count($game->players)
                         )->withFixedPlayerIds(
-                            /** @phpstan-ignore argument.type */
                             array_map(fn (Player $user) => PlayerId::fromString($user->id), $game->players->all())
                         ));
                     }

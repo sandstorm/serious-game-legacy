@@ -37,7 +37,7 @@ jobs:
       - name: Run PHPStan
         run: |
           cd app
-          ./vendor/bin/phpstan analyse --no-progress --memory-limit 1G --error-format table
+          ./vendor/bin/phpstan analyse --no-progress --memory-limit 2G --error-format table
 
   test:
     name: PHPUnit Tests
