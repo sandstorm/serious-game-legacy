@@ -177,7 +177,6 @@ class GamePlayController extends Controller
         // start game in core game logic
         $gameId = GameId::fromString((string) $game->id);
         $playerIds = [
-            /** @phpstan-ignore argument.type */
             PlayerId::fromString($player->id),
         ];
         // add random player ids for the other players
