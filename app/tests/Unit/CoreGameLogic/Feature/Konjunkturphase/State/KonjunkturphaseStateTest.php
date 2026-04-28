@@ -9,6 +9,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
@@ -47,6 +48,7 @@ describe('isConditionForEndOfKonjunkturphaseMet', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
@@ -80,6 +82,7 @@ describe('isConditionForEndOfKonjunkturphaseMet', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
@@ -88,6 +91,7 @@ describe('isConditionForEndOfKonjunkturphaseMet', function () {
             $this->gameId,
             new EndSpielzug($this->players[0])
         );
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE)
@@ -132,6 +136,7 @@ describe('hasCurrentKonjunkturphaseEnded', function () {
             ),
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
@@ -140,6 +145,7 @@ describe('hasCurrentKonjunkturphaseEnded', function () {
             $this->gameId,
             new EndSpielzug($this->players[0])
         );
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE)
@@ -188,6 +194,7 @@ describe('hasCurrentKonjunkturphaseEnded', function () {
             ),
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
@@ -196,6 +203,7 @@ describe('hasCurrentKonjunkturphaseEnded', function () {
             $this->gameId,
             new EndSpielzug($this->players[0])
         );
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE)
@@ -279,6 +287,7 @@ describe('hasPlayerStartetCurrentKonjunkturphase', function () {
             ),
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
@@ -287,6 +296,7 @@ describe('hasPlayerStartetCurrentKonjunkturphase', function () {
             $this->gameId,
             new EndSpielzug($this->players[0])
         );
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE)
@@ -357,6 +367,7 @@ describe('isPlayerReadyForKonjunkturphaseChange', function () {
             ),
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
@@ -365,6 +376,7 @@ describe('isPlayerReadyForKonjunkturphaseChange', function () {
             $this->gameId,
             new EndSpielzug($this->players[0])
         );
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE)
@@ -413,6 +425,7 @@ describe('isPlayerReadyForKonjunkturphaseChange', function () {
             ),
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
@@ -421,6 +434,7 @@ describe('isPlayerReadyForKonjunkturphaseChange', function () {
             $this->gameId,
             new EndSpielzug($this->players[0])
         );
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE)

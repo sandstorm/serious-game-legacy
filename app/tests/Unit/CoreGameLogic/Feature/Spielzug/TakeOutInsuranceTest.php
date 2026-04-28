@@ -7,6 +7,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\MinijobCardDefinition;
@@ -43,6 +44,7 @@ describe('handleConcludeInsurance', function () {
             ),
         );
         $this->startNewKonjunkturphaseWithCardsOnTop([$cardToRemoveGuthaben]);
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
         $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->players[0], InsuranceId::create(1)));
     })->throws(\RuntimeException::class, 'Cannot conclude insurance: Du hast nicht genug Ressourcen', 1751554652);
@@ -61,6 +63,7 @@ describe('handleConcludeInsurance', function () {
         $this->startNewKonjunkturphaseWithCardsOnTop([$cardForTesting]);
 
         $this->handle(StartKonjunkturphaseForPlayer::create($this->getPlayers()[0]));
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(DoMinijob::create($this->getPlayers()[0]));
         $this->handle(ConcludeInsuranceForPlayer::create($this->getPlayers()[0], InsuranceId::create(1)));
     })->throws(\RuntimeException::class, 'Cannot conclude insurance: Du bist insolvent', 1751554652);

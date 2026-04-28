@@ -11,6 +11,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\DoesNotSkipTurnValida
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasCategoryFreeZeitsteinslotsValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerDoneNoZeitsteinaktionThisTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughZeitsteineValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerStartedSpielzugValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\CardWasSkipped;
@@ -37,6 +38,7 @@ class SkipCardAktion extends Aktion
         );
         $validatorChain = new IsPlayersTurnValidator();
         $validatorChain
+            ->setNext(new HasPlayerStartedSpielzugValidator())
             ->setNext(new DoesNotSkipTurnValidator())
             ->setNext(new HasPlayerDoneNoZeitsteinaktionThisTurnValidator())
             ->setNext(new HasPlayerEnoughZeitsteineValidator(1))

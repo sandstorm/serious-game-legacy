@@ -6,6 +6,7 @@ use App\Livewire\Forms\TakeOutALoanForm;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\RepayLoanForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasRepaidForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasTakenOutForPlayer;
@@ -159,6 +160,7 @@ describe('handleRepayLoanForPlayer', function () {
 
         // buy investments to reduce guthaben
         $amount = intval(Configuration::STARTKAPITAL_VALUE / Configuration::INITIAL_INVESTMENT_PRICE);
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, BuyInvestmentsForPlayer::create(
             $this->players[0],
             InvestmentId::MERFEDES_PENZ,

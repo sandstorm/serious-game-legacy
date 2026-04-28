@@ -9,6 +9,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
@@ -32,6 +33,7 @@ describe('handleBuyInvestmentsForPlayer', function () {
         // buy low risk stocks
         $amountOfStocks = 100;
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyInvestmentsForPlayer::create(
@@ -88,6 +90,7 @@ describe('handleBuyInvestmentsForPlayer', function () {
         $currentPriceLowRisk = InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MERFEDES_PENZ);
 
         // player 1 does mini job
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
             DoMinijob::create($this->players[1])
@@ -112,6 +115,7 @@ describe('handleBuyInvestmentsForPlayer', function () {
 
         // buy some high risk stocks
         $amountOfStocksHighRisk = 50;
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyInvestmentsForPlayer::create(
@@ -172,6 +176,7 @@ describe('handleBuyInvestmentsForPlayer', function () {
 
     it('throws exception if player tries to end spielzug before other players sold their investments', function () {
         /** @var TestCase $this */
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyInvestmentsForPlayer::create(
@@ -192,6 +197,7 @@ describe('handleBuyInvestmentsForPlayer', function () {
         $amountOfStocks = intval(Configuration::STARTKAPITAL_VALUE / Configuration::INITIAL_INVESTMENT_PRICE + 1);
 
         /** @var TestCase $this */
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyInvestmentsForPlayer::create(
@@ -206,12 +212,15 @@ describe('handleBuyInvestmentsForPlayer', function () {
         /** @var TestCase $this */
         $this->setupInsolvenz();
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(DoMinijob::create($this->players[0]));
         $this->handle(new EndSpielzug($this->players[0]));
 
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->handle(DoMinijob::create($this->players[1]));
         $this->handle(new EndSpielzug($this->players[1]));
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(BuyInvestmentsForPlayer::create($this->players[0], InvestmentId::MERFEDES_PENZ, 1));
     })->throws(\RuntimeException::class, 'Cannot buy investment: Du bist insolvent', 1752066529);
 });

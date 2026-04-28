@@ -6,6 +6,7 @@ namespace Tests\CoreGameLogic\Feature\Moneysheet\State;
 
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\ValueObject\CardId;
@@ -32,6 +33,7 @@ describe('calculate Insolvenzabgaben', function () {
             ),
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(AcceptJobOffer::create($this->getPlayers()[0], new CardId('job1')));
 
         $gameEvents = $this->getGameEvents();
@@ -62,6 +64,7 @@ describe('calculate Insolvenzabgaben', function () {
             ),
         )];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(AcceptJobOffer::create($this->getPlayers()[0], new CardId('job1')));
 
         $gameEvents = $this->getGameEvents();
@@ -83,6 +86,7 @@ describe('calculate Insolvenzabgaben', function () {
             ),
         )];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(AcceptJobOffer::create($this->getPlayers()[0], new CardId('job1')));
 
         $gameEvents = $this->getGameEvents();

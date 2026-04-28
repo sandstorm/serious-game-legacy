@@ -13,6 +13,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellImmobilieForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellImmobilieForPlayerToAvoidInsolvenz;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasBoughtImmobilie;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\ImmobilieId;
@@ -50,6 +51,7 @@ describe('handleBuyImmoblie', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyImmobilieForPlayer::create(
@@ -87,6 +89,7 @@ describe('handleBuyImmoblie', function () {
         $this->startNewKonjunkturphaseWithCardsOnTop([$cardForTesting]);
 
         // player 0 buys the immobile
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyImmobilieForPlayer::create(
@@ -102,6 +105,7 @@ describe('handleBuyImmoblie', function () {
         );
 
         // player 1 does mini job
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
             DoMinijob::create($this->players[1])
@@ -129,6 +133,7 @@ describe('handleBuyImmoblie', function () {
         $valueOfFirstImmobilie = ImmobilienPriceState::getCurrentPriceForImmobilie($gameEvents, $boughtEvent->getImmobilieId());
 
         // player 0 buys the immobile again (card was reshuffled back into the pile)
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyImmobilieForPlayer::create(
@@ -154,6 +159,7 @@ describe('handleBuyImmoblie', function () {
         );
 
         // player 1 does mini job
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
             DoMinijob::create($this->players[1])
@@ -169,6 +175,7 @@ describe('handleBuyImmoblie', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         /** @var PlayerHasBoughtImmobilie $boughtEvent */
         $boughtEvent = $gameEvents->findLast(PlayerHasBoughtImmobilie::class);
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             SellImmobilieForPlayer::create(
@@ -202,6 +209,7 @@ describe('handleBuyImmoblie', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyImmobilieForPlayer::create(
@@ -249,6 +257,7 @@ describe('handleBuyImmoblie', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyImmobilieForPlayer::create(
@@ -277,6 +286,7 @@ describe('handleSellImmobilie', function () {
 
         $this->startNewKonjunkturphaseWithCardsOnTop([$cardForTesting]);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyImmobilieForPlayer::create(
@@ -292,6 +302,7 @@ describe('handleSellImmobilie', function () {
         );
 
         // player 1 does mini job
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
             DoMinijob::create($this->players[1])
@@ -318,6 +329,7 @@ describe('handleSellImmobilie', function () {
         expect($currentPriceForImmobilie->value)->not->toEqual($purchasePrice);
 
         // now sell the immobile
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             SellImmobilieForPlayer::create(
@@ -350,6 +362,7 @@ describe('handleSellImmobilie', function () {
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
         // try to sell a immobilie the player does not own
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             SellImmobilieForPlayer::create(
@@ -402,6 +415,7 @@ describe('Sell Immoblien to Avoid insolvenz', function () {
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
         $turn = PlayerState::getCurrentTurnForPlayer($this->getGameEvents(), $this->getPlayers()[0]);
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyImmobilieForPlayer::create(
@@ -417,6 +431,7 @@ describe('Sell Immoblien to Avoid insolvenz', function () {
         );
 
         // player 1 does mini job
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
             DoMinijob::create($this->players[1])
@@ -429,6 +444,7 @@ describe('Sell Immoblien to Avoid insolvenz', function () {
         );
 
         // player 0 does mini job
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             DoMinijob::create($this->players[0])
@@ -496,6 +512,7 @@ describe('Sell Immoblien to Avoid insolvenz', function () {
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
         $turn = PlayerState::getCurrentTurnForPlayer($this->getGameEvents(), $this->getPlayers()[0]);
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyImmobilieForPlayer::create(
@@ -511,6 +528,7 @@ describe('Sell Immoblien to Avoid insolvenz', function () {
         );
 
         // player 1 does mini job
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
             DoMinijob::create($this->players[1])
@@ -523,6 +541,7 @@ describe('Sell Immoblien to Avoid insolvenz', function () {
         );
 
         // player 0 does mini job
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             DoMinijob::create($this->players[0])

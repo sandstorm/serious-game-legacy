@@ -8,6 +8,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
@@ -32,6 +33,7 @@ test('Cards can be drawn from piles', function () {
         $pileIdSozialesUndFreizeit,
     );
 
+    $this->handle(new StartSpielzug($this->players[0]));
     $this->coreGameLogic->handle(
         $this->gameId,
         new SkipCard($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
@@ -55,6 +57,7 @@ test('Cards can be drawn from piles', function () {
     expect(PileState::topCardIdForPile($gameEvents, $pileIdBildungUndKarriere)->value)->not->toBe($currenTopCardBildung->value)
         ->and(PileState::topCardIdForPile($gameEvents, $pileIdSozialesUndFreizeit)->value)->toBe($currenTopCardFreizeit->value);
 
+    $this->handle(new StartSpielzug($this->players[1]));
     $this->coreGameLogic->handle(
         $this->gameId,
         ActivateCard::create($this->players[1], CategoryId::SOZIALES_UND_FREIZEIT)

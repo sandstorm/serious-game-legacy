@@ -10,6 +10,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
@@ -98,12 +99,14 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
                 $this->players[1]
             ))->toBeTrue();
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
         );
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
 
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE)
@@ -315,6 +318,7 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cards);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('job1234')));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
 

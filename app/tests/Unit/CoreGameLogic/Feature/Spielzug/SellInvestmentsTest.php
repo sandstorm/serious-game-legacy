@@ -14,6 +14,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPl
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsToAvoidInsolvenzForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
@@ -34,6 +35,7 @@ describe('handleSellInvestmentsForPlayer', function () {
         $amountOfStocks = 100;
 
         /** @var TestCase $this */
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyInvestmentsForPlayer::create(
@@ -64,6 +66,7 @@ describe('handleSellInvestmentsForPlayer', function () {
         );
 
         // player 1 does a mini job
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
             DoMinijob::create($this->players[1])
@@ -81,6 +84,7 @@ describe('handleSellInvestmentsForPlayer', function () {
         $expectedGuthaben = $expectedGuthaben->add(new MoneyAmount($currentPrice->value * $amountOfStocks));
 
         // player 0 sells all of their stocks
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             SellInvestmentsForPlayer::create(
@@ -118,6 +122,7 @@ describe('handleSellInvestmentsForPlayer', function () {
 
     it('throws exception if you try to sell investments you do not have', function () {
         /** @var TestCase $this */
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             SellInvestmentsForPlayer::create(
@@ -134,6 +139,7 @@ describe('handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer', function 
         $amountOfStocks = 100;
         // player 0 buys low risk stocks
         /** @var TestCase $this */
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyInvestmentsForPlayer::create(
@@ -162,6 +168,7 @@ describe('handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer', function 
 
         // player 1 buys low risk stocks
         /** @var TestCase $this */
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyInvestmentsForPlayer::create(
@@ -196,6 +203,7 @@ describe('handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer', function 
         $amountOfStocks = 100;
         // player 0 buys low risk stocks
         /** @var TestCase $this */
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyInvestmentsForPlayer::create(
@@ -224,6 +232,7 @@ describe('handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer', function 
 
         // player 1 buys low risk stocks
         /** @var TestCase $this */
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyInvestmentsForPlayer::create(
@@ -247,13 +256,13 @@ describe('handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer', function 
                 $amountOfStocks + 50
             )
         );
-
     })->throws(\RuntimeException::class, 'Du hast nicht genug Investitionen vom Typ Merfedes-Penz zum Verkaufen.', 1752753850);
 
     it('throws exception if player tries end their turn and another player did not sell their investments', function () {
         $amountOfStocks = 100;
         // player 0 buys low risk stocks
         /** @var TestCase $this */
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyInvestmentsForPlayer::create(
@@ -274,6 +283,7 @@ describe('handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer', function 
 
         // player 0 buys low risk stocks
         /** @var TestCase $this */
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyInvestmentsForPlayer::create(
@@ -289,6 +299,8 @@ describe('handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer', function 
             ->and(GamePhaseState::anotherPlayerHasInvestedThisTurn($gameEvents, $this->players[0]))->toBeFalse()
             ->and(GamePhaseState::anotherPlayerHasInvestedThisTurn($gameEvents, $this->players[1]))->toBeTrue();
 
+        // Player 1 hasn't started their turn — addressing this without triggering a domain rule
+        // we want to test by starting their turn first, then attempting the wrong-type sell.
         $this->coreGameLogic->handle(
             $this->gameId,
             SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer::create(
@@ -300,6 +312,8 @@ describe('handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer', function 
     })->throws(\RuntimeException::class, 'Ein anderer Spieler muss Investitionen der gleichen Art gekauft oder verkauft haben, bevor du welche verkaufen kannst', 1752753850);
 
     it('throws exception if player tries to sell investments when no other player bought some', function () {
+        /** @var TestCase $this */
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer::create(
@@ -318,6 +332,7 @@ describe('handleSellInvestmentsToAvoidInsolvenzForPlayer', function () {
      */
     it('throws an exception if player has no negative balance and therefore is not allowed to sell investments during the KonjunkturphaseChange', function () {
         /** @var TestCase $this */
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(BuyInvestmentsForPlayer::create($this->getPlayers()[0], InvestmentId::MERFEDES_PENZ, 10));
         $this->handle(SellInvestmentsToAvoidInsolvenzForPlayer::create($this->getPlayers()[0], InvestmentId::MERFEDES_PENZ, 10));
     })->throws(\RuntimeException::class, 'Cannot sell investments for insolvenz: Dein Kontostand ist positiv', 1757078994);
@@ -346,9 +361,11 @@ describe('handleSellInvestmentsToAvoidInsolvenzForPlayer', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(DoMinijob::create($this->getPlayers()[0]));
         $this->handle(new EndSpielzug($this->getPlayers()[0]));
 
+        $this->handle(new StartSpielzug($this->getPlayers()[1]));
         $this->handle(DoMinijob::create($this->getPlayers()[1]));
         $this->handle(new EndSpielzug($this->getPlayers()[1]));
 
@@ -360,7 +377,9 @@ describe('handleSellInvestmentsToAvoidInsolvenzForPlayer', function () {
 
     it('sells investments for almost insolvent player and returns correct amount of money', function () {
         /** @var TestCase $this */
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(BuyInvestmentsForPlayer::create($this->getPlayers()[0], InvestmentId::BETA_PEAR, 10));
+        // Other-player reaction during P0's turn — does not require P1 to start spielzug.
         $this->handle(SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer::create($this->getPlayers()[1], InvestmentId::BETA_PEAR, 0));
         $this->handle(new EndSpielzug($this->getPlayers()[0]));
 
@@ -386,9 +405,11 @@ describe('handleSellInvestmentsToAvoidInsolvenzForPlayer', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->getPlayers()[1]));
         $this->handle(DoMinijob::create($this->getPlayers()[1]));
         $this->handle(new EndSpielzug($this->getPlayers()[1]));
 
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(DoMinijob::create($this->getPlayers()[0]));
         $this->handle(new EndSpielzug($this->getPlayers()[0]));
 

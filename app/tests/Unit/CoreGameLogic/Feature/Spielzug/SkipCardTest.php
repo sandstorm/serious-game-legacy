@@ -10,6 +10,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
@@ -39,6 +40,7 @@ describe('handleSkipCard', function () {
             $this->players[0]
         ))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE)
@@ -53,6 +55,7 @@ describe('handleSkipCard', function () {
 
     it('Cannot skip twice', function () {
         /** @var TestCase $this */
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE)
@@ -81,6 +84,7 @@ describe('handleSkipCard', function () {
 
     it('throws an error when the player tries to end their Spielzug directly after skipping a card', function () {
         /** @var TestCase $this */
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE)
@@ -117,6 +121,7 @@ describe('handleSkipCard', function () {
             $this->players[0]
         ))->toBe($this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2));
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
             playerId: $this->players[0],
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
@@ -127,6 +132,7 @@ describe('handleSkipCard', function () {
             new EndSpielzug($this->players[0])
         );
 
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
             DoMinijob::create($this->players[1])
@@ -138,6 +144,7 @@ describe('handleSkipCard', function () {
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer($stream, $this->players[0]))->toBe(0);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             new SkipCard(playerId: $this->players[0], categoryId: CategoryId::BILDUNG_UND_KARRIERE)
@@ -190,18 +197,21 @@ describe('handleSkipCard', function () {
         $events = $stream->findAllOfType(KonjunkturphaseWasChanged::class);
         expect(count($events))->toBe(2);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
             playerId: $this->players[0],
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
 
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
             playerId: $this->players[1],
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
         ));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, ActivateCard::create(
             playerId: $this->players[0],
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
@@ -212,6 +222,7 @@ describe('handleSkipCard', function () {
         expect(GamePhaseState::hasFreeTimeSlotsForCategory($gameEvents, CategoryId::BILDUNG_UND_KARRIERE))->toBeFalse();
 
         // this fails, no free slots available
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
             playerId: $this->players[1],
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,

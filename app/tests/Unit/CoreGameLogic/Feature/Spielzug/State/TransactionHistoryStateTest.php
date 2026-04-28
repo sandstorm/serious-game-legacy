@@ -9,6 +9,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\State\TransactionHistoryState;
 use Domain\Definitions\Card\Dto\ImmobilienCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
@@ -37,6 +38,7 @@ describe('TransactionHistoryState::getTransactionHistoryForPlayer', function () 
     it('records a single investment buy', function () {
         /** @var TestCase $this */
         // Player 0 buys stocks
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyInvestmentsForPlayer::create($this->players[0], InvestmentId::MERFEDES_PENZ, 10)
@@ -62,6 +64,7 @@ describe('TransactionHistoryState::getTransactionHistoryForPlayer', function () 
     it('records buy and sell with correct holding after', function () {
         /** @var TestCase $this */
         // Turn 1: Player 0 buys 10 stocks
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyInvestmentsForPlayer::create($this->players[0], InvestmentId::MERFEDES_PENZ, 10)
@@ -73,10 +76,12 @@ describe('TransactionHistoryState::getTransactionHistoryForPlayer', function () 
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
 
         // Player 1 does minijob and ends turn
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[1]));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
 
         // Turn 2: Player 0 sells 3 stocks
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             SellInvestmentsForPlayer::create($this->players[0], InvestmentId::MERFEDES_PENZ, 3)
@@ -98,6 +103,7 @@ describe('TransactionHistoryState::getTransactionHistoryForPlayer', function () 
     it('tracks holdings per investment type independently', function () {
         /** @var TestCase $this */
         // Turn 1: Player 0 buys Merfedes-Penz
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyInvestmentsForPlayer::create($this->players[0], InvestmentId::MERFEDES_PENZ, 10)
@@ -109,10 +115,12 @@ describe('TransactionHistoryState::getTransactionHistoryForPlayer', function () 
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
 
         // Player 1 does minijob and ends turn
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[1]));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
 
         // Turn 2: Player 0 buys Bat-Coin
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyInvestmentsForPlayer::create($this->players[0], InvestmentId::BAT_COIN, 20)
@@ -135,6 +143,7 @@ describe('TransactionHistoryState::getTransactionHistoryForPlayer', function () 
     it('maps icon classes correctly for different investment types', function () {
         /** @var TestCase $this */
         // Turn 1: Buy Aktie
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyInvestmentsForPlayer::create($this->players[0], InvestmentId::MERFEDES_PENZ, 1)
@@ -145,10 +154,12 @@ describe('TransactionHistoryState::getTransactionHistoryForPlayer', function () 
         );
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
 
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[1]));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
 
         // Turn 2: Buy ETF
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyInvestmentsForPlayer::create($this->players[0], InvestmentId::ETF_MSCI_WORLD, 1)
@@ -159,10 +170,12 @@ describe('TransactionHistoryState::getTransactionHistoryForPlayer', function () 
         );
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
 
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[1]));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
 
         // Turn 3: Buy Krypto
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyInvestmentsForPlayer::create($this->players[0], InvestmentId::BAT_COIN, 1)
@@ -198,6 +211,7 @@ describe('TransactionHistoryState::getTransactionHistoryForPlayer', function () 
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyImmobilieForPlayer::create($this->players[0], new CardId('immo1'))
@@ -219,6 +233,7 @@ describe('TransactionHistoryState::getTransactionHistoryForPlayer', function () 
     it('only returns transactions for the requested player', function () {
         /** @var TestCase $this */
         // Player 0 buys stocks
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyInvestmentsForPlayer::create($this->players[0], InvestmentId::MERFEDES_PENZ, 10)
@@ -240,10 +255,12 @@ describe('TransactionHistoryState::getTransactionHistoryForPlayer', function () 
     it('records optional sell after another player buys investments', function () {
         /** @var TestCase $this */
         // Turn 1: Player 0 does minijob
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
 
         // Turn 1: Player 1 buys stocks so they have some to sell later
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyInvestmentsForPlayer::create($this->players[1], InvestmentId::MERFEDES_PENZ, 10)
@@ -255,6 +272,7 @@ describe('TransactionHistoryState::getTransactionHistoryForPlayer', function () 
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
 
         // Turn 2: Player 0 buys stocks — player 1 gets prompted to sell
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyInvestmentsForPlayer::create($this->players[0], InvestmentId::MERFEDES_PENZ, 5)

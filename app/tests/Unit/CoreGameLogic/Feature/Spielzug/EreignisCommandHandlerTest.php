@@ -7,6 +7,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\Dto\EreignisCardDefinition;
@@ -147,6 +148,7 @@ describe('Ereignisse', function () {
 
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE));
         $gameEventsAfterEreignis = $this->getGameEvents();
         expect($gameEventsAfterEreignis->findLast(EreignisWasTriggered::class))->not()->toBeNull()
@@ -206,6 +208,7 @@ describe('Ereignisse', function () {
 
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE));
         $gameEventsAfterEreignis = $this->getGameEvents();
         expect($gameEventsAfterEreignis->findLast(EreignisWasTriggered::class))->not()->toBeNull()
@@ -267,6 +270,7 @@ describe('Ereignisse', function () {
 
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE));
         $gameEventsAfterEreignis = $this->getGameEvents();
         expect($gameEventsAfterEreignis->findLast(EreignisWasTriggered::class))->not()->toBeNull()
@@ -334,6 +338,7 @@ describe('Childbirth', function () {
 
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(ActivateCard::create($this->getPlayers()[0], CategoryId::SOZIALES_UND_FREIZEIT));
         $gameEventsAfterEreignis = $this->getGameEvents();
         expect($gameEventsAfterEreignis->findLast(EreignisWasTriggered::class))->not()->toBeNull()
@@ -394,12 +399,15 @@ describe('Childbirth', function () {
         ];
 
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(AcceptJobOffer::create($this->getPlayers()[0], new CardId('jobForTest')));
         $this->handle(new EndSpielzug($this->getPlayers()[0]));
 
+        $this->handle(new StartSpielzug($this->getPlayers()[1]));
         $this->handle(DoMinijob::create($this->getPlayers()[1]));
         $this->handle(new EndSpielzug($this->getPlayers()[1]));
 
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(ActivateCard::create($this->getPlayers()[0], CategoryId::SOZIALES_UND_FREIZEIT));
         $gameEventsAfterEreignis = $this->getGameEvents();
         expect($gameEventsAfterEreignis->findLast(EreignisWasTriggered::class))->not()->toBeNull()
@@ -444,6 +452,7 @@ describe('Ereignis Modifier application', function () {
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
         // activate card, which triggers the Ereignis with Investitionssperre
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE));
         $gameEvents = $this->getGameEvents();
         expect($gameEvents->findLast(EreignisWasTriggered::class))->not()->toBeNull();
@@ -452,10 +461,12 @@ describe('Ereignis Modifier application', function () {
         $this->handle(new EndSpielzug($this->getPlayers()[0]));
 
         // player 1 does mini job and ends turn
+        $this->handle(new StartSpielzug($this->getPlayers()[1]));
         $this->handle(DoMinijob::create($this->getPlayers()[1]));
         $this->handle(new EndSpielzug($this->getPlayers()[1]));
 
         // player 0 tries to buy investments - should be blocked by Investitionssperre
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(\Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer::create(
             $this->getPlayers()[0],
             \Domain\Definitions\Investments\ValueObject\InvestmentId::MERFEDES_PENZ,
@@ -490,6 +501,7 @@ describe('Ereignis Modifier application', function () {
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
         // activate card, which triggers the Ereignis with Kreditsperre
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE));
         $gameEvents = $this->getGameEvents();
         expect($gameEvents->findLast(EreignisWasTriggered::class))->not()->toBeNull();
@@ -498,6 +510,7 @@ describe('Ereignis Modifier application', function () {
         $this->handle(new EndSpielzug($this->getPlayers()[0]));
 
         // player 1 does mini job and ends turn
+        $this->handle(new StartSpielzug($this->getPlayers()[1]));
         $this->handle(DoMinijob::create($this->getPlayers()[1]));
         $this->handle(new EndSpielzug($this->getPlayers()[1]));
 

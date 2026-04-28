@@ -8,6 +8,7 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasNotYetAnsweredThisWeiterbildungValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerStartedAWeiterbildungThisTurnValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerStartedSpielzugValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\SelectedAnswerForWeiterbildungExistsValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
@@ -29,6 +30,7 @@ class SubmitAnswerForWeiterbildungAktion extends Aktion
     {
         $validatorChain = new IsPlayersTurnValidator();
         $validatorChain
+            ->setNext(new HasPlayerStartedSpielzugValidator())
             ->setNext(new HasPlayerStartedAWeiterbildungThisTurnValidator())
             ->setNext(new HasNotYetAnsweredThisWeiterbildungValidator())
             ->setNext(new SelectedAnswerForWeiterbildungExistsValidator($this->selectedAnswer));

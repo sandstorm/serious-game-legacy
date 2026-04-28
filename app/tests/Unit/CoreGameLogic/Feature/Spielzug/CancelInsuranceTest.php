@@ -9,6 +9,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\Dto\MinijobCardDefinition;
@@ -76,9 +77,11 @@ describe('handleCancelAllInsurancesToAvoidInsolvenzForPlayer', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(DoMinijob::create($this->getPlayers()[0]));
         $this->handle(new EndSpielzug($this->getPlayers()[0]));
 
+        $this->handle(new StartSpielzug($this->getPlayers()[1]));
         $this->handle(DoMinijob::create($this->getPlayers()[1]));
         $this->handle(new EndSpielzug($this->getPlayers()[1]));
 
@@ -116,9 +119,11 @@ describe('handleCancelAllInsurancesToAvoidInsolvenzForPlayer', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(DoMinijob::create($this->getPlayers()[0]));
         $this->handle(new EndSpielzug($this->getPlayers()[0]));
 
+        $this->handle(new StartSpielzug($this->getPlayers()[1]));
         $this->handle(DoMinijob::create($this->getPlayers()[1]));
         $this->handle(new EndSpielzug($this->getPlayers()[1]));
 

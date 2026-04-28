@@ -10,6 +10,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasCompletedMoneysheetForCurrentKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
@@ -61,12 +62,14 @@ describe('handleCompleteMoneysheetForPlayer', function () {
             ),
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(
             ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
         );
         $this->handle(
             new EndSpielzug($this->players[0])
         );
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->handle(
             ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE)
         );
@@ -74,6 +77,7 @@ describe('handleCompleteMoneysheetForPlayer', function () {
             new EndSpielzug($this->players[1])
         );
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(AcceptJobOffer::create($this->getPlayers()[0], new CardId('job1')));
         $this->handle(
             new EndSpielzug($this->players[0])
@@ -144,6 +148,7 @@ describe('handleCompleteMoneysheetForPlayer', function () {
             ),
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
@@ -152,6 +157,7 @@ describe('handleCompleteMoneysheetForPlayer', function () {
             $this->gameId,
             new EndSpielzug($this->players[0])
         );
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE)
@@ -205,12 +211,14 @@ describe('handleCompleteMoneysheetForPlayer', function () {
             ),
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(
             ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
         );
         $this->handle(
             new EndSpielzug($this->players[0])
         );
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->handle(
             ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE)
         );
@@ -218,6 +226,7 @@ describe('handleCompleteMoneysheetForPlayer', function () {
             new EndSpielzug($this->players[1])
         );
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(AcceptJobOffer::create($this->getPlayers()[0], new CardId('job1')));
         $this->handle(
             new EndSpielzug($this->players[0])
@@ -289,12 +298,14 @@ describe('handleCompleteMoneysheetForPlayer', function () {
             ),
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(
             ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE)
         );
         $this->handle(
             new EndSpielzug($this->players[0])
         );
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->handle(
             ActivateCard::create($this->players[1], CategoryId::BILDUNG_UND_KARRIERE)
         );
