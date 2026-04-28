@@ -14,6 +14,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\FileInsolvenzForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasRepaidForPlayerInCaseOfInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasTakenOutForPlayer;
@@ -60,9 +61,11 @@ function setupRegularKonjunkturphaseEnd(TestCase $testCase): void
     ];
     $testCase->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+    $testCase->handle(new StartSpielzug($testCase->getPlayers()[0]));
     $testCase->handle(ActivateCard::create($testCase->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE));
     $testCase->handle(new EndSpielzug($testCase->getPlayers()[0]));
 
+    $testCase->handle(new StartSpielzug($testCase->getPlayers()[1]));
     $testCase->handle(ActivateCard::create($testCase->getPlayers()[1], CategoryId::BILDUNG_UND_KARRIERE));
     $testCase->handle(new EndSpielzug($testCase->getPlayers()[1]));
 
@@ -125,12 +128,14 @@ describe('FileInsolvenzForPlayer', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE)
         );
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->getPlayers()[0]));
 
+        $this->handle(new StartSpielzug($this->getPlayers()[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->getPlayers()[1], CategoryId::BILDUNG_UND_KARRIERE)
@@ -138,6 +143,7 @@ describe('FileInsolvenzForPlayer', function () {
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->getPlayers()[1]));
 
         // Buy as many shares as we can with our Guthaben
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->coreGameLogic->handle($this->gameId, BuyInvestmentsForPlayer::create(
             $this->getPlayers()[0],
             InvestmentId::MERFEDES_PENZ,
@@ -208,12 +214,14 @@ describe('FileInsolvenzForPlayer', function () {
             ConcludeInsuranceForPlayer::create($this->getPlayers()[0], InsuranceId::create(1))
         );
 
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE)
         );
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->getPlayers()[0]));
 
+        $this->handle(new StartSpielzug($this->getPlayers()[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->getPlayers()[1], CategoryId::BILDUNG_UND_KARRIERE)
@@ -267,12 +275,14 @@ describe('FileInsolvenzForPlayer', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE)
         );
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->getPlayers()[0]));
 
+        $this->handle(new StartSpielzug($this->getPlayers()[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
             ActivateCard::create($this->getPlayers()[1], CategoryId::BILDUNG_UND_KARRIERE)
@@ -354,9 +364,11 @@ describe('FileInsolvenzForPlayer', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(ActivateCard::create($this->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE));
         $this->handle(new EndSpielzug($this->getPlayers()[0]));
 
+        $this->handle(new StartSpielzug($this->getPlayers()[1]));
         $this->handle(ActivateCard::create($this->getPlayers()[1], CategoryId::BILDUNG_UND_KARRIERE));
         $this->handle(new EndSpielzug($this->getPlayers()[1]));
 

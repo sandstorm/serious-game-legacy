@@ -6,7 +6,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
-use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerAlreadyStartedSpielzugValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerNotStartedSpielzugValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasStarted;
@@ -19,7 +19,7 @@ class StartSpielzugAktion extends Aktion
     {
         $validatorChain = new IsPlayersTurnValidator();
         $validatorChain
-            ->setNext(new HasPlayerAlreadyStartedSpielzugValidator());
+            ->setNext(new HasPlayerNotStartedSpielzugValidator());
         return $validatorChain->validate($gameEvents, $playerId);
     }
 

@@ -8,6 +8,7 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\DoesNotSkipTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerAJobValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerStartedSpielzugValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\JobWasQuit;
@@ -20,6 +21,7 @@ class QuitJobAktion extends Aktion
     {
         $validatorChain = new IsPlayersTurnValidator();
         $validatorChain
+            ->setNext(new HasPlayerStartedSpielzugValidator())
             ->setNext(new DoesNotSkipTurnValidator())
             ->setNext(new HasPlayerAJobValidator());
 

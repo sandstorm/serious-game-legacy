@@ -142,7 +142,10 @@ class GameUi extends Component
 
     public function notifyGameStateUpdated(): void
     {
-        // the component automatically recalculates; so we do not need to do anything.
+        // Refresh the cached event stream so rendering hooks see events written by other clients.
+        // Without this, popups derived in renderingHas*() can miss broadcasts when boot() ran
+        // against a stale snapshot (see issue #652).
+        $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
     }
 
     /**

@@ -14,6 +14,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CancelInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
@@ -82,6 +83,7 @@ describe('calculateLebenshaltungskostenForPlayer', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('tj0')));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -105,6 +107,7 @@ describe('calculateLebenshaltungskostenForPlayer', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('tj0')));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -129,6 +132,7 @@ describe('calculateLebenshaltungskostenForPlayer', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('tj0')));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -234,6 +238,7 @@ describe('calculateLebenshaltungskostenForPlayer', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('tj0')));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -266,6 +271,7 @@ describe('calculateSteuernUndAbgabenForPlayer', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('tj0')));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -317,6 +323,7 @@ describe('getNumberOfTriesForSteuernUndAbgabenInput', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(MoneySheetState::getNumberOfTriesForSteuernUndAbgabenInput($gameEvents, $this->players[0]))->toBe(1);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j0')));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -338,6 +345,7 @@ describe('getNumberOfTriesForSteuernUndAbgabenInput', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(AcceptJobOffer::create($this->players[0], new CardId('j0')));
         $this->handle(EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(200)));
 
@@ -365,6 +373,7 @@ describe('getNumberOfTriesForSteuernUndAbgabenInput', function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(AcceptJobOffer::create($this->players[0], new CardId('j0')));
         $this->handle(EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(200)));
 
@@ -550,10 +559,12 @@ describe('getNumberOfTriesForSteuernUndAbgabenInput', function () {
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
         // Turn 1: Player 0 accepts job
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(AcceptJobOffer::create($this->players[0], new CardId('j0')));
         $this->handle(new EndSpielzug($this->players[0]));
 
         // Turn 1: Player 1 does minijob
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->handle(DoMinijob::create($this->players[1]));
         $this->handle(new EndSpielzug($this->players[1]));
 
@@ -564,6 +575,7 @@ describe('getNumberOfTriesForSteuernUndAbgabenInput', function () {
         expect(MoneySheetState::getNumberOfTriesForSteuernUndAbgabenInput($gameEvents, $this->players[0]))->toBe(1);
 
         // Turn 2: Player 0 activates card -> triggers Ereignis with GEHALT_CHANGE modifier
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
 
         $gameEvents = $this->getGameEvents();
@@ -718,6 +730,7 @@ describe('getLastInputForSteuernUndAbgaben', function () {
         $actual = MoneySheetState::getLastInputForSteuernUndAbgaben($gameEvents, $this->players[0]);
         expect($actual)->toEqual(new MoneyAmount(0));
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j0')));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -791,6 +804,7 @@ describe('getLastInputLebenshaltungskosten', function () {
         $actual = MoneySheetState::getLastInputForLebenshaltungskosten($gameEvents, $this->players[0]);
         expect($actual)->toEqual(new MoneyAmount(5000));
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId('j0')));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -863,6 +877,7 @@ describe('doesSteuernUndAbgabenRequirePlayerAction', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeFalse();
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId("j0")));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -897,6 +912,7 @@ describe('doesSteuernUndAbgabenRequirePlayerAction', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeTrue();
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId("j0")));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -960,6 +976,7 @@ describe('doesSteuernUndAbgabenRequirePlayerAction', function () {
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeFalse();
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId("j0")));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -1424,6 +1441,7 @@ describe("getAnnualExpensesForPlayer", function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId("tj0")));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -1458,6 +1476,7 @@ describe("getAnnualIncomeForPlayer", function () {
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($this->players[0], new CardId("j0")));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -1469,6 +1488,7 @@ describe("getAnnualIncomeForPlayer", function () {
         $amountOfStocks = 100;
 
         /** @var TestCase $this */
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
             BuyInvestmentsForPlayer::create(

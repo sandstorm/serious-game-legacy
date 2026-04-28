@@ -22,6 +22,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPl
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterSteuernUndAbgabenForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\FileInsolvenzForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\MarkPlayerAsReadyForKonjunkturphaseChange;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
@@ -259,6 +260,7 @@ abstract class TestCase extends BaseTestCase
     public function makeSpielzugForPlayersByPlayingCard(): void
     {
         foreach ($this->players as $player) {
+            $this->coreGameLogic->handle($this->gameId, new StartSpielzug($player));
             $this->coreGameLogic->handle($this->gameId, ActivateCard::create($player, CategoryId::BILDUNG_UND_KARRIERE));
             $this->coreGameLogic->handle($this->gameId, new EndSpielzug($player));
         }
@@ -297,6 +299,7 @@ abstract class TestCase extends BaseTestCase
     public function makeSpielzugForPlayersByDoingAMiniJob(): void
     {
         foreach ($this->players as $player) {
+            $this->coreGameLogic->handle($this->gameId, new StartSpielzug($player));
             $this->coreGameLogic->handle($this->gameId, DoMiniJob::create($player));
             $this->coreGameLogic->handle($this->gameId, new EndSpielzug($player));
         }
@@ -564,9 +567,11 @@ abstract class TestCase extends BaseTestCase
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(DoMinijob::create($this->getPlayers()[0]));
         $this->handle(new EndSpielzug($this->getPlayers()[0]));
 
+        $this->handle(new StartSpielzug($this->getPlayers()[1]));
         $this->handle(DoMinijob::create($this->getPlayers()[1]));
         $this->handle(new EndSpielzug($this->getPlayers()[1]));
 

@@ -10,17 +10,20 @@ use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\PlayerId;
 
 /**
- * Succeeds if the player has not already started their turn.
+ * Succeeds if the player has already started their turn.
+ *
+ * Use this in the validator chain of any Aktion that should only run once the player
+ * has clicked through the "Du bist am Zug!" mandatory modal. Prevents turn-actions
+ * from slipping through when the popup did not appear (see issue #652).
  */
-final class HasPlayerAlreadyStartedSpielzugValidator extends AbstractValidator
+final class HasPlayerStartedSpielzugValidator extends AbstractValidator
 {
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
-        $hasPlayerStartedTurn = GamePhaseState::hasPlayerStartedTurn($gameEvents, $playerId);
-        if ($hasPlayerStartedTurn) {
+        if (!GamePhaseState::hasPlayerStartedTurn($gameEvents, $playerId)) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Du hast bereits deinen Spielzug gestartet.',
+                reason: 'Du musst deinen Spielzug erst starten.',
             );
         }
 

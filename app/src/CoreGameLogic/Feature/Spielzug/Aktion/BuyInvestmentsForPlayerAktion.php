@@ -11,6 +11,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasCategoryFreeZeitst
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerDoneNoZeitsteinaktionThisTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughResourcesValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughZeitsteineValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerStartedSpielzugValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerAllowedToInvestValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerNotInsolventValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
@@ -35,6 +36,7 @@ class BuyInvestmentsForPlayerAktion extends Aktion
     {
         $validationChain = new IsPlayersTurnValidator();
         $validationChain
+            ->setNext(new HasPlayerStartedSpielzugValidator())
             ->setNext(new IsPlayerNotInsolventValidator())
             ->setNext(new DoesNotSkipTurnValidator())
             ->setNext(new IsPlayerAllowedToInvestValidator())

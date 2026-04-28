@@ -6,6 +6,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\QuitJob;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
@@ -40,6 +41,7 @@ describe('handleQuitJob', function () {
         $initialZeitsteine = PlayerState::getZeitsteineForPlayer($gameEvents, $this->players[0]);
 
         // accept job (costs 1 Zeitstein + binds 1 Zeitstein permanently)
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(AcceptJobOffer::create($this->players[0], new CardId('testJob')));
 
         $gameEvents = $this->getGameEvents();
@@ -50,10 +52,12 @@ describe('handleQuitJob', function () {
         $this->handle(new EndSpielzug($this->players[0]));
 
         // player 1 does mini job and ends turn
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->handle(DoMinijob::create($this->players[1]));
         $this->handle(new EndSpielzug($this->players[1]));
 
         // player 0 quits job in next turn
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(QuitJob::create($this->players[0]));
 
         $gameEvents = $this->getGameEvents();
@@ -96,6 +100,7 @@ describe('handleQuitJob', function () {
         $this->startNewKonjunkturphaseWithCardsOnTop($testCards);
 
         // player 0 accepts first job
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(AcceptJobOffer::create($this->players[0], new CardId('testJob1')));
         $gameEvents = $this->getGameEvents();
         expect(PlayerState::getJobForPlayer($gameEvents, $this->players[0])?->getId())->toEqual(new CardId('testJob1'));
@@ -104,10 +109,12 @@ describe('handleQuitJob', function () {
         $this->handle(new EndSpielzug($this->players[0]));
 
         // player 1 does mini job and ends turn
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->handle(DoMinijob::create($this->players[1]));
         $this->handle(new EndSpielzug($this->players[1]));
 
         // player 0 quits first job and does a minijob to be able to end turn
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(QuitJob::create($this->players[0]));
         $gameEvents = $this->getGameEvents();
         expect(PlayerState::getJobForPlayer($gameEvents, $this->players[0]))->toBeNull();
@@ -116,6 +123,7 @@ describe('handleQuitJob', function () {
         $this->handle(new EndSpielzug($this->players[0]));
 
         // player 1 does mini job and ends turn
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->handle(DoMinijob::create($this->players[1]));
         $this->handle(new EndSpielzug($this->players[1]));
 
@@ -123,6 +131,7 @@ describe('handleQuitJob', function () {
         $this->startNewKonjunkturphaseWithCardsOnTop($testCards);
 
         // player 0 accepts second job
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(AcceptJobOffer::create($this->players[0], new CardId('testJob2')));
         $gameEvents = $this->getGameEvents();
         expect(PlayerState::getJobForPlayer($gameEvents, $this->players[0])?->getId())->toEqual(new CardId('testJob2'));

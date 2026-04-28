@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartWeiterbildung;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SubmitAnswerForWeiterbildung;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
@@ -38,6 +39,7 @@ describe('Weiterbildung Kompetenzstein awards', function () {
         $gameEvents = $this->getGameEvents();
         $initialKompetenzsteine = PlayerState::getBildungsKompetenzsteine($gameEvents, $this->players[0]);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(StartWeiterbildung::create($this->players[0]));
         $this->handle(SubmitAnswerForWeiterbildung::create($this->players[0], new AnswerId('a')));
 
@@ -65,6 +67,7 @@ describe('Weiterbildung Kompetenzstein awards', function () {
         $gameEvents = $this->getGameEvents();
         $initialKompetenzsteine = PlayerState::getBildungsKompetenzsteine($gameEvents, $this->players[0]);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(StartWeiterbildung::create($this->players[0]));
         $this->handle(SubmitAnswerForWeiterbildung::create($this->players[0], new AnswerId('b')));
 
@@ -92,14 +95,17 @@ describe('Weiterbildung across turns', function () {
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
         // player 0 does a minijob (Zeitsteinaktion)
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(DoMinijob::create($this->players[0]));
         $this->handle(new EndSpielzug($this->players[0]));
 
         // player 1 does mini job and ends turn
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->handle(DoMinijob::create($this->players[1]));
         $this->handle(new EndSpielzug($this->players[1]));
 
         // player 0 can now do a Weiterbildung (different turn)
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(StartWeiterbildung::create($this->players[0]));
         $this->handle(SubmitAnswerForWeiterbildung::create($this->players[0], new AnswerId('a')));
 
@@ -110,11 +116,13 @@ describe('Weiterbildung across turns', function () {
     it('allows doing a Minijob after a Weiterbildung in a previous turn', function () {
         /** @var TestCase $this */
         // player 0 does a Weiterbildung (Zeitsteinaktion)
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(StartWeiterbildung::create($this->players[0]));
         $this->handle(SubmitAnswerForWeiterbildung::create($this->players[0], new AnswerId('a')));
         $this->handle(new EndSpielzug($this->players[0]));
 
         // player 1 does mini job and ends turn
+        $this->handle(new StartSpielzug($this->players[1]));
         $this->handle(DoMinijob::create($this->players[1]));
         $this->handle(new EndSpielzug($this->players[1]));
 
@@ -122,6 +130,7 @@ describe('Weiterbildung across turns', function () {
         $gameEvents = $this->getGameEvents();
         $guthabenBefore = PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]);
 
+        $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(DoMinijob::create($this->players[0]));
 
         $gameEvents = $this->getGameEvents();

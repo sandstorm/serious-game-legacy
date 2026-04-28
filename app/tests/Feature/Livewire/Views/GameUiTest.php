@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Livewire;
 
+use App\Livewire\GameUi;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\Definitions\Insurance\ValueObject\InsuranceTypeEnum;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Livewire\Livewire;
 use PHPUnit\Framework\Assert;
 use Tests\Feature\Livewire\Views\Helpers\GameUiTester;
 use Tests\TestCase;
@@ -53,7 +55,6 @@ describe('GameUi', function () {
             ->startTurn()
             ->assertSidebarActionsAreVisible(true)
             ->seeUpdatedGameboard();
-
     })->with([CategoryId::BILDUNG_UND_KARRIERE, CategoryId::SOZIALES_UND_FREIZEIT]);
 
     test('get enough Kompetenzsteine and accept a job offer', function () {
@@ -250,7 +251,6 @@ describe('GameUi', function () {
                 'Kompetenzsteine have not changed'
             );
         }
-
     });
 
     test('show Lebensziel of current player', function () {
@@ -290,4 +290,38 @@ describe('GameUi', function () {
             ->seeUpdatedGameboard();
     });
 
+    // Regression coverage for issue #652 — popups not behaving correctly
+    describe('popups (issue #652)', function () {
+        test('sell modal stays visible for player B across a passive WebSocket-style re-render after player A invests', function () {
+            /** @var TestCase $this */
+            $testCase = $this;
+            $stockId = InvestmentId::BETA_PEAR;
+
+            new GameUiTester($testCase, $this->getPlayers()[0], 'Player 0')
+                ->startGame()
+                ->startTurn()
+                ->openInvestmentsOverview()
+                ->chooseStocks()
+                ->buyStocks($stockId, 15);
+
+            // Player B advances past the konjunkturphase-start screen, then sees the sell-popup.
+            $playerBComponent = Livewire::test(GameUi::class, [
+                'gameId' => $this->getGameId(),
+                'myself' => $this->getPlayers()[1],
+            ])
+                ->call('startKonjunkturphaseForPlayer');
+
+            $playerBComponent
+                ->assertSet('sellInvestmentsModalIsVisible', true)
+                ->assertSeeHtml("hat in $stockId->value investiert!");
+
+            // Simulate a WebSocket-triggered re-render with no local user action. Before the fix,
+            // an empty notifyGameStateUpdated() relied on cached gameEvents and could leave the
+            // flag flipped to false.
+            $playerBComponent
+                ->call('notifyGameStateUpdated')
+                ->assertSet('sellInvestmentsModalIsVisible', true)
+                ->assertSeeHtml("hat in $stockId->value investiert!");
+        });
+    });
 });

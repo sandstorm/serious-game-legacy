@@ -12,6 +12,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasCategoryFreeZeitst
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\DoesPlayerOwnImmobilieValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerDoneNoZeitsteinaktionThisTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughZeitsteineValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerStartedSpielzugValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerAllowedToInvestValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
@@ -32,6 +33,7 @@ class SellImmobilieAktion extends Aktion
     {
         $validatorChain = new IsPlayersTurnValidator();
         $validatorChain
+            ->setNext(new HasPlayerStartedSpielzugValidator())
             ->setNext(new DoesNotSkipTurnValidator())
             ->setNext(new DoesPlayerOwnImmobilieValidator($this->immobilieId))
             ->setNext(new IsPlayerAllowedToInvestValidator())

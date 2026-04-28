@@ -10,6 +10,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\DoesNotSkipTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerDoneNoZeitsteinaktionThisTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughZeitsteineValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerStartedSpielzugValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayersTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\WeiterbildungWasStarted;
@@ -28,6 +29,7 @@ class StartWeiterbildungAktion extends Aktion
     {
         $validatorChain = new IsPlayersTurnValidator();
         $validatorChain
+            ->setNext(new HasPlayerStartedSpielzugValidator())
             ->setNext(new DoesNotSkipTurnValidator())
             ->setNext(new HasPlayerEnoughZeitsteineValidator(1))
             ->setNext(new HasPlayerDoneNoZeitsteinaktionThisTurnValidator());
