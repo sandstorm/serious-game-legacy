@@ -43,7 +43,9 @@ class GamePlayController extends Controller
             $gamesDto[] = new Games(
                 game: $game,
                 playerNames: array_values(
-                    array_map(function ($playerWithnameAndLebensziel) { return $playerWithnameAndLebensziel->name ?? null; }, PreGameState::playersWithNameAndLebensziel($gameEvents))
+                    array_map(function ($playerWithnameAndLebensziel) {
+                        return $playerWithnameAndLebensziel->name ?? null;
+                    }, PreGameState::playersWithNameAndLebensziel($gameEvents))
                 ),
                 isInGamePhase: !PreGameState::isInPreGamePhase($gameEvents),
             );

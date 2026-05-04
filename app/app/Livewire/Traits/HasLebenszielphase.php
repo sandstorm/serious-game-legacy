@@ -20,7 +20,7 @@ trait HasLebenszielphase
      * Rendering is triggered by Livewire when we use the broadcastNotify() method.
      * @return void
      */
-    public function renderingHasLebenszielphase(): void
+    public function prepareHasLebenszielphase(): void
     {
         if (PreGameState::isInPreGamePhase($this->getGameEvents())) {
             // do not mount the if we are in pre-game phase

@@ -1009,7 +1009,7 @@ describe('handleAcceptJobOffer', function () {
 
         $events = $this->coreGameLogic->getGameEvents($this->gameId);
 
-        $jobQuitEvent = $events->findLastOrNullWhere(fn(
+        $jobQuitEvent = $events->findLastOrNullWhere(fn (
             $e
         ) => $e instanceof JobWasQuit && $e->playerId->equals($this->players[0]));
         expect($jobQuitEvent)->not->toBeNull()
