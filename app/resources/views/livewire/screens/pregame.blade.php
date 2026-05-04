@@ -13,7 +13,7 @@
         <h1>Wähle Dein Lebensziel</h1>
         <x-pregame.selectLebensziel :lebensziele="$lebensziele" :lebensziel-form="$lebenszielForm" />
     @else
-        <div class="pregame__start"
+        <div class="pregame__start">
             @if(PreGameState::isReadyForGame($this->getGameEvents()))
                 <button type="button" class="button button--type-primary" wire:click="startGame">Spiel starten</button>
             @else

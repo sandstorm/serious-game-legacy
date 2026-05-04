@@ -444,21 +444,22 @@ readonly class GameUiTester
             'wire:click="startSpielzug()',
         ];
         // check that modal is visible
-        $this->assertSeeMandatoryModal($modalAttributes, $additionalModalContent);
+        $this->assertSeeMandatoryModal($modalAttributes, $additionalModalContent, 'showItsYourTurnNotification');
 
         // player confirms starting turn
         $this->testableGameUi
             ->call('startSpielzug');
 
         // check that modal is not visible anymore
-        $this->assertDoNotSeeMandatoryModal($additionalModalContent);
+        $this->assertDoNotSeeMandatoryModal('showItsYourTurnNotification');
 
         return $this;
     }
 
-    private function assertSeeMandatoryModal(array $modalAttributes, array $additionalContent): void
+    private function assertSeeMandatoryModal(array $modalAttributes, array $additionalContent, string $livewireProperty): void
     {
         $this->testableGameUi
+            ->assertSet($livewireProperty, true)
             ->assertSeeHtml([
                 '<div class="modal__backdrop"></div>',
                 '<div class="modal__content">',
@@ -480,14 +481,9 @@ readonly class GameUiTester
         }
     }
 
-    private function assertDoNotSeeMandatoryModal(array $additionalContent): void
+    private function assertDoNotSeeMandatoryModal(string $livewireProperty): void
     {
-        $this->testableGameUi->assertDontSeeHtml([
-            '<div class="modal__backdrop"></div>',
-            '<div class="modal__content">',
-            '<div class="modal__body" id="mandatory-modal-content">',
-            ...$additionalContent
-        ]);
+        $this->testableGameUi->assertSet($livewireProperty, false);
     }
 
     public function seeUpdatedGameboard(): static
@@ -778,7 +774,6 @@ readonly class GameUiTester
     private function assertDoNotSeeModal(array $modalAttributes, array $additionalContent): void
     {
         $this->testableGameUi->assertDontSeeHtml([
-            '<div class="modal__content">',
             '<div class="modal__body" id="modal-content">',
             ...$additionalContent
         ]);
@@ -819,13 +814,13 @@ readonly class GameUiTester
             "<h4>$nameOfPlayerWhoBoughtInvestment hat in $stockId->value investiert!</h4>",
             "Ich möchte nichts verkaufen"
         ];
-        $this->assertSeeMandatoryModal($modalAttributes, $additionalModalContent);
+        $this->assertSeeMandatoryModal($modalAttributes, $additionalModalContent, 'sellInvestmentsModalIsVisible');
 
         $this->assertSeeInvestitionenSellAfterPurchaseModal($amountOfCurrentBoughtInvestmentsThatPlayerOwns, $stockId);
 
         $this->testableGameUi->call('closeSellInvestmentsModal');
 
-        $this->assertDoNotSeeMandatoryModal($additionalModalContent);
+        $this->assertDoNotSeeMandatoryModal('sellInvestmentsModalIsVisible');
     }
 
     private function assertSeeInvestitionenSellAfterPurchaseModal($amountInvestment, $stockId): void

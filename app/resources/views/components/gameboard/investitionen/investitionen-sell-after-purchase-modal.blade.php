@@ -1,5 +1,3 @@
-@extends ('components.modal.mandatory-modal', ['size' => "small"])
-
 @use('Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState')
 
 @props([
@@ -7,17 +5,17 @@
     'game-events' => null,
 ])
 
-@section('title_mandatory')
-    <span>
-        Verkauf - {{ $this->sellInvestmentsForm->investmentId }} <i class="icon-aktien" aria-hidden="true"></i>
-    </span>
-@endsection
+<x-modal.mandatory-modal size="small">
+    <x-slot:icon>
+        <i class="icon-ereignis" aria-hidden="true"></i>
+    </x-slot:icon>
 
-@section('icon_mandatory')
-    <i class="icon-ereignis" aria-hidden="true"></i>
-@endsection
+    <x-slot:title>
+        <span>
+            Verkauf - {{ $this->sellInvestmentsForm->investmentId }} <i class="icon-aktien" aria-hidden="true"></i>
+        </span>
+    </x-slot:title>
 
-@section('content_mandatory')
     <h4>{{ $this->sellInvestmentsForm->playerName }} hat in {{ $this->sellInvestmentsForm->investmentId }} investiert!</h4>
     @if ($this->sellInvestmentsForm->amountOwned > 0)
         <p>
@@ -32,17 +30,17 @@
         action="sellInvestmentsAfterPurchase('{{ $this->sellInvestmentsForm->investmentId }}')"
         :does-cost-zeitstein="false"
     />
-@endsection
 
-@section('footer_mandatory')
-    <button type="button"
-            @class([
-                "button",
-                "button--type-outline-primary",
-                $this->getPlayerColorClass()
-            ])
-            wire:click="closeSellInvestmentsModal()"
-    >
-        Ich möchte nichts verkaufen
-    </button>
-@endsection
+    <x-slot:footer>
+        <button type="button"
+                @class([
+                    "button",
+                    "button--type-outline-primary",
+                    $this->getPlayerColorClass()
+                ])
+                wire:click="closeSellInvestmentsModal()"
+        >
+            Ich möchte nichts verkaufen
+        </button>
+    </x-slot:footer>
+</x-modal.mandatory-modal>
