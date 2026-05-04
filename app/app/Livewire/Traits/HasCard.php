@@ -37,7 +37,7 @@ trait HasCard
      *
      * @return void
      */
-    public function renderingHasCard(): void
+    public function prepareHasCard(): void
     {
         if (PreGameState::isInPreGamePhase($this->getGameEvents())) {
             return;

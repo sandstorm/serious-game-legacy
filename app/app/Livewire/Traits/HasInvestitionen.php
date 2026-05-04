@@ -55,7 +55,7 @@ trait HasInvestitionen
      *
      * @return void
      */
-    public function renderingHasInvestitionen(): void
+    public function prepareHasInvestitionen(): void
     {
         if (PreGameState::isInPreGamePhase($this->getGameEvents())) {
             // do not mount the if we are in pre-game phase

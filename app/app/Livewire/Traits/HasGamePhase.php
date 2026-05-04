@@ -19,7 +19,7 @@ trait HasGamePhase
 {
     public bool $showItsYourTurnNotification = false;
 
-    public function renderingHasGamePhase(): void
+    public function prepareHasGamePhase(): void
     {
         if (PreGameState::isInPreGamePhase($this->getGameEvents())) {
             return;

@@ -84,6 +84,16 @@ class GameUi extends Component
 
     public function render(): View
     {
+        // Auto-derive flags driven by event-store state. These must run BEFORE the
+        // phase dispatch — Livewire 3 captures public properties *before* its own
+        // renderingTraitName() hooks fire (see HandleComponents::getView), so we
+        // can't rely on them to populate template variables.
+        $this->prepareHasKonjunkturphase();
+        $this->prepareHasGamePhase();
+        $this->prepareHasInvestitionen();
+        $this->prepareHasLebenszielphase();
+        $this->prepareHasCard();
+
         if (PreGameState::isInPreGamePhase($this->gameEvents)) {
             return $this->renderPreGamePhase();
         }
@@ -142,10 +152,7 @@ class GameUi extends Component
 
     public function notifyGameStateUpdated(): void
     {
-        // Refresh the cached event stream so rendering hooks see events written by other clients.
-        // Without this, popups derived in renderingHas*() can miss broadcasts when boot() ran
-        // against a stale snapshot (see issue #652).
-        $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        // Empty body — Livewire just needs a handler to trigger the re-render; boot() refreshes events.
     }
 
     /**

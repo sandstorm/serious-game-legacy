@@ -26,7 +26,7 @@ trait HasKonjunkturphase
     public int $konjunkturphaseStartScreenPage = 0;
     public ?int $lastSeenKonjunkturphaseId = null;
 
-    public function renderingHasKonjunkturphase(): void
+    public function prepareHasKonjunkturphase(): void
     {
         if (PreGameState::isInPreGamePhase($this->getGameEvents())) {
             return;
