@@ -6,6 +6,12 @@ namespace Tests\Feature\Livewire;
 
 use App\Livewire\GameUi;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellInvestmentsForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\Definitions\Insurance\ValueObject\InsuranceTypeEnum;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
@@ -322,6 +328,45 @@ describe('GameUi', function () {
                 ->call('notifyGameStateUpdated')
                 ->assertSet('sellInvestmentsModalIsVisible', true)
                 ->assertSeeHtml("hat in $stockId->value investiert!");
+        });
+
+        test('sell modal can be dismissed when triggered by a PlayerHasSoldInvestment event', function () {
+            /** @var TestCase $this */
+            $stockId = InvestmentId::BETA_PEAR;
+            $player0 = $this->getPlayers()[0];
+            $player1 = $this->getPlayers()[1];
+
+            // Turn 1 for Player 0: start turn, buy stocks, then Player 1 declines to sell, Player 0 ends turn
+            $this->handle(new StartSpielzug($player0));
+            $this->handle(BuyInvestmentsForPlayer::create($player0, $stockId, 5));
+            $this->handle(DontSellInvestmentsForPlayer::create($player1, $stockId));
+            $this->handle(new EndSpielzug($player0));
+
+            // Turn 1 for Player 1: start turn, use a Zeitstein, end turn
+            $this->handle(new StartSpielzug($player1));
+            $this->handle(ActivateCard::create($player1, CategoryId::BILDUNG_UND_KARRIERE));
+            $this->handle(new EndSpielzug($player1));
+
+            // Turn 2 for Player 0: start turn and SELL stocks — triggers PlayerHasSoldInvestment
+            $this->handle(new StartSpielzug($player0));
+            $this->handle(SellInvestmentsForPlayer::create($player0, $stockId, 5));
+
+            // Player 1's component should show the sell modal (triggered by sell, not buy).
+            // Before Fix 1, closeSellInvestmentsModal() would call findLast(PlayerHasBoughtInvestment)
+            // which would find a stale event from turn 1 and issue a DontSell for the wrong turn,
+            // or potentially throw if no buy event existed at all.
+            $playerBComponent = Livewire::test(GameUi::class, [
+                'gameId' => $this->getGameId(),
+                'myself' => $player1,
+            ])->call('startKonjunkturphaseForPlayer');
+
+            $playerBComponent
+                ->assertSet('sellInvestmentsModalIsVisible', true)
+                ->assertSeeHtml("hat in $stockId->value investiert!");
+
+            $playerBComponent
+                ->call('closeSellInvestmentsModal')
+                ->assertSet('sellInvestmentsModalIsVisible', false);
         });
     });
 });

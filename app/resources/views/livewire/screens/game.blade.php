@@ -73,19 +73,27 @@
             :player-id="$myself"
         />
     @endif
-    @if ($this->sellInvestmentsModalIsVisible)
-        <x-gameboard.investitionen.investitionen-sell-after-purchase-modal
-            :game-events="$this->getGameEvents()"
-            :player-id="$myself"
-        />
-    @endif
-    @if ($this->showItsYourTurnNotification)
-        <x-gameboard.its-your-turn-notification />
-    @endif
-    @if ($this->isFinishedGameModalVisible)
-        <x-gameboard.finished-game-modal
-            :winner-name="$this->getCurrentPlayerName()"
-            :lebensziel-name="$this->getLebenszielNameForCurrentPlayer()"
-        />
-    @endif
+    <div wire:key="modal-sell-investments-after-purchase">
+        @if ($this->sellInvestmentsModalIsVisible)
+            <x-gameboard.investitionen.investitionen-sell-after-purchase-modal
+                :game-events="$this->getGameEvents()"
+                :player-id="$myself"
+            />
+        @endif
+    </div>
+
+    <div wire:key="modal-its-your-turn">
+        @if ($this->showItsYourTurnNotification)
+            <x-gameboard.its-your-turn-notification />
+        @endif
+    </div>
+
+    <div wire:key="modal-finished-game">
+        @if ($this->isFinishedGameModalVisible)
+            <x-gameboard.finished-game-modal
+                :winner-name="$this->getCurrentPlayerName()"
+                :lebensziel-name="$this->getLebenszielNameForCurrentPlayer()"
+            />
+        @endif
+    </div>
 </div>

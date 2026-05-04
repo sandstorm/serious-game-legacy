@@ -14,7 +14,7 @@ class SellInvestmentsForm extends Form
     public ?int $amount = 0;
 
     // public properties needed for validation
-    public ?InvestmentId $investmentId;
+    public ?InvestmentId $investmentId = null;
     public float $sharePrice = 0;
     public int $amountOwned = 0;
     // used to show others who bought the investment

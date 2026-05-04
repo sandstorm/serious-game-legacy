@@ -2,7 +2,13 @@
     'size' => '', // small
 ])
 
-<div x-data="{ open: true }" x-trap.inert.noscroll="open" role="alertdialog" aria-modal="true" aria-modal="true" aria-labelledby="mandatory-modal-headline" aria-describedby="mandatory-modal-content"
+<div
+    x-data="{ open: true }"
+    x-trap.inert.noscroll="open"
+    role="alertdialog"
+    aria-modal="true"
+    aria-labelledby="mandatory-modal-headline"
+    aria-describedby="mandatory-modal-content"
     @class([
         "modal",
         "modal--type-mandatory",
@@ -11,26 +17,26 @@
 >
     <div class="modal__backdrop"></div>
     <div class="modal__content">
-        @hasSection('icon_mandatory')
+        @isset($icon)
             <div class="modal__icon">
-                @yield('icon_mandatory')
+                {{ $icon }}
             </div>
-        @endif
+        @endisset
 
-        @hasSection('title_mandatory')
+        @isset($title)
             <h2 class="modal__header" id="mandatory-modal-headline">
-                @yield('title_mandatory')
+                {{ $title }}
             </h2>
-        @endif
+        @endisset
 
         <div class="modal__body" id="mandatory-modal-content">
-            @yield('content_mandatory')
+            {{ $slot }}
         </div>
 
-        @hasSection('footer_mandatory')
+        @isset($footer)
             <footer class="modal__actions">
-                @yield('footer_mandatory')
+                {{ $footer }}
             </footer>
-        @endif
+        @endisset
     </div>
 </div>

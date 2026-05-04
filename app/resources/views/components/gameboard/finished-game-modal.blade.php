@@ -1,27 +1,25 @@
-@extends ('components.modal.mandatory-modal', ['size' => "small"])
-
 @props([
     'winnerName' => '',
     'lebenszielName' => '',
 ])
 
-@section('icon_mandatory')
-    <i class="icon-info" aria-hidden="true"></i>
-@endsection
+<x-modal.mandatory-modal size="small">
+    <x-slot:icon>
+        <i class="icon-info" aria-hidden="true"></i>
+    </x-slot:icon>
 
-@section('content_mandatory')
     <h3>{{ $winnerName }} hat das Lebensziel '{{ $lebenszielName }}' erreicht!</h3>
-@endsection
 
-@section('footer_mandatory')
-    <button type="button"
-            @class([
-                "button",
-                "button--type-primary",
-                $this->getPlayerColorClass()
-            ])
-            wire:click="endGame()"
-    >
-        Spiel beenden
-    </button>
-@endsection
+    <x-slot:footer>
+        <button type="button"
+                @class([
+                    "button",
+                    "button--type-primary",
+                    $this->getPlayerColorClass()
+                ])
+                wire:click="endGame()"
+        >
+            Spiel beenden
+        </button>
+    </x-slot:footer>
+</x-modal.mandatory-modal>

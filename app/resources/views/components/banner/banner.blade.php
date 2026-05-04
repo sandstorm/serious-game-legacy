@@ -26,7 +26,7 @@
         })"
     role="status"
 >
-    <div class="banner__content"
+    <div class="banner__content">
         @if ($this->getBannerResourceChanges())
             <div class="banner__resource-changes">
                 <x-gameboard.resourceChanges.resource-changes style-class="horizontal" :resource-changes="$this->getBannerResourceChanges()" />

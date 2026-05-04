@@ -7,9 +7,10 @@ namespace App\Livewire\Traits;
 use App\Livewire\Forms\BuyInvestmentsForm;
 use App\Livewire\Forms\SellInvestmentsForm;
 use App\Livewire\ValueObject\NotificationTypeEnum;
-use Domain\CoreGameLogic\EventStore\GameEventInterface;
+use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\BuyImmobilieAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\BuyInvestmentsForPlayerAktion;
@@ -67,9 +68,13 @@ trait HasInvestitionen
             !PlayerState::hasPlayerInteractedWithInvestmentsModalThisTurn($this->getGameEvents(), $this->myself)
         ) {
 
-            /** @var PlayerHasBoughtInvestment|PlayerHasSoldInvestment $investmentEvent */
-            $investmentEvent = $this->getGameEvents()->findLastOrNullWhere(
-                fn (GameEventInterface $event) => $event instanceof PlayerHasBoughtInvestment || $event instanceof PlayerHasSoldInvestment
+            $eventsThisTurn = $this->getGameEvents()->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class)
+                ?? $this->getGameEvents()->findAllAfterLastOfType(GameWasStarted::class);
+
+            /** @var PlayerHasBoughtInvestment|PlayerHasSoldInvestment|null $investmentEvent */
+            $investmentEvent = $eventsThisTurn->findLastOrNullWhere(
+                fn ($event) => ($event instanceof PlayerHasBoughtInvestment || $event instanceof PlayerHasSoldInvestment)
+                    && !$event->getPlayerId()->equals($this->myself)
             );
             if ($investmentEvent === null) {
                 return; // Should not happen, ignore if it does.
@@ -210,12 +215,12 @@ trait HasInvestitionen
 
     public function closeSellInvestmentsModal(): void
     {
-        /** @var PlayerHasBoughtInvestment $stocksBoughtEvent */
-        $stocksBoughtEvent = $this->getGameEvents()->findLast(PlayerHasBoughtInvestment::class);
-        $this->handleCommand(DontSellInvestmentsForPlayer::create(
-            $this->myself,
-            $stocksBoughtEvent->getInvestmentId()
-        ));
+        $investmentId = $this->sellInvestmentsForm->investmentId;
+        if ($investmentId === null) {
+            $this->sellInvestmentsModalIsVisible = false;
+            return;
+        }
+        $this->handleCommand(DontSellInvestmentsForPlayer::create($this->myself, $investmentId));
         $this->broadcastNotify();
         $this->sellInvestmentsModalIsVisible = false;
     }
