@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator;
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
-use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
+use Domain\CoreGameLogic\Feature\Initialization\Event\GameWasStarted;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasBoughtInvestment;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasSoldInvestment;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\SpielzugWasEnded;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\CoreGameLogic\PlayerId;
 
@@ -27,10 +29,16 @@ final class HasAnotherPlayerInvestedThisTurnValidator extends AbstractValidator
 
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
-        $anotherPlayerHasInvestedThisTurn = GamePhaseState::anotherPlayerHasInvestedThisTurn($gameEvents, $playerId);
-        $investmentsBought = $gameEvents->findLastOrNull(PlayerHasBoughtInvestment::class)?->getInvestmentId();
+        $eventsThisTurn = $gameEvents->findAllAfterLastOfTypeOrNull(SpielzugWasEnded::class)
+            ?? $gameEvents->findAllAfterLastOfType(GameWasStarted::class);
 
-        if (!$anotherPlayerHasInvestedThisTurn || $investmentsBought !== $this->investmentId) {
+        $investmentEventThisTurn = $eventsThisTurn->findLastOrNullWhere(
+            fn ($event) => ($event instanceof PlayerHasBoughtInvestment || $event instanceof PlayerHasSoldInvestment)
+                && !$event->getPlayerId()->equals($playerId)
+                && $event->getInvestmentId() === $this->investmentId
+        );
+
+        if ($investmentEventThisTurn === null) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: 'Ein anderer Spieler muss Investitionen der gleichen Art gekauft oder verkauft haben, bevor du welche verkaufen kannst.',
