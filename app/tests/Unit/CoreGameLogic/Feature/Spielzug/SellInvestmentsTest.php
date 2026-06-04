@@ -132,6 +132,52 @@ describe('handleSellInvestmentsForPlayer', function () {
             )
         );
     })->throws(\RuntimeException::class, 'Du hast nicht genug Investitionen vom Typ Merfedes-Penz zum Verkaufen.', 1752753850);
+
+    it('allows other players to respond to the investments modal when the active player sells a different investment type than was last globally bought', function () {
+        // player 0 buys MERFEDES_PENZ on turn 1
+        /** @var TestCase $this */
+        $this->handle(new StartSpielzug($this->players[0]));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            BuyInvestmentsForPlayer::create($this->players[0], InvestmentId::MERFEDES_PENZ, 100)
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            DontSellInvestmentsForPlayer::create($this->players[1], InvestmentId::MERFEDES_PENZ)
+        );
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+
+        // player 1 buys BAT_COIN on turn 1 — now the globally last PlayerHasBoughtInvestment is BAT_COIN
+        $this->handle(new StartSpielzug($this->players[1]));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            BuyInvestmentsForPlayer::create($this->players[1], InvestmentId::BAT_COIN, 100)
+        );
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            DontSellInvestmentsForPlayer::create($this->players[0], InvestmentId::BAT_COIN)
+        );
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[1]));
+
+        // player 0 sells MERFEDES_PENZ on turn 2
+        $this->handle(new StartSpielzug($this->players[0]));
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            SellInvestmentsForPlayer::create($this->players[0], InvestmentId::MERFEDES_PENZ, 100)
+        );
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(PlayerState::getAmountOfAllInvestmentsOfTypeForPlayer($gameEvents, $this->players[0], InvestmentId::MERFEDES_PENZ))->toEqual(0);
+
+        // player 1 must be able to respond "don't sell" for MERFEDES_PENZ
+        // BUG: this failed because HasAnotherPlayerInvestedThisTurnValidator used the globally
+        // last PlayerHasBoughtInvestment (BAT_COIN), which does not match MERFEDES_PENZ
+        $this->coreGameLogic->handle(
+            $this->gameId,
+            DontSellInvestmentsForPlayer::create($this->players[1], InvestmentId::MERFEDES_PENZ)
+        );
+        $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
+    });
 });
 
 describe('handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer', function () {
