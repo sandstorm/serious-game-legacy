@@ -12,7 +12,7 @@
         <tr class="konjunkturphase-summary-table__total-row">
             <td class="konjunkturphase-summary-table__empty-column"></td>
             <td class="konjunkturphase-summary-table__heading-column">Aktueller Kontostand</td>
-            <td class="konjunkturphase-summary-table__value-column"><x-money-amount :value="$moneySheet->guthabenBeforeKonjunkturphaseChange" with-icon /></td>
+            <td class="konjunkturphase-summary-table__value-column"><x-money-amount :value="$moneySheet->guthabenBeforeKonjunkturphaseChange" with-sign /></td>
         </tr>
         <tr>
             <td class="konjunkturphase-summary-table__icon-column">
@@ -23,12 +23,12 @@
         <tr>
             <td class="konjunkturphase-summary-table__empty-column"></td>
             <td class="konjunkturphase-summary-table__name-column">Finanzanlagen und Vermögenswerte</td>
-            <td class="konjunkturphase-summary-table__value-column"><x-money-amount :value="$moneySheet->annualIncomeForAllAssets" with-icon /></td>
+            <td class="konjunkturphase-summary-table__value-column"><x-money-amount :value="$moneySheet->annualIncomeForAllAssets" with-sign /></td>
         </tr>
         <tr class="konjunkturphase-summary-table__bottom-row">
             <td class="konjunkturphase-summary-table__empty-column"></td>
             <td class="konjunkturphase-summary-table__name-column">Gehalt</td>
-            <td class="konjunkturphase-summary-table__value-column"><x-money-amount :value="$moneySheet->gehalt" with-icon /></td>
+            <td class="konjunkturphase-summary-table__value-column"><x-money-amount :value="$moneySheet->gehalt" with-sign /></td>
         </tr>
 
         <tr>
@@ -40,43 +40,43 @@
         <tr>
             <td class="konjunkturphase-summary-table__empty-column"></td>
             <td class="konjunkturphase-summary-table__name-column">Kredite</td>
-            <td class="konjunkturphase-summary-table__value-column"><x-money-amount :value="$moneySheet->annualExpensesForAllLoans" with-icon /></td>
+            <td class="konjunkturphase-summary-table__value-column"><x-money-amount :value="$moneySheet->annualExpensesForAllLoans" with-sign /></td>
         </tr>
         <tr>
             <td class="konjunkturphase-summary-table__empty-column"></td>
             <td class="konjunkturphase-summary-table__name-column">Steuern und Abgaben</td>
-            <td class="konjunkturphase-summary-table__value-column"><x-money-amount :value="$moneySheet->steuernUndAbgaben" with-icon /></td>
+            <td class="konjunkturphase-summary-table__value-column"><x-money-amount :value="$moneySheet->steuernUndAbgaben" with-sign /></td>
         </tr>
         @if ($moneySheet->insolvenzabgaben->value < 0)
         <tr>
             <td class="konjunkturphase-summary-table__empty-column"></td>
             <td class="konjunkturphase-summary-table__name-column">Insolvenzabgaben</td>
-            <td class="konjunkturphase-summary-table__value-column"><x-money-amount :value="$moneySheet->insolvenzabgaben" with-icon /></td>
+            <td class="konjunkturphase-summary-table__value-column"><x-money-amount :value="$moneySheet->insolvenzabgaben" with-sign /></td>
         </tr>
         @endif
         <tr>
             <td class="konjunkturphase-summary-table__empty-column"></td>
             <td class="konjunkturphase-summary-table__name-column">Lebenshaltungskosten</td>
-            <td class="konjunkturphase-summary-table__value-column"><x-money-amount :value="$moneySheet->lebenshaltungskosten" with-icon /></td>
+            <td class="konjunkturphase-summary-table__value-column"><x-money-amount :value="$moneySheet->lebenshaltungskosten" with-sign /></td>
         </tr>
         <tr class="konjunkturphase-summary-table__bottom-row">
             <td class="konjunkturphase-summary-table__empty-column"></td>
             <td class="konjunkturphase-summary-table__name-column">Versicherungen</td>
-            <td class="konjunkturphase-summary-table__value-column"><x-money-amount :value="$moneySheet->totalInsuranceCost" with-icon /></td>
+            <td class="konjunkturphase-summary-table__value-column"><x-money-amount :value="$moneySheet->totalInsuranceCost" with-sign /></td>
         </tr>
         <tr class="konjunkturphase-summary-tabe__total-row">
             <td class="konjunkturphase-summary-table__icon-column">
                 <i class="icon-ist-gleich" aria-hidden="true"></i>
             </td>
             <td class="konjunkturphase-summary-table__heading-column">Summe der Ein- und Ausgaben</td>
-            <td class="konjunkturphase-summary-table__value-column"><x-money-amount :value="$moneySheet->totalFromPlayerInput" with-icon /></td>
+            <td class="konjunkturphase-summary-table__value-column"><x-money-amount :value="$moneySheet->totalFromPlayerInput" with-sign /></td>
         </tr>
         <tr class="konjunkturphase-summary-tabe__total-row">
             <td class="konjunkturphase-summary-table__icon-column">
                 <i class="icon-ist-gleich" aria-hidden="true"></i>
             </td>
             <td class="konjunkturphase-summary-table__heading-column">Neuer Kontostand</td>
-            <td class="konjunkturphase-summary-table__value-column"><x-money-amount :value="$moneySheet->guthabenAfterKonjunkturphaseChange" with-icon /></td>
+            <td class="konjunkturphase-summary-table__value-column"><x-money-amount :value="$moneySheet->guthabenAfterKonjunkturphaseChange" with-sign /></td>
         </tr>
         @if($this->playerIsMyself($playerId) && $moneySheet->guthabenAfterKonjunkturphaseChange->value < 0)
             <tr class="konjunkturphase-summary-tabe__total-row">

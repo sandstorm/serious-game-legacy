@@ -33,7 +33,7 @@
                     </td>
                     <td class="text-align--right">
                         <small>Dein Jahreseinkommen brutto</small> <br/>
-                        <x-money-amount :value="$jobDefinition->getGehalt()" with-icon />
+                        <x-money-amount :value="$jobDefinition->getGehalt()" with-sign />
                     </td>
                 </tr>
                 <tr>
@@ -64,7 +64,7 @@
 @if ($currentGehalt->value > 0)
     <div class="tabs__lower-content">
         <div class="salary__summary">
-            <x-money-amount :value="$currentGehalt" with-icon />
+            <x-money-amount :value="$currentGehalt" with-sign />
         </div>
     </div>
 @endif

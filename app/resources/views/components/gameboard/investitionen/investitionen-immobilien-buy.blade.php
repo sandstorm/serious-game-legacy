@@ -9,7 +9,7 @@
             <div class="card__content card__content--center">
                 <div class="resource-changes">
                     <div class="resource-change">
-                        <x-money-amount :value="$immobilieCard->getAnnualRent()" with-icon />
+                        <x-money-amount :value="$immobilieCard->getAnnualRent()" with-sign />
                     </div>
                 </div>
                 <span class="font-size--sm">Jährliche Miete</span>

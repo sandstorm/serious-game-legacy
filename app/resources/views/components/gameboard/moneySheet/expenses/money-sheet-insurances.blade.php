@@ -19,7 +19,7 @@
 
     <div class="tabs__lower-content insurances__actions">
         <div class="insurances__total-cost">
-            <x-money-amount :value="$totalCost" with-icon />
+            <x-money-amount :value="$totalCost" with-sign />
             <span>Summe Versicherungen</span>
         </div>
         <x-form.submit disabled wire:dirty.remove.attr="disabled">Änderungen speichern</x-form.submit>

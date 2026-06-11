@@ -36,7 +36,7 @@
                         @endif
                     </td>
                     <td>
-                        <x-money-amount :value="$investment->totalDividend" with-icon />
+                        <x-money-amount :value="$investment->totalDividend" with-sign />
                     </td>
                 </tr>
                 @endif
@@ -49,13 +49,13 @@
                     <td><x-money-amount :value="$immobilie->getPurchasePrice()" /></td>
                     <td><x-money-amount :value="$immobilie->getAnnualRent()" /></td>
                     <td>
-                        <x-money-amount :value="$immobilie->getAnnualRent()" with-icon />
+                        <x-money-amount :value="$immobilie->getAnnualRent()" with-sign />
                     </td>
                 </tr>
             @endforeach
             <tr>
                 <td colspan="5" class="text-align--right">Einnahmen gesamt</td>
-                <td><x-money-amount :value="MoneySheetState::getAnnualIncomeForAllInvestments($gameEvents, $playerId)" with-icon /></td>
+                <td><x-money-amount :value="MoneySheetState::getAnnualIncomeForAllInvestments($gameEvents, $playerId)" with-sign /></td>
             </tr>
             </tbody>
         </table>

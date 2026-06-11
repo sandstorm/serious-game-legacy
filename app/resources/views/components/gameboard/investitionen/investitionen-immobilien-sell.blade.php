@@ -24,7 +24,7 @@
                 <td>{{ $immobilieOwnedByPlayer->getTitle() }}</td>
                 <td><x-money-amount :value="$immobilieOwnedByPlayer->getPurchasePrice()" /></td>
                 <td><x-money-amount :value="$immobilieOwnedByPlayer->getAnnualRent()" /></td>
-                <td><x-money-amount :value="ImmobilienPriceState::getCurrentPriceForImmobilie($gameEvents, $immobilieOwnedByPlayer->getImmobilieId())" with-icon /></td>
+                <td><x-money-amount :value="ImmobilienPriceState::getCurrentPriceForImmobilie($gameEvents, $immobilieOwnedByPlayer->getImmobilieId())" with-sign /></td>
                 <td>
                     <button
                         type="button"

@@ -23,13 +23,13 @@
                     <div class="lebensziel__phase-balance">
                         <small>Kontostand</small>
                         <div>
-                            <x-money-amount :value="PlayerState::getGuthabenForPlayer($gameEvents, $playerId)" with-icon />
+                            <x-money-amount :value="PlayerState::getGuthabenForPlayer($gameEvents, $playerId)" with-sign />
                         </div>
                     </div>
                 @endif
                 <div class="lebensziel__phase-cost">
                     <small>Phasenwechsel</small>
-                    <div><x-money-amount :value="$getCostForPhaseChange($phase->investitionen->value)" with-icon /></div>
+                    <div><x-money-amount :value="$getCostForPhaseChange($phase->investitionen->value)" with-sign /></div>
                 </div>
 
                 @if($this->playerIsMyself($playerId) && $phase->lebenszielPhaseId->value >= PlayerState::getCurrentLebenszielphaseIdForPlayer($gameEvents, $playerId)->value)
