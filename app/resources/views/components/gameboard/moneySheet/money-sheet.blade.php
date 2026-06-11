@@ -19,11 +19,11 @@
             <tbody>
             <tr>
                 <td>Finanzanlagen und Vermögenswerte</td>
-                <td class="text-align--right"><x-money-amount :value="$moneySheet->annualIncomeForAllAssets" with-icon /></td>
+                <td class="text-align--right"><x-money-amount :value="$moneySheet->annualIncomeForAllAssets" with-sign /></td>
             </tr>
             <tr>
                 <td>Gehalt</td>
-                <td class="text-align--right"><x-money-amount :value="$moneySheet->gehalt" with-icon /></td>
+                <td class="text-align--right"><x-money-amount :value="$moneySheet->gehalt" with-sign /></td>
             </tr>
             </tbody>
         </table>
@@ -50,13 +50,13 @@
             <tr>
                 <td>Kredite</td>
                 <td class="text-align--right">
-                    <x-money-amount :value="$moneySheet->annualExpensesForAllLoans" with-icon />
+                    <x-money-amount :value="$moneySheet->annualExpensesForAllLoans" with-sign />
                 </td>
             </tr>
             <tr>
                 <td>Steuern und Abgaben</td>
                 <td class="text-align--right">
-                    <x-money-amount :value="$moneySheet->steuernUndAbgaben" with-icon />
+                    <x-money-amount :value="$moneySheet->steuernUndAbgaben" with-sign />
                     @if($moneySheet->doesSteuernUndAbgabenRequirePlayerAction)
                         <div class="moneysheet__action-required"><span class="sr-only">Berechnung erforderlich</span></div>
                     @endif
@@ -66,14 +66,14 @@
             <tr>
                 <td>Insolvenzabgaben</td>
                 <td class="text-align--right">
-                    <x-money-amount :value="$moneySheet->insolvenzabgaben" with-icon />
+                    <x-money-amount :value="$moneySheet->insolvenzabgaben" with-sign />
                 </td>
             </tr>
             @endif
             <tr>
                 <td>Lebenshaltungskosten</td>
                 <td class="text-align--right">
-                    <x-money-amount :value="$moneySheet->lebenshaltungskosten" with-icon />
+                    <x-money-amount :value="$moneySheet->lebenshaltungskosten" with-sign />
                     @if($moneySheet->doesLebenshaltungskostenRequirePlayerAction)
                         <div class="moneysheet__action-required"><span class="sr-only">Berechnung erforderlich</span></div>
                     @endif
@@ -82,7 +82,7 @@
             <tr>
                 <td>Versicherungen</td>
                 <td class="text-align--right">
-                    <x-money-amount :value="$moneySheet->totalInsuranceCost" with-icon />
+                    <x-money-amount :value="$moneySheet->totalInsuranceCost" with-sign />
                 </td>
             </tr>
             </tbody>
@@ -116,12 +116,12 @@
     </div>
 
     <div class="moneysheet__income-sum">
-        <span class="badge-with-background"><x-money-amount :value="$moneySheet->annualIncome" with-icon /></span>
+        <span class="badge-with-background"><x-money-amount :value="$moneySheet->annualIncome" with-sign /></span>
     </div>
     <div class="moneysheet__expenses-sum">
-        <span class="badge-with-background"><x-money-amount :value="$moneySheet->annualExpensesFromPlayerInput" with-icon /></span>
+        <span class="badge-with-background"><x-money-amount :value="$moneySheet->annualExpensesFromPlayerInput" with-sign /></span>
     </div>
     <div class="moneysheet__sum">
-        <span class="badge-with-background">= <x-money-amount :value="$moneySheet->totalFromPlayerInput" with-icon /></span>
+        <span class="badge-with-background">= <x-money-amount :value="$moneySheet->totalFromPlayerInput" with-sign /></span>
     </div>
 </div>

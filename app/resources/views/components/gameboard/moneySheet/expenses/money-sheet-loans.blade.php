@@ -67,11 +67,11 @@
         <span>Aktueller Zinssatz: <x-formatted-number :value="KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->value" suffix="%" /></span>
     </div>
     <div class="loans__summary-column">
-        <span class="badge-with-background"><x-money-amount :value="$totalRepaymentValue" with-icon /></span>
+        <span class="badge-with-background"><x-money-amount :value="$totalRepaymentValue" with-sign /></span>
         <span>Summe Rückzahlungen</span>
     </div>
     <div class="loans__summary-column">
-        <span class="badge-with-background"><x-money-amount :value="$sumOfRepaymentsPerRound" with-icon /></span>
+        <span class="badge-with-background"><x-money-amount :value="$sumOfRepaymentsPerRound" with-sign /></span>
         <span>Summe Rückzahlungen pro Runde</span>
     </div>
 </div>

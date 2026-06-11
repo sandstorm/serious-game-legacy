@@ -348,11 +348,11 @@ readonly class GameUiTester
     private function formatMoneyAsHtml(\Domain\Definitions\Card\ValueObject\MoneyAmount $money): string
     {
         $value = number_format($money->value, 2, ',', '.');
-        return "<span class='text--currency'>" . $value . " €</span>";
+        return "<span class='text--currency'>" . $value . " <i aria-hidden='true' class='icon-euro'></i><span class='sr-only'>€</span></span>";
     }
 
     /**
-     * Builds the expected HTML output for a MoneyAmount with +/- icon, matching the <x-money-amount with-icon> Blade component.
+     * Builds the expected HTML output for a MoneyAmount with +/- icon, matching the <x-money-amount with-sign> Blade component.
      * Used in test assertions to verify rendered Livewire views contain the correct formatted currency with sign indicators.
      */
     private function formatMoneyWithIconAsHtml(\Domain\Definitions\Card\ValueObject\MoneyAmount $money): string
@@ -569,7 +569,6 @@ readonly class GameUiTester
             ->assertDontSee([
                 "nimmt Job '$topCardTitle' an",
                 'Mein Job: ',
-                "$gehalt €"
             ])
             // play card
             ->call('applyForJob', $topCard->getId()->value)
@@ -577,7 +576,7 @@ readonly class GameUiTester
             ->assertSee([
                 "nimmt Job '$topCardTitle' an",
                 'Mein Job: ',
-                "$gehalt €"
+                $gehalt
             ]);
 
         $playersZeitsteineAfterAction = $this->getPlayersZeitsteine();
@@ -1112,7 +1111,7 @@ readonly class GameUiTester
 
         foreach ($allInsurances as $index => $insurance) {
             $insuranceNames[$index] = $insurance->type->value;
-            $insuranceCosts[$index] = $this->numberFormatMoney($insurance->annualCost[$lebenszielPhase]->value) . " €";
+            $insuranceCosts[$index] = $this->numberFormatMoney($insurance->annualCost[$lebenszielPhase]->value);
         }
 
         return [$insuranceNames, $insuranceCosts];

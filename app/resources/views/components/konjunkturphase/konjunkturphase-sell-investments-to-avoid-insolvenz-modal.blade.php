@@ -12,7 +12,7 @@
 @endsection
 
 @section('content')
-    <p>Dein aktueller Kontostand: <x-money-amount :value="PlayerState::getGuthabenForPlayer($gameEvents, $playerId)" with-icon /></p>
+    <p>Dein aktueller Kontostand: <x-money-amount :value="PlayerState::getGuthabenForPlayer($gameEvents, $playerId)" with-sign /></p>
     @if ($investments)
         <table>
             <thead>
