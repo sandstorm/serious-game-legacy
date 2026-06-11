@@ -369,18 +369,27 @@ function importImmobilienCards(): void
  */
 function importKonjunkturphasen(): void
 {
-    $file = file(__DIR__ . "/Konjunkturen.csv");
-    $tableContent = array_slice($file, 2); //removes the first two element (table header)
-    $tableHeader = trim(array_slice($file, 1, 1)[0]); //table header containing keys
-    $tableHeaderArray = explode(";", $tableHeader); //array containing the table headers
+    $handle = fopen(__DIR__ . "/Konjunkturen.csv", "r");
+    $index = 0;
     $keys = [];
-    foreach ($tableHeaderArray as $key) {
-        $keys[] = str_replace(["\"", " "], "", trim($key)); //removes spaces and " from table headers
+    $rows = [];
+    while (($row = fgetcsv($handle, 0, ';', '"', '\\')) !== false) {
+        if ($index === 1) {
+            foreach ($row as $key) {
+                $keys[] = str_replace(["\"", " "], "", trim($key));
+            }
+        } elseif ($index >= 2) {
+            $rows[] = $row;
+        }
+        $index++;
     }
+    fclose($handle);
 
-    foreach ($tableContent as $line) {
-        $lineArray = explode(";", trim($line));
-        $lineArrayWithKeys = array_combine($keys, $lineArray);
+    foreach ($rows as $lineArray) {
+        if (empty($lineArray[0])) {
+            continue;
+        }
+        $lineArrayWithKeys = array_combine($keys, array_slice($lineArray, 0, count($keys)));
 
         //stores modifiers as key value pair (modifierId and modifierValue) as it simplifies the iteration over the elements
         $modifierArrayWithKeys = array_slice($lineArrayWithKeys, 13, 8);
@@ -513,8 +522,8 @@ function importLebensziele(): void
 //importKategorieCards();
 //importEreignisCards();
 //importInvestitionenCards();
-//importKonjunkturphasen();
-importLebensziele();
+importKonjunkturphasen();
+//importLebensziele();
 
 
 
