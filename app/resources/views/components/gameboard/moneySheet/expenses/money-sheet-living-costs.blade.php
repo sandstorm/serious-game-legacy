@@ -1,4 +1,5 @@
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
+@use('Domain\Definitions\Card\ValueObject\MoneyAmount')
 
 @props([
     'moneySheet' => null,
@@ -53,7 +54,14 @@
     </div>
 
     <div class="tabs__lower-content taxes__actions">
-        @error('moneySheetLebenshaltungskostenForm.lebenshaltungskosten') <span class="form-error badge-with-background">{{ $message }}</span> @enderror
+        @error('moneySheetLebenshaltungskostenForm.lebenshaltungskosten')
+            <span class="form-error badge-with-background">
+                {{ $message }}
+                @if ($this->lebenshaltungskostenFine)
+                    Dir wurden <x-money-amount :value="new MoneyAmount($this->lebenshaltungskostenFine)" /> abgezogen. Wir haben den Wert für dich korrigiert.
+                @endif
+            </span>
+        @enderror
         <x-form.submit :disabled="$this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled">Änderungen speichern</x-form.submit>
     </div>
 </form>

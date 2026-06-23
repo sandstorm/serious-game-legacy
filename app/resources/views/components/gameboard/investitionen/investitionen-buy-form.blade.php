@@ -26,8 +26,7 @@
     </div>
     <div class="investitionen-form__sum">
         <strong>Summe Kauf</strong>
-        <span
-            x-text="new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format($wire.buyInvestmentsForm.amount * $wire.buyInvestmentsForm.sharePrice)"></span>
+        <x-dynamic-money-amount expression="$wire.buyInvestmentsForm.amount * $wire.buyInvestmentsForm.sharePrice" />
     </div>
     <x-form.submit disabled wire:dirty.remove.attr="disabled">
         {{ $buyButtonLabel }}

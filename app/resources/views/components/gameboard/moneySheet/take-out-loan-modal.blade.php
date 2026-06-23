@@ -69,8 +69,7 @@
 
         <div class="form-group take-out-loan__sum">
             <strong>Rückzahlungssumme</strong>
-            <span
-                x-text="new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format($wire.takeOutALoanForm.loanAmount * (1 + $wire.takeOutALoanForm.zinssatz / $wire.takeOutALoanForm.repaymentPeriod))"></span>
+            <x-dynamic-money-amount expression="$wire.takeOutALoanForm.loanAmount * (1 + $wire.takeOutALoanForm.zinssatz / $wire.takeOutALoanForm.repaymentPeriod)" />
             <p>
                 Rückzahlungssumme = <br />
                 <strong>Kreditsumme * (1 + Zinssatz / {{ Configuration::REPAYMENT_PERIOD }}).</strong><br />
@@ -80,8 +79,7 @@
 
         <div class="form-group take-out-loan__repayment">
             <strong>Rückzahlung pro Runde</strong>
-            <span
-                x-text="new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format($wire.takeOutALoanForm.loanAmount * (1 + $wire.takeOutALoanForm.zinssatz / $wire.takeOutALoanForm.repaymentPeriod) /  $wire.takeOutALoanForm.repaymentPeriod)"></span>
+            <x-dynamic-money-amount expression="$wire.takeOutALoanForm.loanAmount * (1 + $wire.takeOutALoanForm.zinssatz / $wire.takeOutALoanForm.repaymentPeriod) / $wire.takeOutALoanForm.repaymentPeriod" />
             <p>
                 Der Kredit wird innerhalb von <strong>{{ Configuration::REPAYMENT_PERIOD }}</strong> Jahren abbezahlt!
             </p>
