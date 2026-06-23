@@ -94,7 +94,7 @@
 
 .take-out-loan__sum,
 .take-out-loan__repayment {
-    span {
+    > span {
         display: inline-flex;
         align-items: center;
         width: 100%;

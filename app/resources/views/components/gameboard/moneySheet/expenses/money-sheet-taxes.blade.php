@@ -1,3 +1,5 @@
+@use('Domain\Definitions\Card\ValueObject\MoneyAmount')
+
 @props([
     'moneySheet' => null,
 ])
@@ -31,7 +33,14 @@
         </div>
     </div>
     <div class="tabs__lower-content taxes__actions">
-        @error('moneySheetSteuernUndAbgabenForm.steuernUndAbgaben') <span class="form-error badge-with-background">{{ $message }}</span> @enderror
+        @error('moneySheetSteuernUndAbgabenForm.steuernUndAbgaben')
+            <span class="form-error badge-with-background">
+                {{ $message }}
+                @if ($this->steuernUndAbgabenFine)
+                    Dir wurden <x-money-amount :value="new MoneyAmount($this->steuernUndAbgabenFine)" /> abgezogen. Wir haben den Wert für dich korrigiert.
+                @endif
+            </span>
+        @enderror
         <x-form.submit :disabled="$this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled">Änderungen speichern</x-form.submit>
     </div>
 </form>

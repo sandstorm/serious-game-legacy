@@ -1,6 +1,7 @@
 @use('Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState')
 @use('Domain\CoreGameLogic\Feature\MoneySheet\State\MoneySheetState')
 @use('Domain\Definitions\Configuration\Configuration')
+@use('Domain\Definitions\Card\ValueObject\MoneyAmount')
 
 @props(['moneySheet' => null])
 
@@ -107,7 +108,7 @@
                     <td>
                         <p>
                             Bei allen Einnahmen und Ausgaben, die Du selbst berechnen musst, hast Du immer zwei Versuche. <br />
-                            <strong>Bei dem dritten Fehlversuch hilft Dir das Spiel. Dir werden jedoch {{ Configuration::FINE_VALUE }} € abgezogen.</strong>
+                            <strong>Bei dem dritten Fehlversuch hilft Dir das Spiel. Dir werden jedoch <x-money-amount :value="new MoneyAmount(Configuration::FINE_VALUE)" /> abgezogen.</strong>
                         </p>
                     </td>
                 </tr>

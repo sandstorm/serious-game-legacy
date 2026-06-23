@@ -42,6 +42,9 @@ trait HasMoneySheet
     public MoneySheetInsurancesForm $moneySheetInsurancesForm;
     public TakeOutALoanForm $takeOutALoanForm;
 
+    public ?float $lebenshaltungskostenFine = null;
+    public ?float $steuernUndAbgabenFine = null;
+
     public bool $moneySheetIsVisible = false;
     public bool $editIncomeIsVisible = false;
     public bool $editExpensesIsVisible = false;
@@ -203,16 +206,14 @@ trait HasMoneySheet
         $updatedEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $resultOfLastInput = MoneySheetState::getResultOfLastLebenshaltungskostenInput($updatedEvents, $this->myself);
 
-        if (!$resultOfLastInput->wasSuccessful && $resultOfLastInput->fine->value > 0) {
-            $this->moneySheetLebenshaltungskostenForm->addError(
-                'lebenshaltungskosten',
-                "Du hast einen falschen Wert für die Lebenshaltungskosten eingegeben. Dir wurden {$resultOfLastInput->fine->value} € abgezogen. Wir haben den Wert für dich korrigiert."
-            );
-        } elseif (!$resultOfLastInput->wasSuccessful) {
+        if (!$resultOfLastInput->wasSuccessful) {
+            $this->lebenshaltungskostenFine = $resultOfLastInput->fine->value > 0 ? $resultOfLastInput->fine->value : null;
             $this->moneySheetLebenshaltungskostenForm->addError(
                 'lebenshaltungskosten',
                 "Du hast einen falschen Wert für die Lebenshaltungskosten eingegeben."
             );
+        } else {
+            $this->lebenshaltungskostenFine = null;
         }
 
         $this->initializeLivingCostsForm();
@@ -230,16 +231,14 @@ trait HasMoneySheet
         $updatedEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $resultOfLastInput = MoneySheetState::getResultOfLastSteuernUndAbgabenInput($updatedEvents, $this->myself);
 
-        if (!$resultOfLastInput->wasSuccessful && $resultOfLastInput->fine->value > 0) {
-            $this->moneySheetSteuernUndAbgabenForm->addError(
-                'steuernUndAbgaben',
-                "Du hast einen falschen Wert für die Steuern und Abgaben eingegeben. Dir wurden {$resultOfLastInput->fine->value} € abgezogen. Wir haben den Wert für dich korrigiert."
-            );
-        } elseif (!$resultOfLastInput->wasSuccessful) {
+        if (!$resultOfLastInput->wasSuccessful) {
+            $this->steuernUndAbgabenFine = $resultOfLastInput->fine->value > 0 ? $resultOfLastInput->fine->value : null;
             $this->moneySheetSteuernUndAbgabenForm->addError(
                 'steuernUndAbgaben',
                 "Du hast einen falschen Wert für die Steuern und Abgaben eingegeben."
             );
+        } else {
+            $this->steuernUndAbgabenFine = null;
         }
 
         $this->initializeTaxesForm();
