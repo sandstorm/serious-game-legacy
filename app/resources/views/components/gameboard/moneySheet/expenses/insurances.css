@@ -43,6 +43,12 @@
         min-width: 150px;
         justify-content: center;
         height: var(--button-height);
+
+        /* Outer flex centering already handles vertical alignment — reset the global
+           .icon-euro glyph offset that would otherwise push the icon too high. */
+        .icon-euro {
+            top: 0;
+        }
         padding-inline: var(--spacing-100);
 
         background: var(--color-semi-transparent);

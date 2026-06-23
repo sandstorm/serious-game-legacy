@@ -69,6 +69,12 @@ i {
     i {
         font-size: .8em;
     }
+
+    .icon-euro {
+        position: relative;
+        top: -0.07em;
+        color: inherit;
+    }
 }
 
 .font-size--sm {

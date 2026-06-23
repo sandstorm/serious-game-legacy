@@ -36,4 +36,10 @@
     i.text--danger, i.text--success {
         font-size: var(--font-size-base);
     }
+
+    /* Outer flex centering already handles vertical alignment — reset the global
+       .icon-euro glyph offset that would otherwise push the icon too high. */
+    .text--currency .icon-euro {
+        top: 0;
+    }
 }

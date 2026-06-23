@@ -150,4 +150,10 @@
     .card__effects {
         margin-right: auto;
     }
+
+    /* Outer flex centering already handles vertical alignment — reset the global
+       .icon-euro glyph offset that would otherwise push the icon too high. */
+    .text--currency .icon-euro {
+        top: 0;
+    }
 }
