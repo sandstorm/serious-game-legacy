@@ -35,6 +35,13 @@ button {
     }
 }
 
+/* The global .icon-euro offset in .text--currency corrects for the glyph sitting low
+   in its em square. Inside a button the button's own flex centering already handles
+   vertical alignment, so the offset overcorrects and must be reset. */
+.button--type-secondary .text--currency .icon-euro {
+    top: 0;
+}
+
 .button__suffix {
     display: flex;
     min-height: var(--button-height);
