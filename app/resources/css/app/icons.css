@@ -151,3 +151,9 @@
 .icon-krypto:before {
   content: "\e915";
 }
+
+/* Glyph sits high in its em square — nudge it down to align with surrounding text. */
+.icon-krypto {
+    position: relative;
+    top: 0.1em;
+}
