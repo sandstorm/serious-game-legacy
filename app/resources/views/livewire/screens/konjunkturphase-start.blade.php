@@ -12,7 +12,7 @@
                 <h2><strong>{{$konjunkturphase->type->value}}</strong></h2>
                 <img
                     class="konjunkturphase-start__image"
-                    src="/images/{{ strtolower($konjunkturphase->type->value) }}.jpg"
+                    src="/images/{{ strtolower($konjunkturphase->type->value) }}.svg"
                     alt="{{ $konjunkturphase->type->value }}"
                 />
             </div>
