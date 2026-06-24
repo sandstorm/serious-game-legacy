@@ -6,7 +6,7 @@
         </div>
         <a href="https://github.com/sandstorm/serious-game-legacy" target="_blank">Github</a>
         <a href="https://www.legacy-finanzbildung.de/spielanleitung/" target="_blank">Spielregeln</a>
-        <a href="https://www.legacy-finanzbildung.de/zusatzmaterial/ " target="_blank">Datenschutz</a>
+        <a href="https://www.legacy-finanzbildung.de/sonstiges/datenschutz/" target="_blank">Datenschutz</a>
         <a href="https://www.legacy-finanzbildung.de/sonstiges/impressum/" target="_blank">Impressum</a>
     </div>
 </footer>
