@@ -49,6 +49,12 @@ fieldset {
 
 .form-error {
     color: var(--color-error);
+
+    &.badge-with-background {
+        display: block;
+        height: auto;
+        padding-block: var(--spacing-100);
+    }
 }
 
 input {
