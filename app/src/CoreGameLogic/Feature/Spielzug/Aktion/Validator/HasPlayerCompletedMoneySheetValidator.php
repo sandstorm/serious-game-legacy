@@ -28,7 +28,7 @@ final class HasPlayerCompletedMoneySheetValidator extends AbstractValidator
         if ($lastCompletedMoneysheetEvent === null) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: "Du musst erst das Money Sheet korrekt ausfüllen"
+                reason: "Du musst erst das Money Sheet korrekt ausfüllen."
             );
         }
 

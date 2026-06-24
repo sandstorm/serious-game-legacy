@@ -12,7 +12,7 @@
                         <x-money-amount :value="$immobilieCard->getAnnualRent()" with-sign />
                     </div>
                 </div>
-                <span class="font-size--sm">Jährliche Miete</span>
+                <span class="font-size--sm">Jährliche Mieteinnahmen (netto)</span>
                 <x-gameboard.resourceChanges.resource-changes :resource-changes="$immobilieCard->getResourceChanges()" />
                 <span class="font-size--sm">Kaufpreis</span>
 

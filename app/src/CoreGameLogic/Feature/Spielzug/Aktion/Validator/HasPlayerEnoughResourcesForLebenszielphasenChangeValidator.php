@@ -19,7 +19,7 @@ final class HasPlayerEnoughResourcesForLebenszielphasenChangeValidator extends A
         if ($currentLebensziel === null) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: "Du hast kein Lebensziel ausgewählt",
+                reason: "Du hast kein Lebensziel ausgewählt.",
             );
         }
 
@@ -29,20 +29,20 @@ final class HasPlayerEnoughResourcesForLebenszielphasenChangeValidator extends A
         if ($currentLebenszielPhase->bildungsKompetenzSlots > $playerResources->bildungKompetenzsteinChange) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: "Du hast nicht genug Kompetenzsteine in " . CategoryId::BILDUNG_UND_KARRIERE->value,
+                reason: "Du hast nicht genug Kompetenzsteine in " . CategoryId::BILDUNG_UND_KARRIERE->value . ".",
             );
         }
         if ($currentLebenszielPhase->freizeitKompetenzSlots > $playerResources->freizeitKompetenzsteinChange) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: "Du hast nicht genug Kompetenzsteine in " . CategoryId::SOZIALES_UND_FREIZEIT->value,
+                reason: "Du hast nicht genug Kompetenzsteine in " . CategoryId::SOZIALES_UND_FREIZEIT->value . ".",
             );
         }
 
         if ($currentLebenszielPhase->investitionen->value > $playerResources->guthabenChange->value) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: "Du hast nicht genug Geld",
+                reason: "Du hast nicht genug Geld.",
             );
         }
 

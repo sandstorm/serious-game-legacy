@@ -87,7 +87,7 @@ describe('FileInsolvenzForPlayer', function () {
         $this->coreGameLogic->handle($this->gameId, FileInsolvenzForPlayer::create($this->getPlayers()[0]));
     })->throws(
         RuntimeException::class,
-        'Cannot file for Insolvenz: Dein Kontostand ist positiv',
+        'Cannot file for Insolvenz: Dein Kontostand ist positiv.',
         1756801753
     );
 
@@ -98,7 +98,7 @@ describe('FileInsolvenzForPlayer', function () {
         $this->coreGameLogic->handle($this->gameId, FileInsolvenzForPlayer::create($this->getPlayers()[0]));
     })->throws(
         RuntimeException::class,
-        'Cannot file for Insolvenz: Du musst erst das Money Sheet korrekt ausfüllen',
+        'Cannot file for Insolvenz: Du musst erst das Money Sheet korrekt ausfüllen.',
         1756801753
     );
 
@@ -178,7 +178,7 @@ describe('FileInsolvenzForPlayer', function () {
         $this->coreGameLogic->handle($this->gameId, FileInsolvenzForPlayer::create($this->getPlayers()[0]));
     })->throws(
         RuntimeException::class,
-        'Cannot file for Insolvenz: Du hast noch Geldanlagen, die du verkaufen kannst',
+        'Cannot file for Insolvenz: Du hast noch Geldanlagen, die du verkaufen kannst.',
         1756801753
     );
 

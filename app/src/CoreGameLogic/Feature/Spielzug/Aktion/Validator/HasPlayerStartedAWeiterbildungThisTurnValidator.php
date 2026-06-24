@@ -23,7 +23,7 @@ final class HasPlayerStartedAWeiterbildungThisTurnValidator extends AbstractVali
             $eventsAfterLastWeiterbildungWasStarted->findLastOrNull(SpielzugWasEnded::class) !== null) {
             return new AktionValidationResult(
                 canExecute:  false,
-                reason: 'Du hast diese Runde noch keine Weiterbildung gestartet'
+                reason: 'Du hast diese Runde noch keine Weiterbildung gestartet.'
             );
         }
 

@@ -30,7 +30,7 @@ final class HasPlayerEnoughZeitsteineValidator extends AbstractValidator
         )) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Du hast nicht genug Zeitsteine',
+                reason: 'Du hast nicht genug Zeitsteine.',
             );
         }
 

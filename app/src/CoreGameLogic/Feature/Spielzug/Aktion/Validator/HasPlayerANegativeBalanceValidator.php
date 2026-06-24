@@ -21,7 +21,7 @@ final class HasPlayerANegativeBalanceValidator extends AbstractValidator
         if (PlayerState::getGuthabenForPlayer($gameEvents, $playerId)->value >= 0) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Dein Kontostand ist positiv'
+                reason: 'Dein Kontostand ist positiv.'
             );
         }
         return parent::validate($gameEvents, $playerId);

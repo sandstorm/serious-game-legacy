@@ -8,8 +8,9 @@
 <form wire:submit="setLebenshaltungskosten">
     <div class="tabs__upper-content">
         <p>
-            Dazu zählen Nahrung, Wohnen, Krankenversicherung, ... <br />
-            Pro Jahr gibst Du <strong><x-formatted-number :value="$livingCostPercent" suffix="%" /></strong> Deines Gehaltes für Lebenshaltungskosten aus. Jedoch mindestens <strong><x-money-amount :value="$livingCostMinValue" /></strong>
+            Zu den Lebenshaltungskosten zählen zum Beispiel Miete, Lebensmittel, Strom und Heizung, Mobilität sowie
+            Ausgaben für Freizeit und Alltag. <br />
+            Pro Jahr gibst du <strong><x-formatted-number :value="$livingCostPercent" suffix=" %" /></strong> deines Bruttojahreseinkommens für Lebenshaltungskosten aus - mindestens jedoch <strong><x-money-amount :value="$livingCostMinValue" /></strong>.
         </p>
 
         @if(PlayerState::isPlayerInsolvent($gameEvents, $playerId))
@@ -27,7 +28,7 @@
 
         <div class="taxes">
             <div class="form-group">
-                <span class="form-group__label">Dein Jahreseinkommen brutto</span>
+                <span class="form-group__label">Dein Bruttojahreseinkommen</span>
                 <div class="form-group__input">
                     <i class="icon-erwerbseinkommen" aria-hidden="true"></i>
                     <x-money-amount :value="$moneySheet->gehalt" />
@@ -35,7 +36,7 @@
             </div>
 
             <div class="form-group">
-                <label class="form-group__label" for="lebenshaltungskosten"><x-formatted-number :value="$livingCostPercent" suffix="%" /> Deines Gehalts</label>
+                <label class="form-group__label" for="lebenshaltungskosten"><x-formatted-number :value="$livingCostPercent" suffix="%" /> Deines Bruttojahreseinkommens</label>
                 <x-form.textfield wire:model="moneySheetLebenshaltungskostenForm.lebenshaltungskosten" id="lebenshaltungskosten" name="lebenshaltungskosten" type="number" step="0.01" :disabled="$this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled" />
             </div>
         </div>

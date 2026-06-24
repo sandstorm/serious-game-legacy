@@ -38,7 +38,7 @@
     @if ($this->playerHasToPlayCard)
         <p class="text--danger">
             Du hast eine Karte geskippt und musst diese Karte jetzt spielen.
-            Wenn du die Karte nicht spielen kannst, musst du sie zurück legen.
+            Wenn du die Karte nicht spielen kannst, musst du sie zurücklegen.
         </p>
     @endif
 @endsection
@@ -100,7 +100,7 @@
                 ])
                 wire:click="putCardBackOnTopOfPile('{{$category}}')"
             >
-                Karte zurück legen
+                Karte zurücklegen
             </button>
         @endif
     </div>

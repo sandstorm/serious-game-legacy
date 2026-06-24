@@ -17,7 +17,7 @@ final class HasPlayerAJobValidator extends AbstractValidator
         if (PlayerState::getJobForPlayer($gameEvents, $playerId) === null) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Du hast keinen Job'
+                reason: 'Du hast keinen Job.'
             );
         }
         return parent::validate($gameEvents, $playerId);

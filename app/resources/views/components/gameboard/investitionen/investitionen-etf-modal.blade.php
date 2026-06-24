@@ -35,14 +35,14 @@
         <x-gameboard.investitionen.investitionen-buy-form
             :game-events="$gameEvents"
             :investment="InvestmentFinder::findInvestmentById($this->buyInvestmentOfType)"
-            unit="ETF"
+            unit="Anteil"
             buy-button-label="ETFs kaufen"
         />
     @elseif ($this->sellInvestmentOfType)
         <x-gameboard.investitionen.investitionen-sell-form
             :game-events="$gameEvents"
             action="sellInvestments('{{ $this->sellInvestmentOfType }}')"
-            unit="ETF"
+            unit="Anteil"
             sell-button-label="ETFs verkaufen"
         />
     @else
@@ -55,13 +55,13 @@
             <x-gameboard.investitionen.investitionen-type
                 :investment-type="InvestmentId::ETF_MSCI_WORLD"
                 :game-Events="$gameEvents"
-                unit="ETF"
+                unit="Anteil"
             />
 
             <x-gameboard.investitionen.investitionen-type
                 :investmentType="InvestmentId::ETF_CLEAN_ENERGY"
                 :game-Events="$gameEvents"
-                unit="ETF"
+                unit="Anteil"
             />
         </div>
         <x-gameboard.investitionen.transaction-history :game-events="$gameEvents" :player-id="$this->myself" />

@@ -48,7 +48,7 @@ final class HasPlayerDoneNoZeitsteinaktionThisTurnValidator extends AbstractVali
         if (count($zeitsteinEventsThisTurn) > 0) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Du kannst nur eine Zeitsteinaktion pro Runde ausführen',
+                reason: 'Du kannst nur eine Zeitsteinaktion pro Runde ausführen.',
             );
         }
 
@@ -78,14 +78,14 @@ final class HasPlayerDoneNoZeitsteinaktionThisTurnValidator extends AbstractVali
         if (count($zeitsteinEventsThisTurn) > 1 || $zeitsteinEventsThisTurn->findFirstOrNull(CardWasSkipped::class) === null) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Du hast bereits eine andere Aktion ausgeführt'
+                reason: 'Du hast bereits eine andere Aktion ausgeführt.'
             );
         }
 
         if ($zeitsteinEventsThisTurn->findFirst(CardWasSkipped::class)->getCategoryId()->value !== $this->categoryId->value) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Du hast bereits eine Karte in einer anderen Kategorie übersprungen'
+                reason: 'Du hast bereits eine Karte in einer anderen Kategorie übersprungen.'
             );
         }
 

@@ -29,7 +29,7 @@ final class HasPlayerNotAlreadyRepaidLoanValidator extends AbstractValidator
         if ($openRepaymentValue->value <= 0) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: "Du hast diesen Kredit bereits zurückgezahlt"
+                reason: "Du hast diesen Kredit bereits zurückgezahlt."
             );
         }
 

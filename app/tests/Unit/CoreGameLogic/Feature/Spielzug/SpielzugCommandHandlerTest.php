@@ -400,7 +400,7 @@ describe('handleActivateCard', function () {
         ));
     })->throws(
         RuntimeException::class,
-        'Du hast bereits eine Karte in einer anderen Kategorie übersprungen',
+        'Du hast bereits eine Karte in einer anderen Kategorie übersprungen.',
         1748951140
     );
 
@@ -426,7 +426,7 @@ describe('handleActivateCard', function () {
         ));
     })->throws(
         RuntimeException::class,
-        'Du hast bereits eine andere Aktion ausgeführt',
+        'Du hast bereits eine andere Aktion ausgeführt.',
         1748951140
     );
 
@@ -668,7 +668,7 @@ describe('handleAcceptJobOffer', function () {
             $this->gameId,
             AcceptJobOffer::create($this->players[0], new CardId("j5"))
         );
-    })->throws(\RuntimeException::class, "Cannot Accept Job Offer: Du kannst nur eine Zeitsteinaktion pro Runde ausführen", 1749043636);
+    })->throws(\RuntimeException::class, "Cannot Accept Job Offer: Du kannst nur eine Zeitsteinaktion pro Runde ausführen.", 1749043636);
 
     it('throws an exception if job was not previously offered to player', function () {
         /** @var TestCase $this */
@@ -1098,7 +1098,7 @@ describe('handleQuitJob', function () {
         );
     })->throws(
         RuntimeException::class,
-        'Cannot Quit Job: Du hast keinen Job',
+        'Cannot Quit Job: Du hast keinen Job.',
         1752480505
     );
 });
@@ -1135,7 +1135,7 @@ describe('handleChangeLebenszielphase', function () {
         }
     )->throws(
         RuntimeException::class,
-        'Cannot Change Lebensphase: Du hast nicht genug Kompetenzsteine in Bildung & Karriere',
+        'Cannot Change Lebensphase: Du hast nicht genug Kompetenzsteine in Bildung & Karriere.',
         1751619852
     );
 
@@ -1168,7 +1168,7 @@ describe('handleChangeLebenszielphase', function () {
         }
     )->throws(
         RuntimeException::class,
-        'Cannot Change Lebensphase: Du hast nicht genug Kompetenzsteine in Freizeit & Soziales',
+        'Cannot Change Lebensphase: Du hast nicht genug Kompetenzsteine in Freizeit & Soziales.',
         1751619852
     );
 
@@ -1202,7 +1202,7 @@ describe('handleChangeLebenszielphase', function () {
         );
     })->throws(
         RuntimeException::class,
-        'Cannot Change Lebensphase: Du hast nicht genug Geld',
+        'Cannot Change Lebensphase: Du hast nicht genug Geld.',
         1751619852
     );
 
@@ -1557,7 +1557,7 @@ describe('handleDoMinijob', function () {
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
     })->throws(
         RuntimeException::class,
-        'Cannot Do minijob: Du hast nicht genug Zeitsteine',
+        'Cannot Do minijob: Du hast nicht genug Zeitsteine.',
         1750854280
     );
 
@@ -1596,7 +1596,7 @@ describe('handleDoMinijob', function () {
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
     })->throws(
         RuntimeException::class,
-        'Du kannst nur eine Zeitsteinaktion pro Runde ausführen',
+        'Du kannst nur eine Zeitsteinaktion pro Runde ausführen.',
         1750854280
     );
 });
@@ -1654,7 +1654,7 @@ describe('handleStartWeiterbildung', function () {
         $this->coreGameLogic->handle($this->gameId, StartWeiterbildung::create($this->players[0]));
     })->throws(
         RuntimeException::class,
-        'Du hast nicht genug Zeitsteine',
+        'Du hast nicht genug Zeitsteine.',
         1753087476
     );
 
@@ -1664,7 +1664,7 @@ describe('handleStartWeiterbildung', function () {
         $this->coreGameLogic->handle($this->gameId, StartWeiterbildung::create($this->players[0]));
     })->throws(
         RuntimeException::class,
-        'Du kannst nur eine Zeitsteinaktion pro Runde ausführen',
+        'Du kannst nur eine Zeitsteinaktion pro Runde ausführen.',
         1753087476
     );
 
@@ -1694,7 +1694,7 @@ describe('handleSubmitAnswerWeiterbildung', function () {
         $this->coreGameLogic->handle($this->gameId, SubmitAnswerForWeiterbildung::create($this->players[0], $selectedAnswer));
     })->throws(
         RuntimeException::class,
-        'Du hast diese Runde noch keine Weiterbildung gestartet',
+        'Du hast diese Runde noch keine Weiterbildung gestartet.',
         1753265973
     );
 
