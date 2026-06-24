@@ -13,6 +13,12 @@
         i {
             font-size: 3rem;
         }
+
+        /* Flex centering already handles vertical alignment — reset the global
+           .icon-krypto glyph offset that would otherwise push the icon too low. */
+        .icon-krypto {
+            top: 0;
+        }
     }
 }
 

@@ -119,6 +119,12 @@
     i {
         font-size: 1.5rem;
     }
+
+    /* Grid centering already handles vertical alignment — reset the global
+       .icon-krypto glyph offset that would otherwise push the icon too low. */
+    .icon-krypto {
+        top: 0;
+    }
 }
 
 .card__actions-header {
