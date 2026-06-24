@@ -4,6 +4,24 @@
 
 {{-- !!! Livewire components MUST have a single root element !!! --}}
 <div class="konjunkturphase-start">
+    <div class="konjunkturphase-start__actions">
+        <div></div>
+
+        @if ($currentPage >= 1)
+            <button wire:click="startKonjunkturphaseForPlayer()"
+                    type="button"
+                    class="button button--type-borderless">
+                Weiter
+            </button>
+        @else
+            <button wire:click="nextKonjunkturphaseStartScreenPage()"
+                    type="button"
+                    class="button button--type-borderless">
+                Weiter
+            </button>
+        @endif
+    </div>
+
     <div class="konjunkturphase-start__content">
         @if ($currentPage === 0)
             <div class="konjunkturphase-start__info">
@@ -72,22 +90,4 @@
             </div>
         @endif
     </div>
-
-    <footer class="konjunkturphase-start__actions">
-        <div></div>
-
-        @if ($currentPage >= 1)
-            <button wire:click="startKonjunkturphaseForPlayer()"
-                    type="button"
-                    class="button button--type-borderless">
-                Weiter
-            </button>
-        @else
-            <button wire:click="nextKonjunkturphaseStartScreenPage()"
-                    type="button"
-                    class="button button--type-borderless">
-                Weiter
-            </button>
-        @endif
-    </footer>
 </div>
