@@ -7,8 +7,13 @@
     align-items: center;
     height: 50px;
     border-bottom: 1px solid var(--color-primary);
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(8px);
+    background: var(--color-primary-fg);
+
+    /* Full-bleed breakout from max-width container */
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding-left: calc(50vw - 50%);
+    padding-right: calc(50vw - 50%);
 }
 
 .konjunkturphase-start__content {
