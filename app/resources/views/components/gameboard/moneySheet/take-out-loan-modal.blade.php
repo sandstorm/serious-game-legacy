@@ -71,8 +71,22 @@
             <strong>Rückzahlungssumme</strong>
             <x-dynamic-money-amount expression="$wire.takeOutALoanForm.loanAmount * (1 + $wire.takeOutALoanForm.zinssatz / $wire.takeOutALoanForm.repaymentPeriod)" />
             <p>
-                Rückzahlungssumme = <br />
-                <strong>Kreditsumme * (1 + Zinssatz / {{ Configuration::REPAYMENT_PERIOD }}).</strong><br />
+                <math>
+                    <mi>Rückzahlungssumme</mi>
+                    <mo>=</mo>
+                    <mi>Kreditsumme</mi>
+                    <mo>×</mo>
+                    <mrow>
+                        <mo>(</mo>
+                        <mn>1</mn>
+                        <mo>+</mo>
+                        <mfrac>
+                            <mi>Zinssatz</mi>
+                            <mn>{{ Configuration::REPAYMENT_PERIOD }}</mn>
+                        </mfrac>
+                        <mo>)</mo>
+                    </mrow>
+                </math><br />
                 <strong>Aktueller Zinssatz: <x-formatted-number :value="KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->value" suffix="%" /></strong>
             </p>
         </div>

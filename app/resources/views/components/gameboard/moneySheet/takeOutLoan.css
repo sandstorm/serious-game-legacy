@@ -4,9 +4,10 @@
     width: 100%;
     display: grid;
     grid-template-areas:
-        "info amount sum repayment"
-        "action action action action";
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+        "info amount amount   "
+        "info sum    repayment"
+        "action action action ";
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
 
     gap: var(--spacing-100);
 }
@@ -101,6 +102,13 @@
         height: var(--button-height);
         padding-inline: var(--spacing-100);
     }
+}
+
+.take-out-loan math {
+    background-color: var(--color-semi-transparent);
+    padding: 10px;
+    display: block;
+    border-radius: 10px;
 }
 
 .take-out-loan__actions {
