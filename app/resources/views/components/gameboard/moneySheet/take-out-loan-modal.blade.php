@@ -48,10 +48,10 @@
                 <br />
                 @if (PlayerState::getJobForPlayer($gameEvents, $playerId) !== null)
                     @if (PlayerState::wasPlayerInsolventInThePast($gameEvents, $playerId))
-                        Das gesamte Kreditvolumen darf das <strong>2-fache</strong> des aktuellen Jahresgehalt (brutto)
+                        Das gesamte Kreditvolumen darf das <strong>2-Fache</strong> des aktuellen Bruttojahreseinkommens
                         <strong>zzgl. Vermögenswerte</strong>, <strong>abzgl. Verbindlichkeiten</strong> nicht übersteigen!
                     @else
-                        Das gesamte Kreditvolumen darf das <strong>5-fache</strong> des aktuellen Jahresgehalt (brutto)
+                        Das gesamte Kreditvolumen darf das <strong>5-Fache</strong> des aktuellen Bruttojahreseinkommens
                         <strong>zzgl. Vermögenswerte</strong>, <strong>abzgl. Verbindlichkeiten</strong> nicht übersteigen!
                     @endif
                 @else
