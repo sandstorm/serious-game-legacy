@@ -15,7 +15,7 @@
                 <th></th>
                 <th>Anlageart</th>
                 <th>Menge</th>
-                <th>Aktueller Preis/ Kaufpreis</th>
+                <th>Aktueller Preis / Kaufpreis</th>
                 <th>Dividende/Stück oder Mietertrag</th>
                 <th>Einnahmen</th>
             </tr>
