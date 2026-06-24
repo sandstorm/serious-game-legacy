@@ -11,13 +11,13 @@
                 <a href={{route('game-play.index')}}>Zurück zur Übersicht</a>
             </li>
             <li>
-                <a href="{{route('pages.spielregeln')}}" target="_blank">Spielregeln</a>
+                <a href="https://www.legacy-finanzbildung.de/spielanleitung/" target="_blank">Spielregeln</a>
             </li>
             <li>
-                <a href="#todo" target="_blank">Kontakt</a>
+                <a href="https://www.legacy-finanzbildung.de/sonstiges/kontakt/" target="_blank">Kontakt</a>
             </li>
             <li>
-                <a href="{{route('pages.ueberUns')}}" target="_blank">Über uns</a>
+                <a href="https://www.legacy-finanzbildung.de/team/" target="_blank">Über uns</a>
             </li>
         </ul>
     </nav>
