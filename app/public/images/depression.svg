@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <defs>
+    <linearGradient id="cycleGradient" x1="85" y1="675" x2="1600" y2="596" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F5D900"/>
+      <stop offset="20%" stop-color="#C6D900"/>
+      <stop offset="35%" stop-color="#67C914"/>
+      <stop offset="50%" stop-color="#5ABC14"/>
+      <stop offset="66%" stop-color="#D49B24"/>
+      <stop offset="80%" stop-color="#FF642D"/>
+      <stop offset="100%" stop-color="#FF272A"/>
+    </linearGradient>
+    <style>
+      .label { font-family: Arial, Helvetica, DejaVu Sans, sans-serif; font-size: 40px; font-weight: 800; }
+    </style>
+  </defs>
+
+  <!-- transparent background intentionally left empty -->
+
+  <!-- Phase boxes: non-highlighted fills reduced to match the original greyed-out look -->
+  <rect x="98" y="272" width="344" height="463" rx="20" ry="20" fill="#FFFBE6" fill-opacity="0.40" stroke="#F5D900" stroke-width="3"/>
+  <rect x="461" y="272" width="344" height="463" rx="20" ry="20" fill="#F4FEEB" fill-opacity="0.40" stroke="#9BDB77" stroke-width="3"/>
+  <rect x="820" y="272" width="344" height="463" rx="20" ry="20" fill="#FFF5E6" fill-opacity="0.40" stroke="#F1BF68" stroke-width="3"/>
+  <rect x="1182" y="272" width="344" height="463" rx="20" ry="20" fill="#FFF0EF" fill-opacity="0.60" stroke="#FF2D35" stroke-width="8"/>
+
+  <!-- Cycle curve -->
+  <path d="M 86 676
+           C 220 670, 325 565, 442 432
+           C 540 321, 655 305, 764 348
+           C 905 404, 1035 545, 1164 626
+           C 1304 714, 1462 712, 1596 598"
+        fill="none" stroke="url(#cycleGradient)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Titles -->
+  <text x="270" y="229" class="label" text-anchor="middle" fill="#9A9A9F">Aufschwung</text>
+  <text x="633" y="229" class="label" text-anchor="middle" fill="#9A9A9F">Boom</text>
+  <text x="994" y="229" class="label" text-anchor="middle" fill="#9A9A9F">Rezession</text>
+  <text x="1354" y="229" class="label" text-anchor="middle" fill="#FF2D35">Depression</text>
+  <path d="M 1344 247 L 1364 247 L 1354 265 Z" fill="#FF2D35"/>
+</svg>
