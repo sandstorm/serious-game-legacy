@@ -19,6 +19,7 @@
             @else
                 <button type="button" class="button button--type-primary" disabled="disabled">Warte auf andere Spieler...</button>
             @endif
+            <img class="pregame__start-image" src="/images/ziel-des-spiels.svg" alt="Ziel des Spiels" />
         </div>
     @endif
 </div>
