@@ -66,7 +66,7 @@ describe('handleConcludeInsurance', function () {
         $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(DoMinijob::create($this->getPlayers()[0]));
         $this->handle(ConcludeInsuranceForPlayer::create($this->getPlayers()[0], InsuranceId::create(1)));
-    })->throws(\RuntimeException::class, 'Cannot conclude insurance: Du bist insolvent', 1751554652);
+    })->throws(\RuntimeException::class, 'Cannot conclude insurance: Du bist insolvent.', 1751554652);
 
     it('removes the correct balance from the player\'s Guthaben', function () {
         /** @var TestCase $this */

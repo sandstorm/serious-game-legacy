@@ -20,7 +20,7 @@ final class IsPlayerNotInsolventValidator extends AbstractValidator
         if (PlayerState::isPlayerInsolvent($gameEvents, $playerId)) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Du bist insolvent'
+                reason: 'Du bist insolvent.'
             );
         }
 

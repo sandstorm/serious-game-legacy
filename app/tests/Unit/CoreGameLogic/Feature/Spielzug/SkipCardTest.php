@@ -66,7 +66,7 @@ describe('handleSkipCard', function () {
         );
     })->throws(
         RuntimeException::class,
-        'Cannot skip card: Du kannst nur eine Zeitsteinaktion pro Runde ausführen',
+        'Cannot skip card: Du kannst nur eine Zeitsteinaktion pro Runde ausführen.',
         1747325793
     );
 
@@ -151,7 +151,7 @@ describe('handleSkipCard', function () {
         );
     })->throws(
         RuntimeException::class,
-        'Cannot skip card: Du hast nicht genug Zeitsteine',
+        'Cannot skip card: Du hast nicht genug Zeitsteine.',
         1747325793
     );
 

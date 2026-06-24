@@ -37,7 +37,7 @@
                             <x-money-amount :value="$jobOffer->getGehalt()" with-sign />
                         </div>
                     </div>
-                    <span class="font-size--sm">Jahresgehalt brutto</span>
+                    <span class="font-size--sm">Bruttojahreseinkommen</span>
                     <span
                         aria-hidden="true"
                         @class([

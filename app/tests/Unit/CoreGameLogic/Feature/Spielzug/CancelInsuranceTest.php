@@ -51,7 +51,7 @@ describe('handleCancelAllInsurancesToAvoidInsolvenzForPlayer', function () {
         /** @var TestCase $this */
         $this->handle(ConcludeInsuranceForPlayer::create($this->getPlayers()[0], InsuranceId::create(1)));
         $this->handle(CancelAllInsurancesToAvoidInsolvenzForPlayer::create($this->getPlayers()[0]));
-    })->throws(\RuntimeException::class, "Cannot cancel insurance: Dein Kontostand ist positiv", 1756987783);
+    })->throws(\RuntimeException::class, "Cannot cancel insurance: Dein Kontostand ist positiv.", 1756987783);
 
     it('throws an exception if player has no insurance', function () {
         /** @var TestCase $this */
@@ -91,7 +91,7 @@ describe('handleCancelAllInsurancesToAvoidInsolvenzForPlayer', function () {
         ));
         $this->handle(CompleteMoneysheetForPlayer::create($this->getPlayers()[0]));
         $this->handle(CancelAllInsurancesToAvoidInsolvenzForPlayer::create($this->getPlayers()[0]));
-    })->throws(\RuntimeException::class, "Cannot cancel insurance: Du hast keine Versicherung", 1756987783);
+    })->throws(\RuntimeException::class, "Cannot cancel insurance: Du hast keine Versicherung.", 1756987783);
 
     it('cancels all insurances when a player has a negative balance and pays back insurance cost', function () {
         /** @var TestCase $this */

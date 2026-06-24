@@ -96,7 +96,7 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
         );
     })->throws(
         RuntimeException::class,
-        "Cannot mark player as ready: Du musst erst das Money Sheet korrekt ausfüllen",
+        "Cannot mark player as ready: Du musst erst das Money Sheet korrekt ausfüllen.",
         1756798041
     );
 

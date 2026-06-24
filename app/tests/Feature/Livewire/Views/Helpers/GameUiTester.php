@@ -530,7 +530,7 @@ readonly class GameUiTester
                 'Deine bisher erworbenen Kompetenzen:',
                 $topCard->getTitle(),
                 $this->numberFormatMoney($topCard->getGehalt()->value),
-                'Jahresgehalt brutto',
+                'Bruttojahreseinkommen',
                 'Das mache ich!',
                 'Voraussetzungen:',
                 'Deine bisher erworbenen Kompetenzen:'
@@ -726,7 +726,6 @@ readonly class GameUiTester
                 InvestmentFinder::findInvestmentById($investmentId)->description,
                 'Stückzahl',
                 'Summe Kauf',
-                'Langfristige Tendenz:',
                 'Kursschwankungen:',
                 'Dividende pro Aktie:'
             ]);
@@ -740,7 +739,6 @@ readonly class GameUiTester
         $additionalModalContent = [
             "Kauf - $investmentId->value",
             $this->formatMoneyAsHtml($currentInvestmentPrice),
-            "$investmentDefinition->longTermTrend%",
             "$investmentDefinition->fluctuations%",
             "<strong>$dividende</strong>"
         ];

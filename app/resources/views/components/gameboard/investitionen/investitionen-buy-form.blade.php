@@ -42,7 +42,6 @@
 
 <div class="investitionen-form__hints">
     <ul>
-        <li>Langfristige Tendenz: <strong><x-formatted-number :value="$investment->longTermTrend" suffix="%" /></strong></li>
         <li>Kursschwankungen: <strong><x-formatted-number :value="$investment->fluctuations" suffix="%" /></strong></li>
         <li>Dividende pro {{ $unit }}:
             @if ($this->buyInvestmentOfType === InvestmentId::MERFEDES_PENZ)

@@ -20,7 +20,7 @@ final class HasPlayerNoInvestmentsToSellValidator extends AbstractValidator
         if (PlayerState::getTotalValueOfAllAssetsForPlayer($gameEvents, $playerId)->value > 0) {
             return new AktionValidationResult(
                 canExecute: false,
-                reason: 'Du hast noch Geldanlagen, die du verkaufen kannst'
+                reason: 'Du hast noch Geldanlagen, die du verkaufen kannst.'
             );
         }
         return parent::validate($gameEvents, $playerId);

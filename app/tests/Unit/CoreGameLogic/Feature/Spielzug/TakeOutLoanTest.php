@@ -44,7 +44,7 @@ describe('handleTakeOutALoanForPlayer', function () {
             $takeoutLoanForm->loanAmount
         ));
 
-    })->throws(\RuntimeException::class, "Cannot take out a loan: Du bist insolvent", 1756200359);
+    })->throws(\RuntimeException::class, "Cannot take out a loan: Du bist insolvent.", 1756200359);
 
     it('adds the loan amount to the player\s Guthaben', function () {
         /** @var TestCase $this */

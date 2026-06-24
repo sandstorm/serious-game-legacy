@@ -381,7 +381,7 @@ describe('handleSellInvestmentsToAvoidInsolvenzForPlayer', function () {
         $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(BuyInvestmentsForPlayer::create($this->getPlayers()[0], InvestmentId::MERFEDES_PENZ, 10));
         $this->handle(SellInvestmentsToAvoidInsolvenzForPlayer::create($this->getPlayers()[0], InvestmentId::MERFEDES_PENZ, 10));
-    })->throws(\RuntimeException::class, 'Cannot sell investments for insolvenz: Dein Kontostand ist positiv', 1757078994);
+    })->throws(\RuntimeException::class, 'Cannot sell investments for insolvenz: Dein Kontostand ist positiv.', 1757078994);
 
     it('throws an exception if player has no investments to sell', function () {
         /** @var TestCase $this */

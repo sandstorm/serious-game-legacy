@@ -465,7 +465,7 @@ describe('Sell Immoblien to Avoid insolvenz', function () {
                 new ImmobilieId(new CardId('immo1'), $turn)
             )
         );
-    })->throws(\RuntimeException::class, 'Dein Kontostand ist positiv', 1754909475);
+    })->throws(\RuntimeException::class, 'Dein Kontostand ist positiv.', 1754909475);
 
     it('returns 80 percent of the purchase price if the player has a negative balance and has an immobilie to sell', function () {
         /** @var TestCase $this */

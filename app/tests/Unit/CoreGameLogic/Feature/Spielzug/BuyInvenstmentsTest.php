@@ -222,5 +222,5 @@ describe('handleBuyInvestmentsForPlayer', function () {
 
         $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(BuyInvestmentsForPlayer::create($this->players[0], InvestmentId::MERFEDES_PENZ, 1));
-    })->throws(\RuntimeException::class, 'Cannot buy investment: Du bist insolvent', 1752066529);
+    })->throws(\RuntimeException::class, 'Cannot buy investment: Du bist insolvent.', 1752066529);
 });

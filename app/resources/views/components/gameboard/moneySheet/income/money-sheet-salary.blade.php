@@ -32,7 +32,7 @@
                         </button>
                     </td>
                     <td class="text-align--right">
-                        <small>Dein Jahreseinkommen brutto</small> <br/>
+                        <small>Dein Bruttojahreseinkommen</small> <br/>
                         <x-money-amount :value="$jobDefinition->getGehalt()" with-sign />
                     </td>
                 </tr>

@@ -7,8 +7,9 @@
 <form wire:submit="setSteuernUndAbgaben">
     <div class="tabs__upper-content">
         <p>
-            Zu den Steuern zählen Einkommensteuern, Sozialversicherung und Solidaritätszuschlag. <br />
-            Pro Jahr gibst Du <strong>25%</strong> Deines Jahreseinkommens brutto für Steuern und Abgaben aus.
+            Zu den Steuern und Abgaben zählen vereinfacht die Einkommensteuer, die
+            Sozialversicherungsbeiträge und der Solidaritätszuschlag. <br />
+            Pro Jahr zahlst du dafür pauschal <strong>25 %</strong> deines Bruttojahreseinkommens.
         </p>
 
         @if ($this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled)
@@ -19,7 +20,7 @@
 
         <div class="taxes">
             <div class="form-group">
-                <span class="form-group__label">Dein Jahreseinkommen brutto</span>
+                <span class="form-group__label">Dein Bruttojahreseinkommen</span>
                 <div class="form-group__input">
                     <i class="icon-erwerbseinkommen" aria-hidden="true"></i>
                     <x-money-amount :value="$moneySheet->gehalt" />
@@ -27,7 +28,7 @@
             </div>
 
             <div class="form-group">
-                <label class="form-group__label" for="steuernUndAbgaben">25% Deines Gehalts</label>
+                <label class="form-group__label" for="steuernUndAbgaben">25% Deines Bruttojahreseinkommens</label>
                 <x-form.textfield wire:model="moneySheetSteuernUndAbgabenForm.steuernUndAbgaben" id="steuernUndAbgaben" name="steuernUndAbgaben" type="number" step="0.01" min="0" :disabled="$this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled" />
             </div>
         </div>
