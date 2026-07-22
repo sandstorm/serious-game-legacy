@@ -81,7 +81,7 @@ trait HasPreGamePhase
 
     public function selectLebensZiel(int|string $lebensziel): void
     {
-        $this->lebenszielForm->lebensziel = is_int($lebensziel) ? $lebensziel : null;
+        $this->lebenszielForm->lebensziel = is_numeric($lebensziel) ? (int) $lebensziel : null;
     }
 
     public function startGame(): void
