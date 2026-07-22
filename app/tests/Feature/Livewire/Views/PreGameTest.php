@@ -33,16 +33,18 @@ beforeEach(function () {
 
 describe('selectLebensZiel', function () {
     test('selecting a valid lebensziel sets the form value', function () {
+        // The browser <select> always delivers its value as a string, e.g. "1".
         Livewire::test(GameUi::class, ['gameId' => $this->gameId, 'myself' => $this->p1])
-            ->call('selectLebensZiel', 1)
+            ->call('selectLebensZiel', '1')
             ->assertSet('lebenszielForm.lebensziel', 1);
     });
 
     test('re-selecting the placeholder option resets lebensziel to null', function () {
+        // The placeholder option's value is the empty string (see selectLebensziel.blade.php).
         Livewire::test(GameUi::class, ['gameId' => $this->gameId, 'myself' => $this->p1])
-            ->call('selectLebensZiel', 1)
+            ->call('selectLebensZiel', '1')
             ->assertSet('lebenszielForm.lebensziel', 1)
-            ->call('selectLebensZiel', '---')
+            ->call('selectLebensZiel', '')
             ->assertSet('lebenszielForm.lebensziel', null);
     });
 });
