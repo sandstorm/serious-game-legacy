@@ -6,7 +6,7 @@ Diese Anleitung beschreibt, wie Lehrpersonen eigene Kurse mit Spieler:innen anle
 
 ## 1. Anmelden
 
-1. Die App-URL im Browser öffnen.
+1. Die [App-URL](https://spiel.legacy-finanzbildung.de/login) im Browser öffnen.
 2. Im Footer auf **"Login für Lehrpersonen"** klicken — dies führt zur Admin-Oberfläche (`/admin`).
 3. Mit E-Mail und Passwort anmelden.
 
