@@ -274,3 +274,44 @@ describe('generatePilesFromCards', function () {
             ->and(count($actualPiles))->toBe(3);
     });
 });
+
+describe('legacy cards', function () {
+    afterEach(function () {
+        CardFinder::getInstance()->overrideLegacyCardsForTesting([]);
+    });
+
+    it('finds legacy cards by id, but never adds them to the piles', function () {
+        $card = new KategorieCardDefinition(
+            id: new CardId('t00'),
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+            title: 'current card',
+            description: 'for testing',
+            phaseId: LebenszielPhaseId::PHASE_1,
+            year: new Year(1),
+            resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(-100)),
+        );
+        $legacyCard = new KategorieCardDefinition(
+            id: new CardId('legacy1'),
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+            title: 'removed card',
+            description: 'for testing',
+            phaseId: LebenszielPhaseId::PHASE_1,
+            year: new Year(1),
+            resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(-200)),
+        );
+        CardFinder::getInstance()->overrideCardsForTesting(['t00' => $card]);
+        CardFinder::getInstance()->overrideLegacyCardsForTesting(['legacy1' => $legacyCard]);
+
+        expect(CardFinder::getInstance()->getCardById(new CardId('legacy1')))->toEqual($legacyCard)
+            ->and(CardFinder::getInstance()->generatePilesFromCards(new Year(1)))->toEqual([
+                new Pile(
+                    new PileId(CategoryId::BILDUNG_UND_KARRIERE, LebenszielPhaseId::PHASE_1),
+                    [new CardId('t00')]
+                ),
+            ])
+            ->and(CardFinder::getInstance()->getCardDefinitionsByCategoryAndPhase(
+                CategoryId::BILDUNG_UND_KARRIERE,
+                LebenszielPhaseId::PHASE_1
+            ))->toEqual(['t00' => $card]);
+    });
+});
