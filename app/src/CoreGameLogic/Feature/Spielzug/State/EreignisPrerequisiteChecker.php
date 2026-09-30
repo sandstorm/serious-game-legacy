@@ -26,6 +26,7 @@ final readonly class EreignisPrerequisiteChecker
     {
         return match ($ereignisPrerequisitesId) {
             EreignisPrerequisitesId::HAS_JOB => $this->hasPlayerAJob($playerId),
+            EreignisPrerequisitesId::HAS_NO_JOB => !($this->hasPlayerAJob($playerId)),
             EreignisPrerequisitesId::HAS_CHILD => $this->hasPlayerAChild($playerId),
             EreignisPrerequisitesId::HAS_NO_CHILD => !($this->hasPlayerAChild($playerId)),
             EreignisPrerequisitesId::HAS_SPECIFIC_CARD => $this->hasPlayerPlayedThisCard($playerId, $requiredCardId),

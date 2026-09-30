@@ -35,6 +35,7 @@ class ConditionalResourceChange
      * @param float|null $lohnsonderzahlungPercent
      * @param bool $isGrundsteuer
      * @param bool $isExtraZins
+     * @param string $description text shown to the players, e.g. "Einmaliger Konjunkturbonus i.H.v. 500 €"
      */
     public function __construct(
         public EreignisPrerequisitesId $prerequisite,
@@ -43,6 +44,7 @@ class ConditionalResourceChange
         public ?float $lohnsonderzahlungPercent = null,
         public bool $isGrundsteuer = false,
         public bool $isExtraZins = false,
+        public string $description = '',
     ) {
     }
 }

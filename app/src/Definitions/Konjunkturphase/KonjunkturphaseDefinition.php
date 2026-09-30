@@ -33,6 +33,8 @@ class KonjunkturphaseDefinition
      * @param ModifierParameters $modifierParameters
      * @param AuswirkungDefinition[] $auswirkungen
      * @param ConditionalResourceChange[] $conditionalResourceChanges
+     * @param string $zeitsteineDescription text shown to the players to explain the amount of Zeitsteine, e.g.
+     *                                      "+1 Zeitstein für alle" (the amount itself is defined in $zeitsteine)
      */
     public function __construct(
         public KonjunkturphasenId      $id,
@@ -46,6 +48,7 @@ class KonjunkturphaseDefinition
         public ModifierParameters      $modifierParameters,
         public array                   $auswirkungen = [],
         protected array                $conditionalResourceChanges = [],
+        public string                  $zeitsteineDescription = '',
     ) {
     }
 

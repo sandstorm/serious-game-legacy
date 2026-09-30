@@ -39,14 +39,24 @@ final class CardFinder
      */
     private array $cards;
 
+    /**
+     * Cards that were removed from the game. They are never drawn, but can still be found by id,
+     * see {@see self::getLegacyCards()}
+     *
+     * @var CardDefinition[] $legacyCards
+     */
+    private array $legacyCards;
+
     private static ?self $instance = null;
 
     /**
      * @param CardDefinition[] $cards
+     * @param CardDefinition[] $legacyCards
      */
-    private function __construct(array $cards)
+    private function __construct(array $cards, array $legacyCards = [])
     {
         $this->cards = $cards;
+        $this->legacyCards = $legacyCards;
     }
 
     public static function getInstance(): self
@@ -69,6 +79,15 @@ final class CardFinder
     public function overrideCardsForTesting(array $cards): void
     {
         self::getInstance()->cards = $cards;
+    }
+
+    /**
+     * @param CardDefinition[] $legacyCards
+     * @return void
+     */
+    public function overrideLegacyCardsForTesting(array $legacyCards): void
+    {
+        self::getInstance()->legacyCards = $legacyCards;
     }
 
     private static function initialize(): self
@@ -10108,8 +10127,24 @@ final class CardFinder
                     new AnswerOption(new AnswerId("b"), "Er berücksichtigt lediglich die Rolle von Konsumenten, nicht aber von Produzenten."),
                 ],
             ),
-        ]);
+        ], self::getLegacyCards());
         return self::$instance;
+    }
+
+    /**
+     * Cards that were removed from the game with a new import of the card definitions.
+     *
+     * WHY: The events of a game only store the ids of the cards. Games that were started before the import still
+     * reference these cards and need them to be loaded, e.g. to show the game log or to export the game as json
+     * (see GameResource). These cards are never drawn in new games, because they are not part of {@see self::$cards}.
+     *
+     * They can be deleted once the games started before the respective import are not needed anymore.
+     *
+     * @return CardDefinition[]
+     */
+    private static function getLegacyCards(): array
+    {
+        return [];
     }
 
     /**
@@ -10125,12 +10160,11 @@ final class CardFinder
      */
     public function getCardById(CardId $cardId, string $classString = CardDefinition::class): mixed
     {
-
-        if (!array_key_exists($cardId->value, $this->cards)) {
+        $card = $this->cards[$cardId->value] ?? $this->legacyCards[$cardId->value] ?? null;
+        if ($card === null) {
             throw new \RuntimeException('Card ' . $cardId . ' does not exist', 1747645954);
         }
 
-        $card = $this->cards[$cardId->value];
         assert($card instanceof $classString);
         if (!$card instanceof $classString) {
             throw new \RuntimeException(
