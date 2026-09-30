@@ -18,3 +18,6 @@ devenv.local.nix
 
 # lock files of open office documents
 ~$*
+
+# source files of the import (provided by the content team), see docs/2025_09_10_Karten_Importieren.md
+import/*.xlsx
