@@ -52,7 +52,7 @@ describe('definitions version', function () {
     })->throws(
         RuntimeException::class,
         'Game game1 was created on a different version of the game and cannot be continued',
-        1790760000
+        1790777826
     );
 
     it('uses version 0 for games created before the definitions version was introduced', function () {
