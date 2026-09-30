@@ -8,11 +8,14 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyImmobilieForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\Definitions\Card\Dto\ImmobilienCardDefinition;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
@@ -20,6 +23,7 @@ use Domain\Definitions\Card\Dto\ModifierParameters;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
+use Domain\Definitions\Card\ValueObject\ImmobilienType;
 use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
@@ -447,5 +451,78 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
         $actualGuthaben = PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]);
         expect($actualGuthaben->equals($expectedGuthaben))
             ->toBeTrue("Guthaben should be $expectedGuthaben, was $actualGuthaben->value");
+    });
+
+    it('applies Grundsteuer for each Immobilie owned by the player', function () {
+        /** @var TestCase $this */
+        $grundsteuerAmount = new MoneyAmount(-1000);
+        $immobilienCards = [];
+        foreach (['inv1', 'inv2', 'inv3', 'inv4'] as $cardId) {
+            $immobilienCards[] = new ImmobilienCardDefinition(
+                id: new CardId($cardId),
+                title: 'Kauf Wohnung',
+                description: 'for testing',
+                phaseId: LebenszielPhaseId::PHASE_1,
+                resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(-5000)),
+                annualRent: new MoneyAmount(1500),
+                immobilienTyp: ImmobilienType::WOHNUNG,
+            );
+        }
+        $this->startNewKonjunkturphaseWithCardsOnTop($immobilienCards);
+
+        // player 0 buys one Immobilie per round (only one Zeitsteinaktion per turn is allowed), player 1 none.
+        // Two Immobilien are offered at a time and both are discarded after a purchase -> inv1, then inv3
+        foreach (['inv1', 'inv3'] as $cardId) {
+            $this->handle(new StartSpielzug($this->players[0]));
+            $this->handle(BuyImmobilieForPlayer::create($this->players[0], new CardId($cardId)));
+            $this->handle(new EndSpielzug($this->players[0]));
+            $this->handle(new StartSpielzug($this->players[1]));
+            $this->handle(DoMinijob::create($this->players[1]));
+            $this->handle(new EndSpielzug($this->players[1]));
+        }
+
+        $currentKonjunkturphase = $this->konjunkturphaseDefinition;
+        $konjunkturphaseWithGrundsteuer = new KonjunkturphaseDefinition(
+            id: KonjunkturphasenId::create(2),
+            type: $currentKonjunkturphase->type,
+            name: 'Immobilienblase',
+            description: 'for testing',
+            additionalEvents: '',
+            zeitsteine: $currentKonjunkturphase->zeitsteine,
+            kompetenzbereiche: $currentKonjunkturphase->kompetenzbereiche,
+            modifierIds: [],
+            modifierParameters: new ModifierParameters(),
+            auswirkungen: $currentKonjunkturphase->auswirkungen,
+            conditionalResourceChanges: [
+                new ConditionalResourceChange(
+                    prerequisite: EreignisPrerequisitesId::NO_PREREQUISITES,
+                    resourceChanges: new ResourceChanges(guthabenChange: $grundsteuerAmount),
+                    isGrundsteuer: true,
+                ),
+            ]
+        );
+        // the current Konjunkturphase is still needed, because the previous events reference it
+        KonjunkturphaseFinder::getInstance()->overrideKonjunkturphaseDefinitionsForTesting([
+            $currentKonjunkturphase,
+            $konjunkturphaseWithGrundsteuer,
+        ]);
+        $this->handle(ChangeKonjunkturphase::create()->withFixedKonjunkturphaseForTesting($konjunkturphaseWithGrundsteuer));
+
+        $gameEvents = $this->getGameEvents();
+        $guthabenBeforeGrundsteuer = [
+            PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]),
+            PlayerState::getGuthabenForPlayer($gameEvents, $this->players[1]),
+        ];
+
+        $this->handle(StartKonjunkturPhaseForPlayer::create($this->players[0]));
+        $this->handle(StartKonjunkturPhaseForPlayer::create($this->players[1]));
+
+        $gameEvents = $this->getGameEvents();
+        // 2 Immobilien -> grundsteuerAmount * 2
+        expect(PlayerState::getImmoblienOwnedByPlayer($gameEvents, $this->players[0]))->toHaveCount(2)
+            ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))
+            ->toEqual($guthabenBeforeGrundsteuer[0]->add(new MoneyAmount($grundsteuerAmount->value * 2)))
+            ->and(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[1]))
+            ->toEqual($guthabenBeforeGrundsteuer[1]);
     });
 });
