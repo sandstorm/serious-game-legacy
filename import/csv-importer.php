@@ -530,3 +530,14 @@ if (!array_key_exists($type, $importFunctions)) {
     exit(1);
 }
 $importFunctions[$type]();
+
+// written to STDERR, so it is not part of the generated code (e.g. when piped to pbcopy)
+preg_match(
+    '/DEFINITIONS_VERSION = (\d+);/',
+    (string) file_get_contents(__DIR__ . "/../app/src/Definitions/Configuration/Configuration.php"),
+    $matches
+);
+fwrite(STDERR, "\nReminder:\n"
+    . "- increase Configuration::DEFINITIONS_VERSION (currently " . ($matches[1] ?? "unknown") . ") once per import,"
+    . " so games created with the old definitions cannot be continued\n"
+    . "- move cards that are missing in the new files to CardFinder::getLegacyCards() instead of deleting them\n");

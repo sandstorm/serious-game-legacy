@@ -10,6 +10,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
 use Domain\CoreGameLogic\Feature\Initialization\State\Dto\NameAndLebensziel;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Configuration\Configuration;
 
 class PreGameState
 {
@@ -92,5 +93,18 @@ class PreGameState
     public static function getAmountOfPlayers(GameEvents $gameEvents): int
     {
         return count(self::playerIds($gameEvents));
+    }
+
+    /**
+     * Games created with other definitions (cards, Konjunkturphasen, Lebensziele) cannot be continued, but can still
+     * be viewed and exported. See {@see Configuration::DEFINITIONS_VERSION}
+     *
+     * @param GameEvents $gameEvents
+     * @return bool
+     */
+    public static function isPlayableWithCurrentDefinitions(GameEvents $gameEvents): bool
+    {
+        $preGameStarted = $gameEvents->findFirstOrNull(PreGameStarted::class);
+        return $preGameStarted === null || $preGameStarted->definitionsVersion === Configuration::DEFINITIONS_VERSION;
     }
 }

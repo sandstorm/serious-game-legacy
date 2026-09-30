@@ -48,6 +48,7 @@ class GamePlayController extends Controller
                     }, PreGameState::playersWithNameAndLebensziel($gameEvents))
                 ),
                 isInGamePhase: !PreGameState::isInPreGamePhase($gameEvents),
+                isPlayable: PreGameState::isPlayableWithCurrentDefinitions($gameEvents),
             );
         }
 

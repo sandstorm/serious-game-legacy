@@ -7,6 +7,17 @@ namespace Domain\Definitions\Configuration;
 final readonly class Configuration
 {
     /**
+     * Version of the definitions (cards, Konjunkturphasen, Lebensziele). It is stored when a game is created.
+     * Games created with another version cannot be continued, because their state is partially recalculated from the
+     * current definitions (e.g. modifiers of Ereignisse, Zeitsteine of the Konjunkturphase) and could become invalid.
+     *
+     * Increase this value with each import that changes the definitions (see docs/2025_09_10_Karten_Importieren.md).
+     * Games created before this version was introduced have version 0.
+     * @var int
+     */
+    final public const DEFINITIONS_VERSION = 1;
+
+    /**
      * The initial capital for each player
      * @var int
      */
