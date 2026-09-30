@@ -62,7 +62,7 @@ final class CoreGameLogicApp implements ForCoreGameLogic
         if (!PreGameState::isPlayableWithCurrentDefinitions($gameEvents)) {
             throw new \RuntimeException(
                 'Game ' . $gameId->value . ' was created on a different version of the game and cannot be continued',
-                1790760000
+                1790777826
             );
         }
         $eventsToPublish = $this->commandBus->handle($command, $gameEvents);
