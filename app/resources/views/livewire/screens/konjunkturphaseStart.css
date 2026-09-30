@@ -64,4 +64,9 @@
     td {
         border-bottom: 1px solid var(--color-grey);
     }
+
+    /* heading of the "Weitere Auswirkungen" below the values */
+    tbody + tbody th {
+        padding-top: var(--spacing-200);
+    }
 }

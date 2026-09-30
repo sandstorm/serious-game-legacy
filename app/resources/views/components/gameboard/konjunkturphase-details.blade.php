@@ -25,10 +25,13 @@
 
     <h4>Auswirkungen</h4>
     <ul>
-        @foreach($konjunkturphase->auswirkungen as $auswirkung)
+        @foreach($konjunkturphase->getDisplayedAuswirkungen() as $auswirkung)
             <li>
-                <strong>{{ $auswirkung->scope }}: </strong> <x-formatted-number :value="$auswirkung->value" />
+                <strong>{{ $auswirkung->label }}: </strong> <x-formatted-number :value="$auswirkung->value" :suffix="$auswirkung->unit" />
             </li>
+        @endforeach
+        @foreach($konjunkturphase->getDisplayedAuswirkungDescriptions() as $auswirkungDescription)
+            <li>{{ $auswirkungDescription }}</li>
         @endforeach
     </ul>
 @endsection
