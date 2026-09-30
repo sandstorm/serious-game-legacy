@@ -82,6 +82,19 @@ final class CardFinder
     }
 
     /**
+     * Returns all cards including the legacy cards, e.g. to validate all definitions.
+     * Calling `...ForTesting` functions outside of test code will be caught by phpstan.
+     *
+     * @return CardDefinition[]
+     */
+    public function getAllCardsIncludingLegacyForTesting(): array
+    {
+        return $this->cards + $this->legacyCards;
+    }
+
+    /**
+     * Calling `...ForTesting` functions outside of test code will be caught by phpstan.
+     *
      * @param CardDefinition[] $legacyCards
      * @return void
      */

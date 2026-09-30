@@ -9,7 +9,12 @@ declare(strict_types=1);
  */
 
 class ModifierMapping {
-    public function __construct(public string $modifierId, public string $parameterName)
+    /**
+     * @param string $modifierId
+     * @param string $parameterName name of the parameter in ModifierParameters, empty if the modifier has no value
+     * @param bool $isValueRequired false, if the value is optional (e.g. AUSSETZEN defaults to 1 turn)
+     */
+    public function __construct(public string $modifierId, public string $parameterName, public bool $isValueRequired = true)
     {
     }
 }
@@ -190,13 +195,14 @@ function printAuswirkungen(string $type, string $modifierValue):void
 }
 
 /**
+ * @param string $id id of the card/Konjunkturphase, used for error messages
  * @param array $modifierArrayWithIdValuePairs
  * @return void
  */
-function printModifiers(array $modifierArrayWithIdValuePairs): void
+function printModifiers(string $id, array $modifierArrayWithIdValuePairs): void
 {
     $modifierMappings = [
-        "AUSSETZEN" => new ModifierMapping("AUSSETZEN", ""),
+        "AUSSETZEN" => new ModifierMapping("AUSSETZEN", "numberOfTurns", isValueRequired: false),
         "BERUFSUNFÄHIGKEITSVERSICHERUNG" => new ModifierMapping("BERUFSUNFAEHIGKEITSVERSICHERUNG", ""),
         "GEHALT" => new ModifierMapping("GEHALT_CHANGE", "modifyGehaltPercent"),
         "HAFTPFLICHTVERSICHERUNG" => new ModifierMapping("HAFTPFLICHTVERSICHERUNG", ""),
@@ -211,9 +217,20 @@ function printModifiers(array $modifierArrayWithIdValuePairs): void
         "KREDITSPERRE" => new ModifierMapping("KREDITSPERRE", ""),
         "INCREASED_CHANCE_FOR_REZESSION" => new ModifierMapping("INCREASED_CHANCE_FOR_REZESSION", ""),
     ];
-    foreach (array_keys($modifierArrayWithIdValuePairs) as $modifierId) {
+    // a wrong modifier would crash every game in which the card/Konjunkturphase is used -> fail during the import
+    foreach ($modifierArrayWithIdValuePairs as $modifierId => $modifierValue) {
         if (!array_key_exists($modifierId, $modifierMappings)) {
-            throw new RuntimeException("Unknown modifier " . $modifierId);
+            throw new RuntimeException($id . ": unknown modifier " . $modifierId);
+        }
+        $modifierMapping = $modifierMappings[$modifierId];
+        if ($modifierMapping->parameterName === "" && $modifierValue !== "") {
+            throw new RuntimeException($id . ": modifier " . $modifierId . " has no value, but '" . $modifierValue . "' was specified");
+        }
+        if ($modifierMapping->parameterName !== "" && $modifierMapping->isValueRequired && $modifierValue === "") {
+            throw new RuntimeException($id . ": modifier " . $modifierId . " needs a value (" . $modifierMapping->parameterName . ")");
+        }
+        if ($modifierValue !== "" && !is_numeric($modifierValue)) {
+            throw new RuntimeException($id . ": value '" . $modifierValue . "' of modifier " . $modifierId . " is not a number");
         }
     }
     echo "\t" . "modifierIds: [\n";
@@ -349,7 +366,7 @@ function importEreignisCards(): void
         echo "\t" . "description: " . phpString($lineArrayWithKeys["description"]) . ",\n";
         printPhaseAndYear($lineArrayWithKeys["phase"], $lineArrayWithKeys["year"]);
         printResourceChanges($lineArrayWithKeys);
-        printModifiers($modifierArrayWithIdValuePairs);
+        printModifiers($lineArrayWithKeys["id"], $modifierArrayWithIdValuePairs);
         echo "\t" . "ereignisRequirementIds: [\n";
         foreach (["prerequisiteStatusId1", "prerequisiteStatusId2"] as $prerequisiteKey) {
             if (!empty($lineArrayWithKeys[$prerequisiteKey])) {
@@ -453,7 +470,7 @@ function importKonjunkturphasen(): void
         printKompetenzbereichDefinition("INVESTITIONEN", $lineArrayWithKeys["maxInvestitionen"]);
         printKompetenzbereichDefinition("JOBS", $lineArrayWithKeys["maxJobs"]);
         echo "\t" . "],\n";
-        printModifiers($modifierArrayWithIdValuePairs);
+        printModifiers("Konjunkturphase " . $lineArrayWithKeys["id"], $modifierArrayWithIdValuePairs);
         echo "\t" . "auswirkungen: [\n";
         printAuswirkungen("LOANS_INTEREST_RATE", $lineArrayWithKeys["Kreditzins"]);
         printAuswirkungen("STOCKS_BONUS", $lineArrayWithKeys["AktienKursbonus"]);
@@ -529,7 +546,16 @@ if (!array_key_exists($type, $importFunctions)) {
     fwrite(STDERR, "Usage: php csv-importer.php <" . implode("|", array_keys($importFunctions)) . ">\n");
     exit(1);
 }
-$importFunctions[$type]();
+// the output is buffered, so no partially generated code ends up in the clipboard if the import fails
+ob_start();
+try {
+    $importFunctions[$type]();
+} catch (RuntimeException $exception) {
+    ob_end_clean();
+    fwrite(STDERR, "Import failed: " . $exception->getMessage() . "\n");
+    exit(1);
+}
+ob_end_flush();
 
 // written to STDERR, so it is not part of the generated code (e.g. when piped to pbcopy)
 preg_match(

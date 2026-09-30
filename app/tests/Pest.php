@@ -12,6 +12,7 @@
 */
 
 use Domain\Definitions\Card\CardFinder;
+use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 
 pest()->extend(Tests\TestCase::class)
     ->beforeEach(function () {
@@ -19,6 +20,7 @@ pest()->extend(Tests\TestCase::class)
         // by default with the next line. To opt out from this, use $this->withExceptionHandling() in the testcase.
         $this->withoutExceptionHandling();
         CardFinder::initializeForTesting();
+        KonjunkturphaseFinder::initializeForTesting();
     })
  // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
 

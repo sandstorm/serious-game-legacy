@@ -8,8 +8,8 @@ use Domain\CoreGameLogic\Feature\Spielzug\Modifier\ModifierBuilder;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\PlayerTurn;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
-use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
-use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
+use Domain\Definitions\Card\Dto\EreignisCardDefinition;
+use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 
 @covers(ModifierBuilder::class);
@@ -21,55 +21,50 @@ describe('build', function () {
 
     /**
      * Make sure all modifiers can be build. This is actually more a test for the importer to
-     * prevent a mismatch between modifierIds and modifierParameters.
+     * prevent a mismatch between modifierIds and modifierParameters. A modifier that cannot be built would crash
+     * every game in which the card/Konjunkturphase is used (also after the game has ended, e.g. for the export).
      */
-    it('can build all modifiers for all EreignisCards in CardFinder', function () {
-        $allCards = [
-            ...CardFinder::getInstance()->getCardDefinitionsByCategoryAndPhase(
-                CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                LebenszielPhaseId::PHASE_1
-            ),
-            ...CardFinder::getInstance()->getCardDefinitionsByCategoryAndPhase(
-                CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                LebenszielPhaseId::PHASE_2
-            ),
-            ...CardFinder::getInstance()->getCardDefinitionsByCategoryAndPhase(
-                CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                LebenszielPhaseId::PHASE_3
-            ),
-            ...CardFinder::getInstance()->getCardDefinitionsByCategoryAndPhase(
-                CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                LebenszielPhaseId::PHASE_1
-            ),
-            ...CardFinder::getInstance()->getCardDefinitionsByCategoryAndPhase(
-                CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                LebenszielPhaseId::PHASE_2
-            ),
-            ...CardFinder::getInstance()->getCardDefinitionsByCategoryAndPhase(
-                CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
-                LebenszielPhaseId::PHASE_3
-            ),
-        ];
-
-        foreach ($allCards as $card) {
-            $modifierIds = $card->getModifierIds();
-            if (count($modifierIds) === 0) {
+    it('can build all modifiers for all EreignisCards in CardFinder (including legacy cards)', function () {
+        foreach (CardFinder::getInstance()->getAllCardsIncludingLegacyForTesting() as $card) {
+            if (!$card instanceof EreignisCardDefinition) {
                 continue;
             }
-
-            $modifierParameters = $card->getModifierParameters();
-            foreach ($modifierIds as $modifierId) {
-                $modifier = ModifierBuilder::build(
+            foreach ($card->getModifierIds() as $modifierId) {
+                ModifierBuilder::build(
                     modifierId: $modifierId,
                     playerId: PlayerId::fromString("testplayer"),
                     playerTurn: new PlayerTurn(1),
                     year: new Year(1),
-                    modifierParameters: $modifierParameters,
+                    modifierParameters: $card->getModifierParameters(),
                     description: "for testing",
                 );
             }
-
         }
     })->throwsNoExceptions();
+
+    it('can build all modifiers for all Konjunkturphasen', function () {
+        foreach (KonjunkturphaseFinder::getAllKonjunkturphasen() as $konjunkturphase) {
+            foreach ($konjunkturphase->getModifierIds() as $modifierId) {
+                ModifierBuilder::build(
+                    modifierId: $modifierId,
+                    playerId: PlayerId::fromString("testplayer"),
+                    playerTurn: new PlayerTurn(1),
+                    year: new Year(1),
+                    modifierParameters: $konjunkturphase->getModifierParameters(),
+                    description: "for testing",
+                );
+            }
+        }
+    })->throwsNoExceptions();
+
+    it('only references existing cards as requiredCardId', function () {
+        $allCards = CardFinder::getInstance()->getAllCardsIncludingLegacyForTesting();
+        foreach ($allCards as $card) {
+            if ($card instanceof EreignisCardDefinition && $card->getRequiredCardId() !== null) {
+                expect(array_key_exists($card->getRequiredCardId()->value, $allCards))
+                    ->toBeTrue('Card ' . $card->getId()->value . ' requires the unknown card ' . $card->getRequiredCardId()->value);
+            }
+        }
+    });
 
 });

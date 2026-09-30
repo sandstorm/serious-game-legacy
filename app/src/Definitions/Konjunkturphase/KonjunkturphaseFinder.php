@@ -48,6 +48,15 @@ class KonjunkturphaseFinder
     }
 
     /**
+     * Resets the definitions (e.g. after they were overridden by a test).
+     * Calling `...ForTesting` functions outside of test code will be caught by phpstan.
+     */
+    public static function initializeForTesting(): void
+    {
+        self::initialize();
+    }
+
+    /**
      * @param KonjunkturphaseDefinition[] $konjunkturphaseDefinitions
      * @return void
      */
