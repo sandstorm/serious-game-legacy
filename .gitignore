@@ -4,6 +4,7 @@
 .npmrc
 .env
 /app/.yarn/cache
+/app/.yarn/install-state.gz
 .idea
 
 # Devenv
