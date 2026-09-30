@@ -10221,11 +10221,11 @@ final class CardFinder
     public function getThreeRandomJobs(LebenszielPhaseId $lebenszielPhaseId): array
     {
         $randomizer = new Randomizer();
-        return array_values(array_slice(
-            $randomizer->shuffleArray($this->getCardDefinitionsByCategoryAndPhase(CategoryId::JOBS, $lebenszielPhaseId)),
-            0,
-            3
-        ));
+        $jobs = array_filter(
+            $this->getCardDefinitionsByCategoryAndPhase(CategoryId::JOBS, $lebenszielPhaseId),
+            fn ($card) => $card instanceof JobCardDefinition
+        );
+        return array_values(array_slice($randomizer->shuffleArray($jobs), 0, 3));
     }
 
     /**
