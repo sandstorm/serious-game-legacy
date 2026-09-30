@@ -1,10 +1,12 @@
 <?php
 declare(strict_types=1);
 
-use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
-use Domain\Definitions\Lebensziel\Dto\LebenszielDefinition;
-use Domain\Definitions\Lebensziel\Dto\LebenszielPhaseDefinition;
-use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
+/*
+ * Prints the PHP code for the card/Konjunkturphasen/Lebensziel definitions from the CSV files in this directory.
+ * The CSV files are generated from the xlsx files with xlsx-to-csv.py. See docs/2025_09_10_Karten_Importieren.md
+ *
+ * Usage: php csv-importer.php <type> | pbcopy
+ */
 
 class ModifierMapping {
     public function __construct(public string $modifierId, public string $parameterName)
@@ -12,6 +14,79 @@ class ModifierMapping {
     }
 }
 
+
+/* CSV FUNCTIONS */
+
+/**
+ * Reads all rows of a csv file. The first row (table name) is skipped.
+ * fgetcsv is needed (instead of reading line by line), because cells can contain line breaks.
+ *
+ * @param string $fileName
+ * @return array<int, array<int, string>> rows including the table header row
+ */
+function readCsvRows(string $fileName): array
+{
+    $handle = fopen(__DIR__ . "/" . $fileName, "r");
+    if ($handle === false) {
+        throw new RuntimeException("Could not open " . $fileName);
+    }
+    $rows = [];
+    while (($row = fgetcsv($handle, 0, ';', '"', '\\')) !== false) { // 0 = no limit for the length of a row
+        $rows[] = array_map(fn (?string $value) => trim($value ?? ""), $row);
+    }
+    fclose($handle);
+    return array_slice($rows, 1); // removes the table name
+}
+
+/**
+ * Reads a csv file and returns one array per card (row), using the table header (second row) as keys.
+ * - spaces, quotes and line breaks are removed from the keys (e.g. "Aktien Kursbonus" -> "AktienKursbonus")
+ * - columns without a table header are ignored (e.g. notes next to the table)
+ * - rows without an id are ignored (e.g. empty rows or notes below the table)
+ *
+ * @param string $fileName
+ * @return array<int, array<string, string>>
+ */
+function readCsv(string $fileName): array
+{
+    $rows = readCsvRows($fileName);
+    $keys = array_map(fn (string $key) => str_replace(["\"", " ", "\n", "\r"], "", $key), $rows[0]);
+
+    $result = [];
+    foreach (array_slice($rows, 1) as $row) {
+        if (($row[0] ?? "") === "") {
+            continue;
+        }
+        $rowWithKeys = [];
+        foreach ($keys as $index => $key) {
+            if ($key !== "") {
+                $rowWithKeys[$key] = $row[$index] ?? "";
+            }
+        }
+        $result[] = $rowWithKeys;
+    }
+    return $result;
+}
+
+/**
+ * Returns the value as PHP string literal, so quotes in the texts don't break the generated code.
+ */
+function phpString(string $value): string
+{
+    return var_export($value, true);
+}
+
+/**
+ * Money values can be plain numbers ("50000") or formatted ("50.000,00 €"), depending on how the csv was exported.
+ */
+function parseMoney(string $value): float
+{
+    $value = str_replace(["€", " ", "\t"], "", $value);
+    if (str_contains($value, ",")) {
+        $value = str_replace([".", ","], ["", "."], $value);
+    }
+    return floatval($value);
+}
 
 
 /* PRINT FUNCTIONS */
@@ -76,9 +151,10 @@ function printKompetenzbereichDefinition(string $type, string $maxKompetenzstein
  * @param string $prerequisites
  * @param string $resourceChange
  * @param string $value
+ * @param string $description
  * @return void
  */
-function printConditionalResourceChanges(string $prerequisites, string $resourceChange, string $value):void
+function printConditionalResourceChanges(string $prerequisites, string $resourceChange, string $value, string $description):void
 {
     echo "\t\t" . "new ConditionalResourceChange(\n";
     echo "\t\t\t" . "prerequisite: EreignisPrerequisitesId::" . $prerequisites . ",\n";
@@ -96,6 +172,7 @@ function printConditionalResourceChanges(string $prerequisites, string $resource
     } else {
         echo "\t\t\t" . "resourceChanges: new ResourceChanges(" . $resourceChange . ": " . $value . "),\n";
     }
+    echo "\t\t\t" . "description: " . phpString($description) . ",\n";
     echo "\t\t" . "),\n";
 }
 
@@ -134,6 +211,11 @@ function printModifiers(array $modifierArrayWithIdValuePairs): void
         "KREDITSPERRE" => new ModifierMapping("KREDITSPERRE", ""),
         "INCREASED_CHANCE_FOR_REZESSION" => new ModifierMapping("INCREASED_CHANCE_FOR_REZESSION", ""),
     ];
+    foreach (array_keys($modifierArrayWithIdValuePairs) as $modifierId) {
+        if (!array_key_exists($modifierId, $modifierMappings)) {
+            throw new RuntimeException("Unknown modifier " . $modifierId);
+        }
+    }
     echo "\t" . "modifierIds: [\n";
     foreach ($modifierArrayWithIdValuePairs as $modifierId => $modifierValue) {
         echo "\t\t" . "ModifierId::" . $modifierMappings[$modifierId]->modifierId . ",\n";
@@ -161,18 +243,10 @@ function printModifiers(array $modifierArrayWithIdValuePairs): void
  */
 function importMiniJobCards(): void
 {
-    $file = file(__DIR__ . "/Minijobs.csv");
-    $tableContent = array_slice($file, 2); //removes the first two elements (table name and table header)
-    $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
-    $keys = array_slice(explode(";", $tableHeaderItems[0]), 0, 3); //three table header items
-
-    foreach ($tableContent as $line) {
-        $lineArray = explode(";", substr(trim($line), 0, -2));
-        $lineArrayWithKeys = array_combine($keys, $lineArray);
-
+    foreach (readCsv("Minijobs.csv") as $lineArrayWithKeys) {
         echo "\"" . $lineArrayWithKeys["id"] . "\" => new MinijobCardDefinition(\n";
         echo "\t" . "id: new CardId('" . $lineArrayWithKeys["id"] . "'),\n";
-        echo "\t" . "title: '" . $lineArrayWithKeys["title"] . "',\n";
+        echo "\t" . "title: " . phpString($lineArrayWithKeys["title"]) . ",\n";
         echo "\t" . "description: 'Du hast einen Minijob gemacht und bekommst einmalig Gehalt.',\n";
         echo "\t" . "resourceChanges: new ResourceChanges(\n";
         echo "\t\t" . "guthabenChange: new MoneyAmount(+" . $lineArrayWithKeys["moneyChange"] . "),\n"; //always positive MoneyAmount Change
@@ -186,19 +260,11 @@ function importMiniJobCards(): void
  */
 function importJobCards(): void
 {
-    $file = file(__DIR__ . "/Jobs.csv");
-    $tableContent = array_slice($file, 2); //removes the first two elements (table name and table header)
-    $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
-    $keys = array_slice(explode(";", trim($tableHeaderItems[0])), 0, 8); //eight table header items
-
-    foreach ($tableContent as $line) {
-        $lineArray = explode(";", trim($line));
-        $lineArrayWithKeys = array_combine($keys, $lineArray);
-
+    foreach (readCsv("Jobs.csv") as $lineArrayWithKeys) {
         echo "\"" . $lineArrayWithKeys["id"] . "\" => new JobCardDefinition(\n";
         echo "\t" . "id: new CardId('" . $lineArrayWithKeys["id"] . "'),\n";
-        echo "\t" . "title: '" . $lineArrayWithKeys["title"] . "',\n";
-        echo "\t" . "description: '" . $lineArrayWithKeys["description"] . "',\n";
+        echo "\t" . "title: " . phpString($lineArrayWithKeys["title"]) . ",\n";
+        echo "\t" . "description: " . phpString($lineArrayWithKeys["description"]) . ",\n";
         printPhaseAndYear($lineArrayWithKeys["phase"], $lineArrayWithKeys["year"]);
         echo "\t" . "gehalt: new MoneyAmount(+" . $lineArrayWithKeys["gehalt"] . "),\n"; //always positive MoneyAmount change
         echo "\t" . "requirements: new JobRequirements(\n";
@@ -215,26 +281,25 @@ function importJobCards(): void
  */
 function importWeiterbildungCards(): void
 {
-    $file = file(__DIR__ . "/Weiterbildungen.csv");
-    $tableContent = array_slice($file, 2); //removes the first two elements (table name and table header)
-    $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
-    $keys = array_slice(explode(";", trim($tableHeaderItems[0])), 0, 3); //first three table header items
-    $answerIds = ["a", "b", "c", "d"];
-
-    foreach ($tableContent as $line) {
-        shuffle($answerIds); //first answer Id is used for the correct answer -> randomized through the shuffle
-        $lineArray = explode(";", trim($line));
-        $lineArrayWithoutWrongAnswers = array_slice($lineArray, 0, 3); //remove all wrong answers
-        $lineArrayWithKeys = array_combine($keys, $lineArrayWithoutWrongAnswers);
-        $wrongAnswersArray = array_filter(array_slice($lineArray, 3)); //array_filter removes empty entries as not all questions have all three wrong answers
+    foreach (readCsv("Weiterbildungen.csv") as $lineArrayWithKeys) {
+        //first answer Id is used for the correct answer -> randomized through the shuffle. The shuffle is seeded with
+        //the card id, so the answer ids stay the same when the cards are imported again.
+        $randomizer = new \Random\Randomizer(new \Random\Engine\Mt19937(crc32($lineArrayWithKeys["id"])));
+        $answerIds = $randomizer->shuffleArray(["a", "b", "c", "d"]);
+        //array_filter removes empty entries as not all questions have all three wrong answers
+        $wrongAnswersArray = array_values(array_filter([
+            $lineArrayWithKeys["wrongAnswer1"],
+            $lineArrayWithKeys["wrongAnswer2"],
+            $lineArrayWithKeys["wrongAnswer3"],
+        ]));
 
         echo "\"" . $lineArrayWithKeys["id"] . "\" => new WeiterbildungCardDefinition(\n";
         echo "\t" . "id: new CardId('" . $lineArrayWithKeys["id"] . "'),\n";
-        echo "\t" . "description: '" . $lineArrayWithKeys["description"] . "',\n";
+        echo "\t" . "description: " . phpString($lineArrayWithKeys["description"]) . ",\n";
         echo "\t" . "answerOptions: [\n";
-        echo "\t\t" . "new AnswerOption(new AnswerId(\"" . $answerIds[0] . "\"), \"" . $lineArrayWithKeys["correctAnswer"] . "\", true),\n";
+        echo "\t\t" . "new AnswerOption(new AnswerId(\"" . $answerIds[0] . "\"), " . phpString($lineArrayWithKeys["correctAnswer"]) . ", true),\n";
         foreach($wrongAnswersArray as $key => $wrongAnswer) {
-            echo "\t\t" . "new AnswerOption(new AnswerId(\"" . $answerIds[$key + 1] . "\"), \"" . $wrongAnswer . "\"),\n";
+            echo "\t\t" . "new AnswerOption(new AnswerId(\"" . $answerIds[$key + 1] . "\"), " . phpString($wrongAnswer) . "),\n";
         }
         echo "\t],\n),\n";
     }
@@ -246,20 +311,12 @@ function importWeiterbildungCards(): void
  */
 function importKategorieCards(): void
 {
-    $file = file(__DIR__ . "/Kategorie_Karten.csv");
-    $tableContent = array_slice($file, 2); //removes the first two elements (table name and table header)
-    $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
-    $keys = array_slice(explode(";", trim($tableHeaderItems[0])), 0); //table header items
-
-    foreach ($tableContent as $line) {
-        $lineArray = explode(";", trim($line));
-        $lineArrayWithKeys = array_combine($keys, $lineArray);
-
+    foreach (readCsv("Kategorie_Karten.csv") as $lineArrayWithKeys) {
         echo "\"" . $lineArrayWithKeys["id"] . "\" => new KategorieCardDefinition(\n";
         echo "\t" . "id: new CardId('" . $lineArrayWithKeys["id"] . "'),\n";
         echo "\t" . "categoryId: CategoryId::" . $lineArrayWithKeys["category"] . ",\n";
-        echo "\t" . "title: '" . $lineArrayWithKeys["title"] . "',\n";
-        echo "\t" . "description: '" . $lineArrayWithKeys["description"] . "',\n";
+        echo "\t" . "title: " . phpString($lineArrayWithKeys["title"]) . ",\n";
+        echo "\t" . "description: " . phpString($lineArrayWithKeys["description"]) . ",\n";
         printPhaseAndYear($lineArrayWithKeys["phase"], $lineArrayWithKeys["year"]);
         printResourceChanges($lineArrayWithKeys);
         echo "),\n";
@@ -272,60 +329,40 @@ function importKategorieCards(): void
  */
 function importEreignisCards(): void
 {
-    $file = file(__DIR__ . "/Ereignisse.csv");
-    $tableContent = array_slice($file, 2); //removes the first two elements (table name and table header)
-    $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
-    $tableHeaderArray = explode(";", trim($tableHeaderItems[0]));
-    $keys = [];
-    foreach ($tableHeaderArray as $key) {
-        $keys[] = str_replace(["\"", " "], "", trim($key)); //removes spaces and " from table headers
-    }
-    $propertyKeys = array_slice($keys, 0, 11); //11 first table header items
-    $modifierKeys = array_slice($keys, 11, 6); //6 modifier table header items
-    $prerequisiteKeys = array_slice($keys, 17, 3); //3 prerequisite table header items
-
-    foreach ($tableContent as $line) {
-        $lineArray = explode(";", trim($line));
-        $lineArrayWithoutModifiersAndPrerequisites = array_slice($lineArray, 0, 11); //removes modifiers and prerequisites
-        $lineArrayWithKeys = array_combine($propertyKeys, $lineArrayWithoutModifiersAndPrerequisites);
-        $modifierArray = array_slice($lineArray, 11, 6);
-        $modifierArrayWithKeys = array_combine($modifierKeys, $modifierArray);
-        $prerequisiteArray = array_slice($lineArray, 17, 3);
-        $prerequisiteArrayWithKeys = array_combine($prerequisiteKeys, $prerequisiteArray);
-
+    foreach (readCsv("Ereignisse.csv") as $lineArrayWithKeys) {
         //stores multiplier as key value pair (modifierId and modifierValue) as it simplifies the iteration over the elements
         $modifierArrayWithIdValuePairs = [];
-        if (!empty($modifierArrayWithKeys["modifierId1"])) {
-            $modifierArrayWithIdValuePairs[$modifierArrayWithKeys["modifierId1"]] = $modifierArrayWithKeys["modifierValue1percentage"];
+        if (!empty($lineArrayWithKeys["modifierId1"])) {
+            $modifierArrayWithIdValuePairs[$lineArrayWithKeys["modifierId1"]] = $lineArrayWithKeys["modifierValue1percentage"];
         }
-        if (!empty($modifierArrayWithKeys["modifierId2"])) {
-            $modifierArrayWithIdValuePairs[$modifierArrayWithKeys["modifierId2"]] = $modifierArrayWithKeys["modifierValue2"];
+        if (!empty($lineArrayWithKeys["modifierId2"])) {
+            $modifierArrayWithIdValuePairs[$lineArrayWithKeys["modifierId2"]] = $lineArrayWithKeys["modifierValue2"];
         }
-        if (!empty($modifierArrayWithKeys["modifierId3"])) {
-            $modifierArrayWithIdValuePairs[$modifierArrayWithKeys["modifierId3"]] = $modifierArrayWithKeys["modifierValue3"];
+        if (!empty($lineArrayWithKeys["modifierId3"])) {
+            $modifierArrayWithIdValuePairs[$lineArrayWithKeys["modifierId3"]] = $lineArrayWithKeys["modifierValue3"];
         }
 
         echo "\"" . $lineArrayWithKeys["id"] . "\" => new EreignisCardDefinition(\n";
         echo "\t" . "id: new CardId('" . $lineArrayWithKeys["id"] . "'),\n";
         echo "\t" . "categoryId: CategoryId::EREIGNIS_" . $lineArrayWithKeys["category"] . ",\n";
-        echo "\t" . "title: '" . $lineArrayWithKeys["title"] . "',\n";
-        echo "\t" . "description: '" . $lineArrayWithKeys["description"] . "',\n";
+        echo "\t" . "title: " . phpString($lineArrayWithKeys["title"]) . ",\n";
+        echo "\t" . "description: " . phpString($lineArrayWithKeys["description"]) . ",\n";
         printPhaseAndYear($lineArrayWithKeys["phase"], $lineArrayWithKeys["year"]);
         printResourceChanges($lineArrayWithKeys);
         printModifiers($modifierArrayWithIdValuePairs);
         echo "\t" . "ereignisRequirementIds: [\n";
-        for ($i = 1; $i<=2; $i++) {
-            if (!empty($prerequisiteArray[$i])) {
-                echo "\t\t" . "EreignisPrerequisitesId::" . $prerequisiteArray[$i] . ",\n";
+        foreach (["prerequisiteStatusId1", "prerequisiteStatusId2"] as $prerequisiteKey) {
+            if (!empty($lineArrayWithKeys[$prerequisiteKey])) {
+                echo "\t\t" . "EreignisPrerequisitesId::" . $lineArrayWithKeys[$prerequisiteKey] . ",\n";
             }
         }
         //all cards that have a requiredCardId need the Prerequisite HAS_SPECIFIC_CARD for validation
-        if ($prerequisiteArrayWithKeys["prerequisiteCardId"] !== "") {
+        if ($lineArrayWithKeys["prerequisiteCardId"] !== "") {
             echo "\t\t" . "EreignisPrerequisitesId::HAS_SPECIFIC_CARD,\n";
         }
         echo "\t" . "],\n";
-        if ($prerequisiteArrayWithKeys["prerequisiteCardId"] !== "") {
-            echo "\t" . "requiredCardId: new CardId('" . $prerequisiteArrayWithKeys["prerequisiteCardId"] . "'),\n";
+        if ($lineArrayWithKeys["prerequisiteCardId"] !== "") {
+            echo "\t" . "requiredCardId: new CardId('" . $lineArrayWithKeys["prerequisiteCardId"] . "'),\n";
         }
         if ($lineArrayWithKeys["Gewichtung"] === "") {
             echo "\t" . "gewichtung: 1,\n";
@@ -342,19 +379,11 @@ function importEreignisCards(): void
  */
 function importImmobilienCards(): void
 {
-    $file = file(__DIR__ . "/Investitionen_Immobilien.csv");
-    $tableContent = array_slice($file, 2); //removes the first two elements (table name and table header)
-    $tableHeaderItems = array_slice($file, 1, 1); //array element containing the table headers
-    $keys = array_slice(explode(";", trim($tableHeaderItems[0])), 0, 7); //seven table header items
-
-    foreach ($tableContent as $line) {
-        $lineArray = array_slice(explode(";", trim($line)), 0, 7); //array slice to remove empty "cells" at the end
-        $lineArrayWithKeys = array_combine($keys, $lineArray);
-
+    foreach (readCsv("Investitionen_Immobilien.csv") as $lineArrayWithKeys) {
         echo "\"" . $lineArrayWithKeys["id"] . "\" => new ImmobilienCardDefinition(\n";
         echo "\t" . "id: new CardId('" . $lineArrayWithKeys["id"] . "'),\n";
-        echo "\t" . "title: '" . $lineArrayWithKeys["title"] . "',\n";
-        echo "\t" . "description: '" . $lineArrayWithKeys["description"] . "',\n";
+        echo "\t" . "title: " . phpString($lineArrayWithKeys["title"]) . ",\n";
+        echo "\t" . "description: " . phpString($lineArrayWithKeys["description"]) . ",\n";
         echo "\t" . "phaseId: LebenszielPhaseId::PHASE_" . $lineArrayWithKeys["phase"] . ",\n";
         printResourceChanges($lineArrayWithKeys);
         echo "\t" . "annualRent: new MoneyAmount(" . $lineArrayWithKeys["annualRent"] . "),\n";
@@ -369,53 +398,49 @@ function importImmobilienCards(): void
  */
 function importKonjunkturphasen(): void
 {
-    $file = file(__DIR__ . "/Konjunkturen.csv");
-    $tableContent = array_slice($file, 2); //removes the first two element (table header)
-    $tableHeader = trim(array_slice($file, 1, 1)[0]); //table header containing keys
-    $tableHeaderArray = explode(";", $tableHeader); //array containing the table headers
-    $keys = [];
-    foreach ($tableHeaderArray as $key) {
-        $keys[] = str_replace(["\"", " "], "", trim($key)); //removes spaces and " from table headers
-    }
-
-    foreach ($tableContent as $line) {
-        $lineArray = explode(";", trim($line));
-        $lineArrayWithKeys = array_combine($keys, $lineArray);
-
+    foreach (readCsv("Konjunkturen.csv") as $lineArrayWithKeys) {
         //stores modifiers as key value pair (modifierId and modifierValue) as it simplifies the iteration over the elements
-        $modifierArrayWithKeys = array_slice($lineArrayWithKeys, 13, 8);
         $modifierArrayWithIdValuePairs = [];
-        foreach (array_slice($modifierArrayWithKeys, 0, 4) as $key => $value) {
-            if ($value !== "100") { //100 percent is the default value -> no modification needed
-                $modifierArrayWithIdValuePairs[$key] = $value;
+        foreach (["GEHALT", "BildungKarriereKosten", "FreizeitSozialesKosten", "Lebenshaltungskosten"] as $key) {
+            //100 percent is the default value (also used, if the cell is empty) -> no modification needed
+            if ($lineArrayWithKeys[$key] !== "100" && $lineArrayWithKeys[$key] !== "") {
+                $modifierArrayWithIdValuePairs[$key] = $lineArrayWithKeys[$key];
             }
         }
-        if (!empty($modifierArrayWithKeys["modifierId1"])) {
-            $modifierArrayWithIdValuePairs[$modifierArrayWithKeys["modifierId1"]] = $modifierArrayWithKeys["modifierValue1"];
+        if (!empty($lineArrayWithKeys["modifierId1"])) {
+            $modifierArrayWithIdValuePairs[$lineArrayWithKeys["modifierId1"]] = $lineArrayWithKeys["modifierValue1"];
         }
-        if (!empty($modifierArrayWithKeys["modifierId2"])) {
-            $modifierArrayWithIdValuePairs[$modifierArrayWithKeys["modifierId2"]] = $modifierArrayWithKeys["modifierValue2"];
+        if (!empty($lineArrayWithKeys["modifierId2"])) {
+            $modifierArrayWithIdValuePairs[$lineArrayWithKeys["modifierId2"]] = $lineArrayWithKeys["modifierValue2"];
         }
 
         //stores conditionalResourceChanges as array in array as it simplifies the iteration over the elements
-        $conditionalResourceChanges = array_slice($lineArrayWithKeys, 26);
         $conditionalResourceChangesArray = [];
         for ($i = 1; $i <= 2; $i++) {
-            if ($conditionalResourceChanges["resourceChange$i"] !== "") { //removes empty resourceChanges
+            if ($lineArrayWithKeys["resourceChange$i"] !== "") { //removes empty resourceChanges
                 $conditionalResourceChangesArray[] = [
-                    "description" => $conditionalResourceChanges["description$i"],
-                    "prerequisite" => $conditionalResourceChanges["prerequisite$i"],
-                    "resourceChange" => $conditionalResourceChanges["resourceChange$i"],
-                    "value" => $conditionalResourceChanges["value$i"],
+                    "description" => $lineArrayWithKeys["description$i"],
+                    "prerequisite" => $lineArrayWithKeys["prerequisite$i"],
+                    "resourceChange" => $lineArrayWithKeys["resourceChange$i"],
+                    "value" => $lineArrayWithKeys["value$i"],
                 ];
+            }
+        }
+
+        // the table header of this column is a whole sentence ("Zeitsteine, anzeigen als Verständnis, ..."), so we
+        // look it up by its beginning
+        $zeitsteineDescription = "";
+        foreach ($lineArrayWithKeys as $key => $value) {
+            if (str_starts_with($key, "Zeitsteine,")) {
+                $zeitsteineDescription = $value;
             }
         }
 
         echo "\$konjunkturphase" . $lineArrayWithKeys["id"] . " = new KonjunkturphaseDefinition(\n";
         echo "\t" . "id: KonjunkturphasenId::create(" . $lineArrayWithKeys["id"] . "),\n";
         echo "\t" . "type: KonjunkturphaseTypeEnum::" . $lineArrayWithKeys["type"] . ",\n";
-        echo "\t" . "name: '" . $lineArrayWithKeys["title"] . "',\n";
-        echo "\t" . "description: '" . $lineArrayWithKeys["description"] . "',\n";
+        echo "\t" . "name: " . phpString($lineArrayWithKeys["title"]) . ",\n";
+        echo "\t" . "description: " . phpString($lineArrayWithKeys["description"]) . ",\n";
         echo "\t" . "additionalEvents: '',\n"; //TODO remove?
         echo "\t" . "zeitsteine: new Zeitsteine([\n";
         echo "\t\t" . "new ZeitsteinePerPlayer(2, " . $lineArrayWithKeys["sumZeitsteine2Spieler"]/2 . "),\n";
@@ -441,82 +466,67 @@ function importKonjunkturphasen(): void
             printConditionalResourceChanges(
                 $conditionalResourceChange["prerequisite"]==="" ? "NO_PREREQUISITES" : $conditionalResourceChange["prerequisite"],
                 $conditionalResourceChange["resourceChange"],
-                $conditionalResourceChange["value"]
+                $conditionalResourceChange["value"],
+                $conditionalResourceChange["description"],
             );
         }
         echo "\t" . "],\n";
+        echo "\t" . "zeitsteineDescription: " . phpString($zeitsteineDescription) . ",\n";
         echo ");\n\n";
-
     }
 }
 
 /**
  * Function imports Lebensziele from csv file and echoes them in the console.
  *
- * Exported the xlsx file in Numbers to csv with default settings.
+ * The table has two header rows and the columns of the three phases have the same names, so the columns are
+ * accessed by their position: title, description, then 4 columns per phase (description, Investitionen,
+ * Bildung & Karriere, Freizeit & Soziales).
  *
  * @return void
  */
 function importLebensziele(): void
 {
+    $rows = array_slice(readCsvRows("Lebensziele.csv"), 1); //removes the second table header row (the first is removed by readCsvRows)
+    $rows = array_values(array_filter($rows, fn (array $row) => ($row[0] ?? "") !== ""));
 
-    $handle = fopen(__DIR__ . "/Lebensziele.csv", "r");
-    $data = [];
-    $index = 0;
-    while (($row = fgetcsv($handle, 1000, ';', '"', '\\')) !== FALSE) {
-        // do something with row values
-        if ($index >= 2) {
-            $data[] = $row;
-        }
-        $index++;
-    }
-
-    foreach ($data as $index => $row) {
+    foreach ($rows as $index => $row) {
         echo "\$lebensziel" . $index + 1 . " = new LebenszielDefinition(\n";
         echo "\t" . "id: LebenszielId::create(" . $index + 1 . "),\n";
-        echo "\t" . "name: '" . $row[0] . "',\n";
-        echo "\t" . "description: '" . $row[1] . "',\n";
+        echo "\t" . "name: " . phpString($row[0]) . ",\n";
+        echo "\t" . "description: " . phpString($row[1]) . ",\n";
         echo "\t" . "phaseDefinitions: [\n";
-        echo "\t\t" . "new LebenszielPhaseDefinition(\n";
-        echo "\t\t\t" . "lebenszielPhaseId: LebenszielPhaseId::PHASE_1,\n";
-        echo "\t\t\t" . "description: '" . $row[2] . "',\n";
-        echo "\t\t\t" . "investitionen: new MoneyAmount(" . floatval(str_replace(".", "", $row[3])) . "),\n";
-        echo "\t\t\t" . "bildungsKompetenzSlots: " . intval($row[4]) . ",\n";
-        echo "\t\t\t" . "freizeitKompetenzSlots: " . intval($row[5]) . ",\n";
-        echo "\t\t" . "),\n";
-        echo "\t\t" . "new LebenszielPhaseDefinition(\n";
-        echo "\t\t\t" . "lebenszielPhaseId: LebenszielPhaseId::PHASE_2,\n";
-        echo "\t\t\t" . "description: '" . $row[6] . "',\n";
-        echo "\t\t\t" . "investitionen: new MoneyAmount(" . floatval(str_replace(".", "", $row[7])) . "),\n";
-        echo "\t\t\t" . "bildungsKompetenzSlots: " . intval($row[8]) . ",\n";
-        echo "\t\t\t" . "freizeitKompetenzSlots: " . intval($row[9]) . ",\n";
-        echo "\t\t" . "),\n";
-        echo "\t\t" . "new LebenszielPhaseDefinition(\n";
-        echo "\t\t\t" . "lebenszielPhaseId: LebenszielPhaseId::PHASE_3,\n";
-        echo "\t\t\t" . "description: '" . $row[10] . "',\n";
-        echo "\t\t\t" . "investitionen: new MoneyAmount(" . floatval(str_replace(".", "", $row[11])) . "),\n";
-        echo "\t\t\t" . "bildungsKompetenzSlots: " . intval($row[12]) . ",\n";
-        echo "\t\t\t" . "freizeitKompetenzSlots: " . intval($row[13]) . ",\n";
-        echo "\t\t" . "),\n";
+        for ($phase = 1; $phase <= 3; $phase++) {
+            $firstColumn = 2 + ($phase - 1) * 4;
+            echo "\t\t" . "new LebenszielPhaseDefinition(\n";
+            echo "\t\t\t" . "lebenszielPhaseId: LebenszielPhaseId::PHASE_" . $phase . ",\n";
+            echo "\t\t\t" . "description: " . phpString($row[$firstColumn]) . ",\n";
+            echo "\t\t\t" . "investitionen: new MoneyAmount(" . parseMoney($row[$firstColumn + 1]) . "),\n";
+            // intval, because the cells contain texts like "2 Kompetenzsteine"
+            echo "\t\t\t" . "bildungsKompetenzSlots: " . intval($row[$firstColumn + 2]) . ",\n";
+            echo "\t\t\t" . "freizeitKompetenzSlots: " . intval($row[$firstColumn + 3]) . ",\n";
+            echo "\t\t" . "),\n";
+        }
         echo "\t" . "],\n";
         echo ");\n\n";
     }
-
-    fclose($handle);
-
 }
 
 
-//importMiniJobCards();
-//importJobCards();
-//importWeiterbildungCards();
-//importKategorieCards();
-//importEreignisCards();
-//importInvestitionenCards();
-//importKonjunkturphasen();
-importLebensziele();
+$importFunctions = [
+    "minijobs" => importMiniJobCards(...),
+    "jobs" => importJobCards(...),
+    "weiterbildungen" => importWeiterbildungCards(...),
+    "kategorie" => importKategorieCards(...),
+    "ereignisse" => importEreignisCards(...),
+    "immobilien" => importImmobilienCards(...),
+    "konjunkturphasen" => importKonjunkturphasen(...),
+    "lebensziele" => importLebensziele(...),
+];
 
-
-
-
-
+$type = $argv[1] ?? "";
+if (!array_key_exists($type, $importFunctions)) {
+    fwrite(STDERR, "Usage: php csv-importer.php <" . implode("|", array_keys($importFunctions)) . ">\n");
+    exit(1);
+}
+$importFunctions[$type]();
