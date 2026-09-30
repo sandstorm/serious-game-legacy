@@ -20,7 +20,7 @@
 [tools]
 # please keep node and yarn version in sync with what is specified in app/package.json
 node = "24"
-yarn = "4.12"
+yarn = "4.18.0"
 "ubi:adwinying/php" = "8.4"
 "github:composer/composer" = { version = "latest", asset_pattern = "*.phar", bin = "composer" }
 kubectl = "latest"

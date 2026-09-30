@@ -1,5 +1,5 @@
 {
-    "packageManager": "yarn@4.12.0",
+    "packageManager": "yarn@4.18.0",
     "private": true,
     "type": "module",
     "scripts": {
@@ -7,13 +7,12 @@
         "dev": "vite build -w"
     },
     "devDependencies": {
-        "axios": "^1.7.4",
-        "concurrently": "^9.0.1",
+        "axios": "^1.18.0",
         "laravel-echo": "^2.0.2",
         "laravel-vite-plugin": "^2.0",
         "pusher-js": "^8.4.0",
         "tailwindcss": "^3.4.17",
-        "vite": "^7.0"
+        "vite": "^7.3.5"
     },
     "dependencies": {
         "@alpinejs/focus": "^3.14.9",
@@ -27,7 +26,7 @@
         },
         "packageManager": {
             "name": "yarn",
-            "version": "4.12.0",
+            "version": "4.18.0",
             "onFail": "error"
         }
     }
