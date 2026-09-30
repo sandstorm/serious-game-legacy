@@ -238,7 +238,8 @@ abstract class TestCase extends BaseTestCase
                     scope: AuswirkungScopeEnum::CRYPTO,
                     value: 4
                 ),
-            ]
+            ],
+            zeitsteineDescription: '+1 Zeitstein für alle', // only a text, does not change the amount of Zeitsteine
         );
         KonjunkturphaseFinder::getInstance()->overrideKonjunkturphaseDefinitionsForTesting([
             $this->konjunkturphaseDefinition

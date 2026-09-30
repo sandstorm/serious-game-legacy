@@ -23,6 +23,7 @@ use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Insurance\InsuranceDefinition;
 use Domain\Definitions\Insurance\InsuranceFinder;
 use Domain\Definitions\Investments\InvestmentFinder;
+use Domain\Definitions\Konjunkturphase\Dto\DisplayedAuswirkung;
 use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
@@ -65,18 +66,26 @@ readonly class GameUiTester
                 $this->testCase->getKonjunkturphaseDefinition()->type->value,
                 'Auswirkungen',
                 ...array_map(
-                    fn (AuswirkungScopeEnum $scope) => $scope->value,
-                    AuswirkungScopeEnum::cases()
+                    fn (DisplayedAuswirkung $auswirkung) => $auswirkung->label,
+                    $this->testCase->getKonjunkturphaseDefinition()->getDisplayedAuswirkungen()
                 ),
                 ...array_map(
-                    fn (AuswirkungScopeEnum $scope) => rtrim(rtrim(number_format(
-                        $this->testCase->getKonjunkturphaseDefinition()->getAuswirkungByScope($scope)->value,
+                    fn (DisplayedAuswirkung $auswirkung) => rtrim(rtrim(number_format(
+                        $auswirkung->value,
                         10,
                         ',',
                         '.'
-                    ), '0'), ','),
-                    AuswirkungScopeEnum::cases()
+                    ), '0'), ',') . $auswirkung->unit,
+                    $this->testCase->getKonjunkturphaseDefinition()->getDisplayedAuswirkungen()
                 ),
+            ])
+            ->assertSee(count($this->testCase->getKonjunkturphaseDefinition()->getDisplayedAuswirkungDescriptions()) > 0
+                ? ['Weitere Auswirkungen', ...$this->testCase->getKonjunkturphaseDefinition()->getDisplayedAuswirkungDescriptions()]
+                : [])
+            // the Kursbonus is intentionally hidden from the players
+            ->assertDontSee([
+                AuswirkungScopeEnum::STOCKS_BONUS->value,
+                AuswirkungScopeEnum::CRYPTO->value,
             ])
             ->call('startKonjunkturphaseForPlayer');
 

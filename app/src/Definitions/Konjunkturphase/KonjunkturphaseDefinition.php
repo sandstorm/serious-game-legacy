@@ -9,6 +9,7 @@ use Domain\Definitions\Card\ValueObject\ModifierId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
 use Domain\Definitions\Konjunkturphase\Dto\ConditionalResourceChange;
+use Domain\Definitions\Konjunkturphase\Dto\DisplayedAuswirkung;
 use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
 use Domain\Definitions\Konjunkturphase\Dto\Zeitsteine;
 use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
@@ -73,6 +74,71 @@ class KonjunkturphaseDefinition
             scope: $scope,
             value: 0.0
         );
+    }
+
+    /**
+     * The Auswirkungen shown to the players (e.g. when the Konjunkturphase starts). Other Auswirkungen (e.g. the
+     * Kursbonus of Aktien, Crypto and Immobilien) are intentionally hidden from the players.
+     *
+     * @return DisplayedAuswirkung[]
+     */
+    public function getDisplayedAuswirkungen(): array
+    {
+        return [
+            new DisplayedAuswirkung(
+                label: 'Gehalt',
+                value: $this->modifierParameters->modifyGehaltPercent ?? 100, // 100 % = no modification
+                unit: '%',
+                isLowerBetter: false,
+            ),
+            new DisplayedAuswirkung(
+                label: 'Lebenshaltungskosten',
+                value: $this->modifierParameters->modifyLebenshaltungskostenMultiplier ?? 100, // 100 % = no modification
+                unit: '%',
+                isLowerBetter: true,
+            ),
+            new DisplayedAuswirkung(
+                label: AuswirkungScopeEnum::LOANS_INTEREST_RATE->value,
+                value: $this->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->value,
+                unit: '%',
+                isLowerBetter: true,
+            ),
+            new DisplayedAuswirkung(
+                label: AuswirkungScopeEnum::DIVIDEND->value,
+                value: $this->getAuswirkungByScope(AuswirkungScopeEnum::DIVIDEND)->value,
+                unit: ' €',
+                isLowerBetter: false,
+            ),
+        ];
+    }
+
+    /**
+     * Texts describing the other Auswirkungen of the Konjunkturphase, which are shown to the players: additional
+     * modifiers (e.g. Kreditsperre), the conditional ResourceChanges and the Zeitsteine.
+     *
+     * @return string[]
+     */
+    public function getDisplayedAuswirkungDescriptions(): array
+    {
+        // these modifiers are either already shown in the Auswirkungen or intentionally hidden from the players
+        $modifierIdsToHide = [
+            ModifierId::GEHALT_CHANGE,
+            ModifierId::LEBENSHALTUNGSKOSTEN_KONJUNKTURPHASE_MULTIPLIER,
+            ModifierId::BILDUNG_UND_KARRIERE_COST,
+            ModifierId::SOZIALES_UND_FREIZEIT_COST,
+        ];
+        $descriptions = [];
+        foreach ($this->modifierIds as $modifierId) {
+            if (!in_array($modifierId, $modifierIdsToHide, true)) {
+                $descriptions[] = $modifierId->value;
+            }
+        }
+        foreach ($this->conditionalResourceChanges as $conditionalResourceChange) {
+            $descriptions[] = $conditionalResourceChange->description;
+        }
+        $descriptions[] = $this->zeitsteineDescription;
+
+        return array_values(array_filter($descriptions, fn (string $description) => $description !== ''));
     }
 
     public function getDividend(): MoneyAmount

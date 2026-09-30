@@ -1,5 +1,3 @@
-@use('Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum')
-
 @props(['konjunkturphase' => null, 'previousKonjunkturphase' => null, 'currentPage' => 0])
 
 {{-- !!! Livewire components MUST have a single root element !!! --}}
@@ -56,15 +54,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (AuswirkungScopeEnum::cases() as $scope)
+                        @php
+                            $previousAuswirkungen = $previousKonjunkturphase?->getDisplayedAuswirkungen() ?? [];
+                        @endphp
+                        @foreach ($konjunkturphase->getDisplayedAuswirkungen() as $index => $auswirkung)
                             @php
-                                $currentValue = $konjunkturphase->getAuswirkungByScope($scope)->value;
-                                $previousValue = $previousKonjunkturphase?->getAuswirkungByScope($scope)->value;
-                                $suffix = $scope === AuswirkungScopeEnum::LOANS_INTEREST_RATE ? '%' : '';
-                                $lowerIsBetter = $scope === AuswirkungScopeEnum::LOANS_INTEREST_RATE;
+                                $currentValue = $auswirkung->value;
+                                $previousValue = $previousAuswirkungen[$index]->value ?? null;
+                                $suffix = $auswirkung->unit;
+                                $lowerIsBetter = $auswirkung->isLowerBetter;
                             @endphp
                             <tr>
-                                <td>{{ $scope->value }}</td>
+                                <td>{{ $auswirkung->label }}</td>
                                 @if ($hasPrevious)
                                     <td><x-formatted-number :value="$previousValue" :suffix="$suffix" /></td>
                                 @endif
@@ -86,6 +87,18 @@
                             </tr>
                         @endforeach
                     </tbody>
+                    @if (count($konjunkturphase->getDisplayedAuswirkungDescriptions()) > 0)
+                        <tbody>
+                            <tr>
+                                <th colspan="{{ $hasPrevious ? 4 : 2 }}">Weitere Auswirkungen</th>
+                            </tr>
+                            @foreach ($konjunkturphase->getDisplayedAuswirkungDescriptions() as $auswirkungDescription)
+                                <tr>
+                                    <td colspan="{{ $hasPrevious ? 4 : 2 }}">{{ $auswirkungDescription }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    @endif
                 </table>
             </div>
         @endif
