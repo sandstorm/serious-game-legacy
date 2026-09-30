@@ -85,7 +85,7 @@ class StartKonjunkturphaseForPlayerAktion extends Aktion
         }
         if ($conditionalResourceChange->isGrundsteuer) {
             $grundSteuerAmount = $conditionalResourceChange->resourceChanges->guthabenChange->value;
-            $numberOfProperties = 0; // TODO use real number of Real Estate Properties once it's implemented
+            $numberOfProperties = count(PlayerState::getImmoblienOwnedByPlayer($gameEvents, $playerId));
             return new ResourceChanges(guthabenChange: new MoneyAmount($grundSteuerAmount * $numberOfProperties));
         }
         if ($conditionalResourceChange->lohnsonderzahlungPercent !== null) {
