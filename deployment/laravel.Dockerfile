@@ -4,11 +4,11 @@
 # BUT with pinned versions. the "crane" tool from https://github.com/google/go-containerregistry/blob/main/cmd/crane/README.md is useful
 # for determining the versions, along with the following lines:
 # crane ls dunglas/frankenphp | grep builder | grep 8\.3 | grep 1\.9\.1
-# crane ls caddy | grep builder | grep 2.11.2
-FROM dunglas/frankenphp:1.12-builder-php8.4-trixie AS builder
+# crane ls caddy | grep builder | grep 2.11.4
+FROM dunglas/frankenphp:1.12.7-builder-php8.4-trixie AS builder
 # Copy xcaddy in the builder image
 # WHY: We want to build our own Caddy with specific plugins. We use xcaddy to do that.
-COPY --from=caddy:2.11.2-builder /usr/bin/xcaddy /usr/bin/xcaddy
+COPY --from=caddy:2.11.4-builder /usr/bin/xcaddy /usr/bin/xcaddy
 
 # CGO must be enabled to build FrankenPHP
 # MODIFICATION: we added build module caching (--mount=...) here, + GOMODCACHE + GOCACHE declarations
@@ -21,7 +21,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked \
     CGO_LDFLAGS="$(php-config --ldflags) $(php-config --libs)" \
     GOMODCACHE=/go/pkg/mod \
     GOCACHE=/root/.cache/go-build \
-    xcaddy build v2.11.2 \
+    xcaddy build v2.11.4 \
         --output /usr/local/bin/frankenphp \
         --with github.com/dunglas/frankenphp=./ \
         --with github.com/dunglas/frankenphp/caddy=./caddy/ \
@@ -33,7 +33,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked \
 
 ################# HERE THE FRANKENPHP BUILD STOPS, and custom logic starts ##################################
 
-FROM dunglas/frankenphp:1.12-php8.4-trixie AS php-base
+FROM dunglas/frankenphp:1.12.7-php8.4-trixie AS php-base
 
 # Replace the official binary by the one contained your custom modules
 COPY --from=builder /usr/local/bin/frankenphp /usr/local/bin/frankenphp
@@ -86,7 +86,7 @@ RUN echo "${CARETAKERD_CHECKSUM_amd64#sha256:}  caretakerd.tar.gz" | sha256sum -
     rm caretakerd.tar.gz
 
 
-COPY --from=composer /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
 ADD deployment/laravel-root/ /
 
