@@ -110,6 +110,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
                     resourceChanges: new ResourceChanges(
                         guthabenChange: new MoneyAmount(Configuration::STARTKAPITAL_VALUE),
                     ),
+                    definitionsVersion: Configuration::DEFINITIONS_VERSION,
                 ),
             );
         }
@@ -126,6 +127,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
                 resourceChanges: new ResourceChanges(
                     guthabenChange: new MoneyAmount(Configuration::STARTKAPITAL_VALUE),
                 ),
+                definitionsVersion: Configuration::DEFINITIONS_VERSION,
             ),
         );
     }

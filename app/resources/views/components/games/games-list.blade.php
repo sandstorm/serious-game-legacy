@@ -25,10 +25,19 @@
                     @endforeach
                 </div>
                 <div class="games-list__game-status">
-                    <strong>Status:</strong> @if ($game->isInGamePhase) Gestartet @else Vorbereitung @endif
+                    <strong>Status:</strong>
+                    @if (!$game->isPlayable)
+                        Nicht mehr spielbar (mit einer anderen Version des Spiels erstellt)
+                    @elseif ($game->isInGamePhase)
+                        Gestartet
+                    @else
+                        Vorbereitung
+                    @endif
                 </div>
                 <div class="games-list__game-action">
-                    @if($game->game->isCreatedByPlayer())
+                    @if(!$game->isPlayable)
+                        {{-- games created on a different version of the game cannot be continued --}}
+                    @elseif($game->game->isCreatedByPlayer())
                         <a class="button button--type-primary" href={{route('game-play.player-links', ['gameId' => $game->game->id])}}>
                             Spiel beitreten
                         </a>

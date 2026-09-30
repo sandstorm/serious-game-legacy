@@ -84,6 +84,12 @@ class GameUi extends Component
 
     public function render(): View
     {
+        // Games created on a different version of the game cannot be continued. This also covers browser tabs that
+        // were open while the new version was deployed.
+        if (!PreGameState::isPlayableWithCurrentDefinitions($this->gameEvents)) {
+            return view('livewire.screens.outdated-game');
+        }
+
         // Auto-derive flags driven by event-store state. These must run BEFORE the
         // phase dispatch — Livewire 3 captures public properties *before* its own
         // renderingTraitName() hooks fire (see HandleComponents::getView), so we
@@ -121,6 +127,10 @@ class GameUi extends Component
      */
     public function handleCommand(CommandInterface $command): void
     {
+        if (!PreGameState::isPlayableWithCurrentDefinitions($this->gameEvents)) {
+            // the command would be rejected by the core game logic -> do nothing, render() shows a notice instead
+            return;
+        }
         $this->coreGameLogic->handle($this->gameId, $command);
         $this->gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
     }

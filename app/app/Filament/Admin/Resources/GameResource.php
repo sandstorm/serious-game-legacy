@@ -86,6 +86,19 @@ class GameResource extends Resource
         );
     }
 
+    /**
+     * Proxy method to test the protected function `getLogs`.
+     * Calling `...ForTesting` functions outside of test code will be caught by phpstan.
+     * @param Game $record
+     * @param ForCoreGameLogic $coreGameLogic
+     * @return string
+     * @throws \JsonException
+     */
+    public static function getLogsForTesting(Game $record, ForCoreGameLogic $coreGameLogic): string
+    {
+        return self::getLogs($record, $coreGameLogic);
+    }
+
     public static function table(Table $table): Table
     {
         return $table

@@ -8,6 +8,7 @@ use Domain\CoreGameLogic\CommandHandler\CommandBus;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\InitializationCommandHandler;
+use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\KonjunkturphaseCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Neos\EventStore\Helper\InMemoryEventStore;
@@ -58,6 +59,12 @@ final class CoreGameLogicApp implements ForCoreGameLogic
     public function handle(GameId $gameId, CommandHandler\CommandInterface $command): void
     {
         [$gameEvents, $version] = $this->gameEventStore->getGameEventsAndLastVersion($gameId);
+        if (!PreGameState::isPlayableWithCurrentDefinitions($gameEvents)) {
+            throw new \RuntimeException(
+                'Game ' . $gameId->value . ' was created on a different version of the game and cannot be continued',
+                1790760000
+            );
+        }
         $eventsToPublish = $this->commandBus->handle($command, $gameEvents);
         $this->gameEventStore->commit($gameId, $eventsToPublish, $version === null ? ExpectedVersion::NO_STREAM() : ExpectedVersion::fromVersion($version));
     }
