@@ -1187,7 +1187,6 @@ describe('getLoansForPlayer', function () {
         /** @var TakeOutALoanForm $takeoutLoanForm */
         $takeoutLoanForm = $takeoutLoanFormComponent->form;
         $takeoutLoanForm->loanAmount = 10000;
-        $takeoutLoanForm->sumOfAllAssets = Configuration::STARTKAPITAL_VALUE;
         $takeoutLoanForm->zinssatz = 4;
 
         // player 0 takes out a loan
@@ -1295,7 +1294,6 @@ describe('getOpenRatesForLoan', function () {
         /** @var TakeOutALoanForm $takeoutLoanForm */
         $takeoutLoanForm = $takeoutLoanFormComponent->form;
         $takeoutLoanForm->loanAmount = $loanAmount;
-        $takeoutLoanForm->sumOfAllAssets = $initialGuthaben;
         $takeoutLoanForm->zinssatz = 4;
 
         // player 0 takes out a loan
@@ -1382,7 +1380,6 @@ describe("getAnnualExpensesForPlayer", function () {
         /** @var TakeOutALoanForm $takeoutLoanForm */
         $takeoutLoanForm = $takeoutLoanFormComponent->form;
         $takeoutLoanForm->loanAmount = 10000;
-        $takeoutLoanForm->sumOfAllAssets = Configuration::STARTKAPITAL_VALUE;
         $takeoutLoanForm->zinssatz = 4;
 
         // player 0 takes out a loan

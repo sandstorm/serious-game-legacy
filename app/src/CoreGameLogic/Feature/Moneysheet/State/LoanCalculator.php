@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Domain\CoreGameLogic\Feature\Moneysheet\State;
 
+use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsLoanAmountWithinLimitValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
 
@@ -22,6 +26,20 @@ class LoanCalculator
                 ? new MoneyAmount($sumOfAlAssets * 0.5 - $obligations)
                 : new MoneyAmount($sumOfAlAssets * 0.8 - $obligations);
         }
+    }
+
+    /**
+     * The max loan amount based on the current state of the player. Single source of truth for the credit limit
+     * (used for validation in {@see IsLoanAmountWithinLimitValidator} and for display in the UI).
+     */
+    public static function getMaxLoanAmountForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
+    {
+        return self::getMaxLoanAmount(
+            PlayerState::getTotalValueOfAllAssetsForPlayer($gameEvents, $playerId)->add(PlayerState::getGuthabenForPlayer($gameEvents, $playerId))->value,
+            PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId)->value,
+            MoneySheetState::getTotalOpenRepaymentValueForAllLoans($gameEvents, $playerId)->value,
+            PlayerState::wasPlayerInsolventInThePast($gameEvents, $playerId),
+        );
     }
 
     /**

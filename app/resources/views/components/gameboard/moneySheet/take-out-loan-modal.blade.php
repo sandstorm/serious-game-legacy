@@ -5,7 +5,7 @@
 @use('Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum')
 @use('Domain\Definitions\Configuration\Configuration')
 @use('Domain\CoreGameLogic\Feature\Moneysheet\State\LoanCalculator')
-@use('Domain\Definitions\Card\ValueObject\MoneyAmount')
+@use('Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState')
 
 @props([
     'gameEvents' => null,
@@ -23,19 +23,19 @@
             <div class="take-out-loan__info-section">
                 <small>Dein Gehalt</small>
                 <span class="badge-with-background">
-                    <x-money-amount :value="new MoneyAmount($this->takeOutALoanForm->salary)" />
+                    <x-money-amount :value="PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId)" />
                 </span>
             </div>
             <div class="take-out-loan__info-section">
                 <small>Deine Vermögenswerte</small>
                 <span class="badge-with-background">
-                    <x-money-amount :value="new MoneyAmount($this->takeOutALoanForm->sumOfAllAssets)" />
+                    <x-money-amount :value="PlayerState::getTotalValueOfAllAssetsForPlayer($gameEvents, $playerId)->add(PlayerState::getGuthabenForPlayer($gameEvents, $playerId))" />
                 </span>
             </div>
             <div class="take-out-loan__info-section">
                 <small>Deine Verbindlichkeiten</small>
                 <span class="badge-with-background">
-                    <x-money-amount :value="new MoneyAmount($this->takeOutALoanForm->obligations)" />
+                    <x-money-amount :value="MoneySheetState::getTotalOpenRepaymentValueForAllLoans($gameEvents, $playerId)" />
                 </span>
             </div>
         </div>
@@ -44,7 +44,7 @@
             <x-form.textfield wire:model="takeOutALoanForm.loanAmount" id="loanAmount" name="loanAmount" type="number" min="1" step="1" />
             @error('takeOutALoanForm.loanAmount') <span class="form-error">{{ $message }}</span> @enderror
             <p>
-                <strong>Kreditlimit: </strong> <x-money-amount :value="LoanCalculator::getMaxLoanAmount($this->takeOutALoanForm->sumOfAllAssets, $this->takeOutALoanForm->salary, $this->takeOutALoanForm->obligations, $this->takeOutALoanForm->wasPlayerInsolventInThePast)" />
+                <strong>Kreditlimit: </strong> <x-money-amount :value="LoanCalculator::getMaxLoanAmountForPlayer($gameEvents, $playerId)" />
                 <br />
                 @if (PlayerState::getJobForPlayer($gameEvents, $playerId) !== null)
                     @if (PlayerState::wasPlayerInsolventInThePast($gameEvents, $playerId))
