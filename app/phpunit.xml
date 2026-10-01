@@ -25,8 +25,8 @@
         <env name="APP_ENV" value="testing"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
-        <!-- force: the docker container sets CACHE_STORE=redis, tests must not share state via the dev redis -->
-        <env name="CACHE_STORE" value="array" force="true"/>
+        <!-- the docker container / CI set CACHE_STORE=redis, which wins over this value -> see tests/Pest.php -->
+        <env name="CACHE_STORE" value="array"/>
         <!-- <env name="DB_CONNECTION" value="sqlite"/> -->
         <!-- <env name="DB_DATABASE" value=":memory:"/> -->
         <env name="MAIL_MAILER" value="array"/>

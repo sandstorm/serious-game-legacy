@@ -32,6 +32,8 @@ beforeEach(function () {
 describe('create game', function () {
     it('offers the allowed numbers of players in the form', function () {
         /** @var TestCase $this */
+        // the CI does not build the frontend assets
+        $this->withoutVite();
         $this->get('/new-game')
             ->assertOk()
             ->assertSeeInOrder(['2 Spieler:innen', '3 Spieler:innen', '4 Spieler:innen'])
