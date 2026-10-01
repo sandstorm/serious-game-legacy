@@ -12,6 +12,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
+use Domain\Definitions\Configuration\Configuration;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -78,8 +79,9 @@ class GamePlayController extends Controller
             abort(403);
         }
 
+        // validate before creating anything, the domain rejects an invalid number of players as well
         $validated = Validator::make($request->all(), [
-            'numberOfPlayers' => 'required|integer|gte:2',
+            'numberOfPlayers' => 'required|integer|between:' . Configuration::MIN_NUMBER_OF_PLAYERS . ',' . Configuration::MAX_NUMBER_OF_PLAYERS,
         ])->validate();
 
         $gameId = $this->startGame($loggedInPlayer, intval($validated['numberOfPlayers']));

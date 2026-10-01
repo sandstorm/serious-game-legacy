@@ -103,6 +103,11 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
             throw new \RuntimeException('Game has already started', 1746713493);
         }
 
+        $numberOfPlayers = count($command->fixedPlayerIdsForTesting) > 0 ? count($command->fixedPlayerIdsForTesting) : $command->numberOfPlayers;
+        if ($numberOfPlayers < Configuration::MIN_NUMBER_OF_PLAYERS || $numberOfPlayers > Configuration::MAX_NUMBER_OF_PLAYERS) {
+            throw new \RuntimeException('Number of players must be between ' . Configuration::MIN_NUMBER_OF_PLAYERS . ' and ' . Configuration::MAX_NUMBER_OF_PLAYERS, 1790886595);
+        }
+
         if (count($command->fixedPlayerIdsForTesting) > 0) {
             return GameEventsToPersist::with(
                 new PreGameStarted(

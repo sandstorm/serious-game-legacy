@@ -18,6 +18,13 @@ final readonly class Configuration
     final public const DEFINITIONS_VERSION = 1;
 
     /**
+     * Allowed number of players per game
+     * @var int
+     */
+    final public const MIN_NUMBER_OF_PLAYERS = 2;
+    final public const MAX_NUMBER_OF_PLAYERS = 4;
+
+    /**
      * The initial capital for each player
      * @var int
      */

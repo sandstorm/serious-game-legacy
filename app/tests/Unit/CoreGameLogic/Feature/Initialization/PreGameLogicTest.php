@@ -106,6 +106,40 @@ test('PreGameLogic can only start once', function () {
     ));
 })->throws(RuntimeException::class);
 
+test('PreGameLogic can not start with more than 4 players', function () {
+    $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
+        numberOfPlayers: 5,
+    ));
+})->throws(RuntimeException::class, 'Number of players must be between 2 and 4', 1790886595);
+
+test('PreGameLogic can not start with more than 4 fixed player ids', function () {
+    // the GamePlayController starts games with fixed player ids
+    $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
+        numberOfPlayers: 5,
+    )->withFixedPlayerIds([
+        PlayerId::fromString('p1'),
+        PlayerId::fromString('p2'),
+        PlayerId::fromString('p3'),
+        PlayerId::fromString('p4'),
+        PlayerId::fromString('p5'),
+    ]));
+})->throws(RuntimeException::class, 'Number of players must be between 2 and 4', 1790886595);
+
+test('PreGameLogic can not start with less than 2 players', function () {
+    $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
+        numberOfPlayers: 1,
+    ));
+})->throws(RuntimeException::class, 'Number of players must be between 2 and 4', 1790886595);
+
+test('PreGameLogic can start with 4 players', function () {
+    /** @var TestCase $this */
+    $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
+        numberOfPlayers: 4,
+    ));
+
+    expect(PreGameState::playerIds($this->coreGameLogic->getGameEvents($this->gameId)))->toHaveCount(4);
+});
+
 test('SetNameForPlayer throws if unknown PlayerId', function () {
     $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
         numberOfPlayers: 2,

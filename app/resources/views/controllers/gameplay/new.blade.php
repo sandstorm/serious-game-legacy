@@ -1,3 +1,5 @@
+@use('Domain\Definitions\Configuration\Configuration')
+
 <x-layout>
     <x-slot:title>Neues Spiel erstellen</x-slot:title>
 
@@ -12,44 +14,28 @@
         action={{ route('game-play.create-game') }}
     >
         @csrf
-        <input type="hidden" id="numberOfPlayers" name="numberOfPlayers" required="required" min="2" max="4" :value="amountOfPlayers" />
+        <input type="hidden" id="numberOfPlayers" name="numberOfPlayers" required="required" min="{{ Configuration::MIN_NUMBER_OF_PLAYERS }}" max="{{ Configuration::MAX_NUMBER_OF_PLAYERS }}" :value="amountOfPlayers" />
 
         <h1>Anzahl der Spielenden wählen</h1>
 
         <div class="create-game__players">
-            <button
-                type="button"
-                class="button button--type-icon"
-                :class="amountOfPlayers === 2 ? 'button--type-primary' : 'button--type-secondary'"
-                title="2 Spieler:innen"
-                x-on:click="amountOfPlayers = 2"
-            >
-                2
-            </button>
-            <button
-                type="button"
-                class="button button--type-icon"
-                :class="amountOfPlayers === 3 ? 'button--type-primary' : 'button--type-secondary'"
-                title="2 Spieler:innen"
-                x-on:click="amountOfPlayers = 3"
-            >
-                3
-            </button>
-            <button
-                type="button"
-                class="button button--type-icon"
-                :class="amountOfPlayers === 4 ? 'button--type-primary' : 'button--type-secondary'"
-                title="2 Spieler:innen"
-                x-on:click="amountOfPlayers = 4"
-            >
-                4
-            </button>
+            @for ($numberOfPlayers = Configuration::MIN_NUMBER_OF_PLAYERS; $numberOfPlayers <= Configuration::MAX_NUMBER_OF_PLAYERS; $numberOfPlayers++)
+                <button
+                    type="button"
+                    class="button button--type-icon"
+                    :class="amountOfPlayers === {{ $numberOfPlayers }} ? 'button--type-primary' : 'button--type-secondary'"
+                    title="{{ $numberOfPlayers }} Spieler:innen"
+                    x-on:click="amountOfPlayers = {{ $numberOfPlayers }}"
+                >
+                    {{ $numberOfPlayers }}
+                </button>
+            @endfor
         </div>
 
         <button
             type="submit"
             class="button button--type-primary"
-            :disabled="amountOfPlayers < 2"
+            :disabled="amountOfPlayers < {{ Configuration::MIN_NUMBER_OF_PLAYERS }}"
         >
             Weiter
         </button>
