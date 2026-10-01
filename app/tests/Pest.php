@@ -19,6 +19,9 @@ pest()->extend(Tests\TestCase::class)
         // It is easier to debug broken tests if we disable exception handling
         // by default with the next line. To opt out from this, use $this->withExceptionHandling() in the testcase.
         $this->withoutExceptionHandling();
+        // The docker container and the CI set CACHE_STORE=redis, which wins over phpunit.xml (even with force="true",
+        // because Laravel reads $_SERVER first). Tests must not share state (e.g. rate limiter counters) via redis.
+        config(['cache.default' => 'array']);
         CardFinder::initializeForTesting();
         KonjunkturphaseFinder::initializeForTesting();
     })
