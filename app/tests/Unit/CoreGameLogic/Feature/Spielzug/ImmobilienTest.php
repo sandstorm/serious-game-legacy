@@ -374,6 +374,51 @@ describe('handleSellImmobilie', function () {
             )
         );
     })->throws(\RuntimeException::class, 'Diese Immobilie befindet sich nicht in deinem Besitz', 1754909475);
+
+    it('throws an error if the player tries to sell an immobilie they have already sold', function () {
+        /** @var TestCase $this */
+        $cardForTesting = new ImmobilienCardDefinition(
+            id: new CardId('inv1'),
+            title: 'Kauf Wohnung',
+            description: 'Eine Wohnung in einem neuen Sudierendenwohnheim steht zum Verkauf.',
+            phaseId: LebenszielPhaseId::PHASE_1,
+            resourceChanges: new ResourceChanges(
+                guthabenChange: new MoneyAmount(-20000),
+            ),
+            annualRent: new MoneyAmount(1500),
+            immobilienTyp: ImmobilienType::WOHNUNG
+        );
+        $this->startNewKonjunkturphaseWithCardsOnTop([$cardForTesting]);
+
+        // player 0 buys the immobilie
+        $this->handle(new StartSpielzug($this->players[0]));
+        $this->handle(BuyImmobilieForPlayer::create($this->players[0], new CardId('inv1')));
+        $this->handle(new EndSpielzug($this->players[0]));
+
+        // player 1 does mini job
+        $this->handle(new StartSpielzug($this->players[1]));
+        $this->handle(DoMinijob::create($this->players[1]));
+        $this->handle(new EndSpielzug($this->players[1]));
+
+        /** @var PlayerHasBoughtImmobilie $boughtEvent */
+        $boughtEvent = $this->getGameEvents()->findLast(PlayerHasBoughtImmobilie::class);
+
+        // player 0 sells the immobilie
+        $this->handle(new StartSpielzug($this->players[0]));
+        $this->handle(SellImmobilieForPlayer::create($this->players[0], $boughtEvent->getImmobilieId()));
+        $this->handle(new EndSpielzug($this->players[0]));
+
+        expect(PlayerState::getImmoblienOwnedByPlayer($this->getGameEvents(), $this->players[0]))->toHaveCount(0);
+
+        // player 1 does mini job
+        $this->handle(new StartSpielzug($this->players[1]));
+        $this->handle(DoMinijob::create($this->players[1]));
+        $this->handle(new EndSpielzug($this->players[1]));
+
+        // player 0 tries to sell the same immobilie again
+        $this->handle(new StartSpielzug($this->players[0]));
+        $this->handle(SellImmobilieForPlayer::create($this->players[0], $boughtEvent->getImmobilieId()));
+    })->throws(\RuntimeException::class, 'Diese Immobilie befindet sich nicht in deinem Besitz', 1754909475);
 });
 
 describe('Sell Immoblien to Avoid insolvenz', function () {

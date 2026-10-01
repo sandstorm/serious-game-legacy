@@ -7,6 +7,7 @@ namespace Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasBoughtImmobilie;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\Feature\Spielzug\ValueObject\ImmobilieId;
 use Domain\CoreGameLogic\PlayerId;
 
@@ -24,13 +25,13 @@ final class DoesPlayerOwnImmobilieValidator extends AbstractValidator
 
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
-        $immobilieBoughtEvent = $gameEvents->findLastOrNullWhere(
-            fn ($event) => $event instanceof PlayerHasBoughtImmobilie
-                && $event->getPlayerId()->equals($playerId)
-                && $event->getImmobilieId()->equals($this->immobilieId)
+        // only Immobilien that have not been sold yet
+        $ownsImmobilie = array_any(
+            PlayerState::getImmoblienOwnedByPlayer($gameEvents, $playerId),
+            fn (PlayerHasBoughtImmobilie $event) => $event->getImmobilieId()->equals($this->immobilieId)
         );
 
-        if ($immobilieBoughtEvent === null) {
+        if (!$ownsImmobilie) {
             return new AktionValidationResult(
                 canExecute: false,
                 reason: 'Diese Immobilie befindet sich nicht in deinem Besitz.',
