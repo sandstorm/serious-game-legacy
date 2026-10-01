@@ -33,6 +33,7 @@ use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
 use Illuminate\Events\Dispatcher;
 use Illuminate\View\View;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class GameUi extends Component
@@ -57,8 +58,12 @@ class GameUi extends Component
 
     // injected from outside -> game-play.blade.php
     // Not the current player, but the player connected to THIS SESSION
+    // #[Locked] -> must never be changed by the client, otherwise players could act as other players or in other games
+    #[Locked]
     public PlayerId $myself;
+    #[Locked]
     public GameId $gameId;
+    #[Locked]
     public bool $showRoleSelection = false;
 
     private Dispatcher $eventDispatcher;
@@ -114,9 +119,12 @@ class GameUi extends Component
     }
 
     /**
+     * Must not be public: Livewire exposes public methods to the client and sends their return value back,
+     * which would leak the whole event stream (e.g. the order of all card piles).
+     *
      * @return GameEvents
      */
-    public function getGameEvents(): GameEvents
+    protected function getGameEvents(): GameEvents
     {
         return $this->gameEvents;
     }
@@ -125,7 +133,7 @@ class GameUi extends Component
      * Always use this method to execute commands in the frontend, because it will
      * also update the local gameEvents.
      */
-    public function handleCommand(CommandInterface $command): void
+    protected function handleCommand(CommandInterface $command): void
     {
         if (!PreGameState::isPlayableWithCurrentDefinitions($this->gameEvents)) {
             // the command would be rejected by the core game logic -> do nothing, render() shows a notice instead
