@@ -46,6 +46,23 @@ describe('handleTakeOutALoanForPlayer', function () {
 
     })->throws(\RuntimeException::class, "Cannot take out a loan: Du bist insolvent.", 1756200359);
 
+    it('throws an exception when the loan amount exceeds the credit limit of the player', function () {
+        /** @var TestCase $this */
+        // player has no job and only the Startkapital -> credit limit is 80% of the Startkapital
+        $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
+            $this->players[0],
+            1_000_000
+        ));
+    })->throws(\RuntimeException::class, 'Cannot take out a loan: Du kannst keinen Kredit aufnehmen, der höher ist als das Kreditlimit.', 1756200359);
+
+    it('throws an exception when the loan amount is not positive', function () {
+        /** @var TestCase $this */
+        $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
+            $this->players[0],
+            0
+        ));
+    })->throws(\RuntimeException::class, 'Cannot take out a loan: Der Kreditbetrag muss größer als 0 sein.', 1756200359);
+
     it('adds the loan amount to the player\s Guthaben', function () {
         /** @var TestCase $this */
 
@@ -57,7 +74,6 @@ describe('handleTakeOutALoanForPlayer', function () {
         /** @var TakeOutALoanForm $takeoutLoanForm */
         $takeoutLoanForm = $takeoutLoanFormComponent->form;
         $takeoutLoanForm->loanAmount = $loanAmount;
-        $takeoutLoanForm->sumOfAllAssets = Configuration::STARTKAPITAL_VALUE;
         $takeoutLoanForm->zinssatz = 4;
 
         // player 0 takes out a loan
@@ -87,7 +103,6 @@ describe('handleRepayLoanForPlayer', function () {
         /** @var TakeOutALoanForm $takeoutLoanForm */
         $takeoutLoanForm = $takeoutLoanFormComponent->form;
         $takeoutLoanForm->loanAmount = $loanAmount;
-        $takeoutLoanForm->sumOfAllAssets = Configuration::STARTKAPITAL_VALUE;
         $takeoutLoanForm->zinssatz = 4;
 
         // player 0 takes out a loan
@@ -140,7 +155,6 @@ describe('handleRepayLoanForPlayer', function () {
         /** @var TakeOutALoanForm $takeoutLoanForm */
         $takeoutLoanForm = $takeoutLoanFormComponent->form;
         $takeoutLoanForm->loanAmount = $loanAmount;
-        $takeoutLoanForm->sumOfAllAssets = Configuration::STARTKAPITAL_VALUE;
         $takeoutLoanForm->zinssatz = 5;
 
         // player 0 takes out a loan

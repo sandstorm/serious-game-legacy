@@ -12,6 +12,7 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasTakenOutForPlayer;
 use Domain\Definitions\Insurance\ValueObject\InsuranceTypeEnum;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
@@ -367,6 +368,45 @@ describe('GameUi', function () {
             $playerBComponent
                 ->call('closeSellInvestmentsModal')
                 ->assertSet('sellInvestmentsModalIsVisible', false);
+        });
+    });
+
+    describe('take out a loan', function () {
+        test('a loan above the credit limit is rejected with an error at the input field', function () {
+            /** @var TestCase $this */
+            new GameUiTester($this, $this->getPlayers()[0], 'Player 0')
+                ->startGame()
+                ->startTurn()
+                ->testableGameUi
+                ->call('showTakeOutALoan')
+                ->set('takeOutALoanForm.loanAmount', 1_000_000)
+                ->call('takeOutALoan')
+                ->assertHasErrors(['takeOutALoanForm.loanAmount' => 'Du kannst keinen Kredit aufnehmen, der höher ist als das Kreditlimit.'])
+                // the error is rendered at the input field of the (still open) form
+                ->assertSet('takeOutALoanIsVisible', true)
+                ->assertSeeHtml('<span class="form-error">Du kannst keinen Kredit aufnehmen, der höher ist als das Kreditlimit.</span>');
+
+            expect($this->getGameEvents()->findLastOrNull(LoanWasTakenOutForPlayer::class))->toBeNull();
+        });
+
+        test('a loan above the credit limit is rejected even if the client tampers with the form values', function () {
+            /** @var TestCase $this */
+            new GameUiTester($this, $this->getPlayers()[0], 'Player 0')
+                ->startGame()
+                ->startTurn()
+                ->testableGameUi
+                ->call('showTakeOutALoan')
+                // a manipulated request could send arbitrary values for any form property
+                ->set('takeOutALoanForm.sumOfAllAssets', 1_000_000_000)
+                ->set('takeOutALoanForm.salary', 1_000_000_000)
+                ->set('takeOutALoanForm.loanAmount', 1_000_000)
+                ->call('takeOutALoan')
+                ->assertHasErrors(['takeOutALoanForm.loanAmount' => 'Du kannst keinen Kredit aufnehmen, der höher ist als das Kreditlimit.'])
+                // the error is rendered at the input field of the (still open) form
+                ->assertSet('takeOutALoanIsVisible', true)
+                ->assertSeeHtml('<span class="form-error">Du kannst keinen Kredit aufnehmen, der höher ist als das Kreditlimit.</span>');
+
+            expect($this->getGameEvents()->findLastOrNull(LoanWasTakenOutForPlayer::class))->toBeNull();
         });
     });
 });

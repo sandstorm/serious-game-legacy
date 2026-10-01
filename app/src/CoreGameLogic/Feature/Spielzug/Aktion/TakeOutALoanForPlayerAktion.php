@@ -9,6 +9,7 @@ use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\LoanCalculator;
 use Domain\CoreGameLogic\Feature\Moneysheet\ValueObject\LoanId;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsLoanAmountWithinLimitValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerAllowedToTakeOutALoanValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerNotInsolventValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
@@ -29,7 +30,11 @@ class TakeOutALoanForPlayerAktion extends Aktion
     public function validate(PlayerId $playerId, GameEvents $gameEvents): AktionValidationResult
     {
         $validator = new IsPlayerAllowedToTakeOutALoanValidator();
-        $validator->setNext(new IsPlayerNotInsolventValidator());
+        $next = $validator->setNext(new IsPlayerNotInsolventValidator());
+        // without an amount we only check whether the player is allowed to take out a loan at all (e.g. to show the button)
+        if ($this->loanAmount !== null) {
+            $next->setNext(new IsLoanAmountWithinLimitValidator($this->loanAmount));
+        }
         return $validator->validate($gameEvents, $playerId);
     }
 

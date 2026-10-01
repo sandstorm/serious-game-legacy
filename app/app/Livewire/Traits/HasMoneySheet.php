@@ -281,13 +281,12 @@ trait HasMoneySheet
     {
         $this->takeOutALoanForm->validate();
 
+        // the domain is the single source of truth for the business rules (e.g. credit limit),
+        // the reason is displayed at the input field
         $takeOutLoanAktion = new TakeOutALoanForPlayerAktion($this->takeOutALoanForm->loanAmount);
         $validationResult = $takeOutLoanAktion->validate($this->myself, $this->getGameEvents());
         if (!$validationResult->canExecute) {
-            $this->showNotification(
-                $validationResult->reason,
-                NotificationTypeEnum::ERROR
-            );
+            $this->addError('takeOutALoanForm.loanAmount', $validationResult->reason);
             return;
         }
 
@@ -331,11 +330,7 @@ trait HasMoneySheet
     {
         $this->takeOutALoanForm->reset();
         $this->takeOutALoanForm->resetValidation();
-        $this->takeOutALoanForm->sumOfAllAssets = PlayerState::getTotalValueOfAllAssetsForPlayer($this->getGameEvents(), $this->myself)->value + PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->myself)->value;
-        $this->takeOutALoanForm->salary = PlayerState::getCurrentGehaltForPlayer($this->getGameEvents(), $this->myself)->value;
         $this->takeOutALoanForm->zinssatz = KonjunkturphaseState::getCurrentKonjunkturphase($this->getGameEvents())->getAuswirkungByScope(AuswirkungScopeEnum::LOANS_INTEREST_RATE)->value;
-        $this->takeOutALoanForm->obligations = MoneySheetState::getTotalOpenRepaymentValueForAllLoans($this->getGameEvents(), $this->myself)->value;
-        $this->takeOutALoanForm->wasPlayerInsolventInThePast = PlayerState::wasPlayerInsolventInThePast($this->getGameEvents(), $this->myself);
     }
 
     private function initializeTaxesForm(): void
