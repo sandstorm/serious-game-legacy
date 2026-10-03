@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 
-use App\Livewire\Forms\TakeOutALoanForm;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
@@ -41,7 +40,6 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
-use Tests\ComponentWithForm;
 use Tests\TestCase;
 
 beforeEach(function () {
@@ -418,24 +416,18 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
             ChangeKonjunkturphase::create()
         );
 
-        $takeoutLoanFormComponent = new ComponentWithForm();
-        $takeoutLoanFormComponent->mount(TakeOutALoanForm::class);
-
-        /** @var TakeOutALoanForm $takeoutLoanForm */
-        $takeoutLoanForm = $takeoutLoanFormComponent->form;
-        $takeoutLoanForm->loanAmount = 10000;
-        $takeoutLoanForm->zinssatz = 4;
+        $loanAmount = 10000;
 
         // player 0 takes out a loan
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
             $this->players[0],
-            $takeoutLoanForm->loanAmount
+            $loanAmount
         ));
 
         // player 0 takes out another loan
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
             $this->players[0],
-            $takeoutLoanForm->loanAmount
+            $loanAmount
         ));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);

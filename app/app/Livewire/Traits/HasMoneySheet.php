@@ -197,10 +197,9 @@ trait HasMoneySheet
 
     public function setLebenshaltungskosten(): void
     {
-        $this->moneySheetLebenshaltungskostenForm->validate();
         $this->handleCommand(EnterLebenshaltungskostenForPlayer::create(
             $this->myself,
-            new MoneyAmount($this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten ?? 0)
+            $this->moneySheetLebenshaltungskostenForm->getValidatedLebenshaltungskosten()
         ));
 
         $updatedEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -222,10 +221,9 @@ trait HasMoneySheet
 
     public function setSteuernUndAbgaben(): void
     {
-        $this->moneySheetSteuernUndAbgabenForm->validate();
         $this->handleCommand(EnterSteuernUndAbgabenForPlayer::create(
             $this->myself,
-            new MoneyAmount($this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben ?? 0)
+            $this->moneySheetSteuernUndAbgabenForm->getValidatedSteuernUndAbgaben()
         ));
 
         $updatedEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -279,11 +277,11 @@ trait HasMoneySheet
 
     public function takeOutALoan(): void
     {
-        $this->takeOutALoanForm->validate();
+        $loanAmount = $this->takeOutALoanForm->getValidatedLoanAmount();
 
         // the domain is the single source of truth for the business rules (e.g. credit limit),
         // the reason is displayed at the input field
-        $takeOutLoanAktion = new TakeOutALoanForPlayerAktion($this->takeOutALoanForm->loanAmount);
+        $takeOutLoanAktion = new TakeOutALoanForPlayerAktion($loanAmount);
         $validationResult = $takeOutLoanAktion->validate($this->myself, $this->getGameEvents());
         if (!$validationResult->canExecute) {
             $this->addError('takeOutALoanForm.loanAmount', $validationResult->reason);
@@ -292,12 +290,12 @@ trait HasMoneySheet
 
         $this->handleCommand(TakeOutALoanForPlayer::create(
             $this->myself,
-            $this->takeOutALoanForm->loanAmount
+            $loanAmount
         ));
 
         $this->takeOutALoanForm->resetValidation();
-        $loanAmount = new MoneyAmount($this->takeOutALoanForm->loanAmount ?? 0);
-        $this->showBanner("Du hast einen Kredit über {$loanAmount->formatWithoutHtml()} aufgenommen.");
+        $loanMoneyAmount = new MoneyAmount($loanAmount);
+        $this->showBanner("Du hast einen Kredit über {$loanMoneyAmount->formatWithoutHtml()} aufgenommen.");
         $this->closeTakeOutALoan();
 
         $this->broadcastNotify();
@@ -337,7 +335,7 @@ trait HasMoneySheet
     {
         $latestInputForSteuernUndAbgaben = MoneySheetState::getLastInputForSteuernUndAbgaben($this->getGameEvents(), $this->myself);
         $calculatedSteuernUndAbgaben = MoneySheetState::calculateSteuernUndAbgabenForPlayer($this->getGameEvents(), $this->myself);
-        $this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben = $latestInputForSteuernUndAbgaben->value;
+        $this->moneySheetSteuernUndAbgabenForm->steuernUndAbgaben = (string) $latestInputForSteuernUndAbgaben->value;
         $this->moneySheetSteuernUndAbgabenForm->isSteuernUndAbgabenInputDisabled = $latestInputForSteuernUndAbgaben->equals($calculatedSteuernUndAbgaben);
     }
 
@@ -345,7 +343,7 @@ trait HasMoneySheet
     {
         $latestInputForLebenshaltungskosten = MoneySheetState::getLastInputForLebenshaltungskosten($this->getGameEvents(), $this->myself);
         $calculatedLebenshaltungskosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($this->getGameEvents(), $this->myself);
-        $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten = $latestInputForLebenshaltungskosten->value;
+        $this->moneySheetLebenshaltungskostenForm->lebenshaltungskosten = (string) $latestInputForLebenshaltungskosten->value;
         $this->moneySheetLebenshaltungskostenForm->isLebenshaltungskostenInputDisabled = $latestInputForLebenshaltungskosten->equals($calculatedLebenshaltungskosten);
     }
 

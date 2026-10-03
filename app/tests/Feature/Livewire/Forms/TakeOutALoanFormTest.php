@@ -24,9 +24,18 @@ describe('TakeOutALoanForm', function () {
         Livewire::test(ComponentWithForm::class, [
             'formClass' => TakeOutALoanForm::class,
         ])
-            ->set('form.loanAmount', 8000)
+            ->set('form.loanAmount', '8000')
             ->set('form.zinssatz', 5)
             ->call('validate')
             ->assertHasNoErrors();
     });
+
+    it('rejects input that is not a whole number', function (string $input) {
+        Livewire::test(ComponentWithForm::class, [
+            'formClass' => TakeOutALoanForm::class,
+        ])
+            ->set('form.loanAmount', $input)
+            ->call('validate')
+            ->assertHasErrors(['form.loanAmount']);
+    })->with(['', 'abc', '1.5', '1e3']);
 });

@@ -755,7 +755,7 @@ readonly class GameUiTester
 
         $this->testableGameUi
             // set amount
-            ->set('buyInvestmentsForm.amount', $amount)
+            ->set('buyInvestmentsForm.amount', (string) $amount)
             // buy stocks
             ->call('buyInvestments', $investmentId->value)
             ->assertSee(

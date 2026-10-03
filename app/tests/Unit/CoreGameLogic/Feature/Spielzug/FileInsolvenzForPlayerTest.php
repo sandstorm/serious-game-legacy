@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Livewire\Forms\TakeOutALoanForm;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
@@ -28,7 +27,6 @@ use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
-use Tests\ComponentWithForm;
 use Tests\TestCase;
 
 beforeEach(function () {
@@ -315,20 +313,12 @@ describe('FileInsolvenzForPlayer', function () {
     it('repays all open loans for player in case of Insolvenz', function () {
         /** @var TestCase $this */
         // first player needs to take out a loan
-        $takeoutLoanFormComponent = new ComponentWithForm();
-        $takeoutLoanFormComponent->mount(TakeOutALoanForm::class);
-
         $loanAmount = 10000;
-
-        /** @var TakeOutALoanForm $takeoutLoanForm */
-        $takeoutLoanForm = $takeoutLoanFormComponent->form;
-        $takeoutLoanForm->loanAmount = $loanAmount;
-        $takeoutLoanForm->zinssatz = 4;
 
         // player 0 takes out a loan
         $this->handle(TakeOutALoanForPlayer::create(
             $this->players[0],
-            $takeoutLoanForm->loanAmount
+            $loanAmount
         ));
 
         $gameEvents = $this->getGameEvents();
