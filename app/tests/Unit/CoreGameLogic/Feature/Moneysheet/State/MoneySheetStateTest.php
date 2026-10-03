@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\CoreGameLogic\Feature\Moneysheet\State;
 
-use App\Livewire\Forms\TakeOutALoanForm;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
@@ -51,7 +50,6 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
-use Tests\ComponentWithForm;
 use Tests\TestCase;
 
 beforeEach(function () {
@@ -1181,18 +1179,12 @@ describe('getLoansForPlayer', function () {
             $this->players[0]
         )->value)->toEqual(Configuration::STARTKAPITAL_VALUE);
 
-        $takeoutLoanFormComponent = new ComponentWithForm();
-        $takeoutLoanFormComponent->mount(TakeOutALoanForm::class);
-
-        /** @var TakeOutALoanForm $takeoutLoanForm */
-        $takeoutLoanForm = $takeoutLoanFormComponent->form;
-        $takeoutLoanForm->loanAmount = 10000;
-        $takeoutLoanForm->zinssatz = 4;
+        $loanAmount = 10000;
 
         // player 0 takes out a loan
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
             $this->players[0],
-            $takeoutLoanForm->loanAmount
+            $loanAmount
         ));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -1288,18 +1280,10 @@ describe('getOpenRatesForLoan', function () {
         $loanAmount = 10000;
         $rate = 600;
 
-        $takeoutLoanFormComponent = new ComponentWithForm();
-        $takeoutLoanFormComponent->mount(TakeOutALoanForm::class);
-
-        /** @var TakeOutALoanForm $takeoutLoanForm */
-        $takeoutLoanForm = $takeoutLoanFormComponent->form;
-        $takeoutLoanForm->loanAmount = $loanAmount;
-        $takeoutLoanForm->zinssatz = 4;
-
         // player 0 takes out a loan
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
             $this->players[0],
-            $takeoutLoanForm->loanAmount
+            $loanAmount
         ));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -1374,18 +1358,12 @@ describe("getAnnualExpensesForPlayer", function () {
 
     it('returns annual expenses', function () {
         /** @var TestCase $this */
-        $takeoutLoanFormComponent = new ComponentWithForm();
-        $takeoutLoanFormComponent->mount(TakeOutALoanForm::class);
-
-        /** @var TakeOutALoanForm $takeoutLoanForm */
-        $takeoutLoanForm = $takeoutLoanFormComponent->form;
-        $takeoutLoanForm->loanAmount = 10000;
-        $takeoutLoanForm->zinssatz = 4;
+        $loanAmount = 10000;
 
         // player 0 takes out a loan
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
             $this->players[0],
-            $takeoutLoanForm->loanAmount
+            $loanAmount
         ));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -1396,11 +1374,11 @@ describe("getAnnualExpensesForPlayer", function () {
         )->value)->toEqual($expectedAnnualExpenses);
 
         // player 0 takes out a second loan
-        $takeoutLoanForm->loanAmount = 1000;
+        $loanAmount = 1000;
 
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
             $this->players[0],
-            $takeoutLoanForm->loanAmount
+            $loanAmount
         ));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);

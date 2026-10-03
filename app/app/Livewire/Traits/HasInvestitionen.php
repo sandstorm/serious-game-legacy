@@ -152,12 +152,12 @@ trait HasInvestitionen
         $this->sellInvestmentOfType = null;
     }
 
-    public function canBuyInvestments(InvestmentId $investmentId): AktionValidationResult
+    public function canBuyInvestments(InvestmentId $investmentId, int $amount = 0): AktionValidationResult
     {
         $aktion = new BuyInvestmentsForPlayerAktion(
             $investmentId,
             InvestmentPriceState::getCurrentInvestmentPrice($this->getGameEvents(), $investmentId),
-            $this->buyInvestmentsForm->amount ?? 0
+            $amount
         );
         return $aktion->validate($this->myself, $this->getGameEvents());
     }
@@ -183,9 +183,9 @@ trait HasInvestitionen
 
     public function buyInvestments(string $investmentId): void
     {
-        $this->buyInvestmentsForm->validate();
+        $amount = $this->buyInvestmentsForm->getValidatedAmount();
         $investmentId = InvestmentId::from($investmentId);
-        $validationResult = self::canBuyInvestments($investmentId);
+        $validationResult = self::canBuyInvestments($investmentId, $amount);
         if (!$validationResult->canExecute) {
             $this->showNotification(
                 "Investieren nicht möglich: " . $validationResult->reason,
@@ -194,15 +194,10 @@ trait HasInvestitionen
             return;
         }
 
-        // Amount should not ever be null, but just in case and to fix phpstan errors
-        if ($this->buyInvestmentsForm->amount === null) {
-            return;
-        }
-
         $this->handleCommand(BuyInvestmentsForPlayer::create(
             $this->myself,
             $investmentId,
-            $this->buyInvestmentsForm->amount
+            $amount
         ));
 
         $this->closeInvestmentModals();
@@ -225,22 +220,22 @@ trait HasInvestitionen
         $this->sellInvestmentsModalIsVisible = false;
     }
 
-    public function canSellInvestmentsAfterPurchase(InvestmentId $investmentId): AktionValidationResult
+    public function canSellInvestmentsAfterPurchase(InvestmentId $investmentId, int $amount = 0): AktionValidationResult
     {
         $aktion = new SellInvestmentsForPlayerAfterInvestmentByAnotherPlayerAktion(
             $investmentId,
             InvestmentPriceState::getCurrentInvestmentPrice($this->getGameEvents(), $investmentId),
-            $this->sellInvestmentsForm->amount ?? 0
+            $amount
         );
         return $aktion->validate($this->myself, $this->getGameEvents());
     }
 
     public function sellInvestmentsAfterPurchase(string $investmentId): void
     {
-        $this->sellInvestmentsForm->validate();
+        $amount = $this->sellInvestmentsForm->getValidatedAmount();
         $investmentId = InvestmentId::from($investmentId);
 
-        $validationResult = self::canSellInvestmentsAfterPurchase($investmentId);
+        $validationResult = self::canSellInvestmentsAfterPurchase($investmentId, $amount);
         if (!$validationResult->canExecute) {
             $this->showNotification(
                 "Investition verkaufen nicht möglich: " . $validationResult->reason,
@@ -249,15 +244,10 @@ trait HasInvestitionen
             return;
         }
 
-        // Amount should not ever be null, but just in case and to fix phpstan errors
-        if ($this->sellInvestmentsForm->amount === null) {
-            return;
-        }
-
         $this->handleCommand(SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer::create(
             $this->myself,
             $investmentId,
-            $this->sellInvestmentsForm->amount
+            $amount
         ));
 
         $this->sellInvestmentsModalIsVisible = false;
@@ -274,12 +264,12 @@ trait HasInvestitionen
         }
     }
 
-    public function canSellInvestments(InvestmentId $investmentId): AktionValidationResult
+    public function canSellInvestments(InvestmentId $investmentId, int $amount = 0): AktionValidationResult
     {
         $aktion = new SellInvestmentsForPlayerAktion(
             $investmentId,
             InvestmentPriceState::getCurrentInvestmentPrice($this->getGameEvents(), $investmentId),
-            $this->sellInvestmentsForm->amount ?? 0
+            $amount
         );
         return $aktion->validate($this->myself, $this->getGameEvents());
     }
@@ -312,10 +302,10 @@ trait HasInvestitionen
 
     public function sellInvestments(string $investmentId): void
     {
-        $this->sellInvestmentsForm->validate();
+        $amount = $this->sellInvestmentsForm->getValidatedAmount();
         $investmentId = InvestmentId::from($investmentId);
 
-        $validationResult = self::canSellInvestments($investmentId);
+        $validationResult = self::canSellInvestments($investmentId, $amount);
         if (!$validationResult->canExecute) {
             $this->showNotification(
                 "Investition verkaufen nicht möglich: " . $validationResult->reason,
@@ -324,15 +314,10 @@ trait HasInvestitionen
             return;
         }
 
-        // Amount should not ever be null, but just in case and to fix phpstan errors
-        if ($this->sellInvestmentsForm->amount === null) {
-            return;
-        }
-
         $this->handleCommand(SellInvestmentsForPlayer::create(
             $this->myself,
             $investmentId,
-            $this->sellInvestmentsForm->amount
+            $amount
         ));
 
         $this->closeInvestmentModals();

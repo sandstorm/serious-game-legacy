@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Livewire;
 
 use App\Livewire\GameUi;
+use App\Livewire\ValueObject\ExpensesTabEnum;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
@@ -12,7 +13,9 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\SellInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasTakenOutForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\SteuernUndAbgabenForPlayerWereEntered;
 use Domain\Definitions\Insurance\ValueObject\InsuranceTypeEnum;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
@@ -379,7 +382,7 @@ describe('GameUi', function () {
                 ->startTurn()
                 ->testableGameUi
                 ->call('showTakeOutALoan')
-                ->set('takeOutALoanForm.loanAmount', 1_000_000)
+                ->set('takeOutALoanForm.loanAmount', '1000000')
                 ->call('takeOutALoan')
                 ->assertHasErrors(['takeOutALoanForm.loanAmount' => 'Du kannst keinen Kredit aufnehmen, der höher ist als das Kreditlimit.'])
                 // the error is rendered at the input field of the (still open) form
@@ -399,7 +402,7 @@ describe('GameUi', function () {
                 // a manipulated request could send arbitrary values for any form property
                 ->set('takeOutALoanForm.sumOfAllAssets', 1_000_000_000)
                 ->set('takeOutALoanForm.salary', 1_000_000_000)
-                ->set('takeOutALoanForm.loanAmount', 1_000_000)
+                ->set('takeOutALoanForm.loanAmount', '1000000')
                 ->call('takeOutALoan')
                 ->assertHasErrors(['takeOutALoanForm.loanAmount' => 'Du kannst keinen Kredit aufnehmen, der höher ist als das Kreditlimit.'])
                 // the error is rendered at the input field of the (still open) form
@@ -407,6 +410,71 @@ describe('GameUi', function () {
                 ->assertSeeHtml('<span class="form-error">Du kannst keinen Kredit aufnehmen, der höher ist als das Kreditlimit.</span>');
 
             expect($this->getGameEvents()->findLastOrNull(LoanWasTakenOutForPlayer::class))->toBeNull();
+        });
+    });
+
+    describe('numeric inputs while other players are playing (issue #680)', function () {
+        // The browser always sends input values as strings. If the server returns them with a different type
+        // (e.g. 1125 instead of "1125"), Livewire overwrites the input field on every re-render, e.g. when another
+        // player ends their turn. Everything typed during that request is lost.
+        test('a re-render returns the input value unchanged', function (string $property) {
+            /** @var TestCase $this */
+            $testableGameUi = new GameUiTester($this, $this->getPlayers()[0], 'Player 0')
+                ->startGame()
+                ->startTurn()
+                ->testableGameUi
+                ->set($property, '1125')
+                ->call('notifyGameStateUpdated');
+
+            expect($testableGameUi->get($property))->toBe('1125');
+        })->with([
+            'moneySheetSteuernUndAbgabenForm.steuernUndAbgaben',
+            'moneySheetLebenshaltungskostenForm.lebenshaltungskosten',
+            'takeOutALoanForm.loanAmount',
+            'buyInvestmentsForm.amount',
+            'sellInvestmentsForm.amount',
+        ]);
+
+        test('an invalid Steuern und Abgaben input is rejected without counting as a try', function (string $input) {
+            /** @var TestCase $this */
+            new GameUiTester($this, $this->getPlayers()[0], 'Player 0')
+                ->startGame()
+                ->startTurn()
+                ->testableGameUi
+                ->call('showExpensesTab', ExpensesTabEnum::TAXES->value)
+                ->set('moneySheetSteuernUndAbgabenForm.steuernUndAbgaben', $input)
+                ->call('setSteuernUndAbgaben')
+                ->assertHasErrors(['moneySheetSteuernUndAbgabenForm.steuernUndAbgaben']);
+
+            expect($this->getGameEvents()->findLastOrNull(SteuernUndAbgabenForPlayerWereEntered::class))->toBeNull();
+        })->with(['', 'abc', '1e3', '12.345', '-1']);
+
+        test('an invalid Lebenshaltungskosten input is rejected without counting as a try', function (string $input) {
+            /** @var TestCase $this */
+            new GameUiTester($this, $this->getPlayers()[0], 'Player 0')
+                ->startGame()
+                ->startTurn()
+                ->testableGameUi
+                ->call('showExpensesTab', ExpensesTabEnum::LIVING_COSTS->value)
+                ->set('moneySheetLebenshaltungskostenForm.lebenshaltungskosten', $input)
+                ->call('setLebenshaltungskosten')
+                ->assertHasErrors(['moneySheetLebenshaltungskostenForm.lebenshaltungskosten']);
+
+            expect($this->getGameEvents()->findLastOrNull(LebenshaltungskostenForPlayerWereEntered::class))->toBeNull();
+        })->with(['', 'abc', '1e3', '12.345', '-1']);
+
+        test('a decimal Steuern und Abgaben input is accepted', function () {
+            /** @var TestCase $this */
+            new GameUiTester($this, $this->getPlayers()[0], 'Player 0')
+                ->startGame()
+                ->startTurn()
+                ->testableGameUi
+                ->call('showExpensesTab', ExpensesTabEnum::TAXES->value)
+                ->set('moneySheetSteuernUndAbgabenForm.steuernUndAbgaben', '1250.50')
+                ->call('setSteuernUndAbgaben');
+
+            $event = $this->getGameEvents()->findLast(SteuernUndAbgabenForPlayerWereEntered::class);
+            expect($event->getPlayerInput()->value)->toBe(1250.5);
         });
     });
 });

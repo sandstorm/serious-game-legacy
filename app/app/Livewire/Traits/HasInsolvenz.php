@@ -130,22 +130,22 @@ trait HasInsolvenz
         );
     }
 
-    public function canSellInvestmentToAvoidInsolvenz(InvestmentId $investmentId): AktionValidationResult
+    public function canSellInvestmentToAvoidInsolvenz(InvestmentId $investmentId, int $amount = 0): AktionValidationResult
     {
         $aktion = new SellInvestmentsToAvoidInsolvenzForPlayerAktion(
             $investmentId,
             InvestmentPriceState::getCurrentInvestmentPrice($this->getGameEvents(), $investmentId),
-            $this->sellInvestmentsForm->amount ?? 0
+            $amount
         );
         return $aktion->validate($this->myself, $this->getGameEvents());
     }
 
     public function sellInvestmentToAvoidInsolvenz(string $investmentId): void
     {
-        $this->sellInvestmentsForm->validate();
+        $amount = $this->sellInvestmentsForm->getValidatedAmount();
         $investmentId = InvestmentId::from($investmentId);
 
-        $validationResult = self::canSellInvestmentToAvoidInsolvenz($investmentId);
+        $validationResult = self::canSellInvestmentToAvoidInsolvenz($investmentId, $amount);
         if (!$validationResult->canExecute) {
             $this->showNotification(
                 "Investitionen verkaufen nicht möglich: " . $validationResult->reason,
@@ -154,15 +154,10 @@ trait HasInsolvenz
             return;
         }
 
-        // Amount should not ever be null, but just in case and to fix phpstan errors
-        if ($this->sellInvestmentsForm->amount === null) {
-            return;
-        }
-
         $this->handleCommand(SellInvestmentsToAvoidInsolvenzForPlayer::create(
             $this->myself,
             $investmentId,
-            $this->sellInvestmentsForm->amount
+            $amount
         ));
 
         $this->broadcastNotify();
