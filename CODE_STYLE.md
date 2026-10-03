@@ -119,6 +119,23 @@ in `disallowed-calls.neon`, we test for this; so phpstan fails in case this is v
 
 -  anything else.
 
+# Livewire
+
+## Form inputs are strings, read them only through a validating getter
+
+Form properties bound with `wire:model` must be `?string`, also for numbers. The browser always sends input
+values as strings. If the server returns a different type (e.g. `1125` instead of `"1125"`), Livewire treats the
+form as changed and overwrites the input field. This happens on every re-render, e.g. when another player
+makes a move, and deletes what the player typed in the meantime (see issue #680).
+
+Read the value only through a getter on the form that validates first and returns the typed value, e.g.
+`TakeOutALoanForm::getValidatedLoanAmount(): int` or
+`MoneySheetSteuernUndAbgabenForm::getValidatedSteuernUndAbgaben(): MoneyAmount`. On invalid input, Livewire
+shows the `ValidationException` at the input field.
+
+When adding a new input, add it to the dataset of the test "a re-render returns the input value unchanged"
+in `GameUiTest.php`.
+
 # Filament
 
 ## Familiarize yourself with Filament Advanced Features
