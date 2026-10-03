@@ -21,7 +21,7 @@ describe('SellInvestmentsForm', function () {
         Livewire::test(ComponentWithForm::class, [
             'formClass' => SellInvestmentsForm::class,
         ])
-            ->set('form.amount', 10)
+            ->set('form.amount', '10')
             ->set('form.sharePrice', 100)
             ->set('form.amountOwned', 5)
             ->call('validate')
@@ -32,10 +32,19 @@ describe('SellInvestmentsForm', function () {
         Livewire::test(ComponentWithForm::class, [
             'formClass' => SellInvestmentsForm::class,
         ])
-            ->set('form.amount', 10)
+            ->set('form.amount', '10')
             ->set('form.sharePrice', 100)
             ->set('form.amountOwned', 10)
             ->call('validate')
             ->assertHasNoErrors();
     });
+
+    it('rejects input that is not a whole number', function (string $input) {
+        Livewire::test(ComponentWithForm::class, [
+            'formClass' => SellInvestmentsForm::class,
+        ])
+            ->set('form.amount', $input)
+            ->call('validate')
+            ->assertHasErrors(['form.amount']);
+    })->with(['', 'abc', '1.5', '1e3', '-1']);
 });

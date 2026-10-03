@@ -10,8 +10,10 @@ use Livewire\Form;
 
 class SellInvestmentsForm extends Form
 {
+    // a string, because the browser sends the input as a string. A different type would make Livewire overwrite
+    // the input field while the player is typing, whenever another player triggers a re-render (see issue #680).
     #[Validate]
-    public ?int $amount = 0;
+    public ?string $amount = '0';
 
     // public properties needed for validation
     public ?InvestmentId $investmentId = null;
@@ -29,12 +31,23 @@ class SellInvestmentsForm extends Form
     {
         return [
             'amount' => [
-                'required', 'numeric', 'min:1', function ($attribute, $value, $fail) {
-                    if ($this->amount > $this->amountOwned) {
+                // bail: the closure must only run for a valid integer
+                'bail', 'required', 'integer', 'min:1', function ($attribute, $value, $fail) {
+                    if ((int) $value > $this->amountOwned) {
                         $fail("Du kannst nicht mehr Anteile verkaufen, als du besitzt.");
                     }
                 }
             ],
         ];
+    }
+
+    /**
+     * The only way to read the input: validates the form first. On invalid input, Livewire shows the
+     * ValidationException as an error at the input field.
+     */
+    public function getValidatedAmount(): int
+    {
+        $this->validate();
+        return (int) $this->amount;
     }
 }

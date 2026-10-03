@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Livewire\Forms\TakeOutALoanForm;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\RepayLoanForPlayer;
@@ -14,7 +13,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
-use Tests\ComponentWithForm;
 use Tests\TestCase;
 
 beforeEach(function () {
@@ -30,18 +28,12 @@ describe('handleTakeOutALoanForPlayer', function () {
 
         expect(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->players[0]))->toBeTrue("Player should be insolvent");
 
-        $takeoutLoanFormComponent = new ComponentWithForm();
-        $takeoutLoanFormComponent->mount(TakeOutALoanForm::class);
-
-        /** @var TakeOutALoanForm $takeoutLoanForm */
-        $takeoutLoanForm = $takeoutLoanFormComponent->form;
-        $takeoutLoanForm->loanAmount = 10000;
-        $takeoutLoanForm->zinssatz = 4;
+        $loanAmount = 10000;
 
         // player 0 takes out a loan
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
             $this->players[0],
-            $takeoutLoanForm->loanAmount
+            $loanAmount
         ));
 
     })->throws(\RuntimeException::class, "Cannot take out a loan: Du bist insolvent.", 1756200359);
@@ -66,20 +58,12 @@ describe('handleTakeOutALoanForPlayer', function () {
     it('adds the loan amount to the player\s Guthaben', function () {
         /** @var TestCase $this */
 
-        $takeoutLoanFormComponent = new ComponentWithForm();
-        $takeoutLoanFormComponent->mount(TakeOutALoanForm::class);
-
         $loanAmount = 10000;
-
-        /** @var TakeOutALoanForm $takeoutLoanForm */
-        $takeoutLoanForm = $takeoutLoanFormComponent->form;
-        $takeoutLoanForm->loanAmount = $loanAmount;
-        $takeoutLoanForm->zinssatz = 4;
 
         // player 0 takes out a loan
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
             $this->players[0],
-            $takeoutLoanForm->loanAmount
+            $loanAmount
         ));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -95,20 +79,12 @@ describe('handleRepayLoanForPlayer', function () {
         /** @var TestCase $this */
 
         // first player needs to take out a loan
-        $takeoutLoanFormComponent = new ComponentWithForm();
-        $takeoutLoanFormComponent->mount(TakeOutALoanForm::class);
-
         $loanAmount = 10000;
-
-        /** @var TakeOutALoanForm $takeoutLoanForm */
-        $takeoutLoanForm = $takeoutLoanFormComponent->form;
-        $takeoutLoanForm->loanAmount = $loanAmount;
-        $takeoutLoanForm->zinssatz = 4;
 
         // player 0 takes out a loan
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
             $this->players[0],
-            $takeoutLoanForm->loanAmount
+            $loanAmount
         ));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -147,20 +123,12 @@ describe('handleRepayLoanForPlayer', function () {
         /** @var TestCase $this */
 
         // first player needs to take out a loan
-        $takeoutLoanFormComponent = new ComponentWithForm();
-        $takeoutLoanFormComponent->mount(TakeOutALoanForm::class);
-
         $loanAmount = 10000;
-
-        /** @var TakeOutALoanForm $takeoutLoanForm */
-        $takeoutLoanForm = $takeoutLoanFormComponent->form;
-        $takeoutLoanForm->loanAmount = $loanAmount;
-        $takeoutLoanForm->zinssatz = 5;
 
         // player 0 takes out a loan
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
             $this->players[0],
-            $takeoutLoanForm->loanAmount
+            $loanAmount
         ));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
