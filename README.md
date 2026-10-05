@@ -113,9 +113,6 @@ might be useful as well.
 ```bash
 # run the tests
 mise pest
-
-# run the tests - watching if something changes
-mise pest --watch
 ```
 
 **Tests in IntelliJ IDEA**

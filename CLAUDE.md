@@ -18,7 +18,6 @@ mise down               # Stop and remove containers + volumes
 # Testing (Pest, runs inside Docker)
 mise pest               # Run all tests
 mise pest tests/Unit --filter="TestName"  # Run specific test
-mise pest --watch       # Watch mode
 
 # Static analysis & linting
 mise phpstan            # PHPStan (level 8, strict)

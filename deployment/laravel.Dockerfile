@@ -58,7 +58,6 @@ RUN apt-get update -y && \
     unzip \
     git \
     default-mysql-client \
-    inotify-tools \
     vim \
     procps \
     less \
