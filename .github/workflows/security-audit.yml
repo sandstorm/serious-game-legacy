@@ -1,0 +1,64 @@
+name: Security Audit
+
+# Reports known vulnerabilities in locked dependencies.
+# Intentionally NOT a dependency of the deployment workflows and should NOT be a required
+# status check, so partial fixes can still be deployed while findings remain visible.
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  # new advisories get published without any change to our code
+  schedule:
+    - cron: '0 6 * * 1' # every monday, 06:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  composer_audit:
+    name: Composer Audit
+    runs-on: [self-hosted, linux]
+    container:
+      image: docker-hub.sandstorm.de/docker-infrastructure/build-images/mise-php8.4:1.0.0
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      # audits composer.lock directly, no install needed; abandoned packages are reported but do not fail the job
+      - name: Run composer audit
+        run: composer audit --locked --abandoned=report --format=table
+        working-directory: ./app
+
+  yarn_audit:
+    name: Yarn Audit
+    runs-on: [self-hosted, linux]
+    container:
+      image: docker-hub.sandstorm.de/docker-infrastructure/build-images/mise-php8.4:1.0.0
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      # Cache Mise dependencies
+      - name: Get mise cache directory path
+        id: mise-cache-dir-path
+        run: echo "dir=$(mise cache path)" >> $GITHUB_OUTPUT
+
+      - name: Cache Mise tools
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.mise-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-mise-${{ hashFiles('**/mise.lock') }}
+          restore-keys: ${{ runner.os }}-mise-
+
+      - name: Install Mise tools
+        run: |
+          mise install node
+          mise install yarn
+        working-directory: ./app
+
+      # audits yarn.lock including transitive dependencies, no install needed
+      - name: Run yarn audit
+        run: mise x -- yarn npm audit --all --recursive
+        working-directory: ./app
