@@ -24,8 +24,8 @@ use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
  *
  * **Extrazins**
  *
- * If `$isExtraZins` is `true`, the Player will pay the guthabenChange specified in `$resourceChanges` for each loan
- * they have.
+ * If `$isExtraZins` is `true`, the Player will pay the guthabenChange specified in `$resourceChanges` for each open
+ * loan they have (repaid loans are not counted).
  */
 class ConditionalResourceChange
 {
