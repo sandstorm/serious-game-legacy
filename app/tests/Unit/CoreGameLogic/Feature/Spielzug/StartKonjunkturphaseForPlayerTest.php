@@ -5,11 +5,13 @@ declare(strict_types=1);
 
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
+use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyImmobilieForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\RepayLoanForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartKonjunkturphaseForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
@@ -335,7 +337,7 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
             ->toBeTrue("Guthaben should be $expectedGuthaben, was $actualGuthaben->value");
     });
 
-    it('applies extraZins correctly', function () {
+    it('applies extraZins for each open loan', function (int $numberOfRepaidLoans, int $expectedNumberOfOpenLoans) {
         /** @var TestCase $this */
         $this->setupBasicGameWithoutKonjunkturphase();
 
@@ -430,6 +432,13 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
             $loanAmount
         ));
 
+        // player 0 repays some of the loans, repaid loans must not be charged extraZins
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        $loans = MoneySheetState::getLoansForPlayer($gameEvents, $this->players[0]);
+        foreach (array_slice($loans, 0, $numberOfRepaidLoans) as $loan) {
+            $this->coreGameLogic->handle($this->gameId, RepayLoanForPlayer::create($this->players[0], $loan->loanId));
+        }
+
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $guthabenBeforeExtraZins = PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]);
 
@@ -437,12 +446,16 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
         $this->coreGameLogic->handle($this->gameId, StartKonjunkturPhaseForPlayer::create($this->players[0]));
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
-        // 2 Loans -> extraZinsAmount * 2
-        $expectedGuthaben = $guthabenBeforeExtraZins->add(new MoneyAmount($extraZinsAmount->value * 2));
+        $expectedGuthaben = $guthabenBeforeExtraZins->add(
+            new MoneyAmount($extraZinsAmount->value * $expectedNumberOfOpenLoans)
+        );
         $actualGuthaben = PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]);
         expect($actualGuthaben->equals($expectedGuthaben))
             ->toBeTrue("Guthaben should be $expectedGuthaben, was $actualGuthaben->value");
-    });
+    })->with([
+        'no loan repaid' => [0, 2],
+        'one of two loans repaid' => [1, 1],
+    ]);
 
     it('applies Grundsteuer for each Immobilie owned by the player', function () {
         /** @var TestCase $this */

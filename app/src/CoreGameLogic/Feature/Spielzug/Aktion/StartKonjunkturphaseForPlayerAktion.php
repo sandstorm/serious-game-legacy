@@ -80,8 +80,8 @@ class StartKonjunkturphaseForPlayerAktion extends Aktion
     ): ResourceChanges {
         if ($conditionalResourceChange->isExtraZins) {
             $extraZinsAmount = $conditionalResourceChange->resourceChanges->guthabenChange->value;
-            $numberOfLoans = count(MoneySheetState::getLoansForPlayer($gameEvents, $playerId));
-            return new ResourceChanges(guthabenChange: new MoneyAmount($extraZinsAmount * $numberOfLoans));
+            $numberOfOpenLoans = count(MoneySheetState::getOpenLoansForPlayer($gameEvents, $playerId));
+            return new ResourceChanges(guthabenChange: new MoneyAmount($extraZinsAmount * $numberOfOpenLoans));
         }
         if ($conditionalResourceChange->isGrundsteuer) {
             $grundSteuerAmount = $conditionalResourceChange->resourceChanges->guthabenChange->value;
