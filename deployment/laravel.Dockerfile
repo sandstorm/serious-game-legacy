@@ -4,11 +4,11 @@
 # BUT with pinned versions. the "crane" tool from https://github.com/google/go-containerregistry/blob/main/cmd/crane/README.md is useful
 # for determining the versions, along with the following lines:
 # crane ls dunglas/frankenphp | grep builder | grep 8\.3 | grep 1\.9\.1
-# crane ls caddy | grep builder | grep 2.11.4
-FROM dunglas/frankenphp:1.12.7-builder-php8.4-trixie AS builder
+# crane ls caddy | grep builder | grep 2.11.7
+FROM dunglas/frankenphp:1.13.1-builder-php8.4-trixie AS builder
 # Copy xcaddy in the builder image
 # WHY: We want to build our own Caddy with specific plugins. We use xcaddy to do that.
-COPY --from=caddy:2.11.4-builder /usr/bin/xcaddy /usr/bin/xcaddy
+COPY --from=caddy:2.11.7-builder /usr/bin/xcaddy /usr/bin/xcaddy
 
 # CGO must be enabled to build FrankenPHP
 # MODIFICATION: we added build module caching (--mount=...) here, + GOMODCACHE + GOCACHE declarations
@@ -21,7 +21,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked \
     CGO_LDFLAGS="$(php-config --ldflags) $(php-config --libs)" \
     GOMODCACHE=/go/pkg/mod \
     GOCACHE=/root/.cache/go-build \
-    xcaddy build v2.11.4 \
+    xcaddy build v2.11.7 \
         --output /usr/local/bin/frankenphp \
         --with github.com/dunglas/frankenphp=./ \
         --with github.com/dunglas/frankenphp/caddy=./caddy/ \
@@ -33,7 +33,11 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked \
 
 ################# HERE THE FRANKENPHP BUILD STOPS, and custom logic starts ##################################
 
-FROM dunglas/frankenphp:1.12.7-php8.4-trixie AS php-base
+FROM dunglas/frankenphp:1.13.1-php8.4-trixie AS php-base
+
+# WHY: the frankenphp tags are rebuilt nightly with the latest PHP patch release. Fail the build
+# if the pulled image still ships a PHP version without the fix for the October 2026 security release.
+RUN php -r 'if (version_compare(PHP_VERSION, "8.4.27", "<")) { fwrite(STDERR, "PHP " . PHP_VERSION . " is vulnerable, need >= 8.4.27\n"); exit(1); }'
 
 # Replace the official binary by the one contained your custom modules
 COPY --from=builder /usr/local/bin/frankenphp /usr/local/bin/frankenphp
