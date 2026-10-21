@@ -12,7 +12,7 @@ jobs:
     name: Build Assets
     runs-on: [self-hosted, linux]
     container:
-      image: docker-hub.sandstorm.de/docker-infrastructure/build-images/mise-php8.4:1.0.0
+      image: docker-hub.sandstorm.de/docker-infrastructure/build-images/mise-php8.4:1.0.1
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -82,7 +82,7 @@ jobs:
     name: Package App Production
     runs-on: [self-hosted, linux]
     container:
-      image: docker-hub.sandstorm.de/docker-infrastructure/build-images/mise-php8.4:1.0.0
+      image: docker-hub.sandstorm.de/docker-infrastructure/build-images/mise-php8.4:1.0.1
     needs: build_assets
     permissions:
       contents: read
@@ -149,7 +149,7 @@ jobs:
     needs: package_app_production
     environment: production
     container:
-      image: docker-hub.sandstorm.de/docker-infrastructure/build-images/mise-php8.4:1.0.0
+      image: docker-hub.sandstorm.de/docker-infrastructure/build-images/mise-php8.4:1.0.1
 
     steps:
       - name: Checkout code
