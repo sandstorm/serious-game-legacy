@@ -2,24 +2,20 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Laravel\Pulse\Support\PulseMigration;
+use Illuminate\Database\Migrations\Migration;
 
-return new class () extends PulseMigration {
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        if (! $this->shouldRun()) {
-            return;
-        }
-
         Schema::create('pulse_values', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('timestamp');
             $table->string('type');
             $table->mediumText('key');
-            match ($this->driver()) {
+            match (Schema::getConnection()->getDriverName()) {
                 'mariadb', 'mysql' => $table->char('key_hash', 16)->charset('binary')->virtualAs('unhex(md5(`key`))'),
                 'pgsql' => $table->uuid('key_hash')->storedAs('md5("key")::uuid'),
                 'sqlite' => $table->string('key_hash'),
@@ -36,7 +32,7 @@ return new class () extends PulseMigration {
             $table->unsignedInteger('timestamp');
             $table->string('type');
             $table->mediumText('key');
-            match ($this->driver()) {
+            match (Schema::getConnection()->getDriverName()) {
                 'mariadb', 'mysql' => $table->char('key_hash', 16)->charset('binary')->virtualAs('unhex(md5(`key`))'),
                 'pgsql' => $table->uuid('key_hash')->storedAs('md5("key")::uuid'),
                 'sqlite' => $table->string('key_hash'),
@@ -55,7 +51,7 @@ return new class () extends PulseMigration {
             $table->unsignedMediumInteger('period');
             $table->string('type');
             $table->mediumText('key');
-            match ($this->driver()) {
+            match (Schema::getConnection()->getDriverName()) {
                 'mariadb', 'mysql' => $table->char('key_hash', 16)->charset('binary')->virtualAs('unhex(md5(`key`))'),
                 'pgsql' => $table->uuid('key_hash')->storedAs('md5("key")::uuid'),
                 'sqlite' => $table->string('key_hash'),

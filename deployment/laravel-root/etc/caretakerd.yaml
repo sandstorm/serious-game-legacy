@@ -10,12 +10,6 @@ services:
   startup:
     autoRestart: never
     command: [ "/startup.sh" ]
-  horizon:
-    autoRestart: onFailures
-    command: [ "/usr/local/bin/php", "/app/artisan", "horizon" ]
-  pulseCheck:
-    autoRestart: onFailures
-    command: [ "/usr/local/bin/php", "/app/artisan", "pulse:check" ]
   artisanSchedule:
     cronExpression: "* * * * *"
     command: [ "php", "/app/artisan", "schedule:run" ]

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\ApplicationHelpers\Pulse\UnknownPermissions;
 use App\Authorization\AppAuthorizer;
 use App\Livewire\Synthesizer\GameAndPlayerIdSynth;
 use App\Models\User;
@@ -12,10 +11,8 @@ use Domain\CoreGameLogic\CoreGameLogicApp;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Horizon\Horizon;
 use Livewire\Livewire;
 use Neos\EventStore\EventStoreInterface;
 use Sandstorm\EventStore\LaravelAdapter\LaravelEventStore;
@@ -72,25 +69,7 @@ final class AppServiceProvider extends ServiceProvider
             }
         }
 
-        // Laravel Horizon snapshot
-        $schedule->command('horizon:snapshot')->everyFiveMinutes();
-
         // Register our App Authorizer globally
         \Gate::before(fn (?User $user, string $ability, ...$objectAndOtherArguments) => $appAuthorizer->authorize($user, $ability, $objectAndOtherArguments));
-
-        // we need to define the gate for accessing /pulse - the actual access check is done in AppAuthorizer.
-        \Gate::define('viewPulse', function (User $user) {
-            return false;
-        });
-
-        // we need to define the gate for accessing /horizon - the actual access check is done in AppAuthorizer.
-        \Gate::define('viewHorizon', function (User $user) {
-            return false;
-        });
-        // without this, Horizon only allows access in the local environment
-        Horizon::auth(fn (Request $request) => \Gate::check('viewHorizon', [$request->user()]));
-
-        // the card lives outside of App\Livewire, so Livewire does not discover it automatically
-        Livewire::component('pulse.unknown-permissions', UnknownPermissions::class);
     }
 }

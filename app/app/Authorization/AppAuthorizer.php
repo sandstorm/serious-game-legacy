@@ -9,7 +9,6 @@ use App\Models\User;
 use Illuminate\Auth\Access\Events\GateEvaluated;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Database\Connection;
 
 /**
  * Central authorization service that enforces role-based access control across the application.
@@ -26,48 +25,15 @@ use Illuminate\Database\Connection;
  *
  * In Laravel, predicates are called "abilities".
  *
- * All abilities and objects have to be registered in {@see self::ABILITY_GROUPS} and {@see self::OBJECT_GROUPS} - this way,
- * we can group abilities/objects together; to handle them all in the same way in an access decision.
- *
  * ## Entrypoint
  *
  * This class is called via \Gate::before() in AppServiceProvider.
- *
- * ## Logging of unknown abilities / objects
- *
- * We log unknown abilities / objects into the table unknown_permissions; and render this list in Laravel Pulse
- * at /pulse. This helps to uncover cases we have not thought about.
  *
  * @api
  */
 final class AppAuthorizer
 {
-    // Mapping from Ability to (potentially) grouping for an access decision.
-    // These are the predicates.
-    private const ABILITY_GROUPS = [
-        // Default Laravel / Filament abilities: https://filamentphp.com/docs/3.x/panels/resources/getting-started#authorization
-        'viewAny' => 'viewAny',
-        'create' => 'create',
-        'update' => 'update',
-        'view' => 'view',
-        'delete' => 'delete',
-        'deleteAny' => 'deleteAny',
-        'forceDelete' => 'forceDelete',
-        'forceDeleteAny' => 'forceDeleteAny',
-        'restore' => 'restore',
-        'reorder' => 'reorder',
-
-        // Special abilities
-        'viewPulse' => 'viewPulse',
-        'viewHorizon' => 'viewHorizon',
-    ];
-
-    private const OBJECT_GROUPS = [
-        User::class => User::class
-    ];
-
     public function __construct(
-        private readonly Connection $connection,
         private readonly Dispatcher $dispatcher,
     ) {
     }
@@ -94,8 +60,6 @@ final class AppAuthorizer
         if (is_object($object)) {
             $object = get_class($object);
         }
-        $this->logUnknownAbilitiesAndObjects($ability, $object);
-        // $objectGroup = self::OBJECT_GROUPS[$object] ?? $object;
 
         if ($user === null) {
             // //////////////////
@@ -136,31 +100,5 @@ final class AppAuthorizer
                 return Response::allow('role_lehrperson');
         }
         return Response::deny('not allowed for role_lehrperson');
-    }
-
-    private function logUnknownAbilitiesAndObjects(string $ability, string $object): void
-    {
-        if (! array_key_exists($ability, self::ABILITY_GROUPS)) {
-            $this->connection->table('unknown_permissions')->updateOrInsert(
-                [
-                    'ability' => $ability,
-                ],
-                [
-                    'count' => $this->connection->raw('count + 1'),
-                    'last_seen' => now(),
-                ]
-            );
-        }
-        if ($object !== '' && ! array_key_exists($object, self::OBJECT_GROUPS)) {
-            $this->connection->table('unknown_permissions')->updateOrInsert(
-                [
-                    'object' => $object,
-                ],
-                [
-                    'count' => $this->connection->raw('count + 1'),
-                    'last_seen' => now(),
-                ]
-            );
-        }
     }
 }

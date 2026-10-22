@@ -43,7 +43,6 @@ services:
       CACHE_STORE: redis
       REDIS_HOST: 'redis'
       REDIS_PORT: 6379
-      QUEUE_CONNECTION: redis
       SHELL_ENV_DISPLAY: 'production-serious-game'
 
       REVERB_APP_ID: ${REVERB_APP_ID}
