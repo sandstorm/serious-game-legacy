@@ -69,20 +69,7 @@ final class AppServiceProvider extends ServiceProvider
             }
         }
 
-        // Laravel Horizon snapshot
-        $schedule->command('horizon:snapshot')->everyFiveMinutes();
-
         // Register our App Authorizer globally
         \Gate::before(fn (?User $user, string $ability, ...$objectAndOtherArguments) => $appAuthorizer->authorize($user, $ability, $objectAndOtherArguments));
-
-        // we need to define the gate for accessing /pulse - the actual access check is done in AppAuthorizer.
-        \Gate::define('viewPulse', function (User $user) {
-            return false;
-        });
-
-        // we need to define the gate for accessing /horizon - the actual access check is done in AppAuthorizer.
-        \Gate::define('viewHorizon', function (User $user) {
-            return false;
-        });
     }
 }

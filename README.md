@@ -22,8 +22,7 @@ Entwickelt als Open Source von Sandstorm Media GmbH.
 * [Staging and Production Setup](#staging-and-production-setup)
   * [Observability & Logging](#observability--logging)
     * [Health Check Endpoint](#health-check-endpoint)
-    * [Laravel Pulse - Server Metrics](#laravel-pulse---server-metrics)
-    * [Laravel Horizon - Queue Metrics](#laravel-horizon---queue-metrics)
+    * [Laravel Pulse / Horizon - REMOVED](#laravel-pulse--horizon---removed)
     * [Laravel Telescope - Local Development - Deep Insights](#laravel-telescope---local-development---deep-insights)
     * [Structured Logging](#structured-logging)
   * [Staging](#staging)
@@ -214,19 +213,11 @@ There is a `/up` health check endpoint configured, which response with status 20
 
 In this health check, we also check for database and redis health (implemented in `App\Listeners\BasicHealthChecks`).
 
-### Laravel Pulse - Server Metrics
+### Laravel Pulse / Horizon - REMOVED
 
-At `/pulse`, an endpoint is configured which renders application metrics, including slow queries, caches, slow requests, ...
-
-In `AppAuthorizer`, the `viewPulse` permission gate is configured such that only superadmins can reach
-this gate. This can be adjusted based on the application roles.
-
-### Laravel Horizon - Queue Metrics
-
-We have laravel horizon available and configured for monitoring queues at `/horizon`.
-
-In `AppAuthorizer`, the `viewHorizon` permission gate is configured such that only superadmins can reach
-this gate. This can be adjusted based on the application roles.
+Laravel Pulse and Laravel Horizon have been removed, because we did not use them and they added additional
+long-running processes and admin endpoints. There is no queue worker running, so queued jobs are executed
+synchronously (`QUEUE_CONNECTION=sync`). Server metrics are covered by our external monitoring.
 
 ### Laravel Telescope - Local Development - Deep Insights
 
