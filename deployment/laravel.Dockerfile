@@ -5,7 +5,7 @@
 # for determining the versions, along with the following lines:
 # crane ls dunglas/frankenphp | grep builder | grep 8\.3 | grep 1\.9\.1
 # crane ls caddy | grep builder | grep 2.11.7
-FROM dunglas/frankenphp:1.13.1-builder-php8.4-trixie AS builder
+FROM dunglas/frankenphp:1.13.2-builder-php8.4-trixie AS builder
 # Copy xcaddy in the builder image
 # WHY: We want to build our own Caddy with specific plugins. We use xcaddy to do that.
 COPY --from=caddy:2.11.7-builder /usr/bin/xcaddy /usr/bin/xcaddy
@@ -33,7 +33,7 @@ RUN --mount=type=cache,target=/go/pkg/mod,sharing=locked \
 
 ################# HERE THE FRANKENPHP BUILD STOPS, and custom logic starts ##################################
 
-FROM dunglas/frankenphp:1.13.1-php8.4-trixie AS php-base
+FROM dunglas/frankenphp:1.13.2-php8.4-trixie AS php-base
 
 # WHY: the frankenphp tags are rebuilt nightly with the latest PHP patch release. Fail the build
 # if the pulled image still ships a PHP version without the fix for the October 2026 security release.
