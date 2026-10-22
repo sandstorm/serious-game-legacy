@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "100ceace69d1be1791be2e4919d6473c",
+    "content-hash": "2fb10bb91f9739059efb18dcaf207f14",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -14371,27 +14371,28 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v8.0.15",
+            "version": "v8.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "38e4b36d74a20dd9124a5b34c3e83e270b9649b8"
+                "reference": "6107ee26a25215c3df3af0a3315e56bb4fd0b7db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/38e4b36d74a20dd9124a5b34c3e83e270b9649b8",
-                "reference": "38e4b36d74a20dd9124a5b34c3e83e270b9649b8",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/6107ee26a25215c3df3af0a3315e56bb4fd0b7db",
+                "reference": "6107ee26a25215c3df3af0a3315e56bb4fd0b7db",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.4",
+                "php": ">=8.4.1",
                 "symfony/polyfill-ctype": "^1.8"
             },
             "conflict": {
                 "symfony/console": "<7.4"
             },
             "require-dev": {
-                "symfony/console": "^7.4|^8.0"
+                "symfony/console": "^7.4|^8.0",
+                "yaml/yaml-test-suite": "*"
             },
             "bin": [
                 "Resources/bin/yaml-lint"
@@ -14422,7 +14423,7 @@
             "description": "Loads and dumps YAML files",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/yaml/tree/v8.0.15"
+                "source": "https://github.com/symfony/yaml/tree/v8.1.9"
             },
             "funding": [
                 {
@@ -14442,7 +14443,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-07-22T15:20:43+00:00"
+            "time": "2026-10-12T12:37:13+00:00"
         },
         {
             "name": "ta-tikoma/phpunit-architecture-test",
@@ -14566,7 +14567,7 @@
     },
     "platform-dev": {},
     "platform-overrides": {
-        "php": "8.4"
+        "php": "8.4.27"
     },
     "plugin-api-version": "2.9.0"
 }
