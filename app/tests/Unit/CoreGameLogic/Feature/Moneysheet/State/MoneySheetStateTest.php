@@ -25,8 +25,10 @@ use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasCancelled;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\InsuranceForPlayerWasConcluded;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\MinijobWasDone;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\EreignisCardDefinition;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
+use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\Dto\ModifierParameters;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
@@ -1276,6 +1278,31 @@ describe('getOpenRatesForLoan', function () {
             $testPhase
         ]);
 
+        // WHY: The player must not get a negative balance during the 20 years (they cannot finish the Konjunkturphase
+        // then), so the minijobs have to pay more than the loan rate + the minimum Lebenshaltungskosten.
+        CardFinder::getInstance()->overrideCardsForTesting([
+            ...$this->getCardsForBildungAndKarriere(),
+            ...$this->getCardsForSozialesAndFreizeit(),
+            ...$this->getCardsForJobs(),
+            ...$this->getCardsForWeiterbildung(),
+            "mj0" => new MinijobCardDefinition(
+                id: new CardId('mj0'),
+                title: 'Minijob',
+                description: 'for testing',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+6000),
+                ),
+            ),
+            "mj1" => new MinijobCardDefinition(
+                id: new CardId('mj1'),
+                title: 'Minijob',
+                description: 'for testing',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(+6000),
+                ),
+            ),
+        ]);
+
         $initialGuthaben = Configuration::STARTKAPITAL_VALUE;
         $loanAmount = 10000;
         $rate = 600;
@@ -1319,6 +1346,8 @@ describe('getOpenRatesForLoan', function () {
             $openRates = MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], $loans[0]->loanId);
             expect($loans)->toHaveCount(1)
                 ->and($openRates)->toEqual(Configuration::REPAYMENT_PERIOD - $i)
+                // the loan stays open until the last rate is paid
+                ->and(MoneySheetState::getOpenLoansForPlayer($gameEvents, $this->players[0]))->toHaveCount($i < Configuration::REPAYMENT_PERIOD ? 1 : 0)
                 ->and(KonjunkturphaseState::getCurrentYear($gameEvents)->value)->toEqual($expectedYear)
                 ->and(PlayerState::getGuthabenForPlayer(
                     $gameEvents,
@@ -1342,7 +1371,7 @@ describe('getOpenRatesForLoan', function () {
         $expectedGuthaben -= Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE;
         expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0])->value)->toEqual($expectedGuthaben)
             ->and(MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], $loans[0]->loanId))->toEqual(0);
-    })->todo("Fix in #445");
+    });
 });
 
 describe("getAnnualExpensesForPlayer", function () {
