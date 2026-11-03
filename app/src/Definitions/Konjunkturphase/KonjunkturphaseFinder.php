@@ -65,6 +65,11 @@ class KonjunkturphaseFinder
         self::getInstance()->konjunkturphaseDefinitions = $konjunkturphaseDefinitions;
     }
 
+    /**
+     * Pure Konjunkturphasen data (pasted from the output of import/csv-importer.php). Every test loads it, so recording coverage
+     * for these lines would bloat the coverage report beyond the memory limit without telling us anything.
+     * @codeCoverageIgnore
+     */
     private static function initialize(): self
     {
         $konjunkturphase1 = new KonjunkturphaseDefinition(

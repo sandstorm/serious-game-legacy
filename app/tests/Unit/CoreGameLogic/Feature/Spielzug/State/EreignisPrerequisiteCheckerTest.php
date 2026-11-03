@@ -16,7 +16,7 @@ use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 use Tests\TestCase;
 
-@covers(EreignisPrerequisiteChecker::class);
+mutates(EreignisPrerequisiteChecker::class);
 
 beforeEach(function () {
     /** @var TestCase $this */

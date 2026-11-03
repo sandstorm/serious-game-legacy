@@ -12,7 +12,7 @@ use Domain\Definitions\Card\Dto\EreignisCardDefinition;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 
-@covers(ModifierBuilder::class);
+mutates(ModifierBuilder::class);
 
 beforeEach(function () {
 });
