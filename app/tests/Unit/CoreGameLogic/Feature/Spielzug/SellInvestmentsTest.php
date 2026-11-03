@@ -324,6 +324,24 @@ describe('handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer', function 
         );
     })->throws(\RuntimeException::class, 'Du kannst deinen Spielzug nicht beenden. Andere Spieler können noch Investitionen verkaufen.', 1748946243);
 
+    it('throws exception if player tries end their turn and another player only responded to a purchase in an earlier turn', function () {
+        /** @var DomainTestCase $this */
+        // turn 1: player 0 buys, player 1 responds
+        $this->handle(new StartSpielzug($this->players[0]));
+        $this->handle(BuyInvestmentsForPlayer::create($this->players[0], InvestmentId::MERFEDES_PENZ, 100));
+        $this->handle(DontSellInvestmentsForPlayer::create($this->players[1], InvestmentId::MERFEDES_PENZ));
+        $this->handle(new EndSpielzug($this->players[0]));
+
+        $this->handle(new StartSpielzug($this->players[1]));
+        $this->handle(DoMinijob::create($this->players[1]));
+        $this->handle(new EndSpielzug($this->players[1]));
+
+        // turn 2: player 0 buys again -> the response of player 1 from turn 1 does not count anymore
+        $this->handle(new StartSpielzug($this->players[0]));
+        $this->handle(BuyInvestmentsForPlayer::create($this->players[0], InvestmentId::MERFEDES_PENZ, 100));
+        $this->handle(new EndSpielzug($this->players[0]));
+    })->throws(\RuntimeException::class, 'Du kannst deinen Spielzug nicht beenden. Andere Spieler können noch Investitionen verkaufen.', 1748946243);
+
     it('throws exception if player tries to sell wrong type of investments another player bought', function () {
         $amountOfStocks = 100;
 
