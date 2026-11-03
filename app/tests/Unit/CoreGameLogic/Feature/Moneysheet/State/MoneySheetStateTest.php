@@ -1165,6 +1165,15 @@ describe('getCostOfAllInsurances', function () {
         // Player must pay in advance for all insurances
         expect(MoneySheetState::getCostOfAllInsurances($gameEvents, $this->players[0])->value)->toEqual(750);
     });
+
+    it('returns the costs of all insurances the player has, even if they do not have the first one', function () {
+        $this->handle(ConcludeInsuranceForPlayer::create($this->players[0], $this->insurances[1]->id));
+        $this->handle(ConcludeInsuranceForPlayer::create($this->players[0], $this->insurances[2]->id));
+
+        $gameEvents = $this->getGameEvents();
+        expect(MoneySheetState::getCostOfAllInsurances($gameEvents, $this->players[0])->value)
+            ->toEqual($this->insurances[1]->getAnnualCost(1)->value + $this->insurances[2]->getAnnualCost(1)->value);
+    });
 });
 
 describe('getLoansForPlayer', function () {
