@@ -8,7 +8,6 @@ use Domain\CoreGameLogic\CommandHandler\CommandHandlerInterface;
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
-use Domain\CoreGameLogic\Feature\Initialization\Command\DefinePlayerOrdering;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetNameForPlayer;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SetRoleForPlayer;
@@ -35,8 +34,7 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
 {
     public function canHandle(CommandInterface $command): bool
     {
-        return $command instanceof DefinePlayerOrdering
-            || $command instanceof SelectLebensziel
+        return $command instanceof SelectLebensziel
             || $command instanceof StartGame
             || $command instanceof StartPreGame
             || $command instanceof SetNameForPlayer
@@ -47,20 +45,12 @@ final readonly class InitializationCommandHandler implements CommandHandlerInter
     {
         /** @phpstan-ignore-next-line */
         return match ($command::class) {
-            DefinePlayerOrdering::class => $this->handleDefinePlayerOrdering($command, $gameEvents),
             SelectLebensziel::class => $this->handleSelectLebensziel($command, $gameEvents),
             StartGame::class => $this->handleStartGame($command, $gameEvents),
             StartPreGame::class => $this->handleStartPreGame($command, $gameEvents),
             SetNameForPlayer::class => $this->handleSetNameForPlayer($command, $gameEvents),
             SetRoleForPlayer::class => $this->handleSetRoleForPlayer($command, $gameEvents),
         };
-    }
-
-    private function handleDefinePlayerOrdering(DefinePlayerOrdering $command, GameEvents $gameState): GameEventsToPersist
-    {
-        return GameEventsToPersist::with(
-            new GameWasStarted(playerOrdering: $command->playerOrdering),
-        );
     }
 
     private function handleSelectLebensziel(SelectLebensziel $command, GameEvents $gameState): GameEventsToPersist
