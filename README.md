@@ -114,6 +114,25 @@ might be useful as well.
 mise pest
 ```
 
+**Mutation Testing**
+
+Mutation testing changes the domain code in small ways (e.g. `<` to `<=`) and checks that a test fails. A
+surviving mutation usually means that a rule is not asserted by any test.
+
+```bash
+# mutate a class or namespace
+mise mutate 'Domain\CoreGameLogic\Feature\Moneysheet'
+# mutate all of src/CoreGameLogic (takes several minutes)
+mise mutate-all
+```
+
+The mutations always run against ALL domain tests (`tests/Unit/CoreGameLogic`), because most of our tests are
+behavior tests that play the game through the command bus and use many classes. That is why we do not use `covers()`
+or `mutates()` in the tests: they would restrict the coverage or the tests that run against a mutation to single
+test files and report mutations as surviving that other tests would catch.
+
+Code coverage (also used by mutation testing) is measured with pcov, the tests run with `XDEBUG_MODE=off`.
+
 **Tests in IntelliJ IDEA**
 
 You can run Pest tests directly in IntelliJ IDEA. This is configured by default.

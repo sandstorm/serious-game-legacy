@@ -109,8 +109,10 @@ RUN ln -sf /app/storage/app/public /app/public/storage
 ##################################
 FROM php-base AS php-dev
 
+# pcov: fast code coverage for tests (mutation testing collects coverage on every run), xdebug: debugging
 RUN install-php-extensions \
-    xdebug
+    xdebug \
+    pcov
 
 # Install helpers
 RUN apt-get update && \
