@@ -12,15 +12,15 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 beforeEach(function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->setupBasicGame(2);
 });
 
 test('Cards can be drawn from piles', function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $pileIdBildungUndKarriere = new PileId(CategoryId::BILDUNG_UND_KARRIERE, LebenszielPhaseId::PHASE_1);
     $pileIdSozialesUndFreizeit = new PileId(CategoryId::SOZIALES_UND_FREIZEIT, LebenszielPhaseId::PHASE_1);
     $currenTopCardBildung = PileState::topCardIdForPile(
@@ -69,7 +69,7 @@ test('Cards can be drawn from piles', function () {
 });
 
 test('Shuffling resets draw counter', function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->coreGameLogic->handle($this->gameId, new SkipCard($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
     $this->coreGameLogic->handle($this->gameId, ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
 

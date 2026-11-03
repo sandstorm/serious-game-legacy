@@ -19,16 +19,16 @@ use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 beforeEach(function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->setupBasicGame();
 });
 
 describe('TransactionHistoryState::getTransactionHistoryForPlayer', function () {
     it('returns empty array when no transactions exist', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $history = TransactionHistoryState::getTransactionHistoryForPlayer($gameEvents, $this->players[0]);
 
@@ -36,7 +36,7 @@ describe('TransactionHistoryState::getTransactionHistoryForPlayer', function () 
     });
 
     it('records a single investment buy', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         // Player 0 buys stocks
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
@@ -62,7 +62,7 @@ describe('TransactionHistoryState::getTransactionHistoryForPlayer', function () 
     });
 
     it('records buy and sell with correct holding after', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         // Turn 1: Player 0 buys 10 stocks
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
@@ -101,7 +101,7 @@ describe('TransactionHistoryState::getTransactionHistoryForPlayer', function () 
     });
 
     it('tracks holdings per investment type independently', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         // Turn 1: Player 0 buys Merfedes-Penz
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
@@ -141,7 +141,7 @@ describe('TransactionHistoryState::getTransactionHistoryForPlayer', function () 
     });
 
     it('maps icon classes correctly for different investment types', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         // Turn 1: Buy Aktie
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
@@ -195,7 +195,7 @@ describe('TransactionHistoryState::getTransactionHistoryForPlayer', function () 
     });
 
     it('records immobilie buy with correct icon and asset name', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new ImmobilienCardDefinition(
                 id: new CardId('immo1'),
@@ -231,7 +231,7 @@ describe('TransactionHistoryState::getTransactionHistoryForPlayer', function () 
     });
 
     it('only returns transactions for the requested player', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         // Player 0 buys stocks
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
@@ -253,7 +253,7 @@ describe('TransactionHistoryState::getTransactionHistoryForPlayer', function () 
     });
 
     it('records optional sell after another player buys investments', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         // Turn 1: Player 0 does minijob
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));

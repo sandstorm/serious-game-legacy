@@ -12,23 +12,23 @@ use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 beforeEach(function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->setupBasicGame();
 });
 
 describe('HasPlayerStartedSpielzugValidator (regression test for issue #652)', function () {
     it('blocks DoMinijobAktion before turn started', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $result = new DoMinijobAktion()->validate($this->players[0], $this->getGameEvents());
         expect($result->canExecute)->toBeFalse()
             ->and($result->reason)->toBe('Du musst deinen Spielzug erst starten.');
     });
 
     it('blocks ActivateCardAktion before turn started', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $result = new ActivateCardAktion(CategoryId::BILDUNG_UND_KARRIERE)
             ->validate($this->players[0], $this->getGameEvents());
         expect($result->canExecute)->toBeFalse()
@@ -36,7 +36,7 @@ describe('HasPlayerStartedSpielzugValidator (regression test for issue #652)', f
     });
 
     it('blocks SkipCardAktion before turn started', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $result = new SkipCardAktion(CategoryId::BILDUNG_UND_KARRIERE)
             ->validate($this->players[0], $this->getGameEvents());
         expect($result->canExecute)->toBeFalse()
@@ -44,7 +44,7 @@ describe('HasPlayerStartedSpielzugValidator (regression test for issue #652)', f
     });
 
     it('blocks BuyInvestmentsForPlayerAktion before turn started', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $result = new BuyInvestmentsForPlayerAktion(InvestmentId::BETA_PEAR, new MoneyAmount(50), 1)
             ->validate($this->players[0], $this->getGameEvents());
         expect($result->canExecute)->toBeFalse()
@@ -52,7 +52,7 @@ describe('HasPlayerStartedSpielzugValidator (regression test for issue #652)', f
     });
 
     it('blocks AcceptJobOfferAktion before turn started', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $result = new AcceptJobOfferAktion(new CardId('j100'))
             ->validate($this->players[0], $this->getGameEvents());
         expect($result->canExecute)->toBeFalse()
@@ -60,7 +60,7 @@ describe('HasPlayerStartedSpielzugValidator (regression test for issue #652)', f
     });
 
     it('lets actions through once SpielzugWasStarted has been emitted', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->coreGameLogic->handle($this->gameId, new StartSpielzug($this->players[0]));
 
         $result = new DoMinijobAktion()->validate($this->players[0], $this->getGameEvents());

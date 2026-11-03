@@ -10,16 +10,16 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 describe('getInvestmentPrice', function () {
     beforeEach(function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupBasicGame();
     });
 
     it('returns initial stock price in first year', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MERFEDES_PENZ))->toEqual(new MoneyAmount(Configuration::INITIAL_INVESTMENT_PRICE))
             ->and(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::BETA_PEAR))->toEqual(new MoneyAmount(Configuration::INITIAL_INVESTMENT_PRICE));

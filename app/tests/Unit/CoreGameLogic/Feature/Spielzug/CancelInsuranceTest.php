@@ -17,21 +17,21 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 beforeEach(function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->setupBasicGame();
 });
 
 describe('handleCancelInsuranceForPlayer', function () {
     it('throws an exception when trying to cancel an insurance the player does not have', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->coreGameLogic->handle($this->gameId, CancelInsuranceForPlayer::create($this->players[0], $this->insurances[0]->id));
     })->throws(\RuntimeException::class, 'Cannot cancel insurance: Versicherung wurde bereits gekündigt.');
 
     it('can cancel an active insurance', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->players[0], $this->insurances[0]->id));
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(MoneySheetState::doesPlayerHaveThisInsurance($gameEvents, $this->players[0], $this->insurances[0]->id))->toBeTrue();
@@ -48,13 +48,13 @@ describe('handleCancelAllInsurancesToAvoidInsolvenzForPlayer', function () {
      * (if they have a negative balance during the KonjunkturphaseChange)
      */
     it('throws an exception if player has a positive balance and therefore is not allowed to cancel insurances', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(ConcludeInsuranceForPlayer::create($this->getPlayers()[0], InsuranceId::create(1)));
         $this->handle(CancelAllInsurancesToAvoidInsolvenzForPlayer::create($this->getPlayers()[0]));
     })->throws(\RuntimeException::class, "Cannot cancel insurance: Dein Kontostand ist positiv.", 1756987783);
 
     it('throws an exception if player has no insurance', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $initialGuthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->players[0]);
         $cardsForTesting = [
             new MinijobCardDefinition(
@@ -94,7 +94,7 @@ describe('handleCancelAllInsurancesToAvoidInsolvenzForPlayer', function () {
     })->throws(\RuntimeException::class, "Cannot cancel insurance: Du hast keine Versicherung.", 1756987783);
 
     it('cancels all insurances when a player has a negative balance and pays back insurance cost', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(ConcludeInsuranceForPlayer::create($this->getPlayers()[0], InsuranceId::create(1)));
 
         $initialGuthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->players[0]);

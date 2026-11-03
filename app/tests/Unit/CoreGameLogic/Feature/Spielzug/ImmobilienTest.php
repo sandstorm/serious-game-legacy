@@ -26,16 +26,16 @@ use Domain\Definitions\Card\ValueObject\ImmobilienType;
 use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 beforeEach(function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->setupBasicGame();
 });
 
 describe('handleBuyImmoblie', function () {
     it('works if the player has enough resources', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new ImmobilienCardDefinition(
                 id: new CardId('inv1'),
@@ -73,7 +73,7 @@ describe('handleBuyImmoblie', function () {
     });
 
     it('works if a player buys the same immobilie twice and sells one', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $purchasePrice = 5000;
         $cardForTesting = new ImmobilienCardDefinition(
             id: new CardId('inv1'),
@@ -270,7 +270,7 @@ describe('handleBuyImmoblie', function () {
 
 describe('handleSellImmobilie', function () {
     it('can sell Immobilie', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $purchasePrice = 20000;
         $cardForTesting = new ImmobilienCardDefinition(
             id: new CardId('inv1'),
@@ -345,7 +345,7 @@ describe('handleSellImmobilie', function () {
     });
 
     it('throws an error if the player tries to sell an immobilie that is not for sale', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new ImmobilienCardDefinition(
                 id: new CardId('inv1'),
@@ -376,7 +376,7 @@ describe('handleSellImmobilie', function () {
     })->throws(\RuntimeException::class, 'Diese Immobilie befindet sich nicht in deinem Besitz', 1754909475);
 
     it('throws an error if the player tries to sell an immobilie they have already sold', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardForTesting = new ImmobilienCardDefinition(
             id: new CardId('inv1'),
             title: 'Kauf Wohnung',
@@ -423,7 +423,7 @@ describe('handleSellImmobilie', function () {
 
 describe('Sell Immoblien to Avoid insolvenz', function () {
     it('throws an error if the player is not insolvent', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $purchasePrice = 2000;
         $initialGuthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->getPlayers()[0]);
         $cardsForTesting = [
@@ -513,7 +513,7 @@ describe('Sell Immoblien to Avoid insolvenz', function () {
     })->throws(\RuntimeException::class, 'Dein Kontostand ist positiv.', 1754909475);
 
     it('returns 80 percent of the purchase price if the player has a negative balance and has an immobilie to sell', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         // purchasePrice and rent amount to 5000 (which is the same as the default Lebenshaltungskosten)
         // they will get added to the Guthaben at the end of the Konjunkturphase/after selling the immobilie
         // so at the end the player should come out at 0.

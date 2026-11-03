@@ -16,7 +16,7 @@ use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Lebensziel\LebenszielFinder;
 use Domain\Definitions\Lebensziel\ValueObject\LebenszielId;
 use Domain\Definitions\PlayerRole\PlayerRole;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 beforeEach(function () {
     $this->coreGameLogic = CoreGameLogicApp::createInMemoryForTesting();
@@ -26,7 +26,7 @@ beforeEach(function () {
 });
 
 test('PreGameLogic normal flow', function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
         numberOfPlayers: 2,
     )->withFixedPlayerIdsForTesting($this->p1, $this->p2));
@@ -132,7 +132,7 @@ test('PreGameLogic can not start with less than 2 players', function () {
 })->throws(RuntimeException::class, 'Number of players must be between 2 and 4', 1790886595);
 
 test('PreGameLogic can start with 4 players', function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->coreGameLogic->handle($this->gameId, StartPreGame::create(
         numberOfPlayers: 4,
     ));

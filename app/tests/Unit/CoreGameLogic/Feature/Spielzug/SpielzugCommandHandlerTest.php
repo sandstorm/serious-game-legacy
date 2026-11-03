@@ -52,18 +52,18 @@ use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use RuntimeException;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 mutates(SpielzugCommandHandler::class);
 
 beforeEach(function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->setupBasicGame();
 });
 
 describe('handlePutCardBackOnPile', function () {
     it('Throws exception if no card was skipped', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, new PutCardBackOnTopOfPile(
             playerId: $this->players[0],
@@ -76,7 +76,7 @@ describe('handlePutCardBackOnPile', function () {
     );
 
     it('Throws exception if a card was skipped and the next one was played', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardToTest = [
             // card to skip
             new KategorieCardDefinition(
@@ -125,7 +125,7 @@ describe('handlePutCardBackOnPile', function () {
     );
 
     it('Throws exception if a card was skipped and player can play the next card', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardToTest = [
             // card to skip
             new KategorieCardDefinition(
@@ -169,7 +169,7 @@ describe('handlePutCardBackOnPile', function () {
     );
 
     it('Throws exception if a card was skipped and the next one was discarded', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardToTest = [
             // card to skip
             new KategorieCardDefinition(
@@ -223,7 +223,7 @@ describe('handlePutCardBackOnPile', function () {
     );
 
     it('Discarding a card works', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardToTest = [
             // card to skip
             new KategorieCardDefinition(
@@ -275,7 +275,7 @@ describe('handlePutCardBackOnPile', function () {
 
 describe('handleActivateCard', function () {
     it('will consume a Zeitstein (first turn)', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             "testcard" => new KategorieCardDefinition(
                 id: new CardId('testcard'),
@@ -319,7 +319,7 @@ describe('handleActivateCard', function () {
     });
 
     it('will not consume a Zeitstein after skipping a Card', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $skipThisCard = new KategorieCardDefinition(
             id: new CardId('skipThisCard'),
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
@@ -376,7 +376,7 @@ describe('handleActivateCard', function () {
     });
 
     it('Will not activate a card after skipping in a different category', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardToTest = new KategorieCardDefinition(
             id: new CardId('cardToTest'),
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
@@ -405,7 +405,7 @@ describe('handleActivateCard', function () {
     );
 
     it('Will not activate a card after another was used', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[0]));
         // skip one card
         $this->coreGameLogic->handle($this->gameId, new SkipCard(
@@ -431,7 +431,7 @@ describe('handleActivateCard', function () {
     );
 
     it('Will activate a card if requirements are met', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardToTest = new KategorieCardDefinition(
             id: new CardId('testcard'),
             categoryId: CategoryId::SOZIALES_UND_FREIZEIT,
@@ -461,7 +461,7 @@ describe('handleActivateCard', function () {
     });
 
     it("will not activate the card if it's not the players turn", function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardToTest = new KategorieCardDefinition(
             id: new CardId('testcard'),
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
@@ -485,7 +485,7 @@ describe('handleActivateCard', function () {
     );
 
     it("will not activate the card if the requirements are not met", function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardToTest = new KategorieCardDefinition(
             id: new CardId('testcard'),
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
@@ -511,7 +511,7 @@ describe('handleActivateCard', function () {
     );
 
     it("cannot activate card when no free slots are available for this konjunkturphase", function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsToTest = [
             new KategorieCardDefinition(
                 id: new CardId('testcard'),
@@ -604,7 +604,7 @@ describe('handleActivateCard', function () {
      * to allow the player to activate the next card, since it will not consume a Zeitsteinslot after a SkipAction.
      */
     it('can activate a card after skipping another card, even when no Zeitsteinslot is available', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $cardsToPlay = [];
 
@@ -645,7 +645,7 @@ describe('handleActivateCard', function () {
 
 describe('handleAcceptJobOffer', function () {
     it('throws an exception if the player tries to accept multiple jobs in one turn', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsToTest = [];
         for ($i = 0; $i < 6; $i++) {
             $cardsToTest[] = new JobCardDefinition(
@@ -671,7 +671,7 @@ describe('handleAcceptJobOffer', function () {
     })->throws(\RuntimeException::class, "Cannot Accept Job Offer: Du kannst nur eine Zeitsteinaktion pro Runde ausführen.", 1749043636);
 
     it('throws an exception if job was not previously offered to player', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsToTest = [
             new JobCardDefinition(
                 id: new CardId('j0'),
@@ -722,7 +722,7 @@ describe('handleAcceptJobOffer', function () {
     );
 
     it('permanently removes 1 Zeitstein while the player has a job and adds salary to gehalt', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         KonjunkturphaseFinder::getInstance()->overrideKonjunkturphaseDefinitionsForTesting([
             $this->konjunkturphaseDefinition,
         ]);
@@ -843,7 +843,7 @@ describe('handleAcceptJobOffer', function () {
     });
 
     it('still only binds one Zeitstein after switching jobs', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         // Reaffirm the "normal" number of Zeitsteine (in case we change something and forget to adjust this test)
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -938,7 +938,7 @@ describe('handleAcceptJobOffer', function () {
     });
 
     it('throws an exception if job requirements are not met', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $this->startNewKonjunkturphaseWithCardsOnTop([
             new JobCardDefinition(
@@ -963,7 +963,7 @@ describe('handleAcceptJobOffer', function () {
     );
 
     it('saves the correct Job and Gehalt', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $jobsForTesting = [
             new JobCardDefinition(
                 id: new CardId('tj0'),
@@ -987,7 +987,7 @@ describe('handleAcceptJobOffer', function () {
     });
 
     it('returns 1 Zeitstein to the player after quitting the job', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $testJobs = [
             "testJob" => new JobCardDefinition(
                 id: new CardId('testJob'),
@@ -1017,7 +1017,7 @@ describe('handleAcceptJobOffer', function () {
     });
 
     it('uses one Zeitsteinslot', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $testJobs = [
             "testJob" => new JobCardDefinition(
                 id: new CardId('testJob'),
@@ -1043,7 +1043,7 @@ describe('handleAcceptJobOffer', function () {
     });
 
     it('costs one Zeitstein', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $testJobs = [
             "testJob" => new JobCardDefinition(
                 id: new CardId('testJob'),
@@ -1072,7 +1072,7 @@ describe('handleAcceptJobOffer', function () {
 
 describe('handleQuitJob', function () {
     it('throws an exception, when it\'s not the players turn', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(CurrentPlayerAccessor::forStream($stream))->toEqual($this->players[0]);
@@ -1088,7 +1088,7 @@ describe('handleQuitJob', function () {
     );
 
     it('throws an exception, when the player has no job', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         /** @var GameEvents $stream */
 
         $this->handle(new StartSpielzug($this->players[0]));
@@ -1107,7 +1107,7 @@ describe('handleChangeLebenszielphase', function () {
     it(
         'throws an exception when the player does not have enough BildungsKompetenzsteine to finish the phase',
         function () {
-            /** @var TestCase $this */
+            /** @var DomainTestCase $this */
             $cardsForTesting = [
                 new KategorieCardDefinition(
                     id: new CardId('cardToTest'),
@@ -1142,7 +1142,7 @@ describe('handleChangeLebenszielphase', function () {
     it(
         'throws an exception when the player does not have enough FreizeitKompetenzsteine to finish the phase',
         function () {
-            /** @var TestCase $this */
+            /** @var DomainTestCase $this */
             $cardsForTesting = [
                 "cardToTest" => new KategorieCardDefinition(
                     id: new CardId('cardToTest'),
@@ -1173,7 +1173,7 @@ describe('handleChangeLebenszielphase', function () {
     );
 
     it('throws an exception when the player does not have enough Money to finish the phase', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             "cardToTest" => new KategorieCardDefinition(
                 id: new CardId('cardToTest'),
@@ -1207,7 +1207,7 @@ describe('handleChangeLebenszielphase', function () {
     );
 
     it('throws an exception when it\'s not the players turn', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(CurrentPlayerAccessor::forStream($stream))->toEqual($this->players[0]);
@@ -1238,7 +1238,7 @@ describe('handleChangeLebenszielphase', function () {
             ),
         ];
 
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->startNewKonjunkturphaseWithCardsOnTop($setupCards);
 
         $this->handle(new StartSpielzug($this->players[0]));
@@ -1254,7 +1254,7 @@ describe('handleChangeLebenszielphase', function () {
     });
 
     it('saves the correct Ressources(BildungsKompetenztein, FreizeitKompetenzsteine, Guthaben)', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         /** @var GameEvents $stream */
         $cardsForTesting = [
             new KategorieCardDefinition(
@@ -1284,7 +1284,7 @@ describe('handleChangeLebenszielphase', function () {
     });
 
     it('finishes Lebensziel when the player finishes Lebenszielphase 3', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new KategorieCardDefinition(
                 id: new CardId('phase1'),
@@ -1357,7 +1357,7 @@ describe('handleChangeLebenszielphase', function () {
     });
 
     it('throws an exception when the player tries to finish the Lebensziel while having open loans', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new KategorieCardDefinition(
                 id: new CardId('phase1'),
@@ -1432,7 +1432,7 @@ describe('handleChangeLebenszielphase', function () {
     );
 
     it('allows finishing the Lebensziel after the player has repaid all open loans', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new KategorieCardDefinition(
                 id: new CardId('phase1'),
@@ -1514,7 +1514,7 @@ describe('handleChangeLebenszielphase', function () {
 
 describe('handleDoMinijob', function () {
     it('throws an exception when it\'s not the players turn', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[1]));
     })->throws(
         RuntimeException::class,
@@ -1523,7 +1523,7 @@ describe('handleDoMinijob', function () {
     );
 
     it('throws an exception when the player does not have enough Zeitsteine', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new KategorieCardDefinition(
                 id: new CardId('cardToRemoveZeitsteine'),
@@ -1562,7 +1562,7 @@ describe('handleDoMinijob', function () {
     );
 
     it('adds money to the players account after doing the minijob', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $minijobs = [
             new MinijobCardDefinition(
                 id: new CardId('testMinijob'),
@@ -1590,7 +1590,7 @@ describe('handleDoMinijob', function () {
     });
 
     it('throws an exception when the player wants to do more than one Zeitsteinaktion', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
@@ -1603,7 +1603,7 @@ describe('handleDoMinijob', function () {
 
 describe('handleStartWeiterbildung', function () {
     it('throws an exception when it\'s not the players turn', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->coreGameLogic->handle($this->gameId, StartWeiterbildung::create($this->players[1]));
     })->throws(
         RuntimeException::class,
@@ -1612,7 +1612,7 @@ describe('handleStartWeiterbildung', function () {
     );
 
     it('throws an exception when the player does not have enough Zeitsteine', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             "cardToRemoveZeitsteine" => new KategorieCardDefinition(
                 id: new CardId('cardToRemoveZeitsteine'),
@@ -1688,7 +1688,7 @@ describe('handleSubmitAnswerWeiterbildung', function () {
     );
 
     it('throws an exception if no weiterbildung was started', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $selectedAnswer = AnswerId::fromString('a');
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, SubmitAnswerForWeiterbildung::create($this->players[0], $selectedAnswer));
@@ -1699,7 +1699,7 @@ describe('handleSubmitAnswerWeiterbildung', function () {
     );
 
     it('throws an exception when player selects an answer that does not exist', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, StartWeiterbildung::create($this->players[0]));
         $invalidAnswerId = AnswerId::fromString('invalid-answer');
@@ -1711,7 +1711,7 @@ describe('handleSubmitAnswerWeiterbildung', function () {
     );
 
     it('throws an exception when the player tries to answer twice', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, StartWeiterbildung::create($this->players[0]));
         $answerOption = AnswerId::fromString('a');
@@ -1736,7 +1736,7 @@ describe('handleSubmitAnswerWeiterbildung', function () {
                 ],
             ),
         ];
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
         $this->handle(new StartSpielzug($this->players[0]));
@@ -1770,7 +1770,7 @@ describe('handleSubmitAnswerWeiterbildung', function () {
                 ],
             ),
         ];
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
         $this->handle(new StartSpielzug($this->players[0]));
@@ -1793,7 +1793,7 @@ describe('handleSubmitAnswerWeiterbildung', function () {
     });
 
     it('two players start and answer a weiterbildung', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             "cardWeiterbildungTest1" => new WeiterbildungCardDefinition(
                 id: new CardId('cardWeiterbildungTest1'),
@@ -1858,7 +1858,7 @@ describe('handleSubmitAnswerWeiterbildung', function () {
 
 describe('handleEndSpielzug', function () {
     it('throws an exception when it\'s not the players turn', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         /** @var GameEvents $stream */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(CurrentPlayerAccessor::forStream($stream))->toEqual($this->players[0]);
@@ -1874,7 +1874,7 @@ describe('handleEndSpielzug', function () {
     );
 
     it('throws an exception when the player has not performed a Zeitsteinaktion this turn', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -1889,7 +1889,7 @@ describe('handleEndSpielzug', function () {
     it(
         'does not throw an exception when the player has not performed a Zeitsteinaktion this turn and has 0 Zeitsteine',
         function () {
-            /** @var TestCase $this */
+            /** @var DomainTestCase $this */
             // Setup
             $cardToTest = new KategorieCardDefinition(
                 id: new CardId('testcard'),
@@ -1942,7 +1942,7 @@ describe('handleEndSpielzug', function () {
     );
 
     it('switches the current player', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -1957,7 +1957,7 @@ describe('handleEndSpielzug', function () {
     });
 
     it('starts again with the first player when the last player ends their turn', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -1981,7 +1981,7 @@ describe('handleEndSpielzug', function () {
     });
 
     it('ends current Konjunkturphase if no player has any Zeitsteine left', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new KategorieCardDefinition(
                 id: new CardId('cardToRemoveZeitsteine'),
@@ -2025,7 +2025,7 @@ describe('handleEndSpielzug', function () {
 
 describe('handleStartSpielzug', function () {
     it('throws an exception when it\'s not the players turn', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(CurrentPlayerAccessor::forStream($stream))->toEqual($this->players[0]);
 
@@ -2040,7 +2040,7 @@ describe('handleStartSpielzug', function () {
     );
 
     it('throws an exception when player has already started their turn', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         // player 0 end their turn
         $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(DoMinijob::create($this->players[0]));
@@ -2056,7 +2056,7 @@ describe('handleStartSpielzug', function () {
     );
 
     it('player can start his/her turn', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         // player 0 ends their turn
         $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(DoMinijob::create($this->players[0]));
@@ -2098,7 +2098,7 @@ describe('handleStartSpielzug', function () {
 
 describe('handleEnterSteuernUndAbgabenForPlayer', function () {
     it('works for correct player input when the player has no job', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -2114,7 +2114,7 @@ describe('handleEnterSteuernUndAbgabenForPlayer', function () {
     });
 
     it('works for correct player input when the player has a job', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $cardsToTest = [
             new JobCardDefinition(
@@ -2146,7 +2146,7 @@ describe('handleEnterSteuernUndAbgabenForPlayer', function () {
     });
 
     it('works for incorrect player input when the player has no job', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -2162,7 +2162,7 @@ describe('handleEnterSteuernUndAbgabenForPlayer', function () {
     });
 
     it('works for incorrect player input when the player has a job', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $cardsToTest = [
             new JobCardDefinition(
@@ -2195,7 +2195,7 @@ describe('handleEnterSteuernUndAbgabenForPlayer', function () {
     });
 
     it('charges a fee after two incorrect entries', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE));
@@ -2214,7 +2214,7 @@ describe('handleEnterSteuernUndAbgabenForPlayer', function () {
     });
 
     it('charges no fee after one incorrect entries', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE));
@@ -2231,7 +2231,7 @@ describe('handleEnterSteuernUndAbgabenForPlayer', function () {
 
 describe('handleEnterLebenshaltungskostenForPlayer', function () {
     it('works for correct player input when the player has no job', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -2247,7 +2247,7 @@ describe('handleEnterLebenshaltungskostenForPlayer', function () {
     });
 
     it('works for correct player input when the player has a job', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $cardsToTest = [
             new JobCardDefinition(
@@ -2279,7 +2279,7 @@ describe('handleEnterLebenshaltungskostenForPlayer', function () {
     });
 
     it('works for incorrect player input when the player has no job', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -2295,7 +2295,7 @@ describe('handleEnterLebenshaltungskostenForPlayer', function () {
     });
 
     it('works for incorrect player input when the player has a job', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $cardsToTest = [
             new JobCardDefinition(
@@ -2328,7 +2328,7 @@ describe('handleEnterLebenshaltungskostenForPlayer', function () {
     });
 
     it('charges a fee after two incorrect entries', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE));
@@ -2347,7 +2347,7 @@ describe('handleEnterLebenshaltungskostenForPlayer', function () {
     });
 
     it('charges no fee after one incorrect entries', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE));

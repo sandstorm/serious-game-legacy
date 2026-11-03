@@ -21,16 +21,16 @@ use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 beforeEach(function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->setupBasicGame();
 });
 
 describe('handleCompleteMoneysheetForPlayer', function () {
     it('it works if the player has filled out all required fields', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $cardsForTesting = [
             new KategorieCardDefinition(
@@ -125,7 +125,7 @@ describe('handleCompleteMoneysheetForPlayer', function () {
     });
 
     it('throws an error if the player did not yet fill out the money sheet', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $cardsForTesting = [
             new KategorieCardDefinition(
@@ -178,7 +178,7 @@ describe('handleCompleteMoneysheetForPlayer', function () {
     );
 
     it('changes balance correctly when the player is insolvent', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupInsolvenz();
 
         $cardsForTesting = [
@@ -274,7 +274,7 @@ describe('handleCompleteMoneysheetForPlayer', function () {
     });
 
     it('changes balance correctly when the player is insolvent and cannot pay Lebenshaltungskosten', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupInsolvenz();
 
         $cardsForTesting = [

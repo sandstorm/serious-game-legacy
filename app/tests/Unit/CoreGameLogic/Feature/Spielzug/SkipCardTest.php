@@ -20,19 +20,19 @@ use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use RuntimeException;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 mutates(SpielzugCommandHandler::class);
 
 beforeEach(function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->setupBasicGame();
 });
 
 describe('handleSkipCard', function () {
 
     it('will consume a Zeitstein', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         // Check the initial assumption of how many Zeitsteine the player has at the start of the test
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getZeitsteineForPlayer(
@@ -54,7 +54,7 @@ describe('handleSkipCard', function () {
     });
 
     it('Cannot skip twice', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -71,7 +71,7 @@ describe('handleSkipCard', function () {
     );
 
     it('can only skip when it\'s the player\'s turn', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
             new SkipCard(playerId: $this->players[1], categoryId: CategoryId::BILDUNG_UND_KARRIERE)
@@ -83,7 +83,7 @@ describe('handleSkipCard', function () {
     );
 
     it('throws an error when the player tries to end their Spielzug directly after skipping a card', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -100,7 +100,7 @@ describe('handleSkipCard', function () {
     );
 
     it('cannot skip without a Zeitstein', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             "cardToRemoveZeitsteine" => new KategorieCardDefinition(
                 id: new CardId('cardToRemoveZeitsteine'),
@@ -156,7 +156,7 @@ describe('handleSkipCard', function () {
     );
 
     it("cannot skip card when no free slots are available for this konjunkturphase", function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         KonjunkturphaseFinder::getInstance()->overrideKonjunkturphaseDefinitionsForTesting([
             $this->konjunkturphaseDefinition,
         ]);

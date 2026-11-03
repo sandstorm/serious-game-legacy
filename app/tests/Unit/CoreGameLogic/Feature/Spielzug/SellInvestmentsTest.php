@@ -22,10 +22,10 @@ use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 beforeEach(function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->setupBasicGame();
 });
 
@@ -34,7 +34,7 @@ describe('handleSellInvestmentsForPlayer', function () {
         // buy low risk stocks
         $amountOfStocks = 100;
 
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -121,7 +121,7 @@ describe('handleSellInvestmentsForPlayer', function () {
     });
 
     it('throws exception if you try to sell investments you do not have', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -135,7 +135,7 @@ describe('handleSellInvestmentsForPlayer', function () {
 
     it('allows other players to respond to the investments modal when the active player sells a different investment type than was last globally bought', function () {
         // player 0 buys MERFEDES_PENZ on turn 1
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -184,7 +184,7 @@ describe('handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer', function 
     it('selling investments after purchase works as expected', function () {
         $amountOfStocks = 100;
         // player 0 buys low risk stocks
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -213,7 +213,7 @@ describe('handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer', function 
         );
 
         // player 1 buys low risk stocks
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -248,7 +248,7 @@ describe('handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer', function 
     it('throws exception if player tries sell more investments than they have', function () {
         $amountOfStocks = 100;
         // player 0 buys low risk stocks
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -277,7 +277,7 @@ describe('handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer', function 
         );
 
         // player 1 buys low risk stocks
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[1]));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -307,7 +307,7 @@ describe('handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer', function 
     it('throws exception if player tries end their turn and another player did not sell their investments', function () {
         $amountOfStocks = 100;
         // player 0 buys low risk stocks
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -328,7 +328,7 @@ describe('handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer', function 
         $amountOfStocks = 100;
 
         // player 0 buys low risk stocks
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -358,7 +358,7 @@ describe('handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer', function 
     })->throws(\RuntimeException::class, 'Ein anderer Spieler muss Investitionen der gleichen Art gekauft oder verkauft haben, bevor du welche verkaufen kannst', 1752753850);
 
     it('throws exception if player tries to sell investments when no other player bought some', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -377,14 +377,14 @@ describe('handleSellInvestmentsToAvoidInsolvenzForPlayer', function () {
      * (if they have a negative balance during the KonjunkturphaseChange)
      */
     it('throws an exception if player has no negative balance and therefore is not allowed to sell investments during the KonjunkturphaseChange', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(BuyInvestmentsForPlayer::create($this->getPlayers()[0], InvestmentId::MERFEDES_PENZ, 10));
         $this->handle(SellInvestmentsToAvoidInsolvenzForPlayer::create($this->getPlayers()[0], InvestmentId::MERFEDES_PENZ, 10));
     })->throws(\RuntimeException::class, 'Cannot sell investments for insolvenz: Dein Kontostand ist positiv.', 1757078994);
 
     it('throws an exception if player has no investments to sell', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $initialGuthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->players[0]);
         $cardsForTesting = [
             new MinijobCardDefinition(
@@ -422,7 +422,7 @@ describe('handleSellInvestmentsToAvoidInsolvenzForPlayer', function () {
     })->throws(\RuntimeException::class, 'Cannot sell investments for insolvenz: Du hast nicht genug Investitionen vom Typ Merfedes-Penz zum Verkaufen.', 1757078994);
 
     it('sells investments for almost insolvent player and returns correct amount of money', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->getPlayers()[0]));
         $this->handle(BuyInvestmentsForPlayer::create($this->getPlayers()[0], InvestmentId::BETA_PEAR, 10));
         // Other-player reaction during P0's turn — does not require P1 to start spielzug.

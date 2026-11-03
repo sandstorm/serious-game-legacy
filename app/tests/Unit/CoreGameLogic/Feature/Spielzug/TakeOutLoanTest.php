@@ -13,17 +13,17 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 beforeEach(function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->setupBasicGame();
 });
 
 describe('handleTakeOutALoanForPlayer', function () {
 
     it('throws an exception when the player is insolvent', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupInsolvenz();
 
         expect(PlayerState::isPlayerInsolvent($this->getGameEvents(), $this->players[0]))->toBeTrue("Player should be insolvent");
@@ -39,7 +39,7 @@ describe('handleTakeOutALoanForPlayer', function () {
     })->throws(\RuntimeException::class, "Cannot take out a loan: Du bist insolvent.", 1756200359);
 
     it('throws an exception when the loan amount exceeds the credit limit of the player', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         // player has no job and only the Startkapital -> credit limit is 80% of the Startkapital
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
             $this->players[0],
@@ -48,7 +48,7 @@ describe('handleTakeOutALoanForPlayer', function () {
     })->throws(\RuntimeException::class, 'Cannot take out a loan: Du kannst keinen Kredit aufnehmen, der höher ist als das Kreditlimit.', 1756200359);
 
     it('throws an exception when the loan amount is not positive', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->coreGameLogic->handle($this->gameId, TakeOutALoanForPlayer::create(
             $this->players[0],
             0
@@ -56,7 +56,7 @@ describe('handleTakeOutALoanForPlayer', function () {
     })->throws(\RuntimeException::class, 'Cannot take out a loan: Der Kreditbetrag muss größer als 0 sein.', 1756200359);
 
     it('adds the loan amount to the player\s Guthaben', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $loanAmount = 10000;
 
@@ -76,7 +76,7 @@ describe('handleTakeOutALoanForPlayer', function () {
 
 describe('handleRepayLoanForPlayer', function () {
     it('correctly repays loans', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         // first player needs to take out a loan
         $loanAmount = 10000;
@@ -120,7 +120,7 @@ describe('handleRepayLoanForPlayer', function () {
     });
 
     it('throws exception when player does not have enough money to pay back the loan', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         // first player needs to take out a loan
         $loanAmount = 10000;

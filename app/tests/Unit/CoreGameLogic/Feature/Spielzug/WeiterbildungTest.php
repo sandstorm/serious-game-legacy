@@ -12,16 +12,16 @@ use Domain\Definitions\Card\Dto\AnswerOption;
 use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\ValueObject\AnswerId;
 use Domain\Definitions\Card\ValueObject\CardId;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 beforeEach(function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->setupBasicGame();
 });
 
 describe('Weiterbildung Kompetenzstein awards', function () {
     it('awards 0.5 BildungsKompetenzstein for correct answer', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new WeiterbildungCardDefinition(
                 id: new CardId('wbTest'),
@@ -49,7 +49,7 @@ describe('Weiterbildung Kompetenzstein awards', function () {
     });
 
     it('does not award BildungsKompetenzstein for incorrect answer', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new WeiterbildungCardDefinition(
                 id: new CardId('wbTest'),
@@ -79,7 +79,7 @@ describe('Weiterbildung Kompetenzstein awards', function () {
 
 describe('Weiterbildung across turns', function () {
     it('allows doing a Weiterbildung after a Minijob in a previous turn', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new WeiterbildungCardDefinition(
                 id: new CardId('wbTest'),
@@ -114,7 +114,7 @@ describe('Weiterbildung across turns', function () {
     });
 
     it('allows doing a Minijob after a Weiterbildung in a previous turn', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         // player 0 does a Weiterbildung (Zeitsteinaktion)
         $this->handle(new StartSpielzug($this->players[0]));
         $this->handle(StartWeiterbildung::create($this->players[0]));

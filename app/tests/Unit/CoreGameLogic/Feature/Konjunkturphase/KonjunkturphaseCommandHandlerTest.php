@@ -18,7 +18,7 @@ use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 describe('handleChangeKonjunkturphase', function () {
     beforeEach(function () {
@@ -33,12 +33,12 @@ describe('handleChangeKonjunkturphase', function () {
             ),
         ];
 
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupBasicGame(cards: $cardsForTesting);
     });
 
     it('redistributes Zeitsteine', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         // Make sure the initial number of Zeitsteine is what we expect
         $expectedNumberOfZeitsteine = $this->konjunkturphaseDefinition->zeitsteine->getAmountOfZeitsteineForPlayer(2);
         /** @var GameEvents $stream */
@@ -95,7 +95,7 @@ describe('handleChangeKonjunkturphase', function () {
 
 describe('getListOfPossibleNextPhaseTypes', function () {
     it('start of game -> first phase type is Aufschwung', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupBasicGameWithoutKonjunkturphase();
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -109,7 +109,7 @@ describe('getListOfPossibleNextPhaseTypes', function () {
     });
 
     it('game started -> last phase was of type Aufschwung', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupBasicGame();
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
@@ -126,7 +126,7 @@ describe('getListOfPossibleNextPhaseTypes', function () {
     });
 
     it('returns Rezession with increased likelihood when isChanceForRezessionIncreased is true', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupBasicGame();
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);

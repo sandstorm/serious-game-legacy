@@ -14,18 +14,18 @@ use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
 use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 mutates(EreignisPrerequisiteChecker::class);
 
 beforeEach(function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->setupBasicGame();
 });
 
 describe('hasPlayerPrerequisites', function () {
     it('checks HAS_JOB and HAS_NO_JOB for a player without a job', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $checker = EreignisPrerequisiteChecker::forStream($this->getGameEvents());
 
         expect($checker->hasPlayerPrerequisites($this->players[0], EreignisPrerequisitesId::HAS_JOB))->toBeFalse()
@@ -33,7 +33,7 @@ describe('hasPlayerPrerequisites', function () {
     });
 
     it('checks HAS_JOB and HAS_NO_JOB for a player with a job', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->startNewKonjunkturphaseWithCardsOnTop([
             new JobCardDefinition(
                 id: new CardId('job1234'),

@@ -11,16 +11,16 @@ use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 beforeEach(function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->setupBasicGame();
 });
 
 describe('calculate Insolvenzabgaben', function () {
     it('returns 0 if the player is not insolvent', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new JobCardDefinition(
                 id: new CardId('job1'),
@@ -42,7 +42,7 @@ describe('calculate Insolvenzabgaben', function () {
     });
 
     it('returns 0 if the player is insolvent and has no income', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupInsolvenz();
 
         $gameEvents = $this->getGameEvents();
@@ -51,7 +51,7 @@ describe('calculate Insolvenzabgaben', function () {
     });
 
     it('returns 0 if the player is insolvent and earns less than the Pfändungsfreigrenze after taxes', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupInsolvenz();
 
         $cardsForTesting = [new JobCardDefinition(
@@ -73,7 +73,7 @@ describe('calculate Insolvenzabgaben', function () {
     });
 
     it('returns correct value if the player is insolvent and earns more than the Pfändungsfreigrenze after taxes', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupInsolvenz();
 
         $cardsForTesting = [new JobCardDefinition(
