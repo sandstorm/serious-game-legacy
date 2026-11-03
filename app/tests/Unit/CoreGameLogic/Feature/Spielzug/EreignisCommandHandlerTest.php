@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
@@ -20,6 +21,7 @@ use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ModifierParameters;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
 use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
 use Domain\Definitions\Card\ValueObject\ModifierId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
@@ -614,4 +616,123 @@ describe('Berufsunfähigkeit', function () {
             ->and($gameEvents->findLastOrNull(BerufsunfaehigkeitsversicherungWasActivated::class))->toBeNull()
             ->and(PlayerState::getCurrentGehaltForPlayer($gameEvents, $this->getPlayers()[0])->value)->toEqual(0);
     });
+});
+
+/**
+ * Lets player 0 activate a Soziales & Freizeit card, which triggers the given Ereignis (the Konjunkturphase of this
+ * test always triggers an Ereignis). Optionally concludes an insurance before.
+ */
+function drawEreignisForFirstPlayer(DomainTestCase $testCase, EreignisCardDefinition $ereignisCard, ?InsuranceId $insuranceId = null): GameEvents
+{
+    $testCase->startNewKonjunkturphaseWithCardsOnTop([
+        $ereignisCard,
+        new KategorieCardDefinition(
+            id: new CardId('cardToTriggerEreignis'),
+            categoryId: CategoryId::SOZIALES_UND_FREIZEIT,
+            title: 'for testing',
+            description: 'for testing',
+            resourceChanges: new ResourceChanges(),
+        ),
+    ]);
+    $player = $testCase->getPlayers()[0];
+    $testCase->handle(new StartSpielzug($player));
+    if ($insuranceId !== null) {
+        $testCase->handle(ConcludeInsuranceForPlayer::create($player, $insuranceId));
+    }
+    $testCase->handle(ActivateCard::create($player, CategoryId::SOZIALES_UND_FREIZEIT));
+
+    return $testCase->getGameEvents();
+}
+
+/**
+ * @param ModifierId[] $modifierIds
+ * @param EreignisPrerequisitesId[] $ereignisRequirementIds
+ */
+function ereignisCardForSozialesUndFreizeit(
+    ResourceChanges $resourceChanges = new ResourceChanges(),
+    array $modifierIds = [],
+    array $ereignisRequirementIds = [],
+): EreignisCardDefinition {
+    return new EreignisCardDefinition(
+        id: new CardId('ereignisForTesting'),
+        categoryId: CategoryId::EREIGNIS_SOZIALES_UND_FREIZEIT,
+        title: 'for testing',
+        description: 'for testing',
+        phaseId: LebenszielPhaseId::PHASE_1,
+        year: new Year(1),
+        resourceChanges: $resourceChanges,
+        modifierIds: $modifierIds,
+        modifierParameters: new ModifierParameters(),
+        ereignisRequirementIds: $ereignisRequirementIds,
+        gewichtung: 1,
+    );
+}
+
+describe('Ereignisse covered by insurances', function () {
+    it('pays out the Invaliditätsleistung of an accident only with a private Unfallversicherung', function (bool $withUnfallversicherung, int $expectedGuthabenChange) {
+        /** @var DomainTestCase $this */
+        $gameEvents = drawEreignisForFirstPlayer(
+            $this,
+            ereignisCardForSozialesUndFreizeit(
+                resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(6000)),
+                modifierIds: [ModifierId::PRIVATE_UNFALLVERSICHERUNG],
+            ),
+            $withUnfallversicherung ? InsuranceId::create(2) : null,
+        );
+
+        expect($gameEvents->findLast(EreignisWasTriggered::class)->getResourceChanges($this->players[0])->guthabenChange->value)
+            ->toEqual($expectedGuthabenChange);
+    })->with([
+        'without Unfallversicherung' => [false, 0],
+        'with Unfallversicherung' => [true, 6000],
+    ]);
+
+    it('covers the damage only with a Haftpflichtversicherung', function (bool $withHaftpflichtversicherung, int $expectedGuthabenChange) {
+        /** @var DomainTestCase $this */
+        $gameEvents = drawEreignisForFirstPlayer(
+            $this,
+            ereignisCardForSozialesUndFreizeit(
+                resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(-1200)),
+                modifierIds: [ModifierId::HAFTPFLICHTVERSICHERUNG],
+            ),
+            $withHaftpflichtversicherung ? InsuranceId::create(1) : null,
+        );
+
+        expect($gameEvents->findLast(EreignisWasTriggered::class)->getResourceChanges($this->players[0])->guthabenChange->value)
+            ->toEqual($expectedGuthabenChange);
+    })->with([
+        'without Haftpflichtversicherung' => [false, -1200],
+        'with Haftpflichtversicherung' => [true, 0],
+    ]);
+});
+
+/**
+ * Each test only offers an Ereignis that the player must not draw. If the Ereignis was drawn anyway (instead of failing
+ * because no Ereignis matches), the filter is broken. Two cards would not work: the random pick would hide a broken
+ * filter in 50% of the runs.
+ */
+describe('Ereignisse the player must not draw', function () {
+    it('does not draw an Ereignis that requires a job if the player has no job', function () {
+        /** @var DomainTestCase $this */
+        drawEreignisForFirstPlayer($this, ereignisCardForSozialesUndFreizeit(
+            ereignisRequirementIds: [EreignisPrerequisitesId::HAS_JOB],
+        ));
+    })->throws(\RuntimeException::class, 'No EreignisCard matches the current requirements', 1753874959);
+
+    it('does not draw an Ereignis with a job loss if the player has no job, even without the HAS_JOB requirement', function (ModifierId $modifierId) {
+        /** @var DomainTestCase $this */
+        drawEreignisForFirstPlayer($this, ereignisCardForSozialesUndFreizeit(
+            modifierIds: [$modifierId],
+        ));
+    })->with([
+        ModifierId::JOBVERLUST,
+        ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
+    ])->throws(\RuntimeException::class, 'No EreignisCard matches the current requirements', 1753874959);
+
+    it('does not draw an Ereignis the player cannot afford', function () {
+        /** @var DomainTestCase $this */
+        drawEreignisForFirstPlayer($this, ereignisCardForSozialesUndFreizeit(
+            resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(-1000000)),
+        ));
+    })->throws(\RuntimeException::class, 'No EreignisCard matches the current requirements', 1753874959);
 });
