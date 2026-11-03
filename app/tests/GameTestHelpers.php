@@ -546,7 +546,27 @@ trait GameTestHelpers
         return $this->gameId;
     }
 
+    /**
+     * Player 0 files for Insolvenz at the end of a Konjunkturphase, a new Konjunkturphase is started afterwards.
+     */
     public function setupInsolvenz(): void
+    {
+        $this->setupNegativeBalanceAtEndOfKonjunkturphase();
+        $this->handle(FileInsolvenzForPlayer::create($this->getPlayers()[0]));
+        $this->handle(ChangeKonjunkturphase::create()
+            ->withFixedKonjunkturphaseForTesting($this->konjunkturphaseDefinition)
+            ->withFixedCardOrderForTesting());
+    }
+
+    /**
+     * Player 0 spends all their money in a new Konjunkturphase and completes the Moneysheet, so they have a negative
+     * balance (minus the Lebenshaltungskosten) at the end of the Konjunkturphase. Assets they bought before are kept,
+     * so they can sell them to avoid the Insolvenz.
+     *
+     * @param CardDefinition[] $cardsToKeep cards used before (e.g. a bought Immobilie), which must still exist to load
+     *                                     the events referencing them
+     */
+    public function setupNegativeBalanceAtEndOfKonjunkturphase(array $cardsToKeep = []): void
     {
         $initialGuthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->players[0]);
         // WHY: We use MiniJobs to avoid triggering events.
@@ -568,6 +588,7 @@ trait GameTestHelpers
                     zeitsteineChange: -1 * $this->getKonjunkturphaseDefinition()->zeitsteine->getAmountOfZeitsteineForPlayer(2) + 1,
                 ),
             ),
+            ...$cardsToKeep,
         ];
         $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
@@ -585,9 +606,5 @@ trait GameTestHelpers
         ));
 
         $this->handle(CompleteMoneysheetForPlayer::create($this->getPlayers()[0]));
-        $this->handle(FileInsolvenzForPlayer::create($this->getPlayers()[0]));
-        $this->handle(ChangeKonjunkturphase::create()
-            ->withFixedKonjunkturphaseForTesting($this->konjunkturphaseDefinition)
-            ->withFixedCardOrderForTesting());
     }
 }
