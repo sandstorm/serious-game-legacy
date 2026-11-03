@@ -46,6 +46,13 @@ parameters:
             allowExceptIn:
                 - app/Livewire/Traits/*
 
+         -  # Game actions are always triggered via their command, so the command handler stays the single entry point.
+            # The UI may use Aktion::validate() (e.g. to enable buttons), but never execute().
+            method: 'Domain\CoreGameLogic\Feature\Spielzug\Aktion\*::execute()'
+            message: 'only command handlers may execute an Aktion. To trigger another game action, pass its command to the command handler instead, e.g. new SpielzugCommandHandler()->handle(QuitJob::create($playerId), $gameEvents).'
+            allowIn:
+                - src/CoreGameLogic/Feature/*/*CommandHandler.php
+
     disallowedFunctionCalls:
         -   # We do not want to use helpers which access global state. -> Dependency Injection
             function:

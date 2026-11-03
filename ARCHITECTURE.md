@@ -136,6 +136,15 @@ Teil eines Streams ist (single source of truth).
 Aufgrund des vorherigen Spielverlaufes können Aktionen aktuell deaktiviert sein; oder es können
 zusätzliche Aktionen vorhanden sein. Dies wird über die **aktiven Modifier** gesteuert.
 
+**Aktionen werden nur von Command Handlern ausgeführt** (`Aktion::execute()`), damit der Command Handler der einzige
+Einstieg für eine Spielaktion bleibt:
+
+- Muss eine Spielaktion eine andere auslösen, gibt sie deren Command an den Command Handler weiter, z.B.
+  `new SpielzugCommandHandler()->handle(QuitJob::create($playerId), $gameEvents)`, statt die andere Aktion direkt
+  auszuführen.
+- Die UI darf Aktionen nur prüfen (`Aktion::validate()`, z.B. um Buttons zu aktivieren), nie ausführen.
+- Wird per PHPStan geprüft (`disallowed-calls.neon`).
+
 ### Modifier
 
 TODO: Describe

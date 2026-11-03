@@ -15,8 +15,10 @@ use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerCompletedMon
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerNoInsuranceValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerNoInvestmentsToSellValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsPlayerNotInsolventValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\RepayLoanForPlayerInCaseOfInsolvenz;
 use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasFiledForInsolvenz;
+use Domain\CoreGameLogic\Feature\Spielzug\SpielzugCommandHandler;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\ResourceChanges;
@@ -54,12 +56,15 @@ class FileInsolvenzForPlayerAktion extends Aktion
         $allMyLoanGameEvents = [];
 
         foreach ($allOpenLoansForPlayer as $loan) {
-            $repayLoanAktion = new RepayLoanForPlayerInCaseOfInsolvenzAktion($loan->loanId);
+            $repayLoanEvents = new SpielzugCommandHandler()->handle(
+                RepayLoanForPlayerInCaseOfInsolvenz::create($playerId, $loan->loanId),
+                $gameEvents
+            );
             $allMyLoanGameEvents = [
                 ...$allMyLoanGameEvents,
                 ...array_map(
                     fn ($event) => $event instanceof DecoratedEvent ? $event->innerEvent : $event,
-                    $repayLoanAktion->execute($playerId, $gameEvents)->events
+                    $repayLoanEvents->events
                 )
             ];
         }
