@@ -119,6 +119,15 @@ describe('handleRepayLoanForPlayer', function () {
             ->and(MoneySheetState::getTotalOpenRepaymentValueForAllLoans($gameEvents, $this->players[0]))->toEqual(new MoneyAmount(0));
     });
 
+    it('throws exception when player tries to repay a loan that was already repaid', function () {
+        /** @var DomainTestCase $this */
+        $this->handle(TakeOutALoanForPlayer::create($this->players[0], 10000));
+        $loanId = $this->getGameEvents()->findLast(LoanWasTakenOutForPlayer::class)->loanId;
+        $this->handle(RepayLoanForPlayer::create($this->players[0], $loanId));
+
+        $this->handle(RepayLoanForPlayer::create($this->players[0], $loanId));
+    })->throws(\RuntimeException::class, 'Du hast diesen Kredit bereits zurückgezahlt.', 1756813341);
+
     it('throws exception when player does not have enough money to pay back the loan', function () {
         /** @var DomainTestCase $this */
 

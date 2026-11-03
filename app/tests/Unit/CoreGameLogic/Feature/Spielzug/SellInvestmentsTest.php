@@ -304,6 +304,25 @@ describe('handleSellInvestmentsForPlayerAfterPurchaseByAnotherPlayer', function 
         );
     })->throws(\RuntimeException::class, 'Du hast nicht genug Investitionen vom Typ Merfedes-Penz zum Verkaufen.', 1752753850);
 
+    it('throws exception if player tries to sell twice after the same purchase of another player', function () {
+        /** @var DomainTestCase $this */
+        // player 1 needs investments to sell
+        $this->handle(new StartSpielzug($this->players[0]));
+        $this->handle(DoMinijob::create($this->players[0]));
+        $this->handle(new EndSpielzug($this->players[0]));
+        $this->handle(new StartSpielzug($this->players[1]));
+        $this->handle(BuyInvestmentsForPlayer::create($this->players[1], InvestmentId::MERFEDES_PENZ, 10));
+        $this->handle(DontSellInvestmentsForPlayer::create($this->players[0], InvestmentId::MERFEDES_PENZ));
+        $this->handle(new EndSpielzug($this->players[1]));
+
+        // player 0 buys -> player 1 may sell once in response
+        $this->handle(new StartSpielzug($this->players[0]));
+        $this->handle(BuyInvestmentsForPlayer::create($this->players[0], InvestmentId::MERFEDES_PENZ, 100));
+        $this->handle(SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer::create($this->players[1], InvestmentId::MERFEDES_PENZ, 5));
+
+        $this->handle(SellInvestmentsForPlayerAfterInvestmentByAnotherPlayer::create($this->players[1], InvestmentId::MERFEDES_PENZ, 5));
+    })->throws(\RuntimeException::class, 'Du hast diesen Spielzug schon Investitionen verkauft. Du kannst nicht erneut welche verkaufen.', 1752753850);
+
     it('throws exception if player tries end their turn and another player did not sell their investments', function () {
         $amountOfStocks = 100;
         // player 0 buys low risk stocks
