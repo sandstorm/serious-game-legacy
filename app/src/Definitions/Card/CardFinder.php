@@ -103,6 +103,11 @@ final class CardFinder
         self::getInstance()->legacyCards = $legacyCards;
     }
 
+    /**
+     * Pure card data (pasted from the output of import/csv-importer.php). Every test loads it, so recording coverage
+     * for these lines would bloat the coverage report beyond the memory limit without telling us anything.
+     * @codeCoverageIgnore
+     */
     private static function initialize(): self
     {
         self::$instance = new self([
@@ -9150,6 +9155,7 @@ final class CardFinder
      * They can be deleted once the games started before the respective import are not needed anymore.
      *
      * @return CardDefinition[]
+     * @codeCoverageIgnore pure card data, see initialize()
      */
     private static function getLegacyCards(): array
     {

@@ -54,7 +54,7 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use RuntimeException;
 use Tests\TestCase;
 
-@covers(SpielzugCommandHandler::class);
+mutates(SpielzugCommandHandler::class);
 
 beforeEach(function () {
     /** @var TestCase $this */
