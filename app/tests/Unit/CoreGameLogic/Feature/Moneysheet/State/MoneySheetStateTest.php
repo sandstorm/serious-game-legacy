@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\CoreGameLogic\Feature\Moneysheet\State;
 
+use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
@@ -457,9 +458,12 @@ describe('getNumberOfTriesForSteuernUndAbgabenInput', function () {
         expect(MoneySheetState::getNumberOfTriesForSteuernUndAbgabenInput($gameEvents, $this->players[0]))->toBe(0);
     });
 
-    it('resets tries when Ereignis with Gehalt modifier is triggered', function () {
-        /** @var DomainTestCase $this */
-
+    /**
+     * Player 0 accepts a job, enters wrong Steuern und Abgaben once and then triggers an Ereignis with the given
+     * modifier.
+     */
+    function triggerEreignisAfterWrongSteuernUndAbgabenInput(DomainTestCase $testCase, ModifierId $modifierId, ModifierParameters $modifierParameters): GameEvents
+    {
         // Set up Konjunkturphase that always triggers Ereignis
         $konjunkturphaseWithEreignis = new KonjunkturphaseDefinition(
             id: KonjunkturphasenId::create(1),
@@ -524,19 +528,19 @@ describe('getNumberOfTriesForSteuernUndAbgabenInput', function () {
         KonjunkturphaseFinder::getInstance()->overrideKonjunkturphaseDefinitionsForTesting([
             $konjunkturphaseWithEreignis,
         ]);
-        $this->setKonjunkturphaseDefinition($konjunkturphaseWithEreignis);
+        $testCase->setKonjunkturphaseDefinition($konjunkturphaseWithEreignis);
 
-        // Ereignis card with GEHALT_CHANGE modifier + a Kategorie card to trigger it
+        // Ereignis card with the given modifier + a Kategorie card to trigger it
         $cardsForTesting = [
             new EreignisCardDefinition(
-                id: new CardId('ereignisGehalt'),
+                id: new CardId('ereignis'),
                 categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
-                title: 'Gehaltsänderung Ereignis',
+                title: 'Ereignis',
                 description: 'test',
                 year: new Year(1),
                 resourceChanges: new ResourceChanges(),
-                modifierIds: [ModifierId::GEHALT_CHANGE],
-                modifierParameters: new ModifierParameters(modifyGehaltPercent: 80),
+                modifierIds: [$modifierId],
+                modifierParameters: $modifierParameters,
                 ereignisRequirementIds: [EreignisPrerequisitesId::HAS_JOB],
             ),
             new KategorieCardDefinition(
@@ -556,32 +560,44 @@ describe('getNumberOfTriesForSteuernUndAbgabenInput', function () {
                 ),
             ),
         ];
-        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+        $testCase->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
 
         // Turn 1: Player 0 accepts job
-        $this->handle(new StartSpielzug($this->players[0]));
-        $this->handle(AcceptJobOffer::create($this->players[0], new CardId('j0')));
-        $this->handle(new EndSpielzug($this->players[0]));
+        $testCase->handle(new StartSpielzug($testCase->getPlayers()[0]));
+        $testCase->handle(AcceptJobOffer::create($testCase->getPlayers()[0], new CardId('j0')));
+        $testCase->handle(new EndSpielzug($testCase->getPlayers()[0]));
 
         // Turn 1: Player 1 does minijob
-        $this->handle(new StartSpielzug($this->players[1]));
-        $this->handle(DoMinijob::create($this->players[1]));
-        $this->handle(new EndSpielzug($this->players[1]));
+        $testCase->handle(new StartSpielzug($testCase->getPlayers()[1]));
+        $testCase->handle(DoMinijob::create($testCase->getPlayers()[1]));
+        $testCase->handle(new EndSpielzug($testCase->getPlayers()[1]));
 
         // Between turns: enter Steuern/Abgaben
-        $this->handle(EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(200)));
+        $testCase->handle(EnterSteuernUndAbgabenForPlayer::create($testCase->getPlayers()[0], new MoneyAmount(200)));
 
-        $gameEvents = $this->getGameEvents();
-        expect(MoneySheetState::getNumberOfTriesForSteuernUndAbgabenInput($gameEvents, $this->players[0]))->toBe(1);
+        $gameEvents = $testCase->getGameEvents();
+        expect(MoneySheetState::getNumberOfTriesForSteuernUndAbgabenInput($gameEvents, $testCase->getPlayers()[0]))->toBe(1);
 
-        // Turn 2: Player 0 activates card -> triggers Ereignis with GEHALT_CHANGE modifier
-        $this->handle(new StartSpielzug($this->players[0]));
-        $this->handle(ActivateCard::create($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+        // Turn 2: Player 0 activates card -> triggers the Ereignis
+        $testCase->handle(new StartSpielzug($testCase->getPlayers()[0]));
+        $testCase->handle(ActivateCard::create($testCase->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE));
 
-        $gameEvents = $this->getGameEvents();
+        $gameEvents = $testCase->getGameEvents();
         // Verify the Ereignis was actually triggered
-        expect($gameEvents->findLast(EreignisWasTriggered::class))->not()->toBeNull();
+        expect($gameEvents->findLast(EreignisWasTriggered::class)->ereignisCardId->value)->toBe('ereignis');
+        return $gameEvents;
+    }
+
+    it('resets tries when Ereignis with Gehalt modifier is triggered', function () {
+        /** @var DomainTestCase $this */
+        $gameEvents = triggerEreignisAfterWrongSteuernUndAbgabenInput($this, ModifierId::GEHALT_CHANGE, new ModifierParameters(modifyGehaltPercent: 80));
         expect(MoneySheetState::getNumberOfTriesForSteuernUndAbgabenInput($gameEvents, $this->players[0]))->toBe(0);
+    });
+
+    it('does not reset tries when Ereignis with a modifier that does not change the Gehalt is triggered', function () {
+        /** @var DomainTestCase $this */
+        $gameEvents = triggerEreignisAfterWrongSteuernUndAbgabenInput($this, ModifierId::KREDITSPERRE, new ModifierParameters());
+        expect(MoneySheetState::getNumberOfTriesForSteuernUndAbgabenInput($gameEvents, $this->players[0]))->toBe(1);
     });
 });
 
