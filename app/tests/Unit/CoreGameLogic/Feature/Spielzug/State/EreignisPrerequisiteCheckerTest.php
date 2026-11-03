@@ -21,7 +21,6 @@ use Domain\Definitions\Card\ValueObject\EreignisPrerequisitesId;
 use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
 use Domain\Definitions\Card\ValueObject\ModifierId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
-use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
@@ -38,18 +37,9 @@ beforeEach(function () {
  */
 function triggerEreignisForFirstPlayer(DomainTestCase $testCase, EreignisCardDefinition $ereignisCard): void
 {
-    $definition = $testCase->getKonjunkturphaseDefinition();
-    $konjunkturphaseThatAlwaysTriggersAnEreignis = new KonjunkturphaseDefinition(
-        id: $definition->id,
-        type: $definition->type,
-        name: $definition->name,
-        description: $definition->description,
-        additionalEvents: $definition->additionalEvents,
-        zeitsteine: $definition->zeitsteine,
-        kompetenzbereiche: $definition->kompetenzbereiche,
-        modifierIds: [ModifierId::FOR_TESTING_ONLY_ALWAYS_TRIGGER_EREIGNIS],
-        modifierParameters: $definition->modifierParameters,
-        auswirkungen: $definition->auswirkungen,
+    $konjunkturphaseThatAlwaysTriggersAnEreignis = $testCase->konjunkturphaseDefinitionWithModifiers(
+        $testCase->getKonjunkturphaseDefinition()->id,
+        [ModifierId::FOR_TESTING_ONLY_ALWAYS_TRIGGER_EREIGNIS],
     );
     KonjunkturphaseFinder::getInstance()->overrideKonjunkturphaseDefinitionsForTesting([$konjunkturphaseThatAlwaysTriggersAnEreignis]);
     $testCase->setKonjunkturphaseDefinition($konjunkturphaseThatAlwaysTriggersAnEreignis);

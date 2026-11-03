@@ -521,6 +521,35 @@ trait GameTestHelpers
         return $this->coreGameLogic->getGameEvents($this->gameId);
     }
 
+    /**
+     * A copy of the current test Konjunkturphase with other modifiers.
+     *
+     * WHY: use a new id if the game should keep the old definition for past Konjunkturphasen, because the modifiers
+     * of past Konjunkturphasen are looked up by their id (and register both with
+     * {@see KonjunkturphaseFinder::overrideKonjunkturphaseDefinitionsForTesting()}).
+     *
+     * @param ModifierId[] $modifierIds
+     */
+    public function konjunkturphaseDefinitionWithModifiers(
+        KonjunkturphasenId $id,
+        array $modifierIds,
+        ModifierParameters $modifierParameters = new ModifierParameters(),
+    ): KonjunkturphaseDefinition {
+        $definition = $this->konjunkturphaseDefinition;
+        return new KonjunkturphaseDefinition(
+            id: $id,
+            type: $definition->type,
+            name: $definition->name,
+            description: $definition->description,
+            additionalEvents: $definition->additionalEvents,
+            zeitsteine: $definition->zeitsteine,
+            kompetenzbereiche: $definition->kompetenzbereiche,
+            modifierIds: $modifierIds,
+            modifierParameters: $modifierParameters,
+            auswirkungen: $definition->auswirkungen,
+        );
+    }
+
     public function getKonjunkturphaseDefinition(): ?KonjunkturphaseDefinition
     {
         return $this->konjunkturphaseDefinition;

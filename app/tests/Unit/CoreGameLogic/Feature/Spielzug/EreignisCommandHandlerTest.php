@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\DoMinijobAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
@@ -607,6 +608,25 @@ describe('Berufsunfähigkeit', function () {
         expect(PlayerState::getCurrentGehaltForPlayer($this->getGameEvents(), $this->getPlayers()[0])->value)->toEqual(0);
     });
 
+    it('does not let the player take a new job until the next Konjunkturphase', function () {
+        /** @var DomainTestCase $this */
+        drawBerufsunfaehigkeitEreignis($this, withBerufsunfaehigkeitsversicherung: false);
+        $this->handle(new EndSpielzug($this->getPlayers()[0]));
+        $this->handle(new StartSpielzug($this->getPlayers()[1]));
+        $this->handle(DoMinijob::create($this->getPlayers()[1]));
+        $this->handle(new EndSpielzug($this->getPlayers()[1]));
+
+        // next turn in the same Konjunkturphase: no new job
+        $this->handle(new StartSpielzug($this->getPlayers()[0]));
+        expect(fn () => $this->handle(AcceptJobOffer::create($this->getPlayers()[0], new CardId('jobForTest'))))
+            ->toThrow(\RuntimeException::class, 'Du darfst diese Konjunkturphase keinen neuen Job mehr annehmen.');
+
+        // next Konjunkturphase: the player can take a job again (still in the Spielzug started above)
+        $this->startNewKonjunkturphaseWithCardsOnTop(cardsForBerufsunfaehigkeit());
+        $this->handle(AcceptJobOffer::create($this->getPlayers()[0], new CardId('jobForTest')));
+        expect(PlayerState::getJobForPlayer($this->getGameEvents(), $this->getPlayers()[0])?->getId())->toEqual(new CardId('jobForTest'));
+    });
+
     it('stops paying the Gehalt immediately if the player has no Berufsunfähigkeitsversicherung', function () {
         /** @var DomainTestCase $this */
         drawBerufsunfaehigkeitEreignis($this, withBerufsunfaehigkeitsversicherung: false);
@@ -735,4 +755,32 @@ describe('Ereignisse the player must not draw', function () {
             resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(-1000000)),
         ));
     })->throws(\RuntimeException::class, 'No EreignisCard matches the current requirements', 1753874959);
+});
+
+describe('Aussetzen', function () {
+    it('lets the player skip their next turn', function () {
+        /** @var DomainTestCase $this */
+        // turn 1: player 0 draws the Ereignis
+        drawEreignisForFirstPlayer($this, ereignisCardForSozialesUndFreizeit(
+            modifierIds: [ModifierId::AUSSETZEN],
+        ));
+        $this->handle(new EndSpielzug($this->players[0]));
+        $this->handle(new StartSpielzug($this->players[1]));
+        $this->handle(DoMinijob::create($this->players[1]));
+        $this->handle(new EndSpielzug($this->players[1]));
+
+        // turn 2: player 0 skips the turn
+        $this->handle(new StartSpielzug($this->players[0]));
+        expect(fn () => $this->handle(DoMinijob::create($this->players[0])))
+            ->toThrow(\RuntimeException::class, 'Du setzt diese Runde aus.');
+        // skipping the turn is the Zeitstein action of this turn, so the player can end it
+        $this->handle(new EndSpielzug($this->players[0]));
+        $this->handle(new StartSpielzug($this->players[1]));
+        $this->handle(DoMinijob::create($this->players[1]));
+        $this->handle(new EndSpielzug($this->players[1]));
+
+        // turn 3: player 0 can act again (checked like the UI does, the test setup has no third minijob card)
+        $this->handle(new StartSpielzug($this->players[0]));
+        expect(new DoMinijobAktion()->validate($this->players[0], $this->getGameEvents())->canExecute)->toBeTrue();
+    });
 });
