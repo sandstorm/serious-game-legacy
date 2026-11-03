@@ -141,6 +141,53 @@ describe('calculateLebenshaltungskostenForPlayer', function () {
         expect($actualKosten)->toEqual(new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE));
     });
 
+    /**
+     * Makes player 0 insolvent (without job, loans or insurances, so they have no other income or expenses) and sets
+     * their Guthaben to the given value with a Minijob.
+     */
+    function setupInsolventPlayerWithGuthaben(DomainTestCase $testCase, float $guthaben): GameEvents
+    {
+        $testCase->setupInsolvenz();
+        $player = $testCase->getPlayers()[0];
+        $currentGuthaben = PlayerState::getGuthabenForPlayer($testCase->getGameEvents(), $player);
+        $testCase->startNewKonjunkturphaseWithCardsOnTop([
+            new MinijobCardDefinition(
+                id: new CardId('setGuthaben'),
+                title: 'set Guthaben',
+                description: 'for testing',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount($guthaben - $currentGuthaben->value),
+                ),
+            ),
+        ]);
+        $testCase->handle(new StartSpielzug($player));
+        $testCase->handle(DoMinijob::create($player));
+
+        $gameEvents = $testCase->getGameEvents();
+        expect(PlayerState::isPlayerInsolvent($gameEvents, $player))->toBeTrue()
+            ->and(PlayerState::getGuthabenForPlayer($gameEvents, $player)->value)->toEqual($guthaben)
+            ->and(MoneySheetState::getAnnualIncomeForPlayer($gameEvents, $player)->value)->toEqual(0)
+            ->and(MoneySheetState::getAnnualExpensesForAllLoans($gameEvents, $player)->value)->toEqual(0)
+            ->and(MoneySheetState::getCostOfAllInsurances($gameEvents, $player)->value)->toEqual(0);
+        return $gameEvents;
+    }
+
+    it('returns the minimum value when an insolvent player can exactly afford it', function () {
+        /** @var DomainTestCase $this */
+        $gameEvents = setupInsolventPlayerWithGuthaben($this, Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE);
+
+        expect(MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $this->players[0])->value)
+            ->toEqual(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE);
+    });
+
+    it('returns 0 when an insolvent player cannot afford the minimum value', function () {
+        /** @var DomainTestCase $this */
+        $gameEvents = setupInsolventPlayerWithGuthaben($this, Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE - 1);
+
+        expect(MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $this->players[0])->value)
+            ->toEqual(0);
+    });
+
     it('returns the modified minimum value when a player has a job but is insolvent', function () {
         /** @var DomainTestCase $this */
         $this->setKonjunkturphaseDefinition(new KonjunkturphaseDefinition(
