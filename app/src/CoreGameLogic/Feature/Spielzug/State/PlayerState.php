@@ -353,9 +353,6 @@ class PlayerState
     {
         $spielzugWasEndedEvents = $gameEvents->findAllOfType(SpielzugWasEnded::class)
             ->filter(fn (SpielzugWasEnded $event) => $event->playerId->equals($playerId));
-        if ($spielzugWasEndedEvents === null) {
-            return new PlayerTurn(1);
-        }
         return new PlayerTurn(count($spielzugWasEndedEvents) + 1);
     }
 
