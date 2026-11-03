@@ -18,6 +18,8 @@ mise down               # Stop and remove containers + volumes
 # Testing (Pest, runs inside Docker)
 mise pest               # Run all tests
 mise pest tests/Unit --filter="TestName"  # Run specific test
+mise mutate 'Domain\CoreGameLogic\Feature\Moneysheet'  # Mutation testing for a class/namespace
+mise mutate-all         # Mutation testing for all of src/CoreGameLogic (several minutes)
 
 # Static analysis & linting
 mise phpstan            # PHPStan (level 8, strict)
@@ -70,6 +72,8 @@ Livewire `GameUi` component → dispatches command to `ForCoreGameLogic::handle(
 ### Testing
 
 Use `CoreGameLogicApp::createInMemoryForTesting()` for purely in-memory game logic without database persistence.
+
+Domain tests (`tests/Unit/CoreGameLogic`, `tests/Unit/Definitions`) extend `Tests\DomainTestCase` and do **not** boot Laravel. The game helpers (`setupBasicGame()` etc.) live in the `Tests\GameTestHelpers` trait. Do not add `covers()` or `mutates()` to tests: the tests are behavior tests that use many classes, mutation testing runs against all domain tests (see `mise mutate`).
 
 ## Code Style Rules
 

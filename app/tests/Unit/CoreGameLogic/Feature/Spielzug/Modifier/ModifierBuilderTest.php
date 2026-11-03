@@ -12,8 +12,6 @@ use Domain\Definitions\Card\Dto\EreignisCardDefinition;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 
-mutates(ModifierBuilder::class);
-
 beforeEach(function () {
 });
 

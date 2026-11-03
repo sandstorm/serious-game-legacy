@@ -8,8 +8,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 
-mutates(AktionsCalculator::class);
-
 beforeEach(function () {
     $this->setupBasicGame();
 });

@@ -16,8 +16,6 @@ use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
 use Tests\DomainTestCase;
 
-mutates(EreignisPrerequisiteChecker::class);
-
 beforeEach(function () {
     /** @var DomainTestCase $this */
     $this->setupBasicGame();

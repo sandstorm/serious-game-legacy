@@ -153,8 +153,20 @@ run = "docker compose exec laravel /app/vendor/bin/pint --config /app/.pint.json
 run = "docker compose exec laravel /app/vendor/bin/phpstan $@"
 
 # run Pest (Unit Testing)
+# Xdebug is turned off because it slows down the tests a lot - code coverage uses pcov instead.
 [tasks.pest]
-run = "docker compose exec -e DB_DATABASE=laravel_testing -it laravel /app/vendor/bin/pest $@"
+run = "docker compose exec -e DB_DATABASE=laravel_testing -e XDEBUG_MODE=off -it laravel /app/vendor/bin/pest $@"
+
+# Mutation testing of the domain code. The mutations always run against ALL domain tests, because most of our tests
+# are behavior tests that use many classes (a class is not tested by a single test file).
+[tasks.mutate]
+description = "Mutation testing for a class or namespace, e.g. mise mutate 'Domain\\CoreGameLogic\\Feature\\Moneysheet'"
+usage = 'arg "<target>" help="class or namespace to mutate"'
+run = "docker compose exec -e DB_DATABASE=laravel_testing -e XDEBUG_MODE=off -it laravel /app/vendor/bin/pest tests/Unit/CoreGameLogic --mutate --parallel --class=\"${usage_target}\""
+
+[tasks.mutate-all]
+description = "Mutation testing for all of src/CoreGameLogic (takes several minutes)"
+run = "docker compose exec -e DB_DATABASE=laravel_testing -e XDEBUG_MODE=off -it laravel /app/vendor/bin/pest tests/Unit/CoreGameLogic --mutate --parallel --path=src/CoreGameLogic"
 
 [tasks.artisan]
 run = "docker compose exec laravel /app/artisan $@"
