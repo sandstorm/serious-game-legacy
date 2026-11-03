@@ -5,11 +5,14 @@ declare(strict_types=1);
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\ConcludeInsuranceForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\BerufsunfaehigkeitsversicherungWasActivated;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\EreignisWasTriggered;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\Definitions\Card\Dto\CardDefinition;
 use Domain\Definitions\Card\Dto\EreignisCardDefinition;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
 use Domain\Definitions\Card\Dto\JobRequirements;
@@ -21,6 +24,7 @@ use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
 use Domain\Definitions\Card\ValueObject\ModifierId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
+use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 use Domain\Definitions\Konjunkturphase\Dto\AuswirkungDefinition;
 use Domain\Definitions\Konjunkturphase\Dto\KompetenzbereichDefinition;
 use Domain\Definitions\Konjunkturphase\Dto\Zeitslots;
@@ -520,4 +524,94 @@ describe('Ereignis Modifier application', function () {
             5000
         ));
     })->throws(\RuntimeException::class, 'Du darfst diese Konjunkturphase keine Kredite aufnehmen.');
+});
+
+describe('Berufsunfähigkeit', function () {
+    /**
+     * @return CardDefinition[]
+     */
+    function cardsForBerufsunfaehigkeit(): array
+    {
+        return [
+            new EreignisCardDefinition(
+                id: new CardId('e44'),
+                categoryId: CategoryId::EREIGNIS_BILDUNG_UND_KARRIERE,
+                title: 'Berufsunfähigkeitsversicherung',
+                description: 'Eine chronische Sehnenscheidenentzündung zwingt dich, deinen Beruf aufzugeben. Mit einer Berufsunfähigkeitsversicherung erhältst du trotz Jobverlust dein Gehalt weiter. Zum neuen Jahr kannst du einen neuen Job aufnehmen.',
+                phaseId: LebenszielPhaseId::PHASE_1,
+                year: new Year(1),
+                resourceChanges: new ResourceChanges(),
+                modifierIds: [
+                    ModifierId::BERUFSUNFAEHIGKEITSVERSICHERUNG,
+                ],
+                modifierParameters: new ModifierParameters(),
+                ereignisRequirementIds: [],
+                gewichtung: 1,
+            ),
+            new KategorieCardDefinition(
+                id: new CardId('cardToTriggerEvent'),
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                title: 'for testing',
+                description: 'for testing',
+                resourceChanges: new ResourceChanges(),
+            ),
+            new JobCardDefinition(
+                id: new CardId('jobForTest'),
+                title: 'offered 1',
+                description: 'for testing',
+                gehalt: new MoneyAmount(100000),
+                requirements: new JobRequirements(
+                    zeitsteine: 1,
+                ),
+            ),
+        ];
+    }
+
+    /**
+     * Player 0 accepts a job (and optionally concludes the Berufsunfähigkeitsversicherung), then draws the
+     * Berufsunfähigkeit Ereignis in their next Spielzug.
+     */
+    function drawBerufsunfaehigkeitEreignis(DomainTestCase $testCase, bool $withBerufsunfaehigkeitsversicherung): void
+    {
+        $testCase->startNewKonjunkturphaseWithCardsOnTop(cardsForBerufsunfaehigkeit());
+        $testCase->handle(new StartSpielzug($testCase->getPlayers()[0]));
+        $testCase->handle(AcceptJobOffer::create($testCase->getPlayers()[0], new CardId('jobForTest')));
+        if ($withBerufsunfaehigkeitsversicherung) {
+            $testCase->handle(ConcludeInsuranceForPlayer::create($testCase->getPlayers()[0], InsuranceId::create(3)));
+        }
+        $testCase->handle(new EndSpielzug($testCase->getPlayers()[0]));
+
+        $testCase->handle(new StartSpielzug($testCase->getPlayers()[1]));
+        $testCase->handle(DoMinijob::create($testCase->getPlayers()[1]));
+        $testCase->handle(new EndSpielzug($testCase->getPlayers()[1]));
+
+        $testCase->handle(new StartSpielzug($testCase->getPlayers()[0]));
+        $testCase->handle(ActivateCard::create($testCase->getPlayers()[0], CategoryId::BILDUNG_UND_KARRIERE));
+
+        expect($testCase->getGameEvents()->findLast(EreignisWasTriggered::class)->ereignisCardId->value)->toBe('e44');
+    }
+
+    it('keeps paying the Gehalt until the end of the year if the player has a Berufsunfähigkeitsversicherung', function () {
+        /** @var DomainTestCase $this */
+        drawBerufsunfaehigkeitEreignis($this, withBerufsunfaehigkeitsversicherung: true);
+
+        $gameEvents = $this->getGameEvents();
+        expect(PlayerState::getJobForPlayer($gameEvents, $this->getPlayers()[0]))->toBeNull()
+            ->and($gameEvents->findLastOrNull(BerufsunfaehigkeitsversicherungWasActivated::class))->not->toBeNull()
+            ->and(PlayerState::getCurrentGehaltForPlayer($gameEvents, $this->getPlayers()[0])->value)->toEqual(100000);
+
+        // the Lohnfortzahlung ends with the year (the cards must still exist to load the events referencing them)
+        $this->startNewKonjunkturphaseWithCardsOnTop(cardsForBerufsunfaehigkeit());
+        expect(PlayerState::getCurrentGehaltForPlayer($this->getGameEvents(), $this->getPlayers()[0])->value)->toEqual(0);
+    });
+
+    it('stops paying the Gehalt immediately if the player has no Berufsunfähigkeitsversicherung', function () {
+        /** @var DomainTestCase $this */
+        drawBerufsunfaehigkeitEreignis($this, withBerufsunfaehigkeitsversicherung: false);
+
+        $gameEvents = $this->getGameEvents();
+        expect(PlayerState::getJobForPlayer($gameEvents, $this->getPlayers()[0]))->toBeNull()
+            ->and($gameEvents->findLastOrNull(BerufsunfaehigkeitsversicherungWasActivated::class))->toBeNull()
+            ->and(PlayerState::getCurrentGehaltForPlayer($gameEvents, $this->getPlayers()[0])->value)->toEqual(0);
+    });
 });
