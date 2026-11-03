@@ -46,10 +46,10 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use RuntimeException;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 beforeEach(function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->setupBasicGame();
 });
 
@@ -69,14 +69,14 @@ describe('getPlayerColorClass', function () {
 
 describe('getJobForPlayer', function () {
     it('returns null if player never accepted a job', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         // expect returns null
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getJobForPlayer($stream, $this->players[0]))->toBeNull();
     });
 
     it('returns a job if player accepted a job and never quit', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         // expect return the correct JobCardDefinition
         $testJobs = [
             new JobCardDefinition(
@@ -103,7 +103,7 @@ describe('getJobForPlayer', function () {
     });
 
     it('returns null if Player accepted a job and then quit', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         // expect returns null
         $testJobs = [
             new JobCardDefinition(
@@ -128,7 +128,7 @@ describe('getJobForPlayer', function () {
     });
 
     it('returns a new job if Player accepted a job, quit the job and accept a new job', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         // expect returns the latest accepted JobCardDefinition, from the new Job
         $testCards = [
             new JobCardDefinition(
@@ -190,7 +190,7 @@ describe('getJobForPlayer', function () {
 
 describe('getCurrentLebenszielphaseDefinitionForPlayer', function () {
     it('returns 1 when nothing happend', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getCurrentLebenszielphaseIdForPlayer(
             $stream,
@@ -203,7 +203,7 @@ describe('getCurrentLebenszielphaseDefinitionForPlayer', function () {
     });
 
     it('returns 2 for Player 1 after switching the phase and 1 for Player 2', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         /** @var GameEvents $stream */
 
         $cardsForTesting = [
@@ -282,7 +282,7 @@ describe('getLastWeiterbildungForPlayer', function () {
         expect(PlayerState::getLastWeiterbildungCardDefinitionForPlayer($stream, $this->players[0]))->toBeNull();
     });
     it('returns the correct last WeiterbildungCardDefinition', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $weiterbildung = [
             "testWB" => new WeiterbildungCardDefinition(
                 id: new CardId('testWB'),
@@ -308,7 +308,7 @@ describe('getLastWeiterbildungForPlayer', function () {
 
 describe('getGuthabenForPlayer', function () {
     it('returns the correct number', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new KategorieCardDefinition(
                 id: new CardId('cardToRemoveGuthaben'),
@@ -357,7 +357,7 @@ describe('getGuthabenForPlayer', function () {
     });
 
     it('Throws an exception if the player does not exist', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $stream = $this->coreGameLogic->getGameEvents($this->gameId);
         PlayerState::getGuthabenForPlayer($stream, PlayerId::fromString('doesNotExist'));
     })->throws(RuntimeException::class, 'Player doesNotExist does not exist', 1747827331);
@@ -365,7 +365,7 @@ describe('getGuthabenForPlayer', function () {
 
 describe('getKompetenzenForPlayer', function () {
     it('returns the correct number', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardToTest = new KategorieCardDefinition(
             id: CardId::fromString('cardToTest'),
             categoryId: CategoryId::BILDUNG_UND_KARRIERE,
@@ -412,7 +412,7 @@ describe('getKompetenzenForPlayer', function () {
     });
 
     it('removes excess kompetenzen after phase was changed by player', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $expectedRetainedKompetenzenInBildungUndKarriere = PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($gameEvents, $this->players[0])->bildungsKompetenzSlots;
         $expectedRetainedKompetenzenInSozialesUndFreizeit = PlayerState::getCurrentLebenszielphaseDefinitionForPlayer($gameEvents, $this->players[0])->freizeitKompetenzSlots;
@@ -457,13 +457,13 @@ describe('getKompetenzenForPlayer', function () {
 
 describe("getCurrentTurnForPlayer", function () {
     it("returns 1 in the first round", function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(PlayerState::getCurrentTurnForPlayer($gameEvents, $this->players[0])->value)->toBe(1);
     });
 
     it("increases after the player ends their turn", function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, DoMinijob::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[0]));
@@ -476,7 +476,7 @@ describe("getCurrentTurnForPlayer", function () {
 
 describe("isPlayerInsolvent", function () {
     it('returns true for the duration of Insolvenz and false after', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupInsolvenz();
 
         for ($i = 1; $i <= Configuration::INSOLVENZ_DURATION; $i++) {
@@ -493,7 +493,7 @@ describe("isPlayerInsolvent", function () {
 
 describe("getCurrentGehaltForPlayer", function () {
     it('returns the modified value when a modifier is active', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupBasicGameWithoutKonjunkturphase();
         $konjunkturphase = new KonjunkturphaseDefinition(
             id: KonjunkturphasenId::create(1),

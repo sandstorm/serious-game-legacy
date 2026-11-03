@@ -42,16 +42,16 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 beforeEach(function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->setupBasicGame();
 });
 
 describe('handleStartKonjunkturphaseForPlayer', function () {
     it('throws an exception if the player has already started this Konjunkturphase', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->coreGameLogic->handle($this->gameId, StartKonjunkturPhaseForPlayer::create($this->players[0]));
         $this->coreGameLogic->handle($this->gameId, StartKonjunkturPhaseForPlayer::create($this->players[0]));
     })->throws(
@@ -61,7 +61,7 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
     );
 
     it('works after a new Konjunkturphase has started', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new KategorieCardDefinition(
                 id: new CardId('cardToRemoveZeitsteine'),
@@ -132,7 +132,7 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
     });
 
     it('applies conditional ResourceChanges correctly', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupBasicGameWithoutKonjunkturphase();
         $konjunkturphase = new KonjunkturphaseDefinition(
             id: KonjunkturphasenId::create(1),
@@ -232,7 +232,7 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
     });
 
     it('applies Lohnsonderzahlung correctly', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupBasicGameWithoutKonjunkturphase();
 
         $gehalt = 100000;
@@ -338,7 +338,7 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
     });
 
     it('applies extraZins for each open loan', function (int $numberOfRepaidLoans, int $expectedNumberOfOpenLoans) {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupBasicGameWithoutKonjunkturphase();
 
         $extraZinsAmount = new MoneyAmount(-1000);
@@ -458,7 +458,7 @@ describe('handleStartKonjunkturphaseForPlayer', function () {
     ]);
 
     it('applies Grundsteuer for each Immobilie owned by the player', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $grundsteuerAmount = new MoneyAmount(-1000);
         $immobilienCards = [];
         foreach (['inv1', 'inv2', 'inv3', 'inv4'] as $cardId) {

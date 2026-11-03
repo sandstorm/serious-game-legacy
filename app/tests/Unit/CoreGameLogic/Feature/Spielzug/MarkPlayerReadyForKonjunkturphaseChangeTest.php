@@ -18,17 +18,17 @@ use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 beforeEach(function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->setupBasicGame();
 });
 
 describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
 
     it('throws an error if it\'s not the end of the konjunkturphase', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
             MarkPlayerAsReadyForKonjunkturphaseChange::create($this->players[0])
@@ -40,7 +40,7 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
     );
 
     it('throws an error if the player has not completed the money sheet', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $cardsForTesting = [
             new KategorieCardDefinition(
@@ -101,7 +101,7 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
     );
 
     it('throws an error if the player has a negative balance', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $initialGuthaben = PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]);
 
@@ -166,7 +166,7 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
     })->throws(\RuntimeException::class, "Cannot mark player as ready: Dein Kontostand ist negativ", 1756798041);
 
     it('marks the player as ready', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $cardsForTesting = [
             new KategorieCardDefinition(
@@ -236,7 +236,7 @@ describe('handleMarkPlayerAsReadyForKonjunkturphaseChange', function () {
     });
 
     it('marks the player as ready when they have a balance of 0', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $initialGuthaben = PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]);

@@ -34,10 +34,10 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 beforeEach(function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->setupBasicGame();
     $this->konjunkturphaseDefinition = new KonjunkturphaseDefinition(
         id: KonjunkturphasenId::create(1),
@@ -120,7 +120,7 @@ beforeEach(function () {
 
 describe('Ereignisse', function () {
     it('will apply resourceChanges correctly', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new EreignisCardDefinition(
                 id: new CardId('cardToTest1'),
@@ -178,7 +178,7 @@ describe('Ereignisse', function () {
     });
 
     it('will deduct 50% of any profit if the player is insolvent', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupInsolvenz();
 
         $cardsForTesting = [
@@ -238,7 +238,7 @@ describe('Ereignisse', function () {
     });
 
     it('will not modify negative resourceChanges if the player is insolvent', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupInsolvenz();
 
         $cardsForTesting = [
@@ -302,7 +302,7 @@ describe('Ereignisse', function () {
 
 describe('Childbirth', function () {
     it('will calculate the correct lebenshaltungskosten after childbirth without a job', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new EreignisCardDefinition(
                 id: new CardId('e150'),
@@ -355,7 +355,7 @@ describe('Childbirth', function () {
     });
 
     it('will calculate the correct lebenshaltungskosten after childbirth with a job', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new EreignisCardDefinition(
                 id: new CardId('e150'),
@@ -426,7 +426,7 @@ describe('Childbirth', function () {
 
 describe('Ereignis Modifier application', function () {
     it('applies Investitionssperre modifier and prevents buying investments', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new EreignisCardDefinition(
                 id: new CardId('cardWithInvestitionssperre'),
@@ -475,7 +475,7 @@ describe('Ereignis Modifier application', function () {
     })->throws(\RuntimeException::class, 'Du darfst diese Konjunkturphase keine Investitionen tätigen.', 1752066529);
 
     it('applies Kreditsperre modifier and prevents taking out a loan', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new EreignisCardDefinition(
                 id: new CardId('cardWithKreditsperre'),

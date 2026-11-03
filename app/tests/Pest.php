@@ -14,6 +14,14 @@
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 
+// The domain code (app/src) must not depend on Laravel, so its tests do not boot the Laravel application (see DomainTestCase).
+pest()->extend(Tests\DomainTestCase::class)
+    ->beforeEach(function () {
+        CardFinder::initializeForTesting();
+        KonjunkturphaseFinder::initializeForTesting();
+    })
+    ->in('Unit/CoreGameLogic', 'Unit/Definitions');
+
 pest()->extend(Tests\TestCase::class)
     ->beforeEach(function () {
         // It is easier to debug broken tests if we disable exception handling
@@ -27,7 +35,7 @@ pest()->extend(Tests\TestCase::class)
     })
  // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
 
-    ->in('Feature', 'Unit');
+    ->in('Feature', 'Unit/App', 'Unit/TestEnvironmentTest.php');
 
 /*
 |--------------------------------------------------------------------------

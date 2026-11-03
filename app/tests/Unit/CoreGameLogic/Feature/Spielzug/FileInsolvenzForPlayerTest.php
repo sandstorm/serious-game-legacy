@@ -27,16 +27,16 @@ use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 beforeEach(function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->setupBasicGame();
 });
 
-function setupRegularKonjunkturphaseEnd(TestCase $testCase): void
+function setupRegularKonjunkturphaseEnd(DomainTestCase $testCase): void
 {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $cardsForTesting = [
         new KategorieCardDefinition(
             id: CardId::fromString("removeZeitsteine1"),
@@ -75,7 +75,7 @@ function setupRegularKonjunkturphaseEnd(TestCase $testCase): void
 
 describe('FileInsolvenzForPlayer', function () {
     it('throws an error if the player has a positive balance', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         setupRegularKonjunkturphaseEnd($this);
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -90,7 +90,7 @@ describe('FileInsolvenzForPlayer', function () {
     );
 
     it('throws an error if the player has not completed their money sheet', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         setupRegularKonjunkturphaseEnd($this);
 
         $this->coreGameLogic->handle($this->gameId, FileInsolvenzForPlayer::create($this->getPlayers()[0]));
@@ -101,7 +101,7 @@ describe('FileInsolvenzForPlayer', function () {
     );
 
     it('throws an error if the player has investments that can be sold', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupBasicGame();
         $initialGuthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->getPlayers()[0]);
         $cardsForTesting = [
@@ -181,7 +181,7 @@ describe('FileInsolvenzForPlayer', function () {
     );
 
     it('throws an error if the player has an active insurance that could be cancelled', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $initialGuthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->getPlayers()[0]);
         $cardsForTesting = [
@@ -247,7 +247,7 @@ describe('FileInsolvenzForPlayer', function () {
     );
 
     it('works if player fulfills all requirements', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $initialGuthaben = PlayerState::getGuthabenForPlayer($this->getGameEvents(), $this->getPlayers()[0]);
         $cardsForTesting = [
@@ -311,7 +311,7 @@ describe('FileInsolvenzForPlayer', function () {
     });
 
     it('repays all open loans for player in case of Insolvenz', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         // first player needs to take out a loan
         $loanAmount = 10000;
 

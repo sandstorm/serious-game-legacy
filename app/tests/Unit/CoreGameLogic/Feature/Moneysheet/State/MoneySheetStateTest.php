@@ -50,23 +50,23 @@ use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphasenId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
 use Domain\Definitions\Konjunkturphase\ValueObject\Year;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 beforeEach(function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->setupBasicGame();
 });
 
 describe('calculateLebenshaltungskostenForPlayer', function () {
     it('returns minimum value when player has no job', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actualKosten = MoneySheetState::calculateLebenshaltungskostenForPlayer($gameEvents, $this->players[0]);
         expect($actualKosten)->toEqual(new MoneyAmount(Configuration::LEBENSHALTUNGSKOSTEN_MIN_VALUE));
     });
 
     it('returns minimum value when 35% of the Gehalt is less than the minimum value', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $cardsForTesting = [
             new JobCardDefinition(
@@ -90,7 +90,7 @@ describe('calculateLebenshaltungskostenForPlayer', function () {
     });
 
     it('returns 35% of the Gehalt if that is more than the minimum value', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $cardsForTesting = [
             new JobCardDefinition(
@@ -114,7 +114,7 @@ describe('calculateLebenshaltungskostenForPlayer', function () {
     });
 
     it('returns minimum value when player has a job but is insolvent', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupInsolvenz();
 
         $cardsForTesting = [
@@ -139,7 +139,7 @@ describe('calculateLebenshaltungskostenForPlayer', function () {
     });
 
     it('returns the modified minimum value when a player has a job but is insolvent', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setKonjunkturphaseDefinition(new KonjunkturphaseDefinition(
             id: KonjunkturphasenId::create(1),
             type: KonjunkturphaseTypeEnum::AUFSCHWUNG,
@@ -247,14 +247,14 @@ describe('calculateLebenshaltungskostenForPlayer', function () {
 
 describe('calculateSteuernUndAbgabenForPlayer', function () {
     it('returns 0 when player has no job', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actualKosten = MoneySheetState::calculateSteuernUndAbgabenForPlayer($gameEvents, $this->players[0]);
         expect($actualKosten)->toEqual(new MoneyAmount(0));
     });
 
     it('returns 35% of the Gehalt if the player has a job', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $cardsForTesting = [
             new JobCardDefinition(
@@ -280,14 +280,14 @@ describe('calculateSteuernUndAbgabenForPlayer', function () {
 
 describe('getNumberOfTriesForSteuernUndAbgabenInput', function () {
     it('returns 0 at the start of the game', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(MoneySheetState::getNumberOfTriesForSteuernUndAbgabenInput($gameEvents, $this->players[0]))->toBe(0);
     });
 
     it('returns the correct amount after trying', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -299,7 +299,7 @@ describe('getNumberOfTriesForSteuernUndAbgabenInput', function () {
     });
 
     it('resets tries when an event happens which changes the calculation', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new JobCardDefinition(
                 id: new CardId('j0'),
@@ -329,7 +329,7 @@ describe('getNumberOfTriesForSteuernUndAbgabenInput', function () {
     });
 
     it('resets tries when player quits job', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new JobCardDefinition(
                 id: new CardId('j0'),
@@ -357,7 +357,7 @@ describe('getNumberOfTriesForSteuernUndAbgabenInput', function () {
     });
 
     it('resets tries when Konjunkturphase with Gehalt modifier changes', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new JobCardDefinition(
                 id: new CardId('j0'),
@@ -456,7 +456,7 @@ describe('getNumberOfTriesForSteuernUndAbgabenInput', function () {
     });
 
     it('resets tries when Ereignis with Gehalt modifier is triggered', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         // Set up Konjunkturphase that always triggers Ereignis
         $konjunkturphaseWithEreignis = new KonjunkturphaseDefinition(
@@ -585,7 +585,7 @@ describe('getNumberOfTriesForSteuernUndAbgabenInput', function () {
 
 describe('getResultOfLastSteuernUndAbgabenInput', function () {
     it('works if no input has happened yet', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getResultOfLastSteuernUndAbgabenInput($gameEvents, $this->players[0]);
         expect($actual->wasSuccessful)->toBeTrue()
@@ -593,7 +593,7 @@ describe('getResultOfLastSteuernUndAbgabenInput', function () {
     });
 
     it('works if input was successful', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -607,7 +607,7 @@ describe('getResultOfLastSteuernUndAbgabenInput', function () {
     });
 
     it('works if input was wrong once', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -621,7 +621,7 @@ describe('getResultOfLastSteuernUndAbgabenInput', function () {
     });
 
     it('works if input was wrong twice', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -641,7 +641,7 @@ describe('getResultOfLastSteuernUndAbgabenInput', function () {
 
 describe('getResultOfLastLebenshaltungskostenInput', function () {
     it('works if no input has happened yet', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getResultOfLastLebenshaltungskostenInput($gameEvents, $this->players[0]);
         expect($actual->wasSuccessful)->toBeTrue()
@@ -649,7 +649,7 @@ describe('getResultOfLastLebenshaltungskostenInput', function () {
     });
 
     it('works if input was successful', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -663,7 +663,7 @@ describe('getResultOfLastLebenshaltungskostenInput', function () {
     });
 
     it('works if input was wrong once', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -677,7 +677,7 @@ describe('getResultOfLastLebenshaltungskostenInput', function () {
     });
 
     it('works if input was wrong twice', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -697,7 +697,7 @@ describe('getResultOfLastLebenshaltungskostenInput', function () {
 
 describe('getLastInputForSteuernUndAbgaben', function () {
     it('returns 0 if no input happened yet', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getLastInputForSteuernUndAbgaben($gameEvents, $this->players[0]);
@@ -705,7 +705,7 @@ describe('getLastInputForSteuernUndAbgaben', function () {
     });
 
     it('returns correct input after correct player input', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new JobCardDefinition(
                 id: new CardId('j0'),
@@ -741,7 +741,7 @@ describe('getLastInputForSteuernUndAbgaben', function () {
     });
 
     it('returns correct input after one incorrect player input', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
             EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(2000))
@@ -753,7 +753,7 @@ describe('getLastInputForSteuernUndAbgaben', function () {
     });
 
     it('returns correct input after two incorrect player inputs', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
             EnterSteuernUndAbgabenForPlayer::create($this->players[0], new MoneyAmount(2000))
@@ -771,7 +771,7 @@ describe('getLastInputForSteuernUndAbgaben', function () {
 
 describe('getLastInputLebenshaltungskosten', function () {
     it('returns 0 if no input happened yet', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $actual = MoneySheetState::getLastInputForLebenshaltungskosten($gameEvents, $this->players[0]);
@@ -779,7 +779,7 @@ describe('getLastInputLebenshaltungskosten', function () {
     });
 
     it('returns correct input after correct player input', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new JobCardDefinition(
                 id: new CardId('j0'),
@@ -815,7 +815,7 @@ describe('getLastInputLebenshaltungskosten', function () {
     });
 
     it('returns correct input after one incorrect player input', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
             EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(2000))
@@ -827,7 +827,7 @@ describe('getLastInputLebenshaltungskosten', function () {
     });
 
     it('returns correct input after two incorrect player inputs', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
             EnterLebenshaltungskostenForPlayer::create($this->players[0], new MoneyAmount(2000))
@@ -845,14 +845,14 @@ describe('getLastInputLebenshaltungskosten', function () {
 
 describe('doesSteuernUndAbgabenRequirePlayerAction', function () {
     it('returns false if no input happened', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(MoneySheetState::doesSteuernUndAbgabenRequirePlayerAction($gameEvents, $this->players[0]))->toBeFalse();
     });
 
     it('returns false if the last input was correct', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $cardsForTesting = [
             new JobCardDefinition(
@@ -887,7 +887,7 @@ describe('doesSteuernUndAbgabenRequirePlayerAction', function () {
     });
 
     it('returns true if the last input was incorrect', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $cardsForTesting = [
             new JobCardDefinition(
@@ -923,7 +923,7 @@ describe('doesSteuernUndAbgabenRequirePlayerAction', function () {
 
 
     it('returns false if the last two inputs were incorrect and the value was corrected for the player', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $cardsForTesting = [
             new JobCardDefinition(
@@ -952,7 +952,7 @@ describe('doesSteuernUndAbgabenRequirePlayerAction', function () {
     });
 
     it('returns true if the last input was correct but the Gehalt changed since then', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $testCards = [
             new JobCardDefinition(
                 id: new CardId('j0'),
@@ -1204,7 +1204,7 @@ describe('getLoansForPlayer', function () {
 
 describe('getOpenRatesForLoan', function () {
     it('throws an exception if no loans exist', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
         expect(MoneySheetState::getOpenRatesForLoan($gameEvents, $this->players[0], new LoanId('test')));
@@ -1347,7 +1347,7 @@ describe('getOpenRatesForLoan', function () {
 
 describe("getAnnualExpensesForPlayer", function () {
     it('returns the lebenserhaltungskosten if player has no other expenses', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
         expect(MoneySheetState::getAnnualExpensesForPlayer(
@@ -1357,7 +1357,7 @@ describe("getAnnualExpensesForPlayer", function () {
     });
 
     it('returns annual expenses', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $loanAmount = 10000;
 
         // player 0 takes out a loan
@@ -1430,14 +1430,14 @@ describe("getAnnualExpensesForPlayer", function () {
 
 describe("getAnnualIncomeForPlayer", function () {
     it('returns no income', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
 
         expect(MoneySheetState::getAnnualIncomeForPlayer($gameEvents, $this->players[0])->value)->toEqual(0);
     });
 
     it('returns gehalt if player has a job', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new JobCardDefinition(
                 id: new CardId('j0'),
@@ -1459,10 +1459,10 @@ describe("getAnnualIncomeForPlayer", function () {
     });
 
     it('returns dividend for stocks bought', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $amountOfStocks = 100;
 
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,

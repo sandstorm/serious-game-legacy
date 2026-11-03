@@ -19,22 +19,22 @@ use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 describe('isConditionForEndOfKonjunkturphaseMet', function () {
     beforeEach(function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupBasicGame();
     });
 
     it('returns false if all players have Zeitsteine', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(KonjunkturphaseState::isConditionForEndOfKonjunkturphaseMet($gameEvents))->toBeFalse();
     });
 
     it('returns false if at least one player has Zeitsteine', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new KategorieCardDefinition(
                 id: new CardId('cardToRemoveZeitsteine'),
@@ -59,7 +59,7 @@ describe('isConditionForEndOfKonjunkturphaseMet', function () {
     });
 
     it('returns true if at no player has Zeitsteine', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $cardsForTesting = [
             new KategorieCardDefinition(
                 id: new CardId('cardToRemoveZeitsteine'),
@@ -104,12 +104,12 @@ describe('isConditionForEndOfKonjunkturphaseMet', function () {
 
 describe('hasCurrentKonjunkturphaseEnded', function () {
     beforeEach(function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupBasicGame();
     });
 
     it('returns false if the current Konjunkturphase has not ended', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(KonjunkturphaseState::hasCurrentKonjunkturphaseEnded($gameEvents))
@@ -171,7 +171,7 @@ describe('hasCurrentKonjunkturphaseEnded', function () {
     });
 
     it('returns true if the current Konjunkturphase has ended', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $cardsForTesting = [
             new KategorieCardDefinition(
@@ -221,12 +221,12 @@ describe('hasCurrentKonjunkturphaseEnded', function () {
 
 describe('hasPlayerStartetCurrentKonjunkturphase', function () {
     beforeEach(function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupBasicGame();
     });
 
     it('returns false if the player has not yet started the Konjunkturphase', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(KonjunkturphaseState::hasPlayerStartedCurrentKonjunkturphase($gameEvents, $this->players[0]))
@@ -243,7 +243,7 @@ describe('hasPlayerStartetCurrentKonjunkturphase', function () {
     });
 
     it('returns true if the player has started the Konjunkturphase', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->coreGameLogic->handle(
             $this->gameId,
             StartKonjunkturphaseForPlayer::create(($this->players[0])),
@@ -264,7 +264,7 @@ describe('hasPlayerStartetCurrentKonjunkturphase', function () {
     });
 
     it('works in later Konjunkturphasen', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $cardsForTesting = [
             new KategorieCardDefinition(
@@ -339,12 +339,12 @@ describe('hasPlayerStartetCurrentKonjunkturphase', function () {
 
 describe('isPlayerReadyForKonjunkturphaseChange', function () {
     beforeEach(function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupBasicGame();
     });
 
     it('returns false if the player is not ready', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $cardsForTesting = [
             new KategorieCardDefinition(
@@ -402,7 +402,7 @@ describe('isPlayerReadyForKonjunkturphaseChange', function () {
     });
 
     it('returns true if the player is ready', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
 
         $cardsForTesting = [
             new KategorieCardDefinition(

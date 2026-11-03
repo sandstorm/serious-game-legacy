@@ -16,22 +16,22 @@ use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Insurance\ValueObject\InsuranceId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 beforeEach(function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->setupBasicGame();
 });
 
 describe('handleConcludeInsurance', function () {
     it('throws an exception when trying to take out an active insurance again', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->players[0], $this->insurances[0]->id));
         $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->players[0], $this->insurances[0]->id));
     })->throws(\RuntimeException::class, 'Cannot conclude insurance: Versicherung wurde bereits abgeschlossen.');
 
     it('throws an error when the player does not have enough Guthaben', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $initialGuthabenForPlayer1 = PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]);
         $cardToRemoveGuthaben = new KategorieCardDefinition(
@@ -50,7 +50,7 @@ describe('handleConcludeInsurance', function () {
     })->throws(\RuntimeException::class, 'Cannot conclude insurance: Du hast nicht genug Ressourcen', 1751554652);
 
     it('throws an error when the player is insolvent', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupInsolvenz();
         $cardForTesting = new MinijobCardDefinition(
             id: CardId::fromString("removeZeitsteine1"),
@@ -69,7 +69,7 @@ describe('handleConcludeInsurance', function () {
     })->throws(\RuntimeException::class, 'Cannot conclude insurance: Du bist insolvent.', 1751554652);
 
     it('removes the correct balance from the player\'s Guthaben', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $initialGuthabenForPlayer1 = PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]);
         $initialGuthabenForPlayer2 = PlayerState::getGuthabenForPlayer($gameEvents, $this->players[1]);
@@ -82,7 +82,7 @@ describe('handleConcludeInsurance', function () {
     });
 
     it('works as expected with multiple players taking out and cancelling insurances simultaneously', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->coreGameLogic->handle($this->gameId, ConcludeInsuranceForPlayer::create($this->players[0], $this->insurances[0]->id));
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         expect(MoneySheetState::doesPlayerHaveThisInsurance($gameEvents, $this->players[0], $this->insurances[0]->id))->toBeTrue()

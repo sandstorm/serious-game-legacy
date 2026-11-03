@@ -15,17 +15,17 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 beforeEach(function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->setupBasicGame();
 });
 
 
 describe('handleBuyInvestmentsForPlayer', function () {
     it('works as expected when buying investments', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
         $currentPriceLowRisk = InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, InvestmentId::MERFEDES_PENZ);
         expect($currentPriceLowRisk)->toEqual(new MoneyAmount(Configuration::INITIAL_INVESTMENT_PRICE));
@@ -175,7 +175,7 @@ describe('handleBuyInvestmentsForPlayer', function () {
     });
 
     it('throws exception if player tries to end spielzug before other players sold their investments', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -196,7 +196,7 @@ describe('handleBuyInvestmentsForPlayer', function () {
     it('throws an exception if the player tries to buy more investments than they can afford', function () {
         $amountOfStocks = intval(Configuration::STARTKAPITAL_VALUE / Configuration::INITIAL_INVESTMENT_PRICE + 1);
 
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->handle(new StartSpielzug($this->players[0]));
         $this->coreGameLogic->handle(
             $this->gameId,
@@ -209,7 +209,7 @@ describe('handleBuyInvestmentsForPlayer', function () {
     })->throws(\RuntimeException::class, 'Du hast nicht genug Ressourcen', 1752066529);
 
     it('throws an exception if the player is insolvent', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $this->setupInsolvenz();
 
         $this->handle(new StartSpielzug($this->players[0]));

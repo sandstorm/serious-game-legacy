@@ -14,16 +14,16 @@ use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Card\Dto\MinijobCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
-use Tests\TestCase;
+use Tests\DomainTestCase;
 
 beforeEach(function () {
-    /** @var TestCase $this */
+    /** @var DomainTestCase $this */
     $this->setupBasicGame();
 });
 
 describe('handleQuitJob', function () {
     it('successfully quits a job and releases bound Zeitstein', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $testJobs = [
             new JobCardDefinition(
                 id: new CardId('testJob'),
@@ -68,7 +68,7 @@ describe('handleQuitJob', function () {
     });
 
     it('allows player to accept a new job after quitting', function () {
-        /** @var TestCase $this */
+        /** @var DomainTestCase $this */
         $testCards = [
             new JobCardDefinition(
                 id: new CardId('testJob1'),

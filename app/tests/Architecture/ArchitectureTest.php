@@ -19,3 +19,8 @@ arch()
 
 arch()->expect('Domain')
     ->toUseStrictEquality();
+
+arch()
+    ->note('The domain tests must not boot Laravel, see DomainTestCase')
+    ->expect(['Tests\DomainTestCase', 'Tests\GameTestHelpers'])
+    ->not->toUse('Illuminate');
