@@ -131,7 +131,7 @@ final readonly class EreignisCommandHandler implements CommandHandlerInterface
                 // InsuranceId::create(2) creates an Unfallversicherung-Id
                 && !MoneySheetState::doesPlayerHaveThisInsurance($gameEvents, $command->playerId, InsuranceId::create(2))
             || in_array(ModifierId::HAFTPFLICHTVERSICHERUNG->value, $modifierIdsAsString, true)
-                // InsuranceId::create(2) creates a Haftpflichtversicherung-Id
+                // InsuranceId::create(1) creates a Haftpflichtversicherung-Id
                 && MoneySheetState::doesPlayerHaveThisInsurance($gameEvents, $command->playerId, InsuranceId::create(1))) {
             $resourceChanges = new ResourceChanges(
                 guthabenChange: new MoneyAmount(0),
