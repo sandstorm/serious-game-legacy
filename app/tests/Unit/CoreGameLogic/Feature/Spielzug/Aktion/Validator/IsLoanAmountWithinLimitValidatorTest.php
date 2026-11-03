@@ -4,7 +4,13 @@ declare(strict_types=1);
 
 use Domain\CoreGameLogic\Feature\Moneysheet\State\LoanCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsLoanAmountWithinLimitValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\TakeOutALoanForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
+use Domain\Definitions\Card\Dto\MinijobCardDefinition;
+use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Configuration\Configuration;
 use Tests\DomainTestCase;
@@ -28,6 +34,30 @@ describe('LoanCalculator::getMaxLoanAmountForPlayer', function () {
 
         expect(LoanCalculator::getMaxLoanAmountForPlayer($this->getGameEvents(), $this->players[0]))
             ->toEqual(new MoneyAmount(20000));
+    });
+
+    it('is only 50% of the Guthaben for a player who has filed for Insolvenz', function () {
+        /** @var DomainTestCase $this */
+        $this->setupInsolvenz();
+        // WHY: after the Insolvenz the player has no money left, so 50% and 80% of it would be the same
+        $this->startNewKonjunkturphaseWithCardsOnTop([
+            new MinijobCardDefinition(
+                id: new CardId('minijobAfterInsolvenz'),
+                title: 'Minijob',
+                description: 'for testing',
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount(10000),
+                ),
+            ),
+        ]);
+        $this->handle(new StartSpielzug($this->players[0]));
+        $this->handle(DoMinijob::create($this->players[0]));
+
+        $gameEvents = $this->getGameEvents();
+        $guthaben = PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]);
+        expect($guthaben->value)->toBeGreaterThan(0)
+            ->and(LoanCalculator::getMaxLoanAmountForPlayer($gameEvents, $this->players[0]))
+            ->toEqual(new MoneyAmount($guthaben->value * 0.5));
     });
 });
 
