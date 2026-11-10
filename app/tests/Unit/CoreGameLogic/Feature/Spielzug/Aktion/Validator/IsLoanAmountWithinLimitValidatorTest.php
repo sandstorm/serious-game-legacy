@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Domain\CoreGameLogic\Feature\Moneysheet\State\LoanCalculator;
+use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsLoanAmountWithinLimitValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
@@ -27,13 +28,31 @@ describe('LoanCalculator::getMaxLoanAmountForPlayer', function () {
             ->toEqual(new MoneyAmount(Configuration::STARTKAPITAL_VALUE * 0.8));
     });
 
-    it('subtracts the open repayments of existing loans', function () {
+    it('does not count borrowed money as assets and subtracts the open repayments', function () {
         /** @var DomainTestCase $this */
-        // total repayment for a loan of 10000 is 12000 -> (30000 + 10000) * 0.8 - 12000 = 20000
+        // total repayment for a loan of 10000 is 12000 -> (30000 + 10000 - 10000) * 0.8 - 12000 = 12000
         $this->handle(TakeOutALoanForPlayer::create($this->players[0], 10000));
 
         expect(LoanCalculator::getMaxLoanAmountForPlayer($this->getGameEvents(), $this->players[0]))
-            ->toEqual(new MoneyAmount(20000));
+            ->toEqual(new MoneyAmount(12000));
+    });
+
+    it('frees up the credit limit with every repaid rate', function () {
+        /** @var DomainTestCase $this */
+        $this->handle(TakeOutALoanForPlayer::create($this->players[0], 10000));
+        $this->startNewKonjunkturphaseWithCardsOnTop([]);
+
+        $gameEvents = $this->getGameEvents();
+        $openRates = Configuration::REPAYMENT_PERIOD - 1;
+        expect(MoneySheetState::getTotalOpenRepaymentValueForAllLoans($gameEvents, $this->players[0]))
+            ->toEqual(new MoneyAmount(12000 / Configuration::REPAYMENT_PERIOD * $openRates));
+
+        // borrowed money still in the Guthaben: 10000 / 20 * 19 = 9500
+        $ownAssets = PlayerState::getTotalValueOfAllAssetsForPlayer($gameEvents, $this->players[0])
+            ->add(PlayerState::getGuthabenForPlayer($gameEvents, $this->players[0]))->value
+            - 10000 / Configuration::REPAYMENT_PERIOD * $openRates;
+        expect(LoanCalculator::getMaxLoanAmountForPlayer($gameEvents, $this->players[0]))
+            ->toEqual(new MoneyAmount($ownAssets * 0.8 - 12000 / Configuration::REPAYMENT_PERIOD * $openRates));
     });
 
     it('is only 50% of the Guthaben for a player who has filed for Insolvenz', function () {
@@ -74,6 +93,15 @@ describe('IsLoanAmountWithinLimitValidator', function () {
         $result = new IsLoanAmountWithinLimitValidator((int) (Configuration::STARTKAPITAL_VALUE * 0.8))
             ->validate($this->getGameEvents(), $this->players[0]);
         expect($result->canExecute)->toBeTrue();
+    });
+
+    it('fails if a second loan is taken out after the full credit limit was used (#688)', function () {
+        /** @var DomainTestCase $this */
+        $this->handle(TakeOutALoanForPlayer::create($this->players[0], (int) (Configuration::STARTKAPITAL_VALUE * 0.8)));
+
+        $result = new IsLoanAmountWithinLimitValidator(1)->validate($this->getGameEvents(), $this->players[0]);
+        expect($result->canExecute)->toBeFalse()
+            ->and($result->reason)->toBe('Du kannst keinen Kredit aufnehmen, der höher ist als das Kreditlimit.');
     });
 
     it('fails if the loan amount exceeds the credit limit', function () {

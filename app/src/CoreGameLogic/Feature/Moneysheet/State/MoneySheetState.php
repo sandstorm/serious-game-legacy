@@ -440,6 +440,36 @@ class MoneySheetState
     }
 
     /**
+     * The part of the loan amount (without interest) that is not repaid yet. Shrinks with every repaid rate.
+     */
+    public static function getOpenLoanAmountForLoan(GameEvents $gameEvents, PlayerId $playerId, LoanId $loanId): MoneyAmount
+    {
+        /** @var LoanWasTakenOutForPlayer|null $loan */
+        $loan = $gameEvents->findLastOrNullWhere(
+            fn ($event) => $event instanceof LoanWasTakenOutForPlayer &&
+                $event->playerId->equals($playerId) &&
+                $event->loanId->equals($loanId)
+        );
+
+        if ($loan === null) {
+            throw new \RuntimeException("No loan with ID $loanId->value found for player $playerId->value");
+        }
+
+        $openRates = self::getOpenRatesForLoan($gameEvents, $playerId, $loanId);
+
+        return new MoneyAmount($loan->loanData->loanAmount->value * $openRates / Configuration::REPAYMENT_PERIOD);
+    }
+
+    public static function getTotalOpenLoanAmountForAllLoans(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
+    {
+        $total = new MoneyAmount(0);
+        foreach (self::getLoansForPlayer($gameEvents, $playerId) as $loan) {
+            $total = $total->add(self::getOpenLoanAmountForLoan($gameEvents, $playerId, $loan->loanId));
+        }
+        return $total;
+    }
+
+    /**
      * @param GameEvents $gameEvents
      * @param PlayerId $playerId
      * @return MoneyAmount
