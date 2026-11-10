@@ -49,6 +49,13 @@ services:
       REVERB_APP_KEY: ${REVERB_APP_KEY}
       REVERB_APP_SECRET: ${REVERB_APP_SECRET}
 
+      # Profiling (Excimer -> vector), see docs/2026_11_10_Excimer_Profiling.md
+      # profiling is only active if PROFILING_VECTOR_URL is set (in .env: PROFILING_VECTOR_URL=http://vector:8234)
+      PROFILING_VECTOR_URL: ${PROFILING_VECTOR_URL:-}
+      PROFILING_VECTOR_USER: ${VECTOR_AGENT_USERNAME:-}
+      PROFILING_VECTOR_PASSWORD: ${VECTOR_AGENT_PASSWORD:-}
+      PROFILING_PERIOD: ${PROFILING_PERIOD:-1}
+
     volumes:
       - ./app_logs/:/app/storage/logs/
     depends_on:
@@ -81,3 +88,32 @@ services:
   redis:
     image: redis:7
     restart: unless-stopped
+
+  #####
+  # Vector agent: receives the Excimer profiles from laravel and ships them via NATS to the
+  # Sandstorm profiling pipeline (ClickHouse / Dashica).
+  # only started if COMPOSE_PROFILES=profiling is set in .env
+  vector:
+    image: timberio/vector:0.48.0-alpine
+    restart: unless-stopped
+    profiles: [ profiling ]
+    volumes:
+      - ./vector.yaml:/etc/vector/vector.yaml:ro
+      # the NATS credentials file must be placed here on the server
+      - ./secrets:/secrets:ro
+    environment:
+      CUSTOMER_TENANT: 'Uni-Konstanz'
+      CUSTOMER_PROJECT: 'Uni-Konstanz-LeGacy'
+      HOST_NAME: legacy-project.sandstorm.dev
+      HOST_GROUP: Hetzner
+      NATS_TARGET_SERVER_ADDRESS: 'tls://natsv1.cloud.sandstorm.de:32222'
+      NATS_TARGET_PROFILING_SUBJECT: profiling.default.customer.${PROFILING_CUSTOMER_TENANT:-}
+      NATS_CREDENTIALS_FILE: /secrets/logging_nats_customers.creds
+      VECTOR_AGENT_USERNAME: ${VECTOR_AGENT_USERNAME:-}
+      VECTOR_AGENT_PASSWORD: ${VECTOR_AGENT_PASSWORD:-}
+
+    logging:
+      driver: json-file
+      options:
+        max-size: 1m
+        max-file: 3
