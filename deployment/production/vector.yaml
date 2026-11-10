@@ -1,0 +1,50 @@
+# Vector agent for the Sandstorm profiling pipeline (Excimer -> vector -> NATS -> ClickHouse / Dashica).
+# see docs/2026_11_10_Excimer_Profiling.md
+
+# Log schema timestamp_key is very important! Otherwise the vector aggregator can't transform the timestamp into the correct format
+log_schema:
+  # default "host", but adjust to our naming convention with host_name and host_group
+  host_key: "host_name"
+  # timestamp -> should contain encoding (important so the aggregator can transform the timestamp into clickhouse readable format)
+  timestamp_key: "timestamp_rfc3339"
+
+sources:
+  profiling_http_input:
+    type: "http_server"
+    # this has to be 0.0.0.0 so it can be reached in the local docker compose network
+    address: "0.0.0.0:8234"
+    encoding: "json"
+    headers:
+      - "Content-Type"
+    auth:
+      strategy: "basic"
+      username: "${VECTOR_AGENT_USERNAME:?VECTOR_AGENT_USERNAME env must be specified, f.e. vector}"
+      password: "${VECTOR_AGENT_PASSWORD:?VECTOR_AGENT_PASSWORD env must be specified, f.e. myPassword}"
+
+transforms:
+  profiling_nats_parser:
+    type: "remap"
+    inputs:
+      - "profiling_http_input"
+    # NOTE: the payload fields (traces, request_path, http_method, profiling_type) are passed through unchanged
+    source: |
+      .customer_tenant = "${CUSTOMER_TENANT:?CUSTOMER_TENANT env must be specified, f.e. mycustomer}"
+      .customer_project = "${CUSTOMER_PROJECT:?CUSTOMER_PROJECT env must be specified, f.e. mycustomer.myproject}"
+      .host_name = "${HOST_NAME:?HOST_NAME env must be specified, f.e. myhost}"
+      .host_group = "${HOST_GROUP:?HOST_GROUP env must be specified, f.e. mygroup}"
+
+sinks:
+  sandstorm_profiling_aggregator:
+    inputs:
+      - "profiling_nats_parser"
+    type: nats
+    url: "${NATS_TARGET_SERVER_ADDRESS:?NATS_TARGET_SERVER_ADDRESS env must be specified, f.e. nats://demo.nats.io}"
+    subject: "${NATS_TARGET_PROFILING_SUBJECT:?NATS_TARGET_PROFILING_SUBJECT env must be specified, f.e. profiling.default.customer.mycustomer}"
+    connection_name: vector
+    auth:
+      strategy: credentials_file
+      credentials_file:
+        path: "${NATS_CREDENTIALS_FILE:?NATS_CREDENTIALS_FILE env must be specified}"
+    encoding:
+      codec: json
+      timestamp_format: rfc3339

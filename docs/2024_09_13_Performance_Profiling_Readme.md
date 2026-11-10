@@ -1,3 +1,6 @@
+> **Outdated:** this describes the old file-dump setup. The current setup (Excimer -> vector -> Dashica, wall + CPU time)
+> is described in [2026_11_10_Excimer_Profiling.md](2026_11_10_Excimer_Profiling.md).
+
 # Analyzer für produktive Traces
 
 Dies ist ein *Profiling Werkzeug*, zum Beantworten der Frage: "Was macht der produktive Server?"

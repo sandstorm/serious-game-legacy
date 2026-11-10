@@ -38,6 +38,11 @@ spec:
   envFromSecrets:
     - db
     - laravel-encryption-key
+    # Profiling (Excimer -> shared vector agent in namespace sandstorm-monitoring-v2), see docs/2026_11_10_Excimer_Profiling.md
+    # create the secret in rancher FIRST (otherwise the pod does not start), with the keys:
+    #   PROFILING_VECTOR_URL (http://<vector-service>.sandstorm-monitoring-v2.svc.cluster.local:8234),
+    #   PROFILING_VECTOR_USER, PROFILING_VECTOR_PASSWORD
+    #- profiling-vector
     #- deepl-api-key
     #- sandstorm-maps-api-key
 
