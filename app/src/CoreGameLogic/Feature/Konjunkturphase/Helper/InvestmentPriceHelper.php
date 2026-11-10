@@ -12,6 +12,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\Definitions\Investments\InvestmentFinder;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
+use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\ValueObject\AuswirkungScopeEnum;
 use Random\RandomException;
 
@@ -22,19 +23,23 @@ class InvestmentPriceHelper
      * non-deterministic and will return a different result everytime it is called
      * due to a random factor in the calculation.
      *
+     * Used at a Konjunkturphase change: the Kursbonus of the given (new) Konjunkturphase
+     * is applied, not the one of the Konjunkturphase that is ending.
+     *
      * @param GameEvents $gameEvents
+     * @param KonjunkturphaseDefinition $konjunkturphase the Konjunkturphase whose Kursbonus is applied
      * @return InvestmentPrice[]
      * @throws RandomException
      */
-    public static function calculateInvestmentPrices(GameEvents $gameEvents): array
+    public static function calculateInvestmentPrices(GameEvents $gameEvents, KonjunkturphaseDefinition $konjunkturphase): array
     {
         return [
-            self::calculatePriceGTMWithJumpDiffusion(InvestmentId::MERFEDES_PENZ, $gameEvents),
-            self::calculatePriceGTMWithJumpDiffusion(InvestmentId::BETA_PEAR, $gameEvents),
-            self::calculatePriceGTMWithJumpDiffusion(InvestmentId::ETF_MSCI_WORLD, $gameEvents),
-            self::calculatePriceGTMWithJumpDiffusion(InvestmentId::ETF_CLEAN_ENERGY, $gameEvents),
-            self::calculatePriceGTMWithJumpDiffusion(InvestmentId::BAT_COIN, $gameEvents),
-            self::calculatePriceGTMWithJumpDiffusion(InvestmentId::MEME_COIN, $gameEvents),
+            self::calculatePriceGTMWithJumpDiffusion(InvestmentId::MERFEDES_PENZ, $gameEvents, $konjunkturphase),
+            self::calculatePriceGTMWithJumpDiffusion(InvestmentId::BETA_PEAR, $gameEvents, $konjunkturphase),
+            self::calculatePriceGTMWithJumpDiffusion(InvestmentId::ETF_MSCI_WORLD, $gameEvents, $konjunkturphase),
+            self::calculatePriceGTMWithJumpDiffusion(InvestmentId::ETF_CLEAN_ENERGY, $gameEvents, $konjunkturphase),
+            self::calculatePriceGTMWithJumpDiffusion(InvestmentId::BAT_COIN, $gameEvents, $konjunkturphase),
+            self::calculatePriceGTMWithJumpDiffusion(InvestmentId::MEME_COIN, $gameEvents, $konjunkturphase),
         ];
     }
 
@@ -42,6 +47,8 @@ class InvestmentPriceHelper
      * Calculates new price for a specific investment. This function is
      * non-deterministic and will return a different result everytime it is called
      * due to a random factor in the calculation.
+     *
+     * Used during a Konjunkturphase: the Kursbonus of the current Konjunkturphase is applied.
      *
      * @param GameEvents $gameEvents
      * @param InvestmentId $investmentId
@@ -53,7 +60,11 @@ class InvestmentPriceHelper
         $currentInvestmentPrices = InvestmentPriceState::getCurrentInvestmentPrices($gameEvents);
         return array_map(
             fn (InvestmentPrice $investmentPrice) => $investmentPrice->investmentId === $investmentId
-                ? self::calculatePriceGTMWithJumpDiffusion($investmentId, $gameEvents)
+                ? self::calculatePriceGTMWithJumpDiffusion(
+                    $investmentId,
+                    $gameEvents,
+                    KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents)
+                )
                 : $investmentPrice,
             $currentInvestmentPrices
         );
@@ -64,12 +75,14 @@ class InvestmentPriceHelper
      *
      * @param InvestmentId $investmentType
      * @param GameEvents $gameEvents
+     * @param KonjunkturphaseDefinition $konjunkturphase the Konjunkturphase whose Kursbonus is applied
      * @return InvestmentPrice
      * @throws RandomException
      */
     public static function calculatePriceGTMWithJumpDiffusion(
         InvestmentId $investmentType,
-        GameEvents   $gameEvents
+        GameEvents   $gameEvents,
+        KonjunkturphaseDefinition $konjunkturphase
     ): InvestmentPrice {
         $currentInvestmentPrice = InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, $investmentType);
         if (!GamePhaseState::hasKonjunkturphase($gameEvents)) {
@@ -81,7 +94,7 @@ class InvestmentPriceHelper
         $poissonRate = self::getJumpsPerYear($investmentType);
         $jumpSize = self::getJumpSize($investmentType);
         $jumpControl = self::getJumpControl($investmentType);
-        $schock = self::getSchock($gameEvents, $investmentType);
+        $schock = self::getSchock($konjunkturphase, $investmentType);
         $randomNumber = random_int(-1000, 1000) / 1000.0; // Random number from N(-1,1), here simplified as a uniform distribution
 
         $driftTerm = $drift - 0.5 * $volatility ** 2 - $poissonRate * $jumpSize;
@@ -163,18 +176,16 @@ class InvestmentPriceHelper
     }
 
     /**
-     * Returns the shock (s) based on the current economic phase.
+     * Returns the shock (s) based on the Kursbonus of the given Konjunkturphase.
      *
-     * @param GameEvents $gameEvents
+     * @param KonjunkturphaseDefinition $konjunkturphase
      * @param InvestmentId $investmentType
      * @return float
      */
-    private static function getSchock(GameEvents $gameEvents, InvestmentId $investmentType): float
+    private static function getSchock(KonjunkturphaseDefinition $konjunkturphase, InvestmentId $investmentType): float
     {
-        $konjunkturphaseDefinition = KonjunkturphaseState::getCurrentKonjunkturphase($gameEvents);
-
-        $schockStocks = $konjunkturphaseDefinition->getAuswirkungByScope(AuswirkungScopeEnum::STOCKS_BONUS)->value / 100;
-        $schockCrypto = $konjunkturphaseDefinition->getAuswirkungByScope(AuswirkungScopeEnum::CRYPTO)->value / 100;
+        $schockStocks = $konjunkturphase->getAuswirkungByScope(AuswirkungScopeEnum::STOCKS_BONUS)->value / 100;
+        $schockCrypto = $konjunkturphase->getAuswirkungByScope(AuswirkungScopeEnum::CRYPTO)->value / 100;
 
         return match ($investmentType) {
             InvestmentId::MERFEDES_PENZ, InvestmentId::BETA_PEAR => $schockStocks,
