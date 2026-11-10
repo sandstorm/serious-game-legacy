@@ -12,10 +12,6 @@
 @section('title')
     <div class="job-offers__header">
         <span>Jobbörse</span>
-        <div class="job-offers__header-info">
-            <x-gameboard.resourceChanges.resource-change sr-label="Zeitsteine" change="-1" iconClass="icon-zeitstein" />
-            Ein Job kostet Zeit. Pro Jahr bleibt dir ein Zeitstein weniger.
-        </div>
         <div class="job-offers__header-category">
             <i class="icon-erwerbseinkommen" aria-hidden="true"></i> Beruf
         </div>
@@ -27,9 +23,13 @@
 @endsection
 
 @section('content')
+    <div class="job-offers__info">
+        Ein Job kostet Zeit. Pro Jahr bleibt dir ein Zeitstein weniger.
+        <x-gameboard.resourceChanges.resource-change sr-label="Zeitsteine" change="-1" iconClass="icon-zeitstein" />
+    </div>
     <div class="job-offers">
         @foreach($jobOffers as $jobOffer)
-            <button type="button" wire:click="applyForJob('{{ $jobOffer->getId()->value }}')" title="Beruf annehmen" @class(["card", "card--disabled" => !$this->canAcceptJobOffer($jobOffer->getId()->value)->canExecute])>
+            <button type="button" wire:click="applyForJob('{{ $jobOffer->getId()->value }}')" title="Beruf annehmen, kostet einen Zeitstein" @class(["card", "card--disabled" => !$this->canAcceptJobOffer($jobOffer->getId()->value)->canExecute])>
                 <h4 class="card__title">{{ $jobOffer->getTitle() }}</h4>
                 <div class="card__content card__content--center">
                     <div class="resource-changes">
@@ -48,6 +48,11 @@
                         ])
                     >
                         Das mache ich!
+                        <div class="button__suffix">
+                            <div>
+                                <i class="icon-minus text--danger" aria-hidden="true"></i><i class="icon-zeitstein" aria-hidden="true"></i>
+                            </div>
+                        </div>
                     </span>
                 </div>
 

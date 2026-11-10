@@ -49,11 +49,16 @@
     gap: var(--spacing-100);
 }
 
-.job-offers__header-info {
+.job-offers__info {
     display: flex;
     align-items: center;
+    justify-content: center;
     flex-wrap: nowrap;
     gap: var(--spacing-100);
+    padding-inline: var(--spacing-100);
+
+    text-align: center;
+    padding-top: var(--spacing-100);
 
     font-size: var(--font-size-base);
 }
