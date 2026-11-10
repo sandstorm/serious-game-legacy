@@ -31,11 +31,17 @@ class LoanCalculator
     /**
      * The max loan amount based on the current state of the player. Single source of truth for the credit limit
      * (used for validation in {@see IsLoanAmountWithinLimitValidator} and for display in the UI).
+     *
+     * The limit applies to all open loans together (#688): borrowed money is never counted as an asset (otherwise
+     * every loan would raise the limit again), and the open repayments (incl. interest) of existing loans are
+     * subtracted.
      */
     public static function getMaxLoanAmountForPlayer(GameEvents $gameEvents, PlayerId $playerId): MoneyAmount
     {
         return self::getMaxLoanAmount(
-            PlayerState::getTotalValueOfAllAssetsForPlayer($gameEvents, $playerId)->add(PlayerState::getGuthabenForPlayer($gameEvents, $playerId))->value,
+            PlayerState::getTotalValueOfAllAssetsForPlayer($gameEvents, $playerId)
+                ->add(PlayerState::getGuthabenForPlayer($gameEvents, $playerId))
+                ->subtract(MoneySheetState::getTotalOpenLoanAmountForAllLoans($gameEvents, $playerId))->value,
             PlayerState::getCurrentGehaltForPlayer($gameEvents, $playerId)->value,
             MoneySheetState::getTotalOpenRepaymentValueForAllLoans($gameEvents, $playerId)->value,
             PlayerState::wasPlayerInsolventInThePast($gameEvents, $playerId),
