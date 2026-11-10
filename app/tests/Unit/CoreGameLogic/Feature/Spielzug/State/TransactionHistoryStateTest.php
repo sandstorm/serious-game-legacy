@@ -336,15 +336,17 @@ describe('TransactionHistoryState::getTransactionHistoryForPlayer', function () 
 
     it('records investments and immobilien sold to avoid the Insolvenz', function () {
         /** @var DomainTestCase $this */
+        // WHY: the Immobilie is cheap, so that it and the first half of the investments can never cover the
+        // deficit (about the Lebenshaltungskosten) – the investment prices are random and may triple per Konjunkturphase
         $immobilie = new ImmobilienCardDefinition(
             id: new CardId('immo1'),
             title: 'Kauf Wohnung',
             description: 'Eine Wohnung steht zum Verkauf.',
             phaseId: LebenszielPhaseId::PHASE_1,
             resourceChanges: new ResourceChanges(
-                guthabenChange: new MoneyAmount(-4000),
+                guthabenChange: new MoneyAmount(-1000),
             ),
-            annualRent: new MoneyAmount(1000),
+            annualRent: new MoneyAmount(100),
             immobilienTyp: ImmobilienType::WOHNUNG
         );
         $this->startNewKonjunkturphaseWithCardsOnTop([$immobilie]);
