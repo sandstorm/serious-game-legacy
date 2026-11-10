@@ -16,6 +16,9 @@ use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenshaltungskostenForPlayerWereEntered;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LoanWasTakenOutForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\SteuernUndAbgabenForPlayerWereEntered;
+use Domain\Definitions\Card\Dto\KategorieCardDefinition;
+use Domain\Definitions\Card\Dto\ResourceChanges;
+use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Insurance\ValueObject\InsuranceTypeEnum;
 use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
@@ -298,6 +301,39 @@ describe('GameUi', function () {
             ->startTurn()
             ->assertSidebarActionsAreVisible(true)
             ->seeUpdatedGameboard();
+    });
+
+    test('cards show the Zeitstein for playing the card in their costs (issue #681)', function () {
+        /** @var TestCase $this */
+        $this->startNewKonjunkturphaseWithCardsOnTop([
+            new KategorieCardDefinition(
+                id: new CardId('bildungCardWithExtraZeitstein'),
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                title: 'Bildungskarte mit extra Zeitstein',
+                description: 'for testing',
+                resourceChanges: new ResourceChanges(zeitsteineChange: -1, bildungKompetenzsteinChange: +1),
+            ),
+            new KategorieCardDefinition(
+                id: new CardId('sozialesCardWithoutExtraZeitstein'),
+                categoryId: CategoryId::SOZIALES_UND_FREIZEIT,
+                title: 'Sozialeskarte ohne extra Zeitstein',
+                description: 'for testing',
+                resourceChanges: new ResourceChanges(freizeitKompetenzsteinChange: +1),
+            ),
+        ]);
+
+        new GameUiTester($this, $this->getPlayers()[0], 'Player 0')
+            ->startGame()
+            ->startTurn()
+            ->testableGameUi
+            ->assertSeeInOrder([
+                'Bildungskarte mit extra Zeitstein',
+                '-2 Zeitsteine',
+                'Sozialeskarte ohne extra Zeitstein',
+                '-1 Zeitsteine',
+            ])
+            ->call('showCardActions', 'bildungCardWithExtraZeitstein', CategoryId::BILDUNG_UND_KARRIERE->value)
+            ->assertSeeInOrder(['for testing', '-2 Zeitsteine', 'Karte spielen']);
     });
 
     // Regression coverage for issue #652 — popups not behaving correctly

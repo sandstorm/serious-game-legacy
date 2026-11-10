@@ -10,9 +10,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\Dto\AktionValidationResult;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
-use Domain\Definitions\Card\Dto\CardDefinition;
-use Domain\Definitions\Card\Dto\KategorieCardDefinition;
-use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\PileId;
 
 /**
@@ -27,16 +24,6 @@ final class CanPlayerAffordTopCardOnPileValidator extends AbstractValidator
         $this->pileId = $pileId;
     }
 
-    private function getTotalCosts(PlayerId $playerId, GameEvents $gameEvents, CardDefinition $cardDefinition): ResourceChanges
-    {
-        $costToActivate = new ResourceChanges(
-            zeitsteineChange: AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound($playerId) ? 0 : -1
-        );
-        return $cardDefinition instanceof KategorieCardDefinition
-            ? $costToActivate->accumulate(AktionsCalculator::forStream($gameEvents)->getModifiedResourceChangesForCard($cardDefinition))
-            : $costToActivate;
-    }
-
     public function validate(GameEvents $gameEvents, PlayerId $playerId): AktionValidationResult
     {
         $topCardOnPile = PileState::topCardIdForPile($gameEvents, $this->pileId);
@@ -44,7 +31,7 @@ final class CanPlayerAffordTopCardOnPileValidator extends AbstractValidator
 
         if (!AktionsCalculator::forStream($gameEvents)->canPlayerAffordAction(
             $playerId,
-            $this->getTotalCosts($playerId, $gameEvents, $cardDefinition)
+            AktionsCalculator::forStream($gameEvents)->getTotalCostsForActivatingCard($playerId, $cardDefinition)
         )) {
             return new AktionValidationResult(
                 canExecute: false,

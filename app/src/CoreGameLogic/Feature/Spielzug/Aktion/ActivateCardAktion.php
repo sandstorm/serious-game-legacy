@@ -23,7 +23,6 @@ use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\KategorieCardDefinition;
-use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use RuntimeException;
@@ -55,18 +54,6 @@ class ActivateCardAktion extends Aktion
         return $validationChain->validate($gameEvents, $playerId);
     }
 
-    private function getTotalCosts(
-        GameEvents $gameEvents,
-        KategorieCardDefinition $cardDefinition,
-        PlayerId $playerId,
-    ): ResourceChanges {
-        $costToActivate = new ResourceChanges(
-            zeitsteineChange: AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound($playerId) ? 0 : -1
-        );
-        $modifiedCardResources = AktionsCalculator::forStream($gameEvents)->getModifiedResourceChangesForCard($cardDefinition);
-        return $costToActivate->accumulate($modifiedCardResources);
-    }
-
     public function execute(PlayerId $playerId, GameEvents $gameEvents): GameEventsToPersist
     {
         $result = $this->validate($playerId, $gameEvents);
@@ -80,7 +67,7 @@ class ActivateCardAktion extends Aktion
                 $playerId,
                 $this->pileId,
                 $cardDefinition->getId(),
-                $this->getTotalCosts($gameEvents, $cardDefinition, $playerId),
+                AktionsCalculator::forStream($gameEvents)->getTotalCostsForActivatingCard($playerId, $cardDefinition),
                 AktionsCalculator::forStream($gameEvents)->hasPlayerSkippedACardThisRound($playerId) ? 0 : 1,
             )
         );
