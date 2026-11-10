@@ -7,6 +7,7 @@ namespace Tests\CoreGameLogic\Feature\Konjunkturphase;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
@@ -17,6 +18,8 @@ use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\ModifierId;
+use Domain\Definitions\Investments\ValueObject\InvestmentId;
+use Domain\Definitions\Konjunkturphase\KonjunkturphaseDefinition;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 use Domain\Definitions\Konjunkturphase\ValueObject\KonjunkturphaseTypeEnum;
@@ -174,5 +177,51 @@ describe('increased chance for a Rezession', function () {
         $this->setKonjunkturphaseDefinition($normalKonjunkturphase);
         $this->startNewKonjunkturphaseWithCardsOnTop([]);
         expect($isChanceForRezessionIncreased())->toBeFalse();
+    });
+});
+
+describe('investment prices at a Konjunkturphase change', function () {
+    beforeEach(function () {
+        /** @var DomainTestCase $this */
+        $this->setupBasicGame();
+
+        KonjunkturphaseFinder::initializeForTesting();
+        $this->boomIV = KonjunkturphaseFinder::findKonjunkturphaseById(KonjunkturphasenId::create(8)); // Aktien Kursbonus +12
+        $this->depressionII = KonjunkturphaseFinder::findKonjunkturphaseById(KonjunkturphasenId::create(14)); // Aktien Kursbonus -26
+        KonjunkturphaseFinder::getInstance()->overrideKonjunkturphaseDefinitionsForTesting([
+            $this->getKonjunkturphaseDefinition(),
+            $this->boomIV,
+            $this->depressionII,
+        ]);
+
+        $this->changeKonjunkturphaseTo = fn (KonjunkturphaseDefinition $konjunkturphase) => $this->handle(
+            ChangeKonjunkturphase::create()
+                ->withFixedKonjunkturphaseForTesting($konjunkturphase)
+                ->withFixedCardOrderForTesting()
+        );
+        $this->getMerfedesPenzPrice = fn () => InvestmentPriceState::getCurrentInvestmentPrice(
+            $this->getGameEvents(),
+            InvestmentId::MERFEDES_PENZ
+        )->value;
+    });
+
+    // Merfedes-Penz has no jumps, so its exponent is 0.07 - 0.5 * 0.15^2 ± 0.15 + Kursbonus.
+    // With Boom IV (+0.12) the price always rises, with Depression II (-0.26) it always falls.
+    it('uses the Kursbonus of the new Konjunkturphase when changing from Boom to Depression', function () {
+        ($this->changeKonjunkturphaseTo)($this->boomIV);
+        $priceBefore = ($this->getMerfedesPenzPrice)();
+
+        ($this->changeKonjunkturphaseTo)($this->depressionII);
+
+        expect(($this->getMerfedesPenzPrice)())->toBeLessThan($priceBefore);
+    });
+
+    it('uses the Kursbonus of the new Konjunkturphase when changing from Depression to Boom', function () {
+        ($this->changeKonjunkturphaseTo)($this->depressionII);
+        $priceBefore = ($this->getMerfedesPenzPrice)();
+
+        ($this->changeKonjunkturphaseTo)($this->boomIV);
+
+        expect(($this->getMerfedesPenzPrice)())->toBeGreaterThan($priceBefore);
     });
 });

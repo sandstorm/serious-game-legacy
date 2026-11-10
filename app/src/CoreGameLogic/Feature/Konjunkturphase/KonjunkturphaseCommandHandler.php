@@ -79,7 +79,7 @@ final readonly class KonjunkturphaseCommandHandler implements CommandHandlerInte
                 id: $nextKonjunkturphase->id,
                 year: new Year($year),
                 type: $nextKonjunkturphase->type,
-                investmentPrices: InvestmentPriceHelper::calculateInvestmentPrices($gameEvents),
+                investmentPrices: InvestmentPriceHelper::calculateInvestmentPrices($gameEvents, $nextKonjunkturphase),
                 immobilienPrices: ImmobilienPriceHelper::calculateNewPricesForImmobilienOwnedByPlayers($gameEvents, $nextKonjunkturphase->type)
             ),
 
