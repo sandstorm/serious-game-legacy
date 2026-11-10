@@ -1,8 +1,9 @@
 @props([
     'category' => null,
     'gameEvents' => null,
-    '$playerId' => null,
+    'playerId' => null,
 ])
 
 <x-card-pile :category="$category->title->value" :card-pile="$category->cardPile"
-     :game-events="$gameEvents"/>
+     :game-events="$gameEvents"
+     :player-id="$playerId"/>

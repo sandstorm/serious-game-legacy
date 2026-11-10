@@ -80,14 +80,6 @@
             wire:click="activateCard('{{$category}}')"
         >
             Karte spielen
-            @if (!$this->playerHasToPlayCard)
-                <div class="button__suffix">
-                    <div>
-                        <i class="icon-minus text--danger" aria-hidden="true"></i><i class="icon-zeitstein" aria-hidden="true"></i>
-                        <span class="sr-only">, kostet einen Zeitstein</span>
-                    </div>
-                </div>
-            @endif
         </button>
 
         @if ($this->playerHasToPlayCard && !$this->canActivateCard($category)->canExecute)

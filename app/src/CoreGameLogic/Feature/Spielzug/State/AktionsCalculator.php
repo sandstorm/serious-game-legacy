@@ -15,6 +15,7 @@ use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\Dto\CardDefinition;
 use Domain\Definitions\Card\Dto\CardWithResourceChanges;
 use Domain\Definitions\Card\Dto\JobCardDefinition;
+use Domain\Definitions\Card\Dto\KategorieCardDefinition;
 use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
 
@@ -82,6 +83,20 @@ final readonly class AktionsCalculator
             return true;
         }
         return false;
+    }
+
+    /**
+     * Returns the total costs for activating a card: playing a card costs a Zeitstein (unless the player has
+     * skipped a card this round) plus the (modified) resource changes of the card itself.
+     */
+    public function getTotalCostsForActivatingCard(PlayerId $playerId, CardDefinition $card): ResourceChanges
+    {
+        $costToActivate = new ResourceChanges(
+            zeitsteineChange: $this->hasPlayerSkippedACardThisRound($playerId) ? 0 : -1
+        );
+        return $card instanceof KategorieCardDefinition
+            ? $costToActivate->accumulate($this->getModifiedResourceChangesForCard($card))
+            : $costToActivate;
     }
 
     /**

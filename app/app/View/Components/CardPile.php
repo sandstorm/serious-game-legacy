@@ -7,6 +7,7 @@ namespace App\View\Components;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
+use Domain\CoreGameLogic\PlayerId;
 use Domain\Definitions\Card\CardFinder;
 use Domain\Definitions\Card\Dto\CardDefinition;
 use Domain\Definitions\Card\Dto\CardWithResourceChanges;
@@ -26,6 +27,7 @@ class CardPile extends Component
         public string $category,
         public string $cardPile,
         public GameEvents $gameEvents,
+        public PlayerId $playerId,
     ) {
         $this->pileId = PileId::fromString($this->cardPile);
     }
@@ -41,9 +43,9 @@ class CardPile extends Component
         /**
          * WHY:
          * We cannot simply use the resourceChanges from the CardDefinition, since the current Konjunkturphase may
-         * modify the money costs.
+         * modify the money costs, and playing a card costs a Zeitstein in addition to the costs of the card.
          */
-        $resourceChanges = AktionsCalculator::forStream($this->gameEvents)->getModifiedResourceChangesForCard($cardDefinition);
+        $resourceChanges = AktionsCalculator::forStream($this->gameEvents)->getTotalCostsForActivatingCard($this->playerId, $cardDefinition);
         return view('components.gameboard.cardPile.card-pile', [
             'category' => CategoryId::from($this->category),
             'pileId' => $this->pileId,

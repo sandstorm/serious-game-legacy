@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\CoreGameLogic\Feature\Spielzug\State;
 
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\SkipCard;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
 use Domain\CoreGameLogic\Feature\Spielzug\State\AktionsCalculator;
 use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
@@ -110,5 +111,49 @@ describe('getModifiedResourceChangesForCard', function () {
         $calculator = AktionsCalculator::forStream($this->getGameEvents());
         expect($calculator->getModifiedResourceChangesForCard($bildungCard)->guthabenChange)->toEqual(new MoneyAmount(-1000))
             ->and($calculator->getModifiedResourceChangesForCard($sozialesCard)->guthabenChange)->toEqual(new MoneyAmount(-1000));
+    });
+});
+
+describe('getTotalCostsForActivatingCard', function () {
+    beforeEach(function () {
+        /** @var DomainTestCase $this */
+        $this->cardWithoutExtraZeitstein = new KategorieCardDefinition(
+            id: new CardId('cardWithoutExtraZeitstein'),
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+            title: 'for testing',
+            description: 'for testing',
+            resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(-100), bildungKompetenzsteinChange: +1),
+        );
+        $this->cardWithExtraZeitstein = new KategorieCardDefinition(
+            id: new CardId('cardWithExtraZeitstein'),
+            categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+            title: 'for testing',
+            description: 'for testing',
+            resourceChanges: new ResourceChanges(guthabenChange: new MoneyAmount(-100), zeitsteineChange: -1, bildungKompetenzsteinChange: +1),
+        );
+        $this->startNewKonjunkturphaseWithCardsOnTop([$this->cardWithoutExtraZeitstein, $this->cardWithExtraZeitstein]);
+    });
+
+    it('adds the Zeitstein for playing the card to the costs of the card', function () {
+        /** @var DomainTestCase $this */
+        $calculator = AktionsCalculator::forStream($this->getGameEvents());
+
+        expect($calculator->getTotalCostsForActivatingCard($this->players[0], $this->cardWithoutExtraZeitstein))
+            ->toEqual(new ResourceChanges(guthabenChange: new MoneyAmount(-100), zeitsteineChange: -1, bildungKompetenzsteinChange: +1))
+            ->and($calculator->getTotalCostsForActivatingCard($this->players[0], $this->cardWithExtraZeitstein))
+            ->toEqual(new ResourceChanges(guthabenChange: new MoneyAmount(-100), zeitsteineChange: -2, bildungKompetenzsteinChange: +1));
+    });
+
+    it('does not add the Zeitstein for playing the card after the player skipped a card', function () {
+        /** @var DomainTestCase $this */
+        $this->handle(new StartSpielzug($this->players[0]));
+        $this->handle(new SkipCard($this->players[0], CategoryId::BILDUNG_UND_KARRIERE));
+        $calculator = AktionsCalculator::forStream($this->getGameEvents());
+
+        expect($calculator->getTotalCostsForActivatingCard($this->players[0], $this->cardWithExtraZeitstein))
+            ->toEqual(new ResourceChanges(guthabenChange: new MoneyAmount(-100), zeitsteineChange: -1, bildungKompetenzsteinChange: +1))
+            // the other player has not skipped a card
+            ->and($calculator->getTotalCostsForActivatingCard($this->players[1], $this->cardWithExtraZeitstein))
+            ->toEqual(new ResourceChanges(guthabenChange: new MoneyAmount(-100), zeitsteineChange: -2, bildungKompetenzsteinChange: +1));
     });
 });
