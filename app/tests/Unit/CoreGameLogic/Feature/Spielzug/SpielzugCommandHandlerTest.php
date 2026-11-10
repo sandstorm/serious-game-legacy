@@ -10,6 +10,7 @@ use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseHasEnded;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\PileState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\AcceptJobOffer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
@@ -47,6 +48,7 @@ use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\ValueObject\AnswerId;
 use Domain\Definitions\Card\ValueObject\CardId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
+use Domain\Definitions\Card\ValueObject\PileId;
 use Domain\Definitions\Configuration\Configuration;
 use Domain\Definitions\Konjunkturphase\KonjunkturphaseFinder;
 use Domain\Definitions\Konjunkturphase\ValueObject\CategoryId;
@@ -1038,6 +1040,53 @@ describe('handleAcceptJobOffer', function () {
         $zeitsteinslotsUsedByPlayerAfterJob = PlayerState::getZeitsteinePlacedForCurrentKonjunkturphaseInCategory($gameEvents, $this->players[0], CategoryId::JOBS);
         expect($zeitsteinslotsUsedByPlayerAfterJob)->toBe($initialZeitsteinslotsUsedByPlayer + 1);
     });
+
+    it('cannot accept a job offer if all Zeitsteinslots for Jobs are used', function () {
+        /** @var DomainTestCase $this */
+        // accepting a job discards all three current job offers -> we need enough jobs for five rounds of offers
+        $testJobs = [];
+        for ($i = 0; $i < 15; $i++) {
+            $testJobs["slotJob$i"] = new JobCardDefinition(
+                id: new CardId("slotJob$i"),
+                title: "slotJob$i",
+                description: '...',
+                gehalt: new MoneyAmount(34000),
+                requirements: new JobRequirements(
+                    zeitsteine: 1,
+                ),
+            );
+        }
+        $this->startNewKonjunkturphaseWithCardsOnTop($testJobs);
+
+        $acceptFirstJobOffer = function (int $playerIndex) {
+            /** @var DomainTestCase $this */
+            $playerId = $this->players[$playerIndex];
+            $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+            $currentJobOffers = PileState::getFirstXCardsFromPile(
+                $gameEvents,
+                new PileId(CategoryId::JOBS, PlayerState::getCurrentLebenszielphaseIdForPlayer($gameEvents, $playerId))
+            );
+            $this->coreGameLogic->handle($this->gameId, AcceptJobOffer::create($playerId, $currentJobOffers[0]));
+        };
+
+        // the test Konjunkturphase has 4 Zeitsteinslots for Jobs with 2 players
+        foreach ([0, 1, 0, 1] as $playerIndex) {
+            $this->handle(new StartSpielzug($this->players[$playerIndex]));
+            $acceptFirstJobOffer($playerIndex);
+            $this->coreGameLogic->handle($this->gameId, QuitJob::create($this->players[$playerIndex]));
+            $this->coreGameLogic->handle($this->gameId, new EndSpielzug($this->players[$playerIndex]));
+        }
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($this->gameId);
+        expect(GamePhaseState::hasFreeTimeSlotsForCategory($gameEvents, CategoryId::JOBS))->toBeFalse();
+
+        // this fails, no free slots available
+        $this->handle(new StartSpielzug($this->players[0]));
+        $acceptFirstJobOffer(0);
+    })->throws(
+        RuntimeException::class,
+        'Cannot Accept Job Offer: Es gibt keine freien Zeitsteinslots mehr',
+    );
 
     it('costs one Zeitstein', function () {
         /** @var DomainTestCase $this */

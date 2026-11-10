@@ -8,6 +8,7 @@ use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\DoesNotSkipTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\DoesPlayerMeetJobRequirementsValidator;
+use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasCategoryFreeZeitsteinslotsValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerDoneNoZeitsteinaktionThisTurnValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\IsJobCurrentlyAvailableValidator;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\Validator\HasPlayerEnoughZeitsteineValidator;
@@ -40,6 +41,7 @@ class AcceptJobOfferAktion extends Aktion
             ->setNext(new IsPlayerAllowedToTakeAJobValidator())
             ->setNext(new HasPlayerEnoughZeitsteineValidator(1))
             ->setNext(new HasPlayerDoneNoZeitsteinaktionThisTurnValidator())
+            ->setNext(new HasCategoryFreeZeitsteinslotsValidator(CategoryId::JOBS))
             ->setNext(new DoesPlayerMeetJobRequirementsValidator($this->jobId))
             ->setNext(new IsJobCurrentlyAvailableValidator($this->jobId));
 
