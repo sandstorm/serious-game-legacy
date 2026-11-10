@@ -550,7 +550,16 @@ readonly class GameUiTester
                 "<span class=\"sr-only\">Kompetenzsteine im Bereich Freizeit & Soziales: $topCardRequirements->freizeitKompetenzsteine</span>",
                 '<div class="badge-with-background">',
                 '<div class="job-offers__kompetenzen">'
-            ]);
+            ])
+            // the hint about the Zeitstein is shown directly above the job offers
+            ->assertSeeHtmlInOrder([
+                '<div class="job-offers__info">',
+                'Ein Job kostet Zeit. Pro Jahr bleibt dir ein Zeitstein weniger.',
+                '<div class="job-offers">',
+                'Das mache ich!',
+                '<i class="icon-minus text--danger" aria-hidden="true"></i><i class="icon-zeitstein" aria-hidden="true"></i>',
+            ])
+            ->assertSee('Beruf annehmen, kostet einen Zeitstein');
 
         return $this;
     }
