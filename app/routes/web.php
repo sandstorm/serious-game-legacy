@@ -23,6 +23,7 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // the game play route, no auth middleware here, auth is done inside the controller
 Route::get('/play/{gameId}/{playerId}', [GamePlayController::class, 'game'])->name('game-play.game');
+Route::get('/play/{gameId}/{playerId}/bericht', [GamePlayController::class, 'report'])->name('game-play.report');
 
 if (app()->isLocal()) {
     Route::get('/preview-application-unavailable', function () {

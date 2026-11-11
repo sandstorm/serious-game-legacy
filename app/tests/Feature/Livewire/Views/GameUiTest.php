@@ -477,4 +477,17 @@ describe('GameUi', function () {
             expect($event->getPlayerInput()->value)->toBe(1250.5);
         });
     });
+
+    test('the finished game modal leads every player to the game report', function () {
+        /** @var TestCase $this */
+        $this->letFirstPlayerFinishLebensziel();
+        $otherPlayer = $this->getPlayers()[1];
+
+        Livewire::test(GameUi::class, ['gameId' => $this->getGameId(), 'myself' => $otherPlayer])
+            ->call('endGame')
+            ->assertRedirect(route('game-play.report', [
+                'gameId' => $this->getGameId()->value,
+                'playerId' => $otherPlayer->value,
+            ]));
+    });
 });

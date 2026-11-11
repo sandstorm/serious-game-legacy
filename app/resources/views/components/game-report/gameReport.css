@@ -1,0 +1,506 @@
+.game-report {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-300);
+
+    /* the player colors of the gameboard, the dark steps stay readable on white */
+    .player-color-1 {
+        --player-color: var(--color-player-1--dark);
+        --player-color--light: var(--color-player-1--light);
+    }
+
+    .player-color-2 {
+        --player-color: var(--color-player-2--dark);
+        --player-color--light: var(--color-player-2--light);
+    }
+
+    .player-color-3 {
+        --player-color: var(--color-player-3--dark);
+        --player-color--light: var(--color-player-3--light);
+    }
+
+    .player-color-4 {
+        --player-color: var(--color-player-4--dark);
+        --player-color--light: var(--color-player-4--light);
+    }
+
+    small {
+        color: var(--color-primary);
+        font-size: var(--font-size-sm);
+    }
+}
+
+.game-report__section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-100);
+
+    h2 {
+        margin-bottom: 0;
+        font-size: var(--font-size-xxl);
+    }
+}
+
+.game-report__intro {
+    max-width: 70ch;
+    margin: 0;
+    color: var(--color-primary-dark);
+}
+
+.game-report__dot {
+    display: inline-block;
+    flex: none;
+    width: 0.75em;
+    height: 0.75em;
+    margin-right: var(--spacing-50);
+    border-radius: 50%;
+    background: var(--player-color, var(--color-primary));
+}
+
+.game-report__notice {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-50);
+    margin: 0;
+    padding: var(--spacing-75) var(--spacing-100);
+
+    border-radius: var(--spacing-50);
+    background: var(--color-warning--light);
+    color: var(--color-primary-dark);
+}
+
+/* Summary */
+.game-report__summary {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-200);
+}
+
+.game-report__headline {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-50);
+    padding: var(--spacing-200);
+
+    border-radius: var(--spacing-50);
+    background: var(--color-primary-dark);
+    color: var(--color-primary-fg);
+}
+
+.game-report__title {
+    margin: 0;
+    color: inherit;
+    font-size: clamp(var(--font-size-xxl), 4vw, 2.25rem);
+    line-height: var(--line-height-tight);
+}
+
+.game-report__lede {
+    max-width: 70ch;
+    margin: 0;
+    color: var(--color-primary-light);
+    font-size: var(--font-size-lg);
+}
+
+.game-report__players {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: var(--spacing-100);
+}
+
+.game-report__player {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-75);
+    /* the accent is an inset shadow, so it does not take space */
+    padding: calc(var(--spacing-100) + 6px) var(--spacing-100) var(--spacing-100);
+
+    border: 1px solid var(--color-cards-border);
+    border-radius: var(--spacing-50);
+    background: var(--color-cards-bg);
+    /* an inset shadow follows the rounded corners, a thicker border of another color leaves a gap in them */
+    box-shadow: inset 0 6px 0 var(--player-color);
+}
+
+.game-report__player--winner {
+    padding: calc(var(--spacing-100) + 4px) calc(var(--spacing-100) - 1px) calc(var(--spacing-100) - 1px);
+
+    border: 2px solid var(--player-color);
+    box-shadow: inset 0 4px 0 var(--player-color);
+}
+
+.game-report__player-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-50);
+}
+
+.game-report__player-name {
+    margin: 0;
+    font-size: var(--font-size-xl);
+}
+
+.game-report__you {
+    margin-left: var(--spacing-25);
+    color: var(--color-primary);
+    font-weight: var(--font-weight-regular);
+}
+
+.game-report__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-25);
+    padding: var(--spacing-25) var(--spacing-50);
+
+    border-radius: var(--spacing-100);
+    background: var(--player-color);
+    color: var(--color-primary-fg);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+
+    i {
+        color: inherit;
+    }
+}
+
+.game-report__lebensziel {
+    margin: 0;
+    color: var(--color-primary-dark);
+    font-weight: var(--font-weight-bold);
+}
+
+.game-report__phases {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--spacing-25);
+}
+
+.game-report__phase {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-25) var(--spacing-50);
+
+    border-radius: var(--spacing-25);
+    background: var(--color-grey);
+    color: var(--color-primary-dark);
+    font-size: var(--font-size-xs);
+
+    small {
+        color: inherit;
+        font-size: var(--font-size-xs);
+    }
+}
+
+.game-report__phase--reached {
+    background: var(--player-color--light);
+}
+
+.game-report__phase--finished {
+    background: var(--player-color);
+    color: var(--color-primary-fg);
+}
+
+.game-report__figures {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--spacing-25) var(--spacing-100);
+    margin: 0;
+    padding-top: var(--spacing-75);
+
+    border-top: 1px solid var(--color-cards-border);
+
+    dt {
+        color: var(--color-primary);
+    }
+
+    dd {
+        margin: 0;
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+    }
+}
+
+.game-report__figures-total {
+    font-weight: var(--font-weight-bold);
+}
+
+dt.game-report__figures-total {
+    color: var(--color-primary-dark);
+}
+
+/* Highlights */
+.game-report__highlights {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    gap: var(--spacing-100);
+}
+
+.game-report__highlight {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-25);
+    padding: var(--spacing-100) var(--spacing-100) var(--spacing-100) calc(var(--spacing-100) + 6px);
+
+    border: 1px solid var(--color-cards-border);
+    border-radius: var(--spacing-50);
+    background: var(--color-cards-bg);
+    box-shadow: inset 6px 0 0 var(--player-color);
+
+    p {
+        margin: 0;
+    }
+}
+
+.game-report__highlight--everyone {
+    --player-color: var(--color-primary);
+}
+
+.game-report__highlight-title {
+    margin: 0;
+}
+
+/* Money table */
+.game-report__table-wrapper {
+    overflow-x: auto;
+
+    border: 1px solid var(--color-cards-border);
+    border-radius: var(--spacing-50);
+    background: var(--color-cards-bg);
+}
+
+.game-report__money-table {
+    display: table;
+    width: 100%;
+    min-width: 560px;
+    overflow: visible;
+
+    th, td {
+        padding: var(--spacing-50) var(--spacing-100);
+        white-space: nowrap;
+    }
+
+    td {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+    }
+
+    thead th {
+        border-bottom: 2px solid var(--color-cards-border);
+        color: var(--color-primary-dark);
+        font-weight: var(--font-weight-bold);
+        text-align: right;
+    }
+
+    tbody th {
+        color: var(--color-primary-dark);
+        white-space: normal;
+    }
+}
+
+.game-report__money-group th {
+    padding-top: var(--spacing-100);
+    color: var(--color-primary);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.game-report__money-total {
+    th, td {
+        border-top: 2px solid var(--color-primary-dark);
+        color: var(--color-primary-dark);
+        font-weight: var(--font-weight-bold);
+    }
+}
+
+.game-report__top-expenses {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: var(--spacing-100);
+
+    h4 {
+        margin-bottom: var(--spacing-50);
+        font-size: var(--font-size-base);
+    }
+
+    ol, p {
+        margin: 0;
+        padding-left: var(--spacing-150);
+    }
+
+    p {
+        padding-left: 0;
+    }
+
+    li {
+        margin-bottom: var(--spacing-25);
+    }
+}
+
+/* Key moments */
+.game-report__years {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    border-left: 2px solid var(--color-cards-border);
+}
+
+.game-report__year {
+    position: relative;
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: var(--spacing-100);
+    padding: 0 0 var(--spacing-150) var(--spacing-150);
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0.3em;
+        left: -8px;
+        width: 14px;
+        height: 14px;
+
+        border: 2px solid var(--year-color);
+        border-radius: 50%;
+        background: white;
+    }
+}
+
+.game-report__year--aufschwung {
+    --year-color: var(--color-success);
+}
+
+.game-report__year--boom {
+    --year-color: var(--color-warning);
+}
+
+.game-report__year--rezession {
+    --year-color: var(--color-primary);
+}
+
+.game-report__year--depression {
+    --year-color: var(--color-error);
+}
+
+.game-report__year-label {
+    display: flex;
+    flex-direction: column;
+
+    strong {
+        color: var(--color-primary-dark);
+        font-size: var(--font-size-lg);
+    }
+
+    small {
+        color: var(--year-color);
+    }
+}
+
+.game-report__year-quiet {
+    margin: 0;
+    color: var(--color-primary);
+}
+
+.game-report__moments {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-50);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.game-report__moment {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: start;
+    gap: var(--spacing-75);
+    padding-bottom: var(--spacing-50);
+
+    border-bottom: 1px dashed var(--color-cards-border);
+
+    > i {
+        margin-top: 0.15em;
+        color: var(--player-color);
+    }
+}
+
+.game-report__moment-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.game-report__moment-amount {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Careers */
+.game-report__careers {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-150);
+
+    p {
+        margin: 0;
+    }
+}
+
+.game-report__career-name {
+    margin-bottom: var(--spacing-50);
+}
+
+.game-report__career-steps {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--spacing-50);
+    margin: 0 0 var(--spacing-50);
+    padding: 0;
+    list-style: none;
+}
+
+.game-report__career-step {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-25) var(--spacing-75) var(--spacing-25) calc(var(--spacing-75) + 4px);
+
+    border: 1px solid var(--color-cards-border);
+    border-radius: var(--spacing-25);
+    background: var(--color-cards-bg);
+    box-shadow: inset 4px 0 0 var(--player-color);
+}
+
+.game-report__career-step--quit {
+    box-shadow: inset 4px 0 0 var(--color-grey);
+    color: var(--color-primary);
+}
+
+.game-report__career-minijobs {
+    color: var(--color-primary);
+}
+
+.game-report__actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+    .game-report__year {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--spacing-50);
+    }
+
+    .game-report__moment {
+        grid-template-columns: auto minmax(0, 1fr);
+
+        .game-report__moment-amount {
+            grid-column: 2;
+        }
+    }
+}
