@@ -17,6 +17,7 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Str;
 
 class GameResource extends Resource
@@ -112,7 +113,10 @@ class GameResource extends Resource
                 Tables\Columns\TextColumn::make('creator_name')
                     ->label('Erstellt von')
                     ->getStateUsing(fn (Game $record): string => $record->getCreatorName())
-                    ->searchable(),
+                    // creator_name is not a database column: the creator is either an admin (User) or a player (Player)
+                    ->searchable(query: fn (Builder $query, string $search): Builder => $query
+                        ->whereRelation('creator', 'name', 'like', "%{$search}%")
+                        ->orWhereRelation('creatorPlayer', 'name', 'like', "%{$search}%")),
             ])
             ->filters([
                 //
