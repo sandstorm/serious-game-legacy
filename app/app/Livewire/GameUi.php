@@ -194,14 +194,4 @@ class GameUi extends Component
     {
         return PlayerState::getCurrentLebenszielphaseIdForPlayer($this->gameEvents, $playerId ?? $this->myself)->value;
     }
-
-    public function getCurrentPlayerName(): string
-    {
-        return PlayerState::getNameForPlayer($this->gameEvents, $this->getCurrentPlayer());
-    }
-
-    public function getLebenszielNameForCurrentPlayer(): string
-    {
-        return PlayerState::getLebenszielDefinitionForPlayer($this->gameEvents, $this->getCurrentPlayer())->name;
-    }
 }

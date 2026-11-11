@@ -6,6 +6,13 @@ namespace Tests;
 
 use Domain\CoreGameLogic\CommandHandler\CommandInterface;
 use Domain\CoreGameLogic\CoreGameLogicApp;
+use Neos\EventStore\Model\EventStream\ExpectedVersion;
+use Neos\EventStore\Helper\InMemoryEventStore;
+use Domain\Definitions\Configuration\Configuration;
+use Domain\CoreGameLogic\GameEventStore;
+use Domain\CoreGameLogic\Feature\Initialization\Event\PreGameStarted;
+use Domain\CoreGameLogic\EventStore\GameEventsToPersist;
+use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
 use Domain\CoreGameLogic\EventStore\GameEvents;
 use Domain\CoreGameLogic\Feature\Initialization\Command\SelectLebensziel;
@@ -15,6 +22,7 @@ use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Command\ChangeKonjunkturphase;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ActivateCard;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\ChangeLebenszielphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
@@ -38,6 +46,7 @@ use Domain\Definitions\Card\Dto\ResourceChanges;
 use Domain\Definitions\Card\Dto\WeiterbildungCardDefinition;
 use Domain\Definitions\Card\ValueObject\AnswerId;
 use Domain\Definitions\Card\ValueObject\CardId;
+use Domain\Definitions\Card\ValueObject\LebenszielPhaseId;
 use Domain\Definitions\Card\ValueObject\ModifierId;
 use Domain\Definitions\Card\ValueObject\MoneyAmount;
 use Domain\Definitions\Insurance\InsuranceDefinition;
@@ -568,6 +577,60 @@ trait GameTestHelpers
     public function getPlayers(): array
     {
         return $this->players;
+    }
+
+    /**
+     * Lets the first player reach all Lebenszielphasen and finish the Lebensziel within three Spielzüge,
+     * the second player only does Minijobs in between.
+     */
+    public function letFirstPlayerFinishLebensziel(): void
+    {
+        $cardsForTesting = [];
+        foreach ([LebenszielPhaseId::PHASE_1, LebenszielPhaseId::PHASE_2, LebenszielPhaseId::PHASE_3] as $phase) {
+            $cardsForTesting[] = new KategorieCardDefinition(
+                id: new CardId('phase' . $phase->value),
+                categoryId: CategoryId::BILDUNG_UND_KARRIERE,
+                title: 'Karte für Phase ' . $phase->value,
+                description: '...',
+                phaseId: $phase,
+                resourceChanges: new ResourceChanges(
+                    guthabenChange: new MoneyAmount($phase === LebenszielPhaseId::PHASE_1 ? 2000000 : 0),
+                    zeitsteineChange: +1,
+                    bildungKompetenzsteinChange: +5,
+                    freizeitKompetenzsteinChange: +5,
+                ),
+            );
+        }
+        $this->startNewKonjunkturphaseWithCardsOnTop($cardsForTesting);
+        [$first, $second] = $this->players;
+        for ($i = 0; $i < 3; $i++) {
+            $this->handle(new StartSpielzug($first));
+            $this->handle(ActivateCard::create($first, CategoryId::BILDUNG_UND_KARRIERE));
+            $this->handle(ChangeLebenszielphase::create($first));
+            $this->handle(new EndSpielzug($first));
+            if ($i < 2) {
+                $this->handle(new StartSpielzug($second));
+                $this->handle(DoMinijob::create($second));
+                $this->handle(new EndSpielzug($second));
+            }
+        }
+    }
+
+    /**
+     * Replaces the game with a copy that looks like it was created on an older version of the definitions.
+     * Such games cannot be continued, but can still be loaded.
+     */
+    public function moveGameToOlderDefinitionsVersion(): void
+    {
+        $events = array_map(
+            fn (GameEventInterface $event) => $event instanceof PreGameStarted
+                ? new PreGameStarted($event->playerIds, $event->resourceChanges, Configuration::DEFINITIONS_VERSION - 1)
+                : $event,
+            $this->getGameEvents()->events
+        );
+        $gameEventStore = new GameEventStore(new InMemoryEventStore());
+        $gameEventStore->commit($this->gameId, GameEventsToPersist::with(...$events), ExpectedVersion::NO_STREAM());
+        $this->coreGameLogic = new CoreGameLogicApp($gameEventStore);
     }
 
     public function getGameId(): GameId

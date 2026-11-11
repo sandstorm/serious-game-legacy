@@ -10,6 +10,8 @@ use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\Feature\Spielzug\Aktion\ChangeLebenszielphaseAktion;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\ChangeLebenszielphase;
 use Domain\CoreGameLogic\Feature\Spielzug\Event\LebenszielphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Spielzug\Event\PlayerHasFinishedLebensziel;
+use Domain\CoreGameLogic\Feature\Spielzug\State\PlayerState;
 
 trait HasLebenszielphase
 {
@@ -60,8 +62,28 @@ trait HasLebenszielphase
         }
     }
 
+    /**
+     * Taken from the event, the winner does not have to be the current player anymore.
+     */
+    public function getWinnerName(): string
+    {
+        return PlayerState::getNameForPlayer($this->getGameEvents(), $this->getFinishedLebenszielEvent()->playerId);
+    }
+
+    public function getWinnerLebenszielName(): string
+    {
+        return $this->getFinishedLebenszielEvent()->lebenszielName;
+    }
+
+    private function getFinishedLebenszielEvent(): PlayerHasFinishedLebensziel
+    {
+        /** @var PlayerHasFinishedLebensziel $event */
+        $event = $this->getGameEvents()->findFirst(PlayerHasFinishedLebensziel::class);
+        return $event;
+    }
+
     public function endGame(): void
     {
-        redirect(route('game-play.index'));
+        redirect(route('game-play.report', ['gameId' => $this->gameId->value, 'playerId' => $this->myself->value]));
     }
 }

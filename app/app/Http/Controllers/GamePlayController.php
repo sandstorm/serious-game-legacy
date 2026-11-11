@@ -8,7 +8,9 @@ use App\Livewire\Dto\Games;
 use App\Models\Game;
 use App\Models\Player;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
+use Domain\CoreGameLogic\Feature\GameReport\State\GameReportState;
 use Domain\CoreGameLogic\Feature\Initialization\Command\StartPreGame;
+use Domain\CoreGameLogic\Feature\Initialization\State\GamePhaseState;
 use Domain\CoreGameLogic\Feature\Initialization\State\PreGameState;
 use Domain\CoreGameLogic\GameId;
 use Domain\CoreGameLogic\PlayerId;
@@ -50,6 +52,7 @@ class GamePlayController extends Controller
                 ),
                 isInGamePhase: !PreGameState::isInPreGamePhase($gameEvents),
                 isPlayable: PreGameState::isPlayableWithCurrentDefinitions($gameEvents),
+                isFinished: GamePhaseState::hasAnyPlayerFinishedLebensziel($gameEvents),
             );
         }
 
@@ -125,6 +128,58 @@ class GamePlayController extends Controller
         }
 
         $playerId = PlayerId::fromString($playerId);
+        $game = $this->findGameForPlayerOrAbort($request, $gameId, $playerId);
+
+        $showRoleSelection = $game->isCreatedByPlayer()
+            && $game->creatorPlayer !== null
+            && $playerId->value !== $game->creatorPlayer->id;
+
+        return view('controllers.gameplay.game-play', [
+            'gameId' => $gameId,
+            'myself' => $playerId,
+            'showRoleSelection' => $showRoleSelection,
+        ]);
+    }
+
+    /**
+     * The recap of a finished game, shown after the players closed the finished-game modal.
+     *
+     * @param Request $request
+     * @param string $gameId
+     * @param string $playerId
+     * @return View|RedirectResponse
+     */
+    public function report(Request $request, string $gameId, string $playerId): View|RedirectResponse
+    {
+        $gameId = GameId::fromString($gameId);
+        if (!$this->coreGameLogic->hasGame($gameId)) {
+            abort(404);
+        }
+
+        $playerId = PlayerId::fromString($playerId);
+        $this->findGameForPlayerOrAbort($request, $gameId, $playerId);
+
+        $gameEvents = $this->coreGameLogic->getGameEvents($gameId);
+        if (!GamePhaseState::hasAnyPlayerFinishedLebensziel($gameEvents)) {
+            return redirect()->route('game-play.game', ['gameId' => $gameId, 'playerId' => $playerId]);
+        }
+
+        return view('controllers.gameplay.report', [
+            'report' => GameReportState::getGameReport($gameEvents),
+            'myself' => $playerId,
+        ]);
+    }
+
+    /**
+     * Aborts unless the player is part of the game and, for games not created by a player, is the logged in player.
+     *
+     * @param Request $request
+     * @param GameId $gameId
+     * @param PlayerId $playerId
+     * @return Game
+     */
+    private function findGameForPlayerOrAbort(Request $request, GameId $gameId, PlayerId $playerId): Game
+    {
         $loggedInPlayer = $request->user('game');
         $game = Game::find($gameId->value);
 
@@ -152,15 +207,7 @@ class GamePlayController extends Controller
             abort(403);
         }
 
-        $showRoleSelection = $game->isCreatedByPlayer()
-            && $game->creatorPlayer !== null
-            && $playerId->value !== $game->creatorPlayer->id;
-
-        return view('controllers.gameplay.game-play', [
-            'gameId' => $gameId,
-            'myself' => $playerId,
-            'showRoleSelection' => $showRoleSelection,
-        ]);
+        return $game;
     }
 
     /**

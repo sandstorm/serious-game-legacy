@@ -91,8 +91,8 @@
     <div wire:key="modal-finished-game">
         @if ($isFinishedGameModalVisible)
             <x-gameboard.finished-game-modal
-                :winner-name="$this->getCurrentPlayerName()"
-                :lebensziel-name="$this->getLebenszielNameForCurrentPlayer()"
+                :winner-name="$this->getWinnerName()"
+                :lebensziel-name="$this->getWinnerLebenszielName()"
             />
         @endif
     </div>

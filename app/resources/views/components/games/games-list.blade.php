@@ -26,7 +26,9 @@
                 </div>
                 <div class="games-list__game-status">
                     <strong>Status:</strong>
-                    @if (!$game->isPlayable)
+                    @if ($game->isFinished)
+                        Beendet
+                    @elseif (!$game->isPlayable)
                         Nicht mehr spielbar (mit einer anderen Version des Spiels erstellt)
                     @elseif ($game->isInGamePhase)
                         Gestartet
@@ -35,7 +37,12 @@
                     @endif
                 </div>
                 <div class="games-list__game-action">
-                    @if(!$game->isPlayable)
+                    @if($game->isFinished)
+                        {{-- also for games of other versions, the report only reads their events --}}
+                        <a class="button button--type-primary" href={{route('game-play.report', ['gameId' => $game->game->id, 'playerId' => $player->id])}}>
+                            Spielbericht ansehen
+                        </a>
+                    @elseif(!$game->isPlayable)
                         {{-- games created on a different version of the game cannot be continued --}}
                     @elseif($game->game->isCreatedByPlayer())
                         <a class="button button--type-primary" href={{route('game-play.player-links', ['gameId' => $game->game->id])}}>
