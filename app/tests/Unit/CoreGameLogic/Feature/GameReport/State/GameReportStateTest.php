@@ -10,6 +10,7 @@ use Domain\CoreGameLogic\Feature\GameReport\Dto\MoneyCategory;
 use Domain\CoreGameLogic\Feature\GameReport\State\GameReportState;
 use Domain\CoreGameLogic\Feature\Moneysheet\State\MoneySheetState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\Event\KonjunkturphaseWasChanged;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\State\InvestmentPriceState;
 use Domain\CoreGameLogic\Feature\Konjunkturphase\State\KonjunkturphaseState;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\CompleteMoneysheetForPlayer;
 use Domain\CoreGameLogic\Feature\Spielzug\Command\EnterLebenshaltungskostenForPlayer;
@@ -283,6 +284,72 @@ describe('GameReportState::getGameReport', function () {
         expect($yearStarts)->toHaveCount($gameEvents->findAllOfType(KonjunkturphaseWasChanged::class)->count())
             ->and($yearStarts[0]->turnIndex)->toBe(0)
             ->and(end($yearStarts)->turnIndex)->toBe($numberOfSpielzuege);
+    });
+
+    it('records the price of every investment at each year start and after each Spielzug', function () {
+        /** @var DomainTestCase $this */
+        playOneYearWithMinijobs($this);
+        playOneYearWithMinijobs($this);
+
+        $gameEvents = $this->getGameEvents();
+        $prices = GameReportState::getGameReport($gameEvents)->investmentPrices;
+        $numberOfYears = $gameEvents->findAllOfType(KonjunkturphaseWasChanged::class)->count();
+        $numberOfSpielzuege = $gameEvents->findAllOfType(SpielzugWasEnded::class)->count();
+
+        expect($prices->getNumberOfSpielzuege())->toBe($numberOfSpielzuege);
+        foreach (InvestmentId::cases() as $investmentId) {
+            $points = $prices->getPricesFor($investmentId);
+            $last = end($points);
+            expect($points)->toHaveCount($numberOfYears + $numberOfSpielzuege)
+                ->and($points[0]->turnIndex)->toBe(0)
+                ->and($points[0]->isYearStart)->toBeTrue()
+                ->and($points[0]->price->value)->toEqual(Configuration::INITIAL_INVESTMENT_PRICE)
+                ->and($last !== false ? $last->price->value : null)
+                ->toEqual(InvestmentPriceState::getCurrentInvestmentPrice($gameEvents, $investmentId)->value);
+        }
+    });
+
+    it('records the investment trades of all players in the Spielzug they happened', function () {
+        /** @var DomainTestCase $this */
+        [$first, $second] = $this->getPlayers();
+        $turnsBefore = $this->getGameEvents()->findAllOfType(SpielzugWasEnded::class)->count();
+        $this->handle(new StartSpielzug($first));
+        $this->handle(BuyInvestmentsForPlayer::create($first, InvestmentId::MERFEDES_PENZ, 100));
+        $this->handle(DontSellInvestmentsForPlayer::create($second, InvestmentId::MERFEDES_PENZ));
+        $this->handle(new EndSpielzug($first));
+        $this->handle(new StartSpielzug($second));
+        $this->handle(DoMinijob::create($second));
+        $this->handle(new EndSpielzug($second));
+        $this->handle(new StartSpielzug($first));
+        $this->handle(SellInvestmentsForPlayer::create($first, InvestmentId::MERFEDES_PENZ, 40));
+
+        $gameEvents = $this->getGameEvents();
+        /** @var PlayerHasBoughtInvestment $buy */
+        $buy = $gameEvents->findLast(PlayerHasBoughtInvestment::class);
+        /** @var PlayerHasSoldInvestment $sale */
+        $sale = $gameEvents->findLast(PlayerHasSoldInvestment::class);
+
+        $prices = GameReportState::getGameReport($gameEvents)->investmentPrices;
+        $trades = $prices->getTradesFor(InvestmentId::MERFEDES_PENZ);
+
+        expect($prices->getTradesFor(InvestmentId::BETA_PEAR))->toBe([])
+            ->and($trades)->toHaveCount(2)
+            ->and($trades[0]->playerId->equals($first))->toBeTrue()
+            ->and($trades[0]->isSale)->toBeFalse()
+            ->and($trades[0]->amount)->toBe(100)
+            ->and($trades[0]->price->value)->toEqual($buy->price->value)
+            ->and($trades[0]->turnIndex)->toBe($turnsBefore)
+            ->and($trades[1]->isSale)->toBeTrue()
+            ->and($trades[1]->amount)->toBe(40)
+            ->and($trades[1]->price->value)->toEqual($sale->price->value)
+            ->and($trades[1]->turnIndex)->toBe($turnsBefore + 2);
+        // the trade happens at the price that is valid during the Spielzug
+        $pointsBeforeSale = array_filter(
+            $prices->getPricesFor(InvestmentId::MERFEDES_PENZ),
+            fn ($point) => $point->turnIndex <= $turnsBefore + 2
+        );
+        $priceBeforeSale = end($pointsBeforeSale);
+        expect($priceBeforeSale !== false ? $priceBeforeSale->price->value : null)->toEqual($sale->price->value);
     });
 
     it('counts correct moneysheet inputs and fines', function () {

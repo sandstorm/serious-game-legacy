@@ -19,6 +19,7 @@ final readonly class GameReport
         public ?PlayerId $winnerId,
         public array $players,
         public GuthabenTimeline $timeline,
+        public InvestmentPriceHistory $investmentPrices,
         public array $keyMoments,
         public array $highlights,
         public bool $isFromOlderDefinitionsVersion = false,

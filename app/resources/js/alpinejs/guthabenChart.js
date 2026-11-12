@@ -1,5 +1,5 @@
 /**
- * Hover tooltip for the Guthaben chart of the game report.
+ * Tooltip for the Guthaben chart of the game report, shown while hovering or after tapping the chart.
  * The value at index i is drawn at x = plotLeft + (i + 1) / count * (plotRight - plotLeft).
  */
 export default (data, plotLeft, plotRight) => ({
@@ -27,7 +27,16 @@ export default (data, plotLeft, plotRight) => ({
         this.tooltipLeft = left + 220 > bounds.width ? left - 252 : left
     },
 
-    leave() {
+    /**
+     * A touch ends with leaving the chart, so the tooltip of a tap stays open until it is closed.
+     */
+    leave(event) {
+        if (event.pointerType !== 'touch') {
+            this.index = null
+        }
+    },
+
+    close() {
         this.index = null
     },
 

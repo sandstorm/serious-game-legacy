@@ -7,6 +7,12 @@ namespace Tests\Feature\Http;
 use App\Models\Game;
 use App\Models\Player;
 use Domain\CoreGameLogic\DrivingPorts\ForCoreGameLogic;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\BuyInvestmentsForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\DoMinijob;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\DontSellInvestmentsForPlayer;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\EndSpielzug;
+use Domain\CoreGameLogic\Feature\Spielzug\Command\StartSpielzug;
+use Domain\Definitions\Investments\ValueObject\InvestmentId;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -36,6 +42,26 @@ describe('game report', function () {
             ->assertSee('Player 0 hat das Lebensziel erreicht!')
             ->assertSee(['Player 0', 'Player 1', 'Guthaben im Spielverlauf', 'Wohin das Geld geflossen ist', 'Schlüsselmomente', 'Karrieren'])
             ->assertSee(route('game-play.index'));
+    });
+
+    it('shows the price history of every investment with the trades of the players', function () {
+        /** @var TestCase $this */
+        [$first, $second] = $this->getPlayers();
+        $this->handle(new StartSpielzug($first));
+        $this->handle(BuyInvestmentsForPlayer::create($first, InvestmentId::BETA_PEAR, 100));
+        $this->handle(DontSellInvestmentsForPlayer::create($second, InvestmentId::BETA_PEAR));
+        $this->handle(new EndSpielzug($first));
+        $this->handle(new StartSpielzug($second));
+        $this->handle(DoMinijob::create($second));
+        $this->handle(new EndSpielzug($second));
+        $this->letFirstPlayerFinishLebensziel();
+
+        $this->get(route('game-play.report', ['gameId' => $this->getGameId()->value, 'playerId' => $first->value]))
+            ->assertOk()
+            ->assertSee('Kursverläufe der Anlagen')
+            ->assertSee(array_map(fn (InvestmentId $investmentId) => $investmentId->value, InvestmentId::cases()))
+            ->assertSee('Käufe und Verkäufe (1)')
+            ->assertSee('Player 0 kauft 100 Anteile');
     });
 
     it('redirects to the game while nobody has finished the Lebensziel', function () {

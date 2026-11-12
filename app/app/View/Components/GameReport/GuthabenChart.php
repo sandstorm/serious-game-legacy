@@ -31,7 +31,7 @@ class GuthabenChart extends Component
     {
         $timeline = $this->report->timeline;
         $numberOfValues = max(2, $timeline->getNumberOfValues());
-        [$min, $max, $step] = self::getNiceScale($timeline->getMinValue(), $timeline->getMaxValue());
+        [$min, $max, $step] = ChartScale::getNiceScale($timeline->getMinValue(), $timeline->getMaxValue());
 
         $x = fn (float $position): float => round(
             self::MARGIN_LEFT + $position / $numberOfValues * (self::WIDTH - self::MARGIN_LEFT - self::MARGIN_RIGHT),
@@ -129,26 +129,5 @@ class GuthabenChart extends Component
                 'values' => $timeline->getValuesForPlayer($player->playerId),
             ], $this->report->players)),
         ];
-    }
-
-    /**
-     * @return array{float, float, float} min, max and step of the y-axis, with steps of 1, 2 or 5 times a power of ten
-     */
-    private static function getNiceScale(float $minValue, float $maxValue): array
-    {
-        $range = max(1, $maxValue - $minValue);
-        $roughStep = $range / 4;
-        $magnitude = 10 ** floor(log10($roughStep));
-        $step = $magnitude;
-        foreach ([1, 2, 5, 10] as $factor) {
-            if ($factor * $magnitude >= $roughStep) {
-                $step = $factor * $magnitude;
-                break;
-            }
-        }
-        $min = floor($minValue / $step) * $step;
-        $max = ceil($maxValue / $step) * $step;
-        // a flat line still needs a visible scale
-        return [$min, max($max, $min + $step), $step];
     }
 }
