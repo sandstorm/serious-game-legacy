@@ -6,11 +6,15 @@ namespace Domain\CoreGameLogic\Feature\GameReport\State;
 
 use Domain\CoreGameLogic\EventStore\GameEventInterface;
 use Domain\CoreGameLogic\EventStore\GameEvents;
+use Domain\CoreGameLogic\Feature\Konjunkturphase\Dto\InvestmentPrice;
 use Domain\CoreGameLogic\Feature\GameReport\Dto\CardExpense;
 use Domain\CoreGameLogic\Feature\GameReport\Dto\CareerStep;
 use Domain\CoreGameLogic\Feature\GameReport\Dto\GameReport;
 use Domain\CoreGameLogic\Feature\GameReport\Dto\GuthabenTimeline;
+use Domain\CoreGameLogic\Feature\GameReport\Dto\InvestmentPriceHistory;
+use Domain\CoreGameLogic\Feature\GameReport\Dto\InvestmentPricePoint;
 use Domain\CoreGameLogic\Feature\GameReport\Dto\InvestmentResult;
+use Domain\CoreGameLogic\Feature\GameReport\Dto\InvestmentTrade;
 use Domain\CoreGameLogic\Feature\GameReport\Dto\KeyMoment;
 use Domain\CoreGameLogic\Feature\GameReport\Dto\KeyMomentType;
 use Domain\CoreGameLogic\Feature\GameReport\Dto\MoneyBreakdown;
@@ -113,6 +117,10 @@ class GameReportState
         $keyMoments = [];
         /** @var array<array{playerId: PlayerId, title: string, saved: float}> $insuranceSavings */
         $insuranceSavings = [];
+        /** @var array<string, list<InvestmentPricePoint>> $prices */
+        $prices = [];
+        /** @var array<string, list<InvestmentTrade>> $trades */
+        $trades = [];
         $winnerId = null;
         $initialPrices = null;
 
@@ -156,6 +164,7 @@ class GameReportState
             if ($event instanceof KonjunkturphaseWasChanged) {
                 $year = $event->year;
                 $initialPrices ??= $event->investmentPrices;
+                self::addPricePoints($prices, $event->investmentPrices, $turnIndex, isYearStart: true);
                 $yearStarts[] = new YearStart(
                     turnIndex: $turnIndex,
                     year: $event->year,
@@ -167,6 +176,7 @@ class GameReportState
                 }
             } elseif ($event instanceof SpielzugWasEnded) {
                 $turnIndex++;
+                self::addPricePoints($prices, $event->investmentPrices, $turnIndex, isYearStart: false);
                 foreach ($playerIds as $playerId) {
                     $timeline[$playerId->value][] = $guthaben[$playerId->value];
                 }
@@ -202,6 +212,13 @@ class GameReportState
                 $position['cost'] += $paid;
                 $position['invested'] += $paid;
                 $holdings[$event->playerId->value][$investment] = $position;
+                $trades[$investment][] = new InvestmentTrade(
+                    playerId: $event->playerId,
+                    turnIndex: $turnIndex,
+                    isSale: false,
+                    amount: $event->amount,
+                    price: $event->price,
+                );
                 if ($paid >= self::BIG_TRADE_THRESHOLD) {
                     $keyMoments[] = new KeyMoment(
                         year: $year,
@@ -222,6 +239,7 @@ class GameReportState
             ) {
                 $playerId = $event instanceof PlayerHasSoldInvestmentsToAvoidInsolvenz ? $event->getPlayerId() : $event->playerId;
                 $amount = $event instanceof PlayerHasSoldInvestmentsToAvoidInsolvenz ? $event->getAmount() : $event->amount;
+                $price = $event instanceof PlayerHasSoldInvestmentsToAvoidInsolvenz ? $event->getPrice() : $event->price;
                 $investment = $event->getInvestmentId()->value;
                 $received = $event->getResourceChanges($playerId)->guthabenChange->value;
                 $position = $holdings[$playerId->value][$investment] ?? ['amount' => 0, 'cost' => 0.0, 'invested' => 0.0, 'proceeds' => 0.0, 'gain' => 0.0];
@@ -231,6 +249,13 @@ class GameReportState
                 $position['proceeds'] += $received;
                 $position['gain'] += $received - $costOfSoldShares;
                 $holdings[$playerId->value][$investment] = $position;
+                $trades[$investment][] = new InvestmentTrade(
+                    playerId: $playerId,
+                    turnIndex: $turnIndex,
+                    isSale: true,
+                    amount: $amount,
+                    price: $price,
+                );
                 if ($received >= self::BIG_TRADE_THRESHOLD) {
                     $keyMoments[] = new KeyMoment(
                         year: $year,
@@ -354,10 +379,26 @@ class GameReportState
             winnerId: $winnerId,
             players: $playerReports,
             timeline: new GuthabenTimeline($timeline, $yearStarts),
+            investmentPrices: new InvestmentPriceHistory($prices, $trades, $turnIndex),
             keyMoments: $keyMoments,
             highlights: GameReportHighlights::find($gameEvents, $playerReports, $insuranceSavings, $initialPrices ?? []),
             isFromOlderDefinitionsVersion: !$canSplitMoneysheet,
         );
+    }
+
+    /**
+     * @param array<string, list<InvestmentPricePoint>> $prices
+     * @param InvestmentPrice[] $investmentPrices
+     */
+    private static function addPricePoints(array &$prices, array $investmentPrices, int $turnIndex, bool $isYearStart): void
+    {
+        foreach ($investmentPrices as $investmentPrice) {
+            $prices[$investmentPrice->investmentId->value][] = new InvestmentPricePoint(
+                turnIndex: $turnIndex,
+                isYearStart: $isYearStart,
+                price: $investmentPrice->price,
+            );
+        }
     }
 
     /**

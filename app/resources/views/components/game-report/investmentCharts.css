@@ -1,0 +1,201 @@
+.investment-charts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-100);
+}
+
+.investment-charts__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-50) var(--spacing-150);
+
+    font-size: var(--font-size-sm);
+}
+
+.investment-charts__legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-50);
+
+    &::before {
+        content: "";
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--player-color);
+    }
+}
+
+.investment-charts__legend-symbol {
+    color: var(--color-primary-dark);
+}
+
+.investment-charts__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-100);
+}
+
+.investment-charts__chart {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-50);
+    margin: 0;
+    padding: var(--spacing-100);
+
+    border: 1px solid var(--color-cards-border);
+    border-radius: var(--spacing-50);
+    background: var(--color-cards-bg);
+}
+
+.investment-charts__caption {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--spacing-25) var(--spacing-100);
+}
+
+.investment-charts__change {
+    font-size: var(--font-size-sm);
+    font-variant-numeric: tabular-nums;
+}
+
+.investment-charts__change--isPositive {
+    color: var(--color-success);
+}
+
+.investment-charts__change--isNegative {
+    color: var(--color-error);
+}
+
+.investment-charts__svg {
+    display: block;
+    width: 100%;
+    height: auto;
+
+    font-family: inherit;
+}
+
+.investment-charts__band {
+    fill-opacity: 0.12;
+}
+
+.investment-charts__band--aufschwung {
+    fill: var(--color-success);
+}
+
+.investment-charts__band--boom {
+    fill: var(--color-warning);
+}
+
+.investment-charts__band--rezession {
+    fill: var(--color-primary);
+    fill-opacity: 0.08;
+}
+
+.investment-charts__band--depression {
+    fill: var(--color-error);
+}
+
+.investment-charts__grid-line {
+    stroke: var(--color-cards-border);
+    stroke-width: 1;
+}
+
+.investment-charts__axis-label {
+    fill: var(--color-primary);
+    font-size: 11px;
+}
+
+.investment-charts__line {
+    fill: none;
+    stroke: var(--color-primary-dark);
+    stroke-width: 2;
+    stroke-linejoin: round;
+}
+
+.investment-charts__marker {
+    cursor: pointer;
+    outline: none;
+
+    &:focus-visible .investment-charts__marker-hit-area {
+        stroke: var(--color-primary-dark);
+        stroke-width: 1.5;
+    }
+}
+
+.investment-charts__marker-hit-area {
+    fill: transparent;
+}
+
+.investment-charts__marker-symbol {
+    fill: var(--player-color);
+    stroke: var(--color-cards-bg);
+    stroke-width: 1;
+}
+
+.investment-charts__marker--isActive {
+    .investment-charts__marker-hit-area {
+        fill: var(--player-color);
+        fill-opacity: 0.2;
+    }
+
+    .investment-charts__marker-symbol {
+        stroke: var(--color-primary-dark);
+    }
+}
+
+.investment-charts__detail {
+    min-height: 2.6em;
+    margin: 0;
+
+    color: var(--color-primary-dark);
+    font-size: var(--font-size-sm);
+
+    [x-cloak] {
+        display: none !important;
+    }
+}
+
+.investment-charts__trade span {
+    color: var(--player-color);
+}
+
+.investment-charts__detail-text {
+    &::before {
+        content: "";
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        margin-right: var(--spacing-50);
+        border-radius: 50%;
+        background: var(--player-color);
+    }
+}
+
+.investment-charts__trades {
+    font-size: var(--font-size-sm);
+
+    summary {
+        cursor: pointer;
+        color: var(--color-primary-dark);
+    }
+}
+
+.investment-charts__trade-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-25);
+    margin: var(--spacing-50) 0 0;
+    padding: 0;
+
+    list-style: none;
+    font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 768px) {
+    .investment-charts__grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

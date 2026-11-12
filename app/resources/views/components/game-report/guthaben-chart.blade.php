@@ -1,5 +1,7 @@
 <div class="guthaben-chart"
      x-data="guthabenChart(@js($hoverData), {{ $plotLeft }}, {{ $plotRight }})"
+     @click.outside="close()"
+     @keydown.escape.window="close()"
 >
     <div class="guthaben-chart__legend">
         @foreach ($report->players as $player)
@@ -13,8 +15,9 @@
              role="img"
              aria-label="Guthaben aller Spieler:innen nach jedem Spielzug"
              x-ref="svg"
+             @pointerdown="move($event)"
              @pointermove="move($event)"
-             @pointerleave="leave()"
+             @pointerleave="leave($event)"
         >
             @foreach ($bands as $band)
                 <rect class="guthaben-chart__band guthaben-chart__band--{{ $band['modifier'] }}"

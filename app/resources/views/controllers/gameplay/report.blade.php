@@ -30,6 +30,12 @@
         </section>
 
         <section class="game-report__section">
+            <h2>Kursverläufe der Anlagen</h2>
+            <p class="game-report__intro">Der Kurs jeder Aktie, jedes ETFs und jeder Kryptowährung über das ganze Spiel. Kurse ändern sich zu Beginn eines Jahres und nach jedem Spielzug, in dem jemand gekauft oder verkauft hat. Die Dreiecke zeigen, wer wann gekauft (▲) und verkauft (▼) hat.</p>
+            <x-game-report.investment-charts :report="$report" />
+        </section>
+
+        <section class="game-report__section">
             <h2>Wohin das Geld geflossen ist</h2>
             <p class="game-report__intro">Alle Einnahmen und Ausgaben über das ganze Spiel. Jede Spalte ergibt zusammen das Guthaben am Ende.</p>
             <x-game-report.money-table :report="$report" />

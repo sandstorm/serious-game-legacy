@@ -81,6 +81,11 @@ class PlayerHasSoldInvestmentsToAvoidInsolvenz implements GameEventInterface, Pr
         return $this->amount;
     }
 
+    public function getPrice(): MoneyAmount
+    {
+        return $this->price;
+    }
+
     public function getInvestmentId(): InvestmentId
     {
         return $this->investmentId;
